@@ -34,7 +34,7 @@ def main():
         (SITE / f"{slug}.html").write_text(wrap((ROOT / fname).read_text()))
     # hub page
     cards = "\n".join(
-        f'''      <a class="card" href="{slug}.html">
+        f'''      <a class="card" href="{slug}">
         <div class="ph"><img src="thumbs/{slug}.jpg" alt="{title}" loading="lazy"></div>
         <div class="body"><span class="no">{i+1:02d}</span><h2>{title}</h2><p>{desc}</p><span class="go">Відкрити →</span></div>
       </a>''' for i, (slug, fname, title, desc) in enumerate(VERSIONS))

@@ -1,0 +1,239 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Obiimy Lookbook</title>
+<meta name="description" content="Лукбук Obiimy: закреплённое фото меняется по мере прокрутки текста о способах носить шёлковый платок, с ценами и ссылками.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=Golos+Text:wght@400;500;600&display=swap">
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #EDEAE5; --bg-2: #E3DFD8; --ink: #141414; --ink-2: #4B4945; --ink-3: #85817B; --line: rgba(20, 20, 20, .14); --gold: #C89B00;
+    --display: 'Playfair Display', 'Times New Roman', serif; --body: 'Golos Text', 'Helvetica Neue', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; line-height: 1.04; text-wrap: balance; }
+  p { margin: 0; }
+  .wrap { width: min(1440px, 100%); margin-inline: auto; padding-inline: clamp(16px, 4vw, 56px); }
+  .label { font-size: .66rem; letter-spacing: .26em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+  .num { font-variant-numeric: tabular-nums; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+
+  .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: color-mix(in srgb, var(--bg) 80%, transparent); backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); }
+  .nav .wrap { display: flex; justify-content: space-between; align-items: center; height: 62px; }
+  .logo { font-family: var(--display); font-size: 1.4rem; letter-spacing: .24em; text-transform: uppercase; text-decoration: none; }
+  .nav-links { display: flex; gap: 22px; font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; font-weight: 500; }
+  .nav-links a { text-decoration: none; color: var(--ink-2); }
+  .nav-links a:hover { color: var(--ink); }
+  @media (max-width: 700px) { .nav-links { display: none; } }
+
+  /* opener */
+  .opener { padding-block: clamp(48px, 8vw, 110px) clamp(32px, 5vw, 72px); }
+  .opener .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 80px); align-items: end; }
+  .opener h1 { font-size: clamp(3rem, 8vw, 8.4rem); letter-spacing: -0.02em; }
+  .opener h1 em { font-style: italic; font-weight: 400; }
+  .opener .lede { color: var(--ink-2); font-size: 1.1rem; max-width: 30em; }
+  .opener .facts { display: flex; gap: 32px; flex-wrap: wrap; margin-top: 26px; padding-top: 18px; border-top: 1px solid var(--line); }
+  .opener .facts b { display: block; font-family: var(--display); font-size: 1.8rem; line-height: 1; }
+  .opener .facts span { font-size: .72rem; color: var(--ink-3); letter-spacing: .06em; }
+  .opener-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: clamp(28px, 4vw, 56px); }
+  .opener-strip div { aspect-ratio: 3 / 4; overflow: hidden; }
+  .opener-strip div:nth-child(2) { transform: translateY(28px); }
+  .opener-strip img { width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 860px) { .opener .wrap { grid-template-columns: 1fr; } }
+
+  /* sticky lookbook */
+  .book { border-top: 1px solid var(--ink); }
+  .book .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 96px); }
+  .book-photo { position: sticky; top: calc(62px + env(safe-area-inset-top, 0px)); height: calc(100vh - 62px); height: calc(100dvh - 62px); display: grid; align-items: center; padding-block: 24px; }
+  .frame { position: relative; width: 100%; max-height: 100%; aspect-ratio: 4 / 5; overflow: hidden; background: var(--bg-2); }
+  .frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity .7s ease, transform 1.4s ease; transform: scale(1.03); }
+  .frame img.on { opacity: 1; transform: scale(1); }
+  .frame .tag { position: absolute; left: 14px; bottom: 14px; background: rgba(20,20,20,.75); color: #fff; font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; padding: 7px 10px; backdrop-filter: blur(6px); }
+  .steps { display: grid; padding-block: 10vh; }
+  .step { min-height: 80vh; display: grid; align-content: center; gap: 16px; padding-block: 12vh; border-bottom: 1px solid var(--line); opacity: .35; transition: opacity .5s ease; }
+  .step.on { opacity: 1; }
+  .step .no { font-family: var(--display); font-size: 3.6rem; line-height: 1; color: var(--ink-3); }
+  .step h2 { font-size: clamp(2rem, 3.8vw, 3.6rem); }
+  .step p.txt { color: var(--ink-2); max-width: 32em; font-size: 1.02rem; }
+  .step .buy { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 16px; padding-top: 16px; border-top: 1px solid var(--line); max-width: 32em; margin-top: 8px; }
+  .step .buy b { font-family: var(--display); font-weight: 400; font-size: 1.3rem; display: block; line-height: 1.1; }
+  .step .buy small { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+  .step .buy a { text-decoration: none; font-family: var(--display); font-size: 1.3rem; white-space: nowrap; border-bottom: 1px solid var(--ink); }
+  @media (max-width: 860px) {
+    .book .wrap { grid-template-columns: 1fr; }
+    .book-photo { height: auto; position: sticky; top: calc(62px + env(safe-area-inset-top, 0px)); z-index: 2; background: var(--bg); padding-block: 12px; }
+    .frame { aspect-ratio: 4 / 3; }
+    .step { min-height: 0; padding-block: 40px; }
+    .steps { padding-block: 0; }
+  }
+
+  /* products marquee row */
+  .rail { padding-block: clamp(56px, 8vw, 110px); border-top: 1px solid var(--ink); }
+  .rail-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; }
+  .rail h2 { font-size: clamp(2rem, 4.6vw, 4.2rem); }
+  .rail-scroller { overflow-x: auto; scroll-snap-type: x mandatory; margin-top: 30px; scrollbar-width: thin; scrollbar-color: var(--ink) transparent; padding-bottom: 12px; }
+  .rail-track { display: flex; gap: 16px; width: max-content; padding-inline: clamp(16px, 4vw, 56px); }
+  .item { width: 260px; scroll-snap-align: start; display: grid; gap: 10px; text-decoration: none; }
+  .item .ph { aspect-ratio: 3 / 4; overflow: hidden; background: var(--bg-2); }
+  .item img { width: 100%; height: 100%; object-fit: cover; transition: transform 1s ease; }
+  .item:hover img { transform: scale(1.04); }
+  .item b { font-family: var(--display); font-weight: 400; font-size: 1.15rem; }
+  .item span { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+  .item .pr { font-family: var(--display); font-size: 1.05rem; color: var(--ink); letter-spacing: 0; text-transform: none; }
+
+  .end { padding-block: clamp(64px, 9vw, 130px); border-top: 1px solid var(--ink); }
+  .end .wrap { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(28px, 6vw, 100px); }
+  .end h2 { font-size: clamp(2.4rem, 6vw, 5.6rem); }
+  .end .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 999px; text-decoration: none; font-weight: 500; font-size: .84rem; transition: transform .2s; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-ink { background: var(--ink); color: var(--bg); }
+  .btn-line { border: 1px solid var(--ink); }
+  .end dl { margin: 0; display: grid; gap: 18px; align-content: start; }
+  .end dt { font-size: .66rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+  .end dd { margin: 4px 0 0; color: var(--ink-2); }
+  .end dd a { text-decoration: none; }
+  .end dd a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .copy { all: unset; cursor: pointer; margin-left: 10px; font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); font-weight: 600; }
+  @media (max-width: 860px) { .end .wrap { grid-template-columns: 1fr; } }
+  footer { border-top: 1px solid var(--line); padding-block: 22px calc(22px + env(safe-area-inset-bottom, 0px)); font-size: .74rem; color: var(--ink-3); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .frame img, .step, .item img, .btn { transition: none; } }
+</style>
+
+<header class="nav"><div class="wrap">
+  <a class="logo" href="#top">Obiimy</a>
+  <nav class="nav-links"><a href="#book">Як носити</a><a href="#rail">Каталог</a><a href="https://obiimy.world/" target="_blank" rel="noopener">obiimy.world</a></nav>
+</div></header>
+
+<main id="top">
+  <section class="opener">
+    <div class="wrap">
+      <div>
+        <p class="label">Лукбук · осінь–зима</p>
+        <h1 style="margin-top:14px">Сім способів <em>носити</em> шовк</h1>
+      </div>
+      <div>
+        <p class="lede">Один квадрат шовку, сім образів. Прокручуйте: фото змінюється разом із текстом, у кожному кроці є ціна і посилання на хустку.</p>
+        <div class="facts"><div><b>88 × 88</b><span>шаль</span></div><div><b>65 × 65</b><span>класика</span></div><div><b>84 × 5</b><span>твіллі</span></div></div>
+      </div>
+    </div>
+    <div class="wrap opener-strip">
+      <div><img src="photo/vyr-3.webp" alt="Хустка на голові, білий жакет, місто" loading="lazy"></div>
+      <div><img src="photo/kolo-3.webp" alt="Хустка «Коло сонця» на плечах тренча" loading="lazy"></div>
+      <div><img src="photo/makiv-knot.webp" alt="Хустка «Маків цвіт» вузлом на сорочці" loading="lazy"></div>
+    </div>
+  </section>
+
+  <section class="book" id="book">
+    <div class="wrap">
+      <div class="book-photo">
+        <div class="frame" id="frame">
+          <img src="photo/mizh-1.webp" alt="" data-step="1" class="on">
+          <img src="photo/vyr-1.webp" alt="" data-step="2">
+          <img src="photo/hratsiia-2.webp" alt="" data-step="3">
+          <img src="photo/enerhiia-back.webp" alt="" data-step="4">
+          <img src="photo/probudzhennia-3.webp" alt="" data-step="5">
+          <img src="photo/dotyk-1.webp" alt="" data-step="6">
+          <img src="photo/bag-2.webp" alt="" data-step="7">
+          <span class="tag" id="tag">01 · На голові</span>
+        </div>
+      </div>
+      <div class="steps" id="steps">
+        <article class="step on" data-step="1" data-tag="01 · На голові">
+          <span class="no num">01</span><h2>На голові, під підборіддя</h2>
+          <p class="txt">Найстаріший спосіб і найактуальніший. Шаль 88 × 88 складається трикутником, кінці зав’язуються під підборіддям або за шиєю. Тримається весь день, не сповзає.</p>
+          <div class="buy"><div><b>«Між нами»</b><small>Шаль 88 × 88 · гортензії</small></div><a class="num" href="https://obiimy.world/shovkova-khustka-mizh-namy-88x88/" target="_blank" rel="noopener">4 400 грн</a></div>
+        </article>
+        <article class="step" data-step="2" data-tag="02 · На плечах">
+          <span class="no num">02</span><h2>На плечах поверх пальта</h2>
+          <p class="txt">Розгорнутий квадрат на плечах працює як легка накидка. Один кут спереду, один за спиною. Найпростіший спосіб додати кольору нейтральному пальту.</p>
+          <div class="buy"><div><b>«Вир почуттів»</b><small>Шаль 88 × 88 · рожеві квіти</small></div><a class="num" href="https://obiimy.world/shovkova-khustka-vyr-pochuttiv-88x88/" target="_blank" rel="noopener">4 400 грн</a></div>
+        </article>
+        <article class="step" data-step="3" data-tag="03 · Як пояс">
+          <span class="no num">03</span><h2>Як пояс на жакеті</h2>
+          <p class="txt">Хустка 65 × 65 складається по діагоналі в стрічку і двічі обертається навколо талії. Вузол збоку, кінці вільно. Замінює ремінь і збирає силует.</p>
+          <div class="buy"><div><b>«Грація»</b><small>Хустка 65 × 65 · леопард</small></div><a class="num" href="https://obiimy.world/shovkova-khustka-hratsiia-65x65/" target="_blank" rel="noopener">3 200 грн</a></div>
+        </article>
+        <article class="step" data-step="4" data-tag="04 · На спині">
+          <span class="no num">04</span><h2>На відкритій спині</h2>
+          <p class="txt">Вечірній варіант. Хустка зав’язується на шиї, а полотно лягає на відкриту спину сорочки чи сукні. Працює як прикраса, яку видно, коли ви йдете.</p>
+          <div class="buy"><div><b>«Енергія»</b><small>Шаль 88 × 88 · чорний з бузковим</small></div><a class="num" href="https://obiimy.world/shovkova-khustka-enerhiia-88x88/" target="_blank" rel="noopener">4 400 грн</a></div>
+        </article>
+        <article class="step" data-step="5" data-tag="05 · Тюрбан">
+          <span class="no num">05</span><h2>Тюрбан</h2>
+          <p class="txt">Квадрат 65 × 65 обертається навколо голови й зав’язується на потилиці або збоку. Шовк не електризує волосся і не лишає заломів, тому тюрбан можна носити цілий день.</p>
+          <div class="buy"><div><b>«Пробудження»</b><small>65 × 65 · двосторонній друк</small></div><a class="num" href="https://obiimy.world/shovkova-khustka-probudzhennia-65x65/" target="_blank" rel="noopener">4 320 грн</a></div>
+        </article>
+        <article class="step" data-step="6" data-tag="06 · На тренчі">
+          <span class="no num">06</span><h2>На тренчі, як шарф</h2>
+          <p class="txt">Шаль складається смугою і закидається на плече поверх тренча. Осінній варіант, коли хочеться кольору, але не хочеться пальта.</p>
+          <div class="buy"><div><b>«Сміливий дотик»</b><small>Шаль 88 × 88 · леопард і квіти</small></div><a class="num" href="https://obiimy.world/shovkova-khustka-smilyvyi-dotyk-88x88/" target="_blank" rel="noopener">4 400 грн</a></div>
+        </article>
+        <article class="step" data-step="7" data-tag="07 · На сумці">
+          <span class="no num">07</span><h2>На ручці сумки</h2>
+          <p class="txt">Твіллі 84 × 5 обертається навколо ручки і зав’язується бантом. Найменша річ у колекції і найчастіший подарунок. Підходить і для зап’ястя.</p>
+          <div class="buy"><div><b>Твіллі «Закоханість»</b><small>84 × 5 · натуральний шовк</small></div><a class="num" href="https://obiimy.world/tvilli/" target="_blank" rel="noopener">1 600 грн</a></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="rail" id="rail">
+    <div class="wrap rail-head"><h2>З лукбука</h2><p class="label">Прокручуйте вбік →</p></div>
+    <div class="rail-scroller"><div class="rail-track">
+      <a class="item" href="https://obiimy.world/shovkova-khustka-smilyvyi-dotyk-88x88/" target="_blank" rel="noopener"><div class="ph"><img src="photo/dotyk-2.webp" alt="" loading="lazy"></div><b>«Сміливий дотик»</b><span>Шаль 88 × 88</span><span class="pr num">4 400 грн</span></a>
+      <a class="item" href="https://obiimy.world/shovkova-khustka-kolo-sontsia-88x88/" target="_blank" rel="noopener"><div class="ph"><img src="photo/kolo-2.webp" alt="" loading="lazy"></div><b>«Коло сонця»</b><span>Шаль 88 × 88</span><span class="pr num">4 400 грн</span></a>
+      <a class="item" href="https://obiimy.world/shovkova-khustka-makovyi-tsvit-65x65/" target="_blank" rel="noopener"><div class="ph"><img src="photo/makiv-1.webp" alt="" loading="lazy"></div><b>«Маків цвіт»</b><span>Хустка 65 × 65</span><span class="pr num">3 200 грн</span></a>
+      <a class="item" href="https://obiimy.world/shovkova-khustka-mizh-namy-88x88/" target="_blank" rel="noopener"><div class="ph"><img src="photo/mizh-2.webp" alt="" loading="lazy"></div><b>«Між нами»</b><span>Шаль 88 × 88</span><span class="pr num">4 400 грн</span></a>
+      <a class="item" href="https://obiimy.world/shovkova-khustka-vyr-pochuttiv-88x88/" target="_blank" rel="noopener"><div class="ph"><img src="photo/vyr-2.webp" alt="" loading="lazy"></div><b>«Вир почуттів»</b><span>Шаль 88 × 88</span><span class="pr num">4 400 грн</span></a>
+      <a class="item" href="https://obiimy.world/shovkova-khustka-probudzhennia-65x65/" target="_blank" rel="noopener"><div class="ph"><img src="photo/probudzhennia-1.webp" alt="" loading="lazy"></div><b>«Пробудження»</b><span>65 × 65 · двосторонній</span><span class="pr num">4 320 грн</span></a>
+      <a class="item" href="https://obiimy.world/shovkova-khustka-enerhiia-88x88/" target="_blank" rel="noopener"><div class="ph"><img src="photo/enerhiia-still.webp" alt="" loading="lazy"></div><b>«Енергія»</b><span>Шаль 88 × 88</span><span class="pr num">4 400 грн</span></a>
+      <a class="item" href="https://obiimy.world/tvilli/" target="_blank" rel="noopener"><div class="ph"><img src="photo/bag-1.webp" alt="" loading="lazy"></div><b>Твіллі «Закоханість»</b><span>84 × 5</span><span class="pr num">1 600 грн</span></a>
+    </div></div>
+  </section>
+
+  <section class="end">
+    <div class="wrap">
+      <div>
+        <p class="label">Obiimy</p>
+        <h2 style="margin-top:14px">Шовкові обійми з любов’ю</h2>
+        <p style="color:var(--ink-2);margin-top:16px;max-width:32em">Український бренд натурального шовку з авторськими принтами художниці Світлани Сніжко. 100% італійський шовк, ручна обробка, відправка день у день.</p>
+        <div class="actions"><a class="btn btn-ink" href="https://obiimy.world/khustky/" target="_blank" rel="noopener">Каталог</a><a class="btn btn-line" href="https://obiimy.world/podarunkovi-nabory/" target="_blank" rel="noopener">Подарункові набори</a></div>
+      </div>
+      <dl>
+        <div><dt>Телефон</dt><dd><span class="num" id="phone">+38 067 010 85 25</span><button class="copy" type="button" id="copyPhone">Скопіювати</button></dd></div>
+        <div><dt>Доставка</dt><dd>Нова пошта, безкоштовно від 5 000 грн. До 16:00 — відправка того ж дня. Міжнародна — за тарифами перевізника.</dd></div>
+        <div><dt>Де купити</dt><dd><a href="https://obiimy.world/" target="_blank" rel="noopener">obiimy.world</a> · <a href="https://intertop.ua/uk-ua/brands/obiimy/" target="_blank" rel="noopener">INTERTOP</a> · <a href="https://bebraveukrainian.ca/collections/obiimy" target="_blank" rel="noopener">Be Brave, Канада</a> · <a href="https://ufd.london/collections/obiimy" target="_blank" rel="noopener">UFD, Лондон</a></dd></div>
+        <div><dt>Соцмережі</dt><dd><a href="https://www.instagram.com/obiimy.world/" target="_blank" rel="noopener">Instagram @obiimy.world</a></dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><span>© Obiimy. Художниця та засновниця — Світлана Сніжко.</span><span>Фото з лукбуків бренду.</span></div></footer>
+
+<script>
+(function () {
+  var steps = document.querySelectorAll('.step'), imgs = document.querySelectorAll('#frame img'), tag = document.getElementById('tag');
+  function activate(n) {
+    steps.forEach(function (s) { s.classList.toggle('on', s.dataset.step === n); });
+    imgs.forEach(function (i) { i.classList.toggle('on', i.dataset.step === n); });
+    var s = document.querySelector('.step[data-step="' + n + '"]'); if (s) tag.textContent = s.dataset.tag;
+  }
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting) activate(e.target.dataset.step); }); }, { rootMargin: '-45% 0px -45% 0px', threshold: 0 });
+    steps.forEach(function (s) { io.observe(s); });
+  } else steps.forEach(function (s) { s.classList.add('on'); });
+  var copyBtn = document.getElementById('copyPhone'), phone = document.getElementById('phone');
+  copyBtn.addEventListener('click', function () {
+    var done = function () { copyBtn.textContent = 'Скопійовано'; setTimeout(function () { copyBtn.textContent = 'Скопіювати'; }, 1800); };
+    var fb = function () { var r = document.createRange(); r.selectNodeContents(phone); var s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(phone.textContent.trim()).then(done, fb); else fb();
+  });
+})();
+</script>

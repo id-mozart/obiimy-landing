@@ -1,0 +1,592 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Obiimy Silk Atelier</title>
+<meta name="description" content="Артовий лендинг Obiimy: шовкова хустка в 3D, дев’ять станів-принтів художниці Світлани Сніжко, зали-галереї та стрічка твіллі.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Manrope:wght@400;500;600;700&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --stage: #0B0912;
+    --stage-2: #141020;
+    --wall: #1B1626;
+    --ink: #F3EEF4;
+    --ink-2: #C6BFD0;
+    --ink-3: #8B8399;
+    --line: rgba(243, 238, 244, .14);
+    --gold: #F2B705;
+    --accent: #7FC9B8;
+    --font-display: 'Prata', 'Times New Roman', Georgia, serif;
+    --font-body: 'Manrope', 'Helvetica Neue', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--stage); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 400; margin: 0; line-height: 1.05; text-wrap: balance; }
+  p { margin: 0; }
+  .wrap { width: min(1320px, 100%); margin-inline: auto; padding-inline: clamp(16px, 4vw, 48px); }
+  .eyebrow { font-size: .7rem; letter-spacing: .22em; text-transform: uppercase; font-weight: 600; color: var(--ink-3); }
+  .num { font-variant-numeric: tabular-nums; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  /* nav */
+  .nav { position: fixed; inset-inline: 0; top: 0; z-index: 40; padding-top: env(safe-area-inset-top, 0px); mix-blend-mode: difference; color: #fff; }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; height: 64px; }
+  .logo { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: .16em; text-transform: uppercase; text-decoration: none; }
+  .nav-right { display: flex; gap: 22px; align-items: center; font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; }
+  .nav-right a { text-decoration: none; }
+  .nav-right a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  @media (max-width: 640px) { .nav-right .hide-m { display: none; } }
+
+  /* stage / hero */
+  .stage { position: relative; min-height: clamp(620px, 92vh, 960px); display: grid; overflow: hidden; background: radial-gradient(120% 80% at 70% 40%, color-mix(in srgb, var(--accent) 22%, var(--stage)) 0%, var(--stage) 60%); transition: background 1.2s ease; }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: grab; }
+  .stage canvas.dragging { cursor: grabbing; }
+  .stage-fallback { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; }
+  .stage-fallback img { width: min(60vw, 520px); aspect-ratio: 1; object-fit: cover; box-shadow: 0 40px 90px -30px rgba(0,0,0,.8); transform: rotate(-6deg); }
+  .stage.no-webgl .stage-fallback { display: flex; }
+  .stage .wrap { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 300px) 1fr minmax(0, 300px); grid-template-rows: 1fr auto; gap: 24px; padding-top: 96px; padding-bottom: 36px; pointer-events: none; }
+  .stage .wrap > * { pointer-events: auto; }
+
+  .states { align-self: start; display: grid; gap: 2px; list-style: none; margin: 0; padding: 0; }
+  .states button { all: unset; cursor: pointer; display: grid; grid-template-columns: 30px 1fr; align-items: baseline; gap: 8px; padding: 5px 0; font-family: var(--font-display); font-size: 1.05rem; color: var(--ink-3); transition: color .25s ease, transform .25s ease; }
+  .states button small { font-family: var(--font-body); font-size: .62rem; letter-spacing: .14em; font-weight: 600; }
+  .states button:hover { color: var(--ink); transform: translateX(6px); }
+  .states button[aria-pressed="true"] { color: var(--ink); }
+  .states button[aria-pressed="true"] small { color: var(--gold); }
+  .states-title { margin-bottom: 14px; }
+
+  .stage-hint { align-self: start; justify-self: end; text-align: right; font-size: .72rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); line-height: 1.9; }
+  .stage-hint b { color: var(--ink); font-weight: 600; }
+
+  .stage-title { grid-column: 1 / -1; display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px; min-width: 0; }
+  .stage-title h1 { font-size: clamp(2.4rem, 7.2vw, 7rem); letter-spacing: -0.02em; line-height: .95; overflow-wrap: anywhere; }
+  .stage-title h1 .q { color: var(--accent); transition: color .8s ease; }
+  .stage-line { margin-top: 12px; font-size: 1rem; color: var(--ink-2); max-width: 32em; }
+  .buy { display: grid; gap: 8px; justify-items: end; text-align: right; }
+  .buy .size { font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); }
+  .buy .price { font-family: var(--font-display); font-size: 1.9rem; line-height: 1; }
+  .buy .price s { font-family: var(--font-body); font-size: .9rem; color: var(--ink-3); margin-left: 8px; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .88rem; transition: transform .2s ease; white-space: nowrap; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-gold { background: var(--gold); color: #1B1626; }
+  .btn-line { border: 1px solid var(--line); color: var(--ink); }
+  .btn-line:hover { border-color: var(--ink); }
+
+  .sizes { display: inline-flex; gap: 4px; border: 1px solid var(--line); border-radius: 999px; padding: 4px; }
+  .sizes button { all: unset; cursor: pointer; padding: 6px 12px; border-radius: 999px; font-size: .74rem; letter-spacing: .1em; font-weight: 600; color: var(--ink-3); }
+  .sizes button[aria-pressed="true"] { background: var(--ink); color: var(--stage); }
+  .flip { all: unset; cursor: pointer; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--ink-2); border-bottom: 1px solid var(--line); padding-bottom: 2px; }
+  .flip:hover { color: var(--ink); border-color: var(--ink); }
+  .controls { display: flex; gap: 18px; align-items: center; flex-wrap: wrap; }
+
+  @media (max-width: 900px) {
+    .stage .wrap { grid-template-columns: 1fr; grid-template-rows: auto auto auto; padding-top: 84px; }
+    .states { grid-template-columns: repeat(3, 1fr); gap: 0 12px; }
+    .states button { font-size: .95rem; grid-template-columns: 22px 1fr; }
+    .stage-hint { display: none; }
+    .stage-title { grid-template-columns: 1fr; }
+    .buy { justify-items: start; text-align: left; }
+    .stage { min-height: 0; }
+    .stage canvas { position: relative; height: min(72vw, 480px); order: -1; margin-top: calc(64px + env(safe-area-inset-top, 0px)); }
+    .stage .wrap { padding-top: 12px; }
+    .stage .wrap { padding-bottom: 28px; }
+  }
+
+  /* marquee */
+  .band { border-block: 1px solid var(--line); overflow: hidden; padding-block: 12px; background: var(--stage-2); }
+  .band-track { display: flex; width: max-content; animation: marquee 44s linear infinite; }
+  .band-track ul { display: flex; list-style: none; margin: 0; padding: 0; }
+  .band-track li { padding-inline: 26px; font-family: var(--font-display); font-size: 1.05rem; white-space: nowrap; display: flex; align-items: center; gap: 26px; color: var(--ink-2); }
+  .band-track li::after { content: "✦"; color: var(--gold); font-size: .7rem; }
+  @keyframes marquee { to { transform: translateX(-50%); } }
+
+  /* double-sided */
+  .two-sides { padding-block: clamp(64px, 10vw, 140px); }
+  .two-sides .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 6vw, 96px); align-items: center; }
+  .two-sides h2 { font-size: clamp(2.2rem, 5vw, 4.4rem); }
+  .two-sides p.lede { color: var(--ink-2); font-size: 1.1rem; max-width: 34em; margin-top: 20px; }
+  .pair { position: relative; aspect-ratio: 1; max-width: 100%; }
+  .pair figure { position: absolute; margin: 0; width: 72%; aspect-ratio: 1; overflow: hidden; box-shadow: 0 40px 80px -30px rgba(0,0,0,.9); transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+  .pair figure img { width: 100%; height: 100%; object-fit: cover; }
+  .pair figure.front { left: 0; top: 0; transform: rotate(-5deg); z-index: 2; }
+  .pair figure.back { right: 0; bottom: 0; transform: rotate(6deg); }
+  .pair:hover figure.front { transform: rotate(-9deg) translate(-4%, -3%); }
+  .pair:hover figure.back { transform: rotate(10deg) translate(4%, 3%); }
+  .pair figcaption { position: absolute; left: 12px; bottom: 10px; font-size: .68rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; background: rgba(11,9,18,.7); padding: 5px 9px; color: var(--ink); }
+  @media (max-width: 860px) { .two-sides .wrap { grid-template-columns: 1fr; } }
+
+  /* halls */
+  .halls { padding-block: clamp(64px, 10vw, 140px); background: var(--wall); }
+  .halls-head { display: grid; gap: 12px; margin-bottom: clamp(36px, 6vw, 80px); }
+  .halls-head h2 { font-size: clamp(2.2rem, 5vw, 4.4rem); }
+  .hall { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(24px, 4vw, 64px); align-items: end; padding-block: clamp(32px, 5vw, 64px); border-top: 1px solid var(--line); }
+  .hall:nth-child(even) { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .hall:nth-child(even) .work { order: 2; }
+  .work { margin: 0; position: relative; padding: clamp(10px, 1.6vw, 20px); background: #F3EEF4; box-shadow: 0 50px 100px -40px rgba(0,0,0,.9); }
+  .work img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; }
+  .work.portrait img { aspect-ratio: 3 / 4; }
+  .work.square img { aspect-ratio: 1; }
+  .plaque { display: grid; gap: 14px; max-width: 30em; }
+  .plaque .no { font-family: var(--font-display); font-size: 3.4rem; line-height: 1; color: var(--ink-3); }
+  .plaque h3 { font-size: clamp(1.7rem, 3vw, 2.6rem); }
+  .plaque dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; font-size: .86rem; padding-top: 14px; border-top: 1px solid var(--line); }
+  .plaque dt { color: var(--ink-3); letter-spacing: .08em; text-transform: uppercase; font-size: .68rem; font-weight: 600; padding-top: 3px; }
+  .plaque dd { margin: 0; color: var(--ink-2); }
+  .plaque .desc { color: var(--ink-2); }
+  .plaque a { text-decoration: none; font-weight: 600; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--gold); }
+  @media (max-width: 860px) { .hall, .hall:nth-child(even) { grid-template-columns: 1fr; } .hall:nth-child(even) .work { order: 0; } }
+
+  /* ribbon */
+  .ribbon { padding-block: clamp(64px, 10vw, 140px); overflow: hidden; }
+  .ribbon-head { display: flex; justify-content: space-between; align-items: end; gap: 20px; flex-wrap: wrap; margin-bottom: 28px; }
+  .ribbon-head h2 { font-size: clamp(2rem, 4.5vw, 3.6rem); }
+  .ribbon-scroller { overflow-x: auto; scroll-snap-type: x mandatory; padding-block: 40px 30px; scrollbar-width: thin; scrollbar-color: var(--gold) transparent; }
+  .ribbon-track { position: relative; display: flex; gap: 28px; width: max-content; padding-inline: clamp(16px, 4vw, 48px); }
+  .ribbon-track::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 26px; transform: translateY(-50%) rotate(-1.2deg); background: var(--gold); opacity: .9; z-index: 0; }
+  .stamp { position: relative; z-index: 1; scroll-snap-align: center; width: 230px; display: grid; gap: 10px; text-decoration: none; }
+  .stamp:nth-child(odd) { transform: translateY(-14px) rotate(-1.5deg); }
+  .stamp:nth-child(even) { transform: translateY(16px) rotate(1.5deg); }
+  .stamp figure { margin: 0; aspect-ratio: 1; background: #fff; overflow: hidden; box-shadow: 0 24px 50px -24px rgba(0,0,0,.9); }
+  .stamp img { width: 100%; height: 100%; object-fit: cover; }
+  .stamp b { font-weight: 600; font-size: .92rem; }
+  .stamp span { font-size: .78rem; color: var(--ink-3); }
+  .stamp .p { font-family: var(--font-display); font-size: 1.05rem; color: var(--ink); }
+
+  /* manifesto */
+  .manifesto { padding-block: clamp(80px, 12vw, 170px); text-align: center; background: radial-gradient(60% 50% at 50% 50%, color-mix(in srgb, var(--accent) 16%, var(--stage)) 0%, var(--stage) 70%); transition: background 1.2s ease; }
+  .manifesto blockquote { margin: 0 auto; max-width: 22em; font-family: var(--font-display); font-size: clamp(1.6rem, 3.6vw, 3rem); line-height: 1.25; }
+  .manifesto cite { display: block; margin-top: 26px; font-family: var(--font-body); font-style: normal; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); }
+  .manifesto .facts { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px 40px; margin-top: 48px; font-size: .85rem; color: var(--ink-2); }
+  .manifesto .facts b { color: var(--gold); font-weight: 600; }
+
+  /* end */
+  .end { padding-block: clamp(64px, 9vw, 120px); border-top: 1px solid var(--line); }
+  .end .wrap { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: clamp(28px, 6vw, 96px); }
+  .end h2 { font-size: clamp(2.4rem, 6vw, 5.4rem); line-height: 1; }
+  .end .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .end dl { margin: 0; display: grid; gap: 18px; font-size: .95rem; align-content: start; }
+  .end dt { font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); font-weight: 600; margin-bottom: 4px; }
+  .end dd { margin: 0; color: var(--ink-2); }
+  .end dd a { text-decoration: none; }
+  .end dd a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .copy-btn { all: unset; cursor: pointer; margin-left: 10px; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 600; color: var(--gold); }
+  @media (max-width: 860px) { .end .wrap { grid-template-columns: 1fr; } }
+  footer { padding-block: 24px 30px; font-size: .78rem; color: var(--ink-3); border-top: 1px solid var(--line); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .band-track { animation: none; width: 100%; } .band-track ul:last-child { display: none; } .band-track ul { flex-wrap: wrap; }
+    .pair figure, .states button, .btn { transition: none; }
+  }
+</style>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#top">Obiimy</a>
+    <div class="nav-right">
+      <span class="hide-m num" id="counter">01 / 09</span>
+      <a class="hide-m" href="#halls">Зали</a>
+      <a class="hide-m" href="#ribbon">Стрічка</a>
+      <a href="https://obiimy.world/" target="_blank" rel="noopener">obiimy.world ↗</a>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <section class="stage" id="stage">
+    <canvas id="silk" aria-label="Тривимірна шовкова хустка з поточним принтом. Потягніть, щоб обернути." role="img"></canvas>
+    <div class="stage-fallback"><img id="fallbackImg" src="tex/probudzhennia.jpg" alt="Принт «Пробудження»"></div>
+    <div class="wrap">
+      <div>
+        <p class="eyebrow states-title">Обери свій стан</p>
+        <ul class="states" id="states"></ul>
+      </div>
+      <div></div>
+      <div class="stage-hint">
+        <b>Потягніть</b> — обернути<br>
+        <b>Прокрутіть</b> — розгорнути<br>
+        <b>Оберіть стан</b> — змінити принт
+      </div>
+      <div class="stage-title">
+        <div>
+          <p class="eyebrow">Шовкова хустка · авторський принт Світлани Сніжко</p>
+          <h1><span class="q">«</span><span id="stateName">Пробудження</span><span class="q">»</span></h1>
+          <p class="stage-line" id="stateLine">Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини чогось нового.</p>
+          <div class="controls" style="margin-top:18px">
+            <div class="sizes" role="group" aria-label="Розмір">
+              <button type="button" data-size="44" aria-pressed="false">44</button>
+              <button type="button" data-size="65" aria-pressed="true">65</button>
+              <button type="button" data-size="88" aria-pressed="false">88</button>
+            </div>
+            <button class="flip" type="button" id="flipBtn">Перевернути · зворотний бік</button>
+          </div>
+        </div>
+        <div class="buy">
+          <span class="size" id="stateSize">65 × 65 см · двосторонній друк</span>
+          <span class="price num" id="statePrice">4 320 грн <s>4 800 грн</s></span>
+          <a class="btn btn-gold" id="stateLink" href="https://obiimy.world/shovkova-khustka-probudzhennia-65x65/" target="_blank" rel="noopener">Купити цю хустку</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="band" aria-hidden="true">
+    <div class="band-track">
+      <ul><li>100% італійський шовк</li><li>Двосторонній друк</li><li>Кожен принт — картина</li><li>Обробка вручну</li><li>Відправка день у день</li><li>Жовта коробка як обійми</li><li>Зроблено в Україні</li></ul>
+      <ul><li>100% італійський шовк</li><li>Двосторонній друк</li><li>Кожен принт — картина</li><li>Обробка вручну</li><li>Відправка день у день</li><li>Жовта коробка як обійми</li><li>Зроблено в Україні</li></ul>
+    </div>
+  </div>
+
+  <section class="two-sides">
+    <div class="wrap">
+      <div class="pair" id="pair">
+        <figure class="front"><img id="pairFront" src="tex/probudzhennia.jpg" alt="Лицьовий бік хустки"><figcaption>Лице</figcaption></figure>
+        <figure class="back"><img id="pairBack" src="tex/litnie-pole.jpg" alt="Зворотний бік хустки"><figcaption>Зворот</figcaption></figure>
+      </div>
+      <div>
+        <p class="eyebrow">Двосторонній друк</p>
+        <h2>Одна хустка. Два образи. Один вузол.</h2>
+        <p class="lede">Друк на обох боках шовку — рідкісна техніка. Зав’язали лицем — весняні іриси. Перевернули — літнє поле. У 3D-сцені вище хустку можна обернути й побачити обидва боки так, як їх бачить той, хто її носить.</p>
+        <p class="lede" style="margin-top:14px">Двосторонні хустки 44×44 — від 2 400 грн, 65×65 — від 4 800 грн.</p>
+        <div class="controls" style="margin-top:26px">
+          <a class="btn btn-line" href="https://obiimy.world/dvostoronnii-druk/" target="_blank" rel="noopener">Усі двосторонні</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="halls" id="halls">
+    <div class="wrap">
+      <div class="halls-head">
+        <p class="eyebrow">Зали</p>
+        <h2>Спершу картина. Потім хустка.</h2>
+        <p style="color:var(--ink-2);max-width:36em">Кожен принт Obiimy починається з живопису. Тому й показуємо їх так, як показують картини: з етикеткою на стіні, розміром і технікою.</p>
+      </div>
+
+      <article class="hall">
+        <figure class="work portrait"><img src="img/life2.webp" alt="Модель у чорній сукні з хусткою «Пробудження» на плечах" width="800" height="1200" loading="lazy" style="object-position:50% 30%"></figure>
+        <div class="plaque">
+          <span class="no num">01</span>
+          <h3>«Пробудження»</h3>
+          <p class="desc">За картиною «Іриси». Художниця писала її навесні, коли все навколо змінюється так стрімко, що не встигаєш отямитись.</p>
+          <dl>
+            <dt>Автор</dt><dd>Світлана Сніжко</dd>
+            <dt>Техніка</dt><dd>Цифровий друк на 100% італійському шовку, двосторонній</dd>
+            <dt>Розмір</dt><dd class="num">44 × 44 · 65 × 65 · 88 × 88 см</dd>
+            <dt>Ціна</dt><dd class="num">від 1 600 грн</dd>
+          </dl>
+          <a href="https://obiimy.world/shovkova-khustka-probudzhennia-65x65/" target="_blank" rel="noopener">Дивитися роботу →</a>
+        </div>
+      </article>
+
+      <article class="hall">
+        <figure class="work"><img src="img/banner-singing.webp" alt="Дівчина з хусткою колекції «Співоча душа», зав’язаною як тюрбан" width="1920" height="576" loading="lazy" style="object-position:70% 50%"></figure>
+        <div class="plaque">
+          <span class="no num">02</span>
+          <h3>«Співоча душа»</h3>
+          <p class="desc">Колекція про рідкісних птахів України, створена разом із художницею Анною Кловак. Частина коштів іде на гнізда для сиворакші — птаха з Червоної книги.</p>
+          <dl>
+            <dt>Автори</dt><dd>Анна Кловак, Obiimy</dd>
+            <dt>Партнер</dt><dd>Українське товариство охорони птахів</dd>
+            <dt>Роботи</dt><dd>«Єднання», «Піднесення», «Тиша серця», «Коло сонця», «Мелодія двох»</dd>
+            <dt>Ціна</dt><dd class="num">від 1 600 грн</dd>
+          </dl>
+          <a href="https://obiimy.world/spivocha-dusha/" target="_blank" rel="noopener">Увійти до зали →</a>
+        </div>
+      </article>
+
+      <article class="hall">
+        <figure class="work"><img src="img/banner-solo.webp" alt="Жінка в шовковій хустці за кермом кабріолета" width="1920" height="576" loading="lazy" style="object-position:62% 50%"></figure>
+        <div class="plaque">
+          <span class="no num">03</span>
+          <h3>«Соло: шлях до себе»</h3>
+          <p class="desc">Нова колекція. Жіноча сила крізь десятиліття: графічні принти для тих, хто вміє бути наодинці з собою.</p>
+          <dl>
+            <dt>Автор</dt><dd>Світлана Сніжко</dd>
+            <dt>Техніка</dt><dd>Цифровий друк на 100% італійському шовку</dd>
+            <dt>Формати</dt><dd class="num">Хустки 44–88 см, твіллі 84 × 5 см</dd>
+          </dl>
+          <a href="https://obiimy.world/solo-shliakh-do-sebe/" target="_blank" rel="noopener">Увійти до зали →</a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="ribbon" id="ribbon">
+    <div class="wrap ribbon-head">
+      <div>
+        <p class="eyebrow">Стрічка твіллі · 84 × 5 см</p>
+        <h2>Маленькі речі на довгій стрічці</h2>
+      </div>
+      <p style="color:var(--ink-3);font-size:.85rem">Прокручуйте вбік →</p>
+    </div>
+    <div class="ribbon-scroller">
+      <div class="ribbon-track">
+        <a class="stamp" href="https://obiimy.world/khustka-tvilli-shovkova-puls-84x5/" target="_blank" rel="noopener"><figure><img src="img/twilly-puls.webp" alt="Твіллі «Пульс»" loading="lazy"></figure><b>Твіллі «Пульс»</b><span>84 × 5 см · новинка</span><span class="p num">1 600 грн</span></a>
+        <a class="stamp" href="https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/" target="_blank" rel="noopener"><figure><img src="img/twilly-zolote.webp" alt="Твіллі «Золоте світло»" loading="lazy"></figure><b>Твіллі «Золоте світло»</b><span>84 × 5 см · новинка</span><span class="p num">1 600 грн</span></a>
+        <a class="stamp" href="https://obiimy.world/maska-dlia-snu-z-naturalnoho-shovku-svoboda/" target="_blank" rel="noopener"><figure><img src="img/mask-svoboda.webp" alt="Маска для сну «Свобода»" loading="lazy"></figure><b>Маска для сну «Свобода»</b><span>італійський шовк · чохол</span><span class="p num">2 700 грн</span></a>
+        <a class="stamp" href="https://obiimy.world/tvilli/" target="_blank" rel="noopener"><figure><img src="img/twilly-yednannia.webp" alt="Твіллі «Єднання»" loading="lazy"></figure><b>Твіллі «Єднання»</b><span>84 × 5 см</span><span class="p num">1 600 грн</span></a>
+        <a class="stamp" href="https://obiimy.world/rezynky/" target="_blank" rel="noopener"><figure><img src="img/scrunchie-energiia.webp" alt="Резинка «Енергія»" loading="lazy"></figure><b>Резинка «Енергія»</b><span>не ламає волосся</span><span class="p num">700 грн</span></a>
+        <a class="stamp" href="https://obiimy.world/maska-dlia-snu-z-naturalnoho-shovku-vpevnenist/" target="_blank" rel="noopener"><figure><img src="img/mask-vpevnenist.webp" alt="Маска для сну «Впевненість»" loading="lazy"></figure><b>Маска для сну «Впевненість»</b><span>італійський шовк · чохол</span><span class="p num">2 700 грн</span></a>
+        <a class="stamp" href="https://obiimy.world/podarunkovi-nabory/" target="_blank" rel="noopener"><figure><img src="img/set-zolote.webp" alt="Подарунковий набір «Золоте світло»" loading="lazy"></figure><b>Набір твіллі + хустка</b><span>«Золоте світло» · двосторонній</span><span class="p num">3 600 грн</span></a>
+        <a class="stamp" href="https://obiimy.world/rezynky/" target="_blank" rel="noopener"><figure><img src="img/scrunchie-pole.webp" alt="Резинка «Літнє поле»" loading="lazy"></figure><b>Резинка «Літнє поле»</b><span>не лишає заломів</span><span class="p num">700 грн</span></a>
+        <a class="stamp" href="https://obiimy.world/podarunkovi-nabory/" target="_blank" rel="noopener"><figure><img src="img/set-mask.webp" alt="Набір для сну" loading="lazy"></figure><b>Набір для сну</b><span>маска, закладка, резинка</span><span class="p num">3 600 грн</span></a>
+        <a class="stamp" href="https://obiimy.world/podarunkovi-nabory/" target="_blank" rel="noopener"><figure><img src="img/set-3twilly.webp" alt="Три твіллі в коробці" loading="lazy"></figure><b>Три твіллі</b><span>у подарунковій коробці</span><span class="p num">4 800 грн</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="manifesto">
+    <div class="wrap">
+      <blockquote>Ця колекція про тендітність і силу, про птахів, які співають і зникають, про красу, яка може рятувати.
+        <cite>Світлана Сніжко, засновниця Obiimy</cite></blockquote>
+      <div class="facts">
+        <span><b>2022</b> — бренд заснований у часи війни</span>
+        <span><b>Сиворакша</b> — птах Червоної книги, якому будуємо гнізда</span>
+        <span><b>Кожна коробка</b> — обійми: ти варта краси</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="end">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Obiimy</p>
+        <h2>Шовкові обійми з любов’ю</h2>
+        <div class="actions">
+          <a class="btn btn-gold" href="https://obiimy.world/khustky/" target="_blank" rel="noopener">Перейти в каталог</a>
+          <a class="btn btn-line" href="https://obiimy.world/podarunkovi-nabory/" target="_blank" rel="noopener">Подарункові набори</a>
+        </div>
+      </div>
+      <dl>
+        <div><dt>Замовлення телефоном</dt><dd><span class="num" id="phone">+38 067 010 85 25</span><button class="copy-btn" type="button" id="copyPhone">Скопіювати</button></dd></div>
+        <div><dt>Доставка</dt><dd>Нова пошта по Україні, безкоштовно від 5 000 грн. Міжнародна — за тарифами перевізника. Замовлення до 16:00 відправляємо того ж дня.</dd></div>
+        <div><dt>Де ще купити</dt><dd><a href="https://intertop.ua/uk-ua/brands/obiimy/" target="_blank" rel="noopener">INTERTOP</a> · <a href="https://hramaesthetic.com/obiimy" target="_blank" rel="noopener">Hram</a> · <a href="https://bebraveukrainian.ca/collections/obiimy" target="_blank" rel="noopener">Be Brave, Канада</a> · <a href="https://ufd.london/collections/obiimy" target="_blank" rel="noopener">UFD, Лондон</a></dd></div>
+        <div><dt>Соцмережі</dt><dd><a href="https://www.instagram.com/obiimy.world/" target="_blank" rel="noopener">Instagram @obiimy.world</a> · <a href="https://www.facebook.com/ObiimyWorldofficial/" target="_blank" rel="noopener">Facebook</a></dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><span>© Obiimy. Художниця та засновниця — Світлана Сніжко.</span><span>Тривимірна хустка: WebGL, потягніть її мишею або пальцем.</span></div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function () {
+  var STATES = [
+    { id: 'probudzhennia', name: 'Пробудження', line: 'Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини чогось нового.', size: '65 × 65 см · двосторонній друк', price: '4 320 грн', old: '4 800 грн', url: 'https://obiimy.world/shovkova-khustka-probudzhennia-65x65/', back: 'litnie-pole', accent: '#7FC9B8' },
+    { id: 'yednannia', name: 'Єднання', line: 'Жовті пташки на кульбабах. Про те, що тримає нас разом, коли розлітається все інше.', size: '44 × 44 см · двосторонній друк', price: '2 400 грн', old: '', url: 'https://obiimy.world/spivocha-dusha/', back: 'pidnesennia', accent: '#8FBF9C' },
+    { id: 'tysha-sertsia', name: 'Тиша серця', line: 'Горобці у високій траві. Про спокій, який не треба заслуговувати.', size: '65 × 65 см', price: '3 200 грн', old: '', url: 'https://obiimy.world/spivocha-dusha/', back: 'melodiia', accent: '#B8865B' },
+    { id: 'prystrast', name: 'Пристрасть', line: 'Сині кульбаби на кремовому шовку. Про те, що розлітається від одного подиху.', size: '65 × 65 см · двосторонній друк', price: '4 320 грн', old: '4 800 грн', url: 'https://obiimy.world/dvostoronnii-druk/', back: 'mizh-namy', accent: '#5B8DC4' },
+    { id: 'kolo-sontsia', name: 'Коло сонця', line: 'Вінок із сонячних квітів на рожевому. Про тепло, яке щоразу повертається.', size: '88 × 88 см · шаль', price: '4 400 грн', old: '', url: 'https://obiimy.world/spivocha-dusha/', back: 'litnie-pole', accent: '#F0C64A' },
+    { id: 'melodiia', name: 'Мелодія двох', line: 'Дві пташки серед верболозу. Про розмову, для якої не потрібні слова.', size: '44 × 44 см · паше', price: '1 600 грн', old: '', url: 'https://obiimy.world/spivocha-dusha/', back: 'yednannia', accent: '#3E8A96' },
+    { id: 'pidnesennia', name: 'Піднесення', line: 'Сиворакші та золотий дощ. Про політ, який починається на землі.', size: '65 × 65 см · двосторонній друк', price: '4 320 грн', old: '4 800 грн', url: 'https://obiimy.world/spivocha-dusha/', back: 'kolo-sontsia', accent: '#6FB3E0' },
+    { id: 'mizh-namy', name: 'Між нами', line: 'Гортензії по краю сірого шовку. Про те, що лишається тільки між двома.', size: '65 × 65 см · двосторонній друк', price: '4 320 грн', old: '4 800 грн', url: 'https://obiimy.world/dvostoronnii-druk/', back: 'prystrast', accent: '#E29DB6' },
+    { id: 'litnie-pole', name: 'Літнє поле', line: 'Букет, написаний за один день. Про літо, яке не хоче закінчуватись.', size: '65 × 65 см · двосторонній друк', price: '4 320 грн', old: '4 800 грн', url: 'https://obiimy.world/dvostoronnii-druk/', back: 'probudzhennia', accent: '#62C8C2' }
+  ];
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var current = 0;
+
+  // ---- UI ----
+  var list = document.getElementById('states');
+  STATES.forEach(function (s, i) {
+    var li = document.createElement('li');
+    var b = document.createElement('button');
+    b.type = 'button'; b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false'); b.dataset.i = i;
+    b.innerHTML = '<small class="num">' + String(i + 1).padStart(2, '0') + '</small><span>' + s.name + '</span>';
+    b.addEventListener('click', function () { setState(i); });
+    li.appendChild(b); list.appendChild(li);
+  });
+  var nameEl = document.getElementById('stateName'), lineEl = document.getElementById('stateLine'), sizeEl = document.getElementById('stateSize'),
+      priceEl = document.getElementById('statePrice'), linkEl = document.getElementById('stateLink'), counter = document.getElementById('counter'),
+      pairFront = document.getElementById('pairFront'), pairBack = document.getElementById('pairBack'), fallbackImg = document.getElementById('fallbackImg');
+
+  function setState(i) {
+    current = i;
+    var s = STATES[i];
+    list.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.i == i ? 'true' : 'false'); });
+    nameEl.textContent = s.name; lineEl.textContent = s.line; sizeEl.textContent = s.size;
+    priceEl.innerHTML = s.price + (s.old ? ' <s>' + s.old + '</s>' : '');
+    linkEl.href = s.url; counter.textContent = String(i + 1).padStart(2, '0') + ' / ' + String(STATES.length).padStart(2, '0');
+    document.documentElement.style.setProperty('--accent', s.accent);
+    pairFront.src = 'tex/' + s.id + '.jpg'; pairBack.src = 'tex/' + s.back + '.jpg'; fallbackImg.src = 'tex/' + s.id + '.jpg';
+    if (silk) silk.setTextures(s.id, s.back);
+  }
+
+  var sizeButtons = document.querySelectorAll('.sizes button');
+  sizeButtons.forEach(function (b) {
+    b.addEventListener('click', function () {
+      sizeButtons.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      if (silk) silk.setSize(parseInt(b.dataset.size, 10));
+    });
+  });
+  document.getElementById('flipBtn').addEventListener('click', function () { if (silk) silk.flip(); });
+
+  var copyBtn = document.getElementById('copyPhone'), phone = document.getElementById('phone');
+  copyBtn.addEventListener('click', function () {
+    var done = function () { copyBtn.textContent = 'Скопійовано'; setTimeout(function () { copyBtn.textContent = 'Скопіювати'; }, 1800); };
+    var fallback = function () { var r = document.createRange(); r.selectNodeContents(phone); var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(phone.textContent.trim()).then(done, fallback); else fallback();
+  });
+
+  // ---- 3D silk ----
+  var silk = null;
+  var stage = document.getElementById('stage');
+  var canvas = document.getElementById('silk');
+
+  function initSilk() {
+    if (!window.THREE) return null;
+    var renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true }); }
+    catch (e) { return null; }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(32, 1, 0.1, 20);
+    camera.position.set(0, 0, 3.1);
+
+    var loader = new THREE.TextureLoader();
+    var cache = {};
+    function tex(id) {
+      if (!cache[id]) {
+        cache[id] = loader.load('tex/' + id + '.jpg');
+        cache[id].anisotropy = renderer.capabilities.getMaxAnisotropy();
+      }
+      return cache[id];
+    }
+
+    var uniforms = {
+      uTime: { value: 0 }, uAmp: { value: reduced ? 0.05 : 0.14 },
+      uFront: { value: tex(STATES[0].id) }, uBack: { value: tex(STATES[0].back) },
+      uNextFront: { value: tex(STATES[0].id) }, uNextBack: { value: tex(STATES[0].back) }, uMix: { value: 0 },
+      uMouse: { value: new THREE.Vector2(10, 10) }, uLight: { value: new THREE.Vector3(0.6, 0.9, 1.0).normalize() },
+      uSheen: { value: new THREE.Color('#F2B705') }
+    };
+
+    var vert = [
+      'uniform float uTime; uniform float uAmp; uniform vec2 uMouse;',
+      'varying vec2 vUv; varying vec3 vN; varying vec3 vP;',
+      'float wave(vec2 p){',
+      '  float t=uTime;',
+      '  float z = sin(p.x*3.1 + t*1.1 + p.y*1.7)*0.55 + sin(p.y*4.3 - t*0.8 + p.x*0.6)*0.35 + sin((p.x+p.y)*7.0 + t*1.9)*0.12;',
+      '  float d = distance(p, uMouse);',
+      '  z += sin(d*14.0 - t*5.0) * exp(-d*4.0) * 0.5;',
+      '  return z*uAmp;',
+      '}',
+      'void main(){',
+      '  vUv=uv;',
+      '  vec2 p=position.xy; float e=0.02;',
+      '  float z=wave(p); float zx=wave(p+vec2(e,0.0)); float zy=wave(p+vec2(0.0,e));',
+      '  vec3 pos=vec3(p, z);',
+      '  vec3 n=normalize(cross(vec3(e,0.0,zx-z), vec3(0.0,e,zy-z)));',
+      '  vN=normalize(normalMatrix*n);',
+      '  vec4 mv=modelViewMatrix*vec4(pos,1.0); vP=mv.xyz;',
+      '  gl_Position=projectionMatrix*mv;',
+      '}'
+    ].join('\n');
+
+    var frag = [
+      'precision highp float;',
+      'uniform sampler2D uFront, uBack, uNextFront, uNextBack; uniform float uMix; uniform vec3 uLight; uniform vec3 uSheen;',
+      'varying vec2 vUv; varying vec3 vN; varying vec3 vP;',
+      'void main(){',
+      '  vec3 n = normalize(vN); if(!gl_FrontFacing) n = -n;',
+      '  vec2 uv = gl_FrontFacing ? vUv : vec2(1.0-vUv.x, vUv.y);',
+      '  vec3 a = gl_FrontFacing ? texture2D(uFront, uv).rgb : texture2D(uBack, uv).rgb;',
+      '  vec3 b = gl_FrontFacing ? texture2D(uNextFront, uv).rgb : texture2D(uNextBack, uv).rgb;',
+      '  vec3 col = mix(a, b, uMix);',
+      '  vec3 v = normalize(-vP); vec3 l = normalize(uLight); vec3 h = normalize(l+v);',
+      '  float diff = 0.62 + 0.38*max(dot(n,l),0.0);',
+      '  float spec = pow(max(dot(n,h),0.0), 42.0);',
+      '  float fres = pow(1.0-max(dot(n,v),0.0), 3.0);',
+      '  float sheen = pow(max(dot(n,h),0.0), 8.0)*0.18;',
+      '  vec3 c = col*diff + vec3(1.0)*spec*0.55 + uSheen*fres*0.28 + vec3(1.0)*sheen;',
+      '  gl_FragColor = vec4(c, 1.0);',
+      '}'
+    ].join('\n');
+
+    var geo = new THREE.PlaneGeometry(1, 1, 96, 96);
+    var mat = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: vert, fragmentShader: frag, side: THREE.DoubleSide });
+    var mesh = new THREE.Mesh(geo, mat);
+    var group = new THREE.Group(); group.add(mesh); scene.add(group);
+
+    var baseScale = 1.5, sizeScale = 0.74; // 65 cm
+    var rot = { x: -0.25, y: 0.35 }, target = { x: -0.25, y: 0.35 }, flipOffset = 0;
+    var dragging = false, last = { x: 0, y: 0 }, moved = 0;
+    var raycaster = new THREE.Raycaster(), pointerNdc = new THREE.Vector2();
+    var pressed = false;
+
+    canvas.addEventListener('pointerdown', function (e) { dragging = true; pressed = true; last.x = e.clientX; last.y = e.clientY; moved = 0; canvas.classList.add('dragging'); canvas.setPointerCapture(e.pointerId); });
+    window.addEventListener('pointerup', function () { dragging = false; pressed = false; canvas.classList.remove('dragging'); });
+    canvas.addEventListener('pointermove', function (e) {
+      var r = canvas.getBoundingClientRect();
+      pointerNdc.set(((e.clientX - r.left) / r.width) * 2 - 1, -(((e.clientY - r.top) / r.height) * 2 - 1));
+      raycaster.setFromCamera(pointerNdc, camera);
+      var hit = raycaster.intersectObject(mesh)[0];
+      if (hit && hit.uv) uniforms.uMouse.value.set(hit.uv.x - 0.5, hit.uv.y - 0.5); else uniforms.uMouse.value.set(10, 10);
+      if (!dragging) return;
+      var dx = e.clientX - last.x, dy = e.clientY - last.y; last.x = e.clientX; last.y = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
+      target.y += dx * 0.008; target.x += dy * 0.006;
+      target.x = Math.max(-1.2, Math.min(1.2, target.x));
+    });
+    canvas.addEventListener('pointerleave', function () { uniforms.uMouse.value.set(10, 10); });
+
+    function resize() {
+      var w = canvas.clientWidth, h = canvas.clientHeight;
+      if (!w || !h) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h; camera.updateProjectionMatrix();
+      var narrow = w < 900;
+      group.position.x = narrow ? 0 : 0.55;
+      group.position.y = narrow ? 0.05 : 0.12;
+      baseScale = narrow ? 1.25 : 1.5;
+    }
+    window.addEventListener('resize', resize); resize();
+
+    var visible = true;
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0 }).observe(stage);
+    }
+
+    var clock = new THREE.Clock(), scrollP = 0, mixTarget = 0, pendingSwap = null;
+    function frame() {
+      requestAnimationFrame(frame);
+      if (!visible) return;
+      var t = clock.getElapsedTime();
+      uniforms.uTime.value = reduced ? 0 : t;
+      var sh = stage.offsetHeight || 1; scrollP = Math.max(0, Math.min(1, window.scrollY / sh));
+      uniforms.uAmp.value = (reduced ? 0.05 : 0.14) + scrollP * 0.35;
+      var idleY = reduced || pressed ? 0 : Math.sin(t * 0.35) * 0.18;
+      var idleX = reduced || pressed ? 0 : Math.sin(t * 0.27) * 0.08;
+      rot.x += ((target.x + idleX + scrollP * 1.1) - rot.x) * 0.06;
+      rot.y += ((target.y + idleY + flipOffset) - rot.y) * 0.06;
+      group.rotation.set(rot.x, rot.y, -0.12 + scrollP * 0.4);
+      group.position.y += ((0.12 + scrollP * 0.9) - group.position.y) * 0.08;
+      var s = baseScale * sizeScale; group.scale.set(s, s, s);
+      if (uniforms.uMix.value < mixTarget) {
+        uniforms.uMix.value = Math.min(1, uniforms.uMix.value + 0.04);
+        if (uniforms.uMix.value >= 1 && pendingSwap) { uniforms.uFront.value = pendingSwap.f; uniforms.uBack.value = pendingSwap.b; uniforms.uMix.value = 0; mixTarget = 0; pendingSwap = null; }
+      }
+      renderer.render(scene, camera);
+    }
+    frame();
+
+    return {
+      setTextures: function (front, back) {
+        var f = tex(front), b = tex(back);
+        if (pendingSwap) { uniforms.uFront.value = pendingSwap.f; uniforms.uBack.value = pendingSwap.b; }
+        uniforms.uNextFront.value = f; uniforms.uNextBack.value = b; uniforms.uMix.value = 0; mixTarget = 1; pendingSwap = { f: f, b: b };
+      },
+      setSize: function (cm) { sizeScale = cm === 44 ? 0.5 : cm === 88 ? 1.0 : 0.74; },
+      flip: function () { flipOffset += Math.PI; }
+    };
+  }
+
+  silk = initSilk();
+  if (!silk) stage.classList.add('no-webgl');
+  setState(0);
+})();
+</script>

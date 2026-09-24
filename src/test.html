@@ -1,0 +1,11 @@
+<meta charset="utf-8">
+<style>body{margin:0;background:#1a1720;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:8px} canvas{width:100%;height:420px;display:block;background:#2a2533}</style>
+<canvas id="a"></canvas><canvas id="b"></canvas><canvas id="c"></canvas><canvas id="d"></canvas>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="silk-engine.js"></script>
+<script>
+window.E1 = SilkEngine.create({ canvas: document.getElementById('a'), mode: 'hang', texPath: '../tex/', front: 'probudzhennia', back: 'litnie-pole', groundShadow: true });
+window.E2 = SilkEngine.create({ canvas: document.getElementById('b'), mode: 'float', texPath: '../tex/', front: 'prystrast', back: 'mizh-namy', envBottom: '#1a1720', gloss: 0.5 });
+window.E3 = SilkEngine.create({ canvas: document.getElementById('c'), mode: 'drape', texPath: '../tex/', front: 'kolo-sontsia', back: 'pidnesennia', camDist: 4.6, camY: -0.2, formColor: '#cfc9c2' });
+window.E4 = SilkEngine.createRibbon({ canvas: document.getElementById('d'), texPath: '../tex/', texture: 'yednannia' });
+</script>

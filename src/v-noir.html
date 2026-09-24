@@ -1,0 +1,253 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Obiimy Noir</title>
+<meta name="description" content="Тёмная кинематографичная версия лендинга Obiimy: невесомый шёлк с анизотропным блеском и лента твилли в 3D.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400&family=Onest:wght@300;400;500&display=swap">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0C0B0F; --bg-2: #14121A; --ink: #ECE9EF; --ink-2: #B4AEBE; --ink-3: #7A7386;
+    --line: rgba(236, 233, 239, .12); --gold: #F2B705; --iris: #9B8CD6;
+    --display: 'Unbounded', 'Arial Black', sans-serif; --body: 'Onest', 'Helvetica Neue', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 15px; line-height: 1.65; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  body::after { content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 60; opacity: .35; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .07 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 200; margin: 0; line-height: 1.05; text-wrap: balance; letter-spacing: -0.01em; }
+  h1 { font-size: clamp(2.2rem, 7.5vw, 7.2rem); line-height: .98; }
+  h2 { font-size: clamp(1.6rem, 3.6vw, 3rem); }
+  p { margin: 0; }
+  .wrap { width: min(1400px, 100%); margin-inline: auto; padding-inline: clamp(16px, 4vw, 56px); }
+  .eyebrow { font-size: .66rem; letter-spacing: .26em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+  .num { font-variant-numeric: tabular-nums; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .nav { position: fixed; inset-inline: 0; top: 0; z-index: 50; padding-top: env(safe-area-inset-top, 0px); }
+  .nav .wrap { display: flex; justify-content: space-between; align-items: center; height: 66px; }
+  .logo { font-family: var(--display); font-weight: 300; font-size: .95rem; letter-spacing: .32em; text-transform: uppercase; text-decoration: none; }
+  .nav-links { display: flex; gap: 24px; font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; }
+  .nav-links a { text-decoration: none; color: var(--ink-2); }
+  .nav-links a:hover { color: var(--ink); }
+  @media (max-width: 760px) { .nav-links { display: none; } }
+
+  .hero { position: relative; min-height: clamp(640px, 100vh, 1000px); display: grid; align-items: end; overflow: hidden; background: radial-gradient(70% 60% at 62% 40%, #221D2E 0%, var(--bg) 65%); }
+  .hero canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; cursor: grab; }
+  .hero canvas.grabbing { cursor: grabbing; }
+  .hero-fallback { position: absolute; inset: 0; display: none; align-items: center; justify-content: center; }
+  .hero.no-webgl .hero-fallback { display: flex; }
+  .hero-fallback img { width: min(50vw, 480px); aspect-ratio: 1; object-fit: cover; transform: rotate(-8deg); }
+  .hero .wrap { position: relative; z-index: 2; padding-top: 110px; padding-bottom: 40px; display: grid; gap: 28px; pointer-events: none; }
+  .hero .wrap > * { pointer-events: auto; }
+  .hero-top { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; align-items: start; }
+  .hero-top .eyebrow { max-width: 22em; line-height: 1.8; }
+  .hero-bottom { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 28px; align-items: end; }
+  .hero h1 .thin { color: var(--ink-3); }
+  .hero-meta { display: grid; gap: 6px; justify-items: end; text-align: right; }
+  .hero-meta .name { font-family: var(--display); font-weight: 300; font-size: 1.05rem; letter-spacing: .04em; }
+  .hero-meta .size { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); }
+  .hero-meta .price { font-family: var(--display); font-weight: 300; font-size: 1.6rem; }
+  .hero-meta .price s { font-family: var(--body); font-size: .8rem; color: var(--ink-3); margin-left: 8px; font-weight: 400; }
+  .btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 22px; border-radius: 999px; text-decoration: none; font-weight: 500; font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; transition: transform .2s ease; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-gold { background: var(--gold); color: #14121A; }
+  .btn-line { border: 1px solid var(--line); color: var(--ink); }
+  .btn-line:hover { border-color: var(--ink); }
+  .hint { font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); line-height: 2; text-align: right; }
+  .hint b { color: var(--ink); font-weight: 500; }
+  @media (max-width: 860px) { .hero-bottom { grid-template-columns: 1fr; } .hero-meta { justify-items: start; text-align: left; } .hint { display: none; } .hero { min-height: 0; padding-top: 0; } .hero canvas { position: relative; height: 66vw; min-height: 340px; } .hero .wrap { padding-top: 0; } .hero { display: flex; flex-direction: column; } .hero canvas { margin-top: calc(66px + env(safe-area-inset-top, 0px)); } }
+
+  .states-band { border-block: 1px solid var(--line); overflow-x: auto; scrollbar-width: none; }
+  .states-band::-webkit-scrollbar { display: none; }
+  .states-band ul { display: flex; list-style: none; margin: 0; padding: 0 clamp(16px, 4vw, 56px); width: max-content; }
+  .states-band button { all: unset; cursor: pointer; display: flex; gap: 12px; align-items: baseline; padding: 18px 26px 18px 0; margin-right: 26px; font-family: var(--display); font-weight: 200; font-size: 1rem; letter-spacing: .04em; color: var(--ink-3); white-space: nowrap; border-right: 1px solid var(--line); transition: color .25s ease; }
+  .states-band button small { font-family: var(--body); font-size: .62rem; letter-spacing: .18em; }
+  .states-band button:hover { color: var(--ink); }
+  .states-band button[aria-pressed="true"] { color: var(--gold); }
+
+  section.block { padding-block: clamp(72px, 11vw, 160px); }
+  .split { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 6vw, 110px); align-items: center; }
+  .split .lede { color: var(--ink-2); font-size: 1.05rem; max-width: 32em; margin-top: 18px; font-weight: 300; }
+  .flip { all: unset; cursor: pointer; margin-top: 24px; display: inline-flex; gap: 10px; align-items: center; font-size: .72rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink); border-bottom: 1px solid var(--gold); padding-bottom: 4px; }
+  .pair { position: relative; aspect-ratio: 1; max-width: 100%; }
+  .pair figure { position: absolute; margin: 0; width: 70%; aspect-ratio: 1; overflow: hidden; box-shadow: 0 50px 100px -30px rgba(0,0,0,.95); transition: transform .8s cubic-bezier(.2,.8,.2,1); }
+  .pair img { width: 100%; height: 100%; object-fit: cover; }
+  .pair .front { left: 0; top: 0; z-index: 2; transform: rotate(-4deg); }
+  .pair .back { right: 0; bottom: 0; transform: rotate(5deg); }
+  .pair:hover .front { transform: rotate(-8deg) translate(-4%, -3%); }
+  .pair:hover .back { transform: rotate(9deg) translate(4%, 3%); }
+  @media (max-width: 860px) { .split { grid-template-columns: 1fr; } }
+
+  .ribbon { position: relative; border-block: 1px solid var(--line); background: linear-gradient(180deg, var(--bg) 0%, #16131E 50%, var(--bg) 100%); }
+  .ribbon canvas { width: 100%; height: clamp(320px, 56vh, 620px); display: block; }
+  .ribbon .cap { position: absolute; left: clamp(16px, 4vw, 56px); bottom: 30px; display: grid; gap: 8px; pointer-events: none; }
+  .ribbon .cap h2 { font-size: clamp(1.4rem, 3vw, 2.4rem); }
+  .ribbon .cap p { color: var(--ink-2); max-width: 26em; font-size: .92rem; }
+  .ribbon .cta { position: absolute; right: clamp(16px, 4vw, 56px); top: 34px; }
+
+  .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; margin-top: 40px; }
+  .card { display: grid; gap: 10px; text-decoration: none; }
+  .card figure { margin: 0; aspect-ratio: 1; overflow: hidden; background: #fff; }
+  .card img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .card:hover img { transform: scale(1.05); }
+  .card b { font-weight: 500; font-size: .9rem; }
+  .card span { font-size: .74rem; color: var(--ink-3); letter-spacing: .06em; text-transform: uppercase; }
+  .card .p { font-family: var(--display); font-weight: 300; font-size: .95rem; color: var(--ink); text-transform: none; letter-spacing: 0; }
+  @media (max-width: 900px) { .grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .manifesto { text-align: center; }
+  .manifesto blockquote { margin: 0 auto; max-width: 24em; font-family: var(--display); font-weight: 200; font-size: clamp(1.2rem, 2.6vw, 2.1rem); line-height: 1.35; }
+  .manifesto cite { display: block; margin-top: 26px; font-family: var(--body); font-style: normal; font-size: .66rem; letter-spacing: .24em; text-transform: uppercase; color: var(--ink-3); }
+
+  .end { border-top: 1px solid var(--line); }
+  .end .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 6vw, 100px); padding-block: clamp(64px, 9vw, 130px); }
+  .end h2 { font-size: clamp(1.8rem, 4.6vw, 4rem); }
+  .end .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .end dl { margin: 0; display: grid; gap: 18px; align-content: start; }
+  .end dt { font-size: .64rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3); }
+  .end dd { margin: 4px 0 0; color: var(--ink-2); }
+  .end a { text-decoration: none; }
+  .end a:hover { text-decoration: underline; text-underline-offset: 4px; }
+  .copy { all: unset; cursor: pointer; margin-left: 10px; font-size: .66rem; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); }
+  @media (max-width: 860px) { .end .wrap { grid-template-columns: 1fr; } }
+  footer { border-top: 1px solid var(--line); padding-block: 22px; font-size: .72rem; color: var(--ink-3); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .pair figure, .btn, .card img { transition: none; } }
+</style>
+
+<header class="nav"><div class="wrap">
+  <a class="logo" href="#top">Obiimy</a>
+  <nav class="nav-links"><a href="#two">Двосторонній</a><a href="#ribbon">Твіллі</a><a href="#shop">Каталог</a><a href="https://obiimy.world/" target="_blank" rel="noopener">obiimy.world ↗</a></nav>
+</div></header>
+
+<main id="top">
+  <section class="hero" id="hero">
+    <canvas id="silk" role="img" aria-label="Невагома шовкова хустка обертається у темній студії. Рух курсора здіймає вітер."></canvas>
+    <div class="hero-fallback"><img id="fallbackImg" src="tex/melodiia.jpg" alt="Принт «Мелодія двох»"></div>
+    <div class="wrap">
+      <div class="hero-top">
+        <p class="eyebrow">Український бренд натурального шовку<br>Авторські принти художниці Світлани Сніжко</p>
+        <p class="hint"><b>Рух курсора</b> — вітер<br><b>Потягніть</b> — взяти за край<br><b>Прокрутіть</b> — буря</p>
+      </div>
+      <div class="hero-bottom">
+        <h1>Шовк<br><span class="thin">у невагомості</span></h1>
+        <div class="hero-meta">
+          <span class="name" id="stateName">«Мелодія двох»</span>
+          <span class="size" id="stateSize">65 × 65 см · двосторонній друк</span>
+          <span class="price num" id="statePrice">4 320 грн <s>4 800 грн</s></span>
+          <a class="btn btn-gold" id="stateLink" href="https://obiimy.world/dvostoronnii-druk/" target="_blank" rel="noopener">Купити</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="states-band"><ul id="states"></ul></div>
+
+  <section class="block" id="two">
+    <div class="wrap split">
+      <div>
+        <p class="eyebrow">Двосторонній друк</p>
+        <h2 style="margin-top:14px">Один вузол. Два образи.</h2>
+        <p class="lede">Друк на обох боках шовку — рідкісна техніка. Хустка у сцені вище має два принти: потягніть її, і зворотний бік покаже інший малюнок.</p>
+        <p class="lede" style="margin-top:10px">Двосторонні 44 × 44 — від 2 400 грн, 65 × 65 — від 4 800 грн.</p>
+        <button class="flip" type="button" id="flipBtn">Перевернути хустку у сцені →</button>
+      </div>
+      <div class="pair">
+        <figure class="front"><img id="pairFront" src="tex/prystrast.jpg" alt="Лицьовий бік"></figure>
+        <figure class="back"><img id="pairBack" src="tex/mizh-namy.jpg" alt="Зворотний бік"></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="ribbon" id="ribbon">
+    <canvas id="ribbonCanvas" role="img" aria-label="Шовкова стрічка твіллі 84 на 5 сантиметрів пливе у повітрі"></canvas>
+    <div class="cap"><p class="eyebrow">Твіллі · 84 × 5 см</p><h2>Стрічка, яка вміє все</h2><p>У волосся, на зап’ястя, на ручку сумки, замість ременя. Від 1 600 грн.</p></div>
+    <a class="btn btn-line cta" href="https://obiimy.world/tvilli/" target="_blank" rel="noopener">Усі твіллі</a>
+  </section>
+
+  <section class="block" id="shop">
+    <div class="wrap">
+      <p class="eyebrow">Каталог</p>
+      <h2 style="margin-top:14px">Те, що обирають найчастіше</h2>
+      <div class="grid">
+        <a class="card" href="https://obiimy.world/shovkova-khustka-probudzhennia-65x65/" target="_blank" rel="noopener"><figure><img src="img/probudzhennia.webp" alt="Хустка «Пробудження»" loading="lazy"></figure><b>Хустка «Пробудження»</b><span>65 × 65 · 2D</span><span class="p num">4 320 грн</span></a>
+        <a class="card" href="https://obiimy.world/spivocha-dusha/" target="_blank" rel="noopener"><figure><img src="img/yednannia.webp" alt="Хустка «Єднання»" loading="lazy"></figure><b>Хустка «Єднання»</b><span>44 × 44 · 2D</span><span class="p num">2 400 грн</span></a>
+        <a class="card" href="https://obiimy.world/maska-dlia-snu-z-naturalnoho-shovku-svoboda/" target="_blank" rel="noopener"><figure><img src="img/mask-svoboda.webp" alt="Маска для сну «Свобода»" loading="lazy"></figure><b>Маска «Свобода»</b><span>італійський шовк</span><span class="p num">2 700 грн</span></a>
+        <a class="card" href="https://obiimy.world/podarunkovi-nabory/" target="_blank" rel="noopener"><figure><img src="img/set-zolote.webp" alt="Подарунковий набір" loading="lazy"></figure><b>Набір твіллі + хустка</b><span>подарункова коробка</span><span class="p num">3 600 грн</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block manifesto">
+    <div class="wrap">
+      <blockquote>Ця колекція про тендітність і силу, про птахів, які співають і зникають, про красу, яка може рятувати.<cite>Світлана Сніжко, засновниця Obiimy</cite></blockquote>
+    </div>
+  </section>
+
+  <section class="end">
+    <div class="wrap">
+      <div>
+        <p class="eyebrow">Obiimy</p>
+        <h2 style="margin-top:14px">Шовкові обійми з любов’ю</h2>
+        <div class="actions"><a class="btn btn-gold" href="https://obiimy.world/khustky/" target="_blank" rel="noopener">Каталог</a><a class="btn btn-line" href="https://obiimy.world/podarunkovi-nabory/" target="_blank" rel="noopener">Подарунки</a></div>
+      </div>
+      <dl>
+        <div><dt>Телефон</dt><dd><span class="num" id="phone">+38 067 010 85 25</span><button class="copy" type="button" id="copyPhone">Скопіювати</button></dd></div>
+        <div><dt>Доставка</dt><dd>Нова пошта, безкоштовно від 5 000 грн. Замовлення до 16:00 відправляємо того ж дня.</dd></div>
+        <div><dt>Де купити</dt><dd><a href="https://obiimy.world/" target="_blank" rel="noopener">obiimy.world</a> · <a href="https://intertop.ua/uk-ua/brands/obiimy/" target="_blank" rel="noopener">INTERTOP</a> · <a href="https://bebraveukrainian.ca/collections/obiimy" target="_blank" rel="noopener">Be Brave</a> · <a href="https://ufd.london/collections/obiimy" target="_blank" rel="noopener">UFD London</a></dd></div>
+        <div><dt>Соцмережі</dt><dd><a href="https://www.instagram.com/obiimy.world/" target="_blank" rel="noopener">Instagram @obiimy.world</a></dd></div>
+      </dl>
+    </div>
+  </section>
+</main>
+<footer><div class="wrap"><span>© Obiimy. Художниця та засновниця — Світлана Сніжко.</span><span>Сцени: симуляція тканини та стрічки, WebGL.</span></div></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>/*ENGINE*/</script>
+<script>
+(function () {
+  var STATES = /*STATES*/[];
+  var order = [5, 0, 3, 7, 2, 6, 4, 1, 8]; // start with «Мелодія двох»
+  var silk = null, ribbon = null, current = -1;
+  var hero = document.getElementById('hero'), canvas = document.getElementById('silk');
+  var nameEl = document.getElementById('stateName'), sizeEl = document.getElementById('stateSize'), priceEl = document.getElementById('statePrice'), linkEl = document.getElementById('stateLink');
+  var pairFront = document.getElementById('pairFront'), pairBack = document.getElementById('pairBack'), fallbackImg = document.getElementById('fallbackImg');
+  var list = document.getElementById('states');
+  order.forEach(function (idx, n) {
+    var s = STATES[idx], li = document.createElement('li'), b = document.createElement('button');
+    b.type = 'button'; b.dataset.i = idx; b.setAttribute('aria-pressed', n === 0 ? 'true' : 'false');
+    b.innerHTML = '<small class="num">' + String(n + 1).padStart(2, '0') + '</small>' + s.name;
+    b.addEventListener('click', function () { setState(idx); }); li.appendChild(b); list.appendChild(li);
+  });
+  function setState(i) {
+    if (i === current) return; current = i; var s = STATES[i];
+    nameEl.textContent = '«' + s.name + '»'; sizeEl.textContent = s.size; priceEl.innerHTML = s.price + (s.old ? ' <s>' + s.old + '</s>' : ''); linkEl.href = s.url;
+    pairFront.src = 'tex/' + s.id + '.jpg'; pairBack.src = 'tex/' + s.back + '.jpg'; fallbackImg.src = 'tex/' + s.id + '.jpg';
+    list.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.i == i ? 'true' : 'false'); });
+    if (silk) silk.setTextures(s.id, s.back);
+    if (ribbon) ribbon.setTexture(s.back);
+  }
+  document.getElementById('flipBtn').addEventListener('click', function () { if (silk) silk.flip(); document.getElementById('hero').scrollIntoView({ behavior: 'smooth' }); });
+  var copyBtn = document.getElementById('copyPhone'), phone = document.getElementById('phone');
+  copyBtn.addEventListener('click', function () {
+    var done = function () { copyBtn.textContent = 'Скопійовано'; setTimeout(function () { copyBtn.textContent = 'Скопіювати'; }, 1800); };
+    var fb = function () { var r = document.createRange(); r.selectNodeContents(phone); var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(phone.textContent.trim()).then(done, fb); else fb();
+  });
+  var first = STATES[order[0]];
+  silk = window.SilkEngine && SilkEngine.create({
+    canvas: canvas, mode: 'float', texPath: 'tex/', front: first.id, back: first.back,
+    size: 1.45, resolution: 36, camDist: 5.5, offsetX: 0.8, offsetY: 0.05, rotY: 0.35, rotate: true, tiltX: 0.1,
+    envTop: '#FFFFFF', envBottom: '#0C0B0F', envTint: '#FFF1C2', sheen: '#F2B705', gloss: 0.28, aniso: 1.0, envStrength: 0.22, weaveScale: 0.5, weaveRepeat: 24,
+    light: [0.6, 0.6, 1.0], idleSway: 0.25, scrollTilt: 0.5, scrollLift: 0.3
+  });
+  if (!silk) hero.classList.add('no-webgl');
+  ribbon = window.SilkEngine && SilkEngine.createRibbon({ canvas: document.getElementById('ribbonCanvas'), texPath: 'tex/', texture: first.back, envTop: '#FFFFFF', envBottom: '#0C0B0F', sheen: '#F2B705', width: 0.36, repeat: 6 });
+  setState(order[0]);
+  window.addEventListener('scroll', function () { if (silk) silk.setScroll(window.scrollY / (window.innerHeight * 0.9)); }, { passive: true });
+})();
+</script>

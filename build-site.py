@@ -33,11 +33,14 @@ def main():
         shutil.copytree(ROOT / d, SITE / d)
     for slug, fname, title, desc in VERSIONS:
         (SITE / f"{slug}.html").write_text(wrap((ROOT / fname).read_text()))
+        pp = ROOT / f"p-{slug}.html"
+        if pp.exists():
+            (SITE / f"product-{slug}.html").write_text(wrap(pp.read_text()))
     # hub page
     cards = "\n".join(
         f'''      <a class="card" href="{slug}">
         <div class="ph"><img src="thumbs/{slug}.jpg" alt="{title}" loading="lazy"></div>
-        <div class="body"><span class="no">{i+1:02d}</span><h2>{title}</h2><p>{desc}</p><span class="go">Відкрити →</span></div>
+        <div class="body"><span class="no">{i+1:02d}</span><h2>{title}</h2><p>{desc}</p><span class="go">Відкрити лендинг →</span><a class="go sub" href="product-{slug}.html">Сторінка товару →</a></div>
       </a>''' for i, (slug, fname, title, desc) in enumerate(VERSIONS))
     hub = f'''<!DOCTYPE html>
 <html lang="uk">
@@ -68,6 +71,7 @@ def main():
   .card h2 {{ font-family:'Prata',serif; font-weight:400; font-size:1.5rem; margin:0; }}
   .card p {{ margin:0; color:var(--ink-2); font-size:.92rem; }}
   .card .go {{ margin-top:6px; font-size:.82rem; font-weight:500; text-decoration:underline; text-underline-offset:4px; }}
+  .card .go.sub {{ margin-top:0; color:var(--ink-2); }}
   .card:first-child {{ grid-column:span 3; grid-template-columns:1.2fr 1fr; }}
   .card:first-child .ph {{ aspect-ratio:auto; border-bottom:0; border-right:1px solid var(--line); min-height:320px; }}
   .card:first-child .body {{ padding:32px; align-content:center; }}
@@ -81,7 +85,7 @@ def main():
 <div class="wrap">
   <header><img src="brand/logo-ink.png" alt="Obiimy"><a href="https://obiimy.world/" target="_blank" rel="noopener">obiimy.world ↗</a></header>
   <h1>Десять версій лендингу Obiimy</h1>
-  <p class="lede">Український бренд шовкових хусток з авторськими принтами художниці Світлани Сніжко. Від класичного лендингу до 3D-сцен та фешн-лукбуків. Головна версія — Maison, найартовіша — Garden.</p>
+  <p class="lede">Український бренд шовкових хусток з авторськими принтами художниці Світлани Сніжко. Від класичного лендингу до 3D-сцен та фешн-лукбуків. Головна версія — Maison, найартовіша — Garden. У кожної версії є приклад сторінки товару в тому ж стилі.</p>
   <div class="grid">
 {cards}
   </div>

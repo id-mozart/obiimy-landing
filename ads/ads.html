@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<title>Obiimy ads</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Onest:wght@300;400;500;600&display=swap">
+<style>
+  :root { --ivory: #F4F2ED; --stone: #E8E2D8; --ink: #141216; --ink-2: #4A4750; --ink-3: #8A8592; --gold: #F2B705; --plum: #1B1430; --line: rgba(20,18,22,.16); }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: #666; font-family: 'Onest', 'Helvetica Neue', Arial, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+  .ad { width: 1080px; height: 1920px; position: relative; overflow: hidden; background: var(--ivory); margin: 20px auto; }
+  .ad > * { position: absolute; margin: 0; }
+  .ad p, .ad h1 { margin: 0; }
+  .logo { top: 96px; left: 50%; transform: translateX(-50%); height: 44px; }
+  .logo img { display: block; height: 44px; width: auto; }
+  .eyebrow { font-size: 26px; letter-spacing: .32em; text-transform: uppercase; font-weight: 500; color: var(--ink-3); left: 90px; right: 90px; text-align: center; }
+  .h { font-family: 'Prata', serif; font-size: 104px; line-height: 1.04; text-align: center; left: 80px; right: 80px; letter-spacing: -0.01em; }
+  .h em { font-style: italic; font-family: 'Prata', serif; font-style: normal; color: var(--ink-3); position: static; }
+  .body { font-size: 34px; line-height: 1.5; font-weight: 300; color: var(--ink-2); left: 130px; right: 130px; text-align: center; }
+  .price { font-family: 'Prata', serif; font-size: 44px; text-align: center; left: 90px; right: 90px; }
+  .price small { position: static; font-family: 'Onest'; font-size: 24px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); display: block; margin-top: 10px; font-weight: 500; }
+  .code > * { position: static; }
+  .code { left: 50%; transform: translateX(-50%); display: flex; align-items: center; gap: 22px; padding: 22px 36px; border: 1.5px solid var(--line); border-radius: 999px; font-size: 26px; letter-spacing: .06em; color: var(--ink-2); white-space: nowrap; }
+  .code b { position: static; font-weight: 600; color: var(--ink); letter-spacing: .14em; }
+  .code i { position: static; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+  .cta { left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--ivory); font-size: 30px; font-weight: 600; letter-spacing: .04em; padding: 30px 64px; border-radius: 999px; white-space: nowrap; }
+  .rule { left: 50%; transform: translateX(-50%); width: 60px; height: 2px; background: var(--gold); }
+  .photo { overflow: hidden; }
+  .photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dark { background: var(--plum); color: #F1ECF3; }
+  .dark .eyebrow { color: rgba(241,236,243,.65); }
+  .dark .body { color: rgba(241,236,243,.82); }
+  .dark .h em { color: rgba(241,236,243,.55); }
+  .dark .code { border-color: rgba(241,236,243,.3); color: rgba(241,236,243,.85); }
+  .dark .code b { color: #fff; }
+  .dark .cta { background: var(--gold); color: var(--ink); }
+  .full > img { position: absolute; inset: 0; width: 1080px; height: 1920px; object-fit: cover; }
+  .shade { left: 0; right: 0; bottom: 0; height: 1100px; background: linear-gradient(180deg, rgba(20,18,22,0) 0%, rgba(20,18,22,.55) 45%, rgba(20,18,22,.9) 100%); }
+  .shade-top { left: 0; right: 0; top: 0; height: 420px; background: linear-gradient(180deg, rgba(20,18,22,.55) 0%, rgba(20,18,22,0) 100%); }
+  .caption { font-size: 24px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); left: 90px; right: 90px; text-align: center; font-weight: 500; }
+  .corner { font-size: 22px; letter-spacing: .24em; text-transform: uppercase; color: rgba(241,236,243,.7); font-weight: 500; }
+</style>
+</head>
+<body>
+
+<!-- 01 mask -->
+<section class="ad" id="a01">
+  <div class="logo"><img src="../brand/logo-ink.png" alt=""></div>
+  <p class="eyebrow" style="top:250px">Шовк для сну</p>
+  <h1 class="h" style="top:320px">Спати солодко —<br>це про <em>шовк</em></h1>
+  <p class="body" style="top:600px">Маска зі 100% італійського шовку. Не тисне, не залишає слідів, приємно охолоджує шкіру.</p>
+  <div class="photo" style="left:0;right:0;top:790px;height:640px"><img src="src/mask-band.jpg" alt=""></div>
+  <p class="price" style="top:1490px">2 700 грн<small>Маска «Між нами» · чохол у комплекті</small></p>
+  <div class="code" style="top:1640px"><span>−5% за кодом</span><b>OBIIMY55</b><i></i><span>до неділі</span></div>
+  <div class="cta" style="top:1760px">Обрати маску</div>
+</section>
+
+<!-- 02 marble -->
+<section class="ad" id="a02" style="background:var(--stone)">
+  <div class="logo"><img src="../brand/logo-ink.png" alt=""></div>
+  <p class="eyebrow" style="top:250px">Оберіть свій стан</p>
+  <h1 class="h" style="top:320px">Три хустки.<br>Три <em>настрої.</em></h1>
+  <div class="photo" style="left:0;right:0;top:580px;height:760px"><img src="src/marble-band.jpg" alt=""></div>
+  <p class="body" style="top:1400px">Іриси на бордо, графіка на молочному, монограма. Шовк 65 × 65, обробка вручну.</p>
+  <p class="price" style="top:1540px">від 3 200 грн</p>
+  <div class="code" style="top:1660px"><span>−5% за кодом</span><b>OBIIMY55</b><i></i><span>до неділі</span></div>
+  <div class="cta" style="top:1780px">Обрати хустку</div>
+</section>
+
+<!-- 03 box -->
+<section class="ad" id="a03">
+  <div class="logo"><img src="../brand/logo-ink.png" alt=""></div>
+  <p class="eyebrow" style="top:250px">Подарунок</p>
+  <h1 class="h" style="top:320px">Жовта коробка,<br>яку <em>впізнають</em></h1>
+  <div class="photo" style="left:90px;width:900px;top:600px;height:900px;border-radius:8px"><img src="../img/set-zolote.webp" alt=""></div>
+  <p class="body" style="top:1530px">Твіллі та хустка у подарунковій коробці. Підпис на подарунок і відправка того ж дня.</p>
+  <p class="price" style="top:1680px">набори від 2 200 грн</p>
+  <div class="cta" style="top:1790px">Обрати набір</div>
+</section>
+
+<!-- 04 probudzhennia full-bleed -->
+<section class="ad dark full" id="a04">
+  <img src="../photo/probudzhennia-2.webp" alt="" style="object-position:50% 15%">
+  <div class="shade"></div><div class="shade-top"></div>
+  <div class="logo"><img src="../brand/logo-white.png" alt=""></div>
+  <p class="eyebrow" style="top:1090px">«Пробудження»</p>
+  <h1 class="h" style="top:1150px;color:#fff">Кожен принт —<br><em>картина</em></h1>
+  <p class="body" style="top:1420px">Іриси, написані навесні. Двосторонній друк на італійському шовку, 65 × 65.</p>
+  <p class="price" style="top:1560px;color:#fff">4 320 грн <span style="position:static;font-family:'Onest';font-size:26px;color:rgba(241,236,243,.55);text-decoration:line-through;margin-left:12px">4 800</span></p>
+  <div class="code" style="top:1660px"><span>−5% за кодом</span><b>OBIIMY55</b><i></i><span>до неділі</span></div>
+  <div class="cta" style="top:1780px">Купити хустку</div>
+</section>
+
+<!-- 05 mizh street -->
+<section class="ad dark full" id="a05">
+  <img src="../photo/mizh-1.webp" alt="" style="object-position:50% 20%">
+  <div class="shade"></div><div class="shade-top"></div>
+  <div class="logo"><img src="../brand/logo-white.png" alt=""></div>
+  <p class="eyebrow" style="top:1120px">Як носити</p>
+  <h1 class="h" style="top:1180px;color:#fff;font-size:96px">На голові.<br>Як у шістдесятих. <em>Як зараз.</em></h1>
+  <p class="price" style="top:1560px;color:#fff">4 400 грн<small style="color:rgba(241,236,243,.6)">«Між нами» · шаль 88 × 88</small></p>
+  <div class="cta" style="top:1760px">Обрати шаль</div>
+</section>
+
+<!-- 06 double-sided -->
+<section class="ad" id="a06">
+  <div class="logo"><img src="../brand/logo-ink.png" alt=""></div>
+  <p class="eyebrow" style="top:250px">Двосторонній друк</p>
+  <h1 class="h" style="top:320px">Один вузол.<br>Два <em>образи.</em></h1>
+  <div class="photo" style="left:90px;top:600px;width:620px;height:620px;border-radius:6px;box-shadow:0 40px 80px -30px rgba(20,18,22,.45);transform:rotate(-4deg)"><img src="../tex/probudzhennia.jpg" alt=""></div>
+  <div class="photo" style="left:420px;top:760px;width:580px;height:580px;border-radius:6px;box-shadow:0 40px 80px -30px rgba(20,18,22,.45);transform:rotate(5deg)"><img src="../tex/litnie-pole.jpg" alt=""></div>
+  <p class="caption" style="top:1400px">Лице «Пробудження» · зворот «Літнє поле»</p>
+  <p class="body" style="top:1470px">Друк на обох боках шовку. Перевернули хустку — і на плечах уже інший принт.</p>
+  <p class="price" style="top:1600px">від 2 400 грн</p>
+  <div class="code" style="top:1680px"><span>−5% за кодом</span><b>OBIIMY55</b><i></i><span>до неділі</span></div>
+  <div class="cta" style="top:1800px">Дивитися двосторонні</div>
+</section>
+
+<!-- 07 dotyk field -->
+<section class="ad dark full" id="a07">
+  <img src="../photo/dotyk-1.webp" alt="" style="object-position:50% 20%">
+  <div class="shade"></div><div class="shade-top"></div>
+  <div class="logo"><img src="../brand/logo-white.png" alt=""></div>
+  <p class="eyebrow" style="top:1120px">Осінь</p>
+  <h1 class="h" style="top:1180px;color:#fff">Шаль, з якою<br>осінь <em>тепліша</em></h1>
+  <p class="price" style="top:1470px;color:#fff">4 400 грн<small style="color:rgba(241,236,243,.6)">«Сміливий дотик» · 88 × 88 · леопард і квіти</small></p>
+  <div class="code" style="top:1660px"><span>−5% за кодом</span><b>OBIIMY55</b><i></i><span>до неділі</span></div>
+  <div class="cta" style="top:1780px">Обрати шаль</div>
+</section>
+
+<!-- 08 soul -->
+<section class="ad dark full" id="a08">
+  <img src="../photo/kolo-1.webp" alt="" style="object-position:50% 30%">
+  <div class="shade"></div><div class="shade-top"></div>
+  <div class="logo"><img src="../brand/logo-white.png" alt=""></div>
+  <p class="eyebrow" style="top:1080px">Співоча душа</p>
+  <h1 class="h" style="top:1140px;color:#fff">Краса, яка вміє<br><em>рятувати</em></h1>
+  <p class="body" style="top:1410px">Частина коштів від кожної хустки колекції йде на гнізда для сиворакші, птаха з Червоної книги.</p>
+  <div class="rule" style="top:1590px"></div>
+  <p class="caption" style="top:1640px;color:rgba(241,236,243,.7)">Разом з Українським товариством охорони птахів</p>
+  <div class="cta" style="top:1760px">Дивитися колекцію</div>
+</section>
+
+<!-- 09 twilly bag -->
+<section class="ad" id="a09">
+  <div class="logo"><img src="../brand/logo-ink.png" alt=""></div>
+  <p class="eyebrow" style="top:250px">Твіллі 84 × 5</p>
+  <h1 class="h" style="top:320px">Найменша річ<br>у <em>колекції</em></h1>
+  <div class="photo" style="left:0;right:0;top:590px;height:900px"><img src="../photo/bag-2.webp" alt="" style="object-position:50% 45%"></div>
+  <p class="body" style="top:1540px">На ручку сумки, у волосся, на зап’ястя. Шовк, який помічають першим.</p>
+  <p class="price" style="top:1660px">1 600 грн</p>
+  <div class="cta" style="top:1780px">Обрати твіллі</div>
+</section>
+
+<!-- 10 care -->
+<section class="ad dark" id="a10">
+  <div class="photo" style="left:0;right:0;top:0;height:1060px"><img src="../photo/enerhiia-still.webp" alt="" style="object-position:50% 40%"></div>
+  <div style="left:0;right:0;top:860px;height:220px;background:linear-gradient(180deg, rgba(27,20,48,0), var(--plum))"></div>
+  <div class="logo"><img src="../brand/logo-white.png" alt=""></div>
+  <p class="eyebrow" style="top:1130px">100% італійський шовк</p>
+  <h1 class="h" style="top:1190px;color:#fff;font-size:92px">Не електризує.<br>Не лишає <em>заломів.</em></h1>
+  <p class="body" style="top:1440px">Хустки, маски для сну та резинки з натурального шовку. Дбайливо до волосся і шкіри.</p>
+  <div class="code" style="top:1640px"><span>−5% за кодом</span><b>OBIIMY55</b><i></i><span>до неділі</span></div>
+  <div class="cta" style="top:1760px">До каталогу</div>
+</section>
+
+</body>
+</html>

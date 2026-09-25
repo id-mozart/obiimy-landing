@@ -4,3 +4,8 @@ tmp-*.html
 wrap-*.html
 .DS_Store
 .claude/
+drive/
+ads/src/
+ads/src2/
+ads/out/
+ads/out2/

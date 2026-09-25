@@ -1,0 +1,709 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Obiimy Form · Коло сонця</title>
+<meta name="description" content="Шовкова хустка «Коло сонця» Obiimy: 100% італійський шовк, авторський принт, 88 × 88 см, 4 400 грн. Відправка того ж дня, оплата частинами.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oranienbaum&family=Golos+Text:wght@400;500;600&display=swap">
+<style>
+  :root{--bg:#DED9D2;--bg2:#D3CDC5;--card:#ECE8E2;--ink:#1B1A19;--ink2:#4E4A46;--ink3:#807A74;--line:rgba(27,26,25,.14);--accent:#0F4C5C;--gold:#B98A00;--radius:0}
+  :root { --display: 'Oranienbaum', serif; --body: 'Golos Text', sans-serif; color-scheme: light; }
+
+  * { box-sizing: border-box; min-width: 0; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 400; margin: 0; line-height: 1.08; text-wrap: balance; }
+  h1 { font-size: clamp(2.2rem, 4vw, 3.6rem); }
+  h2 { font-size: clamp(1.8rem, 3vw, 2.6rem); }
+  h3 { font-size: 1.3rem; }
+  p { margin: 0; }
+  .wrap { width: min(1280px, 100%); margin-inline: auto; padding-inline: clamp(16px, 4vw, 48px); }
+  .eyebrow { font-size: .7rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ink3); font-weight: 600; }
+  .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 28px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .95rem; border: 1px solid transparent; cursor: pointer; font-family: inherit; transition: transform .2s ease; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-gold { background: var(--gold); color: #17151A; }
+  .btn-line { border-color: var(--ink); background: transparent; color: var(--ink); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+  .bar { background: var(--ink); color: var(--bg); font-size: .78rem; text-align: center; padding: 9px 16px; letter-spacing: .04em; }
+  .dark .bar { background: var(--gold); color: #17151A; }
+  .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+  .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 68px; }
+  .logo img { height: 24px; width: auto; }
+  .nav-links { display: flex; gap: 24px; font-size: .88rem; font-weight: 500; }
+  .nav-links a { text-decoration: none; color: var(--ink2); }
+  .nav-links a:hover { color: var(--ink); }
+  @media (max-width: 860px) { .nav-links { display: none; } }
+  .crumbs { font-size: .78rem; color: var(--ink3); padding-block: 18px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumbs a { text-decoration: none; }
+  .crumbs a:hover { color: var(--ink); }
+
+  /* product hero */
+  .product { padding-block: clamp(20px, 3vw, 40px) clamp(56px, 8vw, 100px); }
+  .product .wrap { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+  .gallery { display: grid; gap: 12px; position: sticky; top: 88px; }
+  .main { aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius); background: var(--bg2); position: relative; }
+  .main img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
+  .main canvas { width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; }
+  .main canvas.grabbing { cursor: grabbing; }
+  .main .hint { position: absolute; left: 14px; bottom: 14px; font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink3); background: color-mix(in srgb, var(--bg) 70%, transparent); padding: 6px 10px; backdrop-filter: blur(6px); pointer-events: none; }
+  .thumbs { display: flex; gap: 10px; }
+  .thumbs button { all: unset; cursor: pointer; width: 84px; aspect-ratio: 1; overflow: hidden; border-radius: var(--radius); border: 1.5px solid transparent; background: var(--bg2); }
+  .thumbs button img { width: 100%; height: 100%; object-fit: cover; }
+  .thumbs button[aria-current="true"] { border-color: var(--ink); }
+  .thumbs button.viewer { display: grid; place-items: center; font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--ink2); text-align: center; line-height: 1.3; }
+  .info { display: grid; gap: 18px; }
+  .info h1 { margin-top: 6px; }
+  .state { font-family: var(--display); font-size: 1.25rem; color: var(--ink2); }
+  .pricebox { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; padding-top: 6px; }
+  .price { font-family: var(--display); font-size: 2.2rem; line-height: 1; }
+  .old { font-size: 1rem; color: var(--ink3); text-decoration: line-through; }
+  .part { font-size: .82rem; color: var(--ink3); }
+  .label { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink3); font-weight: 600; display: flex; justify-content: space-between; }
+  .size { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .size button { all: unset; cursor: pointer; display: grid; gap: 2px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius); text-align: center; }
+  .size button b { font-family: var(--display); font-weight: 400; font-size: 1.15rem; }
+  .size button small { font-size: .74rem; color: var(--ink3); }
+  .size button[aria-pressed="true"] { border-color: var(--ink); background: color-mix(in srgb, var(--ink) 6%, transparent); }
+  .toggle { display: flex; gap: 8px; }
+  .toggle button { all: unset; cursor: pointer; padding: 9px 14px; border: 1px solid var(--line); border-radius: 999px; font-size: .82rem; font-weight: 500; }
+  .toggle button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .dark .toggle button[aria-pressed="true"], .dark .size button[aria-pressed="true"] { background: var(--gold); color: #17151A; border-color: var(--gold); }
+  .buy { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+  .buy .btn-line { padding-inline: 18px; }
+  .ship { display: grid; gap: 8px; font-size: .88rem; color: var(--ink2); padding-top: 14px; border-top: 1px solid var(--line); }
+  .ship span { display: flex; gap: 10px; align-items: baseline; }
+  .ship span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex: none; transform: translateY(-2px); }
+  .acc details { border-top: 1px solid var(--line); }
+  .acc details:last-child { border-bottom: 1px solid var(--line); }
+  .acc summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 14px 0; font-family: var(--display); font-size: 1.1rem; }
+  .acc summary::-webkit-details-marker { display: none; }
+  .acc summary::after { content: "+"; color: var(--ink3); font-size: 1.4rem; line-height: 1; }
+  .acc details[open] summary::after { content: "–"; }
+  .acc p, .acc ul { color: var(--ink2); font-size: .92rem; padding-bottom: 14px; margin: 0; }
+  .acc ul { padding-left: 18px; display: grid; gap: 4px; }
+  @media (max-width: 860px) { .product .wrap { grid-template-columns: 1fr; } .gallery { position: static; } }
+
+  section.block { padding-block: clamp(56px, 8vw, 100px); border-top: 1px solid var(--line); }
+  .head { display: grid; gap: 10px; max-width: 40em; margin-bottom: clamp(24px, 3vw, 40px); }
+  .story { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+  .story figure { margin: 0; aspect-ratio: 1; overflow: hidden; border-radius: var(--radius); }
+  .story img { width: 100%; height: 100%; object-fit: cover; }
+  .story p.txt { color: var(--ink2); font-size: 1.05rem; margin-top: 16px; }
+  blockquote { margin: 22px 0 0; font-family: var(--display); font-size: clamp(1.2rem, 1.8vw, 1.5rem); line-height: 1.4; border-left: 2px solid var(--gold); padding-left: 18px; }
+  @media (max-width: 860px) { .story { grid-template-columns: 1fr; } }
+  .wear { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .wear figure { margin: 0; display: grid; gap: 10px; }
+  .wear .ph { aspect-ratio: 3 / 4; overflow: hidden; border-radius: var(--radius); background: var(--bg2); }
+  .wear img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
+  .wear figcaption { font-family: var(--display); font-size: 1.15rem; }
+  @media (max-width: 640px) { .wear { grid-template-columns: 1fr 1fr; } }
+  .pair { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+  .pair .two { position: relative; aspect-ratio: 1; }
+  .pair .two figure { position: absolute; margin: 0; width: 70%; aspect-ratio: 1; overflow: hidden; box-shadow: 0 40px 80px -30px rgba(0,0,0,.5); }
+  .pair .two img { width: 100%; height: 100%; object-fit: cover; }
+  .pair .two .f { left: 0; top: 0; z-index: 2; transform: rotate(-4deg); }
+  .pair .two .b { right: 0; bottom: 0; transform: rotate(5deg); }
+  .pair .two figcaption { position: absolute; left: 10px; bottom: 8px; font-size: .64rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; background: rgba(0,0,0,.6); color: #fff; padding: 4px 8px; }
+  @media (max-width: 860px) { .pair { grid-template-columns: 1fr; } }
+  .specs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+  .specs div { background: var(--card); padding: 22px; display: grid; gap: 4px; }
+  .specs b { font-family: var(--display); font-weight: 400; font-size: 1.15rem; }
+  .specs span { font-size: .88rem; color: var(--ink2); }
+  @media (max-width: 860px) { .specs { grid-template-columns: 1fr 1fr; } }
+  .trust { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: 18px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; display: grid; gap: 10px; align-content: start; }
+  .stars { color: var(--gold); letter-spacing: .1em; font-size: .9rem; }
+  .who { font-size: .8rem; color: var(--ink3); }
+  .card dl { margin: 0; display: grid; gap: 8px; font-size: .9rem; }
+  .card dt { font-size: .66rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); font-weight: 600; }
+  .card dd { margin: 0; color: var(--ink2); }
+  @media (max-width: 860px) { .trust { grid-template-columns: 1fr; } }
+  .related { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+  .rel { display: grid; gap: 8px; text-decoration: none; }
+  .rel .ph { aspect-ratio: 1; overflow: hidden; border-radius: var(--radius); background: #fff; }
+  .rel img { width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+  .rel:hover img { transform: scale(1.04); }
+  .rel b { font-weight: 600; font-size: .92rem; }
+  .rel span { font-size: .78rem; color: var(--ink3); }
+  .rel .p { font-family: var(--display); font-size: 1.1rem; color: var(--ink); }
+  @media (max-width: 860px) { .related { grid-template-columns: 1fr 1fr; } }
+  footer { border-top: 1px solid var(--line); padding-block: 26px calc(90px + env(safe-area-inset-bottom, 0px)); font-size: .82rem; color: var(--ink3); }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; }
+  footer a { text-decoration: none; color: var(--ink2); }
+  @media (min-width: 861px) { footer { padding-bottom: 26px; } }
+  .sticky { display: none; }
+  @media (max-width: 860px) { .sticky { display: grid; grid-template-columns: 1fr auto; gap: 10px; position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 60; background: rgba(23,21,25,.92); backdrop-filter: blur(10px); border-radius: 999px; padding: 8px 8px 8px 18px; color: #fff; align-items: center; } .sticky .t { font-size: .8rem; line-height: 1.25; } .sticky .t b { display: block; font-weight: 600; } .sticky a { background: var(--gold); color: #17151A; text-decoration: none; font-weight: 600; font-size: .82rem; padding: 11px 16px; border-radius: 999px; white-space: nowrap; } }
+
+</style>
+<body class="light">
+<div class="bar">Замовлення до 16:00 відправляємо того ж дня · Безкоштовна доставка від 5 000 грн · Оплата частинами</div>
+<header class="nav"><div class="wrap">
+  <a class="logo" href="form.html" aria-label="Obiimy"><img src="brand/logo-ink.png" alt="Obiimy"></a>
+  <nav class="nav-links"><a href="form.html">Лендинг</a><a href="https://obiimy.world/khustky/">Хустки</a><a href="https://obiimy.world/tvilli/">Твіллі</a><a href="https://obiimy.world/podarunkovi-nabory/">Подарунки</a></nav>
+  <a class="btn btn-gold" style="padding:10px 16px;font-size:.8rem" href="https://obiimy.world/khustky/">Каталог</a>
+</div></header>
+
+<main>
+  <div class="wrap"><nav class="crumbs"><a href="form.html">Obiimy</a><span>/</span><a href="https://obiimy.world/khustky/">Хустки</a><span>/</span><span>«Коло сонця»</span></nav></div>
+  <section class="product">
+    <div class="wrap">
+      <div class="gallery">
+        <div class="main" id="main"><canvas id="silk" aria-label="Тривимірна хустка з цим принтом. Потягніть за тканину."></canvas><span class="hint">Потягніть за тканину</span><img id="mainImg" src="photo/kolo-2.webp" alt="Хустка «Коло сонця»" hidden></div>
+        <div class="thumbs" id="thumbs"><button type="button" class="viewer" data-i="-1" aria-current="true">3D<br>шовк</button><button type="button" data-i="0" aria-current="false"><img src="photo/kolo-2.webp" alt=""></button><button type="button" data-i="1" aria-current="false"><img src="photo/kolo-1.webp" alt=""></button><button type="button" data-i="2" aria-current="false"><img src="photo/kolo-3.webp" alt=""></button><button type="button" data-i="3" aria-current="false"><img src="img/kolo-sontsia.webp" alt=""></button></div>
+      </div>
+      <div class="info">
+        <div><p class="eyebrow">Колекція «Співоча душа» · арт. 88-30</p><h1>Шовкова хустка «Коло сонця»</h1><p class="state">Про тепло, яке щоразу повертається</p></div>
+        <div class="pricebox"><span class="price num" id="price">4 400 грн</span><span class="old num" id="old" hidden>4 400 грн</span><span class="part num" id="part"></span></div>
+        <div><p class="label"><span>Розмір</span><a href="#sizes" style="font-weight:500;letter-spacing:0;text-transform:none">Який обрати?</a></p><div class="size" id="size" style="margin-top:8px"><button type="button" data-i="0" aria-pressed="false"><b class="num">44 × 44</b><small class="num">1 600 грн</small></button><button type="button" data-i="1" aria-pressed="false"><b class="num">65 × 65</b><small class="num">3 200 грн</small></button><button type="button" data-i="2" aria-pressed="true"><b class="num">88 × 88</b><small class="num">4 400 грн</small></button></div></div>
+        
+        <div class="buy"><a class="btn btn-gold" id="buy" href="https://obiimy.world/shovkova-khustka-kolo-sontsia-88x88/">Купити</a><a class="btn btn-line" href="https://obiimy.world/shovkova-khustka-kolo-sontsia-88x88/">У бажання</a></div>
+        <div class="ship"><span>Замовлення до 16:00 — відправка того ж дня Новою поштою</span><span>Безкоштовна доставка від 5 000 грн</span><span id="upsell" hidden>+ резинка 700 грн = безкоштовна доставка</span><span>Підпис на подарунок за вашим текстом</span></div>
+        <div class="acc">
+          <details open><summary>Матеріал і друк</summary><p>100% італійський шовк, високоякісний цифровий друк. Обробка вручну, тому розмір може відхилятися на 0–2,5 см. Індивідуальне пакування. Країна виробник — Україна.</p></details>
+          <details><summary>Догляд</summary><ul><li>Суха чистка або ручне прання при температурі до 30°</li><li>Не віджимати, сушити в тіні</li><li>Прасування в режимі «шовк» через тонку тканину</li></ul></details>
+          <details><summary>Оплата і повернення</summary><p>Оплата карткою онлайн або частинами: 4 платежі від ПриватБанку чи 3 від monobank. Умови обміну та повернення — на сторінці <a href="https://obiimy.world/obmin-ta-povernennya/">Обмін та повернення</a>.</p></details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block"><div class="wrap story">
+    <div><p class="eyebrow">Спершу картина</p><h2 style="margin-top:10px">Історія принту</h2><p class="txt">Вінок із сонячних квітів на рожевому шовку. Колекція «Співоча душа» присвячена рідкісним птахам України: частина коштів від кожної хустки йде на гнізда для сиворакші, птаха з Червоної книги. Роботи створені разом із художницею Анною Кловак.</p><blockquote>Ця колекція про тендітність і силу, про птахів, які співають і зникають, про красу, яка може рятувати.</blockquote></div>
+    <figure><img src="tex/kolo-sontsia.jpg" alt="Принт «Коло сонця» крупно" loading="lazy"></figure>
+  </div></section>
+  
+  <section class="block" id="sizes"><div class="wrap">
+    <div class="head"><p class="eyebrow">Розміри</p><h2>Один принт, три способи носити</h2></div>
+    <div class="specs">
+      <div><b class="num">44 × 44</b><span>Паше: на сумку, зап’ястя, у кишеню</span><span class="num">від 1 600 грн</span></div>
+      <div><b class="num">65 × 65</b><span>Класика: на шию, у волосся, на пояс</span><span class="num">від 3 200 грн</span></div>
+      <div><b class="num">88 × 88</b><span>Шаль: на плечі, як топ, тюрбан</span><span class="num">від 4 400 грн</span></div>
+      <div><b>2D</b><span>Двосторонній друк: два принти на одній хустці</span><span class="num">від 2 400 грн</span></div>
+    </div>
+  </div></section>
+  <section class="block"><div class="wrap">
+    <div class="head"><p class="eyebrow">Як носити</p><h2>«Коло сонця» у трьох образах</h2></div>
+    <div class="wear"><figure><div class="ph"><img src="photo/kolo-2.webp" alt="На плечі" loading="lazy"></div><figcaption>На плечі</figcaption></figure><figure><div class="ph"><img src="photo/kolo-1.webp" alt="Накидкою" loading="lazy"></div><figcaption>Накидкою</figcaption></figure><figure><div class="ph"><img src="photo/kolo-3.webp" alt="На тренчі" loading="lazy"></div><figcaption>На тренчі</figcaption></figure></div>
+  </div></section>
+  <section class="block"><div class="wrap">
+    <div class="head"><p class="eyebrow">Довіра</p><h2>Відгук і партнери</h2></div>
+    <div class="trust">
+      <div class="card"><span class="stars">★★★★★</span><p>«Замовляла на подарунок хустку, якість неймовірна, подруга теж задоволена! Вирішила замовити собі твіллі — не можу нарадуватись, кожного дня хочеться додавати в образ.»</p><span class="who">Анна Мелешак · відгук на obiimy.world</span></div>
+      <div class="card"><dl><div><dt>Ритейл</dt><dd>INTERTOP, Hram, Be Brave (Канада), UFD London</dd></div><div><dt>Преса</dt><dd>LIGA.net, INSIDER UA</dd></div><div><dt>Рейтинг</dt><dd>5.0 за відгуками покупців на obiimy.world</dd></div></dl></div>
+    </div>
+  </div></section>
+  <section class="block"><div class="wrap">
+    <div class="head"><p class="eyebrow">Поруч</p><h2>Вам також сподобається</h2></div>
+    <div class="related"><a class="rel" href="https://obiimy.world/spivocha-dusha/"><div class="ph"><img src="img/yednannia.webp" alt="" loading="lazy"></div><b>Хустка «Єднання»</b><span>44 × 44 · двосторонній</span><span class="p num">2 400 грн</span></a><a class="rel" href="https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/"><div class="ph"><img src="img/twilly-zolote.webp" alt="" loading="lazy"></div><b>Твіллі «Золоте світло»</b><span>84 × 5</span><span class="p num">1 600 грн</span></a><a class="rel" href="https://obiimy.world/maska-dlia-snu-z-naturalnoho-shovku-vpevnenist/"><div class="ph"><img src="img/mask-vpevnenist.webp" alt="" loading="lazy"></div><b>Маска для сну «Впевненість»</b><span>італійський шовк</span><span class="p num">2 700 грн</span></a><a class="rel" href="https://obiimy.world/nabir-tvilli-845-ta-khustky-4444-natkhnennia/"><div class="ph"><img src="img/set-natkhnennia.webp" alt="" loading="lazy"></div><b>Набір «Натхнення»</b><span>твіллі + хустка</span><span class="p num">3 200 грн</span></a></div>
+  </div></section>
+</main>
+<footer><div class="wrap"><span>© Obiimy. Художниця та засновниця — Світлана Сніжко.</span><span><a href="https://obiimy.world/pro-nas/">Про нас</a> · <a href="https://obiimy.world/oplata-i-dostavka/">Доставка</a> · <a href="https://www.instagram.com/obiimy.world/">Instagram</a></span></div></footer>
+<div class="sticky"><div class="t"><b id="stickyPrice">4 400 грн</b><span>«Коло сонця» · <span id="stickySize">88 × 88</span></span></div><a href="https://obiimy.world/shovkova-khustka-kolo-sontsia-88x88/">Купити</a></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+/* Obiimy silk engine: Verlet cloth + anisotropic silk shader + procedural weave. Requires THREE (r128 UMD). */
+window.SilkEngine = (function () {
+  'use strict';
+
+  function makeWeaveNormalMap(size) {
+    size = size || 512;
+    var c = document.createElement('canvas'); c.width = c.height = size;
+    var ctx = c.getContext('2d');
+    var img = ctx.createImageData(size, size), d = img.data;
+    // height field: twill diagonal + fine thread ridges + noise
+    var h = new Float32Array(size * size);
+    for (var y = 0; y < size; y++) for (var x = 0; x < size; x++) {
+      var tw = Math.sin((x + y) * 0.55) * 0.5 + 0.5;          // diagonal twill
+      var th = Math.sin(x * 1.9) * 0.5 + 0.5;                  // warp threads
+      var tv = Math.sin(y * 1.9) * 0.5 + 0.5;                  // weft threads
+      var n = Math.random() * 0.25;
+      h[y * size + x] = tw * 0.35 + th * 0.35 + tv * 0.2 + n * 0.1;
+    }
+    for (var y2 = 0; y2 < size; y2++) for (var x2 = 0; x2 < size; x2++) {
+      var xl = h[y2 * size + ((x2 - 1 + size) % size)], xr = h[y2 * size + ((x2 + 1) % size)];
+      var yu = h[((y2 - 1 + size) % size) * size + x2], yd = h[((y2 + 1) % size) * size + x2];
+      var nx = (xl - xr) * 2.2, ny = (yu - yd) * 2.2, nz = 1.0;
+      var l = Math.sqrt(nx * nx + ny * ny + nz * nz);
+      var i = (y2 * size + x2) * 4;
+      d[i] = (nx / l * 0.5 + 0.5) * 255; d[i + 1] = (ny / l * 0.5 + 0.5) * 255; d[i + 2] = (nz / l * 0.5 + 0.5) * 255; d[i + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0);
+    var t = new THREE.CanvasTexture(c);
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    return t;
+  }
+
+  function makeShadowTexture() {
+    var c = document.createElement('canvas'); c.width = c.height = 256;
+    var ctx = c.getContext('2d');
+    var g = ctx.createRadialGradient(128, 128, 10, 128, 128, 128);
+    g.addColorStop(0, 'rgba(0,0,0,0.55)'); g.addColorStop(0.5, 'rgba(0,0,0,0.18)'); g.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, 256, 256);
+    return new THREE.CanvasTexture(c);
+  }
+
+  var VERT = [
+    'attribute vec3 tangent;',
+    'varying vec2 vUv; varying vec3 vN; varying vec3 vT; varying vec3 vP;',
+    'void main(){',
+    '  vUv = uv;',
+    '  vN = normalize(normalMatrix * normal);',
+    '  vT = normalize(normalMatrix * tangent);',
+    '  vec4 mv = modelViewMatrix * vec4(position, 1.0); vP = mv.xyz;',
+    '  gl_Position = projectionMatrix * mv;',
+    '}'
+  ].join('\n');
+
+  var FRAG = [
+    'precision highp float;',
+    'uniform sampler2D uFront, uBack, uNextFront, uNextBack, uWeave;',
+    'uniform float uMix, uWeaveRepeat, uWeaveScale, uGloss, uAniso, uEnvStrength, uTime;',
+    'uniform vec3 uLight, uEnvTop, uEnvBottom, uEnvTint, uSheen;',
+    'varying vec2 vUv; varying vec3 vN; varying vec3 vT; varying vec3 vP;',
+    'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }',
+    'void main(){',
+    '  bool front = gl_FrontFacing;',
+    '  vec3 N = normalize(vN); if(!front) N = -N;',
+    '  vec3 T = normalize(vT - N * dot(vT, N)); vec3 B = cross(N, T);',
+    '  vec3 wn = texture2D(uWeave, vUv * uWeaveRepeat).xyz * 2.0 - 1.0;',
+    '  vec3 n = normalize(T * wn.x * uWeaveScale + B * wn.y * uWeaveScale + N * wn.z);',
+    '  vec2 uv = front ? vUv : vec2(1.0 - vUv.x, vUv.y);',
+    '  vec3 a = front ? texture2D(uFront, uv).rgb : texture2D(uBack, uv).rgb;',
+    '  vec3 b = front ? texture2D(uNextFront, uv).rgb : texture2D(uNextBack, uv).rgb;',
+    '  vec3 base = mix(a, b, uMix);',
+    '  vec3 V = normalize(-vP); vec3 L = normalize(uLight); vec3 H = normalize(L + V);',
+    '  float NdotL = dot(n, L);',
+    '  float diff = 0.58 + 0.42 * max(NdotL, 0.0) + 0.08 * max(-NdotL, 0.0);',
+    '  float TdotH = dot(T, H);',
+    '  float aniso = pow(sqrt(max(1.0 - TdotH * TdotH, 0.0)), 24.0) * uAniso;',
+    '  float spec = pow(max(dot(n, H), 0.0), 90.0) * uGloss;',
+    '  vec3 R = reflect(-V, n);',
+    '  float up = clamp(R.y * 0.5 + 0.5, 0.0, 1.0);',
+    '  vec3 env = mix(uEnvBottom, uEnvTop, smoothstep(0.15, 0.95, up));',
+    '  float box1 = smoothstep(0.86, 0.985, dot(R, normalize(vec3(-0.35, 0.55, 0.75))));',
+    '  float box2 = smoothstep(0.93, 0.995, dot(R, normalize(vec3(0.7, 0.2, 0.68))));',
+    '  float fres = pow(1.0 - max(dot(n, V), 0.0), 3.5);',
+    '  float grain = (hash(floor(gl_FragCoord.xy * 0.5)) - 0.5) * 0.035;',
+    '  vec3 col = base * diff;',
+    '  col += base * aniso * 0.55 + uSheen * aniso * 0.25;',
+    '  col += env * uEnvStrength * (0.15 + 0.85 * fres);',
+    '  col += uEnvTint * (box1 * 0.35 + box2 * 0.22) * (0.5 + 0.5 * fres);',
+    '  col += vec3(spec);',
+    '  col += grain;',
+    '  gl_FragColor = vec4(col, 1.0);',
+    '}'
+  ].join('\n');
+
+  function Cloth(nx, ny, w, h) {
+    this.nx = nx; this.ny = ny; this.w = w; this.h = h;
+    var n = nx * ny;
+    this.pos = new Float32Array(n * 3); this.prev = new Float32Array(n * 3); this.acc = new Float32Array(n * 3);
+    this.pinned = new Uint8Array(n); this.pinPos = new Float32Array(n * 3);
+    this.cons = [];
+    var dx = w / (nx - 1), dy = h / (ny - 1);
+    for (var j = 0; j < ny; j++) for (var i = 0; i < nx; i++) {
+      var k = j * nx + i;
+      this.pos[k * 3] = -w / 2 + i * dx; this.pos[k * 3 + 1] = h / 2 - j * dy; this.pos[k * 3 + 2] = 0;
+    }
+    this.prev.set(this.pos);
+    var self = this;
+    function add(a, b, type) { var d = self.dist(a, b); self.cons.push(a, b, d, type); }
+    for (var j2 = 0; j2 < ny; j2++) for (var i2 = 0; i2 < nx; i2++) {
+      var k2 = j2 * nx + i2;
+      if (i2 < nx - 1) add(k2, k2 + 1, 0);
+      if (j2 < ny - 1) add(k2, k2 + nx, 0);
+      if (i2 < nx - 1 && j2 < ny - 1) { add(k2, k2 + nx + 1, 1); add(k2 + 1, k2 + nx, 1); }
+      if (i2 < nx - 2) add(k2, k2 + 2, 2);
+      if (j2 < ny - 2) add(k2, k2 + 2 * nx, 2);
+    }
+    this.uvs = new Float32Array(n * 2);
+    for (var j3 = 0; j3 < ny; j3++) for (var i3 = 0; i3 < nx; i3++) { var k3 = j3 * nx + i3; this.uvs[k3 * 2] = i3 / (nx - 1); this.uvs[k3 * 2 + 1] = 1 - j3 / (ny - 1); }
+    var idx = [];
+    for (var j4 = 0; j4 < ny - 1; j4++) for (var i4 = 0; i4 < nx - 1; i4++) {
+      var a = j4 * nx + i4, b = a + 1, c = a + nx, d = c + 1;
+      idx.push(a, c, b, b, c, d);
+    }
+    this.index = new Uint32Array(idx);
+    this.tangents = new Float32Array(n * 3);
+    this.rest = null; this.bendStiff = 0.35;
+  }
+  Cloth.prototype.dist = function (a, b) {
+    var p = this.pos, dx = p[a * 3] - p[b * 3], dy = p[a * 3 + 1] - p[b * 3 + 1], dz = p[a * 3 + 2] - p[b * 3 + 2];
+    return Math.sqrt(dx * dx + dy * dy + dz * dz);
+  };
+  Cloth.prototype.transform = function (fn) {
+    var n = this.nx * this.ny, v = new THREE.Vector3();
+    for (var k = 0; k < n; k++) { v.set(this.pos[k * 3], this.pos[k * 3 + 1], this.pos[k * 3 + 2]); fn(v, k); this.pos[k * 3] = v.x; this.pos[k * 3 + 1] = v.y; this.pos[k * 3 + 2] = v.z; }
+    this.prev.set(this.pos);
+  };
+  Cloth.prototype.pin = function (k, x, y, z) { this.pinned[k] = 1; this.pinPos[k * 3] = x; this.pinPos[k * 3 + 1] = y; this.pinPos[k * 3 + 2] = z; };
+  Cloth.prototype.unpin = function (k) { this.pinned[k] = 0; };
+  Cloth.prototype.step = function (dt, damping, iterations, collide) {
+    var n = this.nx * this.ny, p = this.pos, q = this.prev, a = this.acc, dt2 = dt * dt;
+    for (var k = 0; k < n; k++) {
+      var i = k * 3;
+      if (this.pinned[k]) { p[i] = this.pinPos[i]; p[i + 1] = this.pinPos[i + 1]; p[i + 2] = this.pinPos[i + 2]; q[i] = p[i]; q[i + 1] = p[i + 1]; q[i + 2] = p[i + 2]; continue; }
+      var x = p[i], y = p[i + 1], z = p[i + 2];
+      p[i] = x + (x - q[i]) * damping + a[i] * dt2;
+      p[i + 1] = y + (y - q[i + 1]) * damping + a[i + 1] * dt2;
+      p[i + 2] = z + (z - q[i + 2]) * damping + a[i + 2] * dt2;
+      q[i] = x; q[i + 1] = y; q[i + 2] = z;
+    }
+    a.fill(0);
+    var c = this.cons, m = c.length;
+    for (var it = 0; it < iterations; it++) {
+      for (var j = 0; j < m; j += 4) {
+        var A = c[j], B = c[j + 1], rest = c[j + 2], type = c[j + 3];
+        var ai = A * 3, bi = B * 3;
+        var dx = p[bi] - p[ai], dy = p[bi + 1] - p[ai + 1], dz = p[bi + 2] - p[ai + 2];
+        var d = Math.sqrt(dx * dx + dy * dy + dz * dz); if (d < 1e-6) continue;
+        var stiff = type === 2 ? this.bendStiff : type === 1 ? 0.75 : 1.0;
+        var diff = (d - rest) / d * 0.5 * stiff;
+        var pa = this.pinned[A], pb = this.pinned[B];
+        if (!pa && !pb) { p[ai] += dx * diff; p[ai + 1] += dy * diff; p[ai + 2] += dz * diff; p[bi] -= dx * diff; p[bi + 1] -= dy * diff; p[bi + 2] -= dz * diff; }
+        else if (!pa) { p[ai] += dx * diff * 2; p[ai + 1] += dy * diff * 2; p[ai + 2] += dz * diff * 2; }
+        else if (!pb) { p[bi] -= dx * diff * 2; p[bi + 1] -= dy * diff * 2; p[bi + 2] -= dz * diff * 2; }
+      }
+      if (collide) collide(p, n);
+    }
+  };
+  Cloth.prototype.computeTangents = function () {
+    var nx = this.nx, ny = this.ny, p = this.pos, t = this.tangents;
+    for (var j = 0; j < ny; j++) for (var i = 0; i < nx; i++) {
+      var k = j * nx + i, l = j * nx + Math.max(0, i - 1), r = j * nx + Math.min(nx - 1, i + 1);
+      var dx = p[r * 3] - p[l * 3], dy = p[r * 3 + 1] - p[l * 3 + 1], dz = p[r * 3 + 2] - p[l * 3 + 2];
+      var len = Math.sqrt(dx * dx + dy * dy + dz * dz) || 1;
+      t[k * 3] = dx / len; t[k * 3 + 1] = dy / len; t[k * 3 + 2] = dz / len;
+    }
+  };
+
+  function create(opts) {
+    if (!window.THREE) return null;
+    var canvas = opts.canvas, mode = opts.mode || 'hang';
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); }
+    catch (e) { return null; }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
+    renderer.setClearColor(0x000000, 0);
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(opts.fov || 30, 1, 0.1, 50);
+    var camDist = opts.camDist || 4.2;
+    camera.position.set(0, opts.camY || 0, camDist);
+
+    var loader = new THREE.TextureLoader(), cache = {};
+    function tex(id) {
+      if (!cache[id]) { cache[id] = loader.load(opts.texPath + id + '.jpg'); cache[id].anisotropy = renderer.capabilities.getMaxAnisotropy(); }
+      return cache[id];
+    }
+    var weave = makeWeaveNormalMap(512);
+    var uniforms = {
+      uFront: { value: tex(opts.front) }, uBack: { value: tex(opts.back) },
+      uNextFront: { value: tex(opts.front) }, uNextBack: { value: tex(opts.back) }, uMix: { value: 0 },
+      uWeave: { value: weave }, uWeaveRepeat: { value: opts.weaveRepeat || 18 }, uWeaveScale: { value: opts.weaveScale == null ? 0.35 : opts.weaveScale },
+      uGloss: { value: opts.gloss == null ? 0.35 : opts.gloss }, uAniso: { value: opts.aniso == null ? 1.0 : opts.aniso },
+      uEnvStrength: { value: opts.envStrength == null ? 0.5 : opts.envStrength }, uTime: { value: 0 },
+      uLight: { value: new THREE.Vector3().fromArray(opts.light || [0.5, 0.8, 1.0]).normalize() },
+      uEnvTop: { value: new THREE.Color(opts.envTop || '#ffffff') }, uEnvBottom: { value: new THREE.Color(opts.envBottom || '#4a4655') },
+      uEnvTint: { value: new THREE.Color(opts.envTint || '#ffffff') }, uSheen: { value: new THREE.Color(opts.sheen || '#F2B705') }
+    };
+    var material = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: VERT, fragmentShader: FRAG, side: THREE.DoubleSide });
+
+    var size = opts.size || 1.6, aspect = opts.aspect || 1;
+    var res = opts.resolution || 34;
+    var cloth = null, geo = null, mesh = null;
+    var group = new THREE.Group(); scene.add(group);
+    var extras = new THREE.Group(); scene.add(extras);
+    var time = 0, flipT = 0, flipTarget = 0;
+
+    // collision sphere for 'drape'
+    var sphereR = opts.sphereRadius || 0.7, sphereC = new THREE.Vector3(0, opts.sphereY == null ? -0.25 : opts.sphereY, 0);
+    if (mode === 'drape') {
+      var sm = new THREE.MeshStandardMaterial({ color: new THREE.Color(opts.formColor || '#d9d5d0'), roughness: 0.95, metalness: 0 });
+      var sph = new THREE.Mesh(new THREE.SphereGeometry(sphereR * 0.985, 64, 48), sm); sph.position.copy(sphereC); extras.add(sph);
+      var stand = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.07, 1.6, 24), sm); stand.position.set(0, sphereC.y - sphereR - 0.8, 0); extras.add(stand);
+      var base = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.45, 0.06, 48), sm); base.position.set(0, sphereC.y - sphereR - 1.6, 0); extras.add(base);
+      var amb = new THREE.AmbientLight(0xffffff, 0.75); scene.add(amb);
+      var dir = new THREE.DirectionalLight(0xffffff, 0.55); dir.position.set(2, 3, 3); scene.add(dir);
+    }
+    if (opts.groundShadow) {
+      var shadow = new THREE.Mesh(new THREE.PlaneGeometry(1, 1), new THREE.MeshBasicMaterial({ map: makeShadowTexture(), transparent: true, depthWrite: false }));
+      shadow.rotation.x = -Math.PI / 2; shadow.position.y = opts.groundY == null ? -1.35 : opts.groundY; shadow.scale.set(2.6, 1.4, 1); extras.add(shadow);
+    }
+
+    function buildCloth() {
+      if (mesh) { group.remove(mesh); geo.dispose(); }
+      var w = size, h = size * aspect;
+      var nx = res, ny = Math.max(8, Math.round(res * aspect));
+      cloth = new Cloth(nx, ny, w, h); cloth.bendStiff = mode === 'float' ? 0.7 : 0.35;
+      geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(cloth.pos, 3));
+      geo.setAttribute('uv', new THREE.BufferAttribute(cloth.uvs, 2));
+      geo.setAttribute('tangent', new THREE.BufferAttribute(cloth.tangents, 3));
+      geo.setIndex(new THREE.BufferAttribute(cloth.index, 1));
+      geo.computeVertexNormals();
+      mesh = new THREE.Mesh(geo, material); mesh.frustumCulled = false; group.add(mesh);
+      poseCloth();
+    }
+    function poseCloth() {
+      var w = size, h = size * aspect, nx = cloth.nx, ny = cloth.ny;
+      if (mode === 'hang') {
+        // two pins at top corners, slight sag, gentle curl in z
+        cloth.transform(function (v) { v.z = Math.sin((v.x / w + 0.5) * Math.PI) * 0.12; v.y += 0.25; });
+        cloth.pin(0, -w / 2 + 0.04, h / 2 + 0.25, 0); cloth.pin(nx - 1, w / 2 - 0.04, h / 2 + 0.25, 0);
+        var mid = Math.floor(nx / 2); cloth.pin(mid, 0, h / 2 + 0.36, 0.05);
+      } else if (mode === 'float') {
+        cloth.transform(function (v) { var x = v.x, y = v.y; v.x = x * 0.92; v.y = y * 0.92 - 0.05; v.z = Math.sin(x * 3.0) * 0.12 + Math.cos(y * 2.2) * 0.1; });
+        cloth.rest = new Float32Array(cloth.pos);
+      } else if (mode === 'drape') {
+        cloth.transform(function (v) { var x = v.x, y = v.y; var c = Math.cos(0.6), s = Math.sin(0.6); var rx = x * c - y * s, rz = x * s + y * c; v.x = rx; v.z = rz; v.y = sphereC.y + sphereR + 0.45 + Math.sin(rx * 2.0) * 0.03 + Math.cos(rz * 1.7) * 0.03; });
+      }
+    }
+    buildCloth();
+
+    // pointer interaction
+    var raycaster = new THREE.Raycaster(), ndc = new THREE.Vector2(), grabbed = -1, grabDepth = 0, lastPointer = new THREE.Vector2(), pointerVel = new THREE.Vector2(), hovering = false;
+    var dragRotate = false, rotY = opts.rotY || 0, rotTarget = rotY, lastX = 0;
+    function setNdc(e) { var r = canvas.getBoundingClientRect(); ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -(((e.clientY - r.top) / r.height) * 2 - 1)); }
+    function nearestVertex(hit) {
+      var f = hit.face, p = cloth.pos, best = f.a, bd = Infinity; [f.a, f.b, f.c].forEach(function (k) {
+        var d = hit.point.distanceTo(new THREE.Vector3(p[k * 3], p[k * 3 + 1], p[k * 3 + 2]).applyMatrix4(group.matrixWorld)); if (d < bd) { bd = d; best = k; }
+      }); return best;
+    }
+    canvas.addEventListener('pointerdown', function (e) {
+      setNdc(e); raycaster.setFromCamera(ndc, camera);
+      var hit = raycaster.intersectObject(mesh)[0];
+      if (hit) {
+        grabbed = nearestVertex(hit); grabDepth = hit.distance;
+        var lp = hit.point.clone(); group.worldToLocal(lp); cloth.pin(grabbed, lp.x, lp.y, lp.z);
+        canvas.classList.add('grabbing');
+      } else if (opts.rotate) { dragRotate = true; lastX = e.clientX; }
+      canvas.setPointerCapture(e.pointerId);
+    });
+    canvas.addEventListener('pointermove', function (e) {
+      setNdc(e); raycaster.setFromCamera(ndc, camera);
+      pointerVel.set(ndc.x - lastPointer.x, ndc.y - lastPointer.y); lastPointer.copy(ndc); hovering = true;
+      if (grabbed >= 0) {
+        var pt = raycaster.ray.at(grabDepth, new THREE.Vector3()); group.worldToLocal(pt); cloth.pin(grabbed, pt.x, pt.y, pt.z);
+      } else if (dragRotate) { rotTarget += (e.clientX - lastX) * 0.006; lastX = e.clientX; }
+      else if (mode === 'float' || mode === 'hang') {
+        // wind push near the ray
+        var p = cloth.pos, n = cloth.nx * cloth.ny, a = cloth.acc, tmp = new THREE.Vector3();
+        var strength = (mode === 'float' ? 60 : 30) * Math.min(1, pointerVel.length() * 12);
+        if (strength > 0.01) for (var k = 0; k < n; k++) {
+          tmp.set(p[k * 3], p[k * 3 + 1], p[k * 3 + 2]); group.localToWorld(tmp);
+          var d = raycaster.ray.distanceToPoint(tmp);
+          if (d < 0.45) { var f = (1 - d / 0.45) * strength; a[k * 3] += pointerVel.x * f * 40; a[k * 3 + 1] += pointerVel.y * f * 40; a[k * 3 + 2] += -f * 0.6; }
+        }
+      }
+    });
+    function release() { if (grabbed >= 0 && !isPermanentPin(grabbed)) cloth.unpin(grabbed); grabbed = -1; dragRotate = false; canvas.classList.remove('grabbing'); }
+    window.addEventListener('pointerup', release); window.addEventListener('pointercancel', release);
+    canvas.addEventListener('pointerleave', function () { hovering = false; });
+    function isPermanentPin(k) { if (mode !== 'hang') return false; return k === 0 || k === cloth.nx - 1 || k === Math.floor(cloth.nx / 2); }
+
+    function resize() {
+      var w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return;
+      renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix();
+      var narrow = w < 820;
+      camera.position.z = camDist * (narrow ? 1.35 : 1);
+      group.position.x = narrow ? 0 : (opts.offsetX || 0);
+      extras.position.x = group.position.x;
+    }
+    window.addEventListener('resize', resize); resize();
+
+    var visible = true;
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0 }).observe(canvas);
+
+    var scrollAmp = 0, mixTarget = 0, pending = null, last = performance.now();
+    var gravity = mode === 'float' ? 0 : (opts.gravity == null ? -6.5 : opts.gravity);
+    var windBase = new THREE.Vector3().fromArray(opts.wind || (mode === 'hang' ? [1.2, 0.1, 0.9] : [0, 0, 0]));
+    var normals = null;
+
+    function collideSphere(p, n) {
+      var cx = sphereC.x, cy = sphereC.y, cz = sphereC.z, R = sphereR + 0.012, q = cloth.prev;
+      for (var k = 0; k < n; k++) {
+        var i = k * 3, dx = p[i] - cx, dy = p[i + 1] - cy, dz = p[i + 2] - cz, d = Math.sqrt(dx * dx + dy * dy + dz * dz);
+        if (d < R) {
+          var f = R / d; p[i] = cx + dx * f; p[i + 1] = cy + dy * f; p[i + 2] = cz + dz * f;
+          // friction: bleed off tangential velocity
+          q[i] = p[i] + (q[i] - p[i]) * 0.25; q[i + 1] = p[i + 1] + (q[i + 1] - p[i + 1]) * 0.25; q[i + 2] = p[i + 2] + (q[i + 2] - p[i + 2]) * 0.25;
+        }
+      }
+    }
+
+    function simulate(dt) {
+      time += dt;
+      var n = cloth.nx * cloth.ny, a = cloth.acc, p = cloth.pos;
+      normals = geo.attributes.normal.array;
+      var gust = 0.65 + 0.35 * Math.sin(time * 0.6) + 0.25 * Math.sin(time * 1.7 + 1.3);
+      if (reduced) gust *= 0.3;
+      for (var k = 0; k < n; k++) {
+        var i = k * 3;
+        a[i + 1] += gravity;
+        if (mode === 'hang') {
+          var wx = windBase.x * gust * (0.6 + 0.4 * Math.sin(p[i + 1] * 2.5 + time * 2.0)), wz = windBase.z * gust * (0.5 + 0.5 * Math.sin(p[i] * 3.0 - time * 1.4));
+          var facing = Math.abs(normals[i] * wx + normals[i + 2] * wz) / (Math.hypot(wx, wz) || 1);
+          a[i] += wx * (0.4 + 0.6 * facing) * 2.2; a[i + 2] += wz * (0.4 + 0.6 * facing) * 2.2;
+        } else if (mode === 'float') {
+          var x = p[i], y = p[i + 1], z = p[i + 2];
+          var t = time * 0.5;
+          var fx = Math.sin(y * 2.1 + t) * Math.cos(z * 1.7 - t * 0.7), fy = Math.sin(z * 2.3 - t * 1.1) * Math.cos(x * 1.9 + t * 0.6), fz = Math.sin(x * 2.0 + t * 0.8) * Math.cos(y * 2.4 - t);
+          var amp = (reduced ? 0.3 : 0.9) * (1 + scrollAmp * 2.5);
+          var r = cloth.rest, ks = 3.2;
+          a[i] += fx * amp + (r[i] - x) * ks; a[i + 1] += fy * amp + (r[i + 1] - y) * ks; a[i + 2] += fz * amp + (r[i + 2] - z) * ks;
+        }
+      }
+      var damping = mode === 'float' ? 0.965 : 0.985;
+      cloth.step(dt, damping, mode === 'drape' ? 7 : 5, mode === 'drape' ? collideSphere : null);
+      geo.computeVertexNormals();
+    }
+    function frame(now) {
+      requestAnimationFrame(frame);
+      var real = Math.min(0.1, (now - last) / 1000); last = now;
+      if (!visible) return;
+      var dt = real;
+      var steps = Math.max(1, Math.min(4, Math.round(real / 0.0167)));
+      for (var st = 0; st < steps; st++) simulate(Math.min(0.02, real / steps));
+      uniforms.uTime.value = time;
+      geo.attributes.position.needsUpdate = true; geo.attributes.normal.needsUpdate = true; cloth.computeTangents(); geo.attributes.tangent.needsUpdate = true;
+
+      rotY += (rotTarget - rotY) * 0.08;
+      flipT += (flipTarget - flipT) * 0.06;
+      var idle = reduced ? 0 : Math.sin(time * 0.3) * (opts.idleSway == null ? 0.12 : opts.idleSway);
+      group.rotation.y = rotY + idle + flipT;
+      extras.rotation.y = rotY + idle;
+      group.rotation.x = (opts.tiltX || 0) + scrollAmp * (opts.scrollTilt == null ? 0.3 : opts.scrollTilt);
+      extras.rotation.x = group.rotation.x;
+      group.position.y = (opts.offsetY || 0) + scrollAmp * (opts.scrollLift == null ? 0.6 : opts.scrollLift);
+      extras.position.y = group.position.y;
+
+      if (uniforms.uMix.value < mixTarget) {
+        uniforms.uMix.value = Math.min(1, uniforms.uMix.value + dt * 1.6);
+        if (uniforms.uMix.value >= 1 && pending) { uniforms.uFront.value = pending.f; uniforms.uBack.value = pending.b; uniforms.uMix.value = 0; mixTarget = 0; pending = null; }
+      }
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(frame);
+
+    return {
+      setTextures: function (front, back) {
+        var f = tex(front), b = tex(back);
+        if (pending) { uniforms.uFront.value = pending.f; uniforms.uBack.value = pending.b; }
+        uniforms.uNextFront.value = f; uniforms.uNextBack.value = b; uniforms.uMix.value = 0; mixTarget = 1; pending = { f: f, b: b };
+      },
+      setScale: function (s) { size = (opts.size || 1.6) * s; buildCloth(); },
+      reset: function () { buildCloth(); },
+      flip: function () { flipTarget += Math.PI; },
+      setScroll: function (v) { scrollAmp = Math.max(0, Math.min(1, v)); },
+      setWind: function (x, y, z) { windBase.set(x, y, z); },
+      setLook: function (o) { if (o.gloss != null) uniforms.uGloss.value = o.gloss; if (o.aniso != null) uniforms.uAniso.value = o.aniso; if (o.weaveScale != null) uniforms.uWeaveScale.value = o.weaveScale; if (o.env != null) uniforms.uEnvStrength.value = o.env; },
+      uniforms: uniforms
+    };
+  }
+
+  // Ribbon (twilly) along an animated curve
+  function createRibbon(opts) {
+    if (!window.THREE) return null;
+    var canvas = opts.canvas, renderer;
+    try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true }); } catch (e) { return null; }
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    var scene = new THREE.Scene(), camera = new THREE.PerspectiveCamera(30, 1, 0.1, 50); camera.position.set(0, 0, 6);
+    var loader = new THREE.TextureLoader();
+    var t = loader.load(opts.texPath + opts.texture + '.jpg'); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    var weave = makeWeaveNormalMap(256);
+    var uniforms = {
+      uFront: { value: t }, uBack: { value: t }, uNextFront: { value: t }, uNextBack: { value: t }, uMix: { value: 0 },
+      uWeave: { value: weave }, uWeaveRepeat: { value: 8 }, uWeaveScale: { value: 0.3 }, uGloss: { value: 0.22 }, uAniso: { value: 0.9 }, uEnvStrength: { value: 0.22 }, uTime: { value: 0 },
+      uLight: { value: new THREE.Vector3(0.4, 0.8, 1).normalize() }, uEnvTop: { value: new THREE.Color(opts.envTop || '#ffffff') }, uEnvBottom: { value: new THREE.Color(opts.envBottom || '#3a3646') },
+      uEnvTint: { value: new THREE.Color('#ffffff') }, uSheen: { value: new THREE.Color(opts.sheen || '#F2B705') }
+    };
+    var material = new THREE.ShaderMaterial({ uniforms: uniforms, vertexShader: VERT, fragmentShader: FRAG, side: THREE.DoubleSide });
+    var SEG = 260, W = opts.width || 0.34;
+    var pos = new Float32Array((SEG + 1) * 2 * 3), uv = new Float32Array((SEG + 1) * 2 * 2), tan = new Float32Array((SEG + 1) * 2 * 3), idx = [];
+    for (var i = 0; i < SEG; i++) { var a = i * 2; idx.push(a, a + 1, a + 2, a + 1, a + 3, a + 2); }
+    for (var i2 = 0; i2 <= SEG; i2++) { var u = i2 / SEG; uv[(i2 * 2) * 2] = u * (opts.repeat || 5); uv[(i2 * 2) * 2 + 1] = 0; uv[(i2 * 2 + 1) * 2] = u * (opts.repeat || 5); uv[(i2 * 2 + 1) * 2 + 1] = 1; }
+    var geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3)); geo.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); geo.setAttribute('tangent', new THREE.BufferAttribute(tan, 3)); geo.setIndex(idx);
+    var mesh = new THREE.Mesh(geo, material); mesh.frustumCulled = false; scene.add(mesh);
+    var pts = [], N = 7; for (var k = 0; k < N; k++) pts.push(new THREE.Vector3());
+    var curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal', 0.5);
+    var time = 0, last = performance.now(), visible = true, mouse = new THREE.Vector2(0, 0), mouseT = new THREE.Vector2(0, 0);
+    if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0 }).observe(canvas);
+    canvas.addEventListener('pointermove', function (e) { var r = canvas.getBoundingClientRect(); mouseT.set(((e.clientX - r.left) / r.width) * 2 - 1, -(((e.clientY - r.top) / r.height) * 2 - 1)); });
+    canvas.addEventListener('pointerleave', function () { mouseT.set(0, 0); });
+    function resize() { var w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); camera.position.z = w < 820 ? 8.5 : 6; }
+    window.addEventListener('resize', resize); resize();
+    var P = new THREE.Vector3(), T = new THREE.Vector3(), Nn = new THREE.Vector3(), B = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0);
+    function frame(now) {
+      requestAnimationFrame(frame); var dt = Math.min(0.033, (now - last) / 1000); last = now; if (!visible) return;
+      time += dt; mouse.lerp(mouseT, 0.05);
+      for (var k = 0; k < N; k++) {
+        var s = k / (N - 1), x = (s - 0.5) * 7.2;
+        pts[k].set(x + Math.sin(time * 0.5 + k) * 0.15, Math.sin(s * 5.2 + time * 0.9) * 0.55 + Math.sin(s * 2.0 - time * 0.5) * 0.35 + mouse.y * 0.6 * Math.sin(s * Math.PI), Math.cos(s * 4.0 + time * 0.7) * 0.5 + mouse.x * 0.5 * Math.sin(s * Math.PI));
+      }
+      for (var i = 0; i <= SEG; i++) {
+        var u = i / SEG; curve.getPoint(u, P); curve.getTangent(u, T).normalize();
+        // twist along the ribbon
+        var twist = u * Math.PI * 2.2 + time * 0.6;
+        Nn.copy(up).cross(T).normalize(); if (Nn.lengthSq() < 1e-4) Nn.set(1, 0, 0); B.copy(T).cross(Nn).normalize();
+        var cx = Math.cos(twist), sx = Math.sin(twist);
+        var side = new THREE.Vector3().copy(Nn).multiplyScalar(cx).addScaledVector(B, sx).multiplyScalar(W / 2);
+        var o = i * 2 * 3;
+        pos[o] = P.x - side.x; pos[o + 1] = P.y - side.y; pos[o + 2] = P.z - side.z;
+        pos[o + 3] = P.x + side.x; pos[o + 4] = P.y + side.y; pos[o + 5] = P.z + side.z;
+        tan[o] = T.x; tan[o + 1] = T.y; tan[o + 2] = T.z; tan[o + 3] = T.x; tan[o + 4] = T.y; tan[o + 5] = T.z;
+      }
+      geo.attributes.position.needsUpdate = true; geo.attributes.tangent.needsUpdate = true; geo.computeVertexNormals();
+      mesh.rotation.z = -0.12; uniforms.uTime.value = time;
+      renderer.render(scene, camera);
+    }
+    requestAnimationFrame(frame);
+    return { setTexture: function (id) { var nt = loader.load(opts.texPath + id + '.jpg'); nt.wrapS = nt.wrapT = THREE.RepeatWrapping; uniforms.uFront.value = nt; uniforms.uBack.value = nt; uniforms.uNextFront.value = nt; uniforms.uNextBack.value = nt; } };
+  }
+
+  return { create: create, createRibbon: createRibbon };
+})();
+
+</script>
+<script>
+(function () {
+  var silk = window.SilkEngine && SilkEngine.create({ canvas: document.getElementById('silk'), texPath: 'tex/', front: 'kolo-sontsia', back: 'kolo-sontsia', mode: 'drape', size: 1.9, resolution: 38, camDist: 6.0, camY: -0.15, sphereRadius: 0.48, sphereY: 0.15, formColor: '#CFC8BF', rotate: true, rotY: 0.2, gravity: -7, envTop: '#FFFFFF', envBottom: '#9A938A', envTint: '#FFF6DD', gloss: 0.34, aniso: 0.9, envStrength: 0.45, weaveScale: 0.4, idleSway: 0.1 });
+  if (!silk) { document.getElementById('silk').hidden = true; document.getElementById('mainImg').hidden = false; }
+  window.__silk = silk;
+})();
+</script>
+<script>
+(function () {
+  var SIZES = [{"s": "44 × 44", "one": 1600, "two": null}, {"s": "65 × 65", "one": 3200, "two": null}, {"s": "88 × 88", "one": 4400, "two": null}], SALE = {}, side = 'one', cur = 2;
+  var priceEl = document.getElementById('price'), oldEl = document.getElementById('old'), partEl = document.getElementById('part'), upsell = document.getElementById('upsell'), sp = document.getElementById('stickyPrice'), ss = document.getElementById('stickySize');
+  function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' грн'; }
+  function render() {
+    var s = SIZES[cur], base = side === 'two' && s.two ? s.two : s.one, sale = side === 'one' && SALE[s.s] ? SALE[s.s] : null;
+    var final = sale || base;
+    priceEl.textContent = fmt(final); oldEl.hidden = !sale; oldEl.textContent = fmt(base);
+    partEl.textContent = 'або 4 × ' + fmt(Math.round(final / 4)) + ' частинами';
+    upsell.hidden = !(final + 700 >= 5000 && final < 5000);
+    sp.textContent = fmt(final); ss.textContent = s.s;
+    document.querySelectorAll('#size button').forEach(function (b, i) { b.setAttribute('aria-pressed', i === cur ? 'true' : 'false'); b.querySelector('small').textContent = fmt(side === 'two' && SIZES[i].two ? SIZES[i].two : SIZES[i].one); b.disabled = side === 'two' && !SIZES[i].two; b.style.opacity = b.disabled ? .4 : 1; });
+  }
+  document.querySelectorAll('#size button').forEach(function (b) { b.addEventListener('click', function () { cur = +b.dataset.i; render(); }); });
+  var sideEl = document.getElementById('side');
+  if (sideEl) sideEl.querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () { side = b.dataset.v; sideEl.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }); if (side === 'two' && !SIZES[cur].two) cur = 1; render(); if (window.__silk && side === 'two') window.__silk.flip(); }); });
+  render();
+  var mainImg = document.getElementById('mainImg'), canvas = document.getElementById('silk');
+  document.querySelectorAll('#thumbs button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('#thumbs button').forEach(function (x) { x.setAttribute('aria-current', x === b ? 'true' : 'false'); });
+      var i = +b.dataset.i;
+      if (i < 0) { if (canvas) canvas.hidden = false; mainImg.hidden = true; }
+      else { if (canvas) canvas.hidden = true; mainImg.hidden = false; mainImg.src = b.querySelector('img').src; }
+    });
+  });
+})();
+</script>

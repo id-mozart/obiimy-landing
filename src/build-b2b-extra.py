@@ -201,7 +201,7 @@ def speakers():
     <div class="stagebar">
       <figure>{img("photo/paris-blazer.jpg", "Шовкова хустка на жакеті спікерки", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Спікерка</b><span>Твіллі або паше — вручають на сцені</span></figcaption></figure>
       <figure>{img("photo/paris-green.jpg", "Зелена шовкова хустка на шиї", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Модераторка</b><span>Той самий принт — дрес-код сцени</span></figcaption></figure>
-      <figure>{img("photo/vyr-1.webp", "Шовкова хустка на білому пальті", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Гостя</b><span>Хустка 44 або твіллі — у welcome-box</span></figcaption></figure>
+      <figure>{img("photo/paris-bun.jpg", "Твіллі у волоссі", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Гостя</b><span>Хустка 44 або твіллі — у welcome-box</span></figcaption></figure>
       <figure>{img("photo/kolo-3.webp", "Хустка на плечах поверх пальта", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Партнер події</b><span>Набір або хустка 65 × 65</span></figcaption></figure>
     </div>
     <p class="note">Один принт на всіх, хто на сцені, — і фото події виглядають як задумано.</p>

@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Generate one example product page per landing version. Output: ../p-<skin>.html"""
-import json, pathlib
+import json, pathlib, sys
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from imgs import img, typo
 
 ROOT = pathlib.Path(__file__).resolve().parent
 OUT = ROOT.parent
@@ -69,12 +71,59 @@ PRODUCTS = {
         "url": "https://obiimy.world/spivocha-dusha/", "sku": "44-27",
     },
 }
+PRODUCTS.update({
+    "twilly": {
+        "kind": "Твіллі", "name": "Золоте світло", "collection": "Твіллі", "state": "Про найменшу річ, яку помічають першою",
+        "story": "Шовкова стрічка 84 × 5 см. На ручку сумки, у волосся, на зап’ястя або як пояс. Монограма на золотистому — принт, який працює і з чорним пальтом, і з білою сорочкою.",
+        "quote": "Один рух — і образ зібраний.",
+        "tex": "kolo-sontsia", "back": None, "backname": None, "double": False,
+        "photos": ["img/twilly-zolote.webp", "photo/box-gold.jpg", "photo/paris-bag.jpg", "photo/paris-bun.jpg"], "contain": True,
+        "sizes": [("84 × 5", 1600, None)], "default": 0, "sale": {},
+        "specs": [("84 × 5", "Довжина і ширина стрічки", "1 600 грн"), ("100%", "Італійський шовк, обробка вручну", "0–2,5 см похибка"), ("3", "Способи: сумка, волосся, зап’ястя", "у коробці"), ("Набір", "Твіллі + резинка «Пристрасть»", "2 200 грн")],
+        "wear": [("У наборі «Золоте світло»", "photo/box-gold.jpg"), ("На сумці · інший принт колекції", "photo/paris-bag.jpg"), ("У волоссі · інший принт колекції", "photo/paris-bun.jpg")],
+        "url": "https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/", "sku": "84-35", "story_img": "photo/paris-belt.jpg",
+    },
+    "mask": {
+        "kind": "Маска для сну", "name": "Впевненість", "collection": "Шовк для сну", "state": "Про ранок, який починається з відпочинку",
+        "story": "Маска зі 100% італійського шовку з авторським принтом. Шовк приємно прохолодний на дотик, м’яко прилягає і не залишає слідів на шкірі зранку. Гумка не тисне — маска тримається, але її не відчуваєш.",
+        "quote": "Повна темрява — половина гарного сну.",
+        "tex": "prystrast", "back": None, "backname": None, "double": False,
+        "photos": ["img/mask-vpevnenist.webp", "img/set-mask.webp", "photo/turban-bath.jpg"], "contain": True,
+        "sizes": [("Один розмір", 2700, None)], "default": 0, "sale": {},
+        "specs": [("100%", "Італійський шовк, авторський принт", "2 700 грн"), ("Коробка", "Фірмова жовта, індивідуальне пакування", "готовий подарунок"), ("Гумка", "М’яка, не тисне на скроні", "ручне прання до 30 °C"), ("Набір", "Набір для сну «Піднесення»", "3 600 грн")],
+        "wear": [("Маска «Впевненість»", "img/mask-vpevnenist.webp"), ("Набір для сну", "img/set-mask.webp"), ("Інший принт · «Свобода»", "img/mask-svoboda.webp")],
+        "url": "https://obiimy.world/maska-dlia-snu-z-naturalnoho-shovku-vpevnenist/", "sku": "M-11", "story_img": "photo/turban-bath.jpg",
+    },
+    "set": {
+        "kind": "Подарунковий набір", "name": "Натхнення", "collection": "Подарункові набори", "state": "Про подарунок, який відчувається на дотик",
+        "story": "Твіллі 84 × 5 і хустка 44 × 44 в одному принті, у фірмовій жовтій коробці з тонким папером. Набір складається сам — нічого не треба підбирати. Підпис на подарунок за вашим текстом, відправка того ж дня.",
+        "quote": "Кожна коробочка — це обійми, що нагадують: ти варта краси.",
+        "tex": "probudzhennia", "back": None, "backname": None, "double": False,
+        "photos": ["img/set-natkhnennia.webp", "photo/box-red.jpg", "photo/box-dots.jpg", "photo/box-green.jpg"],
+        "sizes": [("Твіллі + хустка", 3200, None)], "default": 0, "sale": {},
+        "specs": [("84 × 5", "Твіллі у наборі", "1 600 грн окремо"), ("44 × 44", "Хустка паше у наборі", "1 600 грн окремо"), ("Коробка", "Жовта фірмова, тонкий папір, листівка", "індивідуальне пакування"), ("Три твіллі", "Набір із трьох стрічок в одній коробці", "4 800 грн")],
+        "wear": [("Іриси на червоному", "photo/box-red.jpg"), ("Горох", "photo/box-dots.jpg"), ("Іриси на зеленому", "photo/box-green.jpg")],
+        "url": "https://obiimy.world/nabir-tvilli-845-ta-khustky-4444-natkhnennia/", "sku": "NT84-44-21", "story_img": "photo/box-green.jpg",
+    },
+    "scrunchie": {
+        "kind": "Резинка для волосся", "name": "Енергія", "collection": "Резинки", "state": "Про волосся, яке не ламається",
+        "story": "Шовкова резинка бережно тримає волосся і не залишає заломів. Хвіст, пучок або просто на зап’ясті — як браслет. Пакується у фірмову жовту коробочку: найменший подарунок Obiimy.",
+        "quote": "Бережно до волосся — щодня.",
+        "tex": "mizh-namy", "back": None, "backname": None, "double": False,
+        "photos": ["img/scrunchie-energiia.webp", "photo/scrunchie.jpg", "img/scrunchie-pole.webp"], "contain": True,
+        "sizes": [("Один розмір", 700, None)], "default": 0, "sale": {},
+        "specs": [("100%", "Італійський шовк", "700 грн"), ("Коробка", "Фірмова жовта коробочка", "готовий подарунок"), ("Догляд", "Ручне прання до 30 °C", "сушити в тіні"), ("Набір", "Твіллі + резинка «Пристрасть»", "2 200 грн")],
+        "wear": [("«Енергія»", "img/scrunchie-energiia.webp"), ("У коробочці · горох", "photo/scrunchie.jpg"), ("Інший принт · «Літнє поле»", "img/scrunchie-pole.webp")],
+        "url": "https://obiimy.world/rezynky/", "sku": "R-6", "story_img": "photo/paris-bun.jpg",
+    },
+})
 REVIEW = ("Замовляла на подарунок хустку, якість неймовірна, подруга теж задоволена! Вирішила замовити собі твіллі — не можу нарадуватись, кожного дня хочеться додавати в образ.", "Анна Мелешак · відгук на obiimy.world")
 RELATED = [
     ("Хустка «Єднання»", "44 × 44 · двосторонній", "2 400 грн", "img/yednannia.webp", "https://obiimy.world/spivocha-dusha/"),
     ("Твіллі «Золоте світло»", "84 × 5", "1 600 грн", "img/twilly-zolote.webp", "https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/"),
     ("Маска для сну «Впевненість»", "італійський шовк", "2 700 грн", "img/mask-vpevnenist.webp", "https://obiimy.world/maska-dlia-snu-z-naturalnoho-shovku-vpevnenist/"),
     ("Набір «Натхнення»", "твіллі + хустка", "3 200 грн", "img/set-natkhnennia.webp", "https://obiimy.world/nabir-tvilli-845-ta-khustky-4444-natkhnennia/"),
+    ("Резинка «Енергія»", "італійський шовк", "700 грн", "img/scrunchie-energiia.webp", "https://obiimy.world/rezynky/"),
 ]
 
 # ---------- skins ----------
@@ -150,6 +199,11 @@ BASE_CSS = """
   .gallery { display: grid; gap: 12px; position: sticky; top: 88px; }
   .main { aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius); background: var(--bg2); position: relative; }
   .main img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
+  .main.contain img { object-fit: contain; background: #F4F2EE; padding: 6%; }
+  .variant { font-family: var(--display); font-size: 1.15rem; margin-top: 6px; }
+  .variant small { font-family: var(--body); color: var(--ink3); font-size: .85rem; margin-left: 8px; }
+  .dark .size button[aria-pressed="true"] small { color: #17151A; }
+  [id] { scroll-margin-top: 84px; }
   .main canvas { width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; }
   .main canvas.grabbing { cursor: grabbing; }
   .main .hint { position: absolute; left: 14px; bottom: 14px; font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink3); background: color-mix(in srgb, var(--bg) 70%, transparent); padding: 6px 10px; backdrop-filter: blur(6px); pointer-events: none; }
@@ -167,6 +221,9 @@ BASE_CSS = """
   .part { font-size: .82rem; color: var(--ink3); }
   .label { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink3); font-weight: 600; display: flex; justify-content: space-between; }
   .size { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+  .size.single { grid-template-columns: minmax(0, max-content); }
+  .size button b { white-space: nowrap; }
+  [hidden] { display: none !important; }
   .size button { all: unset; cursor: pointer; display: grid; gap: 2px; padding: 12px 14px; border: 1px solid var(--line); border-radius: var(--radius); text-align: center; }
   .size button b { font-family: var(--display); font-weight: 400; font-size: 1.15rem; }
   .size button small { font-size: .74rem; color: var(--ink3); }
@@ -181,6 +238,7 @@ BASE_CSS = """
   .ship span { display: flex; gap: 10px; align-items: baseline; }
   .ship span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex: none; transform: translateY(-2px); }
   .acc details { border-top: 1px solid var(--line); }
+  .acc summary { min-height: 48px; }
   .acc details:last-child { border-bottom: 1px solid var(--line); }
   .acc summary { cursor: pointer; list-style: none; display: flex; justify-content: space-between; align-items: center; padding: 14px 0; font-family: var(--display); font-size: 1.1rem; }
   .acc summary::-webkit-details-marker { display: none; }
@@ -238,17 +296,23 @@ BASE_CSS = """
   footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; }
   footer a { text-decoration: none; color: var(--ink2); }
   @media (min-width: 861px) { footer { padding-bottom: 26px; } }
-  .sticky { display: none; }
+  .sticky { display: none; transform: translateY(calc(100% + 24px)); transition: transform .25s ease; }
+  .sticky.on { transform: none; }
   @media (max-width: 860px) { .sticky { display: grid; grid-template-columns: 1fr auto; gap: 10px; position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 60; background: rgba(23,21,25,.92); backdrop-filter: blur(10px); border-radius: 999px; padding: 8px 8px 8px 18px; color: #fff; align-items: center; } .sticky .t { font-size: .8rem; line-height: 1.25; } .sticky .t b { display: block; font-weight: 600; } .sticky a { background: var(--gold); color: #17151A; text-decoration: none; font-weight: 600; font-size: .82rem; padding: 11px 16px; border-radius: 999px; white-space: nowrap; } }
 """
 
 def price(n): return f"{n:,}".replace(",", " ") + " грн"
 
-def build(skin_key, skin):
-    p = PRODUCTS[skin["product"]]
+def build(skin_key, skin, product_key=None, suffix=""):
+    p = PRODUCTS[product_key or skin["product"]]
     dark = skin["dark"]
     logo = "brand/logo-white.png" if dark else "brand/logo-ink.png"
-    viewer = skin["viewer"]
+    viewer = skin["viewer"] if "kind" not in p else "photos"
+    kind = p.get("kind", "Шовкова хустка")
+    cat_name, cat_url = {"Твіллі": ("Твіллі", "https://obiimy.world/tvilli/"), "Маска для сну": ("Маски для сну", "https://obiimy.world/masky-dlia-snu/"), "Подарунковий набір": ("Подарункові набори", "https://obiimy.world/podarunkovi-nabory/"), "Резинка для волосся": ("Резинки", "https://obiimy.world/rezynky/")}.get(kind, ("Хустки", "https://obiimy.world/khustky/"))
+    story_img = p.get("story_img", f'tex/{p["tex"]}.jpg')
+    story_title = "Історія принту" if "kind" not in p else "Історія речі"
+    single = len(p["sizes"]) == 1
     sizes_js = json.dumps([{"s": s, "one": one, "two": two} for s, one, two in p["sizes"]], ensure_ascii=False)
     sale_js = json.dumps(p["sale"], ensure_ascii=False)
     # gallery
@@ -257,13 +321,18 @@ def build(skin_key, skin):
         thumbs += '<button type="button" class="viewer" data-i="-1" aria-current="true">3D<br>шовк</button>'
     for i, ph in enumerate(p["photos"]):
         cur = "true" if (viewer == "photos" and i == 0) else "false"
-        thumbs += f'<button type="button" data-i="{i}" aria-current="{cur}"><img src="{ph}" alt=""></button>'
+        thumbs += f'<button type="button" data-i="{i}" aria-current="{cur}" aria-label="Фото {i + 1} з {len(p["photos"])}">{img(ph, "", sizes="84px")}</button>'
     main_first = p["photos"][0]
     canvas = '<canvas id="silk" aria-label="Тривимірна хустка з цим принтом. Потягніть за тканину."></canvas><span class="hint">Потягніть за тканину</span>' if viewer != "photos" else ""
-    main = f'<div class="main" id="main">{canvas}<img id="mainImg" src="{main_first}" alt="Хустка «{p["name"]}»" {"hidden" if viewer != "photos" else ""}></div>'
+    main_alt = f"{kind} «{p['name']}»"
+    main_extra = 'id="mainImg"' + (" hidden" if viewer != "photos" else "")
+    main_img = img(main_first, main_alt, sizes="(max-width: 960px) 100vw, 58vw", lazy=False, eager_priority=True, extra=main_extra)
+    main = f'<div class="main{" contain" if p.get("contain") else ""}" id="main">{canvas}{main_img}</div>'
     size_buttons = "".join(
         f'<button type="button" data-i="{i}" aria-pressed="{"true" if i == p["default"] else "false"}"><b class="num">{s}</b><small class="num">{price(one)}</small></button>'
         for i, (s, one, two) in enumerate(p["sizes"]))
+    if len(p["sizes"]) == 1:
+        size_buttons = f'<p class="variant"><span class="num">{p["sizes"][0][0]}</span><small class="num">{price(p["sizes"][0][1])}</small></p>' 
     toggle = ('<div><p class="label">Друк</p><div class="toggle" id="side" style="margin-top:8px"><button type="button" data-v="one" aria-pressed="true">Односторонній</button>'
               '<button type="button" data-v="two" aria-pressed="false">Двосторонній · зворот «' + p["backname"] + '»</button></div></div>') if p["double"] else ""
     d0 = p["sizes"][p["default"]]
@@ -274,8 +343,8 @@ def build(skin_key, skin):
     <div><p class="eyebrow">Двосторонній друк</p><h2 style="margin-top:10px">Один вузол. Два образи.</h2><p class="story" style="display:block;color:var(--ink2);margin-top:14px;max-width:32em">Друк на обох боках шовку: лицем — «{p["name"]}», зворотом — «{p["backname"]}». Перевернули хустку — і на плечах уже інший принт. Двосторонні хустки 44 × 44 від 2 400 грн, 65 × 65 від 4 800 грн.</p></div>
     <div class="two"><figure class="f"><img src="tex/{p["tex"]}.jpg" alt="Лице"><figcaption>Лице</figcaption></figure><figure class="b"><img src="tex/{p["back"]}.jpg" alt="Зворот"><figcaption>Зворот</figcaption></figure></div>
   </div></section>'''
-    wear = "".join(f'<figure><div class="ph"><img src="{src}" alt="{cap}" loading="lazy"></div><figcaption>{cap}</figcaption></figure>' for cap, src in p["wear"])
-    related = "".join(f'<a class="rel" href="{u}"><div class="ph"><img src="{im}" alt="" loading="lazy"></div><b>{n}</b><span>{s}</span><span class="p num">{pr}</span></a>' for n, s, pr, im, u in RELATED)
+    wear = "".join(f'<figure><div class="ph">{img(src, cap, sizes="(max-width: 640px) 100vw, 33vw")}</div><figcaption>{cap}</figcaption></figure>' for cap, src in p["wear"])
+    related = "".join(f'<a class="rel" href="{u}"><div class="ph"><img src="{im}" alt="" loading="lazy"></div><b>{n}</b><span>{s}</span><span class="p num">{pr}</span></a>' for n, s, pr, im, u in [r for r in RELATED if r[4] != p['url'] and r[0] != f'{kind} «{p["name"]}»'][:4])
     engine = ""
     if viewer != "photos":
         opts = {
@@ -296,15 +365,20 @@ def build(skin_key, skin):
   window.__silk = silk;
 }})();
 </script>'''
+    default_specs = [("44 × 44", "Паше: на сумку, зап’ястя, у кишеню", "від 1 600 грн"), ("65 × 65", "Класика: на шию, у волосся, на пояс", "від 3 200 грн"), ("88 × 88", "Шаль: на плечі, як топ, тюрбан", "від 4 400 грн"), ("2D", "Двосторонній друк: два принти на одній хустці", "від 2 400 грн")]
+    specs = "".join(f'<div><b class="num">{a_}</b><span>{b_}</span><span class="{"num" if any(ch.isdigit() for ch in c_) else ""}">{c_}</span></div>' for a_, b_, c_ in p.get("specs", default_specs))
+    sizes_title = "Розміри" if "kind" not in p else "Деталі"
+    sizes_h2 = "Один принт, три способи носити" if "kind" not in p else "Що всередині"
     html = f'''<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>{skin["title"]} · {p["name"]}</title>
-<meta name="description" content="Шовкова хустка «{p["name"]}» Obiimy: 100% італійський шовк, авторський принт, {d0[0]} см, {price(d0[1])}. Відправка того ж дня, оплата частинами.">
+<title>{kind} «{p["name"]}» — Obiimy</title>
+<meta name="description" content="{kind} «{p["name"]}» Obiimy: 100% італійський шовк, авторський принт{(", " + d0[0] + " см") if d0[0][0].isdigit() else ""}, {price(p["sale"].get(d0[0], d0[1]))}. Відправка того ж дня, оплата частинами.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={skin["fonts"]}&display=swap">
 <style>
   {skin["css"]}
+  :root {{ --ink3: {"#A9A3B3" if dark else "#66626D"}; }}
   :root {{ --display: {skin["display"]}; --body: {skin["body"]}; color-scheme: {"dark" if dark else "light"}; }}
 {BASE_CSS}
 </style>
@@ -312,12 +386,12 @@ def build(skin_key, skin):
 <div class="bar">Замовлення до 16:00 відправляємо того ж дня · Безкоштовна доставка від 5 000 грн · Оплата частинами</div>
 <header class="nav"><div class="wrap">
   <a class="logo" href="{skin["landing"]}" aria-label="Obiimy"><img src="{logo}" alt="Obiimy"></a>
-  <nav class="nav-links"><a href="{skin["landing"]}">Лендинг</a><a href="https://obiimy.world/khustky/">Хустки</a><a href="https://obiimy.world/tvilli/">Твіллі</a><a href="https://obiimy.world/podarunkovi-nabory/">Подарунки</a></nav>
+  <nav class="nav-links"><a href="{skin["landing"]}">Головна</a><a href="https://obiimy.world/khustky/">Хустки</a><a href="https://obiimy.world/tvilli/">Твіллі</a><a href="https://obiimy.world/podarunkovi-nabory/">Подарунки</a></nav>
   <a class="btn btn-gold" style="padding:10px 16px;font-size:.8rem" href="https://obiimy.world/khustky/">Каталог</a>
 </div></header>
 
 <main>
-  <div class="wrap"><nav class="crumbs"><a href="{skin["landing"]}">Obiimy</a><span>/</span><a href="https://obiimy.world/khustky/">Хустки</a><span>/</span><span>«{p["name"]}»</span></nav></div>
+  <div class="wrap"><nav class="crumbs" aria-label="Хлібні крихти"><a href="{skin["landing"]}">Obiimy</a><span>/</span><a href="{cat_url}">{cat_name}</a><span>/</span><span>{kind} «{p["name"]}»</span></nav></div>
   <section class="product">
     <div class="wrap">
       <div class="gallery">
@@ -325,15 +399,15 @@ def build(skin_key, skin):
         <div class="thumbs" id="thumbs">{thumbs}</div>
       </div>
       <div class="info">
-        <div><p class="eyebrow">Колекція «{p["collection"]}» · арт. {p["sku"]}</p><h1>Шовкова хустка «{p["name"]}»</h1><p class="state">{p["state"]}</p></div>
+        <div><p class="eyebrow">{"Колекція «" + p["collection"] + "»" if "kind" not in p else p["collection"]} · арт. {p["sku"]}</p><h1>{kind} «{p["name"]}»</h1><p class="state">{p["state"]}</p></div>
         <div class="pricebox"><span class="price num" id="price">{price(p["sale"].get(d0[0], d0[1]))}</span><span class="old num" id="old" {"" if d0[0] in p["sale"] else "hidden"}>{price(d0[1])}</span><span class="part num" id="part"></span></div>
-        <div><p class="label"><span>Розмір</span><a href="#sizes" style="font-weight:500;letter-spacing:0;text-transform:none">Який обрати?</a></p><div class="size" id="size" style="margin-top:8px">{size_buttons}</div></div>
+        <div><p class="label"><span>{"Розмір" if "kind" not in p else "Варіант"}</span>{"" if single else '<a href="#sizes" style="font-weight:500;letter-spacing:0;text-transform:none">Який обрати?</a>'}</p><div class="size{" single" if single else ""}" id="size" style="margin-top:8px">{size_buttons}</div></div>
         {toggle}
-        <div class="buy"><a class="btn btn-gold" id="buy" href="{p["url"]}">Купити</a><a class="btn btn-line" href="{p["url"]}">У бажання</a></div>
+        <div class="buy"><a class="btn btn-gold" id="buy" href="{p["url"]}">Купити</a><button class="btn btn-line" type="button" id="share">Поділитись</button></div>
         <div class="ship"><span>Замовлення до 16:00 — відправка того ж дня Новою поштою</span><span>Безкоштовна доставка від 5 000 грн</span><span id="upsell" hidden>+ резинка 700 грн = безкоштовна доставка</span><span>Підпис на подарунок за вашим текстом</span></div>
         <div class="acc">
-          <details open><summary>Матеріал і друк</summary><p>100% італійський шовк, високоякісний цифровий друк. Обробка вручну, тому розмір може відхилятися на 0–2,5 см. Індивідуальне пакування. Країна виробник — Україна.</p></details>
-          <details><summary>Догляд</summary><ul><li>Суха чистка або ручне прання при температурі до 30°</li><li>Не віджимати, сушити в тіні</li><li>Прасування в режимі «шовк» через тонку тканину</li></ul></details>
+          <details open><summary>Матеріал і друк</summary><p>100% італійський шовк, високоякісний цифровий друк. {"Обробка вручну, тому розмір може відхилятися на 0–2,5 см." if "kind" not in p else "Обробка вручну, тому дрібні відмінності між екземплярами — норма."} Індивідуальне пакування. Виготовлено в Україні.</p></details>
+          <details><summary>Догляд</summary><ul><li>Суха чистка або ручне прання при температурі до 30 °C</li><li>Не віджимати, сушити в тіні</li><li>Прасування в режимі «шовк» через тонку тканину</li></ul></details>
           <details><summary>Оплата і повернення</summary><p>Оплата карткою онлайн або частинами: 4 платежі від ПриватБанку чи 3 від monobank. Умови обміну та повернення — на сторінці <a href="https://obiimy.world/obmin-ta-povernennya/">Обмін та повернення</a>.</p></details>
         </div>
       </div>
@@ -341,21 +415,16 @@ def build(skin_key, skin):
   </section>
 
   <section class="block"><div class="wrap story">
-    <div><p class="eyebrow">Спершу картина</p><h2 style="margin-top:10px">Історія принту</h2><p class="txt">{p["story"]}</p><blockquote>{p["quote"]}</blockquote></div>
-    <figure><img src="tex/{p["tex"]}.jpg" alt="Принт «{p["name"]}» крупно" loading="lazy"></figure>
+    <div><p class="eyebrow">{"Спершу картина" if "kind" not in p else "Про річ"}</p><h2 style="margin-top:10px">{story_title}</h2><p class="txt">{p["story"]}</p><blockquote>{p["quote"]}</blockquote></div>
+    <figure>{img(story_img, "«" + p["name"] + "» крупно", sizes="(max-width: 960px) 100vw, 50vw")}</figure>
   </div></section>
   {pair}
   <section class="block" id="sizes"><div class="wrap">
-    <div class="head"><p class="eyebrow">Розміри</p><h2>Один принт, три способи носити</h2></div>
-    <div class="specs">
-      <div><b class="num">44 × 44</b><span>Паше: на сумку, зап’ястя, у кишеню</span><span class="num">від 1 600 грн</span></div>
-      <div><b class="num">65 × 65</b><span>Класика: на шию, у волосся, на пояс</span><span class="num">від 3 200 грн</span></div>
-      <div><b class="num">88 × 88</b><span>Шаль: на плечі, як топ, тюрбан</span><span class="num">від 4 400 грн</span></div>
-      <div><b>2D</b><span>Двосторонній друк: два принти на одній хустці</span><span class="num">від 2 400 грн</span></div>
-    </div>
+    <div class="head"><p class="eyebrow">{sizes_title}</p><h2>{sizes_h2}</h2></div>
+    <div class="specs">{specs}</div>
   </div></section>
   <section class="block"><div class="wrap">
-    <div class="head"><p class="eyebrow">Як носити</p><h2>«{p["name"]}» у трьох образах</h2></div>
+    <div class="head"><p class="eyebrow">{"Як носити" if "kind" not in p else "Крупним планом"}</p><h2>{"«" + p["name"] + "» у трьох образах" if "kind" not in p else "У трьох кадрах"}</h2></div>
     <div class="wear">{wear}</div>
   </div></section>
   <section class="block"><div class="wrap">
@@ -391,20 +460,27 @@ def build(skin_key, skin):
   var sideEl = document.getElementById('side');
   if (sideEl) sideEl.querySelectorAll('button').forEach(function (b) {{ b.addEventListener('click', function () {{ side = b.dataset.v; sideEl.querySelectorAll('button').forEach(function (x) {{ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }}); if (side === 'two' && !SIZES[cur].two) cur = 1; render(); if (window.__silk && side === 'two') window.__silk.flip(); }}); }});
   render();
+  var stick = document.querySelector('.sticky'), buy = document.getElementById('buy');
+  if (stick && buy) {{ var tick = false; var chk = function () {{ tick = false; stick.classList.toggle('on', buy.getBoundingClientRect().bottom < 0); }}; window.addEventListener('scroll', function () {{ if (!tick) {{ tick = true; requestAnimationFrame(chk); }} }}, {{ passive: true }}); chk(); }}
+  var share = document.getElementById('share');
+  if (share) share.addEventListener('click', function () {{ var d = {{ title: document.title, url: location.href }}; if (navigator.share) navigator.share(d).catch(function () {{}}); else if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(function () {{ share.textContent = 'Посилання скопійовано'; setTimeout(function () {{ share.textContent = 'Поділитись'; }}, 2000); }}); }});
   var mainImg = document.getElementById('mainImg'), canvas = document.getElementById('silk');
   document.querySelectorAll('#thumbs button').forEach(function (b) {{
     b.addEventListener('click', function () {{
       document.querySelectorAll('#thumbs button').forEach(function (x) {{ x.setAttribute('aria-current', x === b ? 'true' : 'false'); }});
       var i = +b.dataset.i;
       if (i < 0) {{ if (canvas) canvas.hidden = false; mainImg.hidden = true; }}
-      else {{ if (canvas) canvas.hidden = true; mainImg.hidden = false; mainImg.src = b.querySelector('img').src; }}
+      else {{ if (canvas) canvas.hidden = true; mainImg.hidden = false; var im = b.querySelector('img'); mainImg.srcset = im.srcset; mainImg.sizes = '(max-width: 960px) 100vw, 58vw'; mainImg.src = im.src; mainImg.alt = mainImg.alt.replace(/ · фото \d+$/, '') + ' · фото ' + (i + 1); }}
     }});
   }});
 }})();
 </script>
 '''
-    (OUT / f"p-{skin_key}.html").write_text(html)
-    print("p-" + skin_key, len(html) // 1024, "KB")
+    (OUT / f"p-{skin_key}{suffix}.html").write_text(typo(html))
+    print("p-" + skin_key + suffix, len(html) // 1024, "KB")
 
 for k, v in SKINS.items():
     build(k, v)
+EXTRA = [("maison", "twilly"), ("maison", "set"), ("journal", "twilly"), ("campaign", "mask"), ("lookbook", "set"), ("studio", "mask"), ("noir", "scrunchie"), ("form", "set"), ("art", "twilly"), ("garden", "mask"), ("classic", "scrunchie")]
+for k, pk in EXTRA:
+    build(k, SKINS[k], pk, "-" + pk)

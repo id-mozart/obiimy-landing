@@ -17,6 +17,13 @@ VERSIONS = [
     ("art",      "art.html",        "Art",       "Артова версія: 3D-хустка з реальним принтом, дев’ять станів, зали-галереї."),
     ("classic",  "index.html",      "Classic",   "Перша, класична версія: колекції, хіти, розміри у масштабі, місія, подарунки."),
 ]
+B2B = [
+    ("b2b-newyear",   "maison",   "Новий рік · корпоративні подарунки", "Подарунки для команди та партнерів: чотири бюджети від 700 до 4 800 грн, листівка від компанії, графік до свят, доставка кожному співробітнику, форма запиту."),
+    ("b2b-horeca",    "noir",     "HoReCa · уніформа",                  "Шовк у дрес-коді готелів, ресторанів, авіації, банків і салонів: шість сценаріїв, три речі для уніформи, догляд і дозамовлення, запит капсули принтів."),
+    ("b2b-wholesale", "journal",  "Опт · для магазинів",                "Obiimy на полиці бутика чи корнера: шість категорій, що отримує партнер, три формати співпраці, запит оптового прайсу."),
+    ("b2b-calendar",  "lookbook", "Календар · подарунки цілий рік",     "Річна програма корпоративних подарунків: вісім приводів від Нового року до welcome-box, бюджети, один список адрес — і відправки за графіком."),
+]
+EXTRA_PRODUCTS = {"maison": [("twilly", "твіллі"), ("set", "набір")], "journal": [("twilly", "твіллі")], "campaign": [("mask", "маска для сну")], "lookbook": [("set", "набір")], "studio": [("mask", "маска для сну")], "noir": [("scrunchie", "резинка")], "form": [("set", "набір")], "art": [("twilly", "твіллі")], "garden": [("mask", "маска для сну")], "classic": [("scrunchie", "резинка")]}
 ASSET_DIRS = ["img", "photo", "tex", "brand"]
 
 KEEP = {"", "/", "/pro-nas/", "/vidhuky/", "/oplata-i-dostavka/", "/obmin-ta-povernennya/", "/rekomendatsii-po-dohliadu/", "/en/", "/en"}
@@ -43,18 +50,27 @@ def main():
         pp = ROOT / f"p-{slug}.html"
         if pp.exists():
             (SITE / f"product-{slug}.html").write_text(wrap(pp.read_text()))
+        for suffix, _ in EXTRA_PRODUCTS.get(slug, []):
+            (SITE / f"product-{slug}-{suffix}.html").write_text(wrap((ROOT / f"p-{slug}-{suffix}.html").read_text()))
+    for slug, skin, title, desc in B2B:
+        (SITE / f"{slug}.html").write_text(wrap(relink((ROOT / f"{slug}.html").read_text(), skin)))
     # hub page
     cards = "\n".join(
         f'''      <div class="card">
         <a class="ph" href="{slug}"><img src="thumbs/{slug}.jpg" alt="{title}" loading="lazy"></a>
-        <div class="body"><span class="no">{i+1:02d}</span><h2><a href="{slug}">{title}</a></h2><p>{desc}</p><div class="links"><a class="go" href="{slug}">Відкрити лендинг →</a><a class="go sub" href="product-{slug}">Сторінка товару →</a></div></div>
+        <div class="body"><span class="no">{i+1:02d}</span><h2><a href="{slug}">{title}</a></h2><p>{desc}</p><div class="links"><a class="go" href="{slug}">Відкрити лендинг →</a><a class="go sub" href="product-{slug}">Товар: хустка →</a>{"".join(f'<a class="go sub" href="product-{slug}-{suf}">{lab} →</a>' for suf, lab in EXTRA_PRODUCTS.get(slug, []))}</div></div>
       </div>''' for i, (slug, fname, title, desc) in enumerate(VERSIONS))
+    b2b_cards = "\n".join(
+        f'''      <div class="card">
+        <a class="ph" href="{slug}"><img src="thumbs/{slug}.jpg" alt="{title}" loading="lazy"></a>
+        <div class="body"><span class="no">B2B · стиль {skin.capitalize()}</span><h2><a href="{slug}">{title}</a></h2><p>{desc}</p><div class="links"><a class="go" href="{slug}">Відкрити лендинг →</a></div></div>
+      </div>''' for slug, skin, title, desc in B2B)
     hub = f'''<!DOCTYPE html>
 <html lang="uk">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Obiimy — версії лендингу</title>
+<title>Obiimy — версії лендингу та B2B</title>
 <meta name="description" content="Десять версій преміум-лендингу для бренду шовкових хусток Obiimy.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Onest:wght@300;400;500;600&display=swap">
@@ -66,6 +82,10 @@ def main():
   header {{ display:flex; justify-content:space-between; align-items:center; gap:20px; margin-bottom:clamp(28px,4vw,56px); }}
   header img {{ height:26px; width:auto; }}
   header a {{ color:var(--ink-2); text-decoration:none; font-size:.9rem; }}
+  .grid.b2b .card:first-child {{ grid-column:auto; grid-template-columns:none; }}
+  .grid.b2b .card:first-child .ph {{ aspect-ratio:16/10; border-right:0; border-bottom:1px solid var(--line); min-height:0; }}
+  .grid.b2b .card:first-child .body {{ padding:18px 20px 22px; align-content:start; }}
+  .grid.b2b .card:first-child h2 {{ font-size:1.5rem; }}
   h1 {{ font-family:'Prata',serif; font-weight:400; font-size:clamp(2rem,4.5vw,3.6rem); margin:0 0 10px; line-height:1.05; }}
   .lede {{ color:var(--ink-2); max-width:38em; font-weight:300; font-size:1.05rem; margin:0 0 clamp(28px,4vw,56px); }}
   .grid {{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }}
@@ -98,6 +118,11 @@ def main():
   <div class="grid">
 {cards}
   </div>
+  <h1 style="margin-top:72px">Корпоративні та B2B-лендинги</h1>
+  <p class="lede">Чотири сценарії для бізнес-клієнтів у стилях основних версій: новорічні подарунки для команд, шовк для уніформи HoReCa, оптова співпраця з магазинами та річна програма подарунків. Ціни роздрібні з obiimy.world; корпоративні умови, мінімальні тиражі й терміни — пропозиція, яку має підтвердити бренд.</p>
+  <div class="grid b2b">
+{b2b_cards}
+  </div>
   <footer><span>Фото та логотип — obiimy.world.</span><span>Зроблено за допомогою Claude Code.</span></footer>
 </div>
 </body>
@@ -109,7 +134,7 @@ def main():
     thumbs = SITE / "thumbs"; thumbs.mkdir()
     if os.path.exists(chrome):
         from PIL import Image
-        for slug, *_ in VERSIONS:
+        for slug, *_ in VERSIONS + B2B:
             png = thumbs / f"{slug}.png"
             subprocess.run([chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--force-device-scale-factor=1",
                             "--window-size=1440,900", "--virtual-time-budget=9000", f"--screenshot={png}", f"file://{SITE / (slug + '.html')}"],

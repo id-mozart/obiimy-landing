@@ -134,7 +134,9 @@
   .state .s, .stores { font-size: .8rem !important; }
   .ch:not(#c5) .sticky::before { height: 72% !important; background: linear-gradient(180deg, rgba(12,9,20,0) 0%, rgba(12,9,20,.7) 38%, rgba(12,9,20,.9) 100%) !important; }
   .stores { position: relative; z-index: 2; color: var(--ink-2); text-shadow: 0 1px 12px rgba(12,9,20,.9); }
-  #c5 .sticky { align-content: end !important; padding-bottom: 14vh !important; }
+  #c5 .sticky { align-content: end !important; padding-bottom: 30vh !important; }
+  @media (max-width: 760px) { #c5 .sticky { padding-bottom: 22svh !important; } }
+  #c5 .contact, #c5 .stores { background: rgba(12,9,20,.72); -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px); padding: 8px 16px; border-radius: 999px; }
   #c5 .sticky::before { inset: -40vh 0 -40vh 0 !important; height: auto !important; background: radial-gradient(60% 50% at 50% 52%, rgba(12,9,20,.6) 0%, rgba(12,9,20,.3) 55%, rgba(12,9,20,0) 100%) !important; }
   form .hint a { display: inline-block; padding: 10px 0; margin: -10px 0; }
   .done { background: rgba(27,20,48,.72); border: 1px solid var(--line); border-radius: 4px; padding: clamp(18px, 3vw, 32px); display: grid; gap: 14px; }
@@ -222,7 +224,7 @@
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>window.OBIIMY_STATES = /*STATES*/[]; window.GARDEN_OPTS = { boxYMobile: 1.0, boxScaleMobile: 0.5, quietIntro: true, toneMap: true, bird: true, boxX: 1.35, boxY: -0.2, finalOpacity: 0.95, finalLogoY: 1.6, finalLogoScale: 0.7, finalLogoHideMobile: true, clothLift: 1.8 };</script>
+<script>window.OBIIMY_STATES = /*STATES*/[]; window.GARDEN_OPTS = { boxYMobile: 1.0, boxScaleMobile: 0.5, quietIntro: true, toneMap: true, bird: true, boxX: 1.35, boxY: -0.2, finalOpacity: 0.95, finalLogoY: 1.6, finalLogoScale: 0.7, finalLogoHideMobile: true, clothLift: 1.8, finalArcY: -2.6, finalArcYMobile: -3.4 };</script>
 <script>/*ENGINE*/</script>
 <script>
 (function () {

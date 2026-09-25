@@ -1,0 +1,176 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Obiimy Garden</title>
+<meta name="description" content="Мега-арт версия лендинга Obiimy: одна непрерывная 3D-сцена на весь скролл — частицы-логотип, карусель шёлка с реальными принтами, шёлковый тоннель, стая и жёлтая коробка с тканью.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Onest:wght@300;400;500;600&display=swap">
+<style>
+  :root { color-scheme: dark; --bg: #0C0914; --ink: #F1ECF3; --ink-2: #BDB5C9; --ink-3: #7F7690; --gold: #F2B705; --line: rgba(241,236,243,.14);
+    --display: 'Cormorant Garamond', 'Times New Roman', serif; --body: 'Onest', 'Helvetica Neue', Arial, sans-serif; }
+  * { box-sizing: border-box; min-width: 0; }
+  html { scroll-behavior: auto; }
+  body { margin: 0; background: radial-gradient(120% 80% at 50% 0%, #1B1430 0%, var(--bg) 55%, #070510 100%) fixed; color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  #gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; pointer-events: none; }
+  .grain { position: fixed; inset: 0; z-index: 3; pointer-events: none; opacity: .4; mix-blend-mode: screen; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .vignette { position: fixed; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(80% 70% at 50% 50%, transparent 55%, rgba(7,5,16,.75) 100%); }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2 { font-family: var(--display); font-weight: 300; margin: 0; line-height: 1; text-wrap: balance; }
+  h1 { font-size: clamp(2.6rem, 7vw, 6.4rem); letter-spacing: -0.01em; }
+  h2 { font-size: clamp(2.2rem, 5.4vw, 5rem); }
+  p { margin: 0; }
+  em { font-style: italic; }
+  .label { font-size: .66rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+  .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 24px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .86rem; letter-spacing: .04em; border: 1px solid transparent; transition: transform .2s ease; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-gold { background: var(--gold); color: #14101F; }
+  .btn-line { border-color: var(--line); color: var(--ink); }
+  .btn-line:hover { border-color: var(--ink); }
+
+  /* loading + nav + rail */
+  .loadbar { position: fixed; left: 0; top: 0; height: 2px; width: 100%; z-index: 60; background: var(--gold); transform-origin: left; transform: scaleX(0); transition: transform .4s ease, opacity .8s ease 1s; }
+  .ready .loadbar { opacity: 0; }
+  .nav { position: fixed; inset-inline: 0; top: 0; z-index: 50; padding: calc(18px + env(safe-area-inset-top, 0px)) clamp(16px, 3vw, 40px) 0; display: flex; justify-content: space-between; align-items: center; }
+  .nav img { height: 20px; width: auto; }
+  .nav a.site { font-size: .68rem; letter-spacing: .24em; text-transform: uppercase; text-decoration: none; color: var(--ink-2); }
+  .rail { position: fixed; right: clamp(14px, 2.5vw, 34px); top: 50%; transform: translateY(-50%); z-index: 50; display: grid; gap: 14px; }
+  .rail a { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink-3); font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; justify-content: end; }
+  .rail a span { opacity: 0; transition: opacity .3s ease; }
+  .rail a i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .4; transition: transform .3s ease, opacity .3s ease; }
+  .rail a.on { color: var(--gold); } .rail a.on span { opacity: 1; } .rail a.on i { opacity: 1; transform: scale(1.6); }
+  @media (max-width: 760px) { .rail a span { display: none; } }
+
+  /* chapters */
+  main { position: relative; z-index: 4; }
+  .ch { position: relative; }
+  .ch .sticky { position: sticky; top: 0; height: 100vh; height: 100dvh; display: grid; align-content: end; padding: 0 clamp(16px, 4vw, 56px) calc(48px + env(safe-area-inset-bottom, 0px)); pointer-events: none; opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .ch.on .sticky { opacity: 1; transform: none; }
+  .ch .sticky::before { content: ""; position: absolute; inset: auto 0 0 0; height: 62%; background: linear-gradient(180deg, rgba(12,9,20,0) 0%, rgba(12,9,20,.55) 45%, rgba(12,9,20,.82) 100%); z-index: -1; pointer-events: none; }
+  .ch .sticky { isolation: isolate; }
+  .ch .sticky > * { pointer-events: auto; }
+  .chip { display: inline-flex; align-items: center; gap: 12px; font-size: .66rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  .chip::before { content: ""; width: 28px; height: 1px; background: var(--gold); }
+  .copy { max-width: 34em; color: var(--ink-2); font-weight: 300; font-size: 1.05rem; margin-top: 16px; }
+
+  /* intro */
+  #c0 .sticky { align-content: end; text-align: center; justify-items: center; }
+  #c0 h1 { margin-top: 0; }
+  #c0 .copy { margin-inline: auto; text-align: center; }
+  .hint { margin-top: 26px; font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-3); display: grid; justify-items: center; gap: 10px; }
+  .hint::after { content: ""; width: 1px; height: 40px; background: linear-gradient(180deg, var(--ink-3), transparent); animation: drop 2s ease-in-out infinite; }
+  @keyframes drop { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+  /* panels */
+  .panel { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px; }
+  .state { display: grid; gap: 6px; justify-items: end; text-align: right; min-width: 240px; }
+  .state .n { font-family: var(--display); font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1; }
+  .state .s { font-size: .74rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
+  .state .l { font-size: .92rem; color: var(--ink-2); max-width: 26em; }
+  .state a { margin-top: 8px; }
+  @media (max-width: 760px) { .panel { grid-template-columns: 1fr; } .state { justify-items: start; text-align: left; } h2 { font-size: clamp(2rem, 9vw, 3.2rem); } }
+
+  blockquote { margin: 18px 0 0; font-family: var(--display); font-style: italic; font-weight: 300; font-size: clamp(1.3rem, 2.4vw, 2rem); line-height: 1.3; max-width: 26em; border-left: 1px solid var(--gold); padding-left: 18px; }
+  blockquote cite { display: block; font-family: var(--body); font-style: normal; font-size: .66rem; letter-spacing: .24em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px; }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 18px; font-size: .84rem; color: var(--ink-2); }
+  .facts b { color: var(--gold); font-weight: 600; }
+
+  /* final */
+  #c5 .sticky { align-content: center; justify-items: center; text-align: center; }
+  #c5 .sticky::before { inset: 0; height: auto; background: radial-gradient(60% 50% at 50% 50%, rgba(12,9,20,.7) 0%, rgba(12,9,20,0) 100%); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 24px; }
+  .contact { margin-top: 18px; font-size: .9rem; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: center; align-items: center; }
+  .contact a { color: var(--ink); text-decoration: none; font-weight: 600; }
+  .copybtn { all: unset; cursor: pointer; font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; }
+  .stores { margin-top: 14px; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+
+  /* fallback */
+  .fallback { display: none; position: fixed; inset: 0; z-index: 1; }
+  .fallback img { width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+  .no-webgl .fallback { display: block; }
+  @media (prefers-reduced-motion: reduce) { .hint::after { animation: none; } .ch .sticky { transition: none; } }
+</style>
+
+<div class="loadbar" id="loadbar"></div>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="fallback"><img src="photo/enerhiia-back.webp" alt=""></div>
+<div class="vignette"></div><div class="grain"></div>
+
+<header class="nav"><img src="brand/logo-white.png" alt="Obiimy"><a class="site" href="https://obiimy.world/" target="_blank" rel="noopener">obiimy.world</a></header>
+<nav class="rail" id="rail" aria-label="Розділи">
+  <a href="#c0"><span>Вступ</span><i></i></a><a href="#c1"><span>Полотно</span><i></i></a><a href="#c2"><span>Тунель</span><i></i></a><a href="#c3"><span>Душа</span><i></i></a><a href="#c4"><span>Коробка</span><i></i></a><a href="#c5"><span>Фінал</span><i></i></a>
+</nav>
+
+<main>
+  <section class="ch" id="c0" style="height:190vh">
+    <div class="sticky">
+      <p class="label">Український бренд натурального шовку</p>
+      <h1 style="margin-top:14px">Шовкові обійми <em>з любов’ю</em></h1>
+      <p class="copy">Хустки з авторськими принтами художниці Світлани Сніжко на 100% італійському шовку. Це не каталог, а прогулянка: прокрутіть — і шовк почне рухатися.</p>
+      <p class="hint">Прокрутіть</p>
+    </div>
+  </section>
+
+  <section class="ch" id="c1" style="height:360vh">
+    <div class="sticky">
+      <div class="panel">
+        <div><p class="chip">01 · Полотно</p><h2>Кожен принт — <em>картина</em></h2><p class="copy">Дев’ять станів проходять повз, як полотна в майстерні. Шовк колишеться на GPU, блиск лягає вздовж нитки, як на справжньому атласі.</p></div>
+        <div class="state"><span class="n" id="sName">«Пробудження»</span><span class="s" id="sSub">65 × 65 см · двосторонній друк · 4 320 грн</span><span class="l" id="sLine">Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини нового.</span><a class="btn btn-gold" id="sLink" href="https://obiimy.world/shovkova-khustka-probudzhennia-65x65/">Купити цю хустку</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="c2" style="height:300vh">
+    <div class="sticky">
+      <div class="panel">
+        <div><p class="chip">02 · Тунель</p><h2>Крізь дев’ять <em>станів</em></h2><p class="copy">Хустки вишикувались у спіраль. Прокрутіть — і ви пролетите крізь них. Розміри 44, 65 і 88 см, твіллі 84 × 5, від 1 600 грн.</p></div>
+        <div class="state"><span class="n" id="tName">«Пробудження»</span><span class="s num" id="tPrice">4 320 грн</span><a class="btn btn-line" id="tLink" href="https://obiimy.world/khustky/">До хустки</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="c3" style="height:240vh">
+    <div class="sticky">
+      <p class="chip">03 · Співоча душа</p>
+      <h2>Краса, яка вміє <em>рятувати</em></h2>
+      <blockquote>Ця колекція про тендітність і силу, про птахів, які співають і зникають, про красу, яка може рятувати.<cite>Світлана Сніжко, засновниця</cite></blockquote>
+      <div class="facts"><span><b>Сиворакша</b> — птах Червоної книги, якому будуємо гнізда</span><span><b>Партнер</b> — Українське товариство охорони птахів</span><span><b>Художниця колекції</b> — Анна Кловак</span></div>
+    </div>
+  </section>
+
+  <section class="ch" id="c4" style="height:320vh">
+    <div class="sticky">
+      <div class="panel">
+        <div><p class="chip">04 · Жовта коробка</p><h2>Подарунок, який <em>впізнають</em></h2><p class="copy">Прокрутіть — кришка відкриється, і хустка підніметься з тонкого паперу. Подарункові набори від 2 200 до 4 800 грн, підпис на подарунок за вашим текстом, відправка того ж дня при замовленні до 16:00.</p></div>
+        <div class="state"><span class="s">Подарункові набори</span><span class="n num">від 2 200 грн</span><a class="btn btn-gold" href="https://obiimy.world/podarunkovi-nabory/">Обрати набір</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="c5" style="height:160vh">
+    <div class="sticky">
+      <p class="label">Obiimy</p>
+      <h2 style="margin-top:14px">Для себе або для тієї, кого хочеться <em>обійняти</em></h2>
+      <div class="actions"><a class="btn btn-gold" href="https://obiimy.world/khustky/">Перейти в каталог</a><a class="btn btn-line" href="https://www.instagram.com/obiimy.world/" target="_blank" rel="noopener">Instagram @obiimy.world</a></div>
+      <div class="contact"><span>Замовлення телефоном:</span><a class="num" id="phone" href="tel:+380670108525">+38 067 010 85 25</a><button class="copybtn" type="button" id="copyPhone">Скопіювати</button></div>
+      <p class="stores">obiimy.world · INTERTOP · Hram · Be Brave · UFD London</p>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>window.OBIIMY_STATES = /*STATES*/[];</script>
+<script>/*ENGINE*/</script>
+<script>
+(function () {
+  var copyBtn = document.getElementById('copyPhone'), phone = document.getElementById('phone');
+  copyBtn.addEventListener('click', function () {
+    var done = function () { copyBtn.textContent = 'Скопійовано'; setTimeout(function () { copyBtn.textContent = 'Скопіювати'; }, 1800); };
+    var fb = function () { var r = document.createRange(); r.selectNodeContents(phone); var s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(phone.textContent.trim()).then(done, fb); else fb();
+  });
+  document.querySelectorAll('.rail a').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); var el = document.querySelector(a.getAttribute('href')); if (el) window.scrollTo({ top: el.offsetTop + 10, behavior: 'smooth' }); }); });
+})();
+</script>

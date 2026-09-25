@@ -6,6 +6,7 @@ ROOT = pathlib.Path(__file__).resolve().parent
 SITE = ROOT / "site"
 
 VERSIONS = [
+    ("garden",   "garden.html",     "Garden",    "Мега-арт: одна 3D-сцена на весь скрол. Частинки збираються в логотип, шовк пропливає каруселлю, тунель зі станів, зграя і жовта коробка з тканиною (WebGL)."),
     ("maison",   "maison.html",     "Maison",    "Головна преміум-версія. Фото-hero, каталог за настроєм, підбір подарунка, довіра, FAQ. Доведена до 9/10 арт-директором і маркетологом."),
     ("journal",  "f-journal.html",  "Journal",   "Журнал бренду: обкладинка, три фотоісторії з кредитами, натюрморти, розмова із засновницею."),
     ("campaign", "f-campaign.html", "Campaign",  "Темна кампейн-версія: сім повноекранних образів із хотспотами «shop the look»."),
@@ -44,7 +45,7 @@ def main():
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Obiimy — версії лендингу</title>
-<meta name="description" content="Дев’ять версій преміум-лендингу для бренду шовкових хусток Obiimy.">
+<meta name="description" content="Десять версій преміум-лендингу для бренду шовкових хусток Obiimy.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Onest:wght@300;400;500;600&display=swap">
 <style>
@@ -79,8 +80,8 @@ def main():
 <body>
 <div class="wrap">
   <header><img src="brand/logo-ink.png" alt="Obiimy"><a href="https://obiimy.world/" target="_blank" rel="noopener">obiimy.world ↗</a></header>
-  <h1>Дев’ять версій лендингу Obiimy</h1>
-  <p class="lede">Український бренд шовкових хусток з авторськими принтами художниці Світлани Сніжко. Від класичного лендингу до 3D-симуляції тканини та фешн-лукбуків. Головна версія — Maison.</p>
+  <h1>Десять версій лендингу Obiimy</h1>
+  <p class="lede">Український бренд шовкових хусток з авторськими принтами художниці Світлани Сніжко. Від класичного лендингу до 3D-сцен та фешн-лукбуків. Головна версія — Maison, найартовіша — Garden.</p>
   <div class="grid">
 {cards}
   </div>

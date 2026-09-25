@@ -18,9 +18,11 @@ STATES = [
     {"id": "litnie-pole", "name": "Літнє поле", "line": "Букет, написаний за один день. Про літо, яке не хоче закінчуватись.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "probudzhennia"},
 ]
 
-for name in ["v-studio", "v-noir", "v-form"]:
+GARDEN = (ROOT / "garden.js").read_text()
+for name in ["v-studio", "v-noir", "v-form", "garden"]:
     src = (ROOT / f"{name}.html").read_text()
-    out = src.replace("<script>/*ENGINE*/</script>", "<script>\n" + ENGINE + "\n</script>")
+    engine = GARDEN if name == "garden" else ENGINE
+    out = src.replace("<script>/*ENGINE*/</script>", "<script>\n" + engine + "\n</script>")
     out = out.replace("/*STATES*/[]", json.dumps(STATES, ensure_ascii=False))
     (OUT / f"{name}.html").write_text(out)
     print(name, len(out) // 1024, "KB")

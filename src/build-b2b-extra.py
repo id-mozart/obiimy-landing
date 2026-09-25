@@ -199,7 +199,7 @@ def speakers():
 
   <section class="block" id="stage" style="padding-top:0"><div class="wrap">
     <div class="stagebar">
-      <figure>{img("photo/paris-blazer.jpg", "Шовкова хустка на жакеті спікерки", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Спікерка</b><span>Твіллі або паше — вручається на сцені</span></figcaption></figure>
+      <figure>{img("photo/paris-blazer.jpg", "Шовкова хустка на жакеті спікерки", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Спікерка</b><span>Твіллі або паше — вручають на сцені</span></figcaption></figure>
       <figure>{img("photo/paris-bag.jpg", "Твіллі на ручці сумки", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Модераторка</b><span>Той самий принт — дрес-код сцени</span></figcaption></figure>
       <figure>{img("photo/paris-bun.jpg", "Шовк у волоссі", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Гостя</b><span>Резинка у welcome-box</span></figcaption></figure>
       <figure>{img("photo/riviera-red.jpg", "Хустка на зап’ясті", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Партнер події</b><span>Набір або хустка 65 × 65</span></figcaption></figure>
@@ -283,10 +283,10 @@ def english():
     <div class="shipmap">
       <div><p class="eyebrow">Where your team is</p><h3>We ship worldwide</h3><p>One parcel to your office or a parcel to each recipient — at carrier rates, with options set out in the quote.</p></div>
       <ol>
-        <li><b>Kyiv</b><span>Made and packed in Ukraine</span></li>
+        <li><b>Ukraine</b><span>Made and packed by hand</span></li>
         <li><b>European Union</b><span>Offices and remote teams</span></li>
         <li><b>United Kingdom</b><span>Where UFD London sells Obiimy</span></li>
-        <li><b>North America</b><span>Where Be Brave sells Obiimy</span></li>
+        <li><b>Canada</b><span>Where Be Brave sells Obiimy</span></li>
         <li><b>Anywhere else</b><span>Quoted per destination</span></li>
       </ol>
     </div>

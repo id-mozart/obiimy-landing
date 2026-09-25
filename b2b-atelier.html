@@ -930,7 +930,7 @@ window.SilkEngine = (function () {
     lastPrint = l.p;
     stage.classList.toggle('twilly', !!it.ribbon);
     stage.classList.toggle('packshot', !!it.pack); $('pack').hidden = !it.pack;
-    if (it.pack) { $('packImg').src = it.pack; $('packImg').alt = it.name; $('packCap').textContent = 'Приклад виробу; принт «' + s.name + '» — під запит'; }
+    if (it.pack) { $('packImg').src = it.pack; $('packImg').alt = it.name; $('packCap').textContent = 'Приклад виробу. Принт «' + s.name + '» у цьому форматі — під запит'; }
     if (silk && silk.setPaused) silk.setPaused(!!it.ribbon || !!it.pack);
     if (ribbon && ribbon.setPaused) ribbon.setPaused(!it.ribbon);
     $('flipBtn').hidden = !it.flip;

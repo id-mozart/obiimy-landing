@@ -119,6 +119,16 @@
   form .hint { font-size: .82rem; color: var(--ink-2); text-transform: none; letter-spacing: 0; display: block; margin: 0; }
   form .hint::after { display: none; }
   @media (max-width: 760px) { #c1 .copy { display: none; } }
+  .ch:not(.on) .sticky { visibility: hidden; transition: opacity .6s ease, transform .6s ease, visibility 0s linear .6s; }
+  .ch.on .sticky { visibility: visible; transition-delay: 0s; }
+  .rail a { min-height: 44px; }
+  .rail a span { font-size: .72rem; }
+  @media (max-width: 760px) { .rail { display: none; } }
+  .nav a.site.cta { font-size: .78rem; min-height: 44px; display: inline-flex; align-items: center; }
+  .copybtn { min-height: 44px; font-size: .8rem !important; padding: 0 16px !important; display: inline-flex !important; align-items: center; }
+  .chip, .label, blockquote cite, .hint { font-size: .75rem !important; }
+  .state .s, .stores { font-size: .8rem !important; }
+  .ch .sticky::before { height: 72% !important; background: linear-gradient(180deg, rgba(12,9,20,0) 0%, rgba(12,9,20,.7) 38%, rgba(12,9,20,.9) 100%) !important; }
   .stores { position: relative; z-index: 2; color: var(--ink-2); text-shadow: 0 1px 12px rgba(12,9,20,.9); }
   #c5 .sticky::before { background: radial-gradient(70% 60% at 50% 55%, rgba(12,9,20,.85) 0%, rgba(12,9,20,0) 100%); }
   form .hint a { display: inline-block; padding: 10px 0; margin: -10px 0; }
@@ -137,7 +147,7 @@
 
 <header class="nav"><a href="https://obiimy.world/" aria-label="Obiimy — на сайт бренду"><img src="brand/logo-white-480.webp" alt="Obiimy" width="94" height="20"></a><a class="site cta" href="#request">Запит для бізнесу</a></header>
 <nav class="rail" id="rail" aria-label="Розділи">
-  <a href="#c0"><span>Вступ</span><i></i></a><a href="#c1"><span>Принт</span><i></i></a><a href="#c2"><span>Бюджети</span><i></i></a><a href="#c3"><span>Сенс</span><i></i></a><a href="#c4"><span>Коробка</span><i></i></a><a href="#c5"><span>Контакт</span><i></i></a><a href="#request"><span>Запит</span><i></i></a>
+  <a href="#c0"><span>Вступ</span><i></i></a><a href="#c1"><span>Принт</span><i></i></a><a href="#c2"><span>Бюджети</span><i></i></a><a href="#c3"><span>Сенс</span><i></i></a><a href="#c4"><span>Коробка</span><i></i></a><a href="#c5"><span>Контакт</span><i></i></a>
 </nav>
 
 <main>
@@ -154,7 +164,7 @@
     <div class="sticky">
       <div class="panel">
         <div><p class="chip">01 · Принт для команди</p><h2>Один принт — <em>або добірка</em></h2><p class="copy">Один принт на всю команду читається як дрес-код події, добірка різних — як особистий подарунок кожному. Дев’ять принтів пропливають повз — зупиніться на своєму.</p></div>
-        <div class="state"><span class="n" id="sName">«Пробудження»</span><span class="s" id="sSub">65 × 65 см · двосторонній друк · 4 320 грн</span><span class="l" id="sLine">Іриси, написані навесні.</span><div class="duo"><a class="btn btn-gold" href="#request">Запросити для команди</a><a class="btn btn-line" id="sLink" href="https://obiimy.world/khustky/">Принт на сайті</a></div></div>
+        <div class="state"><span class="n" id="sName">«Пробудження»</span><span class="s" id="sSub">65 × 65 см · двосторонній друк · 4 800 грн</span><span class="l" id="sLine">Іриси, написані навесні.</span><div class="duo"><a class="btn btn-gold" href="#request">Запросити для команди</a><a class="btn btn-line" id="sLink" href="https://obiimy.world/khustky/">Принт на сайті</a></div></div>
       </div>
     </div>
   </section>
@@ -163,7 +173,7 @@
     <div class="sticky">
       <div class="panel">
         <div><p class="chip">02 · Бюджети</p><h2>Від 700 до 4 800 <em>гривень</em></h2><p class="copy">Резинка в коробочці — 700 грн, твіллі або паше — 1 600, хустка 65 × 65 — 3 200, шаль 88 × 88 — 4 400, набір із трьох твіллі — 4 800. Роздрібні ціни; умови для тиражу — у розрахунку.</p></div>
-        <div class="state"><span class="s">Зараз перед вами</span><span class="n" id="tName">«Пробудження»</span><span class="s num" id="tPrice">4 320 грн</span><a class="btn btn-line" id="tLink" href="https://obiimy.world/khustky/">До принту</a></div>
+        <div class="state"><span class="s">Зараз перед вами</span><span class="n" id="tName">«Пробудження»</span><span class="s num" id="tPrice">4 800 грн</span><a class="btn btn-line" id="tLink" href="https://obiimy.world/khustky/">До принту</a></div>
       </div>
     </div>
   </section>
@@ -206,10 +216,12 @@
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>window.OBIIMY_STATES = /*STATES*/[]; window.GARDEN_OPTS = { boxYMobile: 1.05 };</script>
+<script>window.OBIIMY_STATES = /*STATES*/[]; window.GARDEN_OPTS = { boxYMobile: 1.05, quietIntro: true };</script>
 <script>/*ENGINE*/</script>
 <script>
 (function () {
+  var req = document.getElementById('request');
+  if (req && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { window.__gardenPaused = es[0].isIntersecting && es[0].intersectionRatio > 0.3; }, { threshold: [0, 0.3, 0.6] }).observe(req);
   var copyBtn = document.getElementById('copyPhone'), phone = document.getElementById('phone');
   copyBtn.addEventListener('click', function () {
     var done = function () { copyBtn.textContent = 'Скопійовано'; setTimeout(function () { copyBtn.textContent = 'Скопіювати'; }, 1800); };

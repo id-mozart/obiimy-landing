@@ -181,6 +181,10 @@
   .approval p { color: var(--ink-2); font-size: .92rem; }
   .approval .row { display: flex; flex-wrap: wrap; gap: 8px; }
   .perhead { font-size: .8rem; color: var(--ink-3); }
+  .summary .toggle, .addline, .lines .ln .pick, .lines .ln button { min-height: 44px; }
+  .lines .ln button.rm { min-width: 44px; text-align: center; }
+  html { scroll-padding-top: 90px; }
+  @media (max-width: 960px) { html { scroll-padding: calc(30svh + 16px) 0 150px; } .typing .stage { height: 18svh; } .typing .gift, .typing .stage .title { display: none; } .no-webgl .fallback { inset: 30% 22% 8%; } }
   @media (max-width: 960px) {
     .stage { transition: height .35s ease; }
     .compact .stage { height: 30svh; }
@@ -639,7 +643,9 @@ window.SilkEngine = (function () {
     }
     window.addEventListener('resize', resize); resize();
 
-    var visible = true;
+    var visible = true, paused = false;
+    document.addEventListener('visibilitychange', function () { if (document.hidden) paused = true; else paused = !!pausedByApp; });
+    var pausedByApp = false;
     if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0 }).observe(canvas);
 
     var scrollAmp = 0, mixTarget = 0, pending = null, last = performance.now();
@@ -688,7 +694,7 @@ window.SilkEngine = (function () {
     function frame(now) {
       requestAnimationFrame(frame);
       var real = Math.min(0.1, (now - last) / 1000); last = now;
-      if (!visible) return;
+      if (!visible || paused) return;
       var dt = real;
       var steps = Math.max(1, Math.min(4, Math.round(real / 0.0167)));
       for (var st = 0; st < steps; st++) simulate(Math.min(0.02, real / steps));
@@ -720,6 +726,7 @@ window.SilkEngine = (function () {
         uniforms.uNextFront.value = f; uniforms.uNextBack.value = b; uniforms.uMix.value = 0; mixTarget = 1; pending = { f: f, b: b };
       },
       setScale: function (s) { size = (opts.size || 1.6) * s; buildCloth(); },
+      setPaused: function (v) { pausedByApp = !!v; paused = !!v || document.hidden; },
       reset: function () { buildCloth(); },
       flip: function () { flipTarget += Math.PI; },
       setScroll: function (v) { scrollAmp = Math.max(0, Math.min(1, v)); },
@@ -755,7 +762,7 @@ window.SilkEngine = (function () {
     var mesh = new THREE.Mesh(geo, material); mesh.frustumCulled = false; scene.add(mesh);
     var pts = [], N = 7; for (var k = 0; k < N; k++) pts.push(new THREE.Vector3());
     var curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal', 0.5);
-    var time = 0, last = performance.now(), visible = true, mouse = new THREE.Vector2(0, 0), mouseT = new THREE.Vector2(0, 0);
+    var rPaused = false, time = 0, last = performance.now(), visible = true, mouse = new THREE.Vector2(0, 0), mouseT = new THREE.Vector2(0, 0);
     if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0 }).observe(canvas);
     canvas.addEventListener('pointermove', function (e) { var r = canvas.getBoundingClientRect(); mouseT.set(((e.clientX - r.left) / r.width) * 2 - 1, -(((e.clientY - r.top) / r.height) * 2 - 1)); });
     canvas.addEventListener('pointerleave', function () { mouseT.set(0, 0); });
@@ -763,7 +770,7 @@ window.SilkEngine = (function () {
     window.addEventListener('resize', resize); resize();
     var P = new THREE.Vector3(), T = new THREE.Vector3(), Nn = new THREE.Vector3(), B = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0);
     function frame(now) {
-      requestAnimationFrame(frame); var dt = Math.min(0.033, (now - last) / 1000); last = now; if (!visible) return;
+      requestAnimationFrame(frame); var dt = Math.min(0.033, (now - last) / 1000); last = now; if (!visible || rPaused || document.hidden) return;
       time += dt; mouse.lerp(mouseT, 0.05);
       for (var k = 0; k < N; k++) {
         var s = k / (N - 1), x = (s - 0.5) * (opts.length || 7.2);
@@ -786,7 +793,7 @@ window.SilkEngine = (function () {
       renderer.render(scene, camera);
     }
     requestAnimationFrame(frame);
-    return { setTexture: function (id) { var nt = loader.load(opts.texPath + id + '.jpg'); nt.wrapS = nt.wrapT = THREE.RepeatWrapping; uniforms.uFront.value = nt; uniforms.uBack.value = nt; uniforms.uNextFront.value = nt; uniforms.uNextBack.value = nt; } };
+    return { setPaused: function (v) { rPaused = !!v; }, setTexture: function (id) { var nt = loader.load(opts.texPath + id + '.jpg'); nt.wrapS = nt.wrapT = THREE.RepeatWrapping; uniforms.uFront.value = nt; uniforms.uBack.value = nt; uniforms.uNextFront.value = nt; uniforms.uNextBack.value = nt; } };
   }
 
   return { create: create, createRibbon: createRibbon };
@@ -835,7 +842,7 @@ window.SilkEngine = (function () {
 
   STATES.forEach(function (s, i) {
     var b = document.createElement('button'); b.type = 'button'; b.dataset.i = i; b.setAttribute('aria-label', 'Принт «' + s.name + '»');
-    b.innerHTML = '<img src="tex/' + s.id + '.jpg" alt="" loading="lazy" width="80" height="80">';
+    b.innerHTML = '<img src="tex/' + s.id + '-160.webp" alt="" loading="lazy" width="80" height="80">';
     b.addEventListener('click', function () { var l = cur(); l.p = i; l.i = idx(ITEMS, catalogItem(s)); apply(true); });
     sw.appendChild(b);
   });
@@ -893,6 +900,8 @@ window.SilkEngine = (function () {
     if (lastPrint !== l.p && ribbon) ribbon.setTexture(s.id);
     lastPrint = l.p;
     stage.classList.toggle('twilly', !!it.ribbon);
+    if (silk && silk.setPaused) silk.setPaused(!!it.ribbon);
+    if (ribbon && ribbon.setPaused) ribbon.setPaused(!it.ribbon);
     $('flipBtn').hidden = !it.flip;
     if (silk && !it.ribbon && it.scale !== lastScale) { silk.setScale(it.scale); lastScale = it.scale; }
     $('qtyNum').value = l.q; $('qtyRange').value = Math.min(300, Math.max(5, l.q));
@@ -940,6 +949,9 @@ window.SilkEngine = (function () {
   canvas.addEventListener('pointerdown', function () { canvas.classList.add('grabbing'); });
   window.addEventListener('pointerup', function () { canvas.classList.remove('grabbing'); });
   window.addEventListener('scroll', function () { root.classList.toggle('compact', window.scrollY > 60); }, { passive: true });
+  document.addEventListener('focusin', function (e) { if (e.target.matches('.panel input, .panel textarea, form input, form textarea, form select')) root.classList.add('typing'); });
+  document.addEventListener('focusout', function () { setTimeout(function () { if (!document.activeElement || !document.activeElement.matches('input, textarea, select')) root.classList.remove('typing'); }, 50); });
+  document.addEventListener('click', function (e) { var a = e.target.closest('a[href^="#"]'); if (!a) return; var t = document.getElementById(a.getAttribute('href').slice(1)); if (!t) return; e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
   apply(true);
 })();
 </script>

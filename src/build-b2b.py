@@ -135,7 +135,8 @@ CSS = """
   form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 3vw, 32px); }
   form label { display: grid; gap: 6px; font-size: .82rem; color: var(--ink2); letter-spacing: .03em; }
   form label.full { grid-column: 1 / -1; }
-  form label .req { color: var(--gold); }
+  form label .req { color: #8A6500; }
+  .dark form label .req { color: var(--gold); }
   input, select, textarea { font: inherit; font-size: 1rem; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: calc(var(--radius) - 2px); padding: 12px 14px; width: 100%; min-height: 48px; }
   .dark input, .dark select, .dark textarea { background: #1C1A22; border-color: rgba(236,233,239,.22); }
   select { appearance: none; -webkit-appearance: none; padding-right: 40px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23807C86' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
@@ -304,6 +305,7 @@ def og_crop(src, slug):
 
 def shell(page, body):
     L = EN if page.get("lang") == "en" else UK
+    body_lang = ' lang="en"' if page.get("lang") == "en" else ""
     skin = SKINS[page["skin"]]
     dark = skin["dark"]
     logo = "brand/logo-white-480.webp" if dark else "brand/logo-ink-480.webp"
@@ -332,11 +334,11 @@ def shell(page, body):
 <link href="https://fonts.googleapis.com/css2?family={skin["fonts"]}&display=swap" rel="stylesheet">
 <style>
   {skin["css"]}
-  :root {{ --display: {skin["display"]}; --body: {skin["body"]}; --ink3: {"#A9A3B3" if dark else "#66626D"}; }}
+  :root {{ --display: {skin["display"]}; --body: {skin["body"]}; --ink3: {"#A9A3B3" if dark else ("#57534E" if page["skin"] == "form" else "#66626D")}; }}
   {CSS}
 </style>
 </head>
-<body class="{"dark" if dark else ""}">
+<body class="{"dark" if dark else ""}"{body_lang}>
 <div class="bar">{L["bar"]}</div>
 <header class="nav"><div class="wrap">
   <a class="logo" href="{"https://obiimy-world.com/" if L is EN else "https://obiimy.world/"}" aria-label="{L["logo"]}"><img src="{logo}" alt="Obiimy" width="113" height="24"></a>

@@ -525,7 +525,9 @@ window.SilkEngine = (function () {
     }
     window.addEventListener('resize', resize); resize();
 
-    var visible = true;
+    var visible = true, paused = false;
+    document.addEventListener('visibilitychange', function () { if (document.hidden) paused = true; else paused = !!pausedByApp; });
+    var pausedByApp = false;
     if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0 }).observe(canvas);
 
     var scrollAmp = 0, mixTarget = 0, pending = null, last = performance.now();
@@ -574,7 +576,7 @@ window.SilkEngine = (function () {
     function frame(now) {
       requestAnimationFrame(frame);
       var real = Math.min(0.1, (now - last) / 1000); last = now;
-      if (!visible) return;
+      if (!visible || paused) return;
       var dt = real;
       var steps = Math.max(1, Math.min(4, Math.round(real / 0.0167)));
       for (var st = 0; st < steps; st++) simulate(Math.min(0.02, real / steps));
@@ -606,6 +608,7 @@ window.SilkEngine = (function () {
         uniforms.uNextFront.value = f; uniforms.uNextBack.value = b; uniforms.uMix.value = 0; mixTarget = 1; pending = { f: f, b: b };
       },
       setScale: function (s) { size = (opts.size || 1.6) * s; buildCloth(); },
+      setPaused: function (v) { pausedByApp = !!v; paused = !!v || document.hidden; },
       reset: function () { buildCloth(); },
       flip: function () { flipTarget += Math.PI; },
       setScroll: function (v) { scrollAmp = Math.max(0, Math.min(1, v)); },
@@ -641,7 +644,7 @@ window.SilkEngine = (function () {
     var mesh = new THREE.Mesh(geo, material); mesh.frustumCulled = false; scene.add(mesh);
     var pts = [], N = 7; for (var k = 0; k < N; k++) pts.push(new THREE.Vector3());
     var curve = new THREE.CatmullRomCurve3(pts, false, 'centripetal', 0.5);
-    var time = 0, last = performance.now(), visible = true, mouse = new THREE.Vector2(0, 0), mouseT = new THREE.Vector2(0, 0);
+    var rPaused = false, time = 0, last = performance.now(), visible = true, mouse = new THREE.Vector2(0, 0), mouseT = new THREE.Vector2(0, 0);
     if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0 }).observe(canvas);
     canvas.addEventListener('pointermove', function (e) { var r = canvas.getBoundingClientRect(); mouseT.set(((e.clientX - r.left) / r.width) * 2 - 1, -(((e.clientY - r.top) / r.height) * 2 - 1)); });
     canvas.addEventListener('pointerleave', function () { mouseT.set(0, 0); });
@@ -649,7 +652,7 @@ window.SilkEngine = (function () {
     window.addEventListener('resize', resize); resize();
     var P = new THREE.Vector3(), T = new THREE.Vector3(), Nn = new THREE.Vector3(), B = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0);
     function frame(now) {
-      requestAnimationFrame(frame); var dt = Math.min(0.033, (now - last) / 1000); last = now; if (!visible) return;
+      requestAnimationFrame(frame); var dt = Math.min(0.033, (now - last) / 1000); last = now; if (!visible || rPaused || document.hidden) return;
       time += dt; mouse.lerp(mouseT, 0.05);
       for (var k = 0; k < N; k++) {
         var s = k / (N - 1), x = (s - 0.5) * (opts.length || 7.2);
@@ -672,7 +675,7 @@ window.SilkEngine = (function () {
       renderer.render(scene, camera);
     }
     requestAnimationFrame(frame);
-    return { setTexture: function (id) { var nt = loader.load(opts.texPath + id + '.jpg'); nt.wrapS = nt.wrapT = THREE.RepeatWrapping; uniforms.uFront.value = nt; uniforms.uBack.value = nt; uniforms.uNextFront.value = nt; uniforms.uNextBack.value = nt; } };
+    return { setPaused: function (v) { rPaused = !!v; }, setTexture: function (id) { var nt = loader.load(opts.texPath + id + '.jpg'); nt.wrapS = nt.wrapT = THREE.RepeatWrapping; uniforms.uFront.value = nt; uniforms.uBack.value = nt; uniforms.uNextFront.value = nt; uniforms.uNextBack.value = nt; } };
   }
 
   return { create: create, createRibbon: createRibbon };

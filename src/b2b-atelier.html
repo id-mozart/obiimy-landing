@@ -181,6 +181,10 @@
   .approval p { color: var(--ink-2); font-size: .92rem; }
   .approval .row { display: flex; flex-wrap: wrap; gap: 8px; }
   .perhead { font-size: .8rem; color: var(--ink-3); }
+  .summary .toggle, .addline, .lines .ln .pick, .lines .ln button { min-height: 44px; }
+  .lines .ln button.rm { min-width: 44px; text-align: center; }
+  html { scroll-padding-top: 90px; }
+  @media (max-width: 960px) { html { scroll-padding: calc(30svh + 16px) 0 150px; } .typing .stage { height: 18svh; } .typing .gift, .typing .stage .title { display: none; } .no-webgl .fallback { inset: 30% 22% 8%; } }
   @media (max-width: 960px) {
     .stage { transition: height .35s ease; }
     .compact .stage { height: 30svh; }
@@ -333,7 +337,7 @@
 
   STATES.forEach(function (s, i) {
     var b = document.createElement('button'); b.type = 'button'; b.dataset.i = i; b.setAttribute('aria-label', 'Принт «' + s.name + '»');
-    b.innerHTML = '<img src="tex/' + s.id + '.jpg" alt="" loading="lazy" width="80" height="80">';
+    b.innerHTML = '<img src="tex/' + s.id + '-160.webp" alt="" loading="lazy" width="80" height="80">';
     b.addEventListener('click', function () { var l = cur(); l.p = i; l.i = idx(ITEMS, catalogItem(s)); apply(true); });
     sw.appendChild(b);
   });
@@ -391,6 +395,8 @@
     if (lastPrint !== l.p && ribbon) ribbon.setTexture(s.id);
     lastPrint = l.p;
     stage.classList.toggle('twilly', !!it.ribbon);
+    if (silk && silk.setPaused) silk.setPaused(!!it.ribbon);
+    if (ribbon && ribbon.setPaused) ribbon.setPaused(!it.ribbon);
     $('flipBtn').hidden = !it.flip;
     if (silk && !it.ribbon && it.scale !== lastScale) { silk.setScale(it.scale); lastScale = it.scale; }
     $('qtyNum').value = l.q; $('qtyRange').value = Math.min(300, Math.max(5, l.q));
@@ -438,6 +444,9 @@
   canvas.addEventListener('pointerdown', function () { canvas.classList.add('grabbing'); });
   window.addEventListener('pointerup', function () { canvas.classList.remove('grabbing'); });
   window.addEventListener('scroll', function () { root.classList.toggle('compact', window.scrollY > 60); }, { passive: true });
+  document.addEventListener('focusin', function (e) { if (e.target.matches('.panel input, .panel textarea, form input, form textarea, form select')) root.classList.add('typing'); });
+  document.addEventListener('focusout', function () { setTimeout(function () { if (!document.activeElement || !document.activeElement.matches('input, textarea, select')) root.classList.remove('typing'); }, 50); });
+  document.addEventListener('click', function (e) { var a = e.target.closest('a[href^="#"]'); if (!a) return; var t = document.getElementById(a.getAttribute('href').slice(1)); if (!t) return; e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
   apply(true);
 })();
 </script>

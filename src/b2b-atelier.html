@@ -1,0 +1,331 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ательє подарунка · Obiimy для бізнесу</title>
+<meta name="description" content="Зберіть корпоративний подарунок Obiimy в 3D: оберіть принт на живому шовку, річ, кількість і текст листівки — і надішліть конфігурацію на розрахунок. Посилання на конфігурацію можна переслати колегам.">
+<meta property="og:title" content="Ательє подарунка · Obiimy для бізнесу">
+<meta property="og:description" content="Оберіть принт на живому 3D-шовку, річ, кількість і листівку — і отримайте розрахунок для команди.">
+<meta property="og:image" content="https://obiimy-landing-production.up.railway.app/photo/og-b2b-newyear.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Onest:wght@300;400;500;600&display=swap">
+<style>
+  :root { color-scheme: dark; --bg: #0C0914; --bg2: #151022; --card: rgba(27,20,48,.72); --ink: #F1ECF3; --ink-2: #C3BBCF; --ink-3: #A39AB2; --gold: #F2B705; --line: rgba(241,236,243,.16);
+    --display: 'Cormorant Garamond', 'Times New Roman', serif; --body: 'Onest', 'Helvetica Neue', Arial, sans-serif; }
+  * { box-sizing: border-box; min-width: 0; }
+  html { scroll-behavior: smooth; }
+  body { margin: 0; background: radial-gradient(110% 80% at 30% 20%, #241A3E 0%, var(--bg) 55%, #070510 100%) fixed; color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2, h3 { font-family: var(--display); font-weight: 300; margin: 0; line-height: 1.02; text-wrap: balance; }
+  h1 { font-size: clamp(2.4rem, 4.6vw, 4.6rem); }
+  h2 { font-size: clamp(1.9rem, 3.2vw, 3rem); }
+  em { font-style: italic; }
+  p { margin: 0; }
+  [hidden] { display: none !important; }
+  [id] { scroll-margin-top: 80px; }
+  .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .eyebrow { font-size: .74rem; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); font-weight: 500; display: inline-flex; align-items: center; gap: 12px; }
+  .eyebrow::before { content: ""; width: 26px; height: 1px; background: var(--gold); }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 13px 24px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .9rem; letter-spacing: .02em; border: 1px solid transparent; cursor: pointer; font-family: inherit; transition: transform .2s ease, background .2s ease; background: none; color: inherit; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-gold { background: var(--gold); color: #14101F; }
+  .btn-line { border-color: var(--line); color: var(--ink); }
+  .btn-line:hover { border-color: var(--ink); }
+  .btn-sm { min-height: 44px; padding: 10px 18px; font-size: .82rem; }
+  .grain { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .35; mix-blend-mode: screen; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+
+  .nav { position: fixed; inset-inline: 0; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: calc(14px + env(safe-area-inset-top, 0px)) clamp(16px, 3vw, 40px) 14px; background: linear-gradient(180deg, rgba(12,9,20,.85), rgba(12,9,20,0)); }
+  .nav .logo { display: inline-flex; align-items: center; min-height: 44px; }
+  .nav .logo img { height: 20px; width: auto; }
+  .nav .links { display: flex; gap: 22px; font-size: .8rem; letter-spacing: .08em; }
+  .nav .links a { text-decoration: none; color: var(--ink-2); padding: 12px 0; }
+  .nav .links a:hover { color: var(--ink); }
+  @media (max-width: 900px) { .nav .links { display: none; } }
+
+  /* layout: stage + panel */
+  .atelier { position: relative; z-index: 2; display: grid; grid-template-columns: minmax(0, 7fr) minmax(360px, 5fr); min-height: 100vh; }
+  .stage { position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: hidden; }
+  .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; }
+  .stage canvas.grabbing { cursor: grabbing; }
+  .stage #ribbon { opacity: 0; transition: opacity .6s ease; pointer-events: none; top: 20%; left: 26%; width: 74%; height: 70%; right: auto; bottom: auto; inset: 20% auto auto 34%; width: 66%; }
+  .stage.twilly #ribbon { opacity: 1; }
+  .stage.twilly #silk { opacity: 0; pointer-events: none; }
+  .stage #silk { transition: opacity .6s ease; }
+  .stage .title { position: absolute; left: clamp(16px, 4vw, 56px); top: calc(96px + env(safe-area-inset-top, 0px)); max-width: 24em; pointer-events: none; z-index: 2; }
+  .stage .title p { margin-top: 14px; color: var(--ink-2); font-weight: 300; font-size: 1.02rem; max-width: 28em; }
+  .stage .now { position: absolute; left: clamp(16px, 4vw, 56px); bottom: calc(30px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 4px; pointer-events: none; }
+  .stage .now .n { font-family: var(--display); font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; }
+  .stage .now .s { font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); }
+  .stage .tools { position: absolute; right: clamp(16px, 3vw, 32px); bottom: calc(30px + env(safe-area-inset-bottom, 0px)); display: flex; gap: 8px; }
+  .stage .hintdrag { position: absolute; right: clamp(16px, 3vw, 32px); top: calc(100px + env(safe-area-inset-top, 0px)); font-size: .7rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3); pointer-events: none; }
+  .fallback { position: absolute; inset: 18% 18%; display: none; }
+  .fallback img { width: 100%; height: 100%; object-fit: contain; }
+  .no-webgl .fallback { display: block; }
+
+  /* gift card preview */
+  .gift { position: absolute; left: clamp(16px, 4vw, 56px); bottom: calc(130px + env(safe-area-inset-bottom, 0px)); width: min(270px, 34%); z-index: 2; pointer-events: none; transform: rotate(-3deg); filter: drop-shadow(0 30px 40px rgba(0,0,0,.45)); }
+  .gift .box { height: 64px; background: linear-gradient(180deg, #F7C51B, #E7AE00); border-radius: 3px 3px 0 0; display: grid; place-items: center; }
+  .gift .box img { height: 16px; width: auto; }
+  .gift .card { background: #F6F1E7; color: #231E2A; padding: 18px 20px 16px; border-radius: 0 0 3px 3px; min-height: 120px; display: grid; gap: 10px; align-content: space-between; }
+  .gift .card p { font-family: var(--display); font-style: italic; font-size: 1.12rem; line-height: 1.3; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .gift .card span { font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: #6B6477; }
+
+  .panel { position: relative; z-index: 3; padding: calc(96px + env(safe-area-inset-top, 0px)) clamp(16px, 3vw, 44px) 40px; display: grid; gap: 34px; align-content: start; background: linear-gradient(90deg, rgba(12,9,20,0), rgba(12,9,20,.55) 18%, rgba(12,9,20,.72)); border-left: 1px solid var(--line); }
+  .step { display: grid; gap: 14px; }
+  .step h2 { font-size: clamp(1.6rem, 2.4vw, 2.1rem); }
+  .step .help { color: var(--ink-2); font-size: .9rem; font-weight: 300; }
+  .swatches { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+  .swatches button { all: unset; cursor: pointer; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 2px solid transparent; box-shadow: 0 0 0 1px var(--line); transition: transform .2s ease, border-color .2s ease; position: relative; }
+  .swatches button img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.35); }
+  .swatches button:hover { transform: translateY(-2px); }
+  .swatches button[aria-pressed="true"] { border-color: var(--gold); }
+  .swatches button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .printline { font-size: .9rem; color: var(--ink-2); font-weight: 300; min-height: 3em; }
+  .items { display: grid; gap: 8px; }
+  .items button { all: unset; cursor: pointer; display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: baseline; padding: 12px 16px; border: 1px solid var(--line); border-radius: 4px; transition: border-color .2s ease, background .2s ease; min-height: 44px; }
+  .items button b { font-family: var(--display); font-weight: 400; font-size: 1.2rem; }
+  .items button small { color: var(--ink-3); font-size: .8rem; grid-column: 1 / -1; }
+  .items button .p { font-size: .9rem; color: var(--ink-2); }
+  .items button[aria-pressed="true"] { border-color: var(--gold); background: rgba(242,183,5,.08); }
+  .items button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .qty { display: grid; grid-template-columns: 1fr 110px; gap: 14px; align-items: center; }
+  input[type=range] { width: 100%; accent-color: var(--gold); min-height: 44px; }
+  input, select, textarea { font: inherit; font-size: 1rem; color: var(--ink); background: #14101F; border: 1px solid rgba(241,236,243,.22); border-radius: 3px; padding: 12px 14px; width: 100%; min-height: 48px; }
+  textarea { min-height: 96px; resize: vertical; }
+  ::placeholder { color: rgba(241,236,243,.55); }
+  .count { font-size: .8rem; color: var(--ink-3); text-align: right; }
+  .summary { position: sticky; bottom: 0; z-index: 4; margin-inline: calc(-1 * clamp(16px, 3vw, 44px)); padding: 16px clamp(16px, 3vw, 44px) calc(16px + env(safe-area-inset-bottom, 0px)); background: rgba(12,9,20,.94); border-top: 1px solid var(--line); backdrop-filter: blur(12px); display: grid; gap: 10px; }
+  .summary .line { font-size: .88rem; color: var(--ink-2); }
+  .summary .total { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .summary .total b { font-family: var(--display); font-weight: 400; font-size: 2rem; line-height: 1; }
+  .summary .total span { font-size: .78rem; color: var(--ink-3); }
+  .summary .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .summary .row .btn-gold { flex: 1 1 auto; }
+
+  /* request */
+  .reqsec { position: relative; z-index: 3; padding: 100px clamp(16px, 4vw, 56px) 80px; border-top: 1px solid var(--line); background: #0C0914; }
+  .req-in { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+  .req-in .copy { color: var(--ink-2); margin-top: 16px; font-weight: 300; }
+  .req-in .others { margin-top: 22px; font-size: .86rem; color: var(--ink-2); }
+  .req-in .others a { color: var(--ink); display: inline-block; padding: 8px 0; }
+  form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: clamp(18px, 3vw, 32px); }
+  form label { display: grid; gap: 6px; font-size: .8rem; color: var(--ink-2); letter-spacing: .03em; }
+  form label.full { grid-column: 1 / -1; }
+  form label .req { color: var(--gold); }
+  form select { appearance: none; -webkit-appearance: none; padding-right: 40px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23BDB5C9' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+  form .err { display: none; font-size: .78rem; color: #F08A7E; }
+  form [aria-invalid="true"] { border-color: #F08A7E; }
+  form [aria-invalid="true"] + .err { display: block; }
+  form .actions { grid-column: 1 / -1; display: grid; gap: 12px; }
+  form .hint { font-size: .82rem; color: var(--ink-2); }
+  form .hint a { display: inline-block; padding: 10px 0; margin: -10px 0; }
+  .done { background: var(--card); border: 1px solid var(--line); border-radius: 4px; padding: clamp(18px, 3vw, 32px); display: grid; gap: 14px; }
+  .done h3 { font-size: 1.8rem; }
+  .done .row { display: flex; flex-wrap: wrap; gap: 10px; }
+  footer { position: relative; z-index: 3; border-top: 1px solid var(--line); padding: 26px clamp(16px, 4vw, 56px) calc(26px + env(safe-area-inset-bottom, 0px)); font-size: .84rem; color: var(--ink-2); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px 24px; background: #0C0914; }
+  footer a { color: var(--ink); text-decoration: none; display: inline-block; padding: 10px 0; }
+
+  @media (max-width: 960px) {
+    .atelier { grid-template-columns: 1fr; }
+    .stage { height: 46vh; height: 46svh; z-index: 6; background: radial-gradient(110% 80% at 30% 20%, #241A3E 0%, var(--bg) 70%); border-bottom: 1px solid var(--line); box-shadow: 0 20px 40px -20px rgba(0,0,0,.8); }
+    .stage .title { top: calc(68px + env(safe-area-inset-top, 0px)); }
+    .stage .title h1 { font-size: 1.35rem; margin-top: 0 !important; }
+    .stage .title p, .stage .title .eyebrow, .stage .hintdrag, .stage .now { display: none; }
+    .stage #ribbon { inset: 20% auto auto 0; width: 100%; height: 70%; }
+    .stage .now { bottom: 14px; }
+    .stage .now .n { font-size: 1.5rem; }
+    .stage .tools { bottom: 12px; }
+    .gift { width: 128px; left: auto; right: 12px; bottom: 12px; transform: rotate(-4deg); }
+    .summary { gap: 6px; padding-top: 10px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+    .summary .line { font-size: .8rem; }
+    .summary .total { flex-wrap: nowrap; }
+    .summary .total b { font-size: 1.5rem; }
+    .summary .total span { display: none; }
+    .summary .row { flex-wrap: nowrap; }
+    .summary .row .btn { min-height: 44px; padding: 10px 14px; font-size: .82rem; }
+    .summary .row #shareBtn { flex: none; }
+    .panel .note-m { display: block; }
+    .gift .box { height: 34px; } .gift .box img { height: 10px; }
+    .gift .card { min-height: 64px; padding: 10px 12px; gap: 4px; } .gift .card p { font-size: .82rem; -webkit-line-clamp: 3; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; } .gift .card span { font-size: .56rem; }
+    .panel { border-left: 0; padding-top: 24px; background: var(--bg); gap: 28px; }
+    .stage .tools { left: 12px; right: auto; bottom: 12px; }
+    .req-in { grid-template-columns: 1fr; }
+    form { grid-template-columns: 1fr; } form label.full { grid-column: auto; }
+  }
+  @media (prefers-reduced-motion: reduce) { .btn, .swatches button { transition: none; } }
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<header class="nav">
+  <a class="logo" href="https://obiimy.world/" aria-label="Obiimy — на сайт бренду"><img src="brand/logo-white-480.webp" alt="Obiimy" width="94" height="20"></a>
+  <nav class="links" aria-label="Розділи сторінки"><a href="#s-print">Принт</a><a href="#s-item">Річ</a><a href="#s-qty">Кількість</a><a href="#s-card">Листівка</a><a href="#request">Запит</a></nav>
+  <a class="btn btn-gold btn-sm" href="#request">Розрахунок</a>
+</header>
+
+<main>
+  <div class="atelier">
+    <div class="stage" id="stage">
+      <canvas id="silk" aria-label="Тривимірна шовкова хустка з обраним принтом. Потягніть за тканину."></canvas>
+      <canvas id="ribbon" aria-hidden="true"></canvas>
+      <div class="fallback"><img id="fallbackImg" src="tex/probudzhennia.jpg" alt=""></div>
+      <div class="title">
+        <p class="eyebrow">Ательє подарунка</p>
+        <h1 style="margin-top:14px">Зберіть подарунок <em>для команди</em></h1>
+        <p>Оберіть принт на живому шовку, річ, кількість і текст листівки. Конфігурацію можна переслати колегам посиланням і надіслати нам на розрахунок.</p>
+      </div>
+      <p class="hintdrag">Потягніть за тканину</p>
+      <div class="now" aria-live="polite"><span class="s" id="nowItem">Хустка 65 × 65</span><span class="n" id="nowName">«Пробудження»</span></div>
+      <div class="gift" aria-hidden="true"><div class="box"><img src="brand/logo-ink-480.webp" alt=""></div><div class="card"><p id="cardPrev">Дякуємо, що цей рік був разом із нами.</p><span id="cardSign">— ваша компанія</span></div></div>
+      <div class="tools"><button class="btn btn-line btn-sm" type="button" id="flipBtn" hidden>Перевернути</button></div>
+    </div>
+
+    <div class="panel">
+      <section class="step" id="s-print" aria-labelledby="h-print">
+        <p class="eyebrow">01 · Принт</p>
+        <h2 id="h-print">Оберіть <em>стан</em></h2>
+        <div class="swatches" id="swatches" role="group" aria-label="Принти"></div>
+        <p class="printline" id="printLine"></p>
+      </section>
+
+      <section class="step" id="s-item" aria-labelledby="h-item">
+        <p class="eyebrow">02 · Річ</p>
+        <h2 id="h-item">Що <em>дарувати</em></h2>
+        <div class="items" id="items" role="group" aria-label="Річ"></div>
+        <p class="help">Наявність принту в обраному форматі підтвердимо в розрахунку. Суми — за роздрібними цінами, це верхня межа; умови для тиражу — у розрахунку.</p>
+      </section>
+
+      <section class="step" id="s-qty" aria-labelledby="h-qty">
+        <p class="eyebrow">03 · Кількість</p>
+        <h2 id="h-qty">Скільки <em>людей</em></h2>
+        <div class="qty"><input type="range" id="qtyRange" min="5" max="300" step="5" value="30" aria-label="Кількість подарунків"><input type="number" id="qtyNum" min="1" max="5000" value="30" inputmode="numeric" aria-label="Кількість подарунків, число"></div>
+      </section>
+
+      <section class="step" id="s-card" aria-labelledby="h-card">
+        <p class="eyebrow">04 · Листівка</p>
+        <h2 id="h-card">Що <em>написати</em></h2>
+        <textarea id="cardText" maxlength="160" aria-label="Текст листівки">Дякуємо, що цей рік був разом із нами.</textarea>
+        <p class="count"><span id="cardCount">38</span> / 160</p>
+        <input type="text" id="cardFrom" maxlength="40" placeholder="Підпис, наприклад: команда Acme" aria-label="Підпис на листівці">
+        <p class="help">Листівка з вашим текстом — у кожній фірмовій жовтій коробці.</p>
+      </section>
+
+      <div class="summary" id="summary">
+        <p class="line" id="sumLine">30 × Хустка 65 × 65 «Пробудження»</p>
+        <div class="total"><b class="num" id="sumTotal">96 000 грн</b><span>за роздрібними цінами — верхня межа; умови для тиражу — у розрахунку</span></div>
+        <div class="row"><a class="btn btn-gold" href="#request" id="toRequest">Надіслати конфігурацію</a><button class="btn btn-line btn-sm" type="button" id="shareBtn">Поділитися</button></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="reqsec" id="request">
+    <div class="req-in">
+      <div><p class="eyebrow">Запит</p><h2 style="margin-top:14px">Отримати <em>розрахунок</em></h2><p class="copy">Ваша конфігурація вже в коментарі до запиту. Повернемось із розрахунком на тираж, наявністю принту та графіком. Документи: рахунок і видаткова накладна; ТОВ і ФОП.</p>
+        <p class="others">Інші програми для бізнесу: <a href="b2b-garden">3D-історія</a> · <a href="b2b-newyear">Новий рік</a> · <a href="b2b-certificates">Сертифікати</a> · <a href="b2b-horeca">HoReCa</a> · <a href="b2b-wholesale">Опт</a></p></div>
+      <div><!--FORM--></div>
+    </div>
+  </section>
+</main>
+<footer><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко</span><span><a href="tel:+380670108525">+38 067 010 85 25</a> · <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a></span></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>window.OBIIMY_STATES = /*STATES*/[];</script>
+<script>/*ENGINE*/</script>
+<script>
+(function () {
+  var STATES = window.OBIIMY_STATES || [];
+  var ITEMS = [
+    { id: 'twilly', name: 'Твіллі 84 × 5', short: 'Твіллі', price: 1600, note: 'На сумку, у волосся, на зап’ястя', ribbon: true },
+    { id: 'p44', name: 'Паше 44 × 44', short: 'Паше 44', price: 1600, note: 'Нашийна хустка або в кишеню жакета', scale: 0.72 },
+    { id: 'k65', name: 'Хустка 65 × 65', short: 'Хустка 65', price: 3200, note: 'Класика: на шию, у волосся, на пояс', scale: 1 },
+    { id: 'd65', name: 'Двостороння 65 × 65', short: 'Двостороння 65', price: 4800, note: 'Два принти на одній хустці', scale: 1, flip: true },
+    { id: 'k88', name: 'Шаль 88 × 88', short: 'Шаль 88', price: 4400, note: 'На плечі, як топ, тюрбан', scale: 1.22 }
+  ];
+  var cfg = { p: 0, i: 2, q: 30, c: 'Дякуємо, що цей рік був разом із нами.', f: '' };
+  // restore from hash
+  try {
+    var h = new URLSearchParams(location.hash.replace(/^#cfg=/, ''));
+    if (location.hash.indexOf('#cfg=') === 0) {
+      var pi = STATES.findIndex(function (s) { return s.id === h.get('p'); }); if (pi >= 0) cfg.p = pi;
+      var ii = ITEMS.findIndex(function (x) { return x.id === h.get('i'); }); if (ii >= 0) cfg.i = ii;
+      var qq = parseInt(h.get('q'), 10); if (qq > 0) cfg.q = Math.min(5000, qq);
+      if (h.get('c') != null) cfg.c = h.get('c').slice(0, 160);
+      if (h.get('f') != null) cfg.f = h.get('f').slice(0, 40);
+    }
+  } catch (e) {}
+
+  var $ = function (id) { return document.getElementById(id); };
+  var stage = $('stage'), sw = $('swatches'), items = $('items');
+  function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' грн'; }
+
+  STATES.forEach(function (s, i) {
+    var b = document.createElement('button'); b.type = 'button'; b.dataset.i = i; b.setAttribute('aria-label', '«' + s.name + '»');
+    b.innerHTML = '<img src="tex/' + s.id + '.jpg" alt="" loading="lazy" width="80" height="80">';
+    b.addEventListener('click', function () { cfg.p = i; apply(true); });
+    sw.appendChild(b);
+  });
+  ITEMS.forEach(function (x, i) {
+    var b = document.createElement('button'); b.type = 'button'; b.dataset.i = i;
+    b.innerHTML = '<b>' + x.name + '</b><span class="p num">' + fmt(x.price) + '</span><small>' + x.note + '</small>';
+    b.addEventListener('click', function () { cfg.i = i; apply(false, true); });
+    items.appendChild(b);
+  });
+
+  var silk = window.SilkEngine && SilkEngine.create({
+    canvas: $('silk'), mode: 'float', texPath: 'tex/', front: STATES[cfg.p].id, back: STATES[cfg.p].back,
+    size: 1.35, resolution: 36, camDist: 5.6, offsetX: innerWidth > 960 ? 0.5 : 0, offsetY: innerWidth > 960 ? -0.28 : -0.05, rotY: 0.35, rotate: true, tiltX: 0.1,
+    envTop: '#FFFFFF', envBottom: '#0C0914', envTint: '#FFF1C2', sheen: '#F2B705', gloss: 0.26, aniso: 1.0, envStrength: 0.22, weaveScale: 0.5, weaveRepeat: 24,
+    light: [0.6, 0.6, 1.0], idleSway: 0.3
+  });
+  var ribbon = window.SilkEngine && SilkEngine.createRibbon({ canvas: $('ribbon'), texPath: 'tex/', texture: STATES[cfg.p].id, envTop: '#FFFFFF', envBottom: '#0C0914', sheen: '#F2B705', width: 0.7, repeat: 3, length: 3.2, camZ: 8.4, camZMobile: 6.6 });
+  if (!silk) document.documentElement.classList.add('no-webgl');
+
+  var lastScale = null;
+  function apply(printChanged, itemChanged) {
+    var s = STATES[cfg.p], it = ITEMS[cfg.i];
+    sw.querySelectorAll('button').forEach(function (b, i) { b.setAttribute('aria-pressed', i === cfg.p ? 'true' : 'false'); });
+    items.querySelectorAll('button').forEach(function (b, i) { b.setAttribute('aria-pressed', i === cfg.i ? 'true' : 'false'); });
+    $('printLine').textContent = '«' + s.name + '» — ' + s.line;
+    $('nowName').textContent = '«' + s.name + '»'; $('nowItem').textContent = it.name;
+    $('fallbackImg').src = 'tex/' + s.id + '.jpg';
+    if (printChanged !== false && silk) silk.setTextures(s.id, s.back);
+    if (ribbon) ribbon.setTexture(s.id);
+    stage.classList.toggle('twilly', !!it.ribbon);
+    $('flipBtn').hidden = !it.flip;
+    if (silk && !it.ribbon && it.scale !== lastScale) { silk.setScale(it.scale); lastScale = it.scale; }
+    $('qtyNum').value = cfg.q; $('qtyRange').value = Math.min(300, Math.max(5, cfg.q));
+    $('cardPrev').textContent = cfg.c || ' '; $('cardSign').textContent = '— ' + (cfg.f || 'ваша компанія'); $('cardCount').textContent = cfg.c.length;
+    $('sumLine').textContent = cfg.q + ' × ' + it.name + ' «' + s.name + '»';
+    $('sumTotal').textContent = fmt(cfg.q * it.price);
+    var note = document.querySelector('#f-at [name="note"]'), qty = document.querySelector('#f-at [name="qty"]');
+    if (note) note.value = summaryText();
+    if (qty) qty.value = cfg.q;
+    try { history.replaceState(null, '', '#cfg=' + shareParams()); } catch (e) {}
+  }
+  function shareParams() { var p = new URLSearchParams({ p: STATES[cfg.p].id, i: ITEMS[cfg.i].id, q: cfg.q, c: cfg.c, f: cfg.f }); return p.toString(); }
+  function summaryText() {
+    var s = STATES[cfg.p], it = ITEMS[cfg.i];
+    return 'Конфігурація з ательє: ' + cfg.q + ' × ' + it.name + ', принт «' + s.name + '». Орієнтир за роздрібними цінами: ' + fmt(cfg.q * it.price) + '. Текст листівки: «' + cfg.c + '»' + (cfg.f ? ', підпис: ' + cfg.f : '') + '.';
+  }
+  $('qtyRange').addEventListener('input', function () { cfg.q = +this.value; apply(false); });
+  $('qtyNum').addEventListener('input', function () { var v = parseInt(this.value, 10); if (v > 0) { cfg.q = Math.min(5000, v); apply(false); } });
+  $('cardText').addEventListener('input', function () { cfg.c = this.value.slice(0, 160); apply(false); });
+  $('cardFrom').addEventListener('input', function () { cfg.f = this.value.slice(0, 40); apply(false); });
+  $('flipBtn').addEventListener('click', function () { if (silk) silk.flip(); });
+  $('shareBtn').addEventListener('click', function () {
+    var b = this, url = location.href.split('#')[0] + '#cfg=' + shareParams();
+    var done = function () { b.textContent = 'Посилання скопійовано'; setTimeout(function () { b.textContent = 'Поділитися'; }, 2200); };
+    if (navigator.share && matchMedia('(pointer: coarse)').matches) navigator.share({ title: document.title, text: summaryText(), url: url }).catch(function () {});
+    else if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, function () { prompt('Скопіюйте посилання', url); });
+    else prompt('Скопіюйте посилання', url);
+  });
+  $('cardText').value = cfg.c; $('cardFrom').value = cfg.f;
+  var canvas = $('silk');
+  canvas.addEventListener('pointerdown', function () { canvas.classList.add('grabbing'); });
+  window.addEventListener('pointerup', function () { canvas.classList.remove('grabbing'); });
+  apply(true);
+})();
+</script>
+</body>
+</html>

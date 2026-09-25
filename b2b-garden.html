@@ -1,0 +1,494 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Obiimy для бізнесу · 3D</title>
+<meta name="description" content="Корпоративні подарунки Obiimy в одній 3D-сцені: принти для команди, бюджети від 700 до 4 800 грн, «Співоча душа», жовта коробка з вашою листівкою. Запит на добірку і розрахунок.">
+<meta property="og:title" content="Obiimy для бізнесу · 3D">
+<meta property="og:image" content="https://obiimy-landing-production.up.railway.app/photo/og-b2b-newyear.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Onest:wght@300;400;500;600&display=swap">
+<style>
+  :root { color-scheme: dark; --bg: #0C0914; --ink: #F1ECF3; --ink-2: #BDB5C9; --ink-3: #7F7690; --gold: #F2B705; --line: rgba(241,236,243,.14);
+    --display: 'Cormorant Garamond', 'Times New Roman', serif; --body: 'Onest', 'Helvetica Neue', Arial, sans-serif; }
+  * { box-sizing: border-box; min-width: 0; }
+  html { scroll-behavior: auto; }
+  body { margin: 0; background: radial-gradient(120% 80% at 50% 0%, #1B1430 0%, var(--bg) 55%, #070510 100%) fixed; color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  #gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; pointer-events: none; }
+  .grain { position: fixed; inset: 0; z-index: 3; pointer-events: none; opacity: .4; mix-blend-mode: screen; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"); }
+  .vignette { position: fixed; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(80% 70% at 50% 50%, transparent 55%, rgba(7,5,16,.75) 100%); }
+  img { max-width: 100%; display: block; }
+  a { color: inherit; }
+  h1, h2 { font-family: var(--display); font-weight: 300; margin: 0; line-height: 1; text-wrap: balance; }
+  h1 { font-size: clamp(2.6rem, 7vw, 6.4rem); letter-spacing: -0.01em; }
+  h2 { font-size: clamp(2.2rem, 5.4vw, 5rem); }
+  p { margin: 0; }
+  em { font-style: italic; }
+  .label { font-size: .66rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+  .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 24px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .86rem; letter-spacing: .04em; border: 1px solid transparent; transition: transform .2s ease; }
+  .btn:hover { transform: translateY(-1px); }
+  .btn-gold { background: var(--gold); color: #14101F; }
+  .btn-line { border-color: var(--line); color: var(--ink); }
+  .btn-line:hover { border-color: var(--ink); }
+
+  /* loading + nav + rail */
+  .loadbar { position: fixed; left: 0; top: 0; height: 2px; width: 100%; z-index: 60; background: var(--gold); transform-origin: left; transform: scaleX(0); transition: transform .4s ease, opacity .8s ease 1s; }
+  .ready .loadbar { opacity: 0; }
+  .nav { position: fixed; inset-inline: 0; top: 0; z-index: 50; padding: calc(18px + env(safe-area-inset-top, 0px)) clamp(16px, 3vw, 40px) 0; display: flex; justify-content: space-between; align-items: center; }
+  .nav img { height: 20px; width: auto; }
+  .nav a.site { font-size: .68rem; letter-spacing: .24em; text-transform: uppercase; text-decoration: none; color: var(--ink-2); }
+  .rail { position: fixed; right: clamp(14px, 2.5vw, 34px); top: 50%; transform: translateY(-50%); z-index: 50; display: grid; gap: 14px; }
+  .rail a { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink-3); font-size: .62rem; letter-spacing: .22em; text-transform: uppercase; justify-content: end; }
+  .rail a span { opacity: 0; transition: opacity .3s ease; }
+  .rail a i { width: 6px; height: 6px; border-radius: 50%; background: currentColor; opacity: .4; transition: transform .3s ease, opacity .3s ease; }
+  .rail a.on { color: var(--gold); } .rail a.on span { opacity: 1; } .rail a.on i { opacity: 1; transform: scale(1.6); }
+  @media (max-width: 760px) { .rail a span { display: none; } }
+
+  /* chapters */
+  main { position: relative; z-index: 4; }
+  .ch { position: relative; }
+  .ch .sticky { position: sticky; top: 0; height: 100vh; height: 100dvh; display: grid; align-content: end; padding: 0 clamp(16px, 4vw, 56px) calc(48px + env(safe-area-inset-bottom, 0px)); pointer-events: none; opacity: 0; transform: translateY(14px); transition: opacity .6s ease, transform .6s ease; }
+  .ch.on .sticky { opacity: 1; transform: none; }
+  .ch .sticky::before { content: ""; position: absolute; inset: auto 0 0 0; height: 62%; background: linear-gradient(180deg, rgba(12,9,20,0) 0%, rgba(12,9,20,.55) 45%, rgba(12,9,20,.82) 100%); z-index: -1; pointer-events: none; }
+  .ch .sticky { isolation: isolate; }
+  .ch .sticky > * { pointer-events: auto; }
+  .chip { display: inline-flex; align-items: center; gap: 12px; font-size: .66rem; letter-spacing: .3em; text-transform: uppercase; color: var(--gold); margin-bottom: 18px; }
+  .chip::before { content: ""; width: 28px; height: 1px; background: var(--gold); }
+  .copy { max-width: 34em; color: var(--ink-2); font-weight: 300; font-size: 1.05rem; margin-top: 16px; }
+
+  /* intro */
+  #c0 .sticky { align-content: end; text-align: center; justify-items: center; }
+  #c0 h1 { margin-top: 0; }
+  #c0 .copy { margin-inline: auto; text-align: center; }
+  .hint { margin-top: 26px; font-size: .62rem; letter-spacing: .3em; text-transform: uppercase; color: var(--ink-3); display: grid; justify-items: center; gap: 10px; }
+  .hint::after { content: ""; width: 1px; height: 40px; background: linear-gradient(180deg, var(--ink-3), transparent); animation: drop 2s ease-in-out infinite; }
+  @keyframes drop { 0% { transform: scaleY(0); transform-origin: top; } 50% { transform: scaleY(1); transform-origin: top; } 51% { transform-origin: bottom; } 100% { transform: scaleY(0); transform-origin: bottom; } }
+
+  /* panels */
+  .panel { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 24px; }
+  .state { display: grid; gap: 6px; justify-items: end; text-align: right; min-width: 240px; }
+  .state .n { font-family: var(--display); font-size: clamp(1.8rem, 3.4vw, 3rem); line-height: 1; }
+  .state .s { font-size: .74rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
+  .state .l { font-size: .92rem; color: var(--ink-2); max-width: 26em; }
+  .state a { margin-top: 8px; }
+  @media (max-width: 760px) { .panel { grid-template-columns: 1fr; } .state { justify-items: start; text-align: left; } h2 { font-size: clamp(2rem, 9vw, 3.2rem); } }
+
+  blockquote { margin: 18px 0 0; font-family: var(--display); font-style: italic; font-weight: 300; font-size: clamp(1.3rem, 2.4vw, 2rem); line-height: 1.3; max-width: 26em; border-left: 1px solid var(--gold); padding-left: 18px; }
+  blockquote cite { display: block; font-family: var(--body); font-style: normal; font-size: .66rem; letter-spacing: .24em; text-transform: uppercase; color: var(--ink-3); margin-top: 10px; }
+  .facts { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 18px; font-size: .84rem; color: var(--ink-2); }
+  .facts b { color: var(--gold); font-weight: 600; }
+
+  /* final */
+  #c5 .sticky { align-content: center; justify-items: center; text-align: center; }
+  #c5 .sticky::before { inset: 0; height: auto; background: radial-gradient(60% 50% at 50% 50%, rgba(12,9,20,.7) 0%, rgba(12,9,20,0) 100%); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 24px; }
+  .contact { margin-top: 18px; font-size: .9rem; color: var(--ink-2); display: flex; flex-wrap: wrap; gap: 8px 18px; justify-content: center; align-items: center; }
+  .contact a { color: var(--ink); text-decoration: none; font-weight: 600; }
+  .copybtn { all: unset; cursor: pointer; font-size: .66rem; letter-spacing: .2em; text-transform: uppercase; border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; }
+  .stores { margin-top: 14px; font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink-3); }
+
+  /* fallback */
+  .fallback { display: none; position: fixed; inset: 0; z-index: 1; }
+  .fallback img { width: 100%; height: 100%; object-fit: cover; opacity: .55; }
+  .no-webgl .fallback { display: block; }
+  @media (prefers-reduced-motion: reduce) { .hint::after { animation: none; } .ch .sticky { transition: none; } }
+
+  /* b2b */
+  .duo { display: flex; flex-wrap: wrap; gap: 10px; justify-content: end; margin-top: 8px; }
+  .duo a { margin-top: 0 !important; }
+  .nav a.site.cta { color: #14101F; background: var(--gold); padding: 11px 16px; border-radius: 999px; letter-spacing: .12em; font-weight: 600; }
+  .reqsec { position: relative; z-index: 5; background: linear-gradient(180deg, rgba(12,9,20,0) 0%, rgba(12,9,20,.92) 12%, #0C0914 30%); padding: 22vh clamp(16px, 4vw, 56px) 80px; }
+  .req-in { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
+  .reqsec .others { margin-top: 22px; font-size: .86rem; color: var(--ink-2); }
+  .reqsec .others a { color: var(--ink); display: inline-block; padding: 8px 0; }
+  form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: rgba(27,20,48,.72); border: 1px solid var(--line); border-radius: 4px; padding: clamp(18px, 3vw, 32px); backdrop-filter: blur(10px); }
+  form label { display: grid; gap: 6px; font-size: .8rem; color: var(--ink-2); letter-spacing: .03em; }
+  form label.full { grid-column: 1 / -1; }
+  form label .req { color: var(--gold); }
+  form input, form select, form textarea, .done textarea { font: inherit; font-size: 1rem; color: var(--ink); background: #14101F; border: 1px solid rgba(241,236,243,.22); border-radius: 3px; padding: 12px 14px; width: 100%; min-height: 48px; }
+  form select { appearance: none; -webkit-appearance: none; padding-right: 40px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23BDB5C9' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; }
+  form textarea { min-height: 96px; resize: vertical; }
+  ::placeholder { color: rgba(241,236,243,.55); }
+  form .err { display: none; font-size: .78rem; color: #F08A7E; }
+  form [aria-invalid="true"] { border-color: #F08A7E; }
+  form [aria-invalid="true"] + .err { display: block; }
+  form .actions { grid-column: 1 / -1; display: grid; gap: 12px; justify-content: stretch; margin: 0; }
+  form .hint { font-size: .82rem; color: var(--ink-2); text-transform: none; letter-spacing: 0; display: block; margin: 0; }
+  form .hint::after { display: none; }
+  @media (max-width: 760px) { #c1 .copy { display: none; } }
+  form .hint a { display: inline-block; padding: 10px 0; margin: -10px 0; }
+  .done { background: rgba(27,20,48,.72); border: 1px solid var(--line); border-radius: 4px; padding: clamp(18px, 3vw, 32px); display: grid; gap: 14px; }
+  .done h3 { font-family: var(--display); font-weight: 300; font-size: 1.8rem; margin: 0; }
+  .done .row { display: flex; flex-wrap: wrap; gap: 10px; }
+  .btn-sm { padding: 10px 18px; min-height: 44px; }
+  [hidden] { display: none !important; }
+  @media (max-width: 860px) { .req-in { grid-template-columns: 1fr; } form { grid-template-columns: 1fr; } form label.full { grid-column: auto; } .duo { justify-content: start; } .nav a.site.cta { padding: 9px 13px; font-size: .62rem; } }
+</style>
+
+<div class="loadbar" id="loadbar"></div>
+<canvas id="gl" aria-hidden="true"></canvas>
+<div class="fallback"><img src="photo/enerhiia-back.webp" alt=""></div>
+<div class="vignette"></div><div class="grain"></div>
+
+<header class="nav"><a href="https://obiimy.world/" aria-label="Obiimy — на сайт бренду"><img src="brand/logo-white-480.webp" alt="Obiimy" width="94" height="20"></a><a class="site cta" href="#request">Запит для бізнесу</a></header>
+<nav class="rail" id="rail" aria-label="Розділи">
+  <a href="#c0"><span>Вступ</span><i></i></a><a href="#c1"><span>Принт</span><i></i></a><a href="#c2"><span>Бюджети</span><i></i></a><a href="#c3"><span>Сенс</span><i></i></a><a href="#c4"><span>Коробка</span><i></i></a><a href="#c5"><span>Фінал</span><i></i></a><a href="#request"><span>Запит</span><i></i></a>
+</nav>
+
+<main>
+  <section class="ch" id="c0" style="height:190vh">
+    <div class="sticky">
+      <p class="label">Obiimy для бізнесу</p>
+      <h1 style="margin-top:14px">Корпоративний подарунок <em>з шовку</em></h1>
+      <p class="copy">Хустки з авторськими принтами для команди, партнерів і клієнтів — у фірмовій жовтій коробці з вашою листівкою. Прокрутіть: цей подарунок краще показати, ніж описати.</p>
+      <p class="hint">Прокрутіть</p>
+    </div>
+  </section>
+
+  <section class="ch" id="c1" style="height:360vh">
+    <div class="sticky">
+      <div class="panel">
+        <div><p class="chip">01 · Принт для команди</p><h2>Один принт — <em>або дев’ять</em></h2><p class="copy">Один принт на всю команду читається як дрес-код події, добірка різних — як особистий подарунок кожному. Дев’ять станів проходять повз — зупиніться на своєму.</p></div>
+        <div class="state"><span class="n" id="sName">«Пробудження»</span><span class="s" id="sSub">65 × 65 см · двосторонній друк · 4 320 грн</span><span class="l" id="sLine">Іриси, написані навесні.</span><div class="duo"><a class="btn btn-gold" href="#request">Запросити для команди</a><a class="btn btn-line" id="sLink" href="https://obiimy.world/khustky/">Принт на сайті</a></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="c2" style="height:300vh">
+    <div class="sticky">
+      <div class="panel">
+        <div><p class="chip">02 · Бюджети</p><h2>Від 700 до 4 800 <em>гривень</em></h2><p class="copy">Резинка в коробочці — 700 грн, твіллі або паше — 1 600, хустка 65 × 65 — 3 200, шаль 88 × 88 — 4 400, набір із трьох твіллі — 4 800. Роздрібні ціни; умови для тиражу — у розрахунку.</p></div>
+        <div class="state"><span class="s">Зараз у тунелі</span><span class="n" id="tName">«Пробудження»</span><span class="s num" id="tPrice">4 320 грн</span><a class="btn btn-line" id="tLink" href="https://obiimy.world/khustky/">До принту</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="c3" style="height:240vh">
+    <div class="sticky">
+      <p class="chip">03 · Подарунок із сенсом</p>
+      <h2>Краса, яка вміє <em>рятувати</em></h2>
+      <blockquote>Ця колекція про тендітність і силу, про птахів, які співають і зникають, про красу, яка може рятувати.<cite>Світлана Сніжко, засновниця</cite></blockquote>
+      <div class="facts"><span><b>Сиворакша</b> — птах Червоної книги, якому будуємо гнізда</span><span><b>Партнер</b> — Українське товариство охорони птахів</span><span><b>Для компанії</b> — історія, яку можна розповісти команді</span></div>
+    </div>
+  </section>
+
+  <section class="ch" id="c4" style="height:320vh">
+    <div class="sticky">
+      <div class="panel">
+        <div><p class="chip">04 · Жовта коробка</p><h2>Ваша листівка — <em>всередині</em></h2><p class="copy">Прокрутіть — кришка відкриється, і хустка підніметься з тонкого паперу. У кожній коробці — листівка з вашим привітанням. В офіс однією посилкою або кожному на відділення Нової пошти.</p></div>
+        <div class="state"><span class="s">Новий рік</span><span class="n num">до 10 грудня</span><span class="l">Рекомендована дата відправки, щоб встигнути до передсвяткового піку пошти.</span><a class="btn btn-gold" href="#request">Встигнути до свят</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ch" id="c5" style="height:160vh">
+    <div class="sticky">
+      <p class="label">Obiimy для бізнесу</p>
+      <h2 style="margin-top:14px">Для команди, партнерів і тих, кого хочеться <em>обійняти</em></h2>
+      <div class="actions"><a class="btn btn-gold" href="#request">Отримати добірку і розрахунок</a><a class="btn btn-line" href="b2b-atelier">Зібрати подарунок у 3D-ательє</a></div>
+      <div class="contact"><span>Корпоративні замовлення:</span><a class="num" id="phone" href="tel:+380670108525">+38 067 010 85 25</a><button class="copybtn" type="button" id="copyPhone">Скопіювати</button></div>
+      <p class="stores">INTERTOP · Hram · Be Brave · UFD London · LIGA.net · INSIDER UA</p>
+    </div>
+  </section>
+
+  <section class="reqsec" id="request">
+    <div class="req-in">
+      <div class="req-t"><p class="chip">Запит</p><h2>Отримати добірку <em>і розрахунок</em></h2><p class="copy">Кількість, бюджет і привід — повернемось із добіркою принтів, цінами на тираж і графіком. Документи для бухгалтерії: рахунок і видаткова накладна; ТОВ і ФОП.</p>
+        <p class="others">Класичні B2B-сторінки: <a href="b2b-newyear">Новий рік</a> · <a href="b2b-calendar">Річна програма</a> · <a href="b2b-horeca">HoReCa</a> · <a href="b2b-wholesale">Опт</a> · <a href="b2b-certificates">Сертифікати</a></p></div>
+      <div>
+      <form id="f-3d" novalidate>
+        <label><span>Компанія <span class="req">*</span></span><input name="company" data-label="Компанія" type="text" placeholder="Назва компанії" autocomplete="organization" required aria-describedby="f-3d-company-err"><span class="err" id="f-3d-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-3d-name-err"><span class="err" id="f-3d-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-3d-phone-err"><span class="err" id="f-3d-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-3d-email-err"><span class="err" id="f-3d-email-err" role="alert">Вкажіть коректний email</span></label><label><span>Кількість подарунків</span><input name="qty" data-label="Кількість подарунків" type="number" min="1" inputmode="numeric" placeholder="наприклад, 30"></label><label><span>Бюджет на один подарунок</span><select name="budget" data-label="Бюджет на один подарунок"><option value="">Оберіть</option><option>до 1 000 грн</option><option>до 2 000 грн</option><option>до 3 500 грн</option><option>до 5 000 грн</option><option>інший</option></select></label><label><span>Коли потрібно</span><select name="deadline" data-label="Коли потрібно"><option value="">Оберіть</option><option>До 10 грудня</option><option>До 20 грудня</option><option>Після свят</option><option>Інша дата</option></select></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Привід, побажання до принтів, текст листівки…"></textarea></label>
+        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на sale@obiimy-world.com з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="tel:+380670108525">+38 067 010 85 25</a>.</span></div>
+      </form>
+      <div class="done" id="f-3d-done" hidden aria-live="polite">
+        <h3 tabindex="-1">Лист підготовлено</h3>
+        <p>Якщо поштова програма не відкрилась — скопіюйте текст нижче й надішліть на <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a>, або подзвоніть <a href="tel:+380670108525">+38 067 010 85 25</a>.</p>
+        <textarea id="f-3d-txt" readonly rows="8" aria-label="Текст запиту"></textarea>
+        <div class="row"><button class="btn btn-line btn-sm" type="button" id="f-3d-copy">Скопіювати текст</button><a class="btn btn-line btn-sm" href="tel:+380670108525">Подзвонити</a><button class="btn btn-line btn-sm" type="button" id="f-3d-back">Змінити запит</button></div>
+      </div>
+      <script>
+      (function () {
+        var f = document.getElementById('f-3d'), done = document.getElementById('f-3d-done'), txt = document.getElementById('f-3d-txt');
+        function valid(i) {
+          var v = i.value.trim();
+          if (i.type === 'email') return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
+          if (i.type === 'tel') return v.replace(/\D/g, '').length >= 9;
+          return v.length > 1;
+        }
+        f.querySelectorAll('[required]').forEach(function (i) { i.addEventListener('input', function () { if (i.getAttribute('aria-invalid') === 'true' && valid(i)) i.setAttribute('aria-invalid', 'false'); }); });
+        f.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var first = null;
+          f.querySelectorAll('[required]').forEach(function (i) { var ok = valid(i); i.setAttribute('aria-invalid', ok ? 'false' : 'true'); if (!ok && !first) first = i; });
+          if (first) { first.focus(); first.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
+          var lines = [];
+          f.querySelectorAll('[name]').forEach(function (i) { if (i.value.trim()) lines.push(i.dataset.label + ': ' + i.value.trim()); });
+          var body = 'Корпоративні подарунки\n\n' + lines.join('\n') + '\n\nНадіслано зі сторінки ' + location.href;
+          txt.value = body;
+          var company = f.querySelector('[name="company"]').value.trim();
+          f.hidden = true; done.hidden = false; done.scrollIntoView({ block: 'start', behavior: 'smooth' }); done.querySelector('h3').focus({ preventScroll: true });
+          window.location.href = 'mailto:sale@obiimy-world.com?subject=' + encodeURIComponent('Корпоративні подарунки — ' + company) + '&body=' + encodeURIComponent(body);
+        });
+        document.getElementById('f-3d-copy').addEventListener('click', function () { var b = this; txt.select(); (navigator.clipboard ? navigator.clipboard.writeText(txt.value) : Promise.reject()).then(function () { b.textContent = 'Скопійовано'; setTimeout(function () { b.textContent = 'Скопіювати текст'; }, 2000); }, function () { document.execCommand('copy'); }); });
+        document.getElementById('f-3d-back').addEventListener('click', function () { done.hidden = true; f.hidden = false; f.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
+      })();
+      </script></div>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>window.OBIIMY_STATES = [{"id": "probudzhennia", "name": "Пробудження", "line": "Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини чогось нового.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "https://obiimy.world/shovkova-khustka-probudzhennia-65x65/", "back": "litnie-pole"}, {"id": "yednannia", "name": "Єднання", "line": "Жовті пташки на кульбабах. Про те, що тримає разом, коли розлітається все інше.", "size": "44 × 44 см · двосторонній друк", "price": "2 400 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "pidnesennia"}, {"id": "tysha-sertsia", "name": "Тиша серця", "line": "Горобці у високій траві. Про спокій, який не треба заслуговувати.", "size": "65 × 65 см", "price": "3 200 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "melodiia"}, {"id": "prystrast", "name": "Пристрасть", "line": "Сині кульбаби на кремовому шовку. Про те, що розлітається від одного подиху.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "mizh-namy"}, {"id": "kolo-sontsia", "name": "Коло сонця", "line": "Вінок із сонячних квітів на рожевому. Про тепло, яке щоразу повертається.", "size": "88 × 88 см · шаль", "price": "4 400 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "litnie-pole"}, {"id": "melodiia", "name": "Мелодія двох", "line": "Дві пташки серед верболозу. Про розмову, для якої не потрібні слова.", "size": "44 × 44 см · паше", "price": "1 600 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "yednannia"}, {"id": "pidnesennia", "name": "Піднесення", "line": "Сиворакші та золотий дощ. Про політ, який починається на землі.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "https://obiimy.world/spivocha-dusha/", "back": "kolo-sontsia"}, {"id": "mizh-namy", "name": "Між нами", "line": "Гортензії по краю сірого шовку. Про те, що лишається тільки між двома.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "prystrast"}, {"id": "litnie-pole", "name": "Літнє поле", "line": "Букет, написаний за один день. Про літо, яке не хоче закінчуватись.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "probudzhennia"}];</script>
+<script>
+/* Obiimy Garden: one scroll-driven WebGL scene. Requires THREE r128 UMD. */
+(function () {
+  'use strict';
+  var STATES = window.OBIIMY_STATES || [];
+  var canvas = document.getElementById('gl');
+  var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var isMobile = innerWidth < 820;
+  var renderer;
+  try { renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true, powerPreference: 'high-performance' }); }
+  catch (e) { document.documentElement.classList.add('no-webgl'); return; }
+  renderer.setPixelRatio(Math.min(devicePixelRatio || 1, isMobile ? 1.5 : 2));
+  renderer.setClearColor(0x000000, 0);
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(38, 1, 0.1, 80);
+  camera.position.set(0, 0, 6);
+  var loader = new THREE.TextureLoader();
+  var loaded = 0, total = STATES.length + 1;
+  var progressEl = document.getElementById('loadbar');
+  function onLoad() { loaded++; if (progressEl) progressEl.style.transform = 'scaleX(' + (loaded / total) + ')'; if (loaded >= total) document.documentElement.classList.add('ready'); }
+
+  /* ---------- weave normal map ---------- */
+  function makeWeave(size) {
+    var c = document.createElement('canvas'); c.width = c.height = size; var ctx = c.getContext('2d');
+    var img = ctx.createImageData(size, size), d = img.data, h = new Float32Array(size * size);
+    for (var y = 0; y < size; y++) for (var x = 0; x < size; x++) h[y * size + x] = (Math.sin((x + y) * 0.55) * 0.5 + 0.5) * 0.35 + (Math.sin(x * 1.9) * 0.5 + 0.5) * 0.35 + (Math.sin(y * 1.9) * 0.5 + 0.5) * 0.2 + Math.random() * 0.03;
+    for (var y2 = 0; y2 < size; y2++) for (var x2 = 0; x2 < size; x2++) {
+      var xl = h[y2 * size + ((x2 - 1 + size) % size)], xr = h[y2 * size + ((x2 + 1) % size)], yu = h[((y2 - 1 + size) % size) * size + x2], yd = h[((y2 + 1) % size) * size + x2];
+      var nx = (xl - xr) * 2.2, ny = (yu - yd) * 2.2, l = Math.sqrt(nx * nx + ny * ny + 1), i = (y2 * size + x2) * 4;
+      d[i] = (nx / l * 0.5 + 0.5) * 255; d[i + 1] = (ny / l * 0.5 + 0.5) * 255; d[i + 2] = (1 / l * 0.5 + 0.5) * 255; d[i + 3] = 255;
+    }
+    ctx.putImageData(img, 0, 0); var t = new THREE.CanvasTexture(c); t.wrapS = t.wrapT = THREE.RepeatWrapping; return t;
+  }
+  var weave = makeWeave(256);
+
+  /* ---------- silk shader (wave displaced, anisotropic sheen) ---------- */
+  var SILK_VERT = [
+    'uniform float uTime, uAmp, uPhase; varying vec2 vUv; varying vec3 vN, vP, vT;',
+    'float wave(vec2 p){ float t=uTime+uPhase; return (sin(p.x*3.1+t*1.1+p.y*1.7)*0.55 + sin(p.y*4.3-t*0.8+p.x*0.6)*0.35 + sin((p.x+p.y)*7.0+t*1.9)*0.12)*uAmp; }',
+    'void main(){ vUv=uv; vec2 p=position.xy; float e=0.02; float z=wave(p), zx=wave(p+vec2(e,0.)), zy=wave(p+vec2(0.,e));',
+    '  vec3 pos=vec3(p,z); vec3 n=normalize(cross(vec3(e,0.,zx-z), vec3(0.,e,zy-z)));',
+    '  vN=normalize(normalMatrix*n); vT=normalize(normalMatrix*vec3(1.,0.,zx-z)); vec4 mv=modelViewMatrix*vec4(pos,1.); vP=mv.xyz; gl_Position=projectionMatrix*mv; }'
+  ].join('\n');
+  var SILK_FRAG = [
+    'precision highp float; uniform sampler2D uTex, uWeave; uniform float uOpacity, uGlow; uniform vec3 uLight, uSheen;',
+    'varying vec2 vUv; varying vec3 vN, vP, vT;',
+    'void main(){ vec3 N=normalize(vN); if(!gl_FrontFacing) N=-N; vec3 T=normalize(vT-N*dot(vT,N)); vec3 B=cross(N,T);',
+    '  vec3 wn=texture2D(uWeave, vUv*16.).xyz*2.-1.; vec3 n=normalize(T*wn.x*0.35+B*wn.y*0.35+N*wn.z);',
+    '  vec2 uv = gl_FrontFacing ? vUv : vec2(1.-vUv.x, vUv.y); vec3 base=texture2D(uTex, uv).rgb;',
+    '  vec3 V=normalize(-vP); vec3 L=normalize(uLight); vec3 H=normalize(L+V);',
+    '  float diff=0.55+0.45*max(dot(n,L),0.); float TdotH=dot(T,H); float aniso=pow(sqrt(max(1.-TdotH*TdotH,0.)),22.);',
+    '  float spec=pow(max(dot(n,H),0.),80.); float fres=pow(1.-max(dot(n,V),0.),3.5);',
+    '  vec3 col=base*diff + base*aniso*0.5 + uSheen*aniso*0.2 + vec3(1.)*spec*0.3 + uSheen*fres*0.35 + base*uGlow;',
+    '  gl_FragColor=vec4(col, uOpacity); }'
+  ].join('\n');
+  var sheetGeo = new THREE.PlaneGeometry(1, 1, 48, 48);
+  var sheets = [];
+  STATES.forEach(function (s, i) {
+    var tex = loader.load('tex/' + s.id + '.jpg', onLoad); tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    var mat = new THREE.ShaderMaterial({
+      uniforms: { uTex: { value: tex }, uWeave: { value: weave }, uTime: { value: 0 }, uAmp: { value: 0.12 }, uPhase: { value: i * 1.7 }, uOpacity: { value: 1 }, uGlow: { value: 0 }, uLight: { value: new THREE.Vector3(0.4, 0.8, 1).normalize() }, uSheen: { value: new THREE.Color('#F2B705') } },
+      vertexShader: SILK_VERT, fragmentShader: SILK_FRAG, side: THREE.DoubleSide, transparent: true, depthWrite: true
+    });
+    var m = new THREE.Mesh(sheetGeo, mat); m.frustumCulled = false; m.userData = { target: new THREE.Vector3(0, 0, -40), rot: new THREE.Euler(), scale: 0.001, opacity: 0 };
+    scene.add(m); sheets.push(m);
+  });
+
+  /* ---------- particles forming the official logo ---------- */
+  var COUNT = isMobile ? 3500 : 7000;
+  var pGeo = new THREE.BufferGeometry();
+  var pos = new Float32Array(COUNT * 3), home = new Float32Array(COUNT * 3), rnd = new Float32Array(COUNT * 4);
+  for (var k = 0; k < COUNT; k++) { rnd[k * 4] = Math.random(); rnd[k * 4 + 1] = Math.random(); rnd[k * 4 + 2] = Math.random(); rnd[k * 4 + 3] = Math.random(); pos[k * 3] = (Math.random() - 0.5) * 20; pos[k * 3 + 1] = (Math.random() - 0.5) * 12; pos[k * 3 + 2] = (Math.random() - 0.5) * 10 - 4; }
+  pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+  pGeo.setAttribute('aHome', new THREE.BufferAttribute(home, 3));
+  pGeo.setAttribute('aRnd', new THREE.BufferAttribute(rnd, 4));
+  var pMat = new THREE.ShaderMaterial({
+    uniforms: { uTime: { value: 0 }, uMorph: { value: 1 }, uAssemble: { value: 0 }, uSwirl: { value: 0.6 }, uSize: { value: isMobile ? 2.2 : 2.6 }, uColor: { value: new THREE.Color('#F2B705') }, uAlpha: { value: 1 }, uPixel: { value: renderer.getPixelRatio() } },
+    vertexShader: [
+      'attribute vec3 aHome; attribute vec4 aRnd; uniform float uTime, uMorph, uAssemble, uSwirl, uSize, uPixel; varying float vA;',
+      'vec3 flock(vec3 h, vec4 r, float t){ float a=r.x*6.2831+t*(0.15+r.y*0.25); float rad=2.2+r.z*5.5; vec3 p=vec3(cos(a)*rad, sin(a*1.3+r.w*3.)*1.8+ (r.w-0.5)*3.0, sin(a)*rad-3.0);',
+      '  p += vec3(sin(t*0.7+r.y*9.), cos(t*0.5+r.z*7.), sin(t*0.6+r.x*5.))*uSwirl; return p; }',
+      'void main(){ float t=uTime; vec3 h=aHome; vec3 f=flock(h,aRnd,t);',
+      '  vec3 scatter = position;',
+      '  vec3 logoPos = mix(scatter, h, smoothstep(0.,1., clamp(uAssemble*1.4 - aRnd.x*0.4, 0., 1.)));',
+      '  logoPos += vec3(sin(t*1.3+aRnd.y*20.), cos(t*1.1+aRnd.z*20.), 0.)*0.012;',
+      '  vec3 p = mix(logoPos, f, smoothstep(0.,1.,uMorph));',
+      '  vec4 mv=modelViewMatrix*vec4(p,1.); gl_Position=projectionMatrix*mv;',
+      '  float tw = 0.65+0.35*sin(t*3.+aRnd.w*40.); vA = tw*(0.55+0.45*aRnd.z);',
+      '  gl_PointSize = uSize*uPixel*(0.7+aRnd.w*0.9)*(6.0/-mv.z); }'
+    ].join('\n'),
+    fragmentShader: [
+      'precision highp float; uniform vec3 uColor; uniform float uAlpha; varying float vA;',
+      'void main(){ vec2 c=gl_PointCoord-0.5; float d=length(c); if(d>0.5) discard; float a=smoothstep(0.5,0.1,d); gl_FragColor=vec4(uColor*(1.0+0.4*(1.0-d*2.0)), a*vA*uAlpha); }'
+    ].join('\n'),
+    transparent: true, depthWrite: false, blending: THREE.AdditiveBlending
+  });
+  var points = new THREE.Points(pGeo, pMat); points.frustumCulled = false; scene.add(points);
+  // sample logo alpha into home positions
+  var logoImg = new Image();
+  logoImg.onload = function () {
+    var c = document.createElement('canvas'), W = 480, H = Math.round(480 * logoImg.height / logoImg.width); c.width = W; c.height = H;
+    var ctx = c.getContext('2d'); ctx.drawImage(logoImg, 0, 0, W, H); var d = ctx.getImageData(0, 0, W, H).data, pts = [];
+    for (var y = 0; y < H; y += 2) for (var x = 0; x < W; x += 2) if (d[(y * W + x) * 4 + 3] > 120) pts.push([x, y]);
+    var visW = 2 * 6 * Math.tan(camera.fov * Math.PI / 360) * camera.aspect; var span = Math.min(visW * 0.86, 5.2), aspect = H / W;
+    for (var i = 0; i < COUNT; i++) { var p = pts[Math.floor(Math.random() * pts.length)]; home[i * 3] = (p[0] / W - 0.5) * span + (Math.random() - 0.5) * 0.02; home[i * 3 + 1] = -(p[1] / H - 0.5) * span * aspect + (Math.random() - 0.5) * 0.02; home[i * 3 + 2] = (Math.random() - 0.5) * 0.15; }
+    pGeo.attributes.aHome.needsUpdate = true; onLoad();
+  };
+  logoImg.src = 'brand/logo-original.png';
+
+  /* ---------- the yellow box + cloth ---------- */
+  var boxGroup = new THREE.Group(); scene.add(boxGroup); boxGroup.visible = false;
+  var yellow = new THREE.MeshStandardMaterial({ color: new THREE.Color('#F2B705'), roughness: 0.55, metalness: 0.02 });
+  var yellowDark = new THREE.MeshStandardMaterial({ color: new THREE.Color('#D9A000'), roughness: 0.6 });
+  var pink = new THREE.MeshStandardMaterial({ color: new THREE.Color('#E9C9D6'), roughness: 0.95, side: THREE.DoubleSide });
+  var BW = 2.4, BD = 1.6, BH = 0.55;
+  function wall(w, h, d, x, y, z) { var m = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), yellowDark); m.position.set(x, y, z); return m; }
+  boxGroup.add(wall(BW, 0.04, BD, 0, -BH / 2, 0));
+  boxGroup.add(wall(0.04, BH, BD, -BW / 2, 0, 0)); boxGroup.add(wall(0.04, BH, BD, BW / 2, 0, 0));
+  boxGroup.add(wall(BW, BH, 0.04, 0, 0, -BD / 2)); boxGroup.add(wall(BW, BH, 0.04, 0, 0, BD / 2));
+  var tissue = new THREE.Mesh(new THREE.PlaneGeometry(BW * 0.92, BD * 0.92, 12, 12), pink); tissue.rotation.x = -Math.PI / 2; tissue.position.y = -BH / 2 + 0.06;
+  var tp = tissue.geometry.attributes.position; for (var ti = 0; ti < tp.count; ti++) tp.setZ(ti, Math.sin(tp.getX(ti) * 5) * 0.03 + Math.cos(tp.getY(ti) * 7) * 0.02); tissue.geometry.computeVertexNormals(); boxGroup.add(tissue);
+  var lidPivot = new THREE.Group(); lidPivot.position.set(0, BH / 2, -BD / 2); boxGroup.add(lidPivot);
+  var lid = new THREE.Mesh(new THREE.BoxGeometry(BW + 0.06, 0.06, BD + 0.06), yellow); lid.position.set(0, 0.03, BD / 2); lidPivot.add(lid);
+  var lidRim = new THREE.Mesh(new THREE.BoxGeometry(BW + 0.06, 0.16, BD + 0.06), yellow); lidRim.position.set(0, -0.05, BD / 2); lidPivot.add(lidRim);
+  var logoTex = loader.load('brand/logo-ink.png'); logoTex.anisotropy = 8;
+  var logoPlane = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 1.1 * 255 / 1200), new THREE.MeshBasicMaterial({ map: logoTex, transparent: true })); logoPlane.rotation.x = -Math.PI / 2; logoPlane.rotation.z = 0.12; logoPlane.position.set(-0.35, 0.065, BD / 2 + 0.1); lidPivot.add(logoPlane);
+  scene.add(new THREE.AmbientLight(0xffffff, 0.55)); var key = new THREE.DirectionalLight(0xfff3d6, 0.9); key.position.set(2, 4, 3); scene.add(key); var rim = new THREE.PointLight(0xF2B705, 0.6, 12); rim.position.set(-3, 2, 2); scene.add(rim);
+
+  // cloth pulled out of the box (Verlet)
+  var CN = isMobile ? 22 : 28, CW = 1.5;
+  var cloth = { pos: new Float32Array(CN * CN * 3), prev: new Float32Array(CN * CN * 3), acc: new Float32Array(CN * CN * 3), cons: [] };
+  var clothGeo = new THREE.BufferGeometry();
+  (function initCloth() {
+    var uv = new Float32Array(CN * CN * 2), idx = [];
+    for (var j = 0; j < CN; j++) for (var i = 0; i < CN; i++) { var k = j * CN + i; cloth.pos[k * 3] = -CW / 2 + i * CW / (CN - 1); cloth.pos[k * 3 + 1] = 0; cloth.pos[k * 3 + 2] = -CW / 2 + j * CW / (CN - 1); uv[k * 2] = i / (CN - 1); uv[k * 2 + 1] = 1 - j / (CN - 1); }
+    cloth.prev.set(cloth.pos);
+    function dist(a, b) { var p = cloth.pos; return Math.hypot(p[a * 3] - p[b * 3], p[a * 3 + 1] - p[b * 3 + 1], p[a * 3 + 2] - p[b * 3 + 2]); }
+    for (var j2 = 0; j2 < CN; j2++) for (var i2 = 0; i2 < CN; i2++) { var k2 = j2 * CN + i2; if (i2 < CN - 1) cloth.cons.push(k2, k2 + 1, dist(k2, k2 + 1), 1); if (j2 < CN - 1) cloth.cons.push(k2, k2 + CN, dist(k2, k2 + CN), 1); if (i2 < CN - 1 && j2 < CN - 1) { cloth.cons.push(k2, k2 + CN + 1, dist(k2, k2 + CN + 1), 0.7); cloth.cons.push(k2 + 1, k2 + CN, dist(k2 + 1, k2 + CN), 0.7); } if (i2 < CN - 2) cloth.cons.push(k2, k2 + 2, dist(k2, k2 + 2), 0.3); if (j2 < CN - 2) cloth.cons.push(k2, k2 + 2 * CN, dist(k2, k2 + 2 * CN), 0.3); }
+    for (var j3 = 0; j3 < CN - 1; j3++) for (var i3 = 0; i3 < CN - 1; i3++) { var a = j3 * CN + i3, b = a + 1, c = a + CN, d = c + 1; idx.push(a, c, b, b, c, d); }
+    clothGeo.setAttribute('position', new THREE.BufferAttribute(cloth.pos, 3)); clothGeo.setAttribute('uv', new THREE.BufferAttribute(uv, 2)); clothGeo.setIndex(idx); clothGeo.computeVertexNormals();
+  })();
+  var clothMat = new THREE.MeshStandardMaterial({ map: sheets[0] ? sheets[0].material.uniforms.uTex.value : null, roughness: 0.35, metalness: 0.05, side: THREE.DoubleSide });
+  var clothMesh = new THREE.Mesh(clothGeo, clothMat); clothMesh.frustumCulled = false; boxGroup.add(clothMesh);
+  var pinIdx = Math.floor(CN / 2) * CN + Math.floor(CN / 2), pinPos = new THREE.Vector3(0, 0, 0);
+  function resetCloth() { for (var j = 0; j < CN; j++) for (var i = 0; i < CN; i++) { var k = j * CN + i; cloth.pos[k * 3] = (-CW / 2 + i * CW / (CN - 1)) * 0.9; cloth.pos[k * 3 + 1] = -BH / 2 + 0.12 + Math.sin(i * 0.9) * 0.03 + Math.cos(j * 0.7) * 0.03; cloth.pos[k * 3 + 2] = (-CW / 2 + j * CW / (CN - 1)) * 0.9; } cloth.prev.set(cloth.pos); }
+  resetCloth();
+  function stepCloth(dt) {
+    var p = cloth.pos, q = cloth.prev, a = cloth.acc, n = CN * CN, dt2 = dt * dt;
+    for (var k = 0; k < n; k++) { var i = k * 3; a[i + 1] -= 7; var x = p[i], y = p[i + 1], z = p[i + 2]; p[i] = x + (x - q[i]) * 0.985 + a[i] * dt2; p[i + 1] = y + (y - q[i + 1]) * 0.985 + a[i + 1] * dt2; p[i + 2] = z + (z - q[i + 2]) * 0.985 + a[i + 2] * dt2; q[i] = x; q[i + 1] = y; q[i + 2] = z; }
+    a.fill(0);
+    var c = cloth.cons;
+    for (var it = 0; it < 5; it++) {
+      p[pinIdx * 3] = pinPos.x; p[pinIdx * 3 + 1] = pinPos.y; p[pinIdx * 3 + 2] = pinPos.z;
+      for (var j = 0; j < c.length; j += 4) { var A = c[j], B = c[j + 1], rest = c[j + 2], st = c[j + 3], ai = A * 3, bi = B * 3; var dx = p[bi] - p[ai], dy = p[bi + 1] - p[ai + 1], dz = p[bi + 2] - p[ai + 2], d = Math.sqrt(dx * dx + dy * dy + dz * dz); if (d < 1e-6) continue; var f = (d - rest) / d * 0.5 * st; if (A !== pinIdx) { p[ai] += dx * f; p[ai + 1] += dy * f; p[ai + 2] += dz * f; } if (B !== pinIdx) { p[bi] -= dx * f; p[bi + 1] -= dy * f; p[bi + 2] -= dz * f; } }
+      // floor of the box
+      for (var k2 = 0; k2 < n; k2++) { var yi = k2 * 3 + 1; if (p[yi] < -BH / 2 + 0.08) p[yi] = -BH / 2 + 0.08; }
+    }
+    clothGeo.attributes.position.needsUpdate = true; clothGeo.computeVertexNormals();
+  }
+
+  /* ---------- chapter choreography ---------- */
+  var chapters = [].slice.call(document.querySelectorAll('.ch'));
+  var state = { ch: 0, t: 0, global: 0 };
+  var current = 0, mouse = new THREE.Vector2(), mouseT = new THREE.Vector2();
+  window.addEventListener('pointermove', function (e) { mouseT.set((e.clientX / innerWidth) * 2 - 1, -((e.clientY / innerHeight) * 2 - 1)); }, { passive: true });
+  var nameEl = document.getElementById('sName'), subEl = document.getElementById('sSub'), lineEl = document.getElementById('sLine'), linkEl = document.getElementById('sLink'), rail = document.getElementById('rail');
+  var tName = document.getElementById('tName'), tPrice = document.getElementById('tPrice'), tLink = document.getElementById('tLink');
+  function setCurrent(i) { if (i === current) return; current = i; var s = STATES[i]; if (nameEl) { nameEl.textContent = '«' + s.name + '»'; subEl.textContent = s.size + ' · ' + s.price; lineEl.textContent = s.line; linkEl.href = s.url; } if (tName) { tName.textContent = '«' + s.name + '»'; tPrice.textContent = s.price; tLink.href = s.url; } clothMat.map = sheets[i].material.uniforms.uTex.value; clothMat.needsUpdate = true; }
+
+  function readScroll() {
+    var vh = innerHeight, y = scrollY;
+    for (var i = 0; i < chapters.length; i++) {
+      var el = chapters[i], top = el.offsetTop, h = el.offsetHeight;
+      var local = (y - top) / Math.max(1, h - vh);
+      if (y < top + h - vh || i === chapters.length - 1) { state.ch = i; state.t = Math.max(0, Math.min(1, local)); break; }
+    }
+    state.global = y / Math.max(1, document.documentElement.scrollHeight - vh);
+    chapters.forEach(function (el, i) { var on = i === state.ch; el.classList.toggle('on', on); });
+    if (rail) rail.querySelectorAll('a').forEach(function (a, i) { a.classList.toggle('on', i === state.ch); });
+  }
+  window.addEventListener('scroll', readScroll, { passive: true }); readScroll();
+  // deep link: #cN opens chapter N at its middle
+  (function () { var m = /^#c(\d)$/.exec(location.hash); if (m && chapters[+m[1]]) { var el = chapters[+m[1]]; setTimeout(function () { window.scrollTo(0, el.offsetTop + Math.max(0, el.offsetHeight - innerHeight) * 0.55); }, 60); } })();
+
+  var tmpV = new THREE.Vector3(), tmpE = new THREE.Euler();
+  function sheetTarget(i, ch, t, out) {
+    var n = STATES.length;
+    if (ch === 0) { var a = i / n * Math.PI * 2 + t * 0.6; out.pos.set(Math.cos(a) * 7, Math.sin(a) * 3.2, -6 - (i % 3) * 3); out.rot.set(0.2, a + Math.PI / 2, 0); out.scale = 1.1; out.opacity = 0.25 + 0.2 * (i % 2); out.amp = 0.14; }
+    else if (ch === 1) { var sp = isMobile ? 2.0 : 2.9, off = (i - t * (n - 1)) * sp; out.pos.set(off, (isMobile ? 1.15 : 0.55) + Math.sin(off * 0.5) * 0.15, -Math.abs(off) * 0.55); out.rot.set(0.05, off * 0.18, -0.06); out.scale = isMobile ? 1.55 : 2.35; out.opacity = Math.max(0, 1 - Math.abs(off) / 7); out.amp = 0.16; }
+    else if (ch === 2) { var ang = i * 0.9 + t * 1.6; var z = -i * 2.6 + t * (n * 2.6 + 3) - 2; var rad = Math.max(1.1, Math.min(7, (isMobile ? 0.22 : 0.34) * (6 - z))); out.pos.set(Math.cos(ang) * rad, Math.sin(ang) * rad * 0.7, z); out.rot.set(-Math.sin(ang) * 0.4, Math.cos(ang) * 0.4, ang * 0.35); out.scale = 1.75; out.opacity = z > 1.2 ? Math.max(0, 1 - (z - 1.2) / 2.2) : (z < -18 ? 0.3 : 1); out.amp = 0.16; }
+    else if (ch === 3) { var b = i / n * Math.PI * 2 + t * 0.4; out.pos.set(Math.cos(b) * 9, 4 + Math.sin(b) * 2, -9); out.rot.set(0.6, b, 0); out.scale = 1.2; out.opacity = 0.15; out.amp = 0.12; }
+    else if (ch === 4) { out.pos.set((i - 4) * 1.2, -4.5, -6); out.rot.set(-1.2, 0, 0); out.scale = 0.9; out.opacity = 0; out.amp = 0.1; }
+    else { var c = (i - (n - 1) / 2) * 0.62; out.pos.set(c * 2.2, -1.9 + Math.abs(c) * 0.5, -2.5 - Math.abs(c) * 0.8); out.rot.set(-0.3, c * 0.35, c * 0.15); out.scale = 1.35; out.opacity = 0.7; out.amp = 0.1; }
+  }
+  var tgt = { pos: new THREE.Vector3(), rot: new THREE.Euler(), scale: 1, opacity: 1, amp: 0.1 };
+  var clock = new THREE.Clock(), lastCh = -1, boxT = 0;
+  function resize() { var w = innerWidth, h = innerHeight; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); isMobile = w < 820; }
+  window.addEventListener('resize', resize); resize();
+
+  function frame() {
+    requestAnimationFrame(frame);
+    var dt = Math.min(0.033, clock.getDelta()), time = clock.elapsedTime;
+    mouse.lerp(mouseT, 0.05);
+    var ch = state.ch, t = state.t, n = STATES.length;
+    // sheets
+    for (var i = 0; i < n; i++) {
+      sheetTarget(i, ch, t, tgt); var m = sheets[i], u = m.userData;
+      var k = ch === 1 || ch === 2 ? 0.16 : 0.06;
+      m.position.lerp(tgt.pos, k);
+      m.rotation.x += (tgt.rot.x - m.rotation.x) * k; m.rotation.y += (tgt.rot.y - m.rotation.y) * k; m.rotation.z += (tgt.rot.z - m.rotation.z) * k;
+      var sc = m.scale.x + (tgt.scale - m.scale.x) * k; m.scale.set(sc, sc, sc);
+      var mu = m.material.uniforms; mu.uOpacity.value += (tgt.opacity - mu.uOpacity.value) * k; mu.uAmp.value += (tgt.amp - mu.uAmp.value) * 0.05; mu.uTime.value = reduced ? 0 : time;
+      mu.uGlow.value += ((ch === 1 && Math.abs(i - t * (n - 1)) < 0.5 ? 0.08 : 0) - mu.uGlow.value) * 0.1;
+    }
+    if (ch === 1) setCurrent(Math.round(t * (n - 1)));
+    if (ch === 2) setCurrent(Math.min(n - 1, Math.max(0, Math.round(t * (n - 1)))));
+    // particles
+    var pu = pMat.uniforms; pu.uTime.value = time;
+    var wantMorph = ch === 0 ? 0 : (ch === 5 ? 0 : 1), wantSwirl = ch === 3 ? 1.6 : 0.5, wantAlpha = ch === 3 ? 1 : (ch === 0 || ch === 5 ? 1 : 0.35);
+    pu.uMorph.value += (wantMorph - pu.uMorph.value) * 0.04; pu.uSwirl.value += (wantSwirl - pu.uSwirl.value) * 0.03; pu.uAlpha.value += (wantAlpha - pu.uAlpha.value) * 0.05;
+    if (document.documentElement.classList.contains('ready')) pu.uAssemble.value = Math.min(1, pu.uAssemble.value + dt * 0.45);
+    points.position.y = ch === 0 ? (isMobile ? 1.15 : 0.9) : (ch === 5 ? 1.4 : 0); points.rotation.y = mouse.x * 0.05;
+    // box
+    var showBox = ch === 4; boxGroup.visible = showBox || boxT > 0.04;
+    boxT += ((showBox ? 1 : 0) - boxT) * 0.08;
+    if (boxGroup.visible) {
+      boxGroup.position.set(isMobile ? 0 : 0.15, (isMobile ? 0.55 : -1.15) + (1 - boxT) * -3, isMobile ? -1.6 : -0.6); boxGroup.rotation.set(0.62 + mouse.y * -0.05, -0.42 + mouse.x * 0.12, 0); var bs = isMobile ? 0.6 : 0.78; boxGroup.scale.set(bs, bs, bs);
+      lidPivot.rotation.x = -Math.min(1, t * 1.6) * 2.15;
+      var lift = Math.max(0, (t - 0.4) / 0.6); pinPos.set(Math.sin(time * 0.8) * 0.08, -BH / 2 + 0.12 + lift * 3.0, Math.cos(time * 0.6) * 0.06);
+      if (t < 0.02 && lastCh !== 4) resetCloth();
+      if (showBox) { var steps = 2; for (var s2 = 0; s2 < steps; s2++) stepCloth(Math.min(0.02, dt / steps)); }
+    }
+    lastCh = ch;
+    camera.position.x += (mouse.x * 0.25 - camera.position.x) * 0.05; camera.position.y += (mouse.y * 0.15 - camera.position.y) * 0.05;
+    camera.lookAt(0, 0, -2);
+    renderer.render(scene, camera);
+  }
+  frame();
+})();
+
+</script>
+<script>
+(function () {
+  var copyBtn = document.getElementById('copyPhone'), phone = document.getElementById('phone');
+  copyBtn.addEventListener('click', function () {
+    var done = function () { copyBtn.textContent = 'Скопійовано'; setTimeout(function () { copyBtn.textContent = 'Скопіювати'; }, 1800); };
+    var fb = function () { var r = document.createRange(); r.selectNodeContents(phone); var s = getSelection(); s.removeAllRanges(); s.addRange(r); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(phone.textContent.trim()).then(done, fb); else fb();
+  });
+  document.querySelectorAll('.rail a').forEach(function (a) { a.addEventListener('click', function (e) { e.preventDefault(); var el = document.querySelector(a.getAttribute('href')); if (el) window.scrollTo({ top: el.offsetTop + 10, behavior: 'smooth' }); }); });
+})();
+</script>

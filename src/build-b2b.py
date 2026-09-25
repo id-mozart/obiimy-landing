@@ -174,6 +174,7 @@ CSS = """
     .m-hide { display: none; }
     .hero { padding-top: 16px; }
     .hero .lead { font-size: 1.05rem; }
+    .hero figure .tag { display: none; }
     .hero .cta { flex-direction: column; align-items: flex-start; gap: 6px; }
     .hero .cta .btn-gold { width: 100%; }
     .hero .cta .btn-line { border: 0; padding: 10px 0; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; font-weight: 500; }
@@ -218,7 +219,8 @@ def proof_html(title, lead, first=False):
     </div>
   </div></section>'''
 
-def form_html(pid, subject, fields, note):
+def form_html(pid, subject, fields, note, L=None):
+    L = L or UK
     """fields: list of (name, label, kind, required, extra) where kind in input/tel/email/number/select:opts/textarea."""
     out = []
     for name, label, kind, req, extra in fields:
@@ -227,10 +229,10 @@ def form_html(pid, subject, fields, note):
         r = " required" if req else ""
         ac = f' autocomplete="{extra["ac"]}"' if extra.get("ac") else ""
         ph = f' placeholder="{extra["ph"]}"' if extra.get("ph") else ""
-        err = f'<span class="err" id="{pid}-{name}-err" role="alert">{extra.get("err", "Заповніть це поле")}</span>' if req else ""
+        err = f'<span class="err" id="{pid}-{name}-err" role="alert">{extra.get("err", L["req_err"])}</span>' if req else ""
         if kind.startswith("select:"):
             opts = "".join(f"<option>{o}</option>" for o in kind[7:].split("|"))
-            ctl = f'<select name="{name}" data-label="{label}"{r}><option value="">Оберіть</option>{opts}</select>'
+            ctl = f'<select name="{name}" data-label="{label}"{r}><option value="">{L["choose"]}</option>{opts}</select>'
         elif kind == "textarea":
             ctl = f'<textarea name="{name}" data-label="{label}"{ph}></textarea>'
         else:
@@ -241,13 +243,13 @@ def form_html(pid, subject, fields, note):
     return f'''
       <form id="{pid}" novalidate>
         {"".join(out)}
-        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на {MAIL} з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="{PHONE_HREF}">{PHONE}</a>.</span></div>
+        <div class="actions"><button class="btn btn-gold" type="submit">{L["submit"]}</button><span class="hint">{L["hint"].format(mail=MAIL, tel=PHONE_HREF, phone=PHONE)}</span></div>
       </form>
       <div class="done" id="{pid}-done" hidden aria-live="polite">
-        <h3 tabindex="-1">Лист підготовлено</h3>
-        <p>Якщо поштова програма не відкрилась — скопіюйте текст нижче й надішліть на <a href="mailto:{MAIL}">{MAIL}</a>, або подзвоніть <a href="{PHONE_HREF}">{PHONE}</a>.</p>
-        <textarea id="{pid}-txt" readonly rows="8" aria-label="Текст запиту"></textarea>
-        <div class="row"><button class="btn btn-line btn-sm" type="button" id="{pid}-copy">Скопіювати текст</button><a class="btn btn-line btn-sm" href="{PHONE_HREF}">Подзвонити</a><button class="btn btn-line btn-sm" type="button" id="{pid}-back">Змінити запит</button></div>
+        <h3 tabindex="-1">{L["done_h"]}</h3>
+        <p>{L["done_p"].format(mail=MAIL, tel=PHONE_HREF, phone=PHONE)}</p>
+        <textarea id="{pid}-txt" readonly rows="8" aria-label="{L["txt_aria"]}"></textarea>
+        <div class="row"><button class="btn btn-line btn-sm" type="button" id="{pid}-copy">{L["copy"]}</button><a class="btn btn-line btn-sm" href="{PHONE_HREF}">{L["call"]}</a><button class="btn btn-line btn-sm" type="button" id="{pid}-back">{L["back"]}</button></div>
       </div>
       <script>
       (function () {{
@@ -266,18 +268,26 @@ def form_html(pid, subject, fields, note):
           if (first) {{ first.focus(); first.scrollIntoView({{ block: 'center', behavior: 'smooth' }}); return; }}
           var lines = [];
           f.querySelectorAll('[name]').forEach(function (i) {{ if (i.value.trim()) lines.push(i.dataset.label + ': ' + i.value.trim()); }});
-          var body = '{subject}\\n\\n' + lines.join('\\n') + '\\n\\nНадіслано зі сторінки ' + location.href;
+          var body = '{subject}\\n\\n' + lines.join('\\n') + '\\n\\n{L["sent"]}' + location.href;
           txt.value = body;
           var company = f.querySelector('[name="company"]').value.trim();
           f.hidden = true; done.hidden = false; done.scrollIntoView({{ block: 'start', behavior: 'smooth' }}); done.querySelector('h3').focus({{ preventScroll: true }});
           window.location.href = 'mailto:{MAIL}?subject=' + encodeURIComponent('{subject} — ' + company) + '&body=' + encodeURIComponent(body);
         }});
-        document.getElementById('{pid}-copy').addEventListener('click', function () {{ var b = this; txt.select(); (navigator.clipboard ? navigator.clipboard.writeText(txt.value) : Promise.reject()).then(function () {{ b.textContent = 'Скопійовано'; setTimeout(function () {{ b.textContent = 'Скопіювати текст'; }}, 2000); }}, function () {{ document.execCommand('copy'); }}); }});
+        document.getElementById('{pid}-copy').addEventListener('click', function () {{ var b = this; txt.select(); (navigator.clipboard ? navigator.clipboard.writeText(txt.value) : Promise.reject()).then(function () {{ b.textContent = '{L["copied"]}'; setTimeout(function () {{ b.textContent = '{L["copy"]}'; }}, 2000); }}, function () {{ document.execCommand('copy'); }}); }});
         document.getElementById('{pid}-back').addEventListener('click', function () {{ done.hidden = true; f.hidden = false; f.scrollIntoView({{ block: 'start', behavior: 'smooth' }}); }});
       }})();
       </script>'''
 
-OTHERS = [("b2b-newyear", "Новий рік"), ("b2b-calendar", "Річна програма"), ("b2b-horeca", "HoReCa та уніформа"), ("b2b-wholesale", "Опт для магазинів")]
+OTHERS = [("b2b-newyear", "Новий рік"), ("b2b-calendar", "Річна програма"), ("b2b-horeca", "HoReCa та уніформа"), ("b2b-wholesale", "Опт для магазинів"), ("b2b-certificates", "Сертифікати для команд"), ("b2b-agencies", "Для агенцій"), ("b2b-speakers", "Спікерам і гостям подій"), ("b2b-garden", "3D-історія"), ("b2b-atelier", "3D-ательє подарунка"), ("b2b-en", "English")]
+UK = dict(bar="Для бізнесу<span class=\"m-hide\"> · відправка Новою поштою по Україні та за кордон</span> · безготівковий розрахунок для компаній", nav="Розділи сторінки", logo="Obiimy — на сайт бренду", others="Інші програми для бізнесу:", others_aria="Інші програми для бізнесу",
+    footer_l="© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко", about="Про нас", delivery="Доставка",
+    choose="Оберіть", req_err="Заповніть це поле", submit="Надіслати запит", hint="Відкриється лист на {mail} з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href=\"{tel}\">{phone}</a>.",
+    done_h="Лист підготовлено", done_p="Якщо поштова програма не відкрилась — скопіюйте текст нижче й надішліть на <a href=\"mailto:{mail}\">{mail}</a>, або подзвоніть <a href=\"{tel}\">{phone}</a>.", txt_aria="Текст запиту", copy="Скопіювати текст", copied="Скопійовано", call="Подзвонити", back="Змінити запит", sent="Надіслано зі сторінки ", or_call="Або одразу:")
+EN = dict(bar="For business<span class=\"m-hide\"> · worldwide shipping at carrier rates</span> · invoice payment for companies", nav="Page sections", logo="Obiimy — brand website", others="Other business programmes:", others_aria="Other business programmes",
+    footer_l="© Obiimy · 100% Italian silk · made in Ukraine · artist and founder — Svitlana Snizhko", about="About", delivery="Shipping",
+    choose="Choose", req_err="Please fill in this field", submit="Send request", hint="Your email app will open with a pre-filled message to {mail} — nothing is sent without your confirmation. Or call <a href=\"{tel}\">{phone}</a>.",
+    done_h="Your message is ready", done_p="If your email app did not open, copy the text below and send it to <a href=\"mailto:{mail}\">{mail}</a>, or call <a href=\"{tel}\">{phone}</a>.", txt_aria="Request text", copy="Copy text", copied="Copied", call="Call", back="Edit request", sent="Sent from ", or_call="Or call now:")
 
 def og_crop(src, slug):
     from PIL import Image
@@ -291,11 +301,14 @@ def og_crop(src, slug):
     return f"photo/og-{slug}.jpg"
 
 def shell(page, body):
+    L = EN if page.get("lang") == "en" else UK
     skin = SKINS[page["skin"]]
     dark = skin["dark"]
     logo = "brand/logo-white-480.webp" if dark else "brand/logo-ink-480.webp"
     links = "".join(f'<a href="#{h}">{t}</a>' for t, h in page["nav"])
-    others = "".join(f'<a href="{slug}">{t}</a>' for slug, t in OTHERS if slug != page["slug"])
+    EN_LABELS = {"b2b-atelier": "3D gift atelier (UA)", "b2b-garden": "3D story (UA)", "b2b-newyear": "New Year gifts (UA)", "b2b-certificates": "Gift certificates (UA)", "b2b-wholesale": "Wholesale (UA)"}
+    pairs = [(slug, EN_LABELS[slug]) for slug in EN_LABELS] if L is EN else [(slug, t) for slug, t in OTHERS if slug != page["slug"]]
+    others = "".join(f'<a href="{slug}">{t}</a>' for slug, t in pairs)
     return f'''<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{page["title"]}</title>
@@ -319,17 +332,17 @@ def shell(page, body):
 </style>
 </head>
 <body class="{"dark" if dark else ""}">
-<div class="bar">Для бізнесу<span class="m-hide"> · відправка Новою поштою по Україні та за кордон</span> · безготівковий розрахунок для компаній</div>
+<div class="bar">{L["bar"]}</div>
 <header class="nav"><div class="wrap">
-  <a class="logo" href="https://obiimy.world/" aria-label="Obiimy — на сайт бренду"><img src="{logo}" alt="Obiimy" width="113" height="24"></a>
-  <nav class="nav-links" aria-label="Розділи сторінки">{links}</nav>
+  <a class="logo" href="{"https://obiimy-world.com/" if L is EN else "https://obiimy.world/"}" aria-label="{L["logo"]}"><img src="{logo}" alt="Obiimy" width="113" height="24"></a>
+  <nav class="nav-links" aria-label="{L["nav"]}">{links}</nav>
   <a class="btn btn-gold btn-sm" href="#request">{page["cta"]}</a>
 </div></header>
 <main>
 {body}
 </main>
-<section class="others" aria-label="Інші програми для бізнесу"><div class="wrap"><span>Інші програми для бізнесу:</span>{others}</div></section>
-<footer><div class="wrap"><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a> · <a href="https://obiimy.world/pro-nas/">Про нас</a> · <a href="https://obiimy.world/oplata-i-dostavka/">Доставка</a></span></div></footer>
+<section class="others" aria-label="{L["others_aria"]}"><div class="wrap"><span>{L["others"]}</span>{others}</div></section>
+<footer><div class="wrap"><span>{L["footer_l"]}</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a> · <a href="https://obiimy.world/pro-nas/">{L["about"]}</a> · <a href="https://obiimy.world/oplata-i-dostavka/">{L["delivery"]}</a></span></div></footer>
 <div class="sticky" id="sticky"><span>{page["sticky"]}</span><a href="#request">{page["cta"]}</a></div>
 <script>
 (function () {{
@@ -342,7 +355,8 @@ def shell(page, body):
 </html>
 '''
 
-def hero(eyebrow, h1, lead, cta1, cta2, cta2_href, fine, photo, alt, tag, cls="", pos="50% 18%"):
+def hero(eyebrow, h1, lead, cta1, cta2, cta2_href, fine, photo, alt, tag, cls="", pos="50% 18%", L=None):
+    L = L or UK
     dl = ' download="Obiimy-lookbook-2026.pdf" type="application/pdf"' if cta2_href.endswith(".pdf") else ""
     return f'''
   <section class="hero{cls}" style="--hero-pos:{pos}"><div class="wrap">
@@ -351,7 +365,7 @@ def hero(eyebrow, h1, lead, cta1, cta2, cta2_href, fine, photo, alt, tag, cls=""
       <h1 style="margin-top:14px">{h1}</h1>
       <p class="lead">{lead}</p>
       <div class="cta"><a class="btn btn-gold" href="#request">{cta1}</a><a class="btn btn-line" href="{cta2_href}"{dl}>{cta2}</a></div>
-      <p class="fine">{fine} Або одразу: <a href="{PHONE_HREF}">{PHONE}</a></p>
+      <p class="fine">{fine} {L["or_call"]} <a href="{PHONE_HREF}">{PHONE}</a></p>
     </div>
     <figure>{img(photo, alt, sizes="(max-width: 960px) 100vw, 50vw", lazy=False, eager_priority=True)}<div class="tag">{tag}</div></figure>
   </div></section>'''
@@ -726,8 +740,14 @@ def calendar():
                 og="photo/paris-green.jpg", nav=[("Календар", "year"), ("Програма", "program"), ("Бюджети", "budgets"), ("Питання", "faq"), ("Контакт", "request")],
                 cta="Запит", sticky="Подарунки на цілий рік · від 700 грн", body=body)
 
-for fn in (newyear, horeca, wholesale, calendar):
-    page = fn()
-    html = typo(shell(page, page["body"]))
-    (OUT / f"{page['slug']}.html").write_text(html)
-    print(page["slug"], len(html) // 1024, "KB")
+PAGES = [newyear, horeca, wholesale, calendar]
+
+def build_all(pages):
+    for fn in pages:
+        page = fn()
+        html = typo(shell(page, page["body"]))
+        (OUT / f"{page['slug']}.html").write_text(html)
+        print(page["slug"], len(html) // 1024, "KB")
+
+if __name__ == "__main__":
+    build_all(PAGES)

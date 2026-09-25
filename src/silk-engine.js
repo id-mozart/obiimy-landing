@@ -429,14 +429,14 @@ window.SilkEngine = (function () {
     if ('IntersectionObserver' in window) new IntersectionObserver(function (en) { visible = en[0].isIntersecting; }, { threshold: 0 }).observe(canvas);
     canvas.addEventListener('pointermove', function (e) { var r = canvas.getBoundingClientRect(); mouseT.set(((e.clientX - r.left) / r.width) * 2 - 1, -(((e.clientY - r.top) / r.height) * 2 - 1)); });
     canvas.addEventListener('pointerleave', function () { mouseT.set(0, 0); });
-    function resize() { var w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); camera.position.z = w < 820 ? 8.5 : 6; }
+    function resize() { var w = canvas.clientWidth, h = canvas.clientHeight; if (!w || !h) return; renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); camera.position.z = (opts.camZ ? window.innerWidth : w) < 820 ? (opts.camZMobile || 8.5) : (opts.camZ || 6); }
     window.addEventListener('resize', resize); resize();
     var P = new THREE.Vector3(), T = new THREE.Vector3(), Nn = new THREE.Vector3(), B = new THREE.Vector3(), up = new THREE.Vector3(0, 1, 0);
     function frame(now) {
       requestAnimationFrame(frame); var dt = Math.min(0.033, (now - last) / 1000); last = now; if (!visible) return;
       time += dt; mouse.lerp(mouseT, 0.05);
       for (var k = 0; k < N; k++) {
-        var s = k / (N - 1), x = (s - 0.5) * 7.2;
+        var s = k / (N - 1), x = (s - 0.5) * (opts.length || 7.2);
         pts[k].set(x + Math.sin(time * 0.5 + k) * 0.15, Math.sin(s * 5.2 + time * 0.9) * 0.55 + Math.sin(s * 2.0 - time * 0.5) * 0.35 + mouse.y * 0.6 * Math.sin(s * Math.PI), Math.cos(s * 4.0 + time * 0.7) * 0.5 + mouse.x * 0.5 * Math.sin(s * Math.PI));
       }
       for (var i = 0; i <= SEG; i++) {

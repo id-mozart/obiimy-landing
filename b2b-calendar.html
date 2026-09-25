@@ -116,7 +116,7 @@
   .others { border-top: 1px solid var(--line); padding-block: 28px; }
   .others .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; font-size: .9rem; }
   .others span { color: var(--ink2); }
-  .others a { text-decoration: none; font-weight: 500; padding: 10px 0; border-bottom: 1px solid var(--ink); }
+  .others a { text-decoration: none; font-weight: 500; padding: 13px 0 11px; border-bottom: 1px solid var(--ink); }
   .others .grp { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 18px; width: 100%; }
   .others .grp b { font-weight: 500; color: var(--ink2); }
 
@@ -135,8 +135,25 @@
   .cert .card img { height: 16px !important; width: auto !important; aspect-ratio: auto !important; background: none !important; padding: 0 !important; border-radius: 0 !important; object-fit: contain !important; }
   .cert .card .k { font-family: var(--display); font-size: clamp(1.4rem, 2.6vw, 2.2rem); line-height: 1.05; }
   .cert .card .v { font-family: var(--display); font-size: clamp(1.6rem, 3vw, 2.6rem); }
-  .cert .card small { font-size: .78rem; color: #5A5560; letter-spacing: .04em; }
-  @media (max-width: 960px) { .cert { aspect-ratio: 16 / 11; } .cert .card { bottom: 16%; top: 10%; min-height: 0; padding: 4% 6%; gap: 4px; } .cert .card .k { font-size: 1.25rem; } .cert .card .v { font-size: 1.5rem; } .cert .card small { font-size: .72rem; } }
+  .cert .card small { font-size: .8rem; color: #5A5560; letter-spacing: .02em; }
+  @media (max-width: 960px) { .cert { aspect-ratio: 16 / 11; } .cert .card { bottom: 16%; top: 10%; min-height: 0; padding: 4% 6%; gap: 4px; } .cert .card .k { font-size: 1.25rem; } .cert .card .v { font-size: 1.5rem; } .cert .card small { font-size: .75rem; } }
+  .stagebar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+  .stagebar figure { margin: 0; position: relative; }
+  .stagebar img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
+  .stagebar figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 16px 14px; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.72)); color: #fff; display: grid; gap: 2px; }
+  .stagebar figcaption b { font-family: var(--display); font-weight: 400; font-size: 1.25rem; }
+  .stagebar figcaption span { font-size: .82rem; opacity: .9; }
+  @media (max-width: 640px) { .stagebar { grid-template-columns: 1fr 1fr; } }
+  .shipmap { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(20px, 4vw, 56px); align-items: center; border-block: 1px solid var(--line); padding-block: 28px; }
+  .shipmap h3 { font-size: 1.6rem; margin-top: 8px; }
+  .shipmap p { color: var(--ink2); margin-top: 10px; font-size: .95rem; }
+  .shipmap ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); position: relative; }
+  .shipmap ol::before { content: ""; position: absolute; left: 6px; right: 6px; top: 6px; border-top: 1px dashed var(--gold); opacity: .6; }
+  .shipmap li { position: relative; padding-top: 24px; display: grid; gap: 4px; padding-right: 10px; }
+  .shipmap li::before { content: ""; position: absolute; left: 0; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 25%, transparent); }
+  .shipmap li b { font-family: var(--display); font-weight: 400; font-size: 1.1rem; }
+  .shipmap li span { font-size: .82rem; color: var(--ink2); }
+  @media (max-width: 960px) { .shipmap { grid-template-columns: 1fr; } .shipmap ol { grid-template-columns: 1fr; gap: 14px; } .shipmap ol::before { left: 6px; right: auto; top: 6px; bottom: 6px; border-top: 0; border-left: 1px dashed var(--gold); } .shipmap li { padding: 0 0 0 26px; } }
   .lbstrip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
   .lbstrip img { width: 100%; height: auto; aspect-ratio: 297 / 210; object-fit: cover; border-radius: 3px; box-shadow: 0 16px 30px -18px rgba(0,0,0,.45); border: 1px solid var(--line); }
   @media (max-width: 640px) { .lbstrip { grid-template-columns: 1fr 1fr; } }
@@ -330,7 +347,7 @@
       </script></div>
   </div></section>
 </main>
-<section class="others" aria-label="Інші програми для бізнесу"><div class="wrap"><span class="grp"><b>Подарунки компаніям:</b><a href="b2b-newyear">Новий рік</a><a href="b2b-certificates">Сертифікати для команд</a><a href="b2b-speakers">Спікерам і гостям подій</a><a href="b2b-atelier">3D-конструктор подарунка</a><a href="b2b-garden">3D-історія</a></span><span class="grp"><b>Уніформа й партнерство:</b><a href="b2b-horeca">HoReCa та уніформа</a><a href="b2b-wholesale">Опт для магазинів</a><a href="b2b-agencies">Для агенцій</a></span><span class="grp"><a href="b2b-en">English</a></span></div></section>
+<section class="others" aria-label="Інші програми для бізнесу"><div class="wrap"><span class="grp"><b>Подарунки компаніям:</b><a href="b2b-newyear">Новий рік</a><a href="b2b-certificates">Сертифікати для команд</a><a href="b2b-speakers">Спікерам і гостям подій</a><a href="b2b-atelier">3D-конструктор подарунка</a><a href="b2b-garden">3D-історія</a></span><span class="grp"><b>Бізнесу й партнерам:</b><a href="b2b-horeca">HoReCa й уніформа</a><a href="b2b-wholesale">Опт для магазинів</a><a href="b2b-agencies">Для агенцій</a></span><span class="grp"><a href="b2b-en">English</a></span></div></section>
 <footer><div class="wrap"><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко</span><span><a href="tel:+380670108525">+38 067 010 85 25</a> · <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a> · <a href="https://obiimy.world/pro-nas/">Про нас</a> · <a href="https://obiimy.world/oplata-i-dostavka/">Доставка</a></span></div></footer>
 <div class="sticky" id="sticky"><span>Подарунки на цілий рік · від 700 грн</span><a href="#request">Запит</a></div>
 <script>

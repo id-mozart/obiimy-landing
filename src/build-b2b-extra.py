@@ -26,7 +26,7 @@ PAY = ("payment", "Оплата", "select:Безготівково, ТОВ|Бе�
 CERT_FIG = ('<figure class="cert" aria-label="Приклад подарункового сертифіката Obiimy у жовтому конверті">'
     '<img class="silk" src="tex/tysha-sertsia.jpg" alt="" width="1024" height="1024">'
     '<div class="env"></div>'
-    '<div class="card"><img src="brand/logo-ink-480.webp" alt="Obiimy" width="75" height="16"><span class="k">Подарунковий сертифікат</span><span class="v">1 600 грн</span><small>На будь-яку річ на obiimy.world · приклад оформлення</small></div>'
+    '<div class="card"><img src="brand/logo-ink-480.webp" alt="Obiimy" width="75" height="16"><span class="k">Подарунковий сертифікат</span><span class="v">1 600 грн</span><small>На вибір на obiimy.world · приклад оформлення</small></div>'
     '</figure>')
 
 # ---------------------------------------------------------------- certificates (Studio)
@@ -43,7 +43,7 @@ def certificates():
   <section class="block" id="how"><div class="wrap">
     <div class="head"><p class="eyebrow">Як це працює</p><h2>Три кроки замість таблиці розмірів</h2><p class="sub">Хочете подарувати конкретну річ, а не вибір? Зберіть її в <a href="b2b-atelier">3D-конструкторі подарунка</a>.</p></div>
     <div class="steps" style="grid-template-columns:repeat(3,minmax(0,1fr))">
-      <div><h3>Номінал і список</h3><p>Оберіть суму на людину й надішліть список імен. Для ключових людей — інший номінал.</p></div>
+      <div><h3>Номінал і список</h3><p>Оберіть суму на людину й надішліть список імен та email. Для ключових людей — інший номінал.</p></div>
       <div><h3>Сертифікати</h3><p>Електронний на email кожному або друкований у фірмовій коробці — формат узгоджуємо в запиті.</p></div>
       <div><h3>Вибір і доставка</h3><p>Людина обирає річ на obiimy.world; замовлення до 16:00 відправляємо того ж дня.</p></div>
     </div>
@@ -118,7 +118,7 @@ def agencies():
       <div class="card"><span class="k">03</span><h3>Листівка від клієнта</h3><p>Листівка з привітанням клієнта в кожній коробці; логотип і підпис від руки — обговорюємо в запиті.</p></div>
       <div class="card"><span class="k">04</span><h3>Доставка і звіт</h3><p>В офіс або кожному адресату Новою поштою; після відправки — номери накладних.</p></div>
     </div>
-    <div class="lbstrip" aria-label="Сторінки лукбука без цін">{img("photo/lb-page-1.jpg", "Лукбук: обкладинка", sizes="(max-width: 640px) 50vw, 25vw")}{img("photo/lb-page-2.jpg", "Лукбук: асортимент", sizes="(max-width: 640px) 50vw, 25vw")}{img("photo/lb-page-3.jpg", "Лукбук: зйомка", sizes="(max-width: 640px) 50vw, 25vw")}{img("photo/lb-page-4.jpg", "Лукбук: зйомка", sizes="(max-width: 640px) 50vw, 25vw")}</div>
+    <div class="lbstrip" aria-label="Сторінки лукбука без цін">{img("photo/lb-page-1.jpg", "Лукбук: обкладинка", sizes="(max-width: 640px) 50vw, 25vw")}{img("photo/lb-page-2.jpg", "Лукбук: асортимент", sizes="(max-width: 640px) 50vw, 25vw")}{img("photo/lb-page-3.jpg", "Лукбук: зйомка в Парижі", sizes="(max-width: 640px) 50vw, 25vw")}{img("photo/lb-page-4.jpg", "Лукбук: зйомка на Рів’єрі", sizes="(max-width: 640px) 50vw, 25vw")}</div>
     <p class="note"><a href="lookbook-obiimy-2026-noprice.pdf" download="Obiimy-lookbook-dlia-klienta.pdf" style="font-weight:600">Завантажити лукбук без цін (PDF, 12 сторінок) →</a></p>
   </div></section>
 
@@ -197,6 +197,16 @@ def speakers():
     </div>
   </div></section>
 
+  <section class="block" id="stage" style="padding-top:0"><div class="wrap">
+    <div class="stagebar">
+      <figure>{img("photo/paris-blazer.jpg", "Шовкова хустка на жакеті спікерки", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Спікерка</b><span>Твіллі або паше — вручається на сцені</span></figcaption></figure>
+      <figure>{img("photo/paris-bag.jpg", "Твіллі на ручці сумки", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Модераторка</b><span>Той самий принт — дрес-код сцени</span></figcaption></figure>
+      <figure>{img("photo/paris-bun.jpg", "Шовк у волоссі", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Гостя</b><span>Резинка у welcome-box</span></figcaption></figure>
+      <figure>{img("photo/riviera-red.jpg", "Хустка на зап’ясті", sizes="(max-width: 640px) 50vw, 25vw")}<figcaption><b>Партнер події</b><span>Набір або хустка 65 × 65</span></figcaption></figure>
+    </div>
+    <p class="note">Один принт на всіх, хто на сцені, — і фото події виглядають як задумано.</p>
+  </div></section>
+
   <section class="block alt" id="why"><div class="wrap grid2">
     <div><p class="eyebrow">Чому це працює</p><h2 style="margin-top:10px">Подарунок, який потрапляє в кадр</h2>
       <div class="faq" style="margin-top:22px">
@@ -223,7 +233,7 @@ def speakers():
     <div class="faq">
       <details><summary>Мінімальна кількість?</summary><p>Фіксованого мінімуму немає — обговорюємо кожен запит окремо.</p></details>
       <details><summary>Логотип події на коробці?</summary><p>Стандартно — листівка з вашим текстом усередині фірмової коробки Obiimy. Логотип та інший брендинг обговорюємо окремо.</p></details>
-      <details><summary>Ви агенція, що веде подію для клієнта?</summary><p>Для агенцій є лукбук без цін і окрема програма — <a href="b2b-agencies">програма для агенцій →</a></p></details>
+      <details><summary>Ви агенція, що веде подію для клієнта?</summary><p>Для агенцій є лукбук без цін і <a href="b2b-agencies">окрема партнерська програма →</a></p></details>
       {DOCS_FAQ}
       {BATCH_FAQ}
     </div>
@@ -266,6 +276,19 @@ def english():
       <div class="card"><span class="k">02</span><h3>One budget, many pieces</h3><p>Scrunchie, twilly, sleep mask, scarves in three sizes, gift sets — a choice within one budget.</p></div>
       <div class="card"><span class="k">03</span><h3>Your card inside</h3><p>A greeting card with your message in every box; handwritten on request.</p></div>
       <div class="card"><span class="k">04</span><h3>Ships worldwide</h3><p>One parcel to your office or to each recipient, at carrier rates.</p></div>
+    </div>
+  </div></section>
+
+  <section class="block" id="ship" style="padding-top:0"><div class="wrap">
+    <div class="shipmap">
+      <div><p class="eyebrow">Where your team is</p><h3>We ship worldwide</h3><p>One parcel to your office or a parcel to each recipient — at carrier rates, with options set out in the quote.</p></div>
+      <ol>
+        <li><b>Kyiv</b><span>Made and packed in Ukraine</span></li>
+        <li><b>European Union</b><span>Offices and remote teams</span></li>
+        <li><b>United Kingdom</b><span>Where UFD London sells Obiimy</span></li>
+        <li><b>North America</b><span>Where Be Brave sells Obiimy</span></li>
+        <li><b>Anywhere else</b><span>Quoted per destination</span></li>
+      </ol>
     </div>
   </div></section>
 
@@ -327,7 +350,7 @@ def english():
     ], "", L=EN)}</div>
   </div></section>'''
     return dict(slug="b2b-en", skin="campaign", lang="en", title="Corporate gifts from Ukraine — Obiimy silk",
-        desc="Silk scarves with original prints, hand-finished in Ukraine, for teams abroad, partners and clients. From ₴700 to ₴4,800 per gift, in a signature box with your card. Worldwide shipping.",
+        desc="Silk scarves with original prints, hand-finished in Ukraine: corporate gifts from ₴700 to ₴4,800 in a signature box with your card. Worldwide shipping.",
         og="photo/vyr-3.webp", nav=[("Why", "why"), ("Budgets", "budgets"), ("How it works", "how"), ("Questions", "faq"), ("Contact", "request")],
         cta="Request", sticky="Corporate gifts · from ₴700", body=body, locale="en_GB")
 

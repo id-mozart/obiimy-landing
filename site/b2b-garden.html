@@ -106,7 +106,7 @@
   .reqsec { position: relative; z-index: 5; background: linear-gradient(180deg, rgba(12,9,20,0) 0%, rgba(12,9,20,.92) 12%, #0C0914 30%); padding: 22vh clamp(16px, 4vw, 56px) 80px; }
   .req-in { max-width: 1180px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
   .reqsec .others { margin-top: 22px; font-size: .86rem; color: var(--ink-2); }
-  .reqsec .others a { color: var(--ink); display: inline-block; padding: 8px 0; }
+  .reqsec .others a { color: var(--ink); display: inline-block; padding: 13px 0; }
   form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: rgba(27,20,48,.72); border: 1px solid var(--line); border-radius: 4px; padding: clamp(18px, 3vw, 32px); backdrop-filter: blur(10px); }
   form label { display: grid; gap: 6px; font-size: .8rem; color: var(--ink-2); letter-spacing: .03em; }
   form label.full { grid-column: 1 / -1; }
@@ -129,7 +129,7 @@
   .static .ch { height: auto !important; min-height: 100svh; }
   .static .ch .sticky { position: relative; opacity: 1 !important; visibility: visible !important; transform: none !important; min-height: 100svh; }
   .static .rail { display: none; }
-  .stores { background: rgba(12,9,20,.72); padding: 8px 14px; border-radius: 999px; display: inline-block; }
+  .stores { background: rgba(12,9,20,.45); padding: 8px 14px; border-radius: 999px; display: inline-block; }
   @media (max-width: 760px) { .rail { display: none; } }
   .nav a.site.cta { font-size: .78rem; min-height: 44px; display: inline-flex; align-items: center; }
   .copybtn { min-height: 44px; font-size: .8rem !important; padding: 0 16px !important; display: inline-flex !important; align-items: center; }
@@ -137,7 +137,7 @@
   .state .s, .stores { font-size: .8rem !important; }
   .ch:not(#c5) .sticky::before { height: 72% !important; background: linear-gradient(180deg, rgba(12,9,20,0) 0%, rgba(12,9,20,.7) 38%, rgba(12,9,20,.9) 100%) !important; }
   .stores { position: relative; z-index: 2; color: var(--ink-2); text-shadow: 0 1px 12px rgba(12,9,20,.9); }
-  #c5 .sticky::before { inset: -40vh 0 -40vh 0 !important; height: auto !important; background: radial-gradient(70% 60% at 50% 52%, rgba(12,9,20,.88) 0%, rgba(12,9,20,.5) 55%, rgba(12,9,20,0) 100%) !important; }
+  #c5 .sticky::before { inset: -40vh 0 -40vh 0 !important; height: auto !important; background: radial-gradient(60% 50% at 50% 52%, rgba(12,9,20,.6) 0%, rgba(12,9,20,.3) 55%, rgba(12,9,20,0) 100%) !important; }
   form .hint a { display: inline-block; padding: 10px 0; margin: -10px 0; }
   .done { background: rgba(27,20,48,.72); border: 1px solid var(--line); border-radius: 4px; padding: clamp(18px, 3vw, 32px); display: grid; gap: 14px; }
   .done h3 { font-family: var(--display); font-weight: 300; font-size: 1.8rem; margin: 0; }
@@ -150,6 +150,7 @@
 <body>
 
 
+<noscript><style>.ch{height:auto!important;min-height:100svh}.ch .sticky{position:relative!important;opacity:1!important;visibility:visible!important;transform:none!important}.rail{display:none}.fallback{display:block}.loadbar{display:none}</style></noscript>
 <div class="loadbar" id="loadbar"></div>
 <canvas id="gl" aria-hidden="true"></canvas>
 <div class="fallback"><img src="photo/enerhiia-back.webp" alt=""></div>
@@ -263,7 +264,7 @@
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>window.OBIIMY_STATES = [{"id": "probudzhennia", "name": "Пробудження", "line": "Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини чогось нового.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "litnie-pole"}, {"id": "yednannia", "name": "Єднання", "line": "Жовті пташки на кульбабах. Про те, що тримає разом, коли розлітається все інше.", "size": "44 × 44 см · двосторонній друк", "price": "2 400 грн", "old": "", "url": "product-garden", "back": "pidnesennia"}, {"id": "tysha-sertsia", "name": "Тиша серця", "line": "Горобці у високій траві. Про спокій, який не треба заслуговувати.", "size": "65 × 65 см", "price": "3 200 грн", "old": "", "url": "product-garden", "back": "melodiia"}, {"id": "prystrast", "name": "Пристрасть", "line": "Сині кульбаби на кремовому шовку. Про те, що розлітається від одного подиху.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "mizh-namy"}, {"id": "kolo-sontsia", "name": "Коло сонця", "line": "Вінок із сонячних квітів на рожевому. Про тепло, яке щоразу повертається.", "size": "88 × 88 см · шаль", "price": "4 400 грн", "old": "", "url": "product-garden", "back": "litnie-pole"}, {"id": "melodiia", "name": "Мелодія двох", "line": "Дві пташки серед верболозу. Про розмову, для якої не потрібні слова.", "size": "44 × 44 см · паше", "price": "1 600 грн", "old": "", "url": "product-garden", "back": "yednannia"}, {"id": "pidnesennia", "name": "Піднесення", "line": "Сиворакші та золотий дощ. Про політ, який починається на землі.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "kolo-sontsia"}, {"id": "mizh-namy", "name": "Між нами", "line": "Гортензії по краю сірого шовку. Про те, що лишається тільки між двома.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "prystrast"}, {"id": "litnie-pole", "name": "Літнє поле", "line": "Букет, написаний за один день. Про літо, яке не хоче закінчуватись.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "probudzhennia"}]; window.GARDEN_OPTS = { boxYMobile: 1.05, quietIntro: true, toneMap: true, bird: true, boxX: 1.35, boxY: -0.4 };</script>
+<script>window.OBIIMY_STATES = [{"id": "probudzhennia", "name": "Пробудження", "line": "Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини чогось нового.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "litnie-pole"}, {"id": "yednannia", "name": "Єднання", "line": "Жовті пташки на кульбабах. Про те, що тримає разом, коли розлітається все інше.", "size": "44 × 44 см · двосторонній друк", "price": "2 400 грн", "old": "", "url": "product-garden", "back": "pidnesennia"}, {"id": "tysha-sertsia", "name": "Тиша серця", "line": "Горобці у високій траві. Про спокій, який не треба заслуговувати.", "size": "65 × 65 см", "price": "3 200 грн", "old": "", "url": "product-garden", "back": "melodiia"}, {"id": "prystrast", "name": "Пристрасть", "line": "Сині кульбаби на кремовому шовку. Про те, що розлітається від одного подиху.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "mizh-namy"}, {"id": "kolo-sontsia", "name": "Коло сонця", "line": "Вінок із сонячних квітів на рожевому. Про тепло, яке щоразу повертається.", "size": "88 × 88 см · шаль", "price": "4 400 грн", "old": "", "url": "product-garden", "back": "litnie-pole"}, {"id": "melodiia", "name": "Мелодія двох", "line": "Дві пташки серед верболозу. Про розмову, для якої не потрібні слова.", "size": "44 × 44 см · паше", "price": "1 600 грн", "old": "", "url": "product-garden", "back": "yednannia"}, {"id": "pidnesennia", "name": "Піднесення", "line": "Сиворакші та золотий дощ. Про політ, який починається на землі.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "kolo-sontsia"}, {"id": "mizh-namy", "name": "Між нами", "line": "Гортензії по краю сірого шовку. Про те, що лишається тільки між двома.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "prystrast"}, {"id": "litnie-pole", "name": "Літнє поле", "line": "Букет, написаний за один день. Про літо, яке не хоче закінчуватись.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "probudzhennia"}]; window.GARDEN_OPTS = { boxYMobile: 1.05, quietIntro: true, toneMap: true, bird: true, boxX: 1.35, boxY: -0.2, finalOpacity: 0.95, finalLogoY: 1.05, finalLogoScale: 0.85, clothLift: 1.8 };</script>
 <script>
 /* Obiimy Garden: one scroll-driven WebGL scene. Requires THREE r128 UMD. */
 (function () {
@@ -317,7 +318,7 @@
     '  float diff=0.55+0.45*max(dot(n,L),0.); float TdotH=dot(T,H); float aniso=pow(sqrt(max(1.-TdotH*TdotH,0.)),22.);',
     '  float spec=pow(max(dot(n,H),0.),80.); float fres=pow(1.-max(dot(n,V),0.),3.5);',
     '  vec3 col=base*diff + base*aniso*0.5 + uSheen*aniso*0.2 + vec3(1.)*spec*0.3 + uSheen*fres*0.35 + base*uGlow;',
-    '  if (uTone > 0.5) { col *= 1.08; col = (col*(2.51*col+0.03))/(col*(2.43*col+0.59)+0.14); }',
+    '  if (uTone > 0.5) { col *= 1.15; col = (col*(2.51*col+0.03))/(col*(2.43*col+0.59)+0.14); float lum = dot(col, vec3(.2126,.7152,.0722)); col = mix(vec3(lum), col, 1.18); }',
     '  gl_FragColor=vec4(col, uOpacity); }'
   ].join('\n');
   var sheetGeo = new THREE.PlaneGeometry(1, 1, 48, 48);
@@ -487,7 +488,7 @@
     else if (ch === 2) { var ang = i * 0.9 + t * 1.6; var z = -i * 2.6 + t * (n * 2.6 + 3) - 2; var rad = Math.max(1.1, Math.min(7, (isMobile ? 0.22 : 0.34) * (6 - z))); out.pos.set(Math.cos(ang) * rad, Math.sin(ang) * rad * 0.7, z); out.rot.set(-Math.sin(ang) * 0.4, Math.cos(ang) * 0.4, ang * 0.35); out.scale = 1.75; out.opacity = z > 1.2 ? Math.max(0, 1 - (z - 1.2) / 2.2) : (z < -18 ? 0.3 : 1); out.amp = 0.16; }
     else if (ch === 3) { var b = i / n * Math.PI * 2 + t * 0.4; out.pos.set(Math.cos(b) * 9, 4 + Math.sin(b) * 2, -9); out.rot.set(0.6, b, 0); out.scale = 1.2; out.opacity = 0.15; out.amp = 0.12; }
     else if (ch === 4) { out.pos.set((i - 4) * 1.2, -4.5, -6); out.rot.set(-1.2, 0, 0); out.scale = 0.9; out.opacity = 0; out.amp = 0.1; }
-    else { var c = (i - (n - 1) / 2) * 0.62; out.pos.set(c * 2.2, -1.9 + Math.abs(c) * 0.5, -2.5 - Math.abs(c) * 0.8); out.rot.set(-0.3, c * 0.35, c * 0.15); out.scale = 1.35; out.opacity = 0.7; out.amp = 0.1; }
+    else { var c = (i - (n - 1) / 2) * 0.62; out.pos.set(c * 2.2, -1.9 + Math.abs(c) * 0.5, -2.5 - Math.abs(c) * 0.8); out.rot.set(-0.3, c * 0.35, c * 0.15); out.scale = 1.35; out.opacity = (window.GARDEN_OPTS && GARDEN_OPTS.finalOpacity) || 0.7; out.amp = 0.1; }
   }
   var tgt = { pos: new THREE.Vector3(), rot: new THREE.Euler(), scale: 1, opacity: 1, amp: 0.1 };
   var clock = new THREE.Clock(), lastCh = -1, boxT = 0;
@@ -519,14 +520,14 @@
     pMat.uniforms.uBird.value += ((ch === 3 && birdMode ? 1 : 0) - pMat.uniforms.uBird.value) * 0.04;
     pu.uMorph.value += (wantMorph - pu.uMorph.value) * 0.04; pu.uSwirl.value += (wantSwirl - pu.uSwirl.value) * 0.03; pu.uAlpha.value += (wantAlpha - pu.uAlpha.value) * 0.05;
     if (document.documentElement.classList.contains('ready')) pu.uAssemble.value = Math.min(1, pu.uAssemble.value + dt * 0.45);
-    points.position.y = ch === 0 ? (isMobile ? 1.15 : 0.9) : (ch === 5 ? 1.4 : 0); points.rotation.y = mouse.x * 0.05;
+    var GOp = window.GARDEN_OPTS || {}; points.position.y = ch === 0 ? (isMobile ? 1.15 : 0.9) : (ch === 5 ? (GOp.finalLogoY || 1.4) : 0); var ps = ch === 5 && GOp.finalLogoScale ? GOp.finalLogoScale : 1; points.scale.x += (ps - points.scale.x) * 0.06; points.scale.y = points.scale.z = points.scale.x; points.rotation.y = mouse.x * 0.05;
     // box
     var showBox = ch === 4; boxGroup.visible = showBox || boxT > 0.04;
     boxT += ((showBox ? 1 : 0) - boxT) * 0.08;
     if (boxGroup.visible) {
       var GO = window.GARDEN_OPTS || {}; boxGroup.position.set(isMobile ? 0 : (GO.boxX || 0.15), (isMobile ? (GO.boxYMobile || 0.55) : (GO.boxY || -1.15)) + (1 - boxT) * -3, isMobile ? -1.6 : -0.6); boxGroup.rotation.set(0.62 + mouse.y * -0.05, -0.42 + mouse.x * 0.12, 0); var bs = isMobile ? 0.6 : 0.78; boxGroup.scale.set(bs, bs, bs);
       lidPivot.rotation.x = -Math.min(1, t * 1.6) * 2.15;
-      var lift = Math.max(0, (t - 0.4) / 0.6); pinPos.set(Math.sin(time * 0.8) * 0.08, -BH / 2 + 0.12 + lift * 3.0, Math.cos(time * 0.6) * 0.06);
+      var lift = Math.max(0, (t - 0.4) / 0.6); pinPos.set(Math.sin(time * 0.8) * 0.08, -BH / 2 + 0.12 + lift * ((window.GARDEN_OPTS && GARDEN_OPTS.clothLift) || 3.0), Math.cos(time * 0.6) * 0.06);
       if (t < 0.02 && lastCh !== 4) resetCloth();
       if (showBox) { var steps = 2; for (var s2 = 0; s2 < steps; s2++) stepCloth(Math.min(0.02, dt / steps)); }
     }

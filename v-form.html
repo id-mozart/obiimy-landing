@@ -307,7 +307,7 @@ window.SilkEngine = (function () {
     '  col += uEnvTint * (box1 * 0.35 + box2 * 0.22) * (0.5 + 0.5 * fres);',
     '  col += vec3(spec);',
     '  col += grain;',
-    '  if (uTone > 0.5) { col *= 1.12; col = (col * (2.51 * col + 0.03)) / (col * (2.43 * col + 0.59) + 0.14); }',
+    '  if (uTone > 0.5) { col *= 1.2; col = (col * (2.51 * col + 0.03)) / (col * (2.43 * col + 0.59) + 0.14); float lum = dot(col, vec3(0.2126, 0.7152, 0.0722)); col = mix(vec3(lum), col, 1.18); }',
     '  gl_FragColor = vec4(col, 1.0);',
     '}'
   ].join('\n');

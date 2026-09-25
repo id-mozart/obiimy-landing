@@ -116,7 +116,7 @@ CSS = """
   .others { border-top: 1px solid var(--line); padding-block: 28px; }
   .others .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; font-size: .9rem; }
   .others span { color: var(--ink2); }
-  .others a { text-decoration: none; font-weight: 500; padding: 10px 0; border-bottom: 1px solid var(--ink); }
+  .others a { text-decoration: none; font-weight: 500; padding: 13px 0 11px; border-bottom: 1px solid var(--ink); }
   .others .grp { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 18px; width: 100%; }
   .others .grp b { font-weight: 500; color: var(--ink2); }
 
@@ -135,8 +135,25 @@ CSS = """
   .cert .card img { height: 16px !important; width: auto !important; aspect-ratio: auto !important; background: none !important; padding: 0 !important; border-radius: 0 !important; object-fit: contain !important; }
   .cert .card .k { font-family: var(--display); font-size: clamp(1.4rem, 2.6vw, 2.2rem); line-height: 1.05; }
   .cert .card .v { font-family: var(--display); font-size: clamp(1.6rem, 3vw, 2.6rem); }
-  .cert .card small { font-size: .78rem; color: #5A5560; letter-spacing: .04em; }
-  @media (max-width: 960px) { .cert { aspect-ratio: 16 / 11; } .cert .card { bottom: 16%; top: 10%; min-height: 0; padding: 4% 6%; gap: 4px; } .cert .card .k { font-size: 1.25rem; } .cert .card .v { font-size: 1.5rem; } .cert .card small { font-size: .72rem; } }
+  .cert .card small { font-size: .8rem; color: #5A5560; letter-spacing: .02em; }
+  @media (max-width: 960px) { .cert { aspect-ratio: 16 / 11; } .cert .card { bottom: 16%; top: 10%; min-height: 0; padding: 4% 6%; gap: 4px; } .cert .card .k { font-size: 1.25rem; } .cert .card .v { font-size: 1.5rem; } .cert .card small { font-size: .75rem; } }
+  .stagebar { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+  .stagebar figure { margin: 0; position: relative; }
+  .stagebar img { width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
+  .stagebar figcaption { position: absolute; left: 0; right: 0; bottom: 0; padding: 40px 16px 14px; background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.72)); color: #fff; display: grid; gap: 2px; }
+  .stagebar figcaption b { font-family: var(--display); font-weight: 400; font-size: 1.25rem; }
+  .stagebar figcaption span { font-size: .82rem; opacity: .9; }
+  @media (max-width: 640px) { .stagebar { grid-template-columns: 1fr 1fr; } }
+  .shipmap { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(20px, 4vw, 56px); align-items: center; border-block: 1px solid var(--line); padding-block: 28px; }
+  .shipmap h3 { font-size: 1.6rem; margin-top: 8px; }
+  .shipmap p { color: var(--ink2); margin-top: 10px; font-size: .95rem; }
+  .shipmap ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); position: relative; }
+  .shipmap ol::before { content: ""; position: absolute; left: 6px; right: 6px; top: 6px; border-top: 1px dashed var(--gold); opacity: .6; }
+  .shipmap li { position: relative; padding-top: 24px; display: grid; gap: 4px; padding-right: 10px; }
+  .shipmap li::before { content: ""; position: absolute; left: 0; top: 0; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 25%, transparent); }
+  .shipmap li b { font-family: var(--display); font-weight: 400; font-size: 1.1rem; }
+  .shipmap li span { font-size: .82rem; color: var(--ink2); }
+  @media (max-width: 960px) { .shipmap { grid-template-columns: 1fr; } .shipmap ol { grid-template-columns: 1fr; gap: 14px; } .shipmap ol::before { left: 6px; right: auto; top: 6px; bottom: 6px; border-top: 0; border-left: 1px dashed var(--gold); } .shipmap li { padding: 0 0 0 26px; } }
   .lbstrip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
   .lbstrip img { width: 100%; height: auto; aspect-ratio: 297 / 210; object-fit: cover; border-radius: 3px; box-shadow: 0 16px 30px -18px rgba(0,0,0,.45); border: 1px solid var(--line); }
   @media (max-width: 640px) { .lbstrip { grid-template-columns: 1fr 1fr; } }
@@ -295,7 +312,7 @@ def form_html(pid, subject, fields, note, L=None):
       }})();
       </script>'''
 
-OTHERS = [("b2b-newyear", "Новий рік"), ("b2b-calendar", "Річна програма"), ("b2b-horeca", "HoReCa та уніформа"), ("b2b-wholesale", "Опт для магазинів"), ("b2b-certificates", "Сертифікати для команд"), ("b2b-agencies", "Для агенцій"), ("b2b-speakers", "Спікерам і гостям подій"), ("b2b-garden", "3D-історія"), ("b2b-atelier", "3D-конструктор подарунка"), ("b2b-en", "English")]
+OTHERS = [("b2b-newyear", "Новий рік"), ("b2b-calendar", "Річна програма"), ("b2b-horeca", "HoReCa й уніформа"), ("b2b-wholesale", "Опт для магазинів"), ("b2b-certificates", "Сертифікати для команд"), ("b2b-agencies", "Для агенцій"), ("b2b-speakers", "Спікерам і гостям подій"), ("b2b-garden", "3D-історія"), ("b2b-atelier", "3D-конструктор подарунка"), ("b2b-en", "English")]
 UK = dict(bar="Для бізнесу<span class=\"m-hide\"> · відправка Новою поштою по Україні та за кордон</span> · безготівковий розрахунок для компаній", nav="Розділи сторінки", logo="Obiimy — на сайт бренду", others="Інші програми для бізнесу:", others_aria="Інші програми для бізнесу",
     footer_l="© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко", about="Про нас", delivery="Доставка",
     choose="Оберіть", req_err="Заповніть це поле", submit="Надіслати запит", hint="Відкриється лист на {mail} з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href=\"{tel}\">{phone}</a>.",
@@ -326,7 +343,7 @@ def shell(page, body):
     if L is EN:
         others = '<a href="b2b-atelier">3D gift builder (UA)</a><a href="b2b-certificates">Gift certificates (UA)</a>'
     else:
-        GROUPS = [("Подарунки компаніям", ["b2b-newyear", "b2b-calendar", "b2b-certificates", "b2b-speakers", "b2b-atelier", "b2b-garden"]), ("Уніформа й партнерство", ["b2b-horeca", "b2b-wholesale", "b2b-agencies"]), ("", ["b2b-en"])]
+        GROUPS = [("Подарунки компаніям", ["b2b-newyear", "b2b-calendar", "b2b-certificates", "b2b-speakers", "b2b-atelier", "b2b-garden"]), ("Бізнесу й партнерам", ["b2b-horeca", "b2b-wholesale", "b2b-agencies"]), ("", ["b2b-en"])]
         names = dict(OTHERS)
         others = "".join('<span class="grp">' + (f"<b>{g}:</b>" if g else "") + "".join(f'<a href="{slug}">{names[slug]}</a>' for slug in slugs if slug != page["slug"]) + "</span>" for g, slugs in GROUPS)
     return f'''<meta charset="utf-8">

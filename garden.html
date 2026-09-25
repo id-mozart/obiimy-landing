@@ -215,7 +215,7 @@
     '  float diff=0.55+0.45*max(dot(n,L),0.); float TdotH=dot(T,H); float aniso=pow(sqrt(max(1.-TdotH*TdotH,0.)),22.);',
     '  float spec=pow(max(dot(n,H),0.),80.); float fres=pow(1.-max(dot(n,V),0.),3.5);',
     '  vec3 col=base*diff + base*aniso*0.5 + uSheen*aniso*0.2 + vec3(1.)*spec*0.3 + uSheen*fres*0.35 + base*uGlow;',
-    '  if (uTone > 0.5) { col *= 1.08; col = (col*(2.51*col+0.03))/(col*(2.43*col+0.59)+0.14); }',
+    '  if (uTone > 0.5) { col *= 1.15; col = (col*(2.51*col+0.03))/(col*(2.43*col+0.59)+0.14); float lum = dot(col, vec3(.2126,.7152,.0722)); col = mix(vec3(lum), col, 1.18); }',
     '  gl_FragColor=vec4(col, uOpacity); }'
   ].join('\n');
   var sheetGeo = new THREE.PlaneGeometry(1, 1, 48, 48);
@@ -385,7 +385,7 @@
     else if (ch === 2) { var ang = i * 0.9 + t * 1.6; var z = -i * 2.6 + t * (n * 2.6 + 3) - 2; var rad = Math.max(1.1, Math.min(7, (isMobile ? 0.22 : 0.34) * (6 - z))); out.pos.set(Math.cos(ang) * rad, Math.sin(ang) * rad * 0.7, z); out.rot.set(-Math.sin(ang) * 0.4, Math.cos(ang) * 0.4, ang * 0.35); out.scale = 1.75; out.opacity = z > 1.2 ? Math.max(0, 1 - (z - 1.2) / 2.2) : (z < -18 ? 0.3 : 1); out.amp = 0.16; }
     else if (ch === 3) { var b = i / n * Math.PI * 2 + t * 0.4; out.pos.set(Math.cos(b) * 9, 4 + Math.sin(b) * 2, -9); out.rot.set(0.6, b, 0); out.scale = 1.2; out.opacity = 0.15; out.amp = 0.12; }
     else if (ch === 4) { out.pos.set((i - 4) * 1.2, -4.5, -6); out.rot.set(-1.2, 0, 0); out.scale = 0.9; out.opacity = 0; out.amp = 0.1; }
-    else { var c = (i - (n - 1) / 2) * 0.62; out.pos.set(c * 2.2, -1.9 + Math.abs(c) * 0.5, -2.5 - Math.abs(c) * 0.8); out.rot.set(-0.3, c * 0.35, c * 0.15); out.scale = 1.35; out.opacity = 0.7; out.amp = 0.1; }
+    else { var c = (i - (n - 1) / 2) * 0.62; out.pos.set(c * 2.2, -1.9 + Math.abs(c) * 0.5, -2.5 - Math.abs(c) * 0.8); out.rot.set(-0.3, c * 0.35, c * 0.15); out.scale = 1.35; out.opacity = (window.GARDEN_OPTS && GARDEN_OPTS.finalOpacity) || 0.7; out.amp = 0.1; }
   }
   var tgt = { pos: new THREE.Vector3(), rot: new THREE.Euler(), scale: 1, opacity: 1, amp: 0.1 };
   var clock = new THREE.Clock(), lastCh = -1, boxT = 0;
@@ -417,14 +417,14 @@
     pMat.uniforms.uBird.value += ((ch === 3 && birdMode ? 1 : 0) - pMat.uniforms.uBird.value) * 0.04;
     pu.uMorph.value += (wantMorph - pu.uMorph.value) * 0.04; pu.uSwirl.value += (wantSwirl - pu.uSwirl.value) * 0.03; pu.uAlpha.value += (wantAlpha - pu.uAlpha.value) * 0.05;
     if (document.documentElement.classList.contains('ready')) pu.uAssemble.value = Math.min(1, pu.uAssemble.value + dt * 0.45);
-    points.position.y = ch === 0 ? (isMobile ? 1.15 : 0.9) : (ch === 5 ? 1.4 : 0); points.rotation.y = mouse.x * 0.05;
+    var GOp = window.GARDEN_OPTS || {}; points.position.y = ch === 0 ? (isMobile ? 1.15 : 0.9) : (ch === 5 ? (GOp.finalLogoY || 1.4) : 0); var ps = ch === 5 && GOp.finalLogoScale ? GOp.finalLogoScale : 1; points.scale.x += (ps - points.scale.x) * 0.06; points.scale.y = points.scale.z = points.scale.x; points.rotation.y = mouse.x * 0.05;
     // box
     var showBox = ch === 4; boxGroup.visible = showBox || boxT > 0.04;
     boxT += ((showBox ? 1 : 0) - boxT) * 0.08;
     if (boxGroup.visible) {
       var GO = window.GARDEN_OPTS || {}; boxGroup.position.set(isMobile ? 0 : (GO.boxX || 0.15), (isMobile ? (GO.boxYMobile || 0.55) : (GO.boxY || -1.15)) + (1 - boxT) * -3, isMobile ? -1.6 : -0.6); boxGroup.rotation.set(0.62 + mouse.y * -0.05, -0.42 + mouse.x * 0.12, 0); var bs = isMobile ? 0.6 : 0.78; boxGroup.scale.set(bs, bs, bs);
       lidPivot.rotation.x = -Math.min(1, t * 1.6) * 2.15;
-      var lift = Math.max(0, (t - 0.4) / 0.6); pinPos.set(Math.sin(time * 0.8) * 0.08, -BH / 2 + 0.12 + lift * 3.0, Math.cos(time * 0.6) * 0.06);
+      var lift = Math.max(0, (t - 0.4) / 0.6); pinPos.set(Math.sin(time * 0.8) * 0.08, -BH / 2 + 0.12 + lift * ((window.GARDEN_OPTS && GARDEN_OPTS.clothLift) || 3.0), Math.cos(time * 0.6) * 0.06);
       if (t < 0.02 && lastCh !== 4) resetCloth();
       if (showBox) { var steps = 2; for (var s2 = 0; s2 < steps; s2++) stepCloth(Math.min(0.02, dt / steps)); }
     }

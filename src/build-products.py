@@ -79,7 +79,7 @@ PRODUCTS.update({
         "tex": "kolo-sontsia", "back": None, "backname": None, "double": False,
         "photos": ["img/twilly-zolote.webp", "photo/box-gold.jpg", "photo/paris-bag.jpg", "photo/paris-bun.jpg"], "contain": True,
         "sizes": [("84 × 5", 1600, None)], "default": 0, "sale": {},
-        "specs": [("84 × 5", "Довжина і ширина стрічки", "1 600 грн"), ("100%", "Італійський шовк, обробка вручну", "0–2,5 см похибка"), ("3", "Способи: сумка, волосся, зап’ястя", "у коробці"), ("Набір", "Твіллі + резинка «Пристрасть»", "2 200 грн")],
+        "specs": [("84 × 5", "Довжина і ширина стрічки", "1 600 грн"), ("100%", "Італійський шовк, обробка вручну", "край підшито вручну"), ("3", "Способи: сумка, волосся, зап’ястя", "у коробці"), ("Набір", "Твіллі + резинка «Пристрасть»", "2 200 грн")],
         "wear": [("У наборі «Золоте світло»", "photo/box-gold.jpg"), ("На сумці · інший принт колекції", "photo/paris-bag.jpg"), ("У волоссі · інший принт колекції", "photo/paris-bun.jpg")],
         "url": "https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/", "sku": "84-35", "story_img": "photo/paris-belt.jpg",
     },
@@ -117,7 +117,7 @@ PRODUCTS.update({
         "url": "https://obiimy.world/rezynky/", "sku": "R-6", "story_img": "photo/paris-bun.jpg",
     },
 })
-REVIEW = ("Замовляла на подарунок хустку, якість неймовірна, подруга теж задоволена! Вирішила замовити собі твіллі — не можу нарадуватись, кожного дня хочеться додавати в образ.", "Анна Мелешак · відгук на obiimy.world")
+REVIEW = ("Замовляла на подарунок хустку, якість неймовірна, подруга теж задоволена! Вирішила замовити собі твіллі — не можу нарадуватись, кожного дня хочеться додавати в образ", "Анна Мелешак · відгук на obiimy.world")
 RELATED = [
     ("Хустка «Єднання»", "44 × 44 · двосторонній", "2 400 грн", "img/yednannia.webp", "https://obiimy.world/spivocha-dusha/"),
     ("Твіллі «Золоте світло»", "84 × 5", "1 600 грн", "img/twilly-zolote.webp", "https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/"),
@@ -172,7 +172,7 @@ BASE_CSS = """
   h3 { font-size: 1.3rem; }
   p { margin: 0; }
   .wrap { width: min(1280px, 100%); margin-inline: auto; padding-inline: clamp(16px, 4vw, 48px); }
-  .eyebrow { font-size: .7rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ink3); font-weight: 600; }
+  .eyebrow { font-size: .76rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ink3); font-weight: 600; }
   .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 28px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .95rem; border: 1px solid transparent; cursor: pointer; font-family: inherit; transition: transform .2s ease; }
   .btn:hover { transform: translateY(-1px); }
@@ -199,7 +199,10 @@ BASE_CSS = """
   .gallery { display: grid; gap: 12px; position: sticky; top: 88px; }
   .main { aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius); background: var(--bg2); position: relative; }
   .main img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
-  .main.contain img { object-fit: contain; background: #F4F2EE; padding: 6%; }
+  .main.contain img { object-fit: contain; background: #fff; padding: 6%; }
+  .wear .ph.contain img { object-fit: contain; background: #fff; padding: 8%; }
+  @media (max-width: 860px) { .main { aspect-ratio: 1; } .thumbs button { width: 64px; } .crumbs a, footer a { display: inline-block; padding: 10px 0; } }
+  .nav .btn { min-height: 44px; }
   .variant { font-family: var(--display); font-size: 1.15rem; margin-top: 6px; }
   .variant small { font-family: var(--body); color: var(--ink3); font-size: .85rem; margin-left: 8px; }
   .dark .size button[aria-pressed="true"] small { color: #17151A; }
@@ -219,7 +222,7 @@ BASE_CSS = """
   .price { font-family: var(--display); font-size: 2.2rem; line-height: 1; }
   .old { font-size: 1rem; color: var(--ink3); text-decoration: line-through; }
   .part { font-size: .82rem; color: var(--ink3); }
-  .label { font-size: .68rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink3); font-weight: 600; display: flex; justify-content: space-between; }
+  .label { font-size: .76rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink3); font-weight: 600; display: flex; justify-content: space-between; }
   .size { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
   .size.single { grid-template-columns: minmax(0, max-content); }
   .size button b { white-space: nowrap; }
@@ -280,7 +283,7 @@ BASE_CSS = """
   .stars { color: var(--gold); letter-spacing: .1em; font-size: .9rem; }
   .who { font-size: .8rem; color: var(--ink3); }
   .card dl { margin: 0; display: grid; gap: 8px; font-size: .9rem; }
-  .card dt { font-size: .66rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); font-weight: 600; }
+  .card dt { font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); font-weight: 600; }
   .card dd { margin: 0; color: var(--ink2); }
   @media (max-width: 860px) { .trust { grid-template-columns: 1fr; } }
   .related { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
@@ -298,7 +301,7 @@ BASE_CSS = """
   @media (min-width: 861px) { footer { padding-bottom: 26px; } }
   .sticky { display: none; transform: translateY(calc(100% + 24px)); transition: transform .25s ease; }
   .sticky.on { transform: none; }
-  @media (max-width: 860px) { .sticky { display: grid; grid-template-columns: 1fr auto; gap: 10px; position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 60; background: rgba(23,21,25,.92); backdrop-filter: blur(10px); border-radius: 999px; padding: 8px 8px 8px 18px; color: #fff; align-items: center; } .sticky .t { font-size: .8rem; line-height: 1.25; } .sticky .t b { display: block; font-weight: 600; } .sticky a { background: var(--gold); color: #17151A; text-decoration: none; font-weight: 600; font-size: .82rem; padding: 11px 16px; border-radius: 999px; white-space: nowrap; } }
+  @media (max-width: 860px) { .sticky { display: grid; grid-template-columns: 1fr auto; gap: 10px; position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 60; background: rgba(23,21,25,.92); backdrop-filter: blur(10px); border-radius: 999px; padding: 8px 8px 8px 18px; color: #fff; align-items: center; } .sticky .t { font-size: .8rem; line-height: 1.25; } .sticky .t b { display: block; font-weight: 600; } .sticky a { background: var(--gold); color: #17151A; text-decoration: none; font-weight: 600; font-size: .82rem; padding: 11px 16px; border-radius: 999px; white-space: nowrap;; min-height: 44px; padding: 12px 18px; display: inline-flex; align-items: center; } }
 """
 
 def price(n): return f"{n:,}".replace(",", " ") + " грн"
@@ -306,7 +309,7 @@ def price(n): return f"{n:,}".replace(",", " ") + " грн"
 def build(skin_key, skin, product_key=None, suffix=""):
     p = PRODUCTS[product_key or skin["product"]]
     dark = skin["dark"]
-    logo = "brand/logo-white.png" if dark else "brand/logo-ink.png"
+    logo = "brand/logo-white-480.webp" if dark else "brand/logo-ink-480.webp"
     viewer = skin["viewer"] if "kind" not in p else "photos"
     kind = p.get("kind", "Шовкова хустка")
     cat_name, cat_url = {"Твіллі": ("Твіллі", "https://obiimy.world/tvilli/"), "Маска для сну": ("Маски для сну", "https://obiimy.world/masky-dlia-snu/"), "Подарунковий набір": ("Подарункові набори", "https://obiimy.world/podarunkovi-nabory/"), "Резинка для волосся": ("Резинки", "https://obiimy.world/rezynky/")}.get(kind, ("Хустки", "https://obiimy.world/khustky/"))
@@ -343,8 +346,8 @@ def build(skin_key, skin, product_key=None, suffix=""):
     <div><p class="eyebrow">Двосторонній друк</p><h2 style="margin-top:10px">Один вузол. Два образи.</h2><p class="story" style="display:block;color:var(--ink2);margin-top:14px;max-width:32em">Друк на обох боках шовку: лицем — «{p["name"]}», зворотом — «{p["backname"]}». Перевернули хустку — і на плечах уже інший принт. Двосторонні хустки 44 × 44 від 2 400 грн, 65 × 65 від 4 800 грн.</p></div>
     <div class="two"><figure class="f"><img src="tex/{p["tex"]}.jpg" alt="Лице"><figcaption>Лице</figcaption></figure><figure class="b"><img src="tex/{p["back"]}.jpg" alt="Зворот"><figcaption>Зворот</figcaption></figure></div>
   </div></section>'''
-    wear = "".join(f'<figure><div class="ph">{img(src, cap, sizes="(max-width: 640px) 100vw, 33vw")}</div><figcaption>{cap}</figcaption></figure>' for cap, src in p["wear"])
-    related = "".join(f'<a class="rel" href="{u}"><div class="ph"><img src="{im}" alt="" loading="lazy"></div><b>{n}</b><span>{s}</span><span class="p num">{pr}</span></a>' for n, s, pr, im, u in [r for r in RELATED if r[4] != p['url'] and r[0] != f'{kind} «{p["name"]}»'][:4])
+    wear = "".join(f'<figure><div class="ph{" contain" if src.startswith("img/") else ""}">{img(src, cap, sizes="(max-width: 640px) 100vw, 33vw")}</div><figcaption>{cap}</figcaption></figure>' for cap, src in p["wear"])
+    related = "".join(f'<a class="rel" href="{u}"><div class="ph">{img(im, "", sizes="(max-width: 860px) 50vw, 25vw")}</div><b>{n}</b><span>{s}</span><span class="p num">{pr}</span></a>' for n, s, pr, im, u in [r for r in RELATED if r[4] != p['url'] and r[0] != f'{kind} «{p["name"]}»'][:4])
     engine = ""
     if viewer != "photos":
         opts = {
@@ -369,16 +372,21 @@ def build(skin_key, skin, product_key=None, suffix=""):
     specs = "".join(f'<div><b class="num">{a_}</b><span>{b_}</span><span class="{"num" if any(ch.isdigit() for ch in c_) else ""}">{c_}</span></div>' for a_, b_, c_ in p.get("specs", default_specs))
     sizes_title = "Розміри" if "kind" not in p else "Деталі"
     sizes_h2 = "Один принт, три способи носити" if "kind" not in p else "Що всередині"
+    state_desc = p["state"] + ". 100% італійський шовк, авторський принт, " + price(p["sale"].get(d0[0], d0[1])) + "."
     html = f'''<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>{kind} «{p["name"]}» — Obiimy</title>
 <meta name="description" content="{kind} «{p["name"]}» Obiimy: 100% італійський шовк, авторський принт{(", " + d0[0] + " см") if d0[0][0].isdigit() else ""}, {price(p["sale"].get(d0[0], d0[1]))}. Відправка того ж дня, оплата частинами.">
+<meta property="og:type" content="product">
+<meta property="og:title" content="{kind} «{p["name"]}» — Obiimy">
+<meta property="og:description" content="{state_desc}">
+<meta property="og:image" content="https://obiimy-landing-production.up.railway.app/{p["photos"][0]}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={skin["fonts"]}&display=swap">
 <style>
   {skin["css"]}
-  :root {{ --ink3: {"#A9A3B3" if dark else "#66626D"}; }}
+  :root {{ --ink3: {"#A9A3B3" if dark else ("#5A5651" if skin_key == "form" else "#66626D")}; }}
   :root {{ --display: {skin["display"]}; --body: {skin["body"]}; color-scheme: {"dark" if dark else "light"}; }}
 {BASE_CSS}
 </style>
@@ -386,7 +394,7 @@ def build(skin_key, skin, product_key=None, suffix=""):
 <div class="bar">Замовлення до 16:00 відправляємо того ж дня · Безкоштовна доставка від 5 000 грн · Оплата частинами</div>
 <header class="nav"><div class="wrap">
   <a class="logo" href="{skin["landing"]}" aria-label="Obiimy"><img src="{logo}" alt="Obiimy"></a>
-  <nav class="nav-links"><a href="{skin["landing"]}">Головна</a><a href="https://obiimy.world/khustky/">Хустки</a><a href="https://obiimy.world/tvilli/">Твіллі</a><a href="https://obiimy.world/podarunkovi-nabory/">Подарунки</a></nav>
+  <nav class="nav-links" aria-label="Розділи сайту"><a href="{skin["landing"]}">Головна</a><a href="https://obiimy.world/khustky/">Хустки</a><a href="https://obiimy.world/tvilli/">Твіллі</a><a href="https://obiimy.world/podarunkovi-nabory/">Подарунки</a></nav>
   <a class="btn btn-gold" style="padding:10px 16px;font-size:.8rem" href="https://obiimy.world/khustky/">Каталог</a>
 </div></header>
 
@@ -408,7 +416,7 @@ def build(skin_key, skin, product_key=None, suffix=""):
         <div class="acc">
           <details open><summary>Матеріал і друк</summary><p>100% італійський шовк, високоякісний цифровий друк. {"Обробка вручну, тому розмір може відхилятися на 0–2,5 см." if "kind" not in p else "Обробка вручну, тому дрібні відмінності між екземплярами — норма."} Індивідуальне пакування. Виготовлено в Україні.</p></details>
           <details><summary>Догляд</summary><ul><li>Суха чистка або ручне прання при температурі до 30 °C</li><li>Не віджимати, сушити в тіні</li><li>Прасування в режимі «шовк» через тонку тканину</li></ul></details>
-          <details><summary>Оплата і повернення</summary><p>Оплата карткою онлайн або частинами: 4 платежі від ПриватБанку чи 3 від monobank. Умови обміну та повернення — на сторінці <a href="https://obiimy.world/obmin-ta-povernennya/">Обмін та повернення</a>.</p></details>
+          <details><summary>Оплата і повернення</summary><p>Оплата карткою онлайн або частинами: 4 платежі від ПриватБанку чи 3 від monobank. Умови обміну та повернення — на сторінці <a href="https://obiimy.world/obmin-ta-povernennya/">«Обмін та повернення»</a>.</p></details>
         </div>
       </div>
     </div>
@@ -431,7 +439,7 @@ def build(skin_key, skin, product_key=None, suffix=""):
     <div class="head"><p class="eyebrow">Довіра</p><h2>Відгук і партнери</h2></div>
     <div class="trust">
       <div class="card"><span class="stars">★★★★★</span><p>«{REVIEW[0]}»</p><span class="who">{REVIEW[1]}</span></div>
-      <div class="card"><dl><div><dt>Ритейл</dt><dd>INTERTOP, Hram, Be Brave (Канада), UFD London</dd></div><div><dt>Преса</dt><dd>LIGA.net, INSIDER UA</dd></div><div><dt>Рейтинг</dt><dd>5.0 за відгуками покупців на obiimy.world</dd></div></dl></div>
+      <div class="card"><dl><div><dt>Ритейл</dt><dd>INTERTOP, Hram, Be Brave · Канада, UFD London</dd></div><div><dt>Преса</dt><dd>LIGA.net, INSIDER UA</dd></div><div><dt>Рейтинг</dt><dd>5,0 за відгуками покупців на obiimy.world</dd></div></dl></div>
     </div>
   </div></section>
   <section class="block"><div class="wrap">
@@ -461,7 +469,7 @@ def build(skin_key, skin, product_key=None, suffix=""):
   if (sideEl) sideEl.querySelectorAll('button').forEach(function (b) {{ b.addEventListener('click', function () {{ side = b.dataset.v; sideEl.querySelectorAll('button').forEach(function (x) {{ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); }}); if (side === 'two' && !SIZES[cur].two) cur = 1; render(); if (window.__silk && side === 'two') window.__silk.flip(); }}); }});
   render();
   var stick = document.querySelector('.sticky'), buy = document.getElementById('buy');
-  if (stick && buy) {{ var tick = false; var chk = function () {{ tick = false; stick.classList.toggle('on', buy.getBoundingClientRect().bottom < 0); }}; window.addEventListener('scroll', function () {{ if (!tick) {{ tick = true; requestAnimationFrame(chk); }} }}, {{ passive: true }}); chk(); }}
+  if (stick && buy) {{ var tick = false; var chk = function () {{ tick = false; var r = buy.getBoundingClientRect(); stick.classList.toggle('on', r.bottom < 0 || r.top > window.innerHeight); }}; window.addEventListener('scroll', function () {{ if (!tick) {{ tick = true; requestAnimationFrame(chk); }} }}, {{ passive: true }}); chk(); }}
   var share = document.getElementById('share');
   if (share) share.addEventListener('click', function () {{ var d = {{ title: document.title, url: location.href }}; if (navigator.share) navigator.share(d).catch(function () {{}}); else if (navigator.clipboard) navigator.clipboard.writeText(location.href).then(function () {{ share.textContent = 'Посилання скопійовано'; setTimeout(function () {{ share.textContent = 'Поділитись'; }}, 2000); }}); }});
   var mainImg = document.getElementById('mainImg'), canvas = document.getElementById('silk');

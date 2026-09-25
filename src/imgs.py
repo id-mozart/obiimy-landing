@@ -36,9 +36,9 @@ def img(src, alt, sizes="100vw", lazy=True, cls="", extra="", eager_priority=Fal
 NBSP, THIN = "\u00a0", "\u202f"
 def typo(html):
     """Non-breaking spaces in prices, sizes, units and phone numbers (applied to the whole document)."""
+    html = html.replace("+38 067 010 85 25", "+38" + NBSP + "067" + NBSP + "010" + NBSP + "85" + NBSP + "25")
     html = re.sub(r'(?<=\d) (?=\d{3}(?!\d))', THIN, html)
     html = re.sub(r'(\d) × (\d)', lambda m: m.group(1) + NBSP + "×" + NBSP + m.group(2), html)
     html = re.sub(r'(\d) (грн|см|шт\.|°C)', lambda m: m.group(1) + NBSP + m.group(2), html)
-    html = html.replace("+38 067 010 85 25", "+38" + NBSP + "067" + NBSP + "010" + NBSP + "85" + NBSP + "25")
     html = re.sub(r'(до|від|з) (\d)', lambda m: m.group(1) + NBSP + m.group(2), html)
     return html

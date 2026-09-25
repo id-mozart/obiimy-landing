@@ -419,7 +419,7 @@
     // particles
     var pu = pMat.uniforms; pu.uTime.value = time;
     var birdMode = !!(window.GARDEN_OPTS && GARDEN_OPTS.bird);
-    var wantMorph = ch === 0 ? 0 : (ch === 5 ? 0 : (ch === 3 && birdMode ? 0 : 1)), wantSwirl = ch === 3 ? 1.6 : 0.5, wantAlpha = window.__gardenForm ? 0 : (ch === 3 ? 1 : (ch === 0 || ch === 5 ? 1 : 0.35));
+    var wantMorph = ch === 0 ? 0 : (ch === 5 ? 0 : (ch === 3 && birdMode ? 0 : 1)), wantSwirl = ch === 3 ? 1.6 : 0.5, wantAlpha = window.__gardenForm ? 0 : (ch === 5 && isMobile && window.GARDEN_OPTS && GARDEN_OPTS.finalLogoHideMobile ? 0 : (ch === 3 ? 1 : (ch === 0 || ch === 5 ? 1 : 0.35)));
     pMat.uniforms.uBird.value += ((ch === 3 && birdMode ? 1 : 0) - pMat.uniforms.uBird.value) * 0.04;
     pu.uMorph.value += (wantMorph - pu.uMorph.value) * 0.04; pu.uSwirl.value += (wantSwirl - pu.uSwirl.value) * 0.03; pu.uAlpha.value += (wantAlpha - pu.uAlpha.value) * 0.05;
     if (document.documentElement.classList.contains('ready')) pu.uAssemble.value = Math.min(1, pu.uAssemble.value + dt * 0.45);

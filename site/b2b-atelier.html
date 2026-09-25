@@ -62,11 +62,13 @@
   .stage.twilly #silk { opacity: 0; pointer-events: none; }
   .stage #silk { transition: opacity .6s ease; }
   .stage.packshot #silk, .stage.packshot #ribbon { opacity: 0; pointer-events: none; }
-  .pack { position: absolute; inset: 20% 6% 18% 38%; margin: 0; display: grid; grid-template-rows: 1fr auto; gap: 10px; justify-items: center; }
-  .pack img { width: 100%; height: 100%; object-fit: contain; background: #F3F3F3; border-radius: 4px; box-shadow: 0 30px 50px -20px rgba(0,0,0,.6); }
+  .pack { position: absolute; inset: 24% 8% 20% 48%; margin: 0; display: grid; grid-template-rows: 1fr auto; gap: 10px; justify-items: center; }
+  .pack img { width: min(100%, 360px); height: auto; aspect-ratio: 1; align-self: center; object-fit: cover; border-radius: 50%; background: #F3F3F3; box-shadow: 0 40px 60px -24px rgba(0,0,0,.7); outline: 1px solid rgba(242,183,5,.5); outline-offset: 10px; }
+  .pack { grid-template-rows: auto auto; align-content: center; }
+  .stage.packshot .hintdrag { display: none; }
   .pack figcaption { font-size: .8rem; color: var(--ink-2); text-align: center; }
-  @media (max-width: 960px) { .pack { inset: 16% 30% 10% 6%; } .pack figcaption { font-size: .72rem; } }
-  .stage .title { position: absolute; left: clamp(16px, 4vw, 56px); top: calc(96px + env(safe-area-inset-top, 0px)); max-width: 24em; pointer-events: none; z-index: 2; }
+  @media (max-width: 960px) { .pack { inset: 18% 40% 8% 4%; } .pack img { width: min(100%, 170px); } .pack figcaption { font-size: .72rem; } .summary.appr #toRequest { display: inline-flex !important; } }
+  .stage .title { position: absolute; left: clamp(16px, 4vw, 56px); top: calc(96px + env(safe-area-inset-top, 0px)); max-width: 24em; pointer-events: none; z-index: 3; }
   .stage .title p { margin-top: 14px; color: var(--ink-2); font-weight: 300; font-size: 1.02rem; max-width: 19em; }
   .stage .now { position: absolute; left: clamp(16px, 4vw, 56px); bottom: calc(30px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 4px; pointer-events: none; }
   .stage .now .n { font-family: var(--display); font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; }

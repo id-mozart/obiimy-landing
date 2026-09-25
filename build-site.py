@@ -19,6 +19,13 @@ VERSIONS = [
 ]
 ASSET_DIRS = ["img", "photo", "tex", "brand"]
 
+KEEP = {"", "/", "/pro-nas/", "/vidhuky/", "/oplata-i-dostavka/", "/obmin-ta-povernennya/", "/rekomendatsii-po-dohliadu/", "/en/", "/en"}
+def relink(src: str, slug: str) -> str:
+    def sub(m):
+        path = m.group(1) or ""
+        return m.group(0) if path in KEEP else f"product-{slug}"
+    return re.sub(r'https://obiimy\.world(/[A-Za-z0-9\-]+/?)?(?=["\'\s<>?])', sub, src)
+
 def wrap(src: str) -> str:
     i = src.index("</style>") + len("</style>")
     head, body = src[:i], src[i:]
@@ -32,16 +39,16 @@ def main():
     for d in ASSET_DIRS:
         shutil.copytree(ROOT / d, SITE / d)
     for slug, fname, title, desc in VERSIONS:
-        (SITE / f"{slug}.html").write_text(wrap((ROOT / fname).read_text()))
+        (SITE / f"{slug}.html").write_text(wrap(relink((ROOT / fname).read_text(), slug)))
         pp = ROOT / f"p-{slug}.html"
         if pp.exists():
             (SITE / f"product-{slug}.html").write_text(wrap(pp.read_text()))
     # hub page
     cards = "\n".join(
-        f'''      <a class="card" href="{slug}">
-        <div class="ph"><img src="thumbs/{slug}.jpg" alt="{title}" loading="lazy"></div>
-        <div class="body"><span class="no">{i+1:02d}</span><h2>{title}</h2><p>{desc}</p><span class="go">Відкрити лендинг →</span><a class="go sub" href="product-{slug}.html">Сторінка товару →</a></div>
-      </a>''' for i, (slug, fname, title, desc) in enumerate(VERSIONS))
+        f'''      <div class="card">
+        <a class="ph" href="{slug}"><img src="thumbs/{slug}.jpg" alt="{title}" loading="lazy"></a>
+        <div class="body"><span class="no">{i+1:02d}</span><h2><a href="{slug}">{title}</a></h2><p>{desc}</p><div class="links"><a class="go" href="{slug}">Відкрити лендинг →</a><a class="go sub" href="product-{slug}">Сторінка товару →</a></div></div>
+      </div>''' for i, (slug, fname, title, desc) in enumerate(VERSIONS))
     hub = f'''<!DOCTYPE html>
 <html lang="uk">
 <head>
@@ -62,16 +69,18 @@ def main():
   h1 {{ font-family:'Prata',serif; font-weight:400; font-size:clamp(2rem,4.5vw,3.6rem); margin:0 0 10px; line-height:1.05; }}
   .lede {{ color:var(--ink-2); max-width:38em; font-weight:300; font-size:1.05rem; margin:0 0 clamp(28px,4vw,56px); }}
   .grid {{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }}
-  .card {{ display:grid; grid-template-rows:auto 1fr; background:var(--card); border-radius:6px; overflow:hidden; text-decoration:none; color:inherit; border:1px solid var(--line); transition:transform .3s ease, box-shadow .3s ease; }}
+  .card {{ display:grid; grid-template-rows:auto 1fr; background:var(--card); border-radius:6px; overflow:hidden; color:inherit; border:1px solid var(--line); transition:transform .3s ease, box-shadow .3s ease; }}
   .card:hover {{ transform:translateY(-4px); box-shadow:0 30px 60px -30px rgba(23,21,25,.35); }}
-  .card .ph {{ aspect-ratio:16/10; overflow:hidden; background:#ECEAE4; border-bottom:1px solid var(--line); }}
+  .card .ph {{ display:block; aspect-ratio:16/10; overflow:hidden; background:#ECEAE4; border-bottom:1px solid var(--line); }}
+  .card h2 a {{ text-decoration:none; color:inherit; }}
+  .card .links {{ display:flex; flex-wrap:wrap; gap:6px 18px; margin-top:6px; }}
   .card img {{ width:100%; height:100%; object-fit:cover; object-position:top; }}
   .card .body {{ padding:18px 20px 22px; display:grid; gap:6px; align-content:start; }}
   .card .no {{ font-size:.7rem; letter-spacing:.2em; color:var(--ink-3); font-weight:600; }}
   .card h2 {{ font-family:'Prata',serif; font-weight:400; font-size:1.5rem; margin:0; }}
   .card p {{ margin:0; color:var(--ink-2); font-size:.92rem; }}
-  .card .go {{ margin-top:6px; font-size:.82rem; font-weight:500; text-decoration:underline; text-underline-offset:4px; }}
-  .card .go.sub {{ margin-top:0; color:var(--ink-2); }}
+  .card .go {{ font-size:.82rem; font-weight:500; text-decoration:underline; text-underline-offset:4px; color:var(--ink); }}
+  .card .go.sub {{ color:var(--ink-2); }}
   .card:first-child {{ grid-column:span 3; grid-template-columns:1.2fr 1fr; }}
   .card:first-child .ph {{ aspect-ratio:auto; border-bottom:0; border-right:1px solid var(--line); min-height:320px; }}
   .card:first-child .body {{ padding:32px; align-content:center; }}

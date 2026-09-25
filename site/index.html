@@ -18,16 +18,18 @@
   h1 { font-family:'Prata',serif; font-weight:400; font-size:clamp(2rem,4.5vw,3.6rem); margin:0 0 10px; line-height:1.05; }
   .lede { color:var(--ink-2); max-width:38em; font-weight:300; font-size:1.05rem; margin:0 0 clamp(28px,4vw,56px); }
   .grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
-  .card { display:grid; grid-template-rows:auto 1fr; background:var(--card); border-radius:6px; overflow:hidden; text-decoration:none; color:inherit; border:1px solid var(--line); transition:transform .3s ease, box-shadow .3s ease; }
+  .card { display:grid; grid-template-rows:auto 1fr; background:var(--card); border-radius:6px; overflow:hidden; color:inherit; border:1px solid var(--line); transition:transform .3s ease, box-shadow .3s ease; }
   .card:hover { transform:translateY(-4px); box-shadow:0 30px 60px -30px rgba(23,21,25,.35); }
-  .card .ph { aspect-ratio:16/10; overflow:hidden; background:#ECEAE4; border-bottom:1px solid var(--line); }
+  .card .ph { display:block; aspect-ratio:16/10; overflow:hidden; background:#ECEAE4; border-bottom:1px solid var(--line); }
+  .card h2 a { text-decoration:none; color:inherit; }
+  .card .links { display:flex; flex-wrap:wrap; gap:6px 18px; margin-top:6px; }
   .card img { width:100%; height:100%; object-fit:cover; object-position:top; }
   .card .body { padding:18px 20px 22px; display:grid; gap:6px; align-content:start; }
   .card .no { font-size:.7rem; letter-spacing:.2em; color:var(--ink-3); font-weight:600; }
   .card h2 { font-family:'Prata',serif; font-weight:400; font-size:1.5rem; margin:0; }
   .card p { margin:0; color:var(--ink-2); font-size:.92rem; }
-  .card .go { margin-top:6px; font-size:.82rem; font-weight:500; text-decoration:underline; text-underline-offset:4px; }
-  .card .go.sub { margin-top:0; color:var(--ink-2); }
+  .card .go { font-size:.82rem; font-weight:500; text-decoration:underline; text-underline-offset:4px; color:var(--ink); }
+  .card .go.sub { color:var(--ink-2); }
   .card:first-child { grid-column:span 3; grid-template-columns:1.2fr 1fr; }
   .card:first-child .ph { aspect-ratio:auto; border-bottom:0; border-right:1px solid var(--line); min-height:320px; }
   .card:first-child .body { padding:32px; align-content:center; }
@@ -43,46 +45,46 @@
   <h1>Десять версій лендингу Obiimy</h1>
   <p class="lede">Український бренд шовкових хусток з авторськими принтами художниці Світлани Сніжко. Від класичного лендингу до 3D-сцен та фешн-лукбуків. Головна версія — Maison, найартовіша — Garden. У кожної версії є приклад сторінки товару в тому ж стилі.</p>
   <div class="grid">
-      <a class="card" href="garden">
-        <div class="ph"><img src="thumbs/garden.jpg" alt="Garden" loading="lazy"></div>
-        <div class="body"><span class="no">01</span><h2>Garden</h2><p>Мега-арт: одна 3D-сцена на весь скрол. Частинки збираються в логотип, шовк пропливає каруселлю, тунель зі станів, зграя і жовта коробка з тканиною (WebGL).</p><span class="go">Відкрити лендинг →</span><a class="go sub" href="product-garden.html">Сторінка товару →</a></div>
-      </a>
-      <a class="card" href="maison">
-        <div class="ph"><img src="thumbs/maison.jpg" alt="Maison" loading="lazy"></div>
-        <div class="body"><span class="no">02</span><h2>Maison</h2><p>Головна преміум-версія. Фото-hero, каталог за настроєм, підбір подарунка, довіра, FAQ. Доведена до 9/10 арт-директором і маркетологом.</p><span class="go">Відкрити лендинг →</span><a class="go sub" href="product-maison.html">Сторінка товару →</a></div>
-      </a>
-      <a class="card" href="journal">
-        <div class="ph"><img src="thumbs/journal.jpg" alt="Journal" loading="lazy"></div>
-        <div class="body"><span class="no">03</span><h2>Journal</h2><p>Журнал бренду: обкладинка, три фотоісторії з кредитами, натюрморти, розмова із засновницею.</p><span class="go">Відкрити лендинг →</span><a class="go sub" href="product-journal.html">Сторінка товару →</a></div>
-      </a>
-      <a class="card" href="campaign">
-        <div class="ph"><img src="thumbs/campaign.jpg" alt="Campaign" loading="lazy"></div>
-        <div class="body"><span class="no">04</span><h2>Campaign</h2><p>Темна кампейн-версія: сім повноекранних образів із хотспотами «shop the look».</p><span class="go">Відкрити лендинг →</span><a class="go sub" href="product-campaign.html">Сторінка товару →</a></div>
-      </a>
-      <a class="card" href="lookbook">
-        <div class="ph"><img src="thumbs/lookbook.jpg" alt="Lookbook" loading="lazy"></div>
-        <div class="body"><span class="no">05</span><h2>Lookbook</h2><p>Сім способів носити шовк: закріплене фото змінюється разом із текстом.</p><span class="go">Відкрити лендинг →</span><a class="go sub" href="product-lookbook.html">Сторінка товару →</a></div>
-      </a>
-      <a class="card" href="studio">
-        <div class="ph"><img src="thumbs/studio.jpg" alt="Studio" loading="lazy"></div>
-        <div class="body"><span class="no">06</span><h2>Studio</h2><p>Світла студія: хустка на двох булавках під вітром, симуляція тканини, фактура шовку (WebGL).</p><span class="go">Відкрити лендинг →</span><a class="go sub" href="product-studio.html">Сторінка товару →</a></div>
-      </a>
-      <a class="card" href="noir">
-        <div class="ph"><img src="thumbs/noir.jpg" alt="Noir" loading="lazy"></div>
-        <div class="body"><span class="no">07</span><h2>Noir</h2><p>Нуар: невагомий шовк з анізотропним блиском і 3D-стрічка твіллі (WebGL).</p><span class="go">Відкрити лендинг →</span><a class="go sub" href="product-noir.html">Сторінка товару →</a></div>
-      </a>
-      <a class="card" href="form">
-        <div class="ph"><img src="thumbs/form.jpg" alt="Form" loading="lazy"></div>
-        <div class="body"><span class="no">08</span><h2>Form</h2><p>Хустка падає на форму й драпірується, розмір змінює драпіровку (WebGL).</p><span class="go">Відкрити лендинг →</span><a class="go sub" href="product-form.html">Сторінка товару →</a></div>
-      </a>
-      <a class="card" href="art">
-        <div class="ph"><img src="thumbs/art.jpg" alt="Art" loading="lazy"></div>
-        <div class="body"><span class="no">09</span><h2>Art</h2><p>Артова версія: 3D-хустка з реальним принтом, дев’ять станів, зали-галереї.</p><span class="go">Відкрити лендинг →</span><a class="go sub" href="product-art.html">Сторінка товару →</a></div>
-      </a>
-      <a class="card" href="classic">
-        <div class="ph"><img src="thumbs/classic.jpg" alt="Classic" loading="lazy"></div>
-        <div class="body"><span class="no">10</span><h2>Classic</h2><p>Перша, класична версія: колекції, хіти, розміри у масштабі, місія, подарунки.</p><span class="go">Відкрити лендинг →</span><a class="go sub" href="product-classic.html">Сторінка товару →</a></div>
-      </a>
+      <div class="card">
+        <a class="ph" href="garden"><img src="thumbs/garden.jpg" alt="Garden" loading="lazy"></a>
+        <div class="body"><span class="no">01</span><h2><a href="garden">Garden</a></h2><p>Мега-арт: одна 3D-сцена на весь скрол. Частинки збираються в логотип, шовк пропливає каруселлю, тунель зі станів, зграя і жовта коробка з тканиною (WebGL).</p><div class="links"><a class="go" href="garden">Відкрити лендинг →</a><a class="go sub" href="product-garden">Сторінка товару →</a></div></div>
+      </div>
+      <div class="card">
+        <a class="ph" href="maison"><img src="thumbs/maison.jpg" alt="Maison" loading="lazy"></a>
+        <div class="body"><span class="no">02</span><h2><a href="maison">Maison</a></h2><p>Головна преміум-версія. Фото-hero, каталог за настроєм, підбір подарунка, довіра, FAQ. Доведена до 9/10 арт-директором і маркетологом.</p><div class="links"><a class="go" href="maison">Відкрити лендинг →</a><a class="go sub" href="product-maison">Сторінка товару →</a></div></div>
+      </div>
+      <div class="card">
+        <a class="ph" href="journal"><img src="thumbs/journal.jpg" alt="Journal" loading="lazy"></a>
+        <div class="body"><span class="no">03</span><h2><a href="journal">Journal</a></h2><p>Журнал бренду: обкладинка, три фотоісторії з кредитами, натюрморти, розмова із засновницею.</p><div class="links"><a class="go" href="journal">Відкрити лендинг →</a><a class="go sub" href="product-journal">Сторінка товару →</a></div></div>
+      </div>
+      <div class="card">
+        <a class="ph" href="campaign"><img src="thumbs/campaign.jpg" alt="Campaign" loading="lazy"></a>
+        <div class="body"><span class="no">04</span><h2><a href="campaign">Campaign</a></h2><p>Темна кампейн-версія: сім повноекранних образів із хотспотами «shop the look».</p><div class="links"><a class="go" href="campaign">Відкрити лендинг →</a><a class="go sub" href="product-campaign">Сторінка товару →</a></div></div>
+      </div>
+      <div class="card">
+        <a class="ph" href="lookbook"><img src="thumbs/lookbook.jpg" alt="Lookbook" loading="lazy"></a>
+        <div class="body"><span class="no">05</span><h2><a href="lookbook">Lookbook</a></h2><p>Сім способів носити шовк: закріплене фото змінюється разом із текстом.</p><div class="links"><a class="go" href="lookbook">Відкрити лендинг →</a><a class="go sub" href="product-lookbook">Сторінка товару →</a></div></div>
+      </div>
+      <div class="card">
+        <a class="ph" href="studio"><img src="thumbs/studio.jpg" alt="Studio" loading="lazy"></a>
+        <div class="body"><span class="no">06</span><h2><a href="studio">Studio</a></h2><p>Світла студія: хустка на двох булавках під вітром, симуляція тканини, фактура шовку (WebGL).</p><div class="links"><a class="go" href="studio">Відкрити лендинг →</a><a class="go sub" href="product-studio">Сторінка товару →</a></div></div>
+      </div>
+      <div class="card">
+        <a class="ph" href="noir"><img src="thumbs/noir.jpg" alt="Noir" loading="lazy"></a>
+        <div class="body"><span class="no">07</span><h2><a href="noir">Noir</a></h2><p>Нуар: невагомий шовк з анізотропним блиском і 3D-стрічка твіллі (WebGL).</p><div class="links"><a class="go" href="noir">Відкрити лендинг →</a><a class="go sub" href="product-noir">Сторінка товару →</a></div></div>
+      </div>
+      <div class="card">
+        <a class="ph" href="form"><img src="thumbs/form.jpg" alt="Form" loading="lazy"></a>
+        <div class="body"><span class="no">08</span><h2><a href="form">Form</a></h2><p>Хустка падає на форму й драпірується, розмір змінює драпіровку (WebGL).</p><div class="links"><a class="go" href="form">Відкрити лендинг →</a><a class="go sub" href="product-form">Сторінка товару →</a></div></div>
+      </div>
+      <div class="card">
+        <a class="ph" href="art"><img src="thumbs/art.jpg" alt="Art" loading="lazy"></a>
+        <div class="body"><span class="no">09</span><h2><a href="art">Art</a></h2><p>Артова версія: 3D-хустка з реальним принтом, дев’ять станів, зали-галереї.</p><div class="links"><a class="go" href="art">Відкрити лендинг →</a><a class="go sub" href="product-art">Сторінка товару →</a></div></div>
+      </div>
+      <div class="card">
+        <a class="ph" href="classic"><img src="thumbs/classic.jpg" alt="Classic" loading="lazy"></a>
+        <div class="body"><span class="no">10</span><h2><a href="classic">Classic</a></h2><p>Перша, класична версія: колекції, хіти, розміри у масштабі, місія, подарунки.</p><div class="links"><a class="go" href="classic">Відкрити лендинг →</a><a class="go sub" href="product-classic">Сторінка товару →</a></div></div>
+      </div>
   </div>
   <footer><span>Фото та логотип — obiimy.world.</span><span>Зроблено за допомогою Claude Code.</span></footer>
 </div>

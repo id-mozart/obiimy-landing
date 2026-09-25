@@ -130,6 +130,19 @@
   .calc .out b { font-family: var(--display); font-weight: 400; font-size: 2rem; }
   .calc .out span { color: var(--ink2); font-size: .9rem; }
 
+  .cert { position: relative; aspect-ratio: 4 / 5; border-radius: var(--radius); background: radial-gradient(120% 90% at 30% 20%, var(--card), var(--bg2)); overflow: hidden; margin: 0; }
+  .cert .silk { position: absolute; right: -12%; top: -8%; width: 70%; height: auto; aspect-ratio: 1; object-fit: cover; transform: rotate(14deg); box-shadow: 0 30px 50px -20px rgba(0,0,0,.35); }
+  .cert .env { position: absolute; left: 8%; right: 14%; bottom: 12%; height: 42%; background: linear-gradient(160deg, #F7C928, #EDB400); border-radius: 4px; transform: rotate(-5deg); box-shadow: 0 30px 40px -18px rgba(60,40,0,.5); }
+  .cert .env::before { content: ""; position: absolute; inset: 0; background: linear-gradient(155deg, transparent 49.5%, rgba(120,80,0,.18) 50%, transparent 51%), linear-gradient(25deg, transparent 49.5%, rgba(120,80,0,.18) 50%, transparent 51%); }
+  .cert .card { position: absolute; left: 14%; right: 10%; bottom: 30%; min-height: 40%; background: #F6F1E7; color: #231E2A; border-radius: 3px; padding: 7% 8%; transform: rotate(3deg); box-shadow: 0 24px 40px -16px rgba(0,0,0,.4); display: grid; align-content: space-between; gap: 10px; }
+  .cert .card img { height: 16px !important; width: auto !important; aspect-ratio: auto !important; background: none !important; padding: 0 !important; border-radius: 0 !important; object-fit: contain !important; }
+  .cert .card .k { font-family: var(--display); font-size: clamp(1.4rem, 2.6vw, 2.2rem); line-height: 1.05; }
+  .cert .card .v { font-family: var(--display); font-size: clamp(1.6rem, 3vw, 2.6rem); }
+  .cert .card small { font-size: .78rem; color: #5A5560; letter-spacing: .04em; }
+  @media (max-width: 960px) { .cert { aspect-ratio: 16 / 11; } .cert .card { bottom: 16%; top: 10%; min-height: 0; padding: 4% 6%; gap: 4px; } .cert .card .k { font-size: 1.25rem; } .cert .card .v { font-size: 1.5rem; } .cert .card small { font-size: .72rem; } }
+  .lbstrip { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; margin-top: 28px; }
+  .lbstrip img { width: 100%; height: auto; aspect-ratio: 297 / 210; object-fit: cover; border-radius: 3px; box-shadow: 0 16px 30px -18px rgba(0,0,0,.45); border: 1px solid var(--line); }
+  @media (max-width: 640px) { .lbstrip { grid-template-columns: 1fr 1fr; } }
   .form-block { padding-block: clamp(48px, 7vw, 100px); }
   .form-block .wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
   .contact { display: grid; gap: 14px; color: var(--ink2); }
@@ -138,7 +151,7 @@
   form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 3vw, 32px); }
   form label { display: grid; gap: 6px; font-size: .82rem; color: var(--ink2); letter-spacing: .03em; }
   form label.full { grid-column: 1 / -1; }
-  form label .req { color: #8A6500; }
+  form label .req { color: #7A5900; }
   .dark form label .req { color: var(--gold); }
   input, select, textarea { font: inherit; font-size: 1rem; color: var(--ink); background: var(--bg); border: 1px solid var(--line); border-radius: calc(var(--radius) - 2px); padding: 12px 14px; width: 100%; min-height: 48px; }
   .dark input, .dark select, .dark textarea { background: #1C1A22; border-color: rgba(236,233,239,.22); }
@@ -224,7 +237,7 @@
       <div class="cta"><a class="btn btn-gold" href="#request">Отримати умови для команди</a><a class="btn btn-line" href="product-studio">Сертифікати на obiimy.world</a></div>
       <p class="fine">Номінали під ціни речей: від 700 до 4 400 грн. Або одразу: <a href="tel:+380670108525">+38 067 010 85 25</a></p>
     </div>
-    <figure><img src="photo/kolo-1-800.webp" srcset="photo/kolo-1-480.webp 480w, photo/kolo-1-800.webp 800w, photo/kolo-1.webp 1000w" sizes="(max-width: 960px) 100vw, 50vw" width="1000" height="1500" alt="Жінка в шовковій хустці біля вікна" fetchpriority="high"><div class="tag">Сертифікат — коли важливо, щоб обрали самі</div></figure>
+    <figure class="cert" aria-label="Приклад подарункового сертифіката Obiimy у жовтому конверті"><img class="silk" src="tex/tysha-sertsia.jpg" alt="" width="1024" height="1024"><div class="env"></div><div class="card"><img src="brand/logo-ink-480.webp" alt="Obiimy" width="75" height="16"><span class="k">Подарунковий сертифікат</span><span class="v">1 600 грн</span><small>На будь-яку річ на obiimy.world · приклад оформлення</small></div></figure>
   </div></section><section class="wrap" aria-label="Коротко про бренд"><div class="facts"><div><b class="num">Без адрес</b><span>Не потрібно збирати розміри, кольори й відділення пошти</span></div><div><b class="num">700 – 4 400 грн</b><span>Номінали під роздрібні ціни речей</span></div><div><b class="num">Будь-де</b><span>Для команд у різних містах і за кордоном</span></div><div><b class="num">Один запит</b><span>Список імен, email і номінал — решту робимо ми</span></div></div></section>
   <section class="block" id="how"><div class="wrap">
     <div class="head"><p class="eyebrow">Як це працює</p><h2>Три кроки замість таблиці розмірів</h2><p class="sub">Хочете подарувати конкретну річ, а не вибір? Зберіть її в <a href="b2b-atelier">3D-конструкторі подарунка</a>.</p></div>

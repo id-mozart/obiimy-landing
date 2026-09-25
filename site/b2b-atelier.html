@@ -22,11 +22,11 @@
     --display: 'Cormorant Garamond', 'Times New Roman', serif; --body: 'Onest', 'Helvetica Neue', Arial, sans-serif; }
   * { box-sizing: border-box; min-width: 0; }
   html { scroll-behavior: smooth; }
-  body { margin: 0; background: radial-gradient(110% 80% at 30% 20%, #241A3E 0%, var(--bg) 55%, #070510 100%) fixed; color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  body { margin: 0; background: radial-gradient(110% 80% at 30% 20%, #241A3E 0%, var(--bg) 55%, #070510 100%) fixed; color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
   img { max-width: 100%; display: block; }
   a { color: inherit; }
   h1, h2, h3 { font-family: var(--display); font-weight: 300; margin: 0; line-height: 1.02; text-wrap: balance; }
-  h1 { font-size: clamp(2.4rem, 4.6vw, 4.6rem); }
+  h1 { font-size: clamp(2.2rem, 3.4vw, 3.6rem); }
   h2 { font-size: clamp(1.9rem, 3.2vw, 3rem); }
   em { font-style: italic; }
   p { margin: 0; }
@@ -34,7 +34,7 @@
   [id] { scroll-margin-top: 80px; }
   .num { font-variant-numeric: tabular-nums; white-space: nowrap; }
   a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
-  .eyebrow { font-size: .74rem; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); font-weight: 500; display: inline-flex; align-items: center; gap: 12px; }
+  .eyebrow { font-size: .76rem; letter-spacing: .26em; text-transform: uppercase; color: var(--gold); font-weight: 500; display: inline-flex; align-items: center; gap: 12px; }
   .eyebrow::before { content: ""; width: 26px; height: 1px; background: var(--gold); }
   .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 13px 24px; border-radius: 999px; text-decoration: none; font-weight: 600; font-size: .9rem; letter-spacing: .02em; border: 1px solid transparent; cursor: pointer; font-family: inherit; transition: transform .2s ease, background .2s ease; background: none; color: inherit; }
   .btn:hover { transform: translateY(-1px); }
@@ -44,7 +44,7 @@
   .btn-sm { min-height: 44px; padding: 10px 18px; font-size: .82rem; }
   .grain { position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: .35; mix-blend-mode: screen; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .05 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
 
-  .nav { position: fixed; inset-inline: 0; top: 0; z-index: 50; display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: calc(14px + env(safe-area-inset-top, 0px)) clamp(16px, 3vw, 40px) 14px; background: linear-gradient(180deg, rgba(12,9,20,.85), rgba(12,9,20,0)); }
+  .nav { position: fixed; inset-inline: 0; top: 0; z-index: 50; background: rgba(12,9,20,.92) !important; backdrop-filter: blur(10px); display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: calc(14px + env(safe-area-inset-top, 0px)) clamp(16px, 3vw, 40px) 14px; background: linear-gradient(180deg, rgba(12,9,20,.85), rgba(12,9,20,0)); }
   .nav .logo { display: inline-flex; align-items: center; min-height: 44px; }
   .nav .logo img { height: 20px; width: auto; }
   .nav .links { display: flex; gap: 22px; font-size: .8rem; letter-spacing: .08em; }
@@ -65,21 +65,22 @@
   .stage .title p { margin-top: 14px; color: var(--ink-2); font-weight: 300; font-size: 1.02rem; max-width: 22em; }
   .stage .now { position: absolute; left: clamp(16px, 4vw, 56px); bottom: calc(30px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 4px; pointer-events: none; }
   .stage .now .n { font-family: var(--display); font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; }
-  .stage .now .s { font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); }
+  .stage .now .s { font-size: .76rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); }
   .stage .tools { position: absolute; right: clamp(16px, 3vw, 32px); bottom: calc(30px + env(safe-area-inset-bottom, 0px)); display: flex; gap: 8px; }
-  .stage .hintdrag { position: absolute; right: clamp(16px, 3vw, 32px); top: calc(100px + env(safe-area-inset-top, 0px)); font-size: .7rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3); pointer-events: none; }
+  .stage .hintdrag { position: absolute; right: clamp(16px, 3vw, 32px); top: calc(100px + env(safe-area-inset-top, 0px)); font-size: .76rem; letter-spacing: .22em; text-transform: uppercase; color: var(--ink-3); pointer-events: none; }
   .fallback { position: absolute; inset: 18% 18%; display: none; }
   .fallback img { width: 100%; height: 100%; object-fit: contain; }
   .no-webgl .fallback { display: block; }
 
-  /* gift card preview */
-  .gift { position: absolute; left: clamp(16px, 4vw, 56px); bottom: calc(130px + env(safe-area-inset-bottom, 0px)); width: min(270px, 34%); z-index: 2; pointer-events: none; transform: rotate(-3deg); filter: drop-shadow(0 30px 40px rgba(0,0,0,.45)); }
-  .gift .box { height: 64px; background: linear-gradient(180deg, #F7C51B, #E7AE00); border-radius: 3px 3px 0 0; display: grid; place-items: center; }
-  .gift .box img { height: 16px; width: auto; }
-  .gift .card { background: #F6F1E7; color: #231E2A; padding: 18px 20px 16px; border-radius: 0 0 3px 3px; min-height: 120px; display: grid; gap: 10px; align-content: space-between; }
-  .gift .card p { font-family: var(--display); font-style: italic; font-size: 1.12rem; line-height: 1.3; white-space: pre-wrap; overflow-wrap: anywhere; }
-  .gift .card span { font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: #6B6477; }
-
+  /* gift box preview: lid leaning back, tray with tissue, the card standing in it */
+  .gift { position: absolute; left: clamp(16px, 4vw, 56px); bottom: calc(118px + env(safe-area-inset-bottom, 0px)); width: min(290px, 34%); z-index: 2; pointer-events: none; perspective: 1100px; filter: drop-shadow(0 34px 38px rgba(0,0,0,.55)); }
+  .gift .lid { height: 70px; margin: 0 5% -4px; background: linear-gradient(180deg, #F7C928 0%, #EDB400 100%); border-radius: 3px; display: grid; place-items: center; transform: rotateX(28deg) rotateZ(-2deg); transform-origin: 50% 100%; box-shadow: inset 0 -10px 16px rgba(120,80,0,.25); }
+  .gift .lid img { height: 18px; width: auto; }
+  .gift .tray { position: relative; height: 128px; border-radius: 3px; background: linear-gradient(180deg, #C98F00 0%, #E7A900 22%, #F2B705 100%); box-shadow: inset 0 18px 22px rgba(80,50,0,.45), inset 0 -2px 0 rgba(255,255,255,.25); transform: rotateX(10deg); transform-origin: 50% 100%; }
+  .gift .tissue { position: absolute; inset: 10px 10px auto 10px; height: 46px; border-radius: 2px; background: linear-gradient(180deg, #CDB6DF, #E3D3EE); box-shadow: inset 0 8px 12px rgba(60,30,80,.25); }
+  .gift .card { position: absolute; left: 9%; right: 9%; bottom: 34px; background: #F6F1E7; color: #231E2A; padding: 14px 16px 12px; border-radius: 2px; min-height: 104px; display: grid; gap: 8px; align-content: space-between; transform: rotate(-4deg) translateY(-6px); box-shadow: 0 10px 18px rgba(0,0,0,.28); }
+  .gift .card p { font-family: var(--display); font-style: italic; font-size: 1.06rem; line-height: 1.28; white-space: pre-wrap; overflow-wrap: anywhere; margin: 0; }
+  .gift .card span { font-size: .7rem; letter-spacing: .16em; text-transform: uppercase; color: #6B6477; }
   .panel { position: relative; z-index: 3; padding: calc(96px + env(safe-area-inset-top, 0px)) clamp(16px, 3vw, 44px) 40px; display: grid; gap: 34px; align-content: start; background: linear-gradient(90deg, rgba(12,9,20,0), rgba(12,9,20,.55) 18%, rgba(12,9,20,.72)); border-left: 1px solid var(--line); }
   .step { display: grid; gap: 14px; }
   .step h2 { font-size: clamp(1.6rem, 2.4vw, 2.1rem); }
@@ -145,7 +146,10 @@
     .stage .now { bottom: 14px; }
     .stage .now .n { font-size: 1.5rem; }
     .stage .tools { bottom: 12px; }
-    .gift { width: 128px; left: auto; right: 12px; bottom: 12px; transform: rotate(-4deg); }
+    .gift { width: 132px; left: auto; right: 14px; bottom: 10px; }
+    .gift .lid { height: 30px; } .gift .lid img { height: 9px; }
+    .gift .tray { height: 70px; } .gift .tissue { height: 24px; inset: 6px 6px auto 6px; }
+    .gift .card { min-height: 58px; padding: 7px 9px; gap: 3px; bottom: 16px; } .gift .card p { font-size: .72rem; -webkit-line-clamp: 3; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; } .gift .card span { font-size: .5rem; }
     .summary { gap: 6px; padding-top: 10px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
     .summary .line { font-size: .8rem; }
     .summary .total { flex-wrap: nowrap; }
@@ -155,8 +159,6 @@
     .summary .row .btn { min-height: 44px; padding: 10px 14px; font-size: .82rem; }
     .summary .row #shareBtn { flex: none; }
     .panel .note-m { display: block; }
-    .gift .box { height: 34px; } .gift .box img { height: 10px; }
-    .gift .card { min-height: 64px; padding: 10px 12px; gap: 4px; } .gift .card p { font-size: .82rem; -webkit-line-clamp: 3; display: -webkit-box; -webkit-box-orient: vertical; overflow: hidden; } .gift .card span { font-size: .56rem; }
     .panel { border-left: 0; padding-top: 24px; background: var(--bg); gap: 28px; }
     .stage .tools { left: 12px; right: auto; bottom: 12px; }
     .req-in { grid-template-columns: 1fr; }
@@ -164,7 +166,7 @@
   }
   @media (prefers-reduced-motion: reduce) { .btn, .swatches button { transition: none; } }
 
-  .items button .tag { grid-column: 1 / -1; justify-self: start; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(242,183,5,.4); border-radius: 999px; padding: 2px 8px; }
+  .items button .tag { grid-column: 1 / -1; justify-self: start; font-size: .75rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(242,183,5,.4); border-radius: 999px; padding: 2px 8px; }
   .items button.over { opacity: .45; }
   .items button.over::after { content: "понад бюджет"; grid-column: 1 / -1; font-size: .72rem; color: var(--ink-3); }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -187,13 +189,12 @@
   .summary .toggle, .addline, .lines .ln .pick, .lines .ln button { min-height: 44px; }
   .lines .ln button.rm { min-width: 44px; text-align: center; }
   html { scroll-padding-top: 90px; }
-  @media (max-width: 960px) { html { scroll-padding: calc(30svh + 16px) 0 150px; } .typing .stage { height: 18svh; } .typing .gift, .typing .stage .title { display: none; } .no-webgl .fallback { inset: 30% 22% 8%; } }
+  @media (max-width: 960px) { html { scroll-padding: calc(30svh + 16px) 0 150px; } .typing .stage, .typing.compact .stage { height: 18svh; } .typing .gift, .typing .stage .title { display: none; } .no-webgl .fallback { inset: 30% 22% 8%; } }
   @media (max-width: 960px) {
     .stage { transition: height .35s ease; }
     .compact .stage { height: 30svh; }
     .compact .stage .title, .compact .stage .tools { display: none; }
-    .compact .gift { width: 104px; bottom: 8px; }
-    .compact .gift .card p { -webkit-line-clamp: 2; }
+    .compact .gift { width: 108px; bottom: 6px; }
     .summary .line, .summary .perhead, .summary .lines, .summary .addline { display: none !important; }
     .summary.open .lines, .summary.open .addline { display: grid !important; }
     .summary .toggle { display: inline-flex !important; }
@@ -207,7 +208,9 @@
   .qtyadd { all: unset; cursor: pointer; font-size: .86rem; color: var(--gold); min-height: 44px; display: inline-flex; align-items: center; }
   .qtyadd[disabled] { opacity: .4; cursor: default; }
   #apprLines { white-space: pre-line; }
-  .summary.multi .line, .summary.multi .total span { display: none; }
+  .summary .line, .summary .total span { display: none; }
+  .summary .total { justify-content: flex-start; gap: 14px; }
+  .summary .perhead { margin: 0; }
   .stage .title p { text-shadow: 0 1px 18px rgba(12,9,20,.95); }
   .summary .total { align-items: baseline; }
   .summary .perhead { margin-top: -6px; }
@@ -221,7 +224,7 @@
 <header class="nav">
   <a class="logo" href="https://obiimy.world/" aria-label="Obiimy — на сайт бренду"><img src="brand/logo-white-480.webp" alt="Obiimy" width="94" height="20"></a>
   <nav class="links" aria-label="Розділи сторінки"><a href="#s-print">Принт</a><a href="#s-item">Річ</a><a href="#s-qty">Кількість</a><a href="#s-card">Листівка</a><a href="#request">Запит</a></nav>
-  <a class="btn btn-gold btn-sm" href="#request">Розрахунок</a>
+  <a class="btn btn-line btn-sm" href="#request">Розрахунок</a>
 </header>
 
 <main>
@@ -229,7 +232,7 @@
     <div class="stage" id="stage">
       <canvas id="silk" aria-label="Тривимірна шовкова хустка з обраним принтом. Потягніть за тканину."></canvas>
       <canvas id="ribbon" aria-hidden="true"></canvas>
-      <div class="fallback"><img id="fallbackImg" src="tex/tysha-sertsia.jpg" alt=""></div>
+      <div class="fallback"><img id="fallbackImg" alt=""></div>
       <div class="title">
         <p class="eyebrow">Ательє подарунка</p>
         <h1 style="margin-top:14px">Зберіть подарунок <em>для команди</em></h1>
@@ -237,7 +240,7 @@
       </div>
       <p class="hintdrag">Потягніть за тканину</p>
       <div class="now" aria-live="polite"><span class="s" id="nowItem">Хустка 65 × 65</span><span class="n" id="nowName">«Тиша серця»</span></div>
-      <div class="gift" aria-hidden="true"><div class="box"><img src="brand/logo-ink-480.webp" alt=""></div><div class="card"><p id="cardPrev">Дякуємо, що цього року ви були поруч.</p><span id="cardSign">— ваша компанія</span></div></div>
+      <div class="gift" aria-hidden="true"><div class="lid"><img src="brand/logo-ink-480.webp" alt=""></div><div class="tray"><div class="tissue"></div><div class="card"><p id="cardPrev">Дякуємо, що цього року ви були поруч.</p><span id="cardSign">— ваша компанія</span></div></div></div>
       <div class="tools"><button class="btn btn-line btn-sm" type="button" id="flipBtn" hidden>Перевернути</button></div>
     </div>
 
@@ -402,7 +405,7 @@ window.SilkEngine = (function () {
   var FRAG = [
     'precision highp float;',
     'uniform sampler2D uFront, uBack, uNextFront, uNextBack, uWeave;',
-    'uniform float uMix, uWeaveRepeat, uWeaveScale, uGloss, uAniso, uEnvStrength, uTime;',
+    'uniform float uMix, uWeaveRepeat, uWeaveScale, uGloss, uAniso, uEnvStrength, uTime, uTone, uDiffBase, uAnisoMix;',
     'uniform vec3 uLight, uEnvTop, uEnvBottom, uEnvTint, uSheen;',
     'varying vec2 vUv; varying vec3 vN; varying vec3 vT; varying vec3 vP;',
     'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }',
@@ -418,7 +421,7 @@ window.SilkEngine = (function () {
     '  vec3 base = mix(a, b, uMix);',
     '  vec3 V = normalize(-vP); vec3 L = normalize(uLight); vec3 H = normalize(L + V);',
     '  float NdotL = dot(n, L);',
-    '  float diff = 0.58 + 0.42 * max(NdotL, 0.0) + 0.08 * max(-NdotL, 0.0);',
+    '  float diff = uDiffBase + (1.0 - uDiffBase) * max(NdotL, 0.0) + 0.08 * max(-NdotL, 0.0);',
     '  float TdotH = dot(T, H);',
     '  float aniso = pow(sqrt(max(1.0 - TdotH * TdotH, 0.0)), 24.0) * uAniso;',
     '  float spec = pow(max(dot(n, H), 0.0), 90.0) * uGloss;',
@@ -430,11 +433,12 @@ window.SilkEngine = (function () {
     '  float fres = pow(1.0 - max(dot(n, V), 0.0), 3.5);',
     '  float grain = (hash(floor(gl_FragCoord.xy * 0.5)) - 0.5) * 0.035;',
     '  vec3 col = base * diff;',
-    '  col += base * aniso * 0.55 + uSheen * aniso * 0.25;',
+    '  col += base * aniso * uAnisoMix + uSheen * aniso * 0.25;',
     '  col += env * uEnvStrength * (0.15 + 0.85 * fres);',
     '  col += uEnvTint * (box1 * 0.35 + box2 * 0.22) * (0.5 + 0.5 * fres);',
     '  col += vec3(spec);',
     '  col += grain;',
+    '  if (uTone > 0.5) { col *= 1.12; col = (col * (2.51 * col + 0.03)) / (col * (2.43 * col + 0.59) + 0.14); }',
     '  gl_FragColor = vec4(col, 1.0);',
     '}'
   ].join('\n');
@@ -547,6 +551,7 @@ window.SilkEngine = (function () {
       uNextFront: { value: tex(opts.front) }, uNextBack: { value: tex(opts.back) }, uMix: { value: 0 },
       uWeave: { value: weave }, uWeaveRepeat: { value: opts.weaveRepeat || 18 }, uWeaveScale: { value: opts.weaveScale == null ? 0.35 : opts.weaveScale },
       uGloss: { value: opts.gloss == null ? 0.35 : opts.gloss }, uAniso: { value: opts.aniso == null ? 1.0 : opts.aniso },
+      uTone: { value: opts.toneMap ? 1 : 0 }, uDiffBase: { value: opts.diffBase == null ? 0.58 : opts.diffBase }, uAnisoMix: { value: opts.anisoMix == null ? 0.55 : opts.anisoMix },
       uEnvStrength: { value: opts.envStrength == null ? 0.5 : opts.envStrength }, uTime: { value: 0 },
       uLight: { value: new THREE.Vector3().fromArray(opts.light || [0.5, 0.8, 1.0]).normalize() },
       uEnvTop: { value: new THREE.Color(opts.envTop || '#ffffff') }, uEnvBottom: { value: new THREE.Color(opts.envBottom || '#4a4655') },
@@ -762,7 +767,7 @@ window.SilkEngine = (function () {
     var weave = makeWeaveNormalMap(256);
     var uniforms = {
       uFront: { value: t }, uBack: { value: t }, uNextFront: { value: t }, uNextBack: { value: t }, uMix: { value: 0 },
-      uWeave: { value: weave }, uWeaveRepeat: { value: 8 }, uWeaveScale: { value: 0.3 }, uGloss: { value: 0.22 }, uAniso: { value: 0.9 }, uEnvStrength: { value: 0.22 }, uTime: { value: 0 },
+      uWeave: { value: weave }, uWeaveRepeat: { value: 8 }, uWeaveScale: { value: 0.3 }, uGloss: { value: 0.22 }, uAniso: { value: 0.9 }, uEnvStrength: { value: 0.22 }, uTime: { value: 0 }, uTone: { value: opts.toneMap ? 1 : 0 }, uDiffBase: { value: opts.diffBase == null ? 0.58 : opts.diffBase }, uAnisoMix: { value: opts.anisoMix == null ? 0.55 : opts.anisoMix },
       uLight: { value: new THREE.Vector3(0.4, 0.8, 1).normalize() }, uEnvTop: { value: new THREE.Color(opts.envTop || '#ffffff') }, uEnvBottom: { value: new THREE.Color(opts.envBottom || '#3a3646') },
       uEnvTint: { value: new THREE.Color('#ffffff') }, uSheen: { value: new THREE.Color(opts.sheen || '#F2B705') }
     };
@@ -819,13 +824,13 @@ window.SilkEngine = (function () {
   var STATES = window.OBIIMY_STATES || [];
   var ITEMS = [
     { id: 'scr', name: 'Резинка для волосся', price: 700, note: 'У фірмовій жовтій коробочці', scale: 0.42 },
-    { id: 'twilly', name: 'Твіллі 84 × 5', price: 1600, note: 'На сумку, у волосся, на зап’ястя', ribbon: true },
+    { id: 'twilly', name: 'Твіллі 84 × 5', price: 1600, note: 'На сумку, у волосся, на зап’ястя', ribbon: true },
     { id: 'mask', name: 'Маска для сну', price: 2700, note: 'Шовк, фірмова коробка', scale: 0.55 },
-    { id: 'p44', name: 'Паше 44 × 44', price: 1600, note: 'На шию або в нагрудну кишеню жакета', scale: 0.72 },
-    { id: 'd44', name: 'Двостороння 44 × 44', price: 2400, note: 'Два принти на невеликій хустці', scale: 0.72, flip: true },
-    { id: 'k65', name: 'Хустка 65 × 65', price: 3200, note: 'Класика: на шию, у волосся, на пояс', scale: 1 },
-    { id: 'd65', name: 'Двостороння 65 × 65', price: 4800, note: 'Два принти на одній хустці', scale: 1, flip: true },
-    { id: 'k88', name: 'Шаль 88 × 88', price: 4400, note: 'На плечі, як топ або тюрбан', scale: 1.22 }
+    { id: 'p44', name: 'Паше 44 × 44', price: 1600, note: 'На шию або в нагрудну кишеню жакета', scale: 0.72 },
+    { id: 'd44', name: 'Двостороння 44 × 44', price: 2400, note: 'Два принти на невеликій хустці', scale: 0.72, flip: true },
+    { id: 'k65', name: 'Хустка 65 × 65', price: 3200, note: 'Класика: на шию, у волосся, на пояс', scale: 1 },
+    { id: 'd65', name: 'Двостороння 65 × 65', price: 4800, note: 'Два принти на одній хустці', scale: 1, flip: true },
+    { id: 'k88', name: 'Шаль 88 × 88', price: 4400, note: 'На плечі, як топ або тюрбан', scale: 1.12 }
   ];
   function catalogItem(s) {
     var z = s.size || '', two = z.indexOf('двосторон') >= 0;
@@ -876,12 +881,12 @@ window.SilkEngine = (function () {
   var first = STATES[cur().p];
   var silk = window.SilkEngine && SilkEngine.create({
     canvas: $('silk'), mode: 'float', texPath: 'tex/', front: first.id, back: first.back,
-    size: 1.25, resolution: 36, camDist: 5.6, offsetX: innerWidth > 960 ? 0.72 : 0, offsetY: innerWidth > 960 ? -0.28 : -0.05, rotY: 0.35, rotate: true, tiltX: 0.1,
-    envTop: '#FFFFFF', envBottom: '#0C0914', envTint: '#FFF1C2', sheen: '#F2B705', gloss: 0.26, aniso: 1.0, envStrength: 0.22, weaveScale: 0.5, weaveRepeat: 24,
+    size: 1.3, resolution: 36, camDist: innerWidth > 960 ? 5.9 : 4.7, offsetX: innerWidth > 960 ? 0.45 : 0, offsetY: innerWidth > 960 ? -0.12 : 0.1, rotY: 0.35, rotate: true, tiltX: 0.1,
+    envTop: '#E8E0D2', envBottom: '#0C0914', envTint: '#FFF1C2', sheen: '#F2B705', gloss: 0.18, aniso: 1.0, envStrength: 0.2, weaveScale: 0.5, weaveRepeat: 24, toneMap: true, diffBase: 0.42, anisoMix: 0.3,
     light: [0.6, 0.6, 1.0], idleSway: 0.3
   });
-  var ribbon = window.SilkEngine && SilkEngine.createRibbon({ canvas: $('ribbon'), texPath: 'tex/', texture: first.id, envTop: '#FFFFFF', envBottom: '#0C0914', sheen: '#F2B705', width: 0.7, repeat: 3, length: 3.2, camZ: 8.4, camZMobile: 6.6 });
-  if (!silk) root.classList.add('no-webgl');
+  var ribbon = window.SilkEngine && SilkEngine.createRibbon({ canvas: $('ribbon'), texPath: 'tex/', texture: first.id, envTop: '#FFFFFF', envBottom: '#0C0914', sheen: '#F2B705', width: 0.7, repeat: 3, length: 3.2, camZ: 8.4, camZMobile: 6.6, toneMap: true, diffBase: 0.45, anisoMix: 0.3 });
+  if (!silk) { root.classList.add('no-webgl'); $('fallbackImg').src = 'tex/' + first.id + '.jpg'; }
 
   var lastScale = null, lastPrint = -1, qtyTouched = false;
   var form = document.getElementById('f-at'), fQty = form && form.querySelector('[name="qty"]'), fCfg = form && form.querySelector('[name="config"]');
@@ -913,7 +918,7 @@ window.SilkEngine = (function () {
     var back = STATES[idx(STATES, s.back)];
     $('printLine').textContent = '«' + s.name + '» — ' + s.line + ' У каталозі: ' + s.size.replace(' см', '') + '.' + (it.flip && back ? ' Зворот «' + back.name + '» — приклад пари, остаточну підберемо в розрахунку.' : '');
     $('nowName').textContent = '«' + s.name + '»'; $('nowItem').textContent = it.name;
-    $('fallbackImg').src = 'tex/' + s.id + '.jpg';
+    if (root.classList.contains('no-webgl')) $('fallbackImg').src = 'tex/' + s.id + '.jpg';
     if (lastPrint !== l.p && silk) { silk.setTextures(s.id, s.back); }
     if (lastPrint !== l.p && ribbon) ribbon.setTexture(s.id);
     lastPrint = l.p;
@@ -927,7 +932,7 @@ window.SilkEngine = (function () {
     renderLines();
     $('sumLine').textContent = cfg.lines.map(lineText).join(' + ');
     $('sumTotal').textContent = fmt(total());
-    $('perHead').textContent = '≈ ' + fmt(Math.round(total() / Math.max(1, people()))) + (cfg.lines.length > 1 ? ' у середньому на людину · ' : ' на людину · ') + gifts(people());
+    $('perHead').textContent = '≈ ' + fmt(Math.round(total() / Math.max(1, people()))) + (cfg.lines.length > 1 ? ' у середньому на людину · ' : ' на людину · ') + gifts(people()) + (budget && cfg.lines.some(function (x) { return ITEMS[x.i].price > budget; }) ? ' · понад обраний бюджет' : '');
     if (fCfg) fCfg.value = summaryText();
     if (fQty && !qtyTouched) fQty.value = people();
     try { history.replaceState(null, '', '#cfg=' + shareParams()); } catch (e) {}
@@ -969,7 +974,7 @@ window.SilkEngine = (function () {
   canvas.addEventListener('pointerdown', function () { canvas.classList.add('grabbing'); });
   window.addEventListener('pointerup', function () { canvas.classList.remove('grabbing'); });
   window.addEventListener('scroll', function () { root.classList.toggle('compact', window.scrollY > 60); }, { passive: true });
-  document.addEventListener('focusin', function (e) { if (e.target.matches('.panel input, .panel textarea, form input, form textarea, form select')) root.classList.add('typing'); });
+  document.addEventListener('focusin', function (e) { if (e.target.matches('.panel input, .panel textarea, form input, form textarea, form select')) { root.classList.add('typing'); if (innerWidth <= 960) setTimeout(function () { e.target.scrollIntoView({ block: 'center', behavior: 'smooth' }); }, 360); } });
   document.addEventListener('focusout', function () { setTimeout(function () { if (!document.activeElement || !document.activeElement.matches('input, textarea, select')) root.classList.remove('typing'); }, 50); });
   document.addEventListener('click', function (e) { var a = e.target.closest('a[href^="#"]'); if (!a) return; var t = document.getElementById(a.getAttribute('href').slice(1)); if (!t) return; e.preventDefault(); t.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
   apply(true);

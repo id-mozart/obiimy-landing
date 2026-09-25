@@ -236,7 +236,7 @@
 
 <script>
 (function () {
-  var SIZES = [{"s": "44 × 44", "one": 1600, "two": 2400}, {"s": "65 × 65", "one": 3200, "two": 4800}, {"s": "88 × 88", "one": 4400, "two": null}], SALE = {"65 × 65": 4320}, side = 'one', cur = 2;
+  var SIZES = [{"s": "44 × 44", "one": 1600, "two": 2400}, {"s": "65 × 65", "one": 3200, "two": 4800}, {"s": "88 × 88", "one": 4400, "two": null}], SALE = {"65 × 65": 4320}, side = 'one', cur = 2;
   var priceEl = document.getElementById('price'), oldEl = document.getElementById('old'), partEl = document.getElementById('part'), upsell = document.getElementById('upsell'), sp = document.getElementById('stickyPrice'), ss = document.getElementById('stickySize');
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' грн'; }
   function render() {

@@ -23,12 +23,18 @@ BASE_FIELDS = [
 PAY = ("payment", "Оплата", "select:Безготівково, ТОВ|Безготівково, ФОП|Карткою", False, {})
 
 
+CERT_FIG = ('<figure class="cert" aria-label="Приклад подарункового сертифіката Obiimy у жовтому конверті">'
+    '<img class="silk" src="tex/tysha-sertsia.jpg" alt="" width="1024" height="1024">'
+    '<div class="env"></div>'
+    '<div class="card"><img src="brand/logo-ink-480.webp" alt="Obiimy" width="75" height="16"><span class="k">Подарунковий сертифікат</span><span class="v">1 600 грн</span><small>На будь-яку річ на obiimy.world · приклад оформлення</small></div>'
+    '</figure>')
+
 # ---------------------------------------------------------------- certificates (Studio)
 def certificates():
     body = hero("Сертифікати · для команд і віддалених колег", "Подарунок, який людина обирає сама",
         "Подарунковий сертифікат Obiimy: ви тримаєте бюджет, а людина обирає хустку, твіллі чи маску для сну під себе. Без збору розмірів і адрес.<span class=\"m-hide\"> Для команд у різних містах і країнах — найпростіший корпоративний подарунок.</span>",
         "Отримати умови для команди", "Сертифікати на obiimy.world", "https://obiimy.world/sertyfikaty/",
-        "Номінали під ціни речей: від 700 до 4 400 грн.", "photo/kolo-1.webp", "Жінка в шовковій хустці біля вікна", "Сертифікат — коли важливо, щоб обрали самі", pos="50% 12%") + facts_html([
+        "Номінали під ціни речей: від 700 до 4 400 грн.", "photo/kolo-1.webp", "Жінка в шовковій хустці біля вікна", "Сертифікат — коли важливо, щоб обрали самі", pos="50% 12%", figure=CERT_FIG) + facts_html([
         ("Без адрес", "Не потрібно збирати розміри, кольори й відділення пошти"),
         ("700 – 4 400 грн", "Номінали під роздрібні ціни речей"),
         ("Будь-де", "Для команд у різних містах і за кордоном"),
@@ -112,6 +118,8 @@ def agencies():
       <div class="card"><span class="k">03</span><h3>Листівка від клієнта</h3><p>Листівка з привітанням клієнта в кожній коробці; логотип і підпис від руки — обговорюємо в запиті.</p></div>
       <div class="card"><span class="k">04</span><h3>Доставка і звіт</h3><p>В офіс або кожному адресату Новою поштою; після відправки — номери накладних.</p></div>
     </div>
+    <div class="lbstrip" aria-label="Сторінки лукбука без цін">{img("photo/lb-page-1.jpg", "Лукбук: обкладинка", sizes="(max-width: 640px) 50vw, 25vw")}{img("photo/lb-page-2.jpg", "Лукбук: асортимент", sizes="(max-width: 640px) 50vw, 25vw")}{img("photo/lb-page-3.jpg", "Лукбук: зйомка", sizes="(max-width: 640px) 50vw, 25vw")}{img("photo/lb-page-4.jpg", "Лукбук: зйомка", sizes="(max-width: 640px) 50vw, 25vw")}</div>
+    <p class="note"><a href="lookbook-obiimy-2026-noprice.pdf" download="Obiimy-lookbook-dlia-klienta.pdf" style="font-weight:600">Завантажити лукбук без цін (PDF, 12 сторінок) →</a></p>
   </div></section>
 
   <section class="block alt" id="range"><div class="wrap">

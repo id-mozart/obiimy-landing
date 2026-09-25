@@ -280,7 +280,7 @@ window.SilkEngine = (function () {
   var FRAG = [
     'precision highp float;',
     'uniform sampler2D uFront, uBack, uNextFront, uNextBack, uWeave;',
-    'uniform float uMix, uWeaveRepeat, uWeaveScale, uGloss, uAniso, uEnvStrength, uTime;',
+    'uniform float uMix, uWeaveRepeat, uWeaveScale, uGloss, uAniso, uEnvStrength, uTime, uTone, uDiffBase, uAnisoMix;',
     'uniform vec3 uLight, uEnvTop, uEnvBottom, uEnvTint, uSheen;',
     'varying vec2 vUv; varying vec3 vN; varying vec3 vT; varying vec3 vP;',
     'float hash(vec2 p){ return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }',
@@ -296,7 +296,7 @@ window.SilkEngine = (function () {
     '  vec3 base = mix(a, b, uMix);',
     '  vec3 V = normalize(-vP); vec3 L = normalize(uLight); vec3 H = normalize(L + V);',
     '  float NdotL = dot(n, L);',
-    '  float diff = 0.58 + 0.42 * max(NdotL, 0.0) + 0.08 * max(-NdotL, 0.0);',
+    '  float diff = uDiffBase + (1.0 - uDiffBase) * max(NdotL, 0.0) + 0.08 * max(-NdotL, 0.0);',
     '  float TdotH = dot(T, H);',
     '  float aniso = pow(sqrt(max(1.0 - TdotH * TdotH, 0.0)), 24.0) * uAniso;',
     '  float spec = pow(max(dot(n, H), 0.0), 90.0) * uGloss;',
@@ -308,11 +308,12 @@ window.SilkEngine = (function () {
     '  float fres = pow(1.0 - max(dot(n, V), 0.0), 3.5);',
     '  float grain = (hash(floor(gl_FragCoord.xy * 0.5)) - 0.5) * 0.035;',
     '  vec3 col = base * diff;',
-    '  col += base * aniso * 0.55 + uSheen * aniso * 0.25;',
+    '  col += base * aniso * uAnisoMix + uSheen * aniso * 0.25;',
     '  col += env * uEnvStrength * (0.15 + 0.85 * fres);',
     '  col += uEnvTint * (box1 * 0.35 + box2 * 0.22) * (0.5 + 0.5 * fres);',
     '  col += vec3(spec);',
     '  col += grain;',
+    '  if (uTone > 0.5) { col *= 1.12; col = (col * (2.51 * col + 0.03)) / (col * (2.43 * col + 0.59) + 0.14); }',
     '  gl_FragColor = vec4(col, 1.0);',
     '}'
   ].join('\n');
@@ -425,6 +426,7 @@ window.SilkEngine = (function () {
       uNextFront: { value: tex(opts.front) }, uNextBack: { value: tex(opts.back) }, uMix: { value: 0 },
       uWeave: { value: weave }, uWeaveRepeat: { value: opts.weaveRepeat || 18 }, uWeaveScale: { value: opts.weaveScale == null ? 0.35 : opts.weaveScale },
       uGloss: { value: opts.gloss == null ? 0.35 : opts.gloss }, uAniso: { value: opts.aniso == null ? 1.0 : opts.aniso },
+      uTone: { value: opts.toneMap ? 1 : 0 }, uDiffBase: { value: opts.diffBase == null ? 0.58 : opts.diffBase }, uAnisoMix: { value: opts.anisoMix == null ? 0.55 : opts.anisoMix },
       uEnvStrength: { value: opts.envStrength == null ? 0.5 : opts.envStrength }, uTime: { value: 0 },
       uLight: { value: new THREE.Vector3().fromArray(opts.light || [0.5, 0.8, 1.0]).normalize() },
       uEnvTop: { value: new THREE.Color(opts.envTop || '#ffffff') }, uEnvBottom: { value: new THREE.Color(opts.envBottom || '#4a4655') },
@@ -640,7 +642,7 @@ window.SilkEngine = (function () {
     var weave = makeWeaveNormalMap(256);
     var uniforms = {
       uFront: { value: t }, uBack: { value: t }, uNextFront: { value: t }, uNextBack: { value: t }, uMix: { value: 0 },
-      uWeave: { value: weave }, uWeaveRepeat: { value: 8 }, uWeaveScale: { value: 0.3 }, uGloss: { value: 0.22 }, uAniso: { value: 0.9 }, uEnvStrength: { value: 0.22 }, uTime: { value: 0 },
+      uWeave: { value: weave }, uWeaveRepeat: { value: 8 }, uWeaveScale: { value: 0.3 }, uGloss: { value: 0.22 }, uAniso: { value: 0.9 }, uEnvStrength: { value: 0.22 }, uTime: { value: 0 }, uTone: { value: opts.toneMap ? 1 : 0 }, uDiffBase: { value: opts.diffBase == null ? 0.58 : opts.diffBase }, uAnisoMix: { value: opts.anisoMix == null ? 0.55 : opts.anisoMix },
       uLight: { value: new THREE.Vector3(0.4, 0.8, 1).normalize() }, uEnvTop: { value: new THREE.Color(opts.envTop || '#ffffff') }, uEnvBottom: { value: new THREE.Color(opts.envBottom || '#3a3646') },
       uEnvTint: { value: new THREE.Color('#ffffff') }, uSheen: { value: new THREE.Color(opts.sheen || '#F2B705') }
     };

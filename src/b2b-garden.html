@@ -122,7 +122,11 @@
   .ch:not(.on) .sticky { visibility: hidden; transition: opacity .6s ease, transform .6s ease, visibility 0s linear .6s; }
   .ch.on .sticky { visibility: visible; transition-delay: 0s; }
   .rail a { min-height: 44px; }
-  .rail a span { font-size: .72rem; }
+  .rail a span { font-size: .75rem; }
+  .static .ch { height: auto !important; min-height: 100svh; }
+  .static .ch .sticky { position: relative; opacity: 1 !important; visibility: visible !important; transform: none !important; min-height: 100svh; }
+  .static .rail { display: none; }
+  .stores { background: rgba(12,9,20,.72); padding: 8px 14px; border-radius: 999px; display: inline-block; }
   @media (max-width: 760px) { .rail { display: none; } }
   .nav a.site.cta { font-size: .78rem; min-height: 44px; display: inline-flex; align-items: center; }
   .copybtn { min-height: 44px; font-size: .8rem !important; padding: 0 16px !important; display: inline-flex !important; align-items: center; }
@@ -130,14 +134,14 @@
   .state .s, .stores { font-size: .8rem !important; }
   .ch:not(#c5) .sticky::before { height: 72% !important; background: linear-gradient(180deg, rgba(12,9,20,0) 0%, rgba(12,9,20,.7) 38%, rgba(12,9,20,.9) 100%) !important; }
   .stores { position: relative; z-index: 2; color: var(--ink-2); text-shadow: 0 1px 12px rgba(12,9,20,.9); }
-  #c5 .sticky::before { inset: 0 !important; height: auto !important; background: radial-gradient(70% 60% at 50% 52%, rgba(12,9,20,.88) 0%, rgba(12,9,20,.5) 55%, rgba(12,9,20,0) 100%) !important; }
+  #c5 .sticky::before { inset: -40vh 0 -40vh 0 !important; height: auto !important; background: radial-gradient(70% 60% at 50% 52%, rgba(12,9,20,.88) 0%, rgba(12,9,20,.5) 55%, rgba(12,9,20,0) 100%) !important; }
   form .hint a { display: inline-block; padding: 10px 0; margin: -10px 0; }
   .done { background: rgba(27,20,48,.72); border: 1px solid var(--line); border-radius: 4px; padding: clamp(18px, 3vw, 32px); display: grid; gap: 14px; }
   .done h3 { font-family: var(--display); font-weight: 300; font-size: 1.8rem; margin: 0; }
   .done .row { display: flex; flex-wrap: wrap; gap: 10px; }
   .btn-sm { padding: 10px 18px; min-height: 44px; }
   [hidden] { display: none !important; }
-  @media (max-width: 860px) { .req-in { grid-template-columns: 1fr; } form { grid-template-columns: 1fr; } form label.full { grid-column: auto; } .duo { justify-content: start; } .nav a.site.cta { padding: 9px 13px; font-size: .62rem; } }
+  @media (max-width: 860px) { .req-in { grid-template-columns: 1fr; } form { grid-template-columns: 1fr; } form label.full { grid-column: auto; } .duo { justify-content: start; } .nav a.site.cta { padding: 9px 14px; } }
 </style>
 
 <div class="loadbar" id="loadbar"></div>
@@ -216,12 +220,18 @@
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>window.OBIIMY_STATES = /*STATES*/[]; window.GARDEN_OPTS = { boxYMobile: 1.05, quietIntro: true };</script>
+<script>window.OBIIMY_STATES = /*STATES*/[]; window.GARDEN_OPTS = { boxYMobile: 1.05, quietIntro: true, toneMap: true, bird: true, boxX: 1.35, boxY: -0.4 };</script>
 <script>/*ENGINE*/</script>
 <script>
 (function () {
   var req = document.getElementById('request');
-  if (req && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { window.__gardenPaused = es[0].isIntersecting && es[0].intersectionRatio > 0.3; }, { threshold: [0, 0.3, 0.6] }).observe(req);
+  var pauseT;
+  if (req && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { var on = es[0].isIntersecting && es[0].intersectionRatio > 0.3; window.__gardenForm = on; clearTimeout(pauseT); if (on) pauseT = setTimeout(function () { window.__gardenPaused = true; }, 1400); else window.__gardenPaused = false; }, { threshold: [0, 0.3, 0.6] }).observe(req);
+  // content must not depend on the renderer: chapters get .on from their own observer; without WebGL/three.js the page falls back to a static layout
+  var chs = [].slice.call(document.querySelectorAll('.ch'));
+  function staticMode() { document.documentElement.classList.add('static'); chs.forEach(function (c) { c.classList.add('on'); }); }
+  if (!window.THREE) staticMode();
+  setTimeout(function () { if (document.documentElement.classList.contains('no-webgl')) staticMode(); }, 300);
   var copyBtn = document.getElementById('copyPhone'), phone = document.getElementById('phone');
   copyBtn.addEventListener('click', function () {
     var done = function () { copyBtn.textContent = 'Скопійовано'; setTimeout(function () { copyBtn.textContent = 'Скопіювати'; }, 1800); };

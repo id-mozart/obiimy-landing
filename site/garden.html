@@ -212,7 +212,7 @@
     '  vN=normalize(normalMatrix*n); vT=normalize(normalMatrix*vec3(1.,0.,zx-z)); vec4 mv=modelViewMatrix*vec4(pos,1.); vP=mv.xyz; gl_Position=projectionMatrix*mv; }'
   ].join('\n');
   var SILK_FRAG = [
-    'precision highp float; uniform sampler2D uTex, uWeave; uniform float uOpacity, uGlow; uniform vec3 uLight, uSheen;',
+    'precision highp float; uniform sampler2D uTex, uWeave; uniform float uOpacity, uGlow, uTone; uniform vec3 uLight, uSheen;',
     'varying vec2 vUv; varying vec3 vN, vP, vT;',
     'void main(){ vec3 N=normalize(vN); if(!gl_FrontFacing) N=-N; vec3 T=normalize(vT-N*dot(vT,N)); vec3 B=cross(N,T);',
     '  vec3 wn=texture2D(uWeave, vUv*16.).xyz*2.-1.; vec3 n=normalize(T*wn.x*0.35+B*wn.y*0.35+N*wn.z);',
@@ -221,6 +221,7 @@
     '  float diff=0.55+0.45*max(dot(n,L),0.); float TdotH=dot(T,H); float aniso=pow(sqrt(max(1.-TdotH*TdotH,0.)),22.);',
     '  float spec=pow(max(dot(n,H),0.),80.); float fres=pow(1.-max(dot(n,V),0.),3.5);',
     '  vec3 col=base*diff + base*aniso*0.5 + uSheen*aniso*0.2 + vec3(1.)*spec*0.3 + uSheen*fres*0.35 + base*uGlow;',
+    '  if (uTone > 0.5) { col *= 1.08; col = (col*(2.51*col+0.03))/(col*(2.43*col+0.59)+0.14); }',
     '  gl_FragColor=vec4(col, uOpacity); }'
   ].join('\n');
   var sheetGeo = new THREE.PlaneGeometry(1, 1, 48, 48);
@@ -228,7 +229,7 @@
   STATES.forEach(function (s, i) {
     var tex = loader.load('tex/' + s.id + '.jpg', onLoad); tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
     var mat = new THREE.ShaderMaterial({
-      uniforms: { uTex: { value: tex }, uWeave: { value: weave }, uTime: { value: 0 }, uAmp: { value: 0.12 }, uPhase: { value: i * 1.7 }, uOpacity: { value: 1 }, uGlow: { value: 0 }, uLight: { value: new THREE.Vector3(0.4, 0.8, 1).normalize() }, uSheen: { value: new THREE.Color('#F2B705') } },
+      uniforms: { uTone: { value: (window.GARDEN_OPTS && GARDEN_OPTS.toneMap) ? 1 : 0 }, uTex: { value: tex }, uWeave: { value: weave }, uTime: { value: 0 }, uAmp: { value: 0.12 }, uPhase: { value: i * 1.7 }, uOpacity: { value: 1 }, uGlow: { value: 0 }, uLight: { value: new THREE.Vector3(0.4, 0.8, 1).normalize() }, uSheen: { value: new THREE.Color('#F2B705') } },
       vertexShader: SILK_VERT, fragmentShader: SILK_FRAG, side: THREE.DoubleSide, transparent: true, depthWrite: true
     });
     var m = new THREE.Mesh(sheetGeo, mat); m.frustumCulled = false; m.userData = { target: new THREE.Vector3(0, 0, -40), rot: new THREE.Euler(), scale: 0.001, opacity: 0 };
@@ -242,14 +243,15 @@
   for (var k = 0; k < COUNT; k++) { rnd[k * 4] = Math.random(); rnd[k * 4 + 1] = Math.random(); rnd[k * 4 + 2] = Math.random(); rnd[k * 4 + 3] = Math.random(); pos[k * 3] = (Math.random() - 0.5) * 20; pos[k * 3 + 1] = (Math.random() - 0.5) * 12; pos[k * 3 + 2] = (Math.random() - 0.5) * 10 - 4; }
   pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   pGeo.setAttribute('aHome', new THREE.BufferAttribute(home, 3));
+  var bird = new Float32Array(COUNT * 3); pGeo.setAttribute('aBird', new THREE.BufferAttribute(bird, 3));
   pGeo.setAttribute('aRnd', new THREE.BufferAttribute(rnd, 4));
   var pMat = new THREE.ShaderMaterial({
-    uniforms: { uTime: { value: 0 }, uMorph: { value: 1 }, uAssemble: { value: 0 }, uSwirl: { value: 0.6 }, uSize: { value: isMobile ? 2.2 : 2.6 }, uColor: { value: new THREE.Color('#F2B705') }, uAlpha: { value: 1 }, uPixel: { value: renderer.getPixelRatio() } },
+    uniforms: { uBird: { value: 0 }, uTime: { value: 0 }, uMorph: { value: 1 }, uAssemble: { value: 0 }, uSwirl: { value: 0.6 }, uSize: { value: isMobile ? 2.2 : 2.6 }, uColor: { value: new THREE.Color('#F2B705') }, uAlpha: { value: 1 }, uPixel: { value: renderer.getPixelRatio() } },
     vertexShader: [
-      'attribute vec3 aHome; attribute vec4 aRnd; uniform float uTime, uMorph, uAssemble, uSwirl, uSize, uPixel; varying float vA;',
+      'attribute vec3 aHome; attribute vec3 aBird; attribute vec4 aRnd; uniform float uTime, uMorph, uAssemble, uSwirl, uSize, uPixel, uBird; varying float vA;',
       'vec3 flock(vec3 h, vec4 r, float t){ float a=r.x*6.2831+t*(0.15+r.y*0.25); float rad=2.2+r.z*5.5; vec3 p=vec3(cos(a)*rad, sin(a*1.3+r.w*3.)*1.8+ (r.w-0.5)*3.0, sin(a)*rad-3.0);',
       '  p += vec3(sin(t*0.7+r.y*9.), cos(t*0.5+r.z*7.), sin(t*0.6+r.x*5.))*uSwirl; return p; }',
-      'void main(){ float t=uTime; vec3 h=aHome; vec3 f=flock(h,aRnd,t);',
+      'void main(){ float t=uTime; vec3 h=mix(aHome, aBird + vec3(sin(t*0.9+aRnd.x*6.)*0.03, sin(t*2.4)*0.06*aRnd.y, 0.), smoothstep(0.,1.,uBird)); vec3 f=flock(h,aRnd,t);',
       '  vec3 scatter = position;',
       '  vec3 logoPos = mix(scatter, h, smoothstep(0.,1., clamp(uAssemble*1.4 - aRnd.x*0.4, 0., 1.)));',
       '  logoPos += vec3(sin(t*1.3+aRnd.y*20.), cos(t*1.1+aRnd.z*20.), 0.)*0.012;',
@@ -276,6 +278,22 @@
     pGeo.attributes.aHome.needsUpdate = true; onLoad();
   };
   logoImg.src = 'brand/logo-original.png';
+  (function drawBird() {
+    var c = document.createElement('canvas'), W = 400, H = 260; c.width = W; c.height = H; var x = c.getContext('2d');
+    x.fillStyle = '#000';
+    x.beginPath(); x.ellipse(205, 150, 78, 30, -0.12, 0, Math.PI * 2); x.fill();                 // body
+    x.beginPath(); x.arc(285, 132, 24, 0, Math.PI * 2); x.fill();                                    // head
+    x.beginPath(); x.moveTo(302, 124); x.lineTo(344, 134); x.lineTo(303, 142); x.closePath(); x.fill(); // beak
+    x.beginPath(); x.moveTo(140, 150); x.lineTo(40, 196); x.lineTo(56, 176); x.lineTo(34, 170); x.lineTo(132, 136); x.closePath(); x.fill(); // tail
+    x.beginPath(); x.moveTo(170, 138); x.bezierCurveTo(150, 70, 110, 30, 40, 18); x.bezierCurveTo(100, 60, 150, 110, 230, 142); x.closePath(); x.fill(); // back wing
+    x.beginPath(); x.moveTo(205, 140); x.bezierCurveTo(215, 70, 250, 34, 310, 22); x.bezierCurveTo(270, 60, 250, 110, 245, 146); x.closePath(); x.fill(); // front wing
+    x.beginPath(); x.moveTo(200, 176); x.lineTo(196, 206); x.moveTo(222, 176); x.lineTo(226, 206); x.lineWidth = 5; x.stroke(); // legs
+    var d = x.getImageData(0, 0, W, H).data, pts = [];
+    for (var yy = 0; yy < H; yy += 2) for (var xx = 0; xx < W; xx += 2) if (d[(yy * W + xx) * 4 + 3] > 100) pts.push([xx, yy]);
+    var visW = 2 * 6 * Math.tan(camera.fov * Math.PI / 360) * camera.aspect, span = Math.min(visW * 0.62, 3.6), asp = H / W;
+    for (var i = 0; i < COUNT; i++) { var p = pts[Math.floor(Math.random() * pts.length)]; bird[i * 3] = (p[0] / W - 0.5) * span; bird[i * 3 + 1] = -(p[1] / H - 0.5) * span * asp + (isMobile ? 1.0 : 0.55); bird[i * 3 + 2] = (Math.random() - 0.5) * 0.12; }
+    pGeo.attributes.aBird.needsUpdate = true;
+  })();
 
   /* ---------- the yellow box + cloth ---------- */
   var boxGroup = new THREE.Group(); scene.add(boxGroup); boxGroup.visible = false;
@@ -294,6 +312,19 @@
   var lidRim = new THREE.Mesh(new THREE.BoxGeometry(BW + 0.06, 0.16, BD + 0.06), yellow); lidRim.position.set(0, -0.05, BD / 2); lidPivot.add(lidRim);
   var logoTex = loader.load('brand/logo-ink.png'); logoTex.anisotropy = 8;
   var logoPlane = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 1.1 * 255 / 1200), new THREE.MeshBasicMaterial({ map: logoTex, transparent: true })); logoPlane.rotation.x = -Math.PI / 2; logoPlane.rotation.z = 0.12; logoPlane.position.set(-0.35, 0.065, BD / 2 + 0.1); lidPivot.add(logoPlane);
+  (function cardPlane() {
+    var cv = document.createElement('canvas'); cv.width = 640; cv.height = 400; var g = cv.getContext('2d');
+    g.fillStyle = '#F6F1E7'; g.fillRect(0, 0, 640, 400); g.fillStyle = '#231E2A'; g.font = 'italic 300 44px "Cormorant Garamond", Georgia, serif'; g.textAlign = 'center';
+    var txt = (window.GARDEN_OPTS && GARDEN_OPTS.cardText) || 'Дякуємо, що цього року ви були поруч.'; var words = txt.split(' '), lines = [], line = '';
+    words.forEach(function (w) { var t = line ? line + ' ' + w : w; if (g.measureText(t).width > 540) { lines.push(line); line = w; } else line = t; }); lines.push(line);
+    lines.forEach(function (l, i) { g.fillText(l, 320, 150 + i * 56 - (lines.length - 1) * 28); });
+    g.font = '500 22px Onest, Arial, sans-serif'; g.fillStyle = '#6B6477'; g.fillText('— ВІД ВАШОЇ КОМПАНІЇ', 320, 340);
+    var ct = new THREE.CanvasTexture(cv); ct.anisotropy = 8;
+    var card = new THREE.Mesh(new THREE.PlaneGeometry(1.3, 0.81), new THREE.MeshStandardMaterial({ map: ct, roughness: 0.9, side: THREE.DoubleSide }));
+    card.position.set(0.35, -BH / 2 + 0.36, -BD / 2 + 0.18); card.rotation.set(-0.28, -0.08, 0.05); boxGroup.add(card);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { cardPlane.redraw && cardPlane.redraw(); });
+  })();
+  yellow.roughness = 0.72; yellowDark.roughness = 0.78;
   scene.add(new THREE.AmbientLight(0xffffff, 0.55)); var key = new THREE.DirectionalLight(0xfff3d6, 0.9); key.position.set(2, 4, 3); scene.add(key); var rim = new THREE.PointLight(0xF2B705, 0.6, 12); rim.position.set(-3, 2, 2); scene.add(rim);
 
   // cloth pulled out of the box (Verlet)
@@ -335,7 +366,7 @@
   window.addEventListener('pointermove', function (e) { mouseT.set((e.clientX / innerWidth) * 2 - 1, -((e.clientY / innerHeight) * 2 - 1)); }, { passive: true });
   var nameEl = document.getElementById('sName'), subEl = document.getElementById('sSub'), lineEl = document.getElementById('sLine'), linkEl = document.getElementById('sLink'), rail = document.getElementById('rail');
   var tName = document.getElementById('tName'), tPrice = document.getElementById('tPrice'), tLink = document.getElementById('tLink');
-  function setCurrent(i) { if (i === current) return; current = i; var s = STATES[i]; if (nameEl) { nameEl.textContent = '«' + s.name + '»'; subEl.textContent = s.size + ' · ' + s.price; lineEl.textContent = s.line; linkEl.href = s.url; } if (tName) { tName.textContent = '«' + s.name + '»'; tPrice.textContent = s.price; tLink.href = s.url; } clothMat.map = sheets[i].material.uniforms.uTex.value; clothMat.needsUpdate = true; }
+  function setCurrent(i) { if (i === current) return; current = i; var s = STATES[i]; if (nameEl) { nameEl.textContent = '«' + s.name + '»'; subEl.textContent = s.size + ' · ' + s.price; lineEl.textContent = s.line; linkEl.href = s.url; } if (tName) { tName.textContent = '«' + s.name + '»'; tPrice.textContent = s.price; tLink.href = s.url; } clothMat.map = sheets[i].material.uniforms.uTex.value; clothMat.needsUpdate = true; clothMat.needsUpdate = true; }
 
   function readScroll() {
     var vh = innerHeight, y = scrollY;
@@ -387,7 +418,9 @@
     if (ch === 2) setCurrent(Math.min(n - 1, Math.max(0, Math.round(t * (n - 1)))));
     // particles
     var pu = pMat.uniforms; pu.uTime.value = time;
-    var wantMorph = ch === 0 ? 0 : (ch === 5 ? 0 : 1), wantSwirl = ch === 3 ? 1.6 : 0.5, wantAlpha = ch === 3 ? 1 : (ch === 0 || ch === 5 ? 1 : 0.35);
+    var birdMode = !!(window.GARDEN_OPTS && GARDEN_OPTS.bird);
+    var wantMorph = ch === 0 ? 0 : (ch === 5 ? 0 : (ch === 3 && birdMode ? 0 : 1)), wantSwirl = ch === 3 ? 1.6 : 0.5, wantAlpha = window.__gardenForm ? 0 : (ch === 3 ? 1 : (ch === 0 || ch === 5 ? 1 : 0.35));
+    pMat.uniforms.uBird.value += ((ch === 3 && birdMode ? 1 : 0) - pMat.uniforms.uBird.value) * 0.04;
     pu.uMorph.value += (wantMorph - pu.uMorph.value) * 0.04; pu.uSwirl.value += (wantSwirl - pu.uSwirl.value) * 0.03; pu.uAlpha.value += (wantAlpha - pu.uAlpha.value) * 0.05;
     if (document.documentElement.classList.contains('ready')) pu.uAssemble.value = Math.min(1, pu.uAssemble.value + dt * 0.45);
     points.position.y = ch === 0 ? (isMobile ? 1.15 : 0.9) : (ch === 5 ? 1.4 : 0); points.rotation.y = mouse.x * 0.05;
@@ -395,7 +428,7 @@
     var showBox = ch === 4; boxGroup.visible = showBox || boxT > 0.04;
     boxT += ((showBox ? 1 : 0) - boxT) * 0.08;
     if (boxGroup.visible) {
-      boxGroup.position.set(isMobile ? 0 : 0.15, (isMobile ? ((window.GARDEN_OPTS && GARDEN_OPTS.boxYMobile) || 0.55) : -1.15) + (1 - boxT) * -3, isMobile ? -1.6 : -0.6); boxGroup.rotation.set(0.62 + mouse.y * -0.05, -0.42 + mouse.x * 0.12, 0); var bs = isMobile ? 0.6 : 0.78; boxGroup.scale.set(bs, bs, bs);
+      var GO = window.GARDEN_OPTS || {}; boxGroup.position.set(isMobile ? 0 : (GO.boxX || 0.15), (isMobile ? (GO.boxYMobile || 0.55) : (GO.boxY || -1.15)) + (1 - boxT) * -3, isMobile ? -1.6 : -0.6); boxGroup.rotation.set(0.62 + mouse.y * -0.05, -0.42 + mouse.x * 0.12, 0); var bs = isMobile ? 0.6 : 0.78; boxGroup.scale.set(bs, bs, bs);
       lidPivot.rotation.x = -Math.min(1, t * 1.6) * 2.15;
       var lift = Math.max(0, (t - 0.4) / 0.6); pinPos.set(Math.sin(time * 0.8) * 0.08, -BH / 2 + 0.12 + lift * 3.0, Math.cos(time * 0.6) * 0.06);
       if (t < 0.02 && lastCh !== 4) resetCloth();

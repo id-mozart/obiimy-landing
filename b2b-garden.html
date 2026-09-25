@@ -14,7 +14,7 @@
     --display: 'Cormorant Garamond', 'Times New Roman', serif; --body: 'Onest', 'Helvetica Neue', Arial, sans-serif; }
   * { box-sizing: border-box; min-width: 0; }
   html { scroll-behavior: auto; }
-  body { margin: 0; background: radial-gradient(120% 80% at 50% 0%, #1B1430 0%, var(--bg) 55%, #070510 100%) fixed; color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
+  body { margin: 0; background: radial-gradient(120% 80% at 50% 0%, #1B1430 0%, var(--bg) 55%, #070510 100%) fixed; color: var(--ink); font-family: var(--body); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; overflow-x: hidden; }
   #gl { position: fixed; inset: 0; width: 100%; height: 100%; display: block; z-index: 0; pointer-events: none; }
   .grain { position: fixed; inset: 0; z-index: 3; pointer-events: none; opacity: .4; mix-blend-mode: screen; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .06 0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)'/%3E%3C/svg%3E"); }
   .vignette { position: fixed; inset: 0; z-index: 2; pointer-events: none; background: radial-gradient(80% 70% at 50% 50%, transparent 55%, rgba(7,5,16,.75) 100%); }
@@ -122,7 +122,11 @@
   .ch:not(.on) .sticky { visibility: hidden; transition: opacity .6s ease, transform .6s ease, visibility 0s linear .6s; }
   .ch.on .sticky { visibility: visible; transition-delay: 0s; }
   .rail a { min-height: 44px; }
-  .rail a span { font-size: .72rem; }
+  .rail a span { font-size: .75rem; }
+  .static .ch { height: auto !important; min-height: 100svh; }
+  .static .ch .sticky { position: relative; opacity: 1 !important; visibility: visible !important; transform: none !important; min-height: 100svh; }
+  .static .rail { display: none; }
+  .stores { background: rgba(12,9,20,.72); padding: 8px 14px; border-radius: 999px; display: inline-block; }
   @media (max-width: 760px) { .rail { display: none; } }
   .nav a.site.cta { font-size: .78rem; min-height: 44px; display: inline-flex; align-items: center; }
   .copybtn { min-height: 44px; font-size: .8rem !important; padding: 0 16px !important; display: inline-flex !important; align-items: center; }
@@ -130,14 +134,14 @@
   .state .s, .stores { font-size: .8rem !important; }
   .ch:not(#c5) .sticky::before { height: 72% !important; background: linear-gradient(180deg, rgba(12,9,20,0) 0%, rgba(12,9,20,.7) 38%, rgba(12,9,20,.9) 100%) !important; }
   .stores { position: relative; z-index: 2; color: var(--ink-2); text-shadow: 0 1px 12px rgba(12,9,20,.9); }
-  #c5 .sticky::before { inset: 0 !important; height: auto !important; background: radial-gradient(70% 60% at 50% 52%, rgba(12,9,20,.88) 0%, rgba(12,9,20,.5) 55%, rgba(12,9,20,0) 100%) !important; }
+  #c5 .sticky::before { inset: -40vh 0 -40vh 0 !important; height: auto !important; background: radial-gradient(70% 60% at 50% 52%, rgba(12,9,20,.88) 0%, rgba(12,9,20,.5) 55%, rgba(12,9,20,0) 100%) !important; }
   form .hint a { display: inline-block; padding: 10px 0; margin: -10px 0; }
   .done { background: rgba(27,20,48,.72); border: 1px solid var(--line); border-radius: 4px; padding: clamp(18px, 3vw, 32px); display: grid; gap: 14px; }
   .done h3 { font-family: var(--display); font-weight: 300; font-size: 1.8rem; margin: 0; }
   .done .row { display: flex; flex-wrap: wrap; gap: 10px; }
   .btn-sm { padding: 10px 18px; min-height: 44px; }
   [hidden] { display: none !important; }
-  @media (max-width: 860px) { .req-in { grid-template-columns: 1fr; } form { grid-template-columns: 1fr; } form label.full { grid-column: auto; } .duo { justify-content: start; } .nav a.site.cta { padding: 9px 13px; font-size: .62rem; } }
+  @media (max-width: 860px) { .req-in { grid-template-columns: 1fr; } form { grid-template-columns: 1fr; } form label.full { grid-column: auto; } .duo { justify-content: start; } .nav a.site.cta { padding: 9px 14px; } }
 </style>
 
 <div class="loadbar" id="loadbar"></div>
@@ -253,7 +257,7 @@
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>window.OBIIMY_STATES = [{"id": "probudzhennia", "name": "Пробудження", "line": "Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини чогось нового.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/shovkova-khustka-probudzhennia-65x65/", "back": "litnie-pole"}, {"id": "yednannia", "name": "Єднання", "line": "Жовті пташки на кульбабах. Про те, що тримає разом, коли розлітається все інше.", "size": "44 × 44 см · двосторонній друк", "price": "2 400 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "pidnesennia"}, {"id": "tysha-sertsia", "name": "Тиша серця", "line": "Горобці у високій траві. Про спокій, який не треба заслуговувати.", "size": "65 × 65 см", "price": "3 200 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "melodiia"}, {"id": "prystrast", "name": "Пристрасть", "line": "Сині кульбаби на кремовому шовку. Про те, що розлітається від одного подиху.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "mizh-namy"}, {"id": "kolo-sontsia", "name": "Коло сонця", "line": "Вінок із сонячних квітів на рожевому. Про тепло, яке щоразу повертається.", "size": "88 × 88 см · шаль", "price": "4 400 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "litnie-pole"}, {"id": "melodiia", "name": "Мелодія двох", "line": "Дві пташки серед верболозу. Про розмову, для якої не потрібні слова.", "size": "44 × 44 см · паше", "price": "1 600 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "yednannia"}, {"id": "pidnesennia", "name": "Піднесення", "line": "Сиворакші та золотий дощ. Про політ, який починається на землі.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "kolo-sontsia"}, {"id": "mizh-namy", "name": "Між нами", "line": "Гортензії по краю сірого шовку. Про те, що лишається тільки між двома.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "prystrast"}, {"id": "litnie-pole", "name": "Літнє поле", "line": "Букет, написаний за один день. Про літо, яке не хоче закінчуватись.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "probudzhennia"}]; window.GARDEN_OPTS = { boxYMobile: 1.05, quietIntro: true };</script>
+<script>window.OBIIMY_STATES = [{"id": "probudzhennia", "name": "Пробудження", "line": "Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини чогось нового.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/shovkova-khustka-probudzhennia-65x65/", "back": "litnie-pole"}, {"id": "yednannia", "name": "Єднання", "line": "Жовті пташки на кульбабах. Про те, що тримає разом, коли розлітається все інше.", "size": "44 × 44 см · двосторонній друк", "price": "2 400 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "pidnesennia"}, {"id": "tysha-sertsia", "name": "Тиша серця", "line": "Горобці у високій траві. Про спокій, який не треба заслуговувати.", "size": "65 × 65 см", "price": "3 200 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "melodiia"}, {"id": "prystrast", "name": "Пристрасть", "line": "Сині кульбаби на кремовому шовку. Про те, що розлітається від одного подиху.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "mizh-namy"}, {"id": "kolo-sontsia", "name": "Коло сонця", "line": "Вінок із сонячних квітів на рожевому. Про тепло, яке щоразу повертається.", "size": "88 × 88 см · шаль", "price": "4 400 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "litnie-pole"}, {"id": "melodiia", "name": "Мелодія двох", "line": "Дві пташки серед верболозу. Про розмову, для якої не потрібні слова.", "size": "44 × 44 см · паше", "price": "1 600 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "yednannia"}, {"id": "pidnesennia", "name": "Піднесення", "line": "Сиворакші та золотий дощ. Про політ, який починається на землі.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "kolo-sontsia"}, {"id": "mizh-namy", "name": "Між нами", "line": "Гортензії по краю сірого шовку. Про те, що лишається тільки між двома.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "prystrast"}, {"id": "litnie-pole", "name": "Літнє поле", "line": "Букет, написаний за один день. Про літо, яке не хоче закінчуватись.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "probudzhennia"}]; window.GARDEN_OPTS = { boxYMobile: 1.05, quietIntro: true, toneMap: true, bird: true, boxX: 1.35, boxY: -0.4 };</script>
 <script>
 /* Obiimy Garden: one scroll-driven WebGL scene. Requires THREE r128 UMD. */
 (function () {
@@ -298,7 +302,7 @@
     '  vN=normalize(normalMatrix*n); vT=normalize(normalMatrix*vec3(1.,0.,zx-z)); vec4 mv=modelViewMatrix*vec4(pos,1.); vP=mv.xyz; gl_Position=projectionMatrix*mv; }'
   ].join('\n');
   var SILK_FRAG = [
-    'precision highp float; uniform sampler2D uTex, uWeave; uniform float uOpacity, uGlow; uniform vec3 uLight, uSheen;',
+    'precision highp float; uniform sampler2D uTex, uWeave; uniform float uOpacity, uGlow, uTone; uniform vec3 uLight, uSheen;',
     'varying vec2 vUv; varying vec3 vN, vP, vT;',
     'void main(){ vec3 N=normalize(vN); if(!gl_FrontFacing) N=-N; vec3 T=normalize(vT-N*dot(vT,N)); vec3 B=cross(N,T);',
     '  vec3 wn=texture2D(uWeave, vUv*16.).xyz*2.-1.; vec3 n=normalize(T*wn.x*0.35+B*wn.y*0.35+N*wn.z);',
@@ -307,6 +311,7 @@
     '  float diff=0.55+0.45*max(dot(n,L),0.); float TdotH=dot(T,H); float aniso=pow(sqrt(max(1.-TdotH*TdotH,0.)),22.);',
     '  float spec=pow(max(dot(n,H),0.),80.); float fres=pow(1.-max(dot(n,V),0.),3.5);',
     '  vec3 col=base*diff + base*aniso*0.5 + uSheen*aniso*0.2 + vec3(1.)*spec*0.3 + uSheen*fres*0.35 + base*uGlow;',
+    '  if (uTone > 0.5) { col *= 1.08; col = (col*(2.51*col+0.03))/(col*(2.43*col+0.59)+0.14); }',
     '  gl_FragColor=vec4(col, uOpacity); }'
   ].join('\n');
   var sheetGeo = new THREE.PlaneGeometry(1, 1, 48, 48);
@@ -314,7 +319,7 @@
   STATES.forEach(function (s, i) {
     var tex = loader.load('tex/' + s.id + '.jpg', onLoad); tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
     var mat = new THREE.ShaderMaterial({
-      uniforms: { uTex: { value: tex }, uWeave: { value: weave }, uTime: { value: 0 }, uAmp: { value: 0.12 }, uPhase: { value: i * 1.7 }, uOpacity: { value: 1 }, uGlow: { value: 0 }, uLight: { value: new THREE.Vector3(0.4, 0.8, 1).normalize() }, uSheen: { value: new THREE.Color('#F2B705') } },
+      uniforms: { uTone: { value: (window.GARDEN_OPTS && GARDEN_OPTS.toneMap) ? 1 : 0 }, uTex: { value: tex }, uWeave: { value: weave }, uTime: { value: 0 }, uAmp: { value: 0.12 }, uPhase: { value: i * 1.7 }, uOpacity: { value: 1 }, uGlow: { value: 0 }, uLight: { value: new THREE.Vector3(0.4, 0.8, 1).normalize() }, uSheen: { value: new THREE.Color('#F2B705') } },
       vertexShader: SILK_VERT, fragmentShader: SILK_FRAG, side: THREE.DoubleSide, transparent: true, depthWrite: true
     });
     var m = new THREE.Mesh(sheetGeo, mat); m.frustumCulled = false; m.userData = { target: new THREE.Vector3(0, 0, -40), rot: new THREE.Euler(), scale: 0.001, opacity: 0 };
@@ -328,14 +333,15 @@
   for (var k = 0; k < COUNT; k++) { rnd[k * 4] = Math.random(); rnd[k * 4 + 1] = Math.random(); rnd[k * 4 + 2] = Math.random(); rnd[k * 4 + 3] = Math.random(); pos[k * 3] = (Math.random() - 0.5) * 20; pos[k * 3 + 1] = (Math.random() - 0.5) * 12; pos[k * 3 + 2] = (Math.random() - 0.5) * 10 - 4; }
   pGeo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
   pGeo.setAttribute('aHome', new THREE.BufferAttribute(home, 3));
+  var bird = new Float32Array(COUNT * 3); pGeo.setAttribute('aBird', new THREE.BufferAttribute(bird, 3));
   pGeo.setAttribute('aRnd', new THREE.BufferAttribute(rnd, 4));
   var pMat = new THREE.ShaderMaterial({
-    uniforms: { uTime: { value: 0 }, uMorph: { value: 1 }, uAssemble: { value: 0 }, uSwirl: { value: 0.6 }, uSize: { value: isMobile ? 2.2 : 2.6 }, uColor: { value: new THREE.Color('#F2B705') }, uAlpha: { value: 1 }, uPixel: { value: renderer.getPixelRatio() } },
+    uniforms: { uBird: { value: 0 }, uTime: { value: 0 }, uMorph: { value: 1 }, uAssemble: { value: 0 }, uSwirl: { value: 0.6 }, uSize: { value: isMobile ? 2.2 : 2.6 }, uColor: { value: new THREE.Color('#F2B705') }, uAlpha: { value: 1 }, uPixel: { value: renderer.getPixelRatio() } },
     vertexShader: [
-      'attribute vec3 aHome; attribute vec4 aRnd; uniform float uTime, uMorph, uAssemble, uSwirl, uSize, uPixel; varying float vA;',
+      'attribute vec3 aHome; attribute vec3 aBird; attribute vec4 aRnd; uniform float uTime, uMorph, uAssemble, uSwirl, uSize, uPixel, uBird; varying float vA;',
       'vec3 flock(vec3 h, vec4 r, float t){ float a=r.x*6.2831+t*(0.15+r.y*0.25); float rad=2.2+r.z*5.5; vec3 p=vec3(cos(a)*rad, sin(a*1.3+r.w*3.)*1.8+ (r.w-0.5)*3.0, sin(a)*rad-3.0);',
       '  p += vec3(sin(t*0.7+r.y*9.), cos(t*0.5+r.z*7.), sin(t*0.6+r.x*5.))*uSwirl; return p; }',
-      'void main(){ float t=uTime; vec3 h=aHome; vec3 f=flock(h,aRnd,t);',
+      'void main(){ float t=uTime; vec3 h=mix(aHome, aBird + vec3(sin(t*0.9+aRnd.x*6.)*0.03, sin(t*2.4)*0.06*aRnd.y, 0.), smoothstep(0.,1.,uBird)); vec3 f=flock(h,aRnd,t);',
       '  vec3 scatter = position;',
       '  vec3 logoPos = mix(scatter, h, smoothstep(0.,1., clamp(uAssemble*1.4 - aRnd.x*0.4, 0., 1.)));',
       '  logoPos += vec3(sin(t*1.3+aRnd.y*20.), cos(t*1.1+aRnd.z*20.), 0.)*0.012;',
@@ -362,6 +368,22 @@
     pGeo.attributes.aHome.needsUpdate = true; onLoad();
   };
   logoImg.src = 'brand/logo-original.png';
+  (function drawBird() {
+    var c = document.createElement('canvas'), W = 400, H = 260; c.width = W; c.height = H; var x = c.getContext('2d');
+    x.fillStyle = '#000';
+    x.beginPath(); x.ellipse(205, 150, 78, 30, -0.12, 0, Math.PI * 2); x.fill();                 // body
+    x.beginPath(); x.arc(285, 132, 24, 0, Math.PI * 2); x.fill();                                    // head
+    x.beginPath(); x.moveTo(302, 124); x.lineTo(344, 134); x.lineTo(303, 142); x.closePath(); x.fill(); // beak
+    x.beginPath(); x.moveTo(140, 150); x.lineTo(40, 196); x.lineTo(56, 176); x.lineTo(34, 170); x.lineTo(132, 136); x.closePath(); x.fill(); // tail
+    x.beginPath(); x.moveTo(170, 138); x.bezierCurveTo(150, 70, 110, 30, 40, 18); x.bezierCurveTo(100, 60, 150, 110, 230, 142); x.closePath(); x.fill(); // back wing
+    x.beginPath(); x.moveTo(205, 140); x.bezierCurveTo(215, 70, 250, 34, 310, 22); x.bezierCurveTo(270, 60, 250, 110, 245, 146); x.closePath(); x.fill(); // front wing
+    x.beginPath(); x.moveTo(200, 176); x.lineTo(196, 206); x.moveTo(222, 176); x.lineTo(226, 206); x.lineWidth = 5; x.stroke(); // legs
+    var d = x.getImageData(0, 0, W, H).data, pts = [];
+    for (var yy = 0; yy < H; yy += 2) for (var xx = 0; xx < W; xx += 2) if (d[(yy * W + xx) * 4 + 3] > 100) pts.push([xx, yy]);
+    var visW = 2 * 6 * Math.tan(camera.fov * Math.PI / 360) * camera.aspect, span = Math.min(visW * 0.62, 3.6), asp = H / W;
+    for (var i = 0; i < COUNT; i++) { var p = pts[Math.floor(Math.random() * pts.length)]; bird[i * 3] = (p[0] / W - 0.5) * span; bird[i * 3 + 1] = -(p[1] / H - 0.5) * span * asp + (isMobile ? 1.0 : 0.55); bird[i * 3 + 2] = (Math.random() - 0.5) * 0.12; }
+    pGeo.attributes.aBird.needsUpdate = true;
+  })();
 
   /* ---------- the yellow box + cloth ---------- */
   var boxGroup = new THREE.Group(); scene.add(boxGroup); boxGroup.visible = false;
@@ -380,6 +402,19 @@
   var lidRim = new THREE.Mesh(new THREE.BoxGeometry(BW + 0.06, 0.16, BD + 0.06), yellow); lidRim.position.set(0, -0.05, BD / 2); lidPivot.add(lidRim);
   var logoTex = loader.load('brand/logo-ink.png'); logoTex.anisotropy = 8;
   var logoPlane = new THREE.Mesh(new THREE.PlaneGeometry(1.1, 1.1 * 255 / 1200), new THREE.MeshBasicMaterial({ map: logoTex, transparent: true })); logoPlane.rotation.x = -Math.PI / 2; logoPlane.rotation.z = 0.12; logoPlane.position.set(-0.35, 0.065, BD / 2 + 0.1); lidPivot.add(logoPlane);
+  (function cardPlane() {
+    var cv = document.createElement('canvas'); cv.width = 640; cv.height = 400; var g = cv.getContext('2d');
+    g.fillStyle = '#F6F1E7'; g.fillRect(0, 0, 640, 400); g.fillStyle = '#231E2A'; g.font = 'italic 300 44px "Cormorant Garamond", Georgia, serif'; g.textAlign = 'center';
+    var txt = (window.GARDEN_OPTS && GARDEN_OPTS.cardText) || 'Дякуємо, що цього року ви були поруч.'; var words = txt.split(' '), lines = [], line = '';
+    words.forEach(function (w) { var t = line ? line + ' ' + w : w; if (g.measureText(t).width > 540) { lines.push(line); line = w; } else line = t; }); lines.push(line);
+    lines.forEach(function (l, i) { g.fillText(l, 320, 150 + i * 56 - (lines.length - 1) * 28); });
+    g.font = '500 22px Onest, Arial, sans-serif'; g.fillStyle = '#6B6477'; g.fillText('— ВІД ВАШОЇ КОМПАНІЇ', 320, 340);
+    var ct = new THREE.CanvasTexture(cv); ct.anisotropy = 8;
+    var card = new THREE.Mesh(new THREE.PlaneGeometry(1.3, 0.81), new THREE.MeshStandardMaterial({ map: ct, roughness: 0.9, side: THREE.DoubleSide }));
+    card.position.set(0.35, -BH / 2 + 0.36, -BD / 2 + 0.18); card.rotation.set(-0.28, -0.08, 0.05); boxGroup.add(card);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { cardPlane.redraw && cardPlane.redraw(); });
+  })();
+  yellow.roughness = 0.72; yellowDark.roughness = 0.78;
   scene.add(new THREE.AmbientLight(0xffffff, 0.55)); var key = new THREE.DirectionalLight(0xfff3d6, 0.9); key.position.set(2, 4, 3); scene.add(key); var rim = new THREE.PointLight(0xF2B705, 0.6, 12); rim.position.set(-3, 2, 2); scene.add(rim);
 
   // cloth pulled out of the box (Verlet)
@@ -421,7 +456,7 @@
   window.addEventListener('pointermove', function (e) { mouseT.set((e.clientX / innerWidth) * 2 - 1, -((e.clientY / innerHeight) * 2 - 1)); }, { passive: true });
   var nameEl = document.getElementById('sName'), subEl = document.getElementById('sSub'), lineEl = document.getElementById('sLine'), linkEl = document.getElementById('sLink'), rail = document.getElementById('rail');
   var tName = document.getElementById('tName'), tPrice = document.getElementById('tPrice'), tLink = document.getElementById('tLink');
-  function setCurrent(i) { if (i === current) return; current = i; var s = STATES[i]; if (nameEl) { nameEl.textContent = '«' + s.name + '»'; subEl.textContent = s.size + ' · ' + s.price; lineEl.textContent = s.line; linkEl.href = s.url; } if (tName) { tName.textContent = '«' + s.name + '»'; tPrice.textContent = s.price; tLink.href = s.url; } clothMat.map = sheets[i].material.uniforms.uTex.value; clothMat.needsUpdate = true; }
+  function setCurrent(i) { if (i === current) return; current = i; var s = STATES[i]; if (nameEl) { nameEl.textContent = '«' + s.name + '»'; subEl.textContent = s.size + ' · ' + s.price; lineEl.textContent = s.line; linkEl.href = s.url; } if (tName) { tName.textContent = '«' + s.name + '»'; tPrice.textContent = s.price; tLink.href = s.url; } clothMat.map = sheets[i].material.uniforms.uTex.value; clothMat.needsUpdate = true; clothMat.needsUpdate = true; }
 
   function readScroll() {
     var vh = innerHeight, y = scrollY;
@@ -473,7 +508,9 @@
     if (ch === 2) setCurrent(Math.min(n - 1, Math.max(0, Math.round(t * (n - 1)))));
     // particles
     var pu = pMat.uniforms; pu.uTime.value = time;
-    var wantMorph = ch === 0 ? 0 : (ch === 5 ? 0 : 1), wantSwirl = ch === 3 ? 1.6 : 0.5, wantAlpha = ch === 3 ? 1 : (ch === 0 || ch === 5 ? 1 : 0.35);
+    var birdMode = !!(window.GARDEN_OPTS && GARDEN_OPTS.bird);
+    var wantMorph = ch === 0 ? 0 : (ch === 5 ? 0 : (ch === 3 && birdMode ? 0 : 1)), wantSwirl = ch === 3 ? 1.6 : 0.5, wantAlpha = window.__gardenForm ? 0 : (ch === 3 ? 1 : (ch === 0 || ch === 5 ? 1 : 0.35));
+    pMat.uniforms.uBird.value += ((ch === 3 && birdMode ? 1 : 0) - pMat.uniforms.uBird.value) * 0.04;
     pu.uMorph.value += (wantMorph - pu.uMorph.value) * 0.04; pu.uSwirl.value += (wantSwirl - pu.uSwirl.value) * 0.03; pu.uAlpha.value += (wantAlpha - pu.uAlpha.value) * 0.05;
     if (document.documentElement.classList.contains('ready')) pu.uAssemble.value = Math.min(1, pu.uAssemble.value + dt * 0.45);
     points.position.y = ch === 0 ? (isMobile ? 1.15 : 0.9) : (ch === 5 ? 1.4 : 0); points.rotation.y = mouse.x * 0.05;
@@ -481,7 +518,7 @@
     var showBox = ch === 4; boxGroup.visible = showBox || boxT > 0.04;
     boxT += ((showBox ? 1 : 0) - boxT) * 0.08;
     if (boxGroup.visible) {
-      boxGroup.position.set(isMobile ? 0 : 0.15, (isMobile ? ((window.GARDEN_OPTS && GARDEN_OPTS.boxYMobile) || 0.55) : -1.15) + (1 - boxT) * -3, isMobile ? -1.6 : -0.6); boxGroup.rotation.set(0.62 + mouse.y * -0.05, -0.42 + mouse.x * 0.12, 0); var bs = isMobile ? 0.6 : 0.78; boxGroup.scale.set(bs, bs, bs);
+      var GO = window.GARDEN_OPTS || {}; boxGroup.position.set(isMobile ? 0 : (GO.boxX || 0.15), (isMobile ? (GO.boxYMobile || 0.55) : (GO.boxY || -1.15)) + (1 - boxT) * -3, isMobile ? -1.6 : -0.6); boxGroup.rotation.set(0.62 + mouse.y * -0.05, -0.42 + mouse.x * 0.12, 0); var bs = isMobile ? 0.6 : 0.78; boxGroup.scale.set(bs, bs, bs);
       lidPivot.rotation.x = -Math.min(1, t * 1.6) * 2.15;
       var lift = Math.max(0, (t - 0.4) / 0.6); pinPos.set(Math.sin(time * 0.8) * 0.08, -BH / 2 + 0.12 + lift * 3.0, Math.cos(time * 0.6) * 0.06);
       if (t < 0.02 && lastCh !== 4) resetCloth();
@@ -499,7 +536,13 @@
 <script>
 (function () {
   var req = document.getElementById('request');
-  if (req && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { window.__gardenPaused = es[0].isIntersecting && es[0].intersectionRatio > 0.3; }, { threshold: [0, 0.3, 0.6] }).observe(req);
+  var pauseT;
+  if (req && 'IntersectionObserver' in window) new IntersectionObserver(function (es) { var on = es[0].isIntersecting && es[0].intersectionRatio > 0.3; window.__gardenForm = on; clearTimeout(pauseT); if (on) pauseT = setTimeout(function () { window.__gardenPaused = true; }, 1400); else window.__gardenPaused = false; }, { threshold: [0, 0.3, 0.6] }).observe(req);
+  // content must not depend on the renderer: chapters get .on from their own observer; without WebGL/three.js the page falls back to a static layout
+  var chs = [].slice.call(document.querySelectorAll('.ch'));
+  function staticMode() { document.documentElement.classList.add('static'); chs.forEach(function (c) { c.classList.add('on'); }); }
+  if (!window.THREE) staticMode();
+  setTimeout(function () { if (document.documentElement.classList.contains('no-webgl')) staticMode(); }, 300);
   var copyBtn = document.getElementById('copyPhone'), phone = document.getElementById('phone');
   copyBtn.addEventListener('click', function () {
     var done = function () { copyBtn.textContent = 'Скопійовано'; setTimeout(function () { copyBtn.textContent = 'Скопіювати'; }, 1800); };

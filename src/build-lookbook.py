@@ -25,7 +25,7 @@ page(f'''
     <p class="eb">Про бренд</p><h2>Obiimy — обійми з шовку</h2>
     <p>Український бренд шовкових хусток, заснований художницею Світланою Сніжко. Кожен принт — авторська картина, надрукована на 100% італійському шовку; край обробляється вручну, тому розмір може відхилятися на 0–2,5 см.</p>
     <p>Бренд народився під час війни й підтримує благодійні проєкти: колекція «Співоча душа» створена разом із художницею Анною Кловак та Українським товариством охорони птахів — частина коштів іде на гніздівлі для сиворакші.</p>
-    <p>Роздрібні партнери: INTERTOP, Hram (Україна), Be Brave (Канада), UFD London. Про бренд писали LIGA.net та INSIDER UA. Рейтинг покупців на obiimy.world — 5,0.</p>
+    <p>Роздрібні партнери: INTERTOP, Hram (Україна), Be Brave (Канада), UFD London (Велика Британія). Про бренд писали LIGA.net та INSIDER UA. Рейтинг покупців на obiimy.world — 5,0.</p>
   </div></div>''')
 
 cats = [
@@ -38,7 +38,7 @@ cats = [
 ]
 page('<p class="eb">Асортимент</p><h2>Шість категорій</h2><div class="grid3">' + "".join(f'<div class="cat">{pic(ph)}<h3>{t}</h3><p>{d}</p><p class="rrp">РРЦ {pr}</p></div>' for t, d, pr, ph in cats) + '</div><p class="foot">РРЦ — рекомендована роздрібна ціна на obiimy.world. Оптові умови — в прайсі за запитом.</p>')
 
-prints = [("Пробудження", "img/probudzhennia.webp"), ("Єднання", "img/yednannia.webp"), ("Тиша серця", "img/tysha-sertsia.webp"), ("Пристрасть", "img/prystrast.webp"), ("Коло сонця", "img/kolo-sontsia.webp"), ("Мелодія", "img/melodiia.webp"), ("Піднесення", "img/pidnesennia.webp"), ("Між нами", "img/mizh-namy.webp"), ("Літнє поле", "img/litnie-pole.webp"), ("Поцілунок", "img/potsilunok.webp")]
+prints = [("Пробудження", "img/probudzhennia.webp"), ("Єднання", "img/yednannia.webp"), ("Тиша серця", "img/tysha-sertsia.webp"), ("Пристрасть", "img/prystrast.webp"), ("Коло сонця", "img/kolo-sontsia.webp"), ("Мелодія двох", "img/melodiia.webp"), ("Піднесення", "img/pidnesennia.webp"), ("Між нами", "img/mizh-namy.webp"), ("Літнє поле", "img/litnie-pole.webp"), ("Поцілунок", "img/potsilunok.webp")]
 page('<p class="eb">Принти</p><h2>Авторські картини на шовку</h2><div class="grid5">' + "".join(f'<figure>{pic(ph)}<figcaption>{n}</figcaption></figure>' for n, ph in prints) + '</div>')
 
 def shoot(title, sub, photos, cls="grid4"):
@@ -61,7 +61,7 @@ page(f'''
     <p><b>A · Оптова закупівля.</b> Партія за оптовими цінами, продаж за своєю. Для бутиків і мультибрендів.</p>
     <p><b>B · Корнер бренду.</b> Виділена зона Obiimy з фірмовою викладкою та коробками. Для універмагів і концепт-сторів.</p>
     <p><b>C · Міжнародний партнер.</b> Відправка партій за тарифами перевізника, англомовний контент, сайт obiimy-world.com.</p>
-    <p class="contact"><b>Запит оптового прайсу</b><br>+38 067 010 85 25<br>sale@obiimy-world.com<br>obiimy.world · @obiimy.world</p>
+    <p class="contact"><b>Запит оптового прайсу</b><br>+38 067 010 85 25<br>sale@obiimy-world.com<br>obiimy.world</p>
   </div><div>{pic("photo/box-green.jpg", "tall")}</div></div>''')
 
 html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — лукбук для партнерів 2026</title>
@@ -80,8 +80,8 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   img {{ display: block; object-fit: cover; }}
   .cover {{ position: relative; width: 100%; height: 100%; }}
   .cover .full {{ width: 100%; height: 100%; object-position: 50% 20%; }}
-  .cover::after {{ content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.55) 100%); }}
-  .cover-t {{ z-index: 1; position: absolute; left: 18mm; bottom: 18mm; color: #fff; text-shadow: 0 2px 30px rgba(0,0,0,.4); }}
+  .cover::after {{ content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.62) 100%); }}
+  .cover-t {{ z-index: 1; position: absolute; left: 18mm; bottom: 14mm; max-width: 50%; color: #fff; text-shadow: 0 2px 30px rgba(0,0,0,.4); }}
   .cover-t .logo {{ height: 12mm; width: auto; margin-bottom: 8mm; object-fit: contain; }}
   .cover-t p {{ font-size: 12pt; margin-top: 4mm; }}
   .two {{ display: grid; grid-template-columns: 1fr 1.1fr; gap: 14mm; height: 100%; }}
@@ -99,7 +99,9 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .foot {{ font-size: 8.5pt; color: #6B6772; margin-top: auto; }}
   .contact {{ margin-top: 8mm; font-size: 12pt; line-height: 1.6; }}
 </style></head><body>{"".join(PAGES)}</body></html>'''
-(OUT / "lookbook.html").write_text(html)
+sys.path.insert(0, str(ROOT))
+from imgs import typo
+(OUT / "lookbook.html").write_text(typo(html))
 print("lookbook.html", len(html) // 1024, "KB")
 
 # render to PDF with puppeteer (review/pp has puppeteer-core)

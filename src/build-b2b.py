@@ -43,7 +43,9 @@ CSS = """
   .dark .bar { background: var(--gold); color: #17151A; }
   .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 50; background: color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
   .nav .wrap { display: flex; align-items: center; justify-content: space-between; gap: 20px; height: 68px; }
+  .logo { display: inline-flex; align-items: center; min-height: 44px; }
   .logo img { height: 24px; width: auto; }
+  .hint a, .faq p a { display: inline-block; padding: 10px 0; margin: -10px 0; }
   .nav-links { display: flex; gap: 24px; font-size: .88rem; font-weight: 500; }
   .nav-links a { text-decoration: none; color: var(--ink2); padding: 12px 0; }
   .nav-links a:hover { color: var(--ink); }
@@ -239,7 +241,7 @@ def form_html(pid, subject, fields, note):
     return f'''
       <form id="{pid}" novalidate>
         {"".join(out)}
-        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на {MAIL} з вашими даними — нічого не піде без вашого підтвердження. Або телефонуйте: <a href="{PHONE_HREF}">{PHONE}</a>.</span></div>
+        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на {MAIL} з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="{PHONE_HREF}">{PHONE}</a>.</span></div>
       </form>
       <div class="done" id="{pid}-done" hidden aria-live="polite">
         <h3 tabindex="-1">Лист підготовлено</h3>
@@ -341,13 +343,14 @@ def shell(page, body):
 '''
 
 def hero(eyebrow, h1, lead, cta1, cta2, cta2_href, fine, photo, alt, tag, cls="", pos="50% 18%"):
+    dl = ' download="Obiimy-lookbook-2026.pdf" type="application/pdf"' if cta2_href.endswith(".pdf") else ""
     return f'''
   <section class="hero{cls}" style="--hero-pos:{pos}"><div class="wrap">
     <div>
       <p class="eyebrow">{eyebrow}</p>
       <h1 style="margin-top:14px">{h1}</h1>
       <p class="lead">{lead}</p>
-      <div class="cta"><a class="btn btn-gold" href="#request">{cta1}</a><a class="btn btn-line" href="{cta2_href}">{cta2}</a></div>
+      <div class="cta"><a class="btn btn-gold" href="#request">{cta1}</a><a class="btn btn-line" href="{cta2_href}"{dl}>{cta2}</a></div>
       <p class="fine">{fine} Або одразу: <a href="{PHONE_HREF}">{PHONE}</a></p>
     </div>
     <figure>{img(photo, alt, sizes="(max-width: 960px) 100vw, 50vw", lazy=False, eager_priority=True)}<div class="tag">{tag}</div></figure>
@@ -579,7 +582,7 @@ def wholesale():
     cats_html = "".join(f'<div class="card">{img(ph, t, sizes="(max-width: 640px) 100vw, 33vw")}<h3>{t}</h3><p>{d}</p><div class="price-row"><span>Роздріб</span><span class="num">{pr}</span></div></div>' for t, d, pr, ph in cats)
     body = hero("Для магазинів, бутиків і корнерів", "Obiimy на вашій полиці",
                 "Готова вітрина для вашого магазину: асортимент, фірмові коробки, фотоконтент та історія, яку легко розповісти покупцю.<span class=\"m-hide\"> Український бренд шовкових хусток із власними принтами, який уже продається в INTERTOP, Hram, Be Brave (Канада) та UFD London.</span>",
-                "Запросити оптовий прайс", "Лукбук і роздрібні ціни (PDF)", "lookbook-obiimy-2026.pdf",
+                "Запросити оптовий прайс", "Лукбук і роздрібні ціни (PDF, 3 МБ)", "lookbook-obiimy-2026.pdf",
                 "Оптовий прайс і умови формату — у відповідь на запит. Відправка Новою поштою по Україні, за кордон — за тарифами перевізника.", "photo/paris-dots.jpg", "Хустка 88 × 88 у горох на білому костюмі", "Фотоконтент двох зйомок — для ваших соцмереж і вітрини", pos="50% 6%") + facts_html([
         ("3 країни", "Роздрібні партнери в Україні, Канаді та Великій Британії"),
         ("6 категорій", "Хустки, двосторонні, твіллі, маски для сну, резинки, набори"),
@@ -598,7 +601,7 @@ def wholesale():
     <div><p class="eyebrow">Що отримує партнер</p><h2 style="margin-top:10px">Вітрина, готова до продажу</h2>
       <div class="faq" style="margin-top:22px">
         <details open><summary>Упаковка як частина продукту</summary><p>Кожна річ — у фірмовій жовтій коробці з тонким папером. На полиці це видно з іншого кінця залу.</p></details>
-        <details><summary>Фото та відео</summary><p>Дві лукбук-зйомки (Париж, Рів’єра), пакшоти всіх речей і відео — для соцмереж, сайту й вітрини.</p></details>
+        <details><summary>Фото та відео</summary><p>Дві лукбук-зйомки (Париж, Рів’єра), пакшоти всіх речей і відео — для соцмереж, сайту й вітрини. <a href="lookbook-obiimy-2026.pdf" download="Obiimy-lookbook-2026.pdf" type="application/pdf" style="font-weight:600">Лукбук у PDF — завантажити →</a></p></details>
         <details><summary>Історія, яку легко розповісти</summary><p>Художниця-засновниця Світлана Сніжко, 100% італійський шовк, ручна обробка, бренд, що народився під час війни, і колекція «Співоча душа» з благодійною складовою.</p></details>
         <details><summary>Пам’ятка для консультантів</summary><p>Коротка пам’ятка: три способи носити кожен розмір, догляд, аргументи для подарунка.</p></details>
         <details><summary>Дозамовлення</summary><p>Замовлення до 16:00 відправляємо з наявності того ж дня — партнер не тримає великий склад.</p></details>
@@ -655,7 +658,7 @@ def calendar():
     body = hero("Річна програма · корпоративні подарунки", "Один список адрес —\u00a0і подарунки їдуть самі",
                 "Погоджений бюджет, добірка під кожну нагоду, відправка кожному адресату за графіком. Від вас — лише список.<span class=\"m-hide\"> Підходить компаніям, які дарують не раз на рік, — від Нового року до welcome-box.</span>",
                 "Скласти річний план подарунків", "Календар нагод", "#year",
-                "Зразок — від 1 600 грн у роздріб, у тій самій коробці, що й програма: <a href=\"https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/\">замовити →</a>", "photo/paris-green.jpg", "Зелена шовкова хустка на бежевому жакеті", "Вісім нагод на рік · один бюджет · один список", cls=" h1-sm", pos="50% 12%") + facts_html([
+                "Зразок — від 1 600 грн у роздріб, у тій самій коробці, що й подарунки програми: <a href=\"https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/\">замовити →</a>", "photo/paris-green.jpg", "Зелена шовкова хустка на бежевому жакеті", "Вісім нагод на рік · один бюджет · один список", cls=" h1-sm", pos="50% 12%") + facts_html([
         ("8 нагод", "Від Нового року до welcome-box і подяки клієнтам"),
         ("700 – 4 800 грн", "Роздрібні ціни: різні речі в межах одного бюджету"),
         ("Один список", "ПІБ, дати й відділення Нової пошти — решту робимо ми"),

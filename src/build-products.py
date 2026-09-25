@@ -119,7 +119,7 @@ PRODUCTS.update({
 })
 REVIEW = ("Замовляла на подарунок хустку, якість неймовірна, подруга теж задоволена! Вирішила замовити собі твіллі — не можу нарадуватись, кожного дня хочеться додавати в образ", "Анна Мелешак · відгук на obiimy.world")
 RELATED = [
-    ("Хустка «Єднання»", "44 × 44 · двосторонній", "2 400 грн", "img/yednannia.webp", "https://obiimy.world/spivocha-dusha/"),
+    ("Хустка «Єднання»", "44 × 44 · двостороння", "2 400 грн", "img/yednannia.webp", "https://obiimy.world/spivocha-dusha/"),
     ("Твіллі «Золоте світло»", "84 × 5", "1 600 грн", "img/twilly-zolote.webp", "https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/"),
     ("Маска для сну «Впевненість»", "італійський шовк", "2 700 грн", "img/mask-vpevnenist.webp", "https://obiimy.world/maska-dlia-snu-z-naturalnoho-shovku-vpevnenist/"),
     ("Набір «Натхнення»", "твіллі + хустка", "3 200 грн", "img/set-natkhnennia.webp", "https://obiimy.world/nabir-tvilli-845-ta-khustky-4444-natkhnennia/"),
@@ -189,7 +189,9 @@ BASE_CSS = """
   .nav-links a { text-decoration: none; color: var(--ink2); }
   .nav-links a:hover { color: var(--ink); }
   @media (max-width: 860px) { .nav-links { display: none; } }
-  .crumbs { font-size: .78rem; color: var(--ink3); padding-block: 18px 0; display: flex; gap: 10px; flex-wrap: wrap; }
+  .crumbs { font-size: .78rem; color: var(--ink3); padding-block: 8px 0; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .logo { display: inline-flex; align-items: center; min-height: 44px; }
+  @media (max-width: 640px) { .crumbs > span:last-child, .crumbs > span:nth-last-child(2) { display: none; } .main { aspect-ratio: 3 / 2; } }
   .crumbs a { text-decoration: none; }
   .crumbs a:hover { color: var(--ink); }
 

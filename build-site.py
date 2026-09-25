@@ -39,11 +39,11 @@ def relink(src: str, slug: str) -> str:
         return m.group(0) if path in KEEP else f"product-{slug}"
     return re.sub(r'https://obiimy\.world(/[A-Za-z0-9\-]+/?)?(?=["\'\s<>?])', sub, src)
 
-def wrap(src: str) -> str:
+def wrap(src: str, lang: str = "uk") -> str:
     i = src.index("</style>") + len("</style>")
     head, body = src[:i], src[i:]
     head = re.sub(r'<meta charset="utf-8">\s*', "", head, count=1)
-    return f'<!DOCTYPE html>\n<html lang="uk">\n<head>\n<meta charset="utf-8">\n{head}\n</head>\n<body>\n{body}\n</body>\n</html>\n'
+    return f'<!DOCTYPE html>\n<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n{head}\n</head>\n<body>\n{body}\n</body>\n</html>\n'
 
 def main():
     if SITE.exists():
@@ -51,8 +51,8 @@ def main():
     SITE.mkdir()
     for d in ASSET_DIRS:
         shutil.copytree(ROOT / d, SITE / d)
-    if (ROOT / "lookbook-obiimy-2026.pdf").exists():
-        shutil.copy(ROOT / "lookbook-obiimy-2026.pdf", SITE / "lookbook-obiimy-2026.pdf")
+    for pdf in ROOT.glob("lookbook-obiimy-2026*.pdf"):
+        shutil.copy(pdf, SITE / pdf.name)
     for slug, fname, title, desc in VERSIONS:
         (SITE / f"{slug}.html").write_text(wrap(relink((ROOT / fname).read_text(), slug)))
         pp = ROOT / f"p-{slug}.html"
@@ -61,7 +61,7 @@ def main():
         for suffix, _ in EXTRA_PRODUCTS.get(slug, []):
             (SITE / f"product-{slug}-{suffix}.html").write_text(wrap((ROOT / f"p-{slug}-{suffix}.html").read_text()))
     for slug, skin, title, desc in B2B:
-        (SITE / f"{slug}.html").write_text(wrap(relink((ROOT / f"{slug}.html").read_text(), skin)))
+        (SITE / f"{slug}.html").write_text(wrap(relink((ROOT / f"{slug}.html").read_text(), skin), "en" if slug.endswith("-en") else "uk"))
     # hub page
     cards = "\n".join(
         f'''      <div class="card">

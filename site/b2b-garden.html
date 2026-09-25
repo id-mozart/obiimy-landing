@@ -3,9 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Obiimy для бізнесу · 3D</title>
+<title>Корпоративні подарунки із шовку в 3D — Obiimy</title>
+<meta name="robots" content="noindex, follow">
+<link rel="canonical" href="https://obiimy-landing-production.up.railway.app/b2b-garden">
 <meta name="description" content="Корпоративні подарунки Obiimy в одній 3D-сцені: принти для команди, бюджети від 700 до 4 800 грн, «Співоча душа», жовта коробка з вашою листівкою. Запит на добірку і розрахунок.">
-<meta property="og:title" content="Obiimy для бізнесу · 3D">
+<meta property="og:title" content="Корпоративні подарунки із шовку в 3D — Obiimy">
 <meta property="og:image" content="https://obiimy-landing-production.up.railway.app/photo/og-b2b-newyear.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -120,6 +122,8 @@
   form .hint { font-size: .82rem; color: var(--ink-2); text-transform: none; letter-spacing: 0; display: block; margin: 0; }
   form .hint::after { display: none; }
   @media (max-width: 760px) { #c1 .copy { display: none; } }
+  .stores { position: relative; z-index: 2; color: var(--ink-2); text-shadow: 0 1px 12px rgba(12,9,20,.9); }
+  #c5 .sticky::before { background: radial-gradient(70% 60% at 50% 55%, rgba(12,9,20,.85) 0%, rgba(12,9,20,0) 100%); }
   form .hint a { display: inline-block; padding: 10px 0; margin: -10px 0; }
   .done { background: rgba(27,20,48,.72); border: 1px solid var(--line); border-radius: 4px; padding: clamp(18px, 3vw, 32px); display: grid; gap: 14px; }
   .done h3 { font-family: var(--display); font-weight: 300; font-size: 1.8rem; margin: 0; }
@@ -139,14 +143,14 @@
 
 <header class="nav"><a href="https://obiimy.world/" aria-label="Obiimy — на сайт бренду"><img src="brand/logo-white-480.webp" alt="Obiimy" width="94" height="20"></a><a class="site cta" href="#request">Запит для бізнесу</a></header>
 <nav class="rail" id="rail" aria-label="Розділи">
-  <a href="#c0"><span>Вступ</span><i></i></a><a href="#c1"><span>Принт</span><i></i></a><a href="#c2"><span>Бюджети</span><i></i></a><a href="#c3"><span>Сенс</span><i></i></a><a href="#c4"><span>Коробка</span><i></i></a><a href="#c5"><span>Фінал</span><i></i></a><a href="#request"><span>Запит</span><i></i></a>
+  <a href="#c0"><span>Вступ</span><i></i></a><a href="#c1"><span>Принт</span><i></i></a><a href="#c2"><span>Бюджети</span><i></i></a><a href="#c3"><span>Сенс</span><i></i></a><a href="#c4"><span>Коробка</span><i></i></a><a href="#c5"><span>Контакт</span><i></i></a><a href="#request"><span>Запит</span><i></i></a>
 </nav>
 
 <main>
   <section class="ch" id="c0" style="height:190vh">
     <div class="sticky">
       <p class="label">Obiimy для бізнесу</p>
-      <h1 style="margin-top:14px">Корпоративний подарунок <em>з шовку</em></h1>
+      <h1 style="margin-top:14px">Корпоративний подарунок <em>із шовку</em></h1>
       <p class="copy">Хустки з авторськими принтами для команди, партнерів і клієнтів — у фірмовій жовтій коробці з вашою листівкою. Прокрутіть: цей подарунок краще показати, ніж описати.</p>
       <p class="hint">Прокрутіть</p>
     </div>
@@ -155,7 +159,7 @@
   <section class="ch" id="c1" style="height:360vh">
     <div class="sticky">
       <div class="panel">
-        <div><p class="chip">01 · Принт для команди</p><h2>Один принт — <em>або дев’ять</em></h2><p class="copy">Один принт на всю команду читається як дрес-код події, добірка різних — як особистий подарунок кожному. Дев’ять станів проходять повз — зупиніться на своєму.</p></div>
+        <div><p class="chip">01 · Принт для команди</p><h2>Один принт — <em>або добірка</em></h2><p class="copy">Один принт на всю команду читається як дрес-код події, добірка різних — як особистий подарунок кожному. Дев’ять принтів пропливають повз — зупиніться на своєму.</p></div>
         <div class="state"><span class="n" id="sName">«Пробудження»</span><span class="s" id="sSub">65 × 65 см · двосторонній друк · 4 320 грн</span><span class="l" id="sLine">Іриси, написані навесні.</span><div class="duo"><a class="btn btn-gold" href="#request">Запросити для команди</a><a class="btn btn-line" id="sLink" href="product-garden">Принт на сайті</a></div></div>
       </div>
     </div>
@@ -165,7 +169,7 @@
     <div class="sticky">
       <div class="panel">
         <div><p class="chip">02 · Бюджети</p><h2>Від 700 до 4 800 <em>гривень</em></h2><p class="copy">Резинка в коробочці — 700 грн, твіллі або паше — 1 600, хустка 65 × 65 — 3 200, шаль 88 × 88 — 4 400, набір із трьох твіллі — 4 800. Роздрібні ціни; умови для тиражу — у розрахунку.</p></div>
-        <div class="state"><span class="s">Зараз у тунелі</span><span class="n" id="tName">«Пробудження»</span><span class="s num" id="tPrice">4 320 грн</span><a class="btn btn-line" id="tLink" href="product-garden">До принту</a></div>
+        <div class="state"><span class="s">Зараз перед вами</span><span class="n" id="tName">«Пробудження»</span><span class="s num" id="tPrice">4 320 грн</span><a class="btn btn-line" id="tLink" href="product-garden">До принту</a></div>
       </div>
     </div>
   </section>
@@ -173,9 +177,9 @@
   <section class="ch" id="c3" style="height:240vh">
     <div class="sticky">
       <p class="chip">03 · Подарунок із сенсом</p>
-      <h2>Краса, яка вміє <em>рятувати</em></h2>
+      <h2>Подарунок, що допомагає <em>птахам</em></h2>
       <blockquote>Ця колекція про тендітність і силу, про птахів, які співають і зникають, про красу, яка може рятувати.<cite>Світлана Сніжко, засновниця</cite></blockquote>
-      <div class="facts"><span><b>Сиворакша</b> — птах Червоної книги, якому будуємо гнізда</span><span><b>Партнер</b> — Українське товариство охорони птахів</span><span><b>Для компанії</b> — історія, яку можна розповісти команді</span></div>
+      <div class="facts"><span><b>Сиворакша</b> — частина коштів іде на гніздівлі для птаха з Червоної книги України</span><span><b>Партнер</b> — Українське товариство охорони птахів</span><span><b>Для компанії</b> — історія, яку можна розповісти команді</span></div>
     </div>
   </section>
 
@@ -192,19 +196,19 @@
     <div class="sticky">
       <p class="label">Obiimy для бізнесу</p>
       <h2 style="margin-top:14px">Для команди, партнерів і тих, кого хочеться <em>обійняти</em></h2>
-      <div class="actions"><a class="btn btn-gold" href="#request">Отримати добірку і розрахунок</a><a class="btn btn-line" href="b2b-atelier">Зібрати подарунок у 3D-ательє</a></div>
+      <div class="actions"><a class="btn btn-gold" href="b2b-atelier">Зібрати подарунок у 3D-конструкторі</a><a class="btn btn-line" href="#request">Отримати добірку і розрахунок</a></div>
       <div class="contact"><span>Корпоративні замовлення:</span><a class="num" id="phone" href="tel:+380670108525">+38 067 010 85 25</a><button class="copybtn" type="button" id="copyPhone">Скопіювати</button></div>
-      <p class="stores">INTERTOP · Hram · Be Brave · UFD London · LIGA.net · INSIDER UA</p>
+      <p class="stores">Продається в INTERTOP, Hram, Be Brave, UFD London · Писали LIGA.net, INSIDER UA</p>
     </div>
   </section>
 
   <section class="reqsec" id="request">
     <div class="req-in">
-      <div class="req-t"><p class="chip">Запит</p><h2>Отримати добірку <em>і розрахунок</em></h2><p class="copy">Кількість, бюджет і привід — повернемось із добіркою принтів, цінами на тираж і графіком. Документи для бухгалтерії: рахунок і видаткова накладна; ТОВ і ФОП.</p>
-        <p class="others">Класичні B2B-сторінки: <a href="b2b-newyear">Новий рік</a> · <a href="b2b-calendar">Річна програма</a> · <a href="b2b-horeca">HoReCa</a> · <a href="b2b-wholesale">Опт</a> · <a href="b2b-certificates">Сертифікати</a></p></div>
+      <div class="req-t"><p class="chip">Запит</p><h2>Отримати добірку <em>і розрахунок</em></h2><p class="copy">Кількість, бюджет і нагода — повернемось із добіркою принтів, цінами на тираж і графіком. Працюємо з ТОВ і ФОП: рахунок і видаткова накладна.</p>
+        <p class="others">Документи, терміни й питання — на сторінці <a href="b2b-newyear#faq">Новий рік</a>. Інші програми для бізнесу: <a href="b2b-calendar">Річна програма</a> · <a href="b2b-certificates">Сертифікати</a> · <a href="b2b-speakers">Спікерам і гостям</a> · <a href="b2b-horeca">HoReCa</a> · <a href="b2b-wholesale">Опт</a></p></div>
       <div>
       <form id="f-3d" novalidate>
-        <label><span>Компанія <span class="req">*</span></span><input name="company" data-label="Компанія" type="text" placeholder="Назва компанії" autocomplete="organization" required aria-describedby="f-3d-company-err"><span class="err" id="f-3d-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-3d-name-err"><span class="err" id="f-3d-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-3d-phone-err"><span class="err" id="f-3d-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-3d-email-err"><span class="err" id="f-3d-email-err" role="alert">Вкажіть коректний email</span></label><label><span>Кількість подарунків</span><input name="qty" data-label="Кількість подарунків" type="number" min="1" inputmode="numeric" placeholder="наприклад, 30"></label><label><span>Бюджет на один подарунок</span><select name="budget" data-label="Бюджет на один подарунок"><option value="">Оберіть</option><option>до 1 000 грн</option><option>до 2 000 грн</option><option>до 3 500 грн</option><option>до 5 000 грн</option><option>інший</option></select></label><label><span>Коли потрібно</span><select name="deadline" data-label="Коли потрібно"><option value="">Оберіть</option><option>До 10 грудня</option><option>До 20 грудня</option><option>Після свят</option><option>Інша дата</option></select></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Привід, побажання до принтів, текст листівки…"></textarea></label>
+        <label><span>Компанія <span class="req">*</span></span><input name="company" data-label="Компанія" type="text" placeholder="Назва компанії" autocomplete="organization" required aria-describedby="f-3d-company-err"><span class="err" id="f-3d-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-3d-name-err"><span class="err" id="f-3d-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-3d-phone-err"><span class="err" id="f-3d-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-3d-email-err"><span class="err" id="f-3d-email-err" role="alert">Вкажіть коректний email</span></label><label><span>Кількість подарунків</span><input name="qty" data-label="Кількість подарунків" type="number" min="1" inputmode="numeric" placeholder="наприклад, 30"></label><label><span>Бюджет на один подарунок</span><select name="budget" data-label="Бюджет на один подарунок"><option value="">Оберіть</option><option>до 1 000 грн</option><option>до 2 000 грн</option><option>до 3 500 грн</option><option>до 5 000 грн</option><option>інший</option></select></label><label><span>Коли потрібно</span><select name="deadline" data-label="Коли потрібно"><option value="">Оберіть</option><option>До 10 грудня</option><option>До 20 грудня</option><option>Після свят</option><option>Інша дата</option></select></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Нагода, побажання до принтів, текст листівки…"></textarea></label>
         <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на sale@obiimy-world.com з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="tel:+380670108525">+38 067 010 85 25</a>.</span></div>
       </form>
       <div class="done" id="f-3d-done" hidden aria-live="polite">
@@ -245,7 +249,7 @@
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>window.OBIIMY_STATES = [{"id": "probudzhennia", "name": "Пробудження", "line": "Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини чогось нового.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "product-garden", "back": "litnie-pole"}, {"id": "yednannia", "name": "Єднання", "line": "Жовті пташки на кульбабах. Про те, що тримає разом, коли розлітається все інше.", "size": "44 × 44 см · двосторонній друк", "price": "2 400 грн", "old": "", "url": "product-garden", "back": "pidnesennia"}, {"id": "tysha-sertsia", "name": "Тиша серця", "line": "Горобці у високій траві. Про спокій, який не треба заслуговувати.", "size": "65 × 65 см", "price": "3 200 грн", "old": "", "url": "product-garden", "back": "melodiia"}, {"id": "prystrast", "name": "Пристрасть", "line": "Сині кульбаби на кремовому шовку. Про те, що розлітається від одного подиху.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "product-garden", "back": "mizh-namy"}, {"id": "kolo-sontsia", "name": "Коло сонця", "line": "Вінок із сонячних квітів на рожевому. Про тепло, яке щоразу повертається.", "size": "88 × 88 см · шаль", "price": "4 400 грн", "old": "", "url": "product-garden", "back": "litnie-pole"}, {"id": "melodiia", "name": "Мелодія двох", "line": "Дві пташки серед верболозу. Про розмову, для якої не потрібні слова.", "size": "44 × 44 см · паше", "price": "1 600 грн", "old": "", "url": "product-garden", "back": "yednannia"}, {"id": "pidnesennia", "name": "Піднесення", "line": "Сиворакші та золотий дощ. Про політ, який починається на землі.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "product-garden", "back": "kolo-sontsia"}, {"id": "mizh-namy", "name": "Між нами", "line": "Гортензії по краю сірого шовку. Про те, що лишається тільки між двома.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "product-garden", "back": "prystrast"}, {"id": "litnie-pole", "name": "Літнє поле", "line": "Букет, написаний за один день. Про літо, яке не хоче закінчуватись.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "product-garden", "back": "probudzhennia"}];</script>
+<script>window.OBIIMY_STATES = [{"id": "probudzhennia", "name": "Пробудження", "line": "Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини чогось нового.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "litnie-pole"}, {"id": "yednannia", "name": "Єднання", "line": "Жовті пташки на кульбабах. Про те, що тримає разом, коли розлітається все інше.", "size": "44 × 44 см · двосторонній друк", "price": "2 400 грн", "old": "", "url": "product-garden", "back": "pidnesennia"}, {"id": "tysha-sertsia", "name": "Тиша серця", "line": "Горобці у високій траві. Про спокій, який не треба заслуговувати.", "size": "65 × 65 см", "price": "3 200 грн", "old": "", "url": "product-garden", "back": "melodiia"}, {"id": "prystrast", "name": "Пристрасть", "line": "Сині кульбаби на кремовому шовку. Про те, що розлітається від одного подиху.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "mizh-namy"}, {"id": "kolo-sontsia", "name": "Коло сонця", "line": "Вінок із сонячних квітів на рожевому. Про тепло, яке щоразу повертається.", "size": "88 × 88 см · шаль", "price": "4 400 грн", "old": "", "url": "product-garden", "back": "litnie-pole"}, {"id": "melodiia", "name": "Мелодія двох", "line": "Дві пташки серед верболозу. Про розмову, для якої не потрібні слова.", "size": "44 × 44 см · паше", "price": "1 600 грн", "old": "", "url": "product-garden", "back": "yednannia"}, {"id": "pidnesennia", "name": "Піднесення", "line": "Сиворакші та золотий дощ. Про політ, який починається на землі.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "kolo-sontsia"}, {"id": "mizh-namy", "name": "Між нами", "line": "Гортензії по краю сірого шовку. Про те, що лишається тільки між двома.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "prystrast"}, {"id": "litnie-pole", "name": "Літнє поле", "line": "Букет, написаний за один день. Про літо, яке не хоче закінчуватись.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "product-garden", "back": "probudzhennia"}]; window.GARDEN_OPTS = { boxYMobile: 1.05 };</script>
 <script>
 /* Obiimy Garden: one scroll-driven WebGL scene. Requires THREE r128 UMD. */
 (function () {
@@ -472,7 +476,7 @@
     var showBox = ch === 4; boxGroup.visible = showBox || boxT > 0.04;
     boxT += ((showBox ? 1 : 0) - boxT) * 0.08;
     if (boxGroup.visible) {
-      boxGroup.position.set(isMobile ? 0 : 0.15, (isMobile ? 0.55 : -1.15) + (1 - boxT) * -3, isMobile ? -1.6 : -0.6); boxGroup.rotation.set(0.62 + mouse.y * -0.05, -0.42 + mouse.x * 0.12, 0); var bs = isMobile ? 0.6 : 0.78; boxGroup.scale.set(bs, bs, bs);
+      boxGroup.position.set(isMobile ? 0 : 0.15, (isMobile ? ((window.GARDEN_OPTS && GARDEN_OPTS.boxYMobile) || 0.55) : -1.15) + (1 - boxT) * -3, isMobile ? -1.6 : -0.6); boxGroup.rotation.set(0.62 + mouse.y * -0.05, -0.42 + mouse.x * 0.12, 0); var bs = isMobile ? 0.6 : 0.78; boxGroup.scale.set(bs, bs, bs);
       lidPivot.rotation.x = -Math.min(1, t * 1.6) * 2.15;
       var lift = Math.max(0, (t - 0.4) / 0.6); pinPos.set(Math.sin(time * 0.8) * 0.08, -BH / 2 + 0.12 + lift * 3.0, Math.cos(time * 0.6) * 0.06);
       if (t < 0.02 && lastCh !== 4) resetCloth();

@@ -102,6 +102,10 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
 sys.path.insert(0, str(ROOT))
 from imgs import typo
 (OUT / "lookbook.html").write_text(typo(html))
+import re as _re
+nop = _re.sub(r'<p class="rrp">[^<]*</p>', '', html)
+nop = nop.replace('<p class="foot">РРЦ — рекомендована роздрібна ціна на obiimy.world. Оптові умови — в прайсі за запитом.</p>', '<p class="foot">Ціни та умови — за запитом.</p>')
+(OUT / "lookbook-noprice.html").write_text(typo(nop))
 print("lookbook.html", len(html) // 1024, "KB")
 
 # render to PDF with puppeteer (review/pp has puppeteer-core)
@@ -112,6 +116,9 @@ const p = await b.newPage();
 await p.goto('file:///Users/ivan/obiimy/lookbook.html', { waitUntil: 'networkidle0', timeout: 120000 });
 await p.evaluate(() => document.fonts.ready);
 await p.pdf({ path: '/Users/ivan/obiimy/lookbook-obiimy-2026.pdf', printBackground: true, preferCSSPageSize: true });
+await p.goto('file:///Users/ivan/obiimy/lookbook-noprice.html', { waitUntil: 'networkidle0', timeout: 120000 });
+await p.evaluate(() => document.fonts.ready);
+await p.pdf({ path: '/Users/ivan/obiimy/lookbook-obiimy-2026-noprice.pdf', printBackground: true, preferCSSPageSize: true });
 await b.close();
 console.log('pdf ok');
 ''')

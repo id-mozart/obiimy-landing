@@ -117,6 +117,8 @@ CSS = """
   .others .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; font-size: .9rem; }
   .others span { color: var(--ink2); }
   .others a { text-decoration: none; font-weight: 500; padding: 10px 0; border-bottom: 1px solid var(--ink); }
+  .others .grp { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 18px; width: 100%; }
+  .others .grp b { font-weight: 500; color: var(--ink2); }
 
   .calc { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 3vw, 32px); display: grid; gap: 16px; }
   .calc .row { display: grid; grid-template-columns: .7fr 1.6fr 1.3fr; gap: 14px; }
@@ -279,15 +281,15 @@ def form_html(pid, subject, fields, note, L=None):
       }})();
       </script>'''
 
-OTHERS = [("b2b-newyear", "Новий рік"), ("b2b-calendar", "Річна програма"), ("b2b-horeca", "HoReCa та уніформа"), ("b2b-wholesale", "Опт для магазинів"), ("b2b-certificates", "Сертифікати для команд"), ("b2b-agencies", "Для агенцій"), ("b2b-speakers", "Спікерам і гостям подій"), ("b2b-garden", "3D-історія"), ("b2b-atelier", "3D-ательє подарунка"), ("b2b-en", "English")]
+OTHERS = [("b2b-newyear", "Новий рік"), ("b2b-calendar", "Річна програма"), ("b2b-horeca", "HoReCa та уніформа"), ("b2b-wholesale", "Опт для магазинів"), ("b2b-certificates", "Сертифікати для команд"), ("b2b-agencies", "Для агенцій"), ("b2b-speakers", "Спікерам і гостям подій"), ("b2b-garden", "3D-історія"), ("b2b-atelier", "3D-конструктор подарунка"), ("b2b-en", "English")]
 UK = dict(bar="Для бізнесу<span class=\"m-hide\"> · відправка Новою поштою по Україні та за кордон</span> · безготівковий розрахунок для компаній", nav="Розділи сторінки", logo="Obiimy — на сайт бренду", others="Інші програми для бізнесу:", others_aria="Інші програми для бізнесу",
     footer_l="© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко", about="Про нас", delivery="Доставка",
     choose="Оберіть", req_err="Заповніть це поле", submit="Надіслати запит", hint="Відкриється лист на {mail} з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href=\"{tel}\">{phone}</a>.",
-    done_h="Лист підготовлено", done_p="Якщо поштова програма не відкрилась — скопіюйте текст нижче й надішліть на <a href=\"mailto:{mail}\">{mail}</a>, або подзвоніть <a href=\"{tel}\">{phone}</a>.", txt_aria="Текст запиту", copy="Скопіювати текст", copied="Скопійовано", call="Подзвонити", back="Змінити запит", sent="Надіслано зі сторінки ", or_call="Або одразу:")
+    done_h="Лист підготовлено", done_p="Якщо поштова програма не відкрилась — скопіюйте текст нижче й надішліть на <a href=\"mailto:{mail}\">{mail}</a>, або подзвоніть <a href=\"{tel}\">{phone}</a>.", txt_aria="Текст запиту", copy="Скопіювати текст", copied="Скопійовано", call="Подзвонити", back="Змінити запит", sent="Надіслано зі сторінки ", or_call="Або одразу:", about_url="https://obiimy.world/pro-nas/", deliv_url="https://obiimy.world/oplata-i-dostavka/", locale="uk_UA")
 EN = dict(bar="For business<span class=\"m-hide\"> · worldwide shipping at carrier rates</span> · invoice payment for companies", nav="Page sections", logo="Obiimy — brand website", others="Other business programmes:", others_aria="Other business programmes",
-    footer_l="© Obiimy · 100% Italian silk · made in Ukraine · artist and founder — Svitlana Snizhko", about="About", delivery="Shipping",
+    footer_l="© Obiimy · 100% Italian silk · made in Ukraine · artist and founder — Svitlana Snizhko", about="About (UA)", delivery="Shipping (UA)",
     choose="Choose", req_err="Please fill in this field", submit="Send request", hint="Your email app will open with a pre-filled message to {mail} — nothing is sent without your confirmation. Or call <a href=\"{tel}\">{phone}</a>.",
-    done_h="Your message is ready", done_p="If your email app did not open, copy the text below and send it to <a href=\"mailto:{mail}\">{mail}</a>, or call <a href=\"{tel}\">{phone}</a>.", txt_aria="Request text", copy="Copy text", copied="Copied", call="Call", back="Edit request", sent="Sent from ", or_call="Or call now:")
+    done_h="Your message is ready", done_p="If your email app did not open, copy the text below and send it to <a href=\"mailto:{mail}\">{mail}</a>, or call <a href=\"{tel}\">{phone}</a>.", txt_aria="Request text", copy="Copy text", copied="Copied", call="Call", back="Edit request", sent="Sent from ", or_call="Or call us:", about_url="https://obiimy.world/pro-nas/", deliv_url="https://obiimy.world/oplata-i-dostavka/", locale="en_GB")
 
 def og_crop(src, slug):
     from PIL import Image
@@ -306,9 +308,12 @@ def shell(page, body):
     dark = skin["dark"]
     logo = "brand/logo-white-480.webp" if dark else "brand/logo-ink-480.webp"
     links = "".join(f'<a href="#{h}">{t}</a>' for t, h in page["nav"])
-    EN_LABELS = {"b2b-atelier": "3D gift atelier (UA)", "b2b-garden": "3D story (UA)", "b2b-newyear": "New Year gifts (UA)", "b2b-certificates": "Gift certificates (UA)", "b2b-wholesale": "Wholesale (UA)"}
-    pairs = [(slug, EN_LABELS[slug]) for slug in EN_LABELS] if L is EN else [(slug, t) for slug, t in OTHERS if slug != page["slug"]]
-    others = "".join(f'<a href="{slug}">{t}</a>' for slug, t in pairs)
+    if L is EN:
+        others = '<a href="b2b-atelier">3D gift builder (UA)</a><a href="b2b-certificates">Gift certificates (UA)</a>'
+    else:
+        GROUPS = [("Подарунки компаніям", ["b2b-newyear", "b2b-calendar", "b2b-certificates", "b2b-speakers", "b2b-atelier", "b2b-garden"]), ("Партнерство", ["b2b-wholesale", "b2b-agencies", "b2b-horeca"]), ("", ["b2b-en"])]
+        names = dict(OTHERS)
+        others = "".join('<span class="grp">' + (f"<b>{g}:</b>" if g else "") + "".join(f'<a href="{slug}">{names[slug]}</a>' for slug in slugs if slug != page["slug"]) + "</span>" for g, slugs in GROUPS)
     return f'''<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{page["title"]}</title>
@@ -319,7 +324,7 @@ def shell(page, body):
 <meta property="og:description" content="{page["desc"]}">
 <meta property="og:image" content="{SITE_URL}/{og_crop(page["og"], page["slug"])}">
 <meta property="og:url" content="{SITE_URL}/{page["slug"]}">
-<meta property="og:locale" content="uk_UA">
+<meta property="og:locale" content="{L["locale"]}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -341,8 +346,8 @@ def shell(page, body):
 <main>
 {body}
 </main>
-<section class="others" aria-label="{L["others_aria"]}"><div class="wrap"><span>{L["others"]}</span>{others}</div></section>
-<footer><div class="wrap"><span>{L["footer_l"]}</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a> · <a href="https://obiimy.world/pro-nas/">{L["about"]}</a> · <a href="https://obiimy.world/oplata-i-dostavka/">{L["delivery"]}</a></span></div></footer>
+<section class="others" aria-label="{L["others_aria"]}"><div class="wrap">{"<span>" + L["others"] + "</span>" if L is EN else ""}{others}</div></section>
+<footer><div class="wrap"><span>{L["footer_l"]}</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a> · <a href="{L["about_url"]}">{L["about"]}</a> · <a href="{L["deliv_url"]}">{L["delivery"]}</a></span></div></footer>
 <div class="sticky" id="sticky"><span>{page["sticky"]}</span><a href="#request">{page["cta"]}</a></div>
 <script>
 (function () {{
@@ -379,7 +384,7 @@ def newyear():
         ("До 1 000 грн", "Маленький знак уваги", [("Резинка для волосся у коробочці", 700)], "photo/scrunchie.jpg", "Резинка у фірмовій коробочці"),
         ("До 2 000 грн", "Подарунок кожному в команді", [("Твіллі 84 × 5", 1600), ("Хустка паше 44 × 44", 1600)], "photo/paris-bag.jpg", "Твіллі на ручці сумки"),
         ("До 3 500 грн", "Для ключових людей", [("Набір «Пристрасть»: твіллі + резинка", 2200), ("Маска для сну", 2700), ("Хустка 65 × 65", 3200), ("Набір «Натхнення»: твіллі + хустка", 3200)], "photo/box-red.jpg", "Набір у жовтій коробці"),
-        ("До 5 000 грн", "Для партнерів і VIP-клієнтів", [("Набір для сну «Піднесення»", 3600), ("Хустка 88 × 88", 4400), ("Набір із трьох твіллі", 4800)], "photo/paris-dots.jpg", "Хустка 88 × 88 на плечах"),
+        ("До 5 000 грн", "Для партнерів і VIP-клієнтів", [("Набір для сну «Піднесення»", 3600), ("Шаль 88 × 88", 4400), ("Набір із трьох твіллі", 4800)], "photo/paris-dots.jpg", "Шаль 88 × 88 на плечах"),
     ]
     tier_html = "".join(f'''
       <div class="card photo">{img(ph, alt, sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">{t}</p><h3>{sub}</h3><div>{"".join(f'<div class="price-row"><span>{n}</span><span class="num">{price(p)}</span></div>' for n, p in items)}</div></div></div>''' for t, sub, items, ph, alt in tiers)
@@ -406,7 +411,7 @@ def newyear():
   <section class="block alt" id="budgets"><div class="wrap">
     <div class="head"><p class="eyebrow">Бюджети</p><h2>Чотири бюджети, один рівень якості</h2><p class="sub">Роздрібні ціни з obiimy.world. Умови для тиражу залежать від кількості й термінів — надішліть запит, і ми повернемось із розрахунком.</p></div>
     <div class="grid4">{tier_html}</div>
-    <p style="margin-top:28px"><a class="btn btn-gold" href="#request">Отримати розрахунок на цей бюджет</a></p>
+    <p style="margin-top:28px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px"><a class="btn btn-gold" href="#request">Отримати розрахунок на цей бюджет</a><a href="b2b-atelier" style="font-weight:600;padding:12px 0">або зберіть подарунок у 3D-конструкторі й перешліть керівнику на погодження →</a></p>
   </div></section>
 
   <section class="block" id="personal"><div class="wrap grid2">
@@ -416,7 +421,7 @@ def newyear():
         <details open><summary>Листівка з вашим привітанням</summary><p>Текст від компанії або керівника, за бажанням — підпис від руки. Це та сама послуга «підпис на подарунок», яку Obiimy робить для кожного замовлення.</p></details>
         <details><summary>Принти під кольори бренду</summary><p>У колекціях є монограмні, геометричні та квіткові принти в різних кольорах. Підберемо ті, що збігаються з вашою айдентикою, — від стриманого до святкового.</p></details>
         <details><summary>Однакові чи різні</summary><p>Один принт на всю команду виглядає як уніформа події; добірка різних принтів у межах бюджету дає кожному відчуття особистого подарунка. Робимо обидва варіанти.</p></details>
-        <details><summary>Сертифікати для віддалених команд</summary><p>Якщо зібрати розміри й адреси неможливо — подарункові сертифікати Obiimy: людина обирає річ сама, а ви дотримуєтесь бюджету.</p></details>
+        <details><summary>Сертифікати для віддалених команд</summary><p>Якщо зібрати розміри й адреси неможливо — подарункові сертифікати Obiimy: людина обирає річ сама, а ви дотримуєтесь бюджету. <a href="b2b-certificates">Докладніше про сертифікати →</a></p></details>
       </div>
     </div>
   </div></section>
@@ -597,7 +602,7 @@ def wholesale():
     body = hero("Для магазинів, бутиків і корнерів", "Obiimy на вашій полиці",
                 "Готова вітрина для вашого магазину: асортимент, фірмові коробки, фотоконтент та історія, яку легко розповісти покупцю.<span class=\"m-hide\"> Український бренд шовкових хусток із власними принтами, який уже продається в INTERTOP, Hram, Be Brave (Канада) та UFD London.</span>",
                 "Запросити оптовий прайс", "Лукбук і роздрібні ціни (PDF, 3 МБ)", "lookbook-obiimy-2026.pdf",
-                "Оптовий прайс і умови формату — у відповідь на запит. Відправка Новою поштою по Україні, за кордон — за тарифами перевізника.", "photo/paris-dots.jpg", "Хустка 88 × 88 у горох на білому костюмі", "Фотоконтент двох зйомок — для ваших соцмереж і вітрини", pos="50% 6%") + facts_html([
+                "Оптовий прайс і умови формату — у відповідь на запит. Відправка Новою поштою по Україні, за кордон — за тарифами перевізника.", "photo/paris-dots.jpg", "Шаль 88 × 88 у горох на білому костюмі", "Фотоконтент двох зйомок — для ваших соцмереж і вітрини", pos="50% 6%") + facts_html([
         ("3 країни", "Роздрібні партнери в Україні, Канаді та Великій Британії"),
         ("6 категорій", "Хустки, двосторонні, твіллі, маски для сну, резинки, набори"),
         ("700 – 4 800 грн", "Роздрібні ціни на obiimy.world — орієнтир для полиці"),
@@ -662,10 +667,10 @@ def calendar():
         ("Грудень", "Новий рік і Різдво", "Коробки для команди та партнерів. Найбільший сезон — плануємо з жовтня.", "img/set-3twilly.webp", "Набір із трьох твіллі"),
         ("Березень", "8 березня", "Подарунок жіночій частині команди, який не виглядає формальністю: твіллі або паше в одному принті.", "photo/paris-bun.jpg", "Шовкова резинка у зачісці"),
         ("Травень", "День матері", "Для клієнток і партнерок — хустка 65 × 65 із листівкою від компанії.", "photo/kolo-2.webp", "Хустка на бежевому пальті"),
-        ("Червень–серпень", "Конференції та івенти", "Спікерам і гостям — твіллі в коробочці замість блокнота з логотипом.", "photo/dotyk-1.webp", "Хустка на тренчі"),
+        ("Червень–серпень", "Конференції та івенти", "Спікерам і гостям — твіллі в коробочці замість блокнота з логотипом. <a href=\"b2b-speakers\">Докладніше →</a>", "photo/dotyk-1.webp", "Хустка на тренчі"),
         ("Щомісяця", "Дні народження", "Іменинникам — подарунок за списком на місяць, відправляємо кожному на відділення.", "img/scrunchie-pole.webp", "Резинка у коробочці"),
         ("Постійно", "Welcome-box", "Новому співробітнику в перший день — шовкова річ у фірмовій коробці з привітанням.", "img/set-zolote.webp", "Набір у фірмовій коробці"),
-        ("Постійно", "Подяка клієнтам", "Закриття великої угоди, річниця співпраці — набір «Натхнення» або хустка 88 × 88.", "photo/riviera-red.jpg", "Червона шовкова хустка на зап’ясті"),
+        ("Постійно", "Подяка клієнтам", "Закриття великої угоди, річниця співпраці — набір «Натхнення» або шаль 88 × 88.", "photo/riviera-red.jpg", "Червона шовкова хустка на зап’ясті"),
         ("Дата компанії", "Річниця бренду", "Один принт на всю команду — і фото на згадку в один день.", "photo/riviera-car.jpg", "Хустка на голові за кермом кабріолета"),
     ]
     months_html = "".join(f'<div class="card photo">{img(ph, alt, sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">{m}</p><h3>{t}</h3><p>{d}</p></div></div>' for m, t, d, ph, alt in months)
@@ -702,10 +707,10 @@ def calendar():
       <div class="card"><p class="eyebrow">До 1 000 грн</p><h3>Резинка</h3><p>У фірмовій коробочці. Для днів народження та welcome-box.</p><div class="price-row"><span>Роздріб</span><span class="num">700 грн</span></div></div>
       <div class="card"><p class="eyebrow">До 2 000 грн</p><h3>Твіллі або паше</h3><p>Універсальний подарунок для команди на 8 березня і до свят.</p><div class="price-row"><span>Роздріб</span><span class="num">1 600 грн</span></div></div>
       <div class="card"><p class="eyebrow">До 3 500 грн</p><h3>Набір або хустка 65</h3><p>Для ключових людей і клієнтів: набір «Пристрасть», маска для сну, набір «Натхнення», хустка 65 × 65.</p><div class="price-row"><span>Роздріб</span><span class="num">2 200 – 3 200 грн</span></div></div>
-      <div class="card"><p class="eyebrow">До 5 000 грн</p><h3>Хустка 88 або три твіллі</h3><p>Партнерам і VIP: набір для сну, хустка 88 × 88, три твіллі в одній коробці.</p><div class="price-row"><span>Роздріб</span><span class="num">3 600 – 4 800 грн</span></div></div>
+      <div class="card"><p class="eyebrow">До 5 000 грн</p><h3>Шаль 88 або три твіллі</h3><p>Партнерам і VIP: набір для сну, шаль 88 × 88, три твіллі в одній коробці.</p><div class="price-row"><span>Роздріб</span><span class="num">3 600 – 4 800 грн</span></div></div>
     </div>
     <p class="note">Умови річної програми залежать від загальної кількості подарунків — надішліть запит, і ми порахуємо.</p>
-    <p style="margin-top:16px"><a class="btn btn-gold" href="#request">Скласти план на рік</a></p>
+    <p style="margin-top:16px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px"><a class="btn btn-gold" href="#request">Скласти план на рік</a><a href="b2b-atelier" style="font-weight:600;padding:12px 0">Зібрати перший подарунок у 3D-конструкторі →</a></p>
   </div></section>
 
   <section class="block alt" id="faq"><div class="wrap">

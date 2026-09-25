@@ -1,10 +1,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Ательє подарунка · Obiimy для бізнесу</title>
-<meta name="description" content="Зберіть корпоративний подарунок Obiimy в 3D: оберіть принт на живому шовку, річ, кількість і текст листівки — і надішліть конфігурацію на розрахунок. Посилання на конфігурацію можна переслати колегам.">
-<meta property="og:title" content="Ательє подарунка · Obiimy для бізнесу">
+<title>Конструктор корпоративного подарунка — Obiimy</title>
+<meta name="description" content="Зберіть корпоративний подарунок Obiimy в 3D: принт на живому шовку, річ, кількість і текст листівки — і надішліть на розрахунок.">
+<link rel="canonical" href="https://obiimy-landing-production.up.railway.app/b2b-atelier">
+<meta property="og:title" content="Конструктор корпоративного подарунка — Obiimy">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="uk_UA">
+<meta name="twitter:card" content="summary_large_image">
 <meta property="og:description" content="Оберіть принт на живому 3D-шовку, річ, кількість і листівку — і отримайте розрахунок для команди.">
-<meta property="og:image" content="https://obiimy-landing-production.up.railway.app/photo/og-b2b-newyear.jpg">
+<meta property="og:image" content="https://obiimy-landing-production.up.railway.app/photo/og-b2b-atelier.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Onest:wght@300;400;500;600&display=swap">
@@ -48,12 +54,12 @@
   .stage { position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: hidden; }
   .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; }
   .stage canvas.grabbing { cursor: grabbing; }
-  .stage #ribbon { opacity: 0; transition: opacity .6s ease; pointer-events: none; top: 20%; left: 26%; width: 74%; height: 70%; right: auto; bottom: auto; inset: 20% auto auto 34%; width: 66%; }
+  .stage #ribbon { opacity: 0; transition: opacity .6s ease; pointer-events: none; top: 20%; left: 26%; width: 74%; height: 70%; right: auto; bottom: auto; inset: 22% auto auto 42%; width: 58%; }
   .stage.twilly #ribbon { opacity: 1; }
   .stage.twilly #silk { opacity: 0; pointer-events: none; }
   .stage #silk { transition: opacity .6s ease; }
   .stage .title { position: absolute; left: clamp(16px, 4vw, 56px); top: calc(96px + env(safe-area-inset-top, 0px)); max-width: 24em; pointer-events: none; z-index: 2; }
-  .stage .title p { margin-top: 14px; color: var(--ink-2); font-weight: 300; font-size: 1.02rem; max-width: 28em; }
+  .stage .title p { margin-top: 14px; color: var(--ink-2); font-weight: 300; font-size: 1.02rem; max-width: 22em; }
   .stage .now { position: absolute; left: clamp(16px, 4vw, 56px); bottom: calc(30px + env(safe-area-inset-bottom, 0px)); display: grid; gap: 4px; pointer-events: none; }
   .stage .now .n { font-family: var(--display); font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; }
   .stage .now .s { font-size: .74rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); }
@@ -154,6 +160,43 @@
     form { grid-template-columns: 1fr; } form label.full { grid-column: auto; }
   }
   @media (prefers-reduced-motion: reduce) { .btn, .swatches button { transition: none; } }
+
+  .items button .tag { grid-column: 1 / -1; justify-self: start; font-size: .68rem; letter-spacing: .14em; text-transform: uppercase; color: var(--gold); border: 1px solid rgba(242,183,5,.4); border-radius: 999px; padding: 2px 8px; }
+  .items button.over { opacity: .45; }
+  .items button.over::after { content: "понад бюджет"; grid-column: 1 / -1; font-size: .72rem; color: var(--ink-3); }
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chips button { all: unset; cursor: pointer; font-size: .8rem; padding: 10px 14px; min-height: 24px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink-2); }
+  .chips button[aria-pressed="true"] { border-color: var(--gold); color: var(--ink); background: rgba(242,183,5,.1); }
+  .chips button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .lines { display: grid; gap: 6px; }
+  .lines .ln { display: grid; grid-template-columns: 1fr auto auto; gap: 8px; align-items: center; font-size: .86rem; color: var(--ink-2); padding: 0 10px; border: 1px solid var(--line); border-radius: 4px; }
+  .lines .ln.active { border-color: var(--gold); color: var(--ink); }
+  .lines .ln button { all: unset; cursor: pointer; font-size: .78rem; color: var(--ink-3); padding: 10px 6px; }
+  .lines .ln button:hover { color: var(--ink); }
+  .lines .ln .pick { text-align: left; color: inherit; padding: 6px 0; font-size: .86rem; }
+  .addline { all: unset; cursor: pointer; font-size: .82rem; color: var(--gold); padding: 10px 0; }
+  .addline[disabled] { opacity: .4; cursor: default; }
+  .approval { border: 1px solid var(--gold); background: rgba(242,183,5,.08); border-radius: 4px; padding: 18px 20px; display: grid; gap: 10px; }
+  .approval h3 { font-size: 1.5rem; }
+  .approval p { color: var(--ink-2); font-size: .92rem; }
+  .approval .row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .perhead { font-size: .8rem; color: var(--ink-3); }
+  @media (max-width: 960px) {
+    .stage { transition: height .35s ease; }
+    .compact .stage { height: 30svh; }
+    .compact .stage .title, .compact .stage .tools { display: none; }
+    .compact .gift { width: 104px; bottom: 8px; }
+    .compact .gift .card p { -webkit-line-clamp: 2; }
+    .summary .line, .summary .perhead, .summary .lines, .summary .addline { display: none !important; }
+    .summary.open .lines, .summary.open .addline { display: grid !important; }
+    .summary .toggle { display: inline-flex !important; }
+  }
+  .summary .toggle { all: unset; display: none; cursor: pointer; font-size: .78rem; color: var(--ink-2); padding: 10px 0; }
+  .summary.multi .line, .summary.multi .total span { display: none; }
+  .stage .title p { text-shadow: 0 1px 18px rgba(12,9,20,.95); }
+  .summary:not(.multi) .lines { display: none; }
+  .summary .total { align-items: baseline; }
+  .summary .perhead { margin-top: -6px; }
 </style>
 </head>
 <body>
@@ -177,14 +220,23 @@
       </div>
       <p class="hintdrag">Потягніть за тканину</p>
       <div class="now" aria-live="polite"><span class="s" id="nowItem">Хустка 65 × 65</span><span class="n" id="nowName">«Пробудження»</span></div>
-      <div class="gift" aria-hidden="true"><div class="box"><img src="brand/logo-ink-480.webp" alt=""></div><div class="card"><p id="cardPrev">Дякуємо, що цей рік був разом із нами.</p><span id="cardSign">— ваша компанія</span></div></div>
+      <div class="gift" aria-hidden="true"><div class="box"><img src="brand/logo-ink-480.webp" alt=""></div><div class="card"><p id="cardPrev">Дякуємо, що цього року ви були поруч.</p><span id="cardSign">— ваша компанія</span></div></div>
       <div class="tools"><button class="btn btn-line btn-sm" type="button" id="flipBtn" hidden>Перевернути</button></div>
     </div>
 
     <div class="panel">
+      <div class="approval" id="approval" hidden>
+        <p class="eyebrow">Для погодження</p>
+        <h3>Вам надіслали конфігурацію подарунка</h3>
+        <p id="apprFrom" hidden></p>
+        <p id="apprLines"></p>
+        <p><b class="num" id="apprTotal"></b> — орієнтир за роздрібними цінами</p>
+        <div class="row"><a class="btn btn-gold btn-sm" href="#request">Надіслати запит на розрахунок</a><button class="btn btn-line btn-sm" type="button" id="apprEdit">Змінити</button></div>
+      </div>
+
       <section class="step" id="s-print" aria-labelledby="h-print">
         <p class="eyebrow">01 · Принт</p>
-        <h2 id="h-print">Оберіть <em>стан</em></h2>
+        <h2 id="h-print">Оберіть <em>принт</em></h2>
         <div class="swatches" id="swatches" role="group" aria-label="Принти"></div>
         <p class="printline" id="printLine"></p>
       </section>
@@ -192,28 +244,35 @@
       <section class="step" id="s-item" aria-labelledby="h-item">
         <p class="eyebrow">02 · Річ</p>
         <h2 id="h-item">Що <em>дарувати</em></h2>
+        <div class="chips" id="budgets" role="group" aria-label="Бюджет на людину"><button type="button" data-b="1000">до 1 000 грн</button><button type="button" data-b="2000">до 2 000 грн</button><button type="button" data-b="3500">до 3 500 грн</button><button type="button" data-b="5000">до 5 000 грн</button></div>
         <div class="items" id="items" role="group" aria-label="Річ"></div>
-        <p class="help">Наявність принту в обраному форматі підтвердимо в розрахунку. Суми — за роздрібними цінами, це верхня межа; умови для тиражу — у розрахунку.</p>
+        <p class="help">«Каталог» — формат, у якому принт є на obiimy.world. «Під запит» — інший формат цього принта: наявність і терміни підтвердимо в розрахунку. Суми — за роздрібними цінами, це верхня межа.</p>
       </section>
 
       <section class="step" id="s-qty" aria-labelledby="h-qty">
         <p class="eyebrow">03 · Кількість</p>
         <h2 id="h-qty">Скільки <em>людей</em></h2>
         <div class="qty"><input type="range" id="qtyRange" min="5" max="300" step="5" value="30" aria-label="Кількість подарунків"><input type="number" id="qtyNum" min="1" max="5000" value="30" inputmode="numeric" aria-label="Кількість подарунків, число"></div>
+        <p class="help">Даруєте у два рівні — команді й ключовим людям? Додайте ще одну позицію в підсумку.</p>
       </section>
 
       <section class="step" id="s-card" aria-labelledby="h-card">
         <p class="eyebrow">04 · Листівка</p>
         <h2 id="h-card">Що <em>написати</em></h2>
-        <textarea id="cardText" maxlength="160" aria-label="Текст листівки">Дякуємо, що цей рік був разом із нами.</textarea>
-        <p class="count"><span id="cardCount">38</span> / 160</p>
+        <textarea id="cardText" maxlength="160" aria-label="Текст листівки">Дякуємо, що цього року ви були поруч.</textarea>
+        <p class="count"><span id="cardCount">37</span> / 160</p>
         <input type="text" id="cardFrom" maxlength="40" placeholder="Підпис, наприклад: команда Acme" aria-label="Підпис на листівці">
-        <p class="help">Листівка з вашим текстом — у кожній фірмовій жовтій коробці.</p>
+        <input type="text" id="author" maxlength="40" placeholder="Хто готує пропозицію, наприклад: Олена, HR" aria-label="Хто готує пропозицію">
+        <p class="help">Листівка з вашим текстом — у кожній фірмовій жовтій коробці. Ім’я того, хто готує пропозицію, побачать колеги за посиланням.</p>
       </section>
 
       <div class="summary" id="summary">
-        <p class="line" id="sumLine">30 × Хустка 65 × 65 «Пробудження»</p>
-        <div class="total"><b class="num" id="sumTotal">96 000 грн</b><span>за роздрібними цінами — верхня межа; умови для тиражу — у розрахунку</span></div>
+        <button class="toggle" type="button" id="sumToggle" aria-expanded="false">Позиції ↑</button>
+        <div class="lines" id="lines"></div>
+        <button class="addline" type="button" id="addLine">+ Додати позицію</button>
+        <p class="line" id="sumLine"></p>
+        <div class="total"><b class="num" id="sumTotal"></b><span>за роздрібними цінами — верхня межа; умови для тиражу — у розрахунку</span></div>
+        <p class="perhead" id="perHead"></p>
         <div class="row"><a class="btn btn-gold" href="#request" id="toRequest">Надіслати конфігурацію</a><button class="btn btn-line btn-sm" type="button" id="shareBtn">Поділитися</button></div>
       </div>
     </div>
@@ -221,12 +280,12 @@
 
   <section class="reqsec" id="request">
     <div class="req-in">
-      <div><p class="eyebrow">Запит</p><h2 style="margin-top:14px">Отримати <em>розрахунок</em></h2><p class="copy">Ваша конфігурація вже в коментарі до запиту. Повернемось із розрахунком на тираж, наявністю принту та графіком. Документи: рахунок і видаткова накладна; ТОВ і ФОП.</p>
-        <p class="others">Інші програми для бізнесу: <a href="b2b-garden">3D-історія</a> · <a href="b2b-newyear">Новий рік</a> · <a href="b2b-certificates">Сертифікати</a> · <a href="b2b-horeca">HoReCa</a> · <a href="b2b-wholesale">Опт</a></p></div>
+      <div><p class="eyebrow">Запит</p><h2 style="margin-top:14px">Отримати <em>розрахунок</em></h2><p class="copy">Ваша конфігурація вже в коментарі до запиту. Повернемось із розрахунком на тираж, наявністю принту та графіком. Працюємо з ТОВ і ФОП: рахунок і видаткова накладна.</p>
+        <p class="others">Документи, терміни й питання — на сторінці <a href="b2b-newyear#faq">Новий рік</a>. Інші програми: <a href="b2b-certificates">Сертифікати</a> · <a href="b2b-calendar">Річна програма</a> · <a href="b2b-speakers">Спікерам і гостям</a></p></div>
       <div>
       <form id="f-at" novalidate>
-        <label><span>Компанія <span class="req">*</span></span><input name="company" data-label="Компанія" type="text" placeholder="Назва компанії" autocomplete="organization" required aria-describedby="f-at-company-err"><span class="err" id="f-at-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-at-name-err"><span class="err" id="f-at-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-at-phone-err"><span class="err" id="f-at-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-at-email-err"><span class="err" id="f-at-email-err" role="alert">Вкажіть коректний email</span></label><label><span>Кількість подарунків</span><input name="qty" data-label="Кількість подарунків" type="number" min="1" inputmode="numeric" placeholder="з конфігуратора"></label><label><span>Коли потрібно</span><select name="deadline" data-label="Коли потрібно"><option value="">Оберіть</option><option>До 10 грудня</option><option>До 20 грудня</option><option>Після свят</option><option>Інша дата</option></select></label><label><span>Доставка</span><select name="delivery" data-label="Доставка"><option value="">Оберіть</option><option>В офіс однією посилкою</option><option>Кожному на відділення Нової пошти</option><option>Ще не знаю</option></select></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Конфігурація і коментар</span><textarea name="note" data-label="Конфігурація і коментар" placeholder="Заповнюється з конфігуратора"></textarea></label>
-        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на sale@obiimy-world.com з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="tel:+380670108525">+38 067 010 85 25</a>.</span></div>
+        <label><span>Компанія <span class="req">*</span></span><input name="company" data-label="Компанія" type="text" placeholder="Назва компанії" autocomplete="organization" required aria-describedby="f-at-company-err"><span class="err" id="f-at-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-at-name-err"><span class="err" id="f-at-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-at-phone-err"><span class="err" id="f-at-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-at-email-err"><span class="err" id="f-at-email-err" role="alert">Вкажіть коректний email</span></label><label><span>Кількість подарунків</span><input name="qty" data-label="Кількість подарунків" type="number" min="1" inputmode="numeric" placeholder="з конструктора"></label><label><span>Коли потрібно</span><select name="deadline" data-label="Коли потрібно"><option value="">Оберіть</option><option>До 10 грудня</option><option>До 20 грудня</option><option>Після свят</option><option>Інша дата</option></select></label><label><span>Доставка</span><select name="delivery" data-label="Доставка"><option value="">Оберіть</option><option>В офіс однією посилкою</option><option>Кожному на відділення Нової пошти</option><option>Ще не знаю</option></select></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Нагода, терміни, побажання…"></textarea></label>
+        <input type="hidden" name="config" data-label="Конфігурація"><div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на sale@obiimy-world.com з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="tel:+380670108525">+38 067 010 85 25</a>.</span></div>
       </form>
       <div class="done" id="f-at-done" hidden aria-live="polite">
         <h3 tabindex="-1">Лист підготовлено</h3>
@@ -251,11 +310,11 @@
           if (first) { first.focus(); first.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
           var lines = [];
           f.querySelectorAll('[name]').forEach(function (i) { if (i.value.trim()) lines.push(i.dataset.label + ': ' + i.value.trim()); });
-          var body = 'Конфігурація з ательє подарунка\n\n' + lines.join('\n') + '\n\nНадіслано зі сторінки ' + location.href;
+          var body = 'Конфігурація з конструктора подарунка\n\n' + lines.join('\n') + '\n\nНадіслано зі сторінки ' + location.href;
           txt.value = body;
           var company = f.querySelector('[name="company"]').value.trim();
           f.hidden = true; done.hidden = false; done.scrollIntoView({ block: 'start', behavior: 'smooth' }); done.querySelector('h3').focus({ preventScroll: true });
-          window.location.href = 'mailto:sale@obiimy-world.com?subject=' + encodeURIComponent('Конфігурація з ательє подарунка — ' + company) + '&body=' + encodeURIComponent(body);
+          window.location.href = 'mailto:sale@obiimy-world.com?subject=' + encodeURIComponent('Конфігурація з конструктора подарунка — ' + company) + '&body=' + encodeURIComponent(body);
         });
         document.getElementById('f-at-copy').addEventListener('click', function () { var b = this; txt.select(); (navigator.clipboard ? navigator.clipboard.writeText(txt.value) : Promise.reject()).then(function () { b.textContent = 'Скопійовано'; setTimeout(function () { b.textContent = 'Скопіювати текст'; }, 2000); }, function () { document.execCommand('copy'); }); });
         document.getElementById('f-at-back').addEventListener('click', function () { done.hidden = true; f.hidden = false; f.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
@@ -267,7 +326,7 @@
 <footer><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко</span><span><a href="tel:+380670108525">+38 067 010 85 25</a> · <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a></span></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>window.OBIIMY_STATES = [{"id": "probudzhennia", "name": "Пробудження", "line": "Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини чогось нового.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "https://obiimy.world/shovkova-khustka-probudzhennia-65x65/", "back": "litnie-pole"}, {"id": "yednannia", "name": "Єднання", "line": "Жовті пташки на кульбабах. Про те, що тримає разом, коли розлітається все інше.", "size": "44 × 44 см · двосторонній друк", "price": "2 400 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "pidnesennia"}, {"id": "tysha-sertsia", "name": "Тиша серця", "line": "Горобці у високій траві. Про спокій, який не треба заслуговувати.", "size": "65 × 65 см", "price": "3 200 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "melodiia"}, {"id": "prystrast", "name": "Пристрасть", "line": "Сині кульбаби на кремовому шовку. Про те, що розлітається від одного подиху.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "mizh-namy"}, {"id": "kolo-sontsia", "name": "Коло сонця", "line": "Вінок із сонячних квітів на рожевому. Про тепло, яке щоразу повертається.", "size": "88 × 88 см · шаль", "price": "4 400 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "litnie-pole"}, {"id": "melodiia", "name": "Мелодія двох", "line": "Дві пташки серед верболозу. Про розмову, для якої не потрібні слова.", "size": "44 × 44 см · паше", "price": "1 600 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "yednannia"}, {"id": "pidnesennia", "name": "Піднесення", "line": "Сиворакші та золотий дощ. Про політ, який починається на землі.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "https://obiimy.world/spivocha-dusha/", "back": "kolo-sontsia"}, {"id": "mizh-namy", "name": "Між нами", "line": "Гортензії по краю сірого шовку. Про те, що лишається тільки між двома.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "prystrast"}, {"id": "litnie-pole", "name": "Літнє поле", "line": "Букет, написаний за один день. Про літо, яке не хоче закінчуватись.", "size": "65 × 65 см · двосторонній друк", "price": "4 320 грн", "old": "4 800 грн", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "probudzhennia"}];</script>
+<script>window.OBIIMY_STATES = [{"id": "probudzhennia", "name": "Пробудження", "line": "Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини чогось нового.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/shovkova-khustka-probudzhennia-65x65/", "back": "litnie-pole"}, {"id": "yednannia", "name": "Єднання", "line": "Жовті пташки на кульбабах. Про те, що тримає разом, коли розлітається все інше.", "size": "44 × 44 см · двосторонній друк", "price": "2 400 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "pidnesennia"}, {"id": "tysha-sertsia", "name": "Тиша серця", "line": "Горобці у високій траві. Про спокій, який не треба заслуговувати.", "size": "65 × 65 см", "price": "3 200 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "melodiia"}, {"id": "prystrast", "name": "Пристрасть", "line": "Сині кульбаби на кремовому шовку. Про те, що розлітається від одного подиху.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "mizh-namy"}, {"id": "kolo-sontsia", "name": "Коло сонця", "line": "Вінок із сонячних квітів на рожевому. Про тепло, яке щоразу повертається.", "size": "88 × 88 см · шаль", "price": "4 400 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "litnie-pole"}, {"id": "melodiia", "name": "Мелодія двох", "line": "Дві пташки серед верболозу. Про розмову, для якої не потрібні слова.", "size": "44 × 44 см · паше", "price": "1 600 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "yednannia"}, {"id": "pidnesennia", "name": "Піднесення", "line": "Сиворакші та золотий дощ. Про політ, який починається на землі.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/spivocha-dusha/", "back": "kolo-sontsia"}, {"id": "mizh-namy", "name": "Між нами", "line": "Гортензії по краю сірого шовку. Про те, що лишається тільки між двома.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "prystrast"}, {"id": "litnie-pole", "name": "Літнє поле", "line": "Букет, написаний за один день. Про літо, яке не хоче закінчуватись.", "size": "65 × 65 см · двосторонній друк", "price": "4 800 грн", "old": "", "url": "https://obiimy.world/dvostoronnii-druk/", "back": "probudzhennia"}];</script>
 <script>
 /* Obiimy silk engine: Verlet cloth + anisotropic silk shader + procedural weave. Requires THREE (r128 UMD). */
 window.SilkEngine = (function () {
@@ -738,94 +797,149 @@ window.SilkEngine = (function () {
 (function () {
   var STATES = window.OBIIMY_STATES || [];
   var ITEMS = [
-    { id: 'twilly', name: 'Твіллі 84 × 5', short: 'Твіллі', price: 1600, note: 'На сумку, у волосся, на зап’ястя', ribbon: true },
-    { id: 'p44', name: 'Паше 44 × 44', short: 'Паше 44', price: 1600, note: 'Нашийна хустка або в кишеню жакета', scale: 0.72 },
-    { id: 'k65', name: 'Хустка 65 × 65', short: 'Хустка 65', price: 3200, note: 'Класика: на шию, у волосся, на пояс', scale: 1 },
-    { id: 'd65', name: 'Двостороння 65 × 65', short: 'Двостороння 65', price: 4800, note: 'Два принти на одній хустці', scale: 1, flip: true },
-    { id: 'k88', name: 'Шаль 88 × 88', short: 'Шаль 88', price: 4400, note: 'На плечі, як топ, тюрбан', scale: 1.22 }
+    { id: 'twilly', name: 'Твіллі 84 × 5', price: 1600, note: 'На сумку, у волосся, на зап’ястя', ribbon: true },
+    { id: 'p44', name: 'Паше 44 × 44', price: 1600, note: 'На шию або в нагрудну кишеню жакета', scale: 0.72 },
+    { id: 'd44', name: 'Двостороння 44 × 44', price: 2400, note: 'Два принти на невеликій хустці', scale: 0.72, flip: true },
+    { id: 'k65', name: 'Хустка 65 × 65', price: 3200, note: 'Класика: на шию, у волосся, на пояс', scale: 1 },
+    { id: 'd65', name: 'Двостороння 65 × 65', price: 4800, note: 'Два принти на одній хустці', scale: 1, flip: true },
+    { id: 'k88', name: 'Шаль 88 × 88', price: 4400, note: 'На плечі, як топ або тюрбан', scale: 1.22 }
   ];
-  var cfg = { p: 0, i: 2, q: 30, c: 'Дякуємо, що цей рік був разом із нами.', f: '' };
-  // restore from hash
+  function catalogItem(s) {
+    var z = s.size || '', two = z.indexOf('двосторон') >= 0;
+    if (z.indexOf('88') === 0) return 'k88';
+    if (z.indexOf('44') === 0) return two ? 'd44' : 'p44';
+    return two ? 'd65' : 'k65';
+  }
+  var idx = function (arr, id) { for (var i = 0; i < arr.length; i++) if (arr[i].id === id) return i; return -1; };
+  var start = Math.max(0, idx(STATES, 'tysha-sertsia'));
+  var cfg = { lines: [{ p: start, i: idx(ITEMS, catalogItem(STATES[start])), q: 30 }], a: 0, c: 'Дякуємо, що цього року ви були поруч.', f: '', n: '' };
+  var shared = false;
   try {
-    var h = new URLSearchParams(location.hash.replace(/^#cfg=/, ''));
     if (location.hash.indexOf('#cfg=') === 0) {
-      var pi = STATES.findIndex(function (s) { return s.id === h.get('p'); }); if (pi >= 0) cfg.p = pi;
-      var ii = ITEMS.findIndex(function (x) { return x.id === h.get('i'); }); if (ii >= 0) cfg.i = ii;
-      var qq = parseInt(h.get('q'), 10); if (qq > 0) cfg.q = Math.min(5000, qq);
+      var h = new URLSearchParams(location.hash.slice(5)), L = [];
+      (h.get('l') || '').split('|').forEach(function (part) { var x = part.split(':'), pi = idx(STATES, x[0]), ii = idx(ITEMS, x[1]), qq = parseInt(x[2], 10); if (pi >= 0 && ii >= 0 && qq > 0) L.push({ p: pi, i: ii, q: Math.min(5000, qq) }); });
+      if (L.length) { cfg.lines = L.slice(0, 3); shared = true; }
       if (h.get('c') != null) cfg.c = h.get('c').slice(0, 160);
       if (h.get('f') != null) cfg.f = h.get('f').slice(0, 40);
+      if (h.get('n') != null) cfg.n = h.get('n').slice(0, 40);
     }
   } catch (e) {}
 
   var $ = function (id) { return document.getElementById(id); };
-  var stage = $('stage'), sw = $('swatches'), items = $('items');
+  var root = document.documentElement, stage = $('stage'), sw = $('swatches'), items = $('items'), budget = 0;
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' грн'; }
+  function cur() { return cfg.lines[cfg.a]; }
+  function lineText(l) { var s = STATES[l.p], it = ITEMS[l.i]; return l.q + ' × ' + it.name + ' «' + s.name + '»' + (it.flip ? ' (зворот «' + (STATES[idx(STATES, s.back)] || {}).name + '» — приклад)' : '') + (ITEMS[l.i].id !== catalogItem(s) ? ' · під запит' : ''); }
+  function total() { return cfg.lines.reduce(function (a, l) { return a + l.q * ITEMS[l.i].price; }, 0); }
+  function people() { return cfg.lines.reduce(function (a, l) { return a + l.q; }, 0); }
 
   STATES.forEach(function (s, i) {
-    var b = document.createElement('button'); b.type = 'button'; b.dataset.i = i; b.setAttribute('aria-label', '«' + s.name + '»');
+    var b = document.createElement('button'); b.type = 'button'; b.dataset.i = i; b.setAttribute('aria-label', 'Принт «' + s.name + '»');
     b.innerHTML = '<img src="tex/' + s.id + '.jpg" alt="" loading="lazy" width="80" height="80">';
-    b.addEventListener('click', function () { cfg.p = i; apply(true); });
+    b.addEventListener('click', function () { var l = cur(); l.p = i; l.i = idx(ITEMS, catalogItem(s)); apply(true); });
     sw.appendChild(b);
   });
   ITEMS.forEach(function (x, i) {
     var b = document.createElement('button'); b.type = 'button'; b.dataset.i = i;
-    b.innerHTML = '<b>' + x.name + '</b><span class="p num">' + fmt(x.price) + '</span><small>' + x.note + '</small>';
-    b.addEventListener('click', function () { cfg.i = i; apply(false, true); });
+    b.innerHTML = '<b>' + x.name + '</b><span class="p num">' + fmt(x.price) + '</span><small>' + x.note + '</small><span class="tag"></span>';
+    b.addEventListener('click', function () { cur().i = i; apply(false); });
     items.appendChild(b);
   });
+  $('budgets').querySelectorAll('button').forEach(function (b) {
+    b.addEventListener('click', function () { budget = budget === +b.dataset.b ? 0 : +b.dataset.b; apply(false); });
+  });
 
+  var first = STATES[cur().p];
   var silk = window.SilkEngine && SilkEngine.create({
-    canvas: $('silk'), mode: 'float', texPath: 'tex/', front: STATES[cfg.p].id, back: STATES[cfg.p].back,
-    size: 1.35, resolution: 36, camDist: 5.6, offsetX: innerWidth > 960 ? 0.5 : 0, offsetY: innerWidth > 960 ? -0.28 : -0.05, rotY: 0.35, rotate: true, tiltX: 0.1,
+    canvas: $('silk'), mode: 'float', texPath: 'tex/', front: first.id, back: first.back,
+    size: 1.25, resolution: 36, camDist: 5.6, offsetX: innerWidth > 960 ? 0.72 : 0, offsetY: innerWidth > 960 ? -0.28 : -0.05, rotY: 0.35, rotate: true, tiltX: 0.1,
     envTop: '#FFFFFF', envBottom: '#0C0914', envTint: '#FFF1C2', sheen: '#F2B705', gloss: 0.26, aniso: 1.0, envStrength: 0.22, weaveScale: 0.5, weaveRepeat: 24,
     light: [0.6, 0.6, 1.0], idleSway: 0.3
   });
-  var ribbon = window.SilkEngine && SilkEngine.createRibbon({ canvas: $('ribbon'), texPath: 'tex/', texture: STATES[cfg.p].id, envTop: '#FFFFFF', envBottom: '#0C0914', sheen: '#F2B705', width: 0.7, repeat: 3, length: 3.2, camZ: 8.4, camZMobile: 6.6 });
-  if (!silk) document.documentElement.classList.add('no-webgl');
+  var ribbon = window.SilkEngine && SilkEngine.createRibbon({ canvas: $('ribbon'), texPath: 'tex/', texture: first.id, envTop: '#FFFFFF', envBottom: '#0C0914', sheen: '#F2B705', width: 0.7, repeat: 3, length: 3.2, camZ: 8.4, camZMobile: 6.6 });
+  if (!silk) root.classList.add('no-webgl');
 
-  var lastScale = null;
-  function apply(printChanged, itemChanged) {
-    var s = STATES[cfg.p], it = ITEMS[cfg.i];
-    sw.querySelectorAll('button').forEach(function (b, i) { b.setAttribute('aria-pressed', i === cfg.p ? 'true' : 'false'); });
-    items.querySelectorAll('button').forEach(function (b, i) { b.setAttribute('aria-pressed', i === cfg.i ? 'true' : 'false'); });
-    $('printLine').textContent = '«' + s.name + '» — ' + s.line;
+  var lastScale = null, lastPrint = -1, qtyTouched = false;
+  var form = document.getElementById('f-at'), fQty = form && form.querySelector('[name="qty"]'), fCfg = form && form.querySelector('[name="config"]');
+  if (fQty) fQty.addEventListener('input', function () { qtyTouched = true; });
+  function renderLines() {
+    var box = $('lines'); box.innerHTML = '';
+    cfg.lines.forEach(function (l, i) {
+      var row = document.createElement('div'); row.className = 'ln' + (i === cfg.a ? ' active' : '');
+      row.innerHTML = '<button type="button" class="pick"></button><span class="num"></span>' + (cfg.lines.length > 1 ? '<button type="button" class="rm" aria-label="Видалити позицію">✕</button>' : '<span></span>');
+      row.querySelector('.pick').textContent = l.q + ' × ' + ITEMS[l.i].name + ' «' + STATES[l.p].name + '»';
+      row.querySelector('.pick').addEventListener('click', function () { cfg.a = i; apply(true); });
+      row.querySelector('.num').textContent = fmt(l.q * ITEMS[l.i].price);
+      var rm = row.querySelector('.rm'); if (rm) rm.addEventListener('click', function () { cfg.lines.splice(i, 1); cfg.a = Math.min(cfg.a, cfg.lines.length - 1); apply(true); });
+      box.appendChild(row);
+    });
+    $('addLine').disabled = cfg.lines.length >= 3;
+    $('summary').classList.toggle('multi', cfg.lines.length > 1);
+  }
+  function apply(printChanged) {
+    var l = cur(), s = STATES[l.p], it = ITEMS[l.i], cat = catalogItem(s);
+    sw.querySelectorAll('button').forEach(function (b, i) { b.setAttribute('aria-pressed', i === l.p ? 'true' : 'false'); });
+    items.querySelectorAll('button').forEach(function (b, i) {
+      b.setAttribute('aria-pressed', i === l.i ? 'true' : 'false');
+      b.querySelector('.tag').textContent = ITEMS[i].id === cat ? 'Каталог' : 'Під запит';
+      b.classList.toggle('over', budget > 0 && ITEMS[i].price > budget);
+    });
+    $('budgets').querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', +b.dataset.b === budget ? 'true' : 'false'); });
+    var back = STATES[idx(STATES, s.back)];
+    $('printLine').textContent = '«' + s.name + '» — ' + s.line + ' У каталозі: ' + s.size.replace(' см', '') + '.' + (it.flip && back ? ' Зворот «' + back.name + '» — приклад пари, остаточну підберемо в розрахунку.' : '');
     $('nowName').textContent = '«' + s.name + '»'; $('nowItem').textContent = it.name;
     $('fallbackImg').src = 'tex/' + s.id + '.jpg';
-    if (printChanged !== false && silk) silk.setTextures(s.id, s.back);
-    if (ribbon) ribbon.setTexture(s.id);
+    if (lastPrint !== l.p && silk) { silk.setTextures(s.id, s.back); }
+    if (lastPrint !== l.p && ribbon) ribbon.setTexture(s.id);
+    lastPrint = l.p;
     stage.classList.toggle('twilly', !!it.ribbon);
     $('flipBtn').hidden = !it.flip;
     if (silk && !it.ribbon && it.scale !== lastScale) { silk.setScale(it.scale); lastScale = it.scale; }
-    $('qtyNum').value = cfg.q; $('qtyRange').value = Math.min(300, Math.max(5, cfg.q));
+    $('qtyNum').value = l.q; $('qtyRange').value = Math.min(300, Math.max(5, l.q));
     $('cardPrev').textContent = cfg.c || ' '; $('cardSign').textContent = '— ' + (cfg.f || 'ваша компанія'); $('cardCount').textContent = cfg.c.length;
-    $('sumLine').textContent = cfg.q + ' × ' + it.name + ' «' + s.name + '»';
-    $('sumTotal').textContent = fmt(cfg.q * it.price);
-    var note = document.querySelector('#f-at [name="note"]'), qty = document.querySelector('#f-at [name="qty"]');
-    if (note) note.value = summaryText();
-    if (qty) qty.value = cfg.q;
+    renderLines();
+    $('sumLine').textContent = cfg.lines.map(lineText).join(' + ');
+    $('sumTotal').textContent = fmt(total());
+    $('perHead').textContent = '≈ ' + fmt(Math.round(total() / Math.max(1, people()))) + ' на людину · ' + people() + ' подарунків';
+    if (fCfg) fCfg.value = summaryText();
+    if (fQty && !qtyTouched) fQty.value = people();
     try { history.replaceState(null, '', '#cfg=' + shareParams()); } catch (e) {}
   }
-  function shareParams() { var p = new URLSearchParams({ p: STATES[cfg.p].id, i: ITEMS[cfg.i].id, q: cfg.q, c: cfg.c, f: cfg.f }); return p.toString(); }
-  function summaryText() {
-    var s = STATES[cfg.p], it = ITEMS[cfg.i];
-    return 'Конфігурація з ательє: ' + cfg.q + ' × ' + it.name + ', принт «' + s.name + '». Орієнтир за роздрібними цінами: ' + fmt(cfg.q * it.price) + '. Текст листівки: «' + cfg.c + '»' + (cfg.f ? ', підпис: ' + cfg.f : '') + '.';
+  function shareParams() {
+    var p = new URLSearchParams(); p.set('l', cfg.lines.map(function (l) { return STATES[l.p].id + ':' + ITEMS[l.i].id + ':' + l.q; }).join('|')); p.set('c', cfg.c); if (cfg.f) p.set('f', cfg.f); if (cfg.n) p.set('n', cfg.n); return p.toString();
   }
-  $('qtyRange').addEventListener('input', function () { cfg.q = +this.value; apply(false); });
-  $('qtyNum').addEventListener('input', function () { var v = parseInt(this.value, 10); if (v > 0) { cfg.q = Math.min(5000, v); apply(false); } });
+  function summaryText() {
+    return cfg.lines.map(lineText).join('; ') + '. Орієнтир за роздрібними цінами: ' + fmt(total()) + '. Листівка: «' + cfg.c + '»' + (cfg.f ? ', підпис: ' + cfg.f : '') + (cfg.n ? '. Готує: ' + cfg.n : '');
+  }
+  function setQty(v) { if (v > 0) { cur().q = Math.min(5000, v); apply(false); } }
+  $('qtyRange').addEventListener('input', function () { setQty(+this.value); });
+  $('qtyNum').addEventListener('input', function () { setQty(parseInt(this.value, 10)); });
   $('cardText').addEventListener('input', function () { cfg.c = this.value.slice(0, 160); apply(false); });
   $('cardFrom').addEventListener('input', function () { cfg.f = this.value.slice(0, 40); apply(false); });
+  $('author').addEventListener('input', function () { cfg.n = this.value.slice(0, 40); apply(false); });
+  $('addLine').addEventListener('click', function () { if (cfg.lines.length >= 3) return; var l = cur(); cfg.lines.push({ p: l.p, i: l.i, q: 10 }); cfg.a = cfg.lines.length - 1; apply(true); $('s-item').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
   $('flipBtn').addEventListener('click', function () { if (silk) silk.flip(); });
+  $('sumToggle').addEventListener('click', function () { var o = $('summary').classList.toggle('open'); this.setAttribute('aria-expanded', o ? 'true' : 'false'); this.textContent = o ? 'Позиції ↓' : 'Позиції ↑'; });
   $('shareBtn').addEventListener('click', function () {
     var b = this, url = location.href.split('#')[0] + '#cfg=' + shareParams();
-    var done = function () { b.textContent = 'Посилання скопійовано'; setTimeout(function () { b.textContent = 'Поділитися'; }, 2200); };
-    if (navigator.share && matchMedia('(pointer: coarse)').matches) navigator.share({ title: document.title, text: summaryText(), url: url }).catch(function () {});
-    else if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, function () { prompt('Скопіюйте посилання', url); });
-    else prompt('Скопіюйте посилання', url);
+    var text = 'Пропоную подарунок для команди: ' + cfg.lines.map(lineText).join('; ') + ', орієнтир ' + fmt(total()) + ' за роздрібними цінами. Листівка: «' + cfg.c + '». Подивитися і змінити: ' + url;
+    var done = function () { b.textContent = 'Скопійовано'; setTimeout(function () { b.textContent = 'Поділитися'; }, 2200); };
+    if (navigator.share && matchMedia('(pointer: coarse)').matches) navigator.share({ title: document.title, text: text.replace(url, ''), url: url }).catch(function () {});
+    else if (navigator.clipboard) navigator.clipboard.writeText(text).then(done, function () { prompt('Скопіюйте текст', text); });
+    else prompt('Скопіюйте текст', text);
   });
-  $('cardText').value = cfg.c; $('cardFrom').value = cfg.f;
+  $('cardText').value = cfg.c; $('cardFrom').value = cfg.f; $('author').value = cfg.n;
+  if (shared) {
+    $('approval').hidden = false;
+    if (cfg.n) { $('apprFrom').hidden = false; $('apprFrom').textContent = 'Підготував(ла): ' + cfg.n; }
+    $('apprLines').textContent = cfg.lines.map(lineText).join('; ') + '. Листівка: «' + cfg.c + '»';
+    $('apprTotal').textContent = fmt(total());
+    $('apprEdit').addEventListener('click', function () { $('approval').hidden = true; $('s-print').scrollIntoView({ behavior: 'smooth' }); });
+  }
   var canvas = $('silk');
   canvas.addEventListener('pointerdown', function () { canvas.classList.add('grabbing'); });
   window.addEventListener('pointerup', function () { canvas.classList.remove('grabbing'); });
+  window.addEventListener('scroll', function () { root.classList.toggle('compact', window.scrollY > 60); }, { passive: true });
   apply(true);
 })();
 </script>

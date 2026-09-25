@@ -91,7 +91,7 @@ PRODUCTS.update({
         "photos": ["img/mask-vpevnenist.webp", "img/set-mask.webp", "photo/turban-bath.jpg"], "contain": True,
         "sizes": [("Один розмір", 2700, None)], "default": 0, "sale": {},
         "specs": [("100%", "Італійський шовк, авторський принт", "2 700 грн"), ("Коробка", "Фірмова жовта, індивідуальне пакування", "готовий подарунок"), ("Гумка", "М’яка, не тисне на скроні", "ручне прання до 30 °C"), ("Набір", "Набір для сну «Піднесення»", "3 600 грн")],
-        "wear": [("Маска «Впевненість»", "img/mask-vpevnenist.webp"), ("Набір для сну", "img/set-mask.webp"), ("Інший принт · «Свобода»", "img/mask-svoboda.webp")],
+        "wear": [("Маска «Впевненість»", "img/mask-vpevnenist.webp"), ("Ритуал перед сном", "photo/turban-bath.jpg"), ("Інший принт · «Свобода»", "img/mask-svoboda.webp")],
         "url": "https://obiimy.world/maska-dlia-snu-z-naturalnoho-shovku-vpevnenist/", "sku": "M-11", "story_img": "photo/turban-bath.jpg",
     },
     "set": {
@@ -199,9 +199,9 @@ BASE_CSS = """
   .gallery { display: grid; gap: 12px; position: sticky; top: 88px; }
   .main { aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius); background: var(--bg2); position: relative; }
   .main img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
-  .main.contain img { object-fit: contain; background: #fff; padding: 6%; }
-  .wear .ph.contain img { object-fit: contain; background: #fff; padding: 8%; }
-  @media (max-width: 860px) { .main { aspect-ratio: 1; } .thumbs button { width: 64px; } .crumbs a, footer a { display: inline-block; padding: 10px 0; } }
+  .main.contain img { object-fit: contain; background: var(--board, #fff); padding: 6%; }
+  .wear .ph.contain img { object-fit: contain; background: var(--board, #fff); padding: 8%; }
+  @media (max-width: 860px) { .main { aspect-ratio: 4 / 3; } .crumbs a, footer a { display: inline-block; padding: 12px 0; } .crumbs { flex-wrap: nowrap; white-space: nowrap; overflow-x: auto; scrollbar-width: none; } }
   .nav .btn { min-height: 44px; }
   .variant { font-family: var(--display); font-size: 1.15rem; margin-top: 6px; }
   .variant small { font-family: var(--body); color: var(--ink3); font-size: .85rem; margin-left: 8px; }
@@ -213,6 +213,8 @@ BASE_CSS = """
   .thumbs { display: flex; gap: 10px; }
   .thumbs button { all: unset; cursor: pointer; width: 84px; aspect-ratio: 1; overflow: hidden; border-radius: var(--radius); border: 1.5px solid transparent; background: var(--bg2); }
   .thumbs button img { width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 860px) { .gallery .thumbs button { width: 64px; } }
+  .acc p a, .acc li a { display: inline-block; padding: 12px 0; margin: -12px 0; }
   .thumbs button[aria-current="true"] { border-color: var(--ink); }
   .thumbs button.viewer { display: grid; place-items: center; font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--ink2); text-align: center; line-height: 1.3; }
   .info { display: grid; gap: 18px; }
@@ -283,7 +285,7 @@ BASE_CSS = """
   .stars { color: var(--gold); letter-spacing: .1em; font-size: .9rem; }
   .who { font-size: .8rem; color: var(--ink3); }
   .card dl { margin: 0; display: grid; gap: 8px; font-size: .9rem; }
-  .card dt { font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); font-weight: 600; }
+  .card dt { font-size: .76rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); font-weight: 600; }
   .card dd { margin: 0; color: var(--ink2); }
   @media (max-width: 860px) { .trust { grid-template-columns: 1fr; } }
   .related { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
@@ -304,6 +306,22 @@ BASE_CSS = """
   @media (max-width: 860px) { .sticky { display: grid; grid-template-columns: 1fr auto; gap: 10px; position: fixed; left: 12px; right: 12px; bottom: calc(12px + env(safe-area-inset-bottom, 0px)); z-index: 60; background: rgba(23,21,25,.92); backdrop-filter: blur(10px); border-radius: 999px; padding: 8px 8px 8px 18px; color: #fff; align-items: center; } .sticky .t { font-size: .8rem; line-height: 1.25; } .sticky .t b { display: block; font-weight: 600; } .sticky a { background: var(--gold); color: #17151A; text-decoration: none; font-weight: 600; font-size: .82rem; padding: 11px 16px; border-radius: 999px; white-space: nowrap;; min-height: 44px; padding: 12px 18px; display: inline-flex; align-items: center; } }
 """
 
+def corner(src):
+    from PIL import Image
+    im = Image.open(OUT / src).convert("RGB"); r, g, b = im.getpixel((3, 3))
+    return f"#{r:02x}{g:02x}{b:02x}"
+
+def og_jpg(src):
+    from PIL import Image
+    out = OUT / "photo" / ("og-" + pathlib.Path(src).stem + ".jpg")
+    if not out.exists():
+        im = Image.open(OUT / src).convert("RGB"); w, h = im.size
+        tw, th = 1200, 630; scale = max(tw / w, th / h)
+        im = im.resize((round(w * scale), round(h * scale))); w, h = im.size
+        top = min(int(h * 0.22), h - th)
+        board = im.crop(((w - tw) // 2, top, (w - tw) // 2 + tw, top + th)); board.save(out, quality=84)
+    return "photo/" + out.name
+
 def price(n): return f"{n:,}".replace(",", " ") + " грн"
 
 def build(skin_key, skin, product_key=None, suffix=""):
@@ -314,7 +332,7 @@ def build(skin_key, skin, product_key=None, suffix=""):
     kind = p.get("kind", "Шовкова хустка")
     cat_name, cat_url = {"Твіллі": ("Твіллі", "https://obiimy.world/tvilli/"), "Маска для сну": ("Маски для сну", "https://obiimy.world/masky-dlia-snu/"), "Подарунковий набір": ("Подарункові набори", "https://obiimy.world/podarunkovi-nabory/"), "Резинка для волосся": ("Резинки", "https://obiimy.world/rezynky/")}.get(kind, ("Хустки", "https://obiimy.world/khustky/"))
     story_img = p.get("story_img", f'tex/{p["tex"]}.jpg')
-    story_title = "Історія принту" if "kind" not in p else "Історія речі"
+    story_title = "Історія принту" if "kind" not in p else "Про річ"
     single = len(p["sizes"]) == 1
     sizes_js = json.dumps([{"s": s, "one": one, "two": two} for s, one, two in p["sizes"]], ensure_ascii=False)
     sale_js = json.dumps(p["sale"], ensure_ascii=False)
@@ -330,7 +348,9 @@ def build(skin_key, skin, product_key=None, suffix=""):
     main_alt = f"{kind} «{p['name']}»"
     main_extra = 'id="mainImg"' + (" hidden" if viewer != "photos" else "")
     main_img = img(main_first, main_alt, sizes="(max-width: 960px) 100vw, 58vw", lazy=False, eager_priority=True, extra=main_extra)
-    main = f'<div class="main{" contain" if p.get("contain") else ""}" id="main">{canvas}{main_img}</div>'
+    board = corner(main_first) if p.get("contain") else ""
+    board_attr = (' style="--board:' + board + '"') if board else ""
+    main = f'<div class="main{" contain" if p.get("contain") else ""}" id="main"{board_attr}>{canvas}{main_img}</div>'
     size_buttons = "".join(
         f'<button type="button" data-i="{i}" aria-pressed="{"true" if i == p["default"] else "false"}"><b class="num">{s}</b><small class="num">{price(one)}</small></button>'
         for i, (s, one, two) in enumerate(p["sizes"]))
@@ -346,7 +366,11 @@ def build(skin_key, skin, product_key=None, suffix=""):
     <div><p class="eyebrow">Двосторонній друк</p><h2 style="margin-top:10px">Один вузол. Два образи.</h2><p class="story" style="display:block;color:var(--ink2);margin-top:14px;max-width:32em">Друк на обох боках шовку: лицем — «{p["name"]}», зворотом — «{p["backname"]}». Перевернули хустку — і на плечах уже інший принт. Двосторонні хустки 44 × 44 від 2 400 грн, 65 × 65 від 4 800 грн.</p></div>
     <div class="two"><figure class="f"><img src="tex/{p["tex"]}.jpg" alt="Лице"><figcaption>Лице</figcaption></figure><figure class="b"><img src="tex/{p["back"]}.jpg" alt="Зворот"><figcaption>Зворот</figcaption></figure></div>
   </div></section>'''
-    wear = "".join(f'<figure><div class="ph{" contain" if src.startswith("img/") else ""}">{img(src, cap, sizes="(max-width: 640px) 100vw, 33vw")}</div><figcaption>{cap}</figcaption></figure>' for cap, src in p["wear"])
+    def wear_fig(cap, src):
+        packshot = src.startswith("img/")
+        attr = (' style="--board:' + corner(src) + '"') if packshot else ""
+        return f'<figure><div class="ph{" contain" if packshot else ""}"{attr}>{img(src, cap, sizes="(max-width: 640px) 100vw, 33vw")}</div><figcaption>{cap}</figcaption></figure>'
+    wear = "".join(wear_fig(cap, src) for cap, src in p["wear"])
     related = "".join(f'<a class="rel" href="{u}"><div class="ph">{img(im, "", sizes="(max-width: 860px) 50vw, 25vw")}</div><b>{n}</b><span>{s}</span><span class="p num">{pr}</span></a>' for n, s, pr, im, u in [r for r in RELATED if r[4] != p['url'] and r[0] != f'{kind} «{p["name"]}»'][:4])
     engine = ""
     if viewer != "photos":
@@ -380,7 +404,9 @@ def build(skin_key, skin, product_key=None, suffix=""):
 <meta property="og:type" content="product">
 <meta property="og:title" content="{kind} «{p["name"]}» — Obiimy">
 <meta property="og:description" content="{state_desc}">
-<meta property="og:image" content="https://obiimy-landing-production.up.railway.app/{p["photos"][0]}">
+<meta property="og:image" content="https://obiimy-landing-production.up.railway.app/{og_jpg(p["photos"][0])}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={skin["fonts"]}&display=swap">
@@ -399,7 +425,7 @@ def build(skin_key, skin, product_key=None, suffix=""):
 </div></header>
 
 <main>
-  <div class="wrap"><nav class="crumbs" aria-label="Хлібні крихти"><a href="{skin["landing"]}">Obiimy</a><span>/</span><a href="{cat_url}">{cat_name}</a><span>/</span><span>{kind} «{p["name"]}»</span></nav></div>
+  <div class="wrap"><nav class="crumbs" aria-label="Навігаційний шлях"><a href="{skin["landing"]}">Obiimy</a><span>/</span><a href="{cat_url}">{cat_name}</a><span>/</span><span>{kind} «{p["name"]}»</span></nav></div>
   <section class="product">
     <div class="wrap">
       <div class="gallery">
@@ -423,7 +449,7 @@ def build(skin_key, skin, product_key=None, suffix=""):
   </section>
 
   <section class="block"><div class="wrap story">
-    <div><p class="eyebrow">{"Спершу картина" if "kind" not in p else "Про річ"}</p><h2 style="margin-top:10px">{story_title}</h2><p class="txt">{p["story"]}</p><blockquote>{p["quote"]}</blockquote></div>
+    <div><p class="eyebrow">{"Спершу картина" if "kind" not in p else "Історія"}</p><h2 style="margin-top:10px">{story_title}</h2><p class="txt">{p["story"]}</p><blockquote>{p["quote"]}</blockquote></div>
     <figure>{img(story_img, "«" + p["name"] + "» крупно", sizes="(max-width: 960px) 100vw, 50vw")}</figure>
   </div></section>
   {pair}

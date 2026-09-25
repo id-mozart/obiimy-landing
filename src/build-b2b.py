@@ -58,6 +58,7 @@ CSS = """
   .hero .fine { font-size: .85rem; color: var(--ink2); margin-top: 16px; }
   .hero .fine a { font-weight: 600; text-decoration: none; display: inline-block; padding: 12px 0; margin: -12px 0; }
   .note a, .steps a { display: inline-block; padding: 10px 0; margin: -10px 0; }
+  .note .btn { flex: none; white-space: nowrap; padding: 10px 18px; margin: 0; }
   .hero figure { margin: 0; position: relative; }
   .hero figure img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); }
   .hero figure .tag { position: absolute; left: 18px; bottom: 18px; background: var(--card); color: var(--ink); padding: 10px 14px; border-radius: var(--radius); font-size: .82rem; box-shadow: 0 20px 40px -20px rgba(0,0,0,.35); }
@@ -99,7 +100,7 @@ CSS = """
   .quote { font-family: var(--display); font-size: clamp(1.3rem, 2vw, 1.7rem); line-height: 1.35; max-width: 28em; }
   .quote + p { margin-top: 12px; color: var(--ink2); font-size: .85rem; }
   .proof { display: grid; gap: 0; border-top: 1px solid var(--line); }
-  .proof div { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: .95rem; }
+  .proof div { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); font-size: .95rem; }
   .proof b { font-family: var(--display); font-weight: 400; font-size: 1.05rem; }
   .proof span { color: var(--ink2); }
   .faq details { border-top: 1px solid var(--line); }
@@ -116,7 +117,7 @@ CSS = """
   .others a { text-decoration: none; font-weight: 500; padding: 10px 0; border-bottom: 1px solid var(--ink); }
 
   .calc { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 3vw, 32px); display: grid; gap: 16px; }
-  .calc .row { display: grid; grid-template-columns: 1fr 1.7fr 1.5fr; gap: 14px; }
+  .calc .row { display: grid; grid-template-columns: .7fr 1.6fr 1.3fr; gap: 14px; }
   .calc label { display: grid; gap: 6px; font-size: .8rem; color: var(--ink2); letter-spacing: .04em; }
   .calc .out { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; border-top: 1px solid var(--line); padding-top: 16px; }
   .calc .out b { font-family: var(--display); font-weight: 400; font-size: 2rem; }
@@ -125,7 +126,7 @@ CSS = """
   .form-block { padding-block: clamp(48px, 7vw, 100px); }
   .form-block .wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 72px); align-items: start; }
   .contact { display: grid; gap: 14px; color: var(--ink2); }
-  .contact a { color: var(--ink); text-decoration: none; font-weight: 500; display: inline-block; padding: 4px 0; }
+  .contact a { color: var(--ink); text-decoration: none; font-weight: 500; display: inline-block; padding: 10px 0; }
   .contact .big { font-family: var(--display); font-size: 1.6rem; }
   form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 3vw, 32px); }
   form label { display: grid; gap: 6px; font-size: .82rem; color: var(--ink2); letter-spacing: .03em; }
@@ -174,7 +175,7 @@ CSS = """
     .hero .cta { flex-direction: column; align-items: flex-start; gap: 6px; }
     .hero .cta .btn-gold { width: 100%; }
     .hero .cta .btn-line { border: 0; padding: 10px 0; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; font-weight: 500; }
-    .hero figure img { aspect-ratio: 16 / 10; }
+    .hero figure img { aspect-ratio: 16 / 10; object-position: var(--hero-pos, 50% 18%); }
     .grid3, .steps, .calc .row { grid-template-columns: 1fr; }
     .grid4 { grid-template-columns: 1fr 1fr; gap: 10px; }
     .grid4 .card { padding: 16px; }
@@ -206,10 +207,10 @@ def proof_html(title, lead, first=False):
     <div>
       <div class="proof">
         <div><b>INTERTOP · Hram</b><span>Роздрібні партнери в Україні</span></div>
-        <div><b>Be Brave · Канада</b><span>Партнер у Канаді</span></div>
+        <div><b>Be Brave</b><span>Партнер у Канаді</span></div>
         <div><b>UFD London</b><span>Партнер у Великій Британії</span></div>
         <div><b>LIGA.net · INSIDER UA</b><span>Писали про бренд</span></div>
-        <div><b class="num">5,0</b><span>Рейтинг покупців на obiimy.world</span></div>
+        <div><b class="num">5,0</b><span>Рейтинг на obiimy.world</span></div>
       </div>
       <p class="quote" style="margin-top:22px">{quote}</p><p>Анна Мелешак · покупниця, відгук на obiimy.world</p>
     </div>
@@ -238,7 +239,7 @@ def form_html(pid, subject, fields, note):
     return f'''
       <form id="{pid}" novalidate>
         {"".join(out)}
-        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">{note} Натискаючи «Надіслати», ви відкриєте лист на {MAIL} із заповненими даними — нічого не надсилається без вашого підтвердження. Або одразу телефонуйте: <a href="{PHONE_HREF}">{PHONE}</a>.</span></div>
+        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на {MAIL} з вашими даними — нічого не піде без вашого підтвердження. Або телефонуйте: <a href="{PHONE_HREF}">{PHONE}</a>.</span></div>
       </form>
       <div class="done" id="{pid}-done" hidden aria-live="polite">
         <h3 tabindex="-1">Лист підготовлено</h3>
@@ -339,9 +340,9 @@ def shell(page, body):
 </html>
 '''
 
-def hero(eyebrow, h1, lead, cta1, cta2, cta2_href, fine, photo, alt, tag, cls=""):
+def hero(eyebrow, h1, lead, cta1, cta2, cta2_href, fine, photo, alt, tag, cls="", pos="50% 18%"):
     return f'''
-  <section class="hero{cls}"><div class="wrap">
+  <section class="hero{cls}" style="--hero-pos:{pos}"><div class="wrap">
     <div>
       <p class="eyebrow">{eyebrow}</p>
       <h1 style="margin-top:14px">{h1}</h1>
@@ -366,8 +367,8 @@ def newyear():
     tier_html = "".join(f'''
       <div class="card photo">{img(ph, alt, sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">{t}</p><h3>{sub}</h3><div>{"".join(f'<div class="price-row"><span>{n}</span><span class="num">{price(p)}</span></div>' for n, p in items)}</div></div></div>''' for t, sub, items, ph, alt in tiers)
     body = hero("Новий рік 2027 · корпоративні подарунки", "Подарунок, який не залишать у шухляді",
-                "Шовкова річ ручної обробки у фірмовій жовтій коробці з листівкою від вашої компанії. Один принт на всю команду або добірка під кожного — від 700 грн.<span class=\"m-hide\"> Від резинки до набору з трьох твіллі.</span>",
-                "Отримати добірку і розрахунок", "Замовити зразок у роздріб", SAMPLE_URL,
+                "Шовкова річ ручної обробки у фірмовій жовтій коробці з листівкою від вашої компанії. Один принт на всю команду або добірка під кожного — від 700 грн.<span class=\"m-hide\"> Резинка, твіллі, маска для сну, хустка або набір із трьох твіллі.</span>",
+                "Отримати добірку і розрахунок", "Замовити зразок", SAMPLE_URL,
                 "Зразок — від 1 600 грн у роздріб, у тій самій коробці, що й тираж.", "photo/box-dots.jpg", "Фірмова жовта коробка Obiimy з шовковою хусткою в горох", "Кожен подарунок — у фірмовій коробці з тонким папером і листівкою") + facts_html([
         ("100% шовк", "Італійський шовк, авторські принти, обробка вручну"),
         ("Україна", "Бренд народився під час війни й підтримує благодійні проєкти"),
@@ -410,10 +411,10 @@ def newyear():
       <div><p class="eyebrow">Крок 2</p><b>До 15 листопада</b><p>Погодження принтів, тексту листівки та списку адрес. Оплата за рахунком.</p></div>
       <div><p class="eyebrow">Крок 3</p><b>До 10 грудня</b><p>Пакування й відправка: в офіс однією посилкою або кожному на відділення — до передсвяткового піку пошти.</p></div>
     </div>
-    <p class="note">Запити після 15 листопада беремо в роботу з принтами, що є в наявності на складі. Зразок — одна річ у роздріб уже сьогодні, у тій самій коробці, що й тираж: <a href="{SAMPLE_URL}" style="font-weight:600">замовити зразок →</a></p>
+    <p class="note">Запити після 15 листопада беремо в роботу з принтами, що є в наявності. <a href="{SAMPLE_URL}" style="font-weight:600">Зразок можна замовити в роздріб уже сьогодні →</a></p>
   </div></section>
 
-  <section class="block alt" id="sense"><div class="wrap grid2">
+  <section class="block" id="sense"><div class="wrap grid2">
     <div><p class="eyebrow">Більше, ніж шовк</p><h2 style="margin-top:10px">Подарунок із продовженням</h2><p style="margin-top:16px;color:var(--ink2);max-width:36em">Колекція «Співоча душа» створена разом із художницею Анною Кловак та Українським товариством охорони птахів: частина коштів іде на гніздівлі для сиворакші — птаха, що зникає. Обравши цю колекцію для команди, ви даруєте не лише шовк.</p><a class="btn btn-line" style="margin-top:22px" href="https://obiimy.world/spivocha-dusha/">Колекція «Співоча душа»</a></div>
     <figure>{img("img/life2.webp", "Хустка з колекції «Співоча душа»", sizes="(max-width: 960px) 100vw, 50vw")}</figure>
   </div></section>
@@ -445,7 +446,7 @@ def newyear():
         ("budget", "Бюджет на один подарунок", "select:до 1 000 грн|до 2 000 грн|до 3 500 грн|до 5 000 грн|інший", False, {}),
         ("delivery", "Доставка", "select:В офіс однією посилкою|Кожному на відділення Нової пошти|Ще не знаю", False, {}),
         ("payment", "Оплата", "select:Безготівково, ТОВ|Безготівково, ФОП|Карткою", False, {}),
-        ("deadline", "Коли потрібно отримати", "input", False, {"ph": "наприклад, до 10 грудня", "full": True}),
+        ("deadline", "Коли потрібно отримати", "select:До 10 грудня (за графіком)|До 20 грудня|Після свят|Інша дата — вкажу в коментарі", False, {"full": True}),
         ("note", "Коментар", "textarea", False, {"ph": "Побажання до принтів, текст листівки, особливі терміни…"}),
     ], "Відповідаємо з добіркою та розрахунком.")}</div>
   </div></section>
@@ -468,14 +469,14 @@ def horeca():
     cases = [
         ("Готелі", "Твіллі для рецепції та консьєржів, шовкова маска для сну як VIP-amenity у номері.", "photo/turban-bath.jpg", "Шовковий тюрбан у ванній готелю"),
         ("Ресторани та бари", "Паше 44 × 44 як нашийна хустка хостес — один принт на команду, що не м’яється за вечір.", "photo/vyr-1.webp", "Шовкова хустка на білому пальті"),
-        ("Авіація та бізнес-джети", "Хустка 65 × 65 у кольорах, близьких до айдентики авіакомпанії, — з колекцій Obiimy; твіллі в нагрудній кишені — для чоловічої частини команди.", "photo/makiv-knot.webp", "Хустка вузлом на білій сорочці"),
+        ("Авіація та бізнес-джети", "Хустка 65 × 65 з колекцій Obiimy у кольорах, близьких до айдентики авіакомпанії; твіллі в нагрудній кишені — для чоловічої частини команди.", "photo/makiv-knot.webp", "Хустка вузлом на білій сорочці"),
         ("Банки та private banking", "Стримані монограмні принти для менеджерів; та сама хустка — як подарунок клієнту.", "photo/hratsiia-1.webp", "Хустка на синьому жакеті"),
     ]
     cases_html = "".join(f'<div class="card photo">{img(ph, alt, sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><h3>{t}</h3><p>{d}</p></div></div>' for t, d, ph, alt in cases)
     body = hero("HoReCa · сервіс · уніформа", "Шовк у вашому дрес-коді",
                 "Хустка на шиї хостес, твіллі на рецепції, маска для сну у VIP-номері — принти Obiimy під кольори вашого бренду.<span class=\"m-hide\"> Одна деталь зі 100% італійського шовку робить уніформу впізнаваною.</span>",
                 "Запросити капсулу принтів", "Замовити зразок у роздріб", "https://obiimy.world/khustky/",
-                "Виготовлено в Україні. Дозамовлення при зміні складу команди — з тих самих принтів.", "photo/paris-blazer.jpg", "Червона шовкова хустка на чорному жакеті", "Хустка 44 × 44 · один вузол — і образ зібраний") + facts_html([
+                "Виготовлено в Україні. Дозамовлення при зміні складу команди — з тих самих принтів.", "photo/paris-blazer.jpg", "Червона шовкова хустка на чорному жакеті", "Хустка 44 × 44 · один вузол — і образ зібраний", pos="50% 10%") + facts_html([
         ("100% шовк", "Італійський шовк, авторські принти, обробка вручну"),
         ("від 1 600 грн", "Роздрібна ціна паше або твіллі на одну людину"),
         ("Поштучно", "Дозамовлення з наявності на складі — того ж дня, якщо до 16:00"),
@@ -503,8 +504,8 @@ def horeca():
     <div class="calc" id="calcbox">
       <div class="row">
         <label>Людей у команді<input type="number" id="c-n" value="12" min="1" inputmode="numeric"></label>
-        <label>Річ<select id="c-item"><option value="1600">Паше 44 × 44 · 1 600 грн</option><option value="1600">Твіллі 84 × 5 · 1 600 грн</option><option value="3200">Хустка 65 × 65 · 3 200 грн</option><option value="2700">Маска для сну (amenity) · 2 700 грн</option></select></label>
-        <label>На людину / номер<select id="c-per"><option value="1">1 річ</option><option value="2" selected>2 речі (зміна + прання)</option></select></label>
+        <label>Річ<select id="c-item"><option value="1600">Паше 44 — 1 600</option><option value="1600">Твіллі — 1 600</option><option value="3200">Хустка 65 — 3 200</option><option value="2700">Маска (amenity) — 2 700</option></select></label>
+        <label>На людину / номер<select id="c-per"><option value="1">1 на людину</option><option value="2" selected>2 на людину (зміна + прання)</option></select></label>
       </div>
       <div class="out"><b class="num" id="c-out">38 400 грн</b><span>орієнтовно за роздрібними цінами · <span id="c-pcs">24</span> шт.</span><a class="btn btn-line btn-sm" href="#request" id="c-send">Надіслати цей розрахунок у запит</a></div>
     </div>
@@ -516,7 +517,7 @@ def horeca():
     function upd() {{ var q = Math.max(1, +n.value || 1) * +per.value; pcs.textContent = q; out.textContent = fmt(q * +it.value); }}
     [n, it, per].forEach(function (el) {{ el.addEventListener('input', upd); el.addEventListener('change', upd); }});
     upd();
-    document.getElementById('c-send').addEventListener('click', function () {{ var t = document.querySelector('#f-hr [name="note"]'), ppl = document.querySelector('#f-hr [name="people"]'); if (ppl && !ppl.value) ppl.value = n.value; var sel = document.querySelector('#f-hr [name="items"]'); if (sel) {{ var txt = it.options[it.selectedIndex].text.split(' · ')[0]; for (var k = 0; k < sel.options.length; k++) if (txt.indexOf(sel.options[k].text.split(' (')[0]) === 0) sel.selectedIndex = k; }} if (t) {{ var line = 'Орієнтир із калькулятора: ' + it.options[it.selectedIndex].text + ', ' + pcs.textContent + ' шт., ' + out.textContent; t.value = t.value ? t.value + String.fromCharCode(10) + line : line; }} }});
+    document.getElementById('c-send').addEventListener('click', function () {{ var t = document.querySelector('#f-hr [name="note"]'), ppl = document.querySelector('#f-hr [name="people"]'); if (ppl && !ppl.value) ppl.value = n.value; var sel = document.querySelector('#f-hr [name="items"]'); if (sel) {{ var txt = it.options[it.selectedIndex].text.split(' — ')[0]; for (var k = 0; k < sel.options.length; k++) if (sel.options[k].text.indexOf(txt.split(' ')[0]) === 0) sel.selectedIndex = k; }} if (t) {{ var line = 'Орієнтир із калькулятора: ' + it.options[it.selectedIndex].text + ', ' + pcs.textContent + ' шт., ' + out.textContent; t.value = t.value ? t.value + String.fromCharCode(10) + line : line; }} }});
   }})();
   </script>
 
@@ -577,9 +578,9 @@ def wholesale():
     ]
     cats_html = "".join(f'<div class="card">{img(ph, t, sizes="(max-width: 640px) 100vw, 33vw")}<h3>{t}</h3><p>{d}</p><div class="price-row"><span>Роздріб</span><span class="num">{pr}</span></div></div>' for t, d, pr, ph in cats)
     body = hero("Для магазинів, бутиків і корнерів", "Obiimy на вашій полиці",
-                "Український бренд шовкових хусток із власними принтами, який уже продається в INTERTOP, Hram, Be Brave (Канада) та UFD London.<span class=\"m-hide\"> Пропонуємо партнерам готову вітрину: асортимент, коробки, фотоконтент та історію, яку легко розповісти покупцю.</span>",
-                "Запросити оптовий прайс", "Асортимент", "#range",
-                "Відправка Новою поштою по Україні, за кордон — за тарифами перевізника.", "photo/paris-dots.jpg", "Хустка 88 × 88 у горох на білому костюмі", "Фотоконтент двох зйомок — для ваших соцмереж і вітрини") + facts_html([
+                "Готова вітрина для вашого магазину: асортимент, фірмові коробки, фотоконтент та історія, яку легко розповісти покупцю.<span class=\"m-hide\"> Український бренд шовкових хусток із власними принтами, який уже продається в INTERTOP, Hram, Be Brave (Канада) та UFD London.</span>",
+                "Запросити оптовий прайс", "Лукбук і роздрібні ціни (PDF)", "lookbook-obiimy-2026.pdf",
+                "Оптовий прайс і умови формату — у відповідь на запит. Відправка Новою поштою по Україні, за кордон — за тарифами перевізника.", "photo/paris-dots.jpg", "Хустка 88 × 88 у горох на білому костюмі", "Фотоконтент двох зйомок — для ваших соцмереж і вітрини", pos="50% 6%") + facts_html([
         ("3 країни", "Роздрібні партнери в Україні, Канаді та Великій Британії"),
         ("6 категорій", "Хустки, двосторонні, твіллі, маски для сну, резинки, набори"),
         ("700 – 4 800 грн", "Роздрібні ціни на obiimy.world — орієнтир для полиці"),
@@ -619,7 +620,7 @@ def wholesale():
   </div></section>
 
   <section class="form-block alt" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити оптовий прайс</h2><p>Розкажіть про магазин і місто. У відповідь надішлемо оптовий прайс із мінімальною партією та знижкою по категоріях, каталог із фото та умови для вашого формату — корнер чи ексклюзив у місті.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p></div>
+    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити оптовий прайс</h2><p>Розкажіть про магазин і місто. У відповідь надішлемо оптовий прайс із мінімальною партією та знижкою за категоріями, каталог із фото та умови для вашого формату — корнер чи ексклюзив у місті.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p></div>
     <div>{form_html("f-ws", "Оптова співпраця", [
         ("company", "Магазин або компанія", "input", True, {"ph": "Назва", "ac": "organization"}),
         ("name", "Ваше ім’я", "input", True, {"ph": "Як до вас звертатись", "ac": "name"}),
@@ -652,9 +653,9 @@ def calendar():
     ]
     months_html = "".join(f'<div class="card photo">{img(ph, alt, sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">{m}</p><h3>{t}</h3><p>{d}</p></div></div>' for m, t, d, ph, alt in months)
     body = hero("Річна програма · корпоративні подарунки", "Один список адрес —\u00a0і подарунки їдуть самі",
-                "Погоджений бюджет, добірка під кожну нагоду, відправка кожному адресату за графіком. Від вас — лише список.<span class=\"m-hide\"> Для компаній, які дарують не раз на рік — від Нового року до welcome-box.</span>",
+                "Погоджений бюджет, добірка під кожну нагоду, відправка кожному адресату за графіком. Від вас — лише список.<span class=\"m-hide\"> Підходить компаніям, які дарують не раз на рік, — від Нового року до welcome-box.</span>",
                 "Скласти річний план подарунків", "Календар нагод", "#year",
-                "Від 700 грн за подарунок. Список адресатів — від вас, усе інше — від нас.", "photo/paris-green.jpg", "Зелена шовкова хустка на бежевому жакеті", "Вісім нагод на рік · один бюджет · один список", cls=" h1-sm") + facts_html([
+                "Зразок — від 1 600 грн у роздріб, у тій самій коробці, що й програма: <a href=\"https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/\">замовити →</a>", "photo/paris-green.jpg", "Зелена шовкова хустка на бежевому жакеті", "Вісім нагод на рік · один бюджет · один список", cls=" h1-sm", pos="50% 12%") + facts_html([
         ("8 нагод", "Від Нового року до welcome-box і подяки клієнтам"),
         ("700 – 4 800 грн", "Роздрібні ціни: різні речі в межах одного бюджету"),
         ("Один список", "ПІБ, дати й відділення Нової пошти — решту робимо ми"),

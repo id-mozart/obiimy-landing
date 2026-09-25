@@ -45,6 +45,8 @@ def main():
     SITE.mkdir()
     for d in ASSET_DIRS:
         shutil.copytree(ROOT / d, SITE / d)
+    if (ROOT / "lookbook-obiimy-2026.pdf").exists():
+        shutil.copy(ROOT / "lookbook-obiimy-2026.pdf", SITE / "lookbook-obiimy-2026.pdf")
     for slug, fname, title, desc in VERSIONS:
         (SITE / f"{slug}.html").write_text(wrap(relink((ROOT / fname).read_text(), slug)))
         pp = ROOT / f"p-{slug}.html"

@@ -8,7 +8,9 @@
 <meta property="og:type" content="product">
 <meta property="og:title" content="Резинка для волосся «Енергія» — Obiimy">
 <meta property="og:description" content="Про волосся, яке не ламається. 100% італійський шовк, авторський принт, 700 грн.">
-<meta property="og:image" content="https://obiimy-landing-production.up.railway.app/img/scrunchie-energiia.webp">
+<meta property="og:image" content="https://obiimy-landing-production.up.railway.app/photo/og-scrunchie-energiia.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@200;300;400&family=Onest:wght@300;400;500&display=swap">
@@ -55,9 +57,9 @@
   .gallery { display: grid; gap: 12px; position: sticky; top: 88px; }
   .main { aspect-ratio: 4 / 5; overflow: hidden; border-radius: var(--radius); background: var(--bg2); position: relative; }
   .main img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 15%; }
-  .main.contain img { object-fit: contain; background: #fff; padding: 6%; }
-  .wear .ph.contain img { object-fit: contain; background: #fff; padding: 8%; }
-  @media (max-width: 860px) { .main { aspect-ratio: 1; } .thumbs button { width: 64px; } .crumbs a, footer a { display: inline-block; padding: 10px 0; } }
+  .main.contain img { object-fit: contain; background: var(--board, #fff); padding: 6%; }
+  .wear .ph.contain img { object-fit: contain; background: var(--board, #fff); padding: 8%; }
+  @media (max-width: 860px) { .main { aspect-ratio: 4 / 3; } .crumbs a, footer a { display: inline-block; padding: 12px 0; } .crumbs { flex-wrap: nowrap; white-space: nowrap; overflow-x: auto; scrollbar-width: none; } }
   .nav .btn { min-height: 44px; }
   .variant { font-family: var(--display); font-size: 1.15rem; margin-top: 6px; }
   .variant small { font-family: var(--body); color: var(--ink3); font-size: .85rem; margin-left: 8px; }
@@ -69,6 +71,8 @@
   .thumbs { display: flex; gap: 10px; }
   .thumbs button { all: unset; cursor: pointer; width: 84px; aspect-ratio: 1; overflow: hidden; border-radius: var(--radius); border: 1.5px solid transparent; background: var(--bg2); }
   .thumbs button img { width: 100%; height: 100%; object-fit: cover; }
+  @media (max-width: 860px) { .gallery .thumbs button { width: 64px; } }
+  .acc p a, .acc li a { display: inline-block; padding: 12px 0; margin: -12px 0; }
   .thumbs button[aria-current="true"] { border-color: var(--ink); }
   .thumbs button.viewer { display: grid; place-items: center; font-size: .62rem; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--ink2); text-align: center; line-height: 1.3; }
   .info { display: grid; gap: 18px; }
@@ -139,7 +143,7 @@
   .stars { color: var(--gold); letter-spacing: .1em; font-size: .9rem; }
   .who { font-size: .8rem; color: var(--ink3); }
   .card dl { margin: 0; display: grid; gap: 8px; font-size: .9rem; }
-  .card dt { font-size: .74rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); font-weight: 600; }
+  .card dt { font-size: .76rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); font-weight: 600; }
   .card dd { margin: 0; color: var(--ink2); }
   @media (max-width: 860px) { .trust { grid-template-columns: 1fr; } }
   .related { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
@@ -172,11 +176,11 @@
 </div></header>
 
 <main>
-  <div class="wrap"><nav class="crumbs" aria-label="Хлібні крихти"><a href="noir.html">Obiimy</a><span>/</span><a href="https://obiimy.world/rezynky/">Резинки</a><span>/</span><span>Резинка для волосся «Енергія»</span></nav></div>
+  <div class="wrap"><nav class="crumbs" aria-label="Навігаційний шлях"><a href="noir.html">Obiimy</a><span>/</span><a href="https://obiimy.world/rezynky/">Резинки</a><span>/</span><span>Резинка для волосся «Енергія»</span></nav></div>
   <section class="product">
     <div class="wrap">
       <div class="gallery">
-        <div class="main contain" id="main"><img src="img/scrunchie-energiia.webp" srcset="img/scrunchie-energiia-480.webp 480w, img/scrunchie-energiia.webp 800w" sizes="(max-width: 960px) 100vw, 58vw" width="800" height="800" alt="Резинка для волосся «Енергія»" fetchpriority="high" id="mainImg"></div>
+        <div class="main contain" id="main" style="--board:#f3f3f3"><img src="img/scrunchie-energiia.webp" srcset="img/scrunchie-energiia-480.webp 480w, img/scrunchie-energiia.webp 800w" sizes="(max-width: 960px) 100vw, 58vw" width="800" height="800" alt="Резинка для волосся «Енергія»" fetchpriority="high" id="mainImg"></div>
         <div class="thumbs" id="thumbs"><button type="button" data-i="0" aria-current="true" aria-label="Фото 1 з 3"><img src="img/scrunchie-energiia.webp" srcset="img/scrunchie-energiia-480.webp 480w, img/scrunchie-energiia.webp 800w" sizes="84px" width="800" height="800" alt="" loading="lazy" decoding="async"></button><button type="button" data-i="1" aria-current="false" aria-label="Фото 2 з 3"><img src="photo/scrunchie-800.webp" srcset="photo/scrunchie-480.webp 480w, photo/scrunchie-800.webp 800w, photo/scrunchie-1200.webp 1200w, photo/scrunchie.jpg 1856w" sizes="84px" width="1856" height="2304" alt="" loading="lazy" decoding="async"></button><button type="button" data-i="2" aria-current="false" aria-label="Фото 3 з 3"><img src="img/scrunchie-pole.webp" srcset="img/scrunchie-pole-480.webp 480w, img/scrunchie-pole.webp 800w" sizes="84px" width="800" height="800" alt="" loading="lazy" decoding="async"></button></div>
       </div>
       <div class="info">
@@ -196,7 +200,7 @@
   </section>
 
   <section class="block"><div class="wrap story">
-    <div><p class="eyebrow">Про річ</p><h2 style="margin-top:10px">Історія речі</h2><p class="txt">Шовкова резинка бережно тримає волосся і не залишає заломів. Хвіст, пучок або просто на зап’ясті — як браслет. Пакується у фірмову жовту коробочку: найменший подарунок Obiimy.</p><blockquote>Бережно до волосся — щодня.</blockquote></div>
+    <div><p class="eyebrow">Історія</p><h2 style="margin-top:10px">Про річ</h2><p class="txt">Шовкова резинка бережно тримає волосся і не залишає заломів. Хвіст, пучок або просто на зап’ясті — як браслет. Пакується у фірмову жовту коробочку: найменший подарунок Obiimy.</p><blockquote>Бережно до волосся — щодня.</blockquote></div>
     <figure><img src="photo/paris-bun-800.webp" srcset="photo/paris-bun-480.webp 480w, photo/paris-bun-800.webp 800w, photo/paris-bun-1200.webp 1200w, photo/paris-bun.jpg 1856w" sizes="(max-width: 960px) 100vw, 50vw" width="1856" height="2304" alt="«Енергія» крупно" loading="lazy" decoding="async"></figure>
   </div></section>
   
@@ -206,7 +210,7 @@
   </div></section>
   <section class="block"><div class="wrap">
     <div class="head"><p class="eyebrow">Крупним планом</p><h2>У трьох кадрах</h2></div>
-    <div class="wear"><figure><div class="ph contain"><img src="img/scrunchie-energiia.webp" srcset="img/scrunchie-energiia-480.webp 480w, img/scrunchie-energiia.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="800" alt="«Енергія»" loading="lazy" decoding="async"></div><figcaption>«Енергія»</figcaption></figure><figure><div class="ph"><img src="photo/scrunchie-800.webp" srcset="photo/scrunchie-480.webp 480w, photo/scrunchie-800.webp 800w, photo/scrunchie-1200.webp 1200w, photo/scrunchie.jpg 1856w" sizes="(max-width: 640px) 100vw, 33vw" width="1856" height="2304" alt="У коробочці · горох" loading="lazy" decoding="async"></div><figcaption>У коробочці · горох</figcaption></figure><figure><div class="ph contain"><img src="img/scrunchie-pole.webp" srcset="img/scrunchie-pole-480.webp 480w, img/scrunchie-pole.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="800" alt="Інший принт · «Літнє поле»" loading="lazy" decoding="async"></div><figcaption>Інший принт · «Літнє поле»</figcaption></figure></div>
+    <div class="wear"><figure><div class="ph contain" style="--board:#f3f3f3"><img src="img/scrunchie-energiia.webp" srcset="img/scrunchie-energiia-480.webp 480w, img/scrunchie-energiia.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="800" alt="«Енергія»" loading="lazy" decoding="async"></div><figcaption>«Енергія»</figcaption></figure><figure><div class="ph"><img src="photo/scrunchie-800.webp" srcset="photo/scrunchie-480.webp 480w, photo/scrunchie-800.webp 800w, photo/scrunchie-1200.webp 1200w, photo/scrunchie.jpg 1856w" sizes="(max-width: 640px) 100vw, 33vw" width="1856" height="2304" alt="У коробочці · горох" loading="lazy" decoding="async"></div><figcaption>У коробочці · горох</figcaption></figure><figure><div class="ph contain" style="--board:#f2f2f2"><img src="img/scrunchie-pole.webp" srcset="img/scrunchie-pole-480.webp 480w, img/scrunchie-pole.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="800" alt="Інший принт · «Літнє поле»" loading="lazy" decoding="async"></div><figcaption>Інший принт · «Літнє поле»</figcaption></figure></div>
   </div></section>
   <section class="block"><div class="wrap">
     <div class="head"><p class="eyebrow">Довіра</p><h2>Відгук і партнери</h2></div>

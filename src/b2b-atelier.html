@@ -54,7 +54,7 @@
   .stage { position: sticky; top: 0; height: 100vh; height: 100dvh; overflow: hidden; }
   .stage canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: pan-y; }
   .stage canvas.grabbing { cursor: grabbing; }
-  .stage #ribbon { opacity: 0; transition: opacity .6s ease; pointer-events: none; top: 20%; left: 26%; width: 74%; height: 70%; right: auto; bottom: auto; inset: 22% auto auto 42%; width: 58%; }
+  .stage #ribbon { opacity: 0; transition: opacity .6s ease; pointer-events: none; top: 20%; left: 26%; width: 74%; height: 70%; right: auto; bottom: auto; inset: 24% auto auto 36%; width: 58%; }
   .stage.twilly #ribbon { opacity: 1; }
   .stage.twilly #silk { opacity: 0; pointer-events: none; }
   .stage #silk { transition: opacity .6s ease; }
@@ -384,7 +384,7 @@
     envTop: '#E8E0D2', envBottom: '#0C0914', envTint: '#FFF1C2', sheen: '#F2B705', gloss: 0.18, aniso: 1.0, envStrength: 0.2, weaveScale: 0.5, weaveRepeat: 24, toneMap: true, diffBase: 0.42, anisoMix: 0.3,
     light: [0.6, 0.6, 1.0], idleSway: 0.2
   });
-  var ribbon = window.SilkEngine && SilkEngine.createRibbon({ canvas: $('ribbon'), texPath: 'tex/', texture: first.id + '-strip', envTop: '#E8E0D2', envBottom: '#0C0914', sheen: '#F2B705', width: 0.7, repeat: 1.25, length: 3.0, camZ: 9.4, camZMobile: 6.8, toneMap: true, diffBase: 0.45, anisoMix: 0.3 });
+  var ribbon = window.SilkEngine && SilkEngine.createRibbon({ canvas: $('ribbon'), texPath: 'tex/', texture: first.id + '-strip', envTop: '#E8E0D2', envBottom: '#0C0914', sheen: '#F2B705', width: 0.7, repeat: 1.25, length: 2.7, camZ: 9.4, camZMobile: 6.8, toneMap: true, diffBase: 0.45, anisoMix: 0.3 });
   if (!silk) { root.classList.add('no-webgl'); $('fallbackImg').src = 'tex/' + first.id + '.jpg'; }
 
   var lastScale = null, lastPrint = -1, qtyTouched = false;

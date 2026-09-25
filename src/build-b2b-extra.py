@@ -25,14 +25,14 @@ PAY = ("payment", "Оплата", "select:Безготівково, ТОВ|Бе�
 
 # ---------------------------------------------------------------- certificates (Studio)
 def certificates():
-    body = hero("Сертифікати · для команд і віддалених людей", "Подарунок, який людина обирає сама",
+    body = hero("Сертифікати · для команд і віддалених колег", "Подарунок, який людина обирає сама",
         "Подарунковий сертифікат Obiimy: ви тримаєте бюджет, а людина обирає хустку, твіллі чи маску для сну під себе. Без збору розмірів і адрес.<span class=\"m-hide\"> Для команд у різних містах і країнах — найпростіший корпоративний подарунок.</span>",
         "Отримати умови для команди", "Сертифікати на obiimy.world", "https://obiimy.world/sertyfikaty/",
         "Номінали під ціни речей: від 700 до 4 400 грн.", "photo/kolo-1.webp", "Жінка в шовковій хустці біля вікна", "Сертифікат — коли важливо, щоб обрали самі", pos="50% 12%") + facts_html([
         ("Без адрес", "Не потрібно збирати розміри, кольори й відділення пошти"),
         ("700 – 4 400 грн", "Номінали під роздрібні ціни речей"),
         ("Будь-де", "Для команд у різних містах і за кордоном"),
-        ("Один запит", "Список імен і номінал — решту робимо ми"),
+        ("Один запит", "Список імен, email і номінал — решту робимо ми"),
     ]) + f'''
   <section class="block" id="how"><div class="wrap">
     <div class="head"><p class="eyebrow">Як це працює</p><h2>Три кроки замість таблиці розмірів</h2><p class="sub">Хочете подарувати конкретну річ, а не вибір? Зберіть її в <a href="b2b-atelier">3D-конструкторі подарунка</a>.</p></div>
@@ -72,7 +72,7 @@ def certificates():
       <details><summary>Як людина використовує сертифікат?</summary><p>Отримує його на email або в коробці й оформлює замовлення на obiimy.world. Механіку погашення — код, термін дії, формат — фіксуємо в розрахунку.</p></details>
       <details><summary>Якщо річ дорожча за номінал?</summary><p>Можливість доплати різниці підтвердимо в розрахунку разом з іншими умовами сертифіката.</p></details>
       {DOCS_FAQ}
-      <details><summary>Чи працює за кордоном?</summary><p>Так. Людина обирає річ на obiimy.world, доставка за кордон — за тарифами перевізника.</p></details>
+      <details><summary>Чи працює за кордоном?</summary><p>Так. Людина обирає річ на obiimy.world або в міжнародному магазині obiimy-world.com — де саме погашається сертифікат, підтвердимо в розрахунку. Доставка за кордон — за тарифами перевізника.</p></details>
     </div>
   </div></section>
   {PROOF}
@@ -105,7 +105,7 @@ def agencies():
         ("Один контакт", "Для всіх ваших проєктів — від брифу до відправки"),
     ]) + f'''
   <section class="block" id="give"><div class="wrap">
-    <div class="head"><p class="eyebrow">Що отримує агенція</p><h2>Ви продаєте ідею — ми беремо на себе решту</h2><p class="sub">Два лукбуки: <a href="lookbook-obiimy-2026-noprice.pdf" download="Obiimy-lookbook-no-prices.pdf">для клієнта, без цін</a> і <a href="lookbook-obiimy-2026.pdf" download="Obiimy-lookbook-2026.pdf">із роздрібними цінами</a> — для вашого кошторису.</p></div>
+    <div class="head"><p class="eyebrow">Що отримує агенція</p><h2>Ви продаєте ідею — ми беремо на себе решту</h2><p class="sub">Два лукбуки: <a href="lookbook-obiimy-2026-noprice.pdf" download="Obiimy-lookbook-dlia-klienta.pdf">без цін — для клієнта</a>, <a href="lookbook-obiimy-2026.pdf" download="Obiimy-lookbook-RRC.pdf">з роздрібними цінами — для вашого кошторису</a>.</p></div>
     <div class="grid4">
       <div class="card"><span class="k">01</span><h3>Матеріали для пітчу</h3><p>Лукбук без цін, пакшоти на білому, лайфстайл-зйомки й історія бренду — для презентації клієнту.</p></div>
       <div class="card"><span class="k">02</span><h3>Швидкий розрахунок</h3><p>Кількість і бюджет — повертаємось із добіркою принтів і цінами на тираж.</p></div>
@@ -141,7 +141,7 @@ def agencies():
     <div class="faq">
       <details><summary>Які агентські умови?</summary><p>Обговорюємо після першого запиту — залежать від обсягу й регулярності проєктів.</p></details>
       <details><summary>Рахунок на агенцію чи на клієнта?</summary><p>Як зручно — узгоджуємо в запиті.</p></details>
-      <details><summary>Відправка від імені агенції?</summary><p>Чи можна пакувати без контактів Obiimy в коробці — обговорюємо в запиті.</p></details>
+      <details><summary>Відправка від імені агенції?</summary><p>Пакування без контактів Obiimy в коробці обговорюємо в запиті.</p></details>
       <details><summary>Чи можна використовувати фото Obiimy в презентаціях?</summary><p>Для презентації подарунків клієнту — так, лукбук і пакшоти для цього й надаємо.</p></details>
       {DOCS_FAQ}
       {BATCH_FAQ}
@@ -214,8 +214,8 @@ def speakers():
     <div class="head"><p class="eyebrow">Питання</p><h2>Що зазвичай питають</h2></div>
     <div class="faq">
       <details><summary>Мінімальна кількість?</summary><p>Фіксованого мінімуму немає — обговорюємо кожен запит окремо.</p></details>
-      <details><summary>Логотип події на коробці?</summary><p>Стандартно — листівка з вашим текстом усередині фірмової коробки Obiimy. Логотип і інший брендинг обговорюємо окремо.</p></details>
-      <details><summary>Ви агенція, що веде подію для клієнта?</summary><p>Для агенцій є окремі умови й лукбук без цін — <a href="b2b-agencies">програма для агенцій</a>.</p></details>
+      <details><summary>Логотип події на коробці?</summary><p>Стандартно — листівка з вашим текстом усередині фірмової коробки Obiimy. Логотип та інший брендинг обговорюємо окремо.</p></details>
+      <details><summary>Ви агенція, що веде подію для клієнта?</summary><p>Для агенцій є лукбук без цін і окрема програма — <a href="b2b-agencies">програма для агенцій →</a></p></details>
       {DOCS_FAQ}
       {BATCH_FAQ}
     </div>
@@ -235,7 +235,7 @@ def speakers():
     ], "")}</div>
   </div></section>'''
     return dict(slug="b2b-speakers", skin="classic", title="Подарунки спікерам і гостям подій — Obiimy",
-        desc="Твіллі та хустки Obiimy у фірмовій коробці для спікерів, гостей і партнерів конференцій: один принт події, від 700 грн. Зразок — у роздріб того ж дня, для тиражу радимо запас у три тижні.",
+        desc="Твіллі та хустки Obiimy у фірмовій коробці для спікерів, гостей і партнерів подій: один принт події, від 700 грн. Для тиражу радимо запас у три тижні.",
         og="photo/probudzhennia-3.webp", nav=[("Формати", "formats"), ("Чому це працює", "why"), ("Терміни", "timeline"), ("Питання", "faq"), ("Контакт", "request")],
         cta="Запит", sticky="Подарунки для події · від 700 грн", body=body)
 
@@ -247,7 +247,7 @@ def english():
         "Request a curated selection", "International store: obiimy-world.com", "https://obiimy-world.com/",
         "Worldwide shipping at carrier rates.", "photo/vyr-3.webp", "Woman in a silk headscarf and white coat", "Every gift in a signature box with your card", pos="50% 14%", L=EN) + facts_html([
         ("100% silk", "Italian silk, original prints, hand-finished edges"),
-        ("Made in Ukraine", "A brand born during the war, supporting charity projects"),
+        ("Made in Ukraine", "Founded during the war; supports charitable projects"),
         ("₴700–₴4,800", "Retail prices in hryvnia; volume terms on request"),
         ("Worldwide", "Shipping at carrier rates to one or many addresses"),
     ]).replace('aria-label="Коротко про бренд"', 'aria-label="The brand in brief"') + f'''
@@ -265,9 +265,9 @@ def english():
     <div class="head"><p class="eyebrow">Budgets</p><h2>Four budgets, one level of quality</h2><p class="sub">Retail prices in Ukrainian hryvnia from our Ukrainian store, obiimy.world. Volume terms depend on quantity and timing — we quote on request.</p></div>
     <div class="grid4">
       <div class="card photo">{img("photo/scrunchie.jpg", "Silk scrunchie in a yellow box", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">Up to ₴1,000</p><h3>A small token</h3><div class="price-row"><span>Scrunchie in a box</span><span class="num">₴700</span></div></div></div>
-      <div class="card photo">{img("photo/paris-bag.jpg", "Twilly on a handbag", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">Up to ₴2,000</p><h3>For the whole team</h3><div class="price-row"><span>Twilly 84 × 5</span><span class="num">₴1,600</span></div><div class="price-row"><span>Silk square 44 × 44 cm</span><span class="num">₴1,600</span></div></div></div>
-      <div class="card photo">{img("photo/box-red.jpg", "Gift set in a yellow box", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">Up to ₴3,500</p><h3>For key people</h3><div class="price-row"><span>Sleep mask</span><span class="num">₴2,700</span></div><div class="price-row"><span>Scarf 65 × 65 cm</span><span class="num">₴3,200</span></div><div class="price-row"><span>Twilly + scarf set</span><span class="num">₴3,200</span></div></div></div>
-      <div class="card photo">{img("photo/paris-dots.jpg", "Large scarf on the shoulders", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">Up to ₴5,000</p><h3>For partners and VIPs</h3><div class="price-row"><span>Shawl 88 × 88 cm</span><span class="num">₴4,400</span></div><div class="price-row"><span>Three twillies</span><span class="num">₴4,800</span></div></div></div>
+      <div class="card photo">{img("photo/paris-bag.jpg", "Twilly on a handbag", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">Up to ₴2,000</p><h3>For the whole team</h3><div class="price-row"><span>Twilly 84 × 5 cm</span><span class="num">₴1,600</span></div><div class="price-row"><span>Silk square 44 × 44 cm</span><span class="num">₴1,600</span></div></div></div>
+      <div class="card photo">{img("photo/box-red.jpg", "Gift set in a yellow box", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">Up to ₴3,500</p><h3>For key people</h3><div class="price-row"><span>Sleep mask</span><span class="num">₴2,700</span></div><div class="price-row"><span>Scarf 65 × 65 cm</span><span class="num">₴3,200</span></div><div class="price-row"><span>Twilly and silk square set</span><span class="num">₴3,200</span></div></div></div>
+      <div class="card photo">{img("photo/paris-dots.jpg", "Large scarf on the shoulders", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">Up to ₴5,000</p><h3>For partners and VIPs</h3><div class="price-row"><span>Shawl 88 × 88 cm</span><span class="num">₴4,400</span></div><div class="price-row"><span>Set of three twillies</span><span class="num">₴4,800</span></div></div></div>
     </div>
   </div></section>
 
@@ -288,7 +288,7 @@ def english():
     <div class="faq">
       <details><summary>Is there a minimum order?</summary><p>No fixed minimum — we discuss every request individually. Quantity affects timing and terms.</p></details>
       <details><summary>How do we pay from abroad?</summary><p>By invoice for companies — currency and details are set out in the quote; samples and small orders by card at obiimy-world.com.</p></details>
-      <details><summary>Who pays import duties?</summary><p>Duties and taxes depend on the destination country; we’ll outline the shipping options in the quote so you can check them in advance.</p></details>
+      <details><summary>Who pays import duties?</summary><p>Duties and taxes depend on the destination country and the shipping terms. We’ll set out in the quote who pays them — your company or the recipient — so there are no surprises on delivery.</p></details>
       <details><summary>How long does shipping take?</summary><p>It depends on the destination and carrier; we quote the option and cost together with the gifts.</p></details>
       <details><summary>Are all pieces identical?</summary><p>Print and colour are identical within a batch. Size may vary by 0–2.5 cm because edges are finished by hand.</p></details>
     </div>
@@ -319,7 +319,7 @@ def english():
     ], "", L=EN)}</div>
   </div></section>'''
     return dict(slug="b2b-en", skin="campaign", lang="en", title="Corporate gifts from Ukraine — Obiimy silk",
-        desc="Silk scarves with original prints, hand-finished in Ukraine, for teams abroad, partners and clients. From ₴700 to ₴4,800 per gift, signature box with your card, worldwide shipping.",
+        desc="Silk scarves with original prints, hand-finished in Ukraine, for teams abroad, partners and clients. From ₴700 to ₴4,800 per gift, in a signature box with your card. Worldwide shipping.",
         og="photo/vyr-3.webp", nav=[("Why", "why"), ("Budgets", "budgets"), ("How it works", "how"), ("Questions", "faq"), ("Contact", "request")],
         cta="Request", sticky="Corporate gifts · from ₴700", body=body, locale="en_GB")
 

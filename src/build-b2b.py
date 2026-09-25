@@ -313,7 +313,7 @@ def shell(page, body):
     if L is EN:
         others = '<a href="b2b-atelier">3D gift builder (UA)</a><a href="b2b-certificates">Gift certificates (UA)</a>'
     else:
-        GROUPS = [("Подарунки компаніям", ["b2b-newyear", "b2b-calendar", "b2b-certificates", "b2b-speakers", "b2b-atelier", "b2b-garden"]), ("Партнерство", ["b2b-wholesale", "b2b-agencies", "b2b-horeca"]), ("", ["b2b-en"])]
+        GROUPS = [("Подарунки компаніям", ["b2b-newyear", "b2b-calendar", "b2b-certificates", "b2b-speakers", "b2b-atelier", "b2b-garden"]), ("Уніформа й партнерство", ["b2b-horeca", "b2b-wholesale", "b2b-agencies"]), ("", ["b2b-en"])]
         names = dict(OTHERS)
         others = "".join('<span class="grp">' + (f"<b>{g}:</b>" if g else "") + "".join(f'<a href="{slug}">{names[slug]}</a>' for slug in slugs if slug != page["slug"]) + "</span>" for g, slugs in GROUPS)
     return f'''<meta charset="utf-8">
@@ -364,7 +364,7 @@ def shell(page, body):
 
 def hero(eyebrow, h1, lead, cta1, cta2, cta2_href, fine, photo, alt, tag, cls="", pos="50% 18%", L=None):
     L = L or UK
-    dl = ' download="Obiimy-lookbook-2026.pdf" type="application/pdf"' if cta2_href.endswith(".pdf") else ""
+    dl = (' download="' + ('Obiimy-lookbook-dlia-klienta.pdf' if 'noprice' in cta2_href else 'Obiimy-lookbook-RRC.pdf') + '" type="application/pdf"') if cta2_href.endswith(".pdf") else ""
     return f'''
   <section class="hero{cls}" style="--hero-pos:{pos}"><div class="wrap">
     <div>
@@ -622,7 +622,7 @@ def wholesale():
     <div><p class="eyebrow">Що отримує партнер</p><h2 style="margin-top:10px">Вітрина, готова до продажу</h2>
       <div class="faq" style="margin-top:22px">
         <details open><summary>Упаковка як частина продукту</summary><p>Кожна річ — у фірмовій жовтій коробці з тонким папером. На полиці це видно з іншого кінця залу.</p></details>
-        <details><summary>Фото та відео</summary><p>Дві лукбук-зйомки (Париж, Рів’єра), пакшоти всіх речей і відео — для соцмереж, сайту й вітрини. <a href="lookbook-obiimy-2026.pdf" download="Obiimy-lookbook-2026.pdf" type="application/pdf" style="font-weight:600">Лукбук у PDF — завантажити →</a></p></details>
+        <details><summary>Фото та відео</summary><p>Дві лукбук-зйомки (Париж, Рів’єра), пакшоти всіх речей і відео — для соцмереж, сайту й вітрини. <a href="lookbook-obiimy-2026.pdf" download="Obiimy-lookbook-RRC.pdf" type="application/pdf" style="font-weight:600">Лукбук у PDF — завантажити →</a></p></details>
         <details><summary>Історія, яку легко розповісти</summary><p>Художниця-засновниця Світлана Сніжко, 100% італійський шовк, ручна обробка, бренд, що народився під час війни, і колекція «Співоча душа» з благодійною складовою.</p></details>
         <details><summary>Пам’ятка для консультантів</summary><p>Коротка пам’ятка: три способи носити кожен розмір, догляд, аргументи для подарунка.</p></details>
         <details><summary>Дозамовлення</summary><p>Замовлення до 16:00 відправляємо з наявності того ж дня — партнер не тримає великий склад.</p></details>

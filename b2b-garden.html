@@ -3,7 +3,7 @@
 <title>Корпоративні подарунки із шовку в 3D — Obiimy</title>
 <meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://obiimy-landing-production.up.railway.app/b2b-garden">
-<meta name="description" content="Корпоративні подарунки Obiimy в одній 3D-сцені: принти для команди, бюджети від 700 до 4 800 грн, «Співоча душа», жовта коробка з вашою листівкою. Запит на добірку і розрахунок.">
+<meta name="description" content="Корпоративні подарунки Obiimy в 3D: принти для команди, бюджети від 700 до 4 800 грн, «Співоча душа» і жовта коробка з вашою листівкою.">
 <meta property="og:title" content="Корпоративні подарунки із шовку в 3D — Obiimy">
 <meta property="og:image" content="https://obiimy-landing-production.up.railway.app/photo/og-b2b-newyear.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -128,9 +128,9 @@
   .copybtn { min-height: 44px; font-size: .8rem !important; padding: 0 16px !important; display: inline-flex !important; align-items: center; }
   .chip, .label, blockquote cite, .hint { font-size: .75rem !important; }
   .state .s, .stores { font-size: .8rem !important; }
-  .ch .sticky::before { height: 72% !important; background: linear-gradient(180deg, rgba(12,9,20,0) 0%, rgba(12,9,20,.7) 38%, rgba(12,9,20,.9) 100%) !important; }
+  .ch:not(#c5) .sticky::before { height: 72% !important; background: linear-gradient(180deg, rgba(12,9,20,0) 0%, rgba(12,9,20,.7) 38%, rgba(12,9,20,.9) 100%) !important; }
   .stores { position: relative; z-index: 2; color: var(--ink-2); text-shadow: 0 1px 12px rgba(12,9,20,.9); }
-  #c5 .sticky::before { background: radial-gradient(70% 60% at 50% 55%, rgba(12,9,20,.85) 0%, rgba(12,9,20,0) 100%); }
+  #c5 .sticky::before { inset: 0 !important; height: auto !important; background: radial-gradient(70% 60% at 50% 52%, rgba(12,9,20,.88) 0%, rgba(12,9,20,.5) 55%, rgba(12,9,20,0) 100%) !important; }
   form .hint a { display: inline-block; padding: 10px 0; margin: -10px 0; }
   .done { background: rgba(27,20,48,.72); border: 1px solid var(--line); border-radius: 4px; padding: clamp(18px, 3vw, 32px); display: grid; gap: 14px; }
   .done h3 { font-family: var(--display); font-weight: 300; font-size: 1.8rem; margin: 0; }
@@ -183,7 +183,7 @@
       <p class="chip">03 · Подарунок із сенсом</p>
       <h2>Подарунок, що допомагає <em>птахам</em></h2>
       <blockquote>Ця колекція про тендітність і силу, про птахів, які співають і зникають, про красу, яка може рятувати.<cite>Світлана Сніжко, засновниця</cite></blockquote>
-      <div class="facts"><span><b>Сиворакша</b> — частина коштів іде на гніздівлі для птаха з Червоної книги України</span><span><b>Партнер</b> — Українське товариство охорони птахів</span><span><b>Для компанії</b> — історія, яку можна розповісти команді</span></div>
+      <div class="facts"><span>Частина коштів іде на гніздівлі для <b>сиворакші</b> — птаха з Червоної книги України</span><span><b>Партнер</b> — Українське товариство охорони птахів</span><span><b>Для компанії</b> — історія, яку можна розповісти команді</span></div>
     </div>
   </section>
 
@@ -209,7 +209,7 @@
   <section class="reqsec" id="request">
     <div class="req-in">
       <div class="req-t"><p class="chip">Запит</p><h2>Отримати добірку <em>і розрахунок</em></h2><p class="copy">Кількість, бюджет і нагода — повернемось із добіркою принтів, цінами на тираж і графіком. Працюємо з ТОВ і ФОП: рахунок і видаткова накладна.</p>
-        <p class="others">Документи, терміни й питання — на сторінці <a href="b2b-newyear#faq">Новий рік</a>. Інші програми для бізнесу: <a href="b2b-calendar">Річна програма</a> · <a href="b2b-certificates">Сертифікати</a> · <a href="b2b-speakers">Спікерам і гостям</a> · <a href="b2b-horeca">HoReCa</a> · <a href="b2b-wholesale">Опт</a></p></div>
+        <p class="others">Документи, терміни й питання — на сторінці <a href="b2b-newyear#faq">«Новий рік»</a>. Інші програми для бізнесу: <a href="b2b-calendar">Річна програма</a> · <a href="b2b-certificates">Сертифікати</a> · <a href="b2b-speakers">Спікерам і гостям</a> · <a href="b2b-horeca">HoReCa</a> · <a href="b2b-wholesale">Опт</a></p></div>
       <div>
       <form id="f-3d" novalidate>
         <label><span>Компанія <span class="req">*</span></span><input name="company" data-label="Компанія" type="text" placeholder="Назва компанії" autocomplete="organization" required aria-describedby="f-3d-company-err"><span class="err" id="f-3d-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-3d-name-err"><span class="err" id="f-3d-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-3d-phone-err"><span class="err" id="f-3d-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-3d-email-err"><span class="err" id="f-3d-email-err" role="alert">Вкажіть коректний email</span></label><label><span>Кількість подарунків</span><input name="qty" data-label="Кількість подарунків" type="number" min="1" inputmode="numeric" placeholder="наприклад, 30"></label><label><span>Бюджет на один подарунок</span><select name="budget" data-label="Бюджет на один подарунок"><option value="">Оберіть</option><option>до 1 000 грн</option><option>до 2 000 грн</option><option>до 3 500 грн</option><option>до 5 000 грн</option><option>інший</option></select></label><label><span>Коли потрібно</span><select name="deadline" data-label="Коли потрібно"><option value="">Оберіть</option><option>До 10 грудня</option><option>До 20 грудня</option><option>Після свят</option><option>Інша дата</option></select></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Нагода, побажання до принтів, текст листівки…"></textarea></label>

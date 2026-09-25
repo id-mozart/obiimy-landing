@@ -195,10 +195,17 @@
     .summary.open .lines, .summary.open .addline { display: grid !important; }
     .summary .toggle { display: inline-flex !important; }
   }
-  .summary .toggle { all: unset; display: none; cursor: pointer; font-size: .78rem; color: var(--ink-2); padding: 10px 0; }
+  .summary .toggle { all: unset; display: none; cursor: pointer; font-size: .82rem; color: var(--ink-2); padding: 10px 0; }
+  .summary.multi .toggle { display: inline-flex; }
+  .summary .lines, .summary .addline { display: none !important; }
+  .summary.open .lines, .summary.open .addline { display: grid !important; }
+  .summary { background: #0C0914 !important; }
+  html { scroll-padding-bottom: 200px; }
+  .qtyadd { all: unset; cursor: pointer; font-size: .86rem; color: var(--gold); min-height: 44px; display: inline-flex; align-items: center; }
+  .qtyadd[disabled] { opacity: .4; cursor: default; }
+  #apprLines { white-space: pre-line; }
   .summary.multi .line, .summary.multi .total span { display: none; }
   .stage .title p { text-shadow: 0 1px 18px rgba(12,9,20,.95); }
-  .summary:not(.multi) .lines { display: none; }
   .summary .total { align-items: baseline; }
   .summary .perhead { margin-top: -6px; }
 </style>
@@ -216,14 +223,14 @@
     <div class="stage" id="stage">
       <canvas id="silk" aria-label="Тривимірна шовкова хустка з обраним принтом. Потягніть за тканину."></canvas>
       <canvas id="ribbon" aria-hidden="true"></canvas>
-      <div class="fallback"><img id="fallbackImg" src="tex/probudzhennia.jpg" alt=""></div>
+      <div class="fallback"><img id="fallbackImg" src="tex/tysha-sertsia.jpg" alt=""></div>
       <div class="title">
         <p class="eyebrow">Ательє подарунка</p>
         <h1 style="margin-top:14px">Зберіть подарунок <em>для команди</em></h1>
         <p>Оберіть принт на живому шовку, річ, кількість і текст листівки. Конфігурацію можна переслати колегам посиланням і надіслати нам на розрахунок.</p>
       </div>
       <p class="hintdrag">Потягніть за тканину</p>
-      <div class="now" aria-live="polite"><span class="s" id="nowItem">Хустка 65 × 65</span><span class="n" id="nowName">«Пробудження»</span></div>
+      <div class="now" aria-live="polite"><span class="s" id="nowItem">Хустка 65 × 65</span><span class="n" id="nowName">«Тиша серця»</span></div>
       <div class="gift" aria-hidden="true"><div class="box"><img src="brand/logo-ink-480.webp" alt=""></div><div class="card"><p id="cardPrev">Дякуємо, що цього року ви були поруч.</p><span id="cardSign">— ваша компанія</span></div></div>
       <div class="tools"><button class="btn btn-line btn-sm" type="button" id="flipBtn" hidden>Перевернути</button></div>
     </div>
@@ -235,7 +242,7 @@
         <p id="apprFrom" hidden></p>
         <p id="apprLines"></p>
         <p><b class="num" id="apprTotal"></b> — орієнтир за роздрібними цінами</p>
-        <div class="row"><a class="btn btn-gold btn-sm" href="#request">Надіслати запит на розрахунок</a><button class="btn btn-line btn-sm" type="button" id="apprEdit">Змінити</button></div>
+        <div class="row"><a class="btn btn-gold btn-sm" href="#request">Погодити й надіслати запит</a><button class="btn btn-line btn-sm" type="button" id="apprEdit">Змінити конфігурацію</button></div>
       </div>
 
       <section class="step" id="s-print" aria-labelledby="h-print">
@@ -257,7 +264,8 @@
         <p class="eyebrow">03 · Кількість</p>
         <h2 id="h-qty">Скільки <em>людей</em></h2>
         <div class="qty"><input type="range" id="qtyRange" min="5" max="300" step="5" value="30" aria-label="Кількість подарунків"><input type="number" id="qtyNum" min="1" max="5000" value="30" inputmode="numeric" aria-label="Кількість подарунків, число"></div>
-        <p class="help">Даруєте у два рівні — команді й ключовим людям? Додайте ще одну позицію в підсумку.</p>
+        <p class="help">Даруєте різне команді й ключовим людям? Додайте ще одну позицію (до трьох).</p>
+        <button class="qtyadd" type="button" id="addLine2">+ Додати позицію</button>
       </section>
 
       <section class="step" id="s-card" aria-labelledby="h-card">
@@ -266,8 +274,8 @@
         <textarea id="cardText" maxlength="160" aria-label="Текст листівки">Дякуємо, що цього року ви були поруч.</textarea>
         <p class="count"><span id="cardCount">37</span> / 160</p>
         <input type="text" id="cardFrom" maxlength="40" placeholder="Підпис, наприклад: команда Acme" aria-label="Підпис на листівці">
-        <input type="text" id="author" maxlength="40" placeholder="Хто готує пропозицію, наприклад: Олена, HR" aria-label="Хто готує пропозицію">
-        <p class="help">Листівка з вашим текстом — у кожній фірмовій жовтій коробці. Ім’я того, хто готує пропозицію, побачать колеги за посиланням.</p>
+        <input type="text" id="author" maxlength="40" placeholder="Автор добірки, наприклад: Олена, HR" aria-label="Автор добірки">
+        <p class="help">Листівка з вашим текстом — у кожній фірмовій жовтій коробці. Автора добірки побачать колеги за посиланням.</p>
       </section>
 
       <div class="summary" id="summary">
@@ -284,8 +292,8 @@
 
   <section class="reqsec" id="request">
     <div class="req-in">
-      <div><p class="eyebrow">Запит</p><h2 style="margin-top:14px">Отримати <em>розрахунок</em></h2><p class="copy">Ваша конфігурація вже в коментарі до запиту. Повернемось із розрахунком на тираж, наявністю принту та графіком. Працюємо з ТОВ і ФОП: рахунок і видаткова накладна.</p>
-        <p class="others">Документи, терміни й питання — на сторінці <a href="b2b-newyear#faq">Новий рік</a>. Інші програми: <a href="b2b-certificates">Сертифікати</a> · <a href="b2b-calendar">Річна програма</a> · <a href="b2b-speakers">Спікерам і гостям</a></p></div>
+      <div><p class="eyebrow">Запит</p><h2 style="margin-top:14px">Отримати <em>розрахунок</em></h2><p class="copy">Ваша конфігурація вже додана до запиту. Повернемось із розрахунком на тираж, наявністю принту та графіком. Працюємо з ТОВ і ФОП: рахунок і видаткова накладна.</p>
+        <p class="others">Документи, терміни й питання — на сторінці <a href="b2b-newyear#faq">«Новий рік»</a>. Інші програми: <a href="b2b-certificates">Сертифікати</a> · <a href="b2b-calendar">Річна програма</a> · <a href="b2b-speakers">Спікерам і гостям</a></p></div>
       <div>
       <form id="f-at" novalidate>
         <label><span>Компанія <span class="req">*</span></span><input name="company" data-label="Компанія" type="text" placeholder="Назва компанії" autocomplete="organization" required aria-describedby="f-at-company-err"><span class="err" id="f-at-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-at-name-err"><span class="err" id="f-at-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-at-phone-err"><span class="err" id="f-at-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-at-email-err"><span class="err" id="f-at-email-err" role="alert">Вкажіть коректний email</span></label><label><span>Кількість подарунків</span><input name="qty" data-label="Кількість подарунків" type="number" min="1" inputmode="numeric" placeholder="з конструктора"></label><label><span>Коли потрібно</span><select name="deadline" data-label="Коли потрібно"><option value="">Оберіть</option><option>До 10 грудня</option><option>До 20 грудня</option><option>Після свят</option><option>Інша дата</option></select></label><label><span>Доставка</span><select name="delivery" data-label="Доставка"><option value="">Оберіть</option><option>В офіс однією посилкою</option><option>Кожному на відділення Нової пошти</option><option>Ще не знаю</option></select></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Нагода, терміни, побажання…"></textarea></label>
@@ -804,7 +812,9 @@ window.SilkEngine = (function () {
 (function () {
   var STATES = window.OBIIMY_STATES || [];
   var ITEMS = [
+    { id: 'scr', name: 'Резинка для волосся', price: 700, note: 'У фірмовій жовтій коробочці', scale: 0.42 },
     { id: 'twilly', name: 'Твіллі 84 × 5', price: 1600, note: 'На сумку, у волосся, на зап’ястя', ribbon: true },
+    { id: 'mask', name: 'Маска для сну', price: 2700, note: 'Шовк, фірмова коробка', scale: 0.55 },
     { id: 'p44', name: 'Паше 44 × 44', price: 1600, note: 'На шию або в нагрудну кишеню жакета', scale: 0.72 },
     { id: 'd44', name: 'Двостороння 44 × 44', price: 2400, note: 'Два принти на невеликій хустці', scale: 0.72, flip: true },
     { id: 'k65', name: 'Хустка 65 × 65', price: 3200, note: 'Класика: на шию, у волосся, на пояс', scale: 1 },
@@ -839,6 +849,7 @@ window.SilkEngine = (function () {
   function lineText(l) { var s = STATES[l.p], it = ITEMS[l.i]; return l.q + ' × ' + it.name + ' «' + s.name + '»' + (it.flip ? ' (зворот «' + (STATES[idx(STATES, s.back)] || {}).name + '» — приклад)' : '') + (ITEMS[l.i].id !== catalogItem(s) ? ' · під запит' : ''); }
   function total() { return cfg.lines.reduce(function (a, l) { return a + l.q * ITEMS[l.i].price; }, 0); }
   function people() { return cfg.lines.reduce(function (a, l) { return a + l.q; }, 0); }
+  function gifts(n) { var d = n % 10, h = n % 100; return n + ' ' + (d === 1 && h !== 11 ? 'подарунок' : (d >= 2 && d <= 4 && (h < 12 || h > 14) ? 'подарунки' : 'подарунків')); }
 
   STATES.forEach(function (s, i) {
     var b = document.createElement('button'); b.type = 'button'; b.dataset.i = i; b.setAttribute('aria-label', 'Принт «' + s.name + '»');
@@ -880,7 +891,8 @@ window.SilkEngine = (function () {
       var rm = row.querySelector('.rm'); if (rm) rm.addEventListener('click', function () { cfg.lines.splice(i, 1); cfg.a = Math.min(cfg.a, cfg.lines.length - 1); apply(true); });
       box.appendChild(row);
     });
-    $('addLine').disabled = cfg.lines.length >= 3;
+    $('addLine').disabled = cfg.lines.length >= 3; $('addLine2').disabled = cfg.lines.length >= 3;
+    var tg = $('sumToggle'); tg.textContent = 'Позиції (' + cfg.lines.length + ') ' + ($('summary').classList.contains('open') ? '↓' : '↑');
     $('summary').classList.toggle('multi', cfg.lines.length > 1);
   }
   function apply(printChanged) {
@@ -909,7 +921,7 @@ window.SilkEngine = (function () {
     renderLines();
     $('sumLine').textContent = cfg.lines.map(lineText).join(' + ');
     $('sumTotal').textContent = fmt(total());
-    $('perHead').textContent = '≈ ' + fmt(Math.round(total() / Math.max(1, people()))) + ' на людину · ' + people() + ' подарунків';
+    $('perHead').textContent = '≈ ' + fmt(Math.round(total() / Math.max(1, people()))) + (cfg.lines.length > 1 ? ' у середньому на людину · ' : ' на людину · ') + gifts(people());
     if (fCfg) fCfg.value = summaryText();
     if (fQty && !qtyTouched) fQty.value = people();
     try { history.replaceState(null, '', '#cfg=' + shareParams()); } catch (e) {}
@@ -918,7 +930,7 @@ window.SilkEngine = (function () {
     var p = new URLSearchParams(); p.set('l', cfg.lines.map(function (l) { return STATES[l.p].id + ':' + ITEMS[l.i].id + ':' + l.q; }).join('|')); p.set('c', cfg.c); if (cfg.f) p.set('f', cfg.f); if (cfg.n) p.set('n', cfg.n); return p.toString();
   }
   function summaryText() {
-    return cfg.lines.map(lineText).join('; ') + '. Орієнтир за роздрібними цінами: ' + fmt(total()) + '. Листівка: «' + cfg.c + '»' + (cfg.f ? ', підпис: ' + cfg.f : '') + (cfg.n ? '. Готує: ' + cfg.n : '');
+    return cfg.lines.map(lineText).join('; ') + '. Орієнтир за роздрібними цінами: ' + fmt(total()) + '. Листівка: «' + cfg.c + '»' + (cfg.f ? ', підпис: ' + cfg.f : '') + (cfg.n ? '. Автор добірки: ' + cfg.n : '');
   }
   function setQty(v) { if (v > 0) { cur().q = Math.min(5000, v); apply(false); } }
   $('qtyRange').addEventListener('input', function () { setQty(+this.value); });
@@ -926,9 +938,10 @@ window.SilkEngine = (function () {
   $('cardText').addEventListener('input', function () { cfg.c = this.value.slice(0, 160); apply(false); });
   $('cardFrom').addEventListener('input', function () { cfg.f = this.value.slice(0, 40); apply(false); });
   $('author').addEventListener('input', function () { cfg.n = this.value.slice(0, 40); apply(false); });
+  $('addLine2').addEventListener('click', function () { $('addLine').click(); });
   $('addLine').addEventListener('click', function () { if (cfg.lines.length >= 3) return; var l = cur(); cfg.lines.push({ p: l.p, i: l.i, q: 10 }); cfg.a = cfg.lines.length - 1; apply(true); $('s-item').scrollIntoView({ behavior: 'smooth', block: 'start' }); });
   $('flipBtn').addEventListener('click', function () { if (silk) silk.flip(); });
-  $('sumToggle').addEventListener('click', function () { var o = $('summary').classList.toggle('open'); this.setAttribute('aria-expanded', o ? 'true' : 'false'); this.textContent = o ? 'Позиції ↓' : 'Позиції ↑'; });
+  $('sumToggle').addEventListener('click', function () { var o = $('summary').classList.toggle('open'); this.setAttribute('aria-expanded', o ? 'true' : 'false'); this.textContent = 'Позиції (' + cfg.lines.length + ') ' + (o ? '↓' : '↑'); });
   $('shareBtn').addEventListener('click', function () {
     var b = this, url = location.href.split('#')[0] + '#cfg=' + shareParams();
     var text = 'Пропоную подарунок для команди: ' + cfg.lines.map(lineText).join('; ') + ', орієнтир ' + fmt(total()) + ' за роздрібними цінами. Листівка: «' + cfg.c + '». Подивитися і змінити: ' + url;
@@ -940,8 +953,9 @@ window.SilkEngine = (function () {
   $('cardText').value = cfg.c; $('cardFrom').value = cfg.f; $('author').value = cfg.n;
   if (shared) {
     $('approval').hidden = false;
-    if (cfg.n) { $('apprFrom').hidden = false; $('apprFrom').textContent = 'Підготував(ла): ' + cfg.n; }
-    $('apprLines').textContent = cfg.lines.map(lineText).join('; ') + '. Листівка: «' + cfg.c + '»';
+    if (cfg.n) { $('apprFrom').hidden = false; $('apprFrom').textContent = 'Автор добірки: ' + cfg.n; }
+    $('apprLines').textContent = cfg.lines.map(function (l) { var s = STATES[l.p], it = ITEMS[l.i]; return l.q + ' × ' + it.name + ' «' + s.name + '» — ' + (it.id === catalogItem(s) ? 'каталог' : 'під запит'); }).join('\n') + '\nЛистівка: «' + cfg.c + '»';
+    $('toRequest').textContent = 'Погодити й надіслати запит';
     $('apprTotal').textContent = fmt(total());
     $('apprEdit').addEventListener('click', function () { $('approval').hidden = true; $('s-print').scrollIntoView({ behavior: 'smooth' }); });
   }

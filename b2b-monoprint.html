@@ -1,22 +1,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Подарунки спікерам і гостям подій — Obiimy</title>
-<meta name="description" content="Твіллі та хустки Obiimy у фірмовій коробці для спікерів, гостей і партнерів подій: один принт події, від 700 грн. Для тиражу радимо запас у три тижні.">
-<link rel="canonical" href="https://obiimy-landing-production.up.railway.app/b2b-speakers">
+<title>Один принт на всю компанію — корпоративні подарунки Obiimy</title>
+<meta name="description" content="Оберіть один принт Obiimy для всієї компанії: твіллі команді, хустка ключовим людям, шаль керівникам, резинка новим співробітникам. Калькулятор тиражу за роздрібними цінами.">
+<link rel="canonical" href="https://obiimy-landing-production.up.railway.app/b2b-monoprint">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Подарунки спікерам і гостям подій — Obiimy">
-<meta property="og:description" content="Твіллі та хустки Obiimy у фірмовій коробці для спікерів, гостей і партнерів подій: один принт події, від 700 грн. Для тиражу радимо запас у три тижні.">
-<meta property="og:image" content="https://obiimy-landing-production.up.railway.app/photo/og-b2b-speakers.jpg">
-<meta property="og:url" content="https://obiimy-landing-production.up.railway.app/b2b-speakers">
+<meta property="og:title" content="Один принт на всю компанію — корпоративні подарунки Obiimy">
+<meta property="og:description" content="Оберіть один принт Obiimy для всієї компанії: твіллі команді, хустка ключовим людям, шаль керівникам, резинка новим співробітникам. Калькулятор тиражу за роздрібними цінами.">
+<meta property="og:image" content="https://obiimy-landing-production.up.railway.app/photo/og-b2b-monoprint.jpg">
+<meta property="og:url" content="https://obiimy-landing-production.up.railway.app/b2b-monoprint">
 <meta property="og:locale" content="uk_UA">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Prata&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Tenor+Sans&display=swap" rel="stylesheet">
 <style>
-  :root{--bg:#F5F2F6;--bg2:#ECE7EF;--card:#fff;--ink:#1E1830;--ink2:#4A4358;--ink3:#7B7489;--line:#D9D2DE;--accent:#5B3E9E;--gold:#F2B705;--radius:6px}
-  :root { --display: 'Prata', serif; --body: 'Manrope', sans-serif; --ink3: #66626D; }
+  :root{--bg:#FAFAF8;--bg2:#F1F0EC;--card:#fff;--ink:#111;--ink2:#4A4A47;--ink3:#8A8984;--line:rgba(17,17,17,.14);--accent:#111;--gold:#E0A800;--radius:0} h1,h2,h3{font-weight:300} .btn{border-radius:0} .size button,.chip{border-radius:0}
+  :root { --display: 'Cormorant Garamond', serif; --body: 'Tenor Sans', sans-serif; --ink3: #66626D; }
   
   * { box-sizing: border-box; min-width: 0; }
   html { scroll-behavior: smooth; }
@@ -235,74 +235,106 @@
 <div class="bar">Для бізнесу<span class="m-hide"> · відправка Новою поштою по Україні та за кордон</span> · безготівковий розрахунок для компаній</div>
 <header class="nav"><div class="wrap">
   <a class="logo" href="https://obiimy.world/" aria-label="Obiimy — на сайт бренду"><img src="brand/logo-ink-480.webp" alt="Obiimy" width="113" height="24"></a>
-  <nav class="nav-links" aria-label="Розділи сторінки"><a href="#formats">Формати</a><a href="#why">Чому це працює</a><a href="#timeline">Терміни</a><a href="#faq">Питання</a><a href="#request">Контакт</a></nav>
+  <nav class="nav-links" aria-label="Розділи сторінки"><a href="#print">Принт</a><a href="#tiers">Рівні</a><a href="#why">Чому один принт</a><a href="#faq">Питання</a><a href="#request">Контакт</a></nav>
   <a class="btn btn-gold btn-sm" href="#request">Запит</a>
 </div></header>
 <main>
 
-  <section class="hero" style="--hero-pos:50% 16%"><div class="wrap">
+<style>
+  .mp-swatches { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 10px; max-width: 760px; }
+  .mp-swatches button { all: unset; cursor: pointer; aspect-ratio: 1; border-radius: 50%; overflow: hidden; border: 2px solid transparent; box-shadow: 0 0 0 1px var(--line); }
+  .mp-swatches button img { width: 100%; height: 100%; object-fit: cover; transform: scale(1.3); }
+  .mp-swatches button[aria-pressed="true"] { border-color: var(--ink); }
+  .mp-swatches button:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+  .mp-name { margin-top: 16px; font-family: var(--display); font-size: 1.6rem; }
+  .mp-line { color: var(--ink2); max-width: 44em; margin-top: 4px; }
+  .tiers { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 30px; }
+  .tier { background: var(--card); border: 1px solid var(--line); display: grid; grid-template-rows: auto 1fr; }
+  .tier .viz { position: relative; aspect-ratio: 1; background: var(--bg2); display: grid; place-items: center; overflow: hidden; }
+  .tier .tex { display: block; background-size: cover; background-position: center; box-shadow: 0 20px 30px -18px rgba(0,0,0,.45); transition: background-image .3s ease; }
+  .v-k65 .tex { width: 64%; aspect-ratio: 1; transform: rotate(-6deg); }
+  .v-k88 .tex { width: 78%; aspect-ratio: 1; transform: rotate(4deg); }
+  .v-tw .tex { width: 90%; height: 13%; transform: rotate(-24deg); border-radius: 2px; background-size: auto 100%; background-repeat: repeat-x; }
+  .v-scr .tex { width: 52%; aspect-ratio: 1; border-radius: 50%; -webkit-mask-image: radial-gradient(circle, transparent 34%, #000 35%, #000 69%, transparent 70%); mask-image: radial-gradient(circle, transparent 34%, #000 35%, #000 69%, transparent 70%); }
+  .tier .in { padding: 16px 18px 18px; display: grid; gap: 6px; align-content: start; }
+  .tier .who { font-size: .76rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink3); font-weight: 600; }
+  .tier h3 { font-size: 1.25rem; }
+  .tier .catline { font-size: .82rem; color: var(--ink2); min-height: 2.4em; }
+  .tier .row { display: flex; align-items: end; justify-content: space-between; gap: 10px; border-top: 1px solid var(--line); padding-top: 12px; margin-top: 4px; }
+  .tier label { display: grid; gap: 4px; font-size: .78rem; color: var(--ink2); }
+  .tier input { font: inherit; width: 96px; min-height: 44px; padding: 8px 10px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); }
+  .tier .sum { font-family: var(--display); font-weight: 400; font-size: 1.15rem; }
+  .mp-total { margin-top: 26px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 22px; border-top: 1px solid var(--ink); padding-top: 18px; }
+  .mp-total b { font-family: var(--display); font-weight: 400; font-size: 2.2rem; }
+  .mp-total span { color: var(--ink2); font-size: .9rem; }
+  @media (max-width: 960px) { .tiers { grid-template-columns: 1fr 1fr; } .mp-swatches { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .tier .viz { aspect-ratio: 4 / 3; } }
+</style>
+  <section class="hero" style="--hero-pos:50% 14%"><div class="wrap">
     <div>
-      <p class="eyebrow">Конференції · форуми · корпоративні події</p>
-      <h1 style="margin-top:14px">Спікеру — не блокнот, а шовк</h1>
-      <p class="lead">Твіллі у фірмовій коробці замість чергового блокнота з логотипом: подарунок, який спікер надягне того ж вечора, а гості сфотографують.<span class="m-hide"> Для спікерів, гостей і партнерів — один принт події або добірка.</span></p>
-      <div class="cta"><a class="btn btn-gold" href="#request">Порахувати для події</a><a class="btn btn-line" href="https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/">Замовити зразок</a></div>
-      <p class="fine">Зразок — від 1 600 грн у роздріб, у тій самій коробці. Або одразу: <a href="tel:+380670108525">+38 067 010 85 25</a></p>
+      <p class="eyebrow">Монопринт · корпоративні подарунки</p>
+      <h1 style="margin-top:14px">Один принт — уся компанія</h1>
+      <p class="lead">Оберіть принт, і він стане подарунком для кожного рівня: твіллі — команді, хустка — ключовим людям, шаль — керівникам, резинка — новим співробітникам.<span class="m-hide"> Разом це виглядає як колекція вашої компанії, а не як набір випадкових подарунків.</span></p>
+      <div class="cta"><a class="btn btn-gold" href="#request">Обрати принт</a><a class="btn btn-line" href="b2b-sets">Готові набори</a></div>
+      <p class="fine">Роздрібні ціни від 700 до 4 400 грн за річ. Або одразу: <a href="tel:+380670108525">+38 067 010 85 25</a></p>
     </div>
-    <figure><img src="photo/probudzhennia-3-800.webp" srcset="photo/probudzhennia-3-480.webp 480w, photo/probudzhennia-3-800.webp 800w, photo/probudzhennia-3.webp 1000w" sizes="(max-width: 960px) 100vw, 50vw" width="1000" height="1500" alt="Жінка в білому жакеті та шовковій хустці" fetchpriority="high"><div class="tag">Один принт події — і сцена виглядає зібрано</div></figure>
-  </div></section><section class="wrap" aria-label="Коротко про бренд"><div class="facts"><div><b class="num">1 600 грн</b><span>Твіллі або паше в коробці — головний формат для спікерів</span></div><div><b class="num">700 грн</b><span>Резинка в коробочці — для гостей і welcome-box</span></div><div><b class="num">Один принт</b><span>Принт події під кольори айдентики — з колекцій Obiimy</span></div><div><b class="num">3 тижні</b><span>Рекомендований запас до дати для тиражу з листівками</span></div></div></section>
-  <section class="block" id="formats"><div class="wrap">
-    <div class="head"><p class="eyebrow">Формати</p><h2>Кому і що дарувати на події</h2></div>
-    <div class="grid4">
-      <div class="card photo"><img src="photo/paris-bag-800.webp" srcset="photo/paris-bag-480.webp 480w, photo/paris-bag-800.webp 800w, photo/paris-bag-1200.webp 1200w, photo/paris-bag.jpg 1856w" sizes="(max-width: 640px) 50vw, 25vw" width="1856" height="2304" alt="Твіллі на ручці сумки" loading="lazy" decoding="async"><div class="in"><h3>Спікерам</h3><p>Твіллі 84 × 5 у коробці з листівкою від організаторів.</p><div class="price-row"><span>Роздріб</span><span class="num">1 600 грн</span></div></div></div>
-      <div class="card photo"><img src="photo/scrunchie-800.webp" srcset="photo/scrunchie-480.webp 480w, photo/scrunchie-800.webp 800w, photo/scrunchie-1200.webp 1200w, photo/scrunchie.jpg 1856w" sizes="(max-width: 640px) 50vw, 25vw" width="1856" height="2304" alt="Резинка у коробочці" loading="lazy" decoding="async"><div class="in"><h3>Гостям</h3><p>Резинка у фірмовій коробочці — маленька й помітна, таку не викидають.</p><div class="price-row"><span>Роздріб</span><span class="num">700 грн</span></div></div></div>
-      <div class="card photo"><img src="photo/box-dots-800.webp" srcset="photo/box-dots-480.webp 480w, photo/box-dots-800.webp 800w, photo/box-dots-1200.webp 1200w, photo/box-dots.jpg 1856w" sizes="(max-width: 640px) 50vw, 25vw" width="1856" height="2304" alt="Набір у жовтій коробці" loading="lazy" decoding="async"><div class="in"><h3>Партнерам події</h3><p>Набір «Натхнення» або хустка 65 × 65 — для спонсорів.</p><div class="price-row"><span>Роздріб</span><span class="num">3 200 грн</span></div></div></div>
-      <div class="card photo"><img src="photo/paris-dots-800.webp" srcset="photo/paris-dots-480.webp 480w, photo/paris-dots-800.webp 800w, photo/paris-dots-1200.webp 1200w, photo/paris-dots.jpg 1856w" sizes="(max-width: 640px) 50vw, 25vw" width="1856" height="2304" alt="Шаль на плечах" loading="lazy" decoding="async"><div class="in"><h3>Хедлайнеру</h3><p>Шаль 88 × 88 — подарунок, який запам’ятають.</p><div class="price-row"><span>Роздріб</span><span class="num">4 400 грн</span></div></div></div>
-    </div>
+    <figure class="mphero" style="margin:0;position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:var(--radius)"><img src="photo/paris-green-800.webp" srcset="photo/paris-green-480.webp 480w, photo/paris-green-800.webp 800w, photo/paris-green-1200.webp 1200w, photo/paris-green.jpg 1856w" sizes="(max-width: 960px) 100vw, 50vw" width="1856" height="2304" alt="Шовкова хустка на жакеті" fetchpriority="high"><div class="tag">Один принт на всіх читається як подарунок від команди</div></figure>
+  </div></section><section class="wrap" aria-label="Коротко про бренд"><div class="facts"><div><b class="num">9 принтів</b><span>Авторські картини художниці Світлани Сніжко</span></div><div><b class="num">4 рівні</b><span>Команда, ключові люди, керівники, нові співробітники</span></div><div><b class="num">Одна історія</b><span>Той самий принт у різних форматах і на різних людях</span></div><div><b class="num">Розрахунок</b><span>Кількість по рівнях — і одразу сума за роздрібом</span></div></div></section>
+
+  <section class="block" id="print"><div class="wrap">
+    <div class="head"><p class="eyebrow">Крок 1 · Принт</p><h2>Оберіть принт компанії</h2><p class="sub">Принт одразу з’явиться на всіх рівнях подарунків нижче. Формат, у якому принт є в каталозі, позначено; інші — під запит.</p></div>
+    <div class="mp-swatches" id="mpSw" role="group" aria-label="Принти"><button type="button" data-i="0" aria-label="Принт «Пробудження»" aria-pressed="false"><img src="tex/probudzhennia-160.webp" alt="" width="80" height="80" loading="lazy"></button><button type="button" data-i="1" aria-label="Принт «Єднання»" aria-pressed="false"><img src="tex/yednannia-160.webp" alt="" width="80" height="80" loading="lazy"></button><button type="button" data-i="2" aria-label="Принт «Тиша серця»" aria-pressed="true"><img src="tex/tysha-sertsia-160.webp" alt="" width="80" height="80" loading="lazy"></button><button type="button" data-i="3" aria-label="Принт «Пристрасть»" aria-pressed="false"><img src="tex/prystrast-160.webp" alt="" width="80" height="80" loading="lazy"></button><button type="button" data-i="4" aria-label="Принт «Коло сонця»" aria-pressed="false"><img src="tex/kolo-sontsia-160.webp" alt="" width="80" height="80" loading="lazy"></button><button type="button" data-i="5" aria-label="Принт «Мелодія двох»" aria-pressed="false"><img src="tex/melodiia-160.webp" alt="" width="80" height="80" loading="lazy"></button><button type="button" data-i="6" aria-label="Принт «Піднесення»" aria-pressed="false"><img src="tex/pidnesennia-160.webp" alt="" width="80" height="80" loading="lazy"></button><button type="button" data-i="7" aria-label="Принт «Між нами»" aria-pressed="false"><img src="tex/mizh-namy-160.webp" alt="" width="80" height="80" loading="lazy"></button><button type="button" data-i="8" aria-label="Принт «Літнє поле»" aria-pressed="false"><img src="tex/litnie-pole-160.webp" alt="" width="80" height="80" loading="lazy"></button></div>
+    <p class="mp-name" id="mpName"></p><p class="mp-line" id="mpLine"></p>
   </div></section>
 
-  <section class="block" id="stage" style="padding-top:0"><div class="wrap">
-    <div class="stagebar">
-      <figure><img src="photo/paris-blazer-800.webp" srcset="photo/paris-blazer-480.webp 480w, photo/paris-blazer-800.webp 800w, photo/paris-blazer-1200.webp 1200w, photo/paris-blazer.jpg 1856w" sizes="(max-width: 640px) 50vw, 25vw" width="1856" height="2304" alt="Шовкова хустка на жакеті спікерки" loading="lazy" decoding="async"><figcaption><b>Спікерка</b><span>Твіллі або паше — вручають на сцені</span></figcaption></figure>
-      <figure><img src="photo/paris-green-800.webp" srcset="photo/paris-green-480.webp 480w, photo/paris-green-800.webp 800w, photo/paris-green-1200.webp 1200w, photo/paris-green.jpg 1856w" sizes="(max-width: 640px) 50vw, 25vw" width="1856" height="2304" alt="Зелена шовкова хустка на шиї" loading="lazy" decoding="async"><figcaption><b>Модераторка</b><span>Той самий принт — дрес-код сцени</span></figcaption></figure>
-      <figure><img src="photo/paris-bun-800.webp" srcset="photo/paris-bun-480.webp 480w, photo/paris-bun-800.webp 800w, photo/paris-bun-1200.webp 1200w, photo/paris-bun.jpg 1856w" sizes="(max-width: 640px) 50vw, 25vw" width="1856" height="2304" alt="Твіллі у волоссі" loading="lazy" decoding="async"><figcaption><b>Гостя</b><span>Хустка 44 або твіллі — у welcome-box</span></figcaption></figure>
-      <figure><img src="photo/kolo-3-800.webp" srcset="photo/kolo-3-480.webp 480w, photo/kolo-3-800.webp 800w, photo/kolo-3.webp 1000w" sizes="(max-width: 640px) 50vw, 25vw" width="1000" height="1500" alt="Хустка на плечах поверх пальта" loading="lazy" decoding="async"><figcaption><b>Партнер події</b><span>Набір або хустка 65 × 65</span></figcaption></figure>
-    </div>
-    <p class="note">Один принт на всіх, хто на сцені, — і фото події виглядають як задумано.</p>
+  <section class="block alt" id="tiers"><div class="wrap">
+    <div class="head"><p class="eyebrow">Крок 2 · Рівні</p><h2>Хто що отримує</h2><p class="sub">Змініть кількість — сума рахується за роздрібними цінами; умови для тиражу надішлемо в розрахунку.</p></div>
+    <div class="tiers" id="tiersGrid">
+      <div class="tier" data-k="team" data-p="1600" data-fmt="tw">
+        <div class="viz v-tw"><span class="tex"></span></div>
+        <div class="in"><p class="who">Уся команда</p><h3>Твіллі 84 × 5</h3><p class="catline"></p>
+          <div class="row"><label>Кількість<input type="number" min="0" max="5000" value="30" inputmode="numeric" aria-label="Уся команда: кількість"></label><b class="num sum"></b></div></div>
+      </div>
+      <div class="tier" data-k="key" data-p="3200" data-fmt="k65">
+        <div class="viz v-k65"><span class="tex"></span></div>
+        <div class="in"><p class="who">Ключові люди</p><h3>Хустка 65 × 65</h3><p class="catline"></p>
+          <div class="row"><label>Кількість<input type="number" min="0" max="5000" value="10" inputmode="numeric" aria-label="Ключові люди: кількість"></label><b class="num sum"></b></div></div>
+      </div>
+      <div class="tier" data-k="lead" data-p="4400" data-fmt="k88">
+        <div class="viz v-k88"><span class="tex"></span></div>
+        <div class="in"><p class="who">Керівники й партнери</p><h3>Шаль 88 × 88</h3><p class="catline"></p>
+          <div class="row"><label>Кількість<input type="number" min="0" max="5000" value="3" inputmode="numeric" aria-label="Керівники й партнери: кількість"></label><b class="num sum"></b></div></div>
+      </div>
+      <div class="tier" data-k="new" data-p="700" data-fmt="scr">
+        <div class="viz v-scr"><span class="tex"></span></div>
+        <div class="in"><p class="who">Нові співробітники</p><h3>Резинка у коробочці</h3><p class="catline"></p>
+          <div class="row"><label>Кількість<input type="number" min="0" max="5000" value="0" inputmode="numeric" aria-label="Нові співробітники: кількість"></label><b class="num sum"></b></div></div>
+      </div></div>
+    <div class="mp-total"><b class="num" id="mpTotal"></b><span id="mpPeople"></span><a class="btn btn-gold" href="#request" id="mpSend">Надіслати розрахунок</a></div>
   </div></section>
 
-  <section class="block alt" id="why"><div class="wrap grid2">
-    <div><p class="eyebrow">Чому це працює</p><h2 style="margin-top:10px">Подарунок, який потрапляє в кадр</h2>
+  <section class="block" id="why"><div class="wrap grid2">
+    <div><p class="eyebrow">Чому один принт</p><h2 style="margin-top:10px">Колекція вашої компанії</h2>
       <div class="faq" style="margin-top:22px">
-        <details open><summary>Його надягають одразу</summary><p>Твіллі на шию чи на сумку — і спікер уже в кадрі фотографа події з вашим подарунком.</p></details>
-        <details><summary>Принт події</summary><p>Один принт на всіх спікерів читається як дрес-код сцени; підбираємо з колекцій під кольори айдентики.</p></details>
-        <details><summary>Є що розповісти зі сцени</summary><p>Авторські принти художниці Світлани Сніжко, італійський шовк, ручна обробка, українське виробництво.</p></details>
-        <details><summary>Один розмір на всіх</summary><p>Твіллі, паше й резинка — не треба збирати мірки.</p></details>
+        <details open><summary>Видно, що це від команди</summary><p>Коли в офісі, на конференції чи на фото один принт — подарунок читається як спільний, а не випадковий.</p></details>
+        <details><summary>Різні формати — різні люди</summary><p>Твіллі носять на сумці чи в волоссі, хустку — на шиї, шаль — на плечах. Один принт працює на кожного.</p></details>
+        <details><summary>Історія принту</summary><p>Кожен принт — авторська картина. У листівці можна розповісти, чому обрали саме його.</p></details>
       </div>
     </div>
-    <figure><img src="photo/kolo-2-800.webp" srcset="photo/kolo-2-480.webp 480w, photo/kolo-2-800.webp 800w, photo/kolo-2.webp 1000w" sizes="(max-width: 960px) 100vw, 50vw" width="1000" height="1500" alt="Хустка на бежевому пальті" loading="lazy" decoding="async"></figure>
-  </div></section>
-
-  <section class="block" id="timeline"><div class="wrap">
-    <div class="head"><p class="eyebrow">Терміни</p><h2>Щоб коробки були на майданчику вчасно</h2><p class="sub">Рекомендований графік для тиражу з листівками. Речі з наявності відправляємо того ж дня при замовленні до 16:00.</p></div>
-    <div class="timeline">
-      <div><p class="eyebrow">За 3 тижні</p><b>Запит і зразок</b><p>Кількість, формат, кольори події. Добірка принтів, розрахунок, зразок у роздріб. Або зберіть подарунок у <a href="b2b-atelier">3D-конструкторі</a>.</p></div>
-      <div><p class="eyebrow">За 2 тижні</p><b>Погодження</b><p>Принт події, текст листівки, рахунок.</p></div>
-      <div><p class="eyebrow">За 3–5 днів</p><b>Відправка</b><p>Одна посилка на майданчик або в офіс організатора.</p></div>
-    </div>
+    <figure><img src="photo/paris-belt-800.webp" srcset="photo/paris-belt-480.webp 480w, photo/paris-belt-800.webp 800w, photo/paris-belt-1200.webp 1200w, photo/paris-belt.jpg 1856w" sizes="(max-width: 960px) 100vw, 50vw" width="1856" height="2304" alt="Твіллі як пояс на тренчі" loading="lazy" decoding="async"></figure>
   </div></section>
 
   <section class="block alt" id="faq"><div class="wrap">
     <div class="head"><p class="eyebrow">Питання</p><h2>Що зазвичай питають</h2></div>
     <div class="faq">
-      <details><summary>Мінімальна кількість?</summary><p>Фіксованого мінімуму немає — обговорюємо кожен запит окремо.</p></details>
-      <details><summary>Логотип події на коробці?</summary><p>Стандартно — листівка з вашим текстом усередині фірмової коробки Obiimy. Логотип та інший брендинг обговорюємо окремо.</p></details>
-      <details><summary>Ви агенція, що веде подію для клієнта?</summary><p>Для агенцій є лукбук без цін і <a href="b2b-agencies">окрема партнерська програма →</a></p></details>
+      <details><summary>Чи є кожен принт у кожному форматі?</summary><p>Ні — у каталозі кожен принт має свої формати. Інші формати того ж принта — під запит: наявність і терміни підтвердимо в розрахунку.</p></details>
+      <details><summary>Чи можна два принти — для жінок і чоловіків?</summary><p>Так, додайте в коментарі — підберемо пару принтів, які поєднуються.</p></details>
       <details><summary>Які документи отримує компанія?</summary><p>Рахунок для безготівкової оплати та видаткова накладна. Працюємо з ТОВ і ФОП. Деталі щодо ПДВ уточнюйте в запиті — відповімо разом із розрахунком.</p></details>
       <details><summary>Чи однакові речі в партії?</summary><p>Принт і колір у межах партії однакові. Розмір може відрізнятися на 0–2,5 см через ручну обробку краю — це особливість шовку, а не брак.</p></details>
     </div>
   </div></section>
   
-  <section class="block" id="proof"><div class="wrap grid2" style="align-items:start">
+  <section class="block alt" id="proof"><div class="wrap grid2" style="align-items:start">
     <div><p class="eyebrow">Довіра</p><h2 style="margin-top:10px">Де вже є Obiimy</h2><p style="margin-top:14px;color:var(--ink2);max-width:36em">Obiimy продається у роздрібних партнерів в Україні та за кордоном, а історію бренду розповідали LIGA.net та INSIDER UA.</p></div>
     <div>
       <div class="proof">
@@ -316,22 +348,22 @@
     </div>
   </div></section>
 
-  <section class="form-block alt" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Порахувати для події</h2><p>Дата, кількість спікерів і гостей — повернемось із добіркою принтів і розрахунком.</p><p class="big"><a href="tel:+380670108525">+38 067 010 85 25</a></p><p><a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a></p></div>
+  <section class="form-block" id="request"><div class="wrap">
+    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Надіслати розрахунок</h2><p>Розрахунок із калькулятора вже в запиті — повернемось із наявністю принту та цінами на тираж.</p><p class="big"><a href="tel:+380670108525">+38 067 010 85 25</a></p><p><a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a></p></div>
     <div>
-      <form id="f-sp" novalidate>
-        <label><span>Організатор <span class="req">*</span></span><input name="company" data-label="Організатор" type="text" placeholder="Компанія або назва події" autocomplete="organization" required aria-describedby="f-sp-company-err"><span class="err" id="f-sp-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-sp-name-err"><span class="err" id="f-sp-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-sp-phone-err"><span class="err" id="f-sp-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-sp-email-err"><span class="err" id="f-sp-email-err" role="alert">Вкажіть коректний email</span></label><label><span>Дата події</span><input name="date" data-label="Дата події" type="text" placeholder="наприклад, 14 травня"></label><label><span>Спікерів</span><input name="speakers" data-label="Спікерів" type="number" min="1" inputmode="numeric" placeholder="наприклад, 20"></label><label><span>Гостей із подарунком</span><input name="guests" data-label="Гостей із подарунком" type="number" min="1" inputmode="numeric" placeholder="наприклад, 150"></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Кольори події, місто майданчика, побажання до принтів…"></textarea></label>
-        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на sale@obiimy-world.com з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="tel:+380670108525">+38 067 010 85 25</a>.</span></div>
+      <form id="f-mono" novalidate>
+        <label><span>Компанія <span class="req">*</span></span><input name="company" data-label="Компанія" type="text" placeholder="Назва компанії" autocomplete="organization" required aria-describedby="f-mono-company-err"><span class="err" id="f-mono-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-mono-name-err"><span class="err" id="f-mono-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-mono-phone-err"><span class="err" id="f-mono-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-mono-email-err"><span class="err" id="f-mono-email-err" role="alert">Вкажіть коректний email</span></label><label><span>Коли потрібно</span><select name="deadline" data-label="Коли потрібно"><option value="">Оберіть</option><option>До 10 грудня</option><option>До 20 грудня</option><option>Після свят</option><option>Інша дата</option></select></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Нагода, текст листівки, побажання…"></textarea></label>
+        <input type="hidden" name="config" data-label="Розрахунок"><div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на sale@obiimy-world.com з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="tel:+380670108525">+38 067 010 85 25</a>.</span></div>
       </form>
-      <div class="done" id="f-sp-done" hidden aria-live="polite">
+      <div class="done" id="f-mono-done" hidden aria-live="polite">
         <h3 tabindex="-1">Лист підготовлено</h3>
         <p>Якщо поштова програма не відкрилась — скопіюйте текст нижче й надішліть на <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a>, або подзвоніть <a href="tel:+380670108525">+38 067 010 85 25</a>.</p>
-        <textarea id="f-sp-txt" readonly rows="8" aria-label="Текст запиту"></textarea>
-        <div class="row"><button class="btn btn-line btn-sm" type="button" id="f-sp-copy">Скопіювати текст</button><a class="btn btn-line btn-sm" href="tel:+380670108525">Подзвонити</a><button class="btn btn-line btn-sm" type="button" id="f-sp-back">Змінити запит</button></div>
+        <textarea id="f-mono-txt" readonly rows="8" aria-label="Текст запиту"></textarea>
+        <div class="row"><button class="btn btn-line btn-sm" type="button" id="f-mono-copy">Скопіювати текст</button><a class="btn btn-line btn-sm" href="tel:+380670108525">Подзвонити</a><button class="btn btn-line btn-sm" type="button" id="f-mono-back">Змінити запит</button></div>
       </div>
       <script>
       (function () {
-        var f = document.getElementById('f-sp'), done = document.getElementById('f-sp-done'), txt = document.getElementById('f-sp-txt');
+        var f = document.getElementById('f-mono'), done = document.getElementById('f-mono-done'), txt = document.getElementById('f-mono-txt');
         function valid(i) {
           var v = i.value.trim();
           if (i.type === 'email') return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v);
@@ -346,21 +378,47 @@
           if (first) { first.focus(); first.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
           var lines = [];
           f.querySelectorAll('[name]').forEach(function (i) { if (i.value.trim()) lines.push(i.dataset.label + ': ' + i.value.trim()); });
-          var body = 'Подарунки для події\n\n' + lines.join('\n') + '\n\nНадіслано зі сторінки ' + location.href;
+          var body = 'Монопринт для компанії\n\n' + lines.join('\n') + '\n\nНадіслано зі сторінки ' + location.href;
           txt.value = body;
           var company = f.querySelector('[name="company"]').value.trim();
           f.hidden = true; done.hidden = false; done.scrollIntoView({ block: 'start', behavior: 'smooth' }); done.querySelector('h3').focus({ preventScroll: true });
-          window.location.href = 'mailto:sale@obiimy-world.com?subject=' + encodeURIComponent('Подарунки для події — ' + company) + '&body=' + encodeURIComponent(body);
+          window.location.href = 'mailto:sale@obiimy-world.com?subject=' + encodeURIComponent('Монопринт для компанії — ' + company) + '&body=' + encodeURIComponent(body);
         });
-        document.getElementById('f-sp-copy').addEventListener('click', function () { var b = this; txt.select(); (navigator.clipboard ? navigator.clipboard.writeText(txt.value) : Promise.reject()).then(function () { b.textContent = 'Скопійовано'; setTimeout(function () { b.textContent = 'Скопіювати текст'; }, 2000); }, function () { document.execCommand('copy'); }); });
-        document.getElementById('f-sp-back').addEventListener('click', function () { done.hidden = true; f.hidden = false; f.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
+        document.getElementById('f-mono-copy').addEventListener('click', function () { var b = this; txt.select(); (navigator.clipboard ? navigator.clipboard.writeText(txt.value) : Promise.reject()).then(function () { b.textContent = 'Скопійовано'; setTimeout(function () { b.textContent = 'Скопіювати текст'; }, 2000); }, function () { document.execCommand('copy'); }); });
+        document.getElementById('f-mono-back').addEventListener('click', function () { done.hidden = true; f.hidden = false; f.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
       })();
       </script></div>
   </div></section>
+  <script>
+  (function () {
+    var ST = [{"id": "probudzhennia", "name": "Пробудження", "line": "Іриси, написані навесні. Про емоції, що ростуть зсередини у перші хвилини чогось нового.", "size": "65 × 65 см · двосторонній друк"}, {"id": "yednannia", "name": "Єднання", "line": "Жовті пташки на кульбабах. Про те, що тримає разом, коли розлітається все інше.", "size": "44 × 44 см · двосторонній друк"}, {"id": "tysha-sertsia", "name": "Тиша серця", "line": "Горобці у високій траві. Про спокій, який не треба заслуговувати.", "size": "65 × 65 см"}, {"id": "prystrast", "name": "Пристрасть", "line": "Сині кульбаби на кремовому шовку. Про те, що розлітається від одного подиху.", "size": "65 × 65 см · двосторонній друк"}, {"id": "kolo-sontsia", "name": "Коло сонця", "line": "Вінок із сонячних квітів на рожевому. Про тепло, яке щоразу повертається.", "size": "88 × 88 см · шаль"}, {"id": "melodiia", "name": "Мелодія двох", "line": "Дві пташки серед верболозу. Про розмову, для якої не потрібні слова.", "size": "44 × 44 см · паше"}, {"id": "pidnesennia", "name": "Піднесення", "line": "Сиворакші та золотий дощ. Про політ, який починається на землі.", "size": "65 × 65 см · двосторонній друк"}, {"id": "mizh-namy", "name": "Між нами", "line": "Гортензії по краю сірого шовку. Про те, що лишається тільки між двома.", "size": "65 × 65 см · двосторонній друк"}, {"id": "litnie-pole", "name": "Літнє поле", "line": "Букет, написаний за один день. Про літо, яке не хоче закінчуватись.", "size": "65 × 65 см · двосторонній друк"}], cur = 2;
+    function cat(s) { var z = s.size, two = z.indexOf('двосторон') >= 0; if (z.indexOf('88') === 0) return 'k88'; if (z.indexOf('44') === 0) return two ? 'd44' : 'p44'; return two ? 'd65' : 'k65'; }
+    function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f') + '\u00a0грн'; }
+    var tiers = [].slice.call(document.querySelectorAll('.tier'));
+    function render() {
+      var s = ST[cur], c = cat(s), total = 0, people = 0, lines = [];
+      document.getElementById('mpName').textContent = '«' + s.name + '»'; document.getElementById('mpLine').textContent = s.line + ' У каталозі: ' + s.size.replace(' см', '') + '.';
+      document.querySelectorAll('#mpSw button').forEach(function (b, i) { b.setAttribute('aria-pressed', i === cur ? 'true' : 'false'); });
+      tiers.forEach(function (t) {
+        var f = t.dataset.fmt, p = +t.dataset.p, q = Math.max(0, +t.querySelector('input').value || 0);
+        t.querySelector('.tex').style.backgroundImage = 'url(tex/' + s.id + (f === 'tw' ? '-strip' : '') + '.jpg)';
+        t.querySelector('.catline').textContent = f === c ? 'Каталог — принт є в цьому форматі' : 'Під запит — цей формат принта підтвердимо';
+        t.querySelector('.sum').textContent = fmt(p * q); total += p * q; people += q;
+        if (q) lines.push(q + ' × ' + t.querySelector('h3').textContent + ' (' + t.querySelector('.who').textContent + ')');
+      });
+      document.getElementById('mpTotal').textContent = fmt(total);
+      document.getElementById('mpPeople').textContent = people + ' подарунків · за роздрібними цінами — верхня межа';
+      var h = document.querySelector('#f-mono [name="config"]'); if (h) h.value = 'Принт «' + s.name + '»: ' + lines.join('; ') + '. Орієнтир: ' + fmt(total) + '.';
+    }
+    document.querySelectorAll('#mpSw button').forEach(function (b) { b.addEventListener('click', function () { cur = +b.dataset.i; render(); }); });
+    tiers.forEach(function (t) { t.querySelector('input').addEventListener('input', render); });
+    render();
+  })();
+  </script>
 </main>
-<section class="others" aria-label="Інші програми для бізнесу"><div class="wrap"><span class="grp"><b>Набори:</b><a href="b2b-sets">Каталог наборів</a><a href="b2b-monoprint">Один принт — уся компанія</a><a href="b2b-unboxing">Розпакування</a><a href="b2b-atelier">3D-конструктор подарунка</a></span><span class="grp"><b>Подарунки компаніям:</b><a href="b2b-newyear">Новий рік</a><a href="b2b-calendar">Річна програма</a><a href="b2b-certificates">Сертифікати для команд</a><a href="b2b-garden">3D-історія</a></span><span class="grp"><b>Бізнесу й партнерам:</b><a href="b2b-horeca">HoReCa й уніформа</a><a href="b2b-wholesale">Опт для магазинів</a><a href="b2b-agencies">Для агенцій</a></span><span class="grp"><a href="b2b-en">English</a></span></div></section>
+<section class="others" aria-label="Інші програми для бізнесу"><div class="wrap"><span class="grp"><b>Набори:</b><a href="b2b-sets">Каталог наборів</a><a href="b2b-unboxing">Розпакування</a><a href="b2b-atelier">3D-конструктор подарунка</a></span><span class="grp"><b>Подарунки компаніям:</b><a href="b2b-newyear">Новий рік</a><a href="b2b-calendar">Річна програма</a><a href="b2b-certificates">Сертифікати для команд</a><a href="b2b-speakers">Спікерам і гостям подій</a><a href="b2b-garden">3D-історія</a></span><span class="grp"><b>Бізнесу й партнерам:</b><a href="b2b-horeca">HoReCa й уніформа</a><a href="b2b-wholesale">Опт для магазинів</a><a href="b2b-agencies">Для агенцій</a></span><span class="grp"><a href="b2b-en">English</a></span></div></section>
 <footer><div class="wrap"><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко</span><span><a href="tel:+380670108525">+38 067 010 85 25</a> · <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a> · <a href="https://obiimy.world/pro-nas/">Про нас</a> · <a href="https://obiimy.world/oplata-i-dostavka/">Доставка</a></span></div></footer>
-<div class="sticky" id="sticky"><span>Подарунки для події · від 700 грн</span><a href="#request">Запит</a></div>
+<div class="sticky" id="sticky"><span>Один принт — уся компанія</span><a href="#request">Запит</a></div>
 <script>
 (function () {
   var s = document.getElementById('sticky'), cta = document.querySelector('.hero .cta'), req = document.getElementById('request'), tick = false;

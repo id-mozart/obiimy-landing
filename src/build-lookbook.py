@@ -61,7 +61,7 @@ page(f'''
     <p><b>A · Оптова закупівля.</b> Партія за оптовими цінами, продаж за своєю. Для бутиків і мультибрендів.</p>
     <p><b>B · Корнер бренду.</b> Виділена зона Obiimy з фірмовою викладкою та коробками. Для універмагів і концепт-сторів.</p>
     <p><b>C · Міжнародний партнер.</b> Відправка партій за тарифами перевізника, англомовний контент, сайт obiimy-world.com.</p>
-    <p class="contact"><b>Запит оптового прайсу</b><br>+38 067 010 85 25<br>sale@obiimy-world.com<br>obiimy.world</p>
+    <p class="contact"><b>Запит оптового прайсу</b><br>+38 073 925 99 49 · Telegram @OBIIMY_sales<br>sale@obiimy.world · obiimy.world<br>Шоурум: Київ, вул. Петра Сагайдачного, 12</p>
   </div><div>{pic("photo/box-green.jpg", "tall")}</div></div>''')
 
 html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — лукбук для партнерів 2026</title>

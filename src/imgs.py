@@ -41,6 +41,7 @@ def typo(html):
 
 def _typo_text(html):
     html = html.replace("+38 067 010 85 25", "+38" + NBSP + "067" + NBSP + "010" + NBSP + "85" + NBSP + "25")
+    html = html.replace("+38 073 925 99 49", "+38" + NBSP + "073" + NBSP + "925" + NBSP + "99" + NBSP + "49")
     html = re.sub(r'(?<=\d) (?=\d{3}(?!\d))', THIN, html)
     html = re.sub(r'(\d) × (\d)', lambda m: m.group(1) + NBSP + "×" + NBSP + m.group(2), html)
     html = re.sub(r'(\d) (грн|см|шт\.|°C)', lambda m: m.group(1) + NBSP + m.group(2), html)

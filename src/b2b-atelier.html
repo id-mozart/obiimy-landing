@@ -315,7 +315,7 @@
     </div>
   </section>
 </main>
-<footer><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко</span><span><a href="tel:+380670108525">+38 067 010 85 25</a> · <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a></span></footer>
+<footer><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко</span><span><a href="tel:+380739259949">+38 073 925 99 49</a> · <a href="mailto:sale@obiimy.world">sale@obiimy.world</a></span></footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 <script>window.OBIIMY_STATES = /*STATES*/[];</script>
@@ -333,6 +333,13 @@
     { id: 'd65', name: 'Двостороння 65 × 65', price: 4800, note: 'Два принти на одній хустці', scale: 1, flip: true },
     { id: 'k88', name: 'Шаль 88 × 88', price: 4400, note: 'На плечі, як топ або тюрбан', scale: 1.04 }
   ];
+  // formats a print has on obiimy.world (checked 28.09.2026); the rest is "під запит"
+  var AVAIL = {
+    'probudzhennia': 'scr twilly p44 d44 d65', 'yednannia': 'scr twilly p44 d44 d65', 'tysha-sertsia': 'scr twilly p44 k65 d65',
+    'prystrast': 'scr twilly k65 d65', 'kolo-sontsia': 'scr twilly p44 d65 k88', 'melodiia': 'scr twilly p44 d65 mask',
+    'pidnesennia': 'scr twilly p44 d65 mask', 'mizh-namy': 'scr twilly d65 k88', 'litnie-pole': 'scr twilly p44 d65 mask'
+  };
+  function inCat(s, id) { return (' ' + (AVAIL[s.id] || '') + ' ').indexOf(' ' + id + ' ') >= 0; }
   function catalogItem(s) {
     var z = s.size || '', two = z.indexOf('двосторон') >= 0;
     if (z.indexOf('88') === 0) return 'k88';
@@ -358,7 +365,7 @@
   var root = document.documentElement, stage = $('stage'), sw = $('swatches'), items = $('items'), budget = 0;
   function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' грн'; }
   function cur() { return cfg.lines[cfg.a]; }
-  function lineText(l) { var s = STATES[l.p], it = ITEMS[l.i]; return l.q + ' × ' + it.name + ' «' + s.name + '»' + (it.flip ? ' (зворот «' + (STATES[idx(STATES, s.back)] || {}).name + '» — приклад)' : '') + (ITEMS[l.i].id !== catalogItem(s) ? ' · під запит' : ''); }
+  function lineText(l) { var s = STATES[l.p], it = ITEMS[l.i]; return l.q + ' × ' + it.name + ' «' + s.name + '»' + (it.flip ? ' (зворот «' + (STATES[idx(STATES, s.back)] || {}).name + '» — приклад)' : '') + (!inCat(s, ITEMS[l.i].id) ? ' · під запит' : ''); }
   function total() { return cfg.lines.reduce(function (a, l) { return a + l.q * ITEMS[l.i].price; }, 0); }
   function people() { return cfg.lines.reduce(function (a, l) { return a + l.q; }, 0); }
   function gifts(n) { var d = n % 10, h = n % 100; return n + ' ' + (d === 1 && h !== 11 ? 'подарунок' : (d >= 2 && d <= 4 && (h < 12 || h > 14) ? 'подарунки' : 'подарунків')); }
@@ -408,16 +415,16 @@
     $('summary').classList.toggle('multi', cfg.lines.length > 1);
   }
   function apply(printChanged) {
-    var l = cur(), s = STATES[l.p], it = ITEMS[l.i], cat = catalogItem(s);
+    var l = cur(), s = STATES[l.p], it = ITEMS[l.i];
     sw.querySelectorAll('button').forEach(function (b, i) { b.setAttribute('aria-pressed', i === l.p ? 'true' : 'false'); });
     items.querySelectorAll('button').forEach(function (b, i) {
       b.setAttribute('aria-pressed', i === l.i ? 'true' : 'false');
-      b.querySelector('.tag').textContent = ITEMS[i].id === cat ? 'Каталог' : 'Під запит';
+      b.querySelector('.tag').textContent = inCat(s, ITEMS[i].id) ? 'Каталог' : 'Під запит';
       b.classList.toggle('over', budget > 0 && ITEMS[i].price > budget);
     });
     $('budgets').querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', +b.dataset.b === budget ? 'true' : 'false'); });
     var back = STATES[idx(STATES, s.back)];
-    $('printLine').textContent = '«' + s.name + '» — ' + s.line + ' У каталозі: ' + s.size.replace(' см', '') + '.' + (it.flip && back ? ' Зворот «' + back.name + '» — приклад пари, остаточну підберемо в розрахунку.' : '');
+    $('printLine').textContent = '«' + s.name + '» — ' + s.line + ' У каталозі: ' + ITEMS.filter(function (x) { return inCat(s, x.id); }).map(function (x) { return x.name.toLowerCase(); }).join(', ') + '.' + (it.flip && back ? ' Зворот «' + back.name + '» — приклад пари, остаточну підберемо в розрахунку.' : '');
     $('nowName').textContent = '«' + s.name + '»'; $('nowItem').textContent = it.name;
     if (root.classList.contains('no-webgl')) $('fallbackImg').src = 'tex/' + s.id + '.jpg';
     if (lastPrint !== l.p && silk) { silk.setTextures(s.id, s.back); }
@@ -425,7 +432,7 @@
     lastPrint = l.p;
     stage.classList.toggle('twilly', !!it.ribbon);
     stage.classList.toggle('packshot', !!it.pack); $('pack').hidden = !it.pack;
-    if (it.pack) { $('packImg').src = it.pack; $('packImg').alt = it.name; $('packCap').textContent = 'Приклад виробу. Принт «' + s.name + '» у цьому форматі — під запит'; }
+    if (it.pack) { $('packImg').src = it.pack; $('packImg').alt = it.name; $('packCap').textContent = inCat(s, it.id) ? 'Приклад виробу. «' + s.name + '» у цьому форматі є в каталозі' : 'Приклад виробу. Принт «' + s.name + '» у цьому форматі — під запит'; }
     if (silk && silk.setPaused) silk.setPaused(!!it.ribbon || !!it.pack);
     if (ribbon && ribbon.setPaused) ribbon.setPaused(!it.ribbon);
     $('flipBtn').hidden = !it.flip;
@@ -468,7 +475,7 @@
   if (shared) {
     $('approval').hidden = false;
     if (cfg.n) { $('apprFrom').hidden = false; $('apprFrom').textContent = 'Автор добірки: ' + cfg.n; }
-    $('apprLines').textContent = cfg.lines.map(function (l) { var s = STATES[l.p], it = ITEMS[l.i]; return l.q + ' × ' + it.name + ' «' + s.name + '» — ' + (it.id === catalogItem(s) ? 'каталог' : 'під запит'); }).join('\n') + '\nЛистівка: «' + cfg.c + '»';
+    $('apprLines').textContent = cfg.lines.map(function (l) { var s = STATES[l.p], it = ITEMS[l.i]; return l.q + ' × ' + it.name + ' «' + s.name + '» — ' + (inCat(s, it.id) ? 'каталог' : 'під запит'); }).join('\n') + '\nЛистівка: «' + cfg.c + '»';
     $('toRequest').textContent = 'Погодити й надіслати запит'; $('summary').classList.add('appr');
     $('apprTotal').textContent = fmt(total());
     $('apprEdit').addEventListener('click', function () { $('approval').hidden = true; $('summary').classList.remove('appr'); $('toRequest').textContent = 'Надіслати конфігурацію'; $('s-print').scrollIntoView({ behavior: 'smooth' }); });

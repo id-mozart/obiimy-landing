@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Корпоративні подарункові набори — Obiimy</title>
-<meta name="description" content="Дев’ять корпоративних наборів із шовку Obiimy: від welcome-box за 700 грн до подарунка керівнику за 6 000 грн. Жовта коробка, листівка від компанії, доставка кожному адресату.">
+<title>Корпоративні подарункові набори на Новий рік і не тільки — Obiimy</title>
+<meta name="description" content="Подарункові набори Obiimy для компаній: твіллі й резинка, твіллі й хустка, маска й резинка, набори резинок і сертифікати з каталогу, а також комбінації з Obiimy HOME. Від 1 250 грн, жовта коробка, листівка від компанії.">
 <link rel="canonical" href="https://obiimy-landing-production.up.railway.app/b2b-sets">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Корпоративні подарункові набори — Obiimy">
-<meta property="og:description" content="Дев’ять корпоративних наборів із шовку Obiimy: від welcome-box за 700 грн до подарунка керівнику за 6 000 грн. Жовта коробка, листівка від компанії, доставка кожному адресату.">
+<meta property="og:title" content="Корпоративні подарункові набори на Новий рік і не тільки — Obiimy">
+<meta property="og:description" content="Подарункові набори Obiimy для компаній: твіллі й резинка, твіллі й хустка, маска й резинка, набори резинок і сертифікати з каталогу, а також комбінації з Obiimy HOME. Від 1 250 грн, жовта коробка, листівка від компанії.">
 <meta property="og:image" content="https://obiimy-landing-production.up.railway.app/photo/og-b2b-sets.jpg">
 <meta property="og:url" content="https://obiimy-landing-production.up.railway.app/b2b-sets">
 <meta property="og:locale" content="uk_UA">
@@ -165,6 +165,7 @@
   .contact { display: grid; gap: 14px; color: var(--ink2); }
   .contact a { color: var(--ink); text-decoration: none; font-weight: 500; display: inline-block; padding: 10px 0; }
   .contact .big { font-family: var(--display); font-size: 1.6rem; }
+  .contact .show { font-size: .9rem; }
   form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 3vw, 32px); }
   form label { display: grid; gap: 6px; font-size: .82rem; color: var(--ink2); letter-spacing: .03em; }
   form label.full { grid-column: 1 / -1; }
@@ -247,9 +248,57 @@
 <main>
 
 <style>
+  .sk { position: absolute; display: block; background-size: cover; background-position: center; }
+  .sk::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,255,255,.32), rgba(255,255,255,0) 38%, rgba(0,0,0,.2)); mix-blend-mode: soft-light; pointer-events: none; border-radius: inherit; }
+  .sk.sq { width: var(--sq, 84px); aspect-ratio: 1; border-radius: 2px; box-shadow: 0 1px 0 rgba(255,255,255,.3) inset; }
+  .sk.sq.s44 { --sq: 66px; } .sk.sq.big { --sq: 104px; }
+  .sk.strip { width: var(--stw, 118px); height: calc(var(--stw, 118px) * .12); background-size: auto 100%; background-repeat: repeat-x; border-radius: 2px; }
+  .sk.strip::before { content: ""; position: absolute; inset: 0; background: inherit; transform: rotate(36deg); border-radius: 2px; }
+  .sk.ring { width: var(--rg, 50px); aspect-ratio: 1; border-radius: 50%;
+    -webkit-mask: radial-gradient(circle, transparent 30%, #000 31%, #000 68%, transparent 70%), repeating-conic-gradient(#000 0 7deg, rgba(0,0,0,.72) 7deg 14deg); -webkit-mask-composite: source-in;
+    mask: radial-gradient(circle, transparent 30%, #000 31%, #000 68%, transparent 70%) intersect, repeating-conic-gradient(#000 0 7deg, rgba(0,0,0,.72) 7deg 14deg); }
+  .sk.mask { width: var(--mk, 84px); aspect-ratio: 2.1 / 1; border-radius: 48% 48% 44% 44% / 62% 62% 38% 38%; }
+  .sk.mask::before { content: ""; position: absolute; left: -12%; right: -12%; top: 38%; height: 9%; background: #1d1a24; border-radius: 4px; z-index: -1; }
+  .sk.bm { width: var(--bw, 26px); height: calc(var(--bw, 26px) * 3.8); background-size: 300% auto; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 90%, 0 100%); }
+  .sk.note { width: var(--nt, 120px); padding: 10px 12px; background: #F6F1E7; color: #231E2A; font-family: var(--display, Georgia), serif; font-style: italic; font-size: .78rem; line-height: 1.25; border-radius: 2px; }
+  .sk.note small { display: block; margin-top: 6px; font-family: var(--body, Arial), sans-serif; font-style: normal; font-size: .56rem; letter-spacing: .12em; text-transform: uppercase; color: #6B6477; }
+
+  .mbox { position: absolute; inset: 0; perspective: 900px; perspective-origin: 50% 20%; }
+  .mbox .b3 { position: absolute; left: 50%; top: 64%; --W: 184px; --D: 122px; --H: 46px; width: var(--W); height: var(--H); margin: calc(var(--H) / -2) 0 0 calc(var(--W) / -2); transform-style: preserve-3d; transform: rotateX(-38deg) rotateY(-24deg) scale3d(.78, .78, .78); }
+  .mbox .fc { position: absolute; left: 50%; top: 50%; }
+  .mbox .fr, .mbox .bk { width: var(--W); height: var(--H); margin: calc(var(--H) / -2) 0 0 calc(var(--W) / -2); }
+  .mbox .lf, .mbox .rt { width: var(--D); height: var(--H); margin: calc(var(--H) / -2) 0 0 calc(var(--D) / -2); }
+  .mbox .bt, .mbox .ts { width: var(--W); height: var(--D); margin: calc(var(--D) / -2) 0 0 calc(var(--W) / -2); }
+  .mbox .fr { transform: translateZ(calc(var(--D) / 2)); background: linear-gradient(180deg, #F2B705, #D99E00); }
+  .mbox .bk { transform: rotateY(180deg) translateZ(calc(var(--D) / 2)); background: #C99400; }
+  .mbox .lf { transform: rotateY(-90deg) translateZ(calc(var(--W) / 2)); background: #CF9700; }
+  .mbox .rt { transform: rotateY(90deg) translateZ(calc(var(--W) / 2)); background: linear-gradient(180deg, #F7C21A, #DDA200); }
+  .mbox .bt { transform: rotateX(-90deg) translateZ(calc(var(--H) / 2)); background: #8C6400; }
+  .mbox .ts { transform: translateY(calc(var(--H) / -2 + 14px)) rotateX(90deg); background: linear-gradient(135deg, #D8C4EA, #BFA6D6 60%, #E4D6F0); }
+  .mbox .lid { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; transform: translateY(calc(var(--H) / -2 - 1px)) translateZ(calc(var(--D) / -2 - 2px)) rotateX(100deg); }
+  .mbox .lid i { position: absolute; width: calc(var(--W) + 4px); height: calc(var(--D) + 4px); left: calc((var(--W) + 4px) / -2); top: calc((var(--D) + 4px) / -2); transform: translateZ(calc(var(--D) / 2 + 2px)) rotateX(90deg); background: linear-gradient(160deg, #FFD23A, #F2B705 55%, #E3A800); }
+  .mbox .lay { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; transform: translateY(calc(var(--H) / -2 + 12px)) rotateX(90deg); }
+  .mbox .lay .sk { transform: translate(-50%, -50%) translate(var(--x, 0px), var(--y, 0px)) rotate(var(--r, 0deg)); box-shadow: 0 6px 10px rgba(60,30,80,.25); }
+  .mbox .stand { position: absolute; left: 50%; top: 50%; transform: translate3d(calc(var(--x, 0px) - 50%), calc(var(--H) / -2 - 44px), calc(var(--D) / -2 + 24px)) rotateX(-8deg) rotateZ(var(--r, 0deg)); }
+
   .setviz { position: relative; margin: 0; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--radius); background: radial-gradient(90% 80% at 50% 30%, var(--card), var(--bg2)); }
-  .setviz .box { position: absolute; left: 12%; right: 12%; bottom: -8%; height: 34%; background: linear-gradient(180deg, #F7C928, #EDB400); border-radius: 4px; box-shadow: 0 -10px 30px -12px rgba(60,40,0,.35), inset 0 10px 14px rgba(120,80,0,.18); display: grid; place-items: center; }
-  .setviz .box img { height: 16px; width: auto; opacity: .85; margin-top: -8%; }
+  .setviz .box { position: absolute; left: 12%; right: 12%; bottom: -10%; height: 30%; background: linear-gradient(180deg, #F7C928, #EDB400); border-radius: 4px; box-shadow: 0 -10px 30px -12px rgba(60,40,0,.35), inset 0 10px 14px rgba(120,80,0,.18); display: grid; place-items: center; }
+  .setviz .box img { height: 16px; width: auto; opacity: .85; margin-top: 18%; }
+  .setviz.dip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10% 8%; background: var(--bg2); }
+  .setviz.dip span.d1, .setviz.dip span.d2 { background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 18px 30px -18px rgba(0,0,0,.45); display: block; }
+  .setviz.dip img { width: 100%; height: 100%; object-fit: contain; }
+  .setviz.dip .plus { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 32px; height: 32px; border-radius: 50%; background: var(--gold); color: #17151A; display: grid; place-items: center; font-weight: 600; }
+  .set .acts { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+  .set .acts .pick { margin-top: 0; }
+  .set .more { font-size: .84rem; font-weight: 500; padding: 12px 0; }
+  .setviz .ph img { object-fit: cover; }
+  .setviz .tv { position: absolute; transform: translate(-50%, -50%) rotate(var(--r, 0deg)); background-size: cover; background-position: center; box-shadow: 0 18px 30px -16px rgba(0,0,0,.5); }
+  .setviz .tv.sq { width: 40%; aspect-ratio: 1; border-radius: 2px; }
+  .setviz .tv.sq.big { width: 50%; }
+  .setviz .tv.strip { width: 62%; height: 9%; background-size: auto 100%; background-repeat: repeat-x; border-radius: 2px; }
+  .setviz .tv.ring { width: 26%; aspect-ratio: 1; border-radius: 50%; -webkit-mask-image: radial-gradient(circle, transparent 33%, #000 34%, #000 69%, transparent 70%); mask-image: radial-gradient(circle, transparent 33%, #000 34%, #000 69%, transparent 70%); box-shadow: none; filter: drop-shadow(0 10px 12px rgba(0,0,0,.35)); }
+  .setviz .tv.mask { width: 34%; aspect-ratio: 2.1 / 1; border-radius: 48% 48% 44% 44% / 60% 60% 40% 40%; }
+  .setviz .ex { position: absolute; left: 10px; top: 10px; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink3); background: color-mix(in srgb, var(--card) 80%, transparent); padding: 3px 8px; border-radius: 999px; }
   .setviz .it { position: absolute; aspect-ratio: 1; background: #fff; border-radius: 6px; box-shadow: 0 18px 30px -16px rgba(0,0,0,.45); overflow: hidden; }
   .setviz .it img { width: 100%; height: 100%; object-fit: contain; padding: 6%; }
   .setviz .ph { position: absolute; inset: 6% 14% 16% 14%; border-radius: 6px; overflow: hidden; box-shadow: 0 18px 30px -16px rgba(0,0,0,.45); background: #fff; }
@@ -270,6 +319,14 @@
   .set .tag.cat { border-color: #8A6500; color: #7A5900; }
   .dark .set .tag.cat { border-color: var(--gold); color: var(--gold); }
   .set .pick { margin-top: 8px; }
+  .set .pick[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+  .set .pack { font-size: .8rem; color: var(--ink3); }
+  .cart { display: grid; gap: 8px; margin-top: 18px; }
+  .cart .row { display: grid; grid-template-columns: 1fr 86px 44px; gap: 8px; align-items: center; font-size: .92rem; border-bottom: 1px solid var(--line); padding-bottom: 8px; }
+  .cart .row input { min-height: 44px; padding: 8px 10px; }
+  .cart .row button { all: unset; cursor: pointer; text-align: center; min-height: 44px; color: var(--ink2); }
+  .cart .tot { font-family: var(--display); font-size: 1.5rem; }
+  .cart .empty { color: var(--ink2); font-size: .92rem; }
   .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 22px; }
   .chips button { all: unset; cursor: pointer; font-size: .86rem; padding: 12px 16px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink2); }
   .chips button[aria-pressed="true"] { border-color: var(--ink); color: var(--ink); background: color-mix(in srgb, var(--ink) 6%, transparent); }
@@ -277,74 +334,92 @@
   @media (max-width: 960px) { .sets { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 640px) { .sets { grid-template-columns: 1fr; } }
 </style>
-  <section class="hero" style="--hero-pos:50% 18%"><div class="wrap">
+  <section class="hero" style="--hero-pos:50% 50%"><div class="wrap">
     <div>
       <p class="eyebrow">Корпоративні набори · Новий рік і не тільки</p>
-      <h1 style="margin-top:14px">Дев’ять наборів — від welcome-box до подарунка керівнику</h1>
-      <p class="lead">Готові комбінації з шовку Obiimy у фірмовій жовтій коробці: для всієї команди, ключових людей, партнерів і тих, хто багато подорожує.<span class="m-hide"> Оберіть набір — ми повернемось із розрахунком на ваш тираж.</span></p>
-      <div class="cta"><a class="btn btn-gold" href="#request">Обрати набір</a><a class="btn btn-line" href="b2b-atelier">Зібрати свій у 3D</a></div>
-      <p class="fine">Від 700 до 6 000 грн за роздрібними цінами. Або одразу: <a href="tel:+380670108525">+38 067 010 85 25</a></p>
+      <h1 style="margin-top:14px">Набори Obiimy для команди, партнерів і клієнтів</h1>
+      <p class="lead">Справжні подарункові набори з каталогу Obiimy — у фірмових жовтих коробках — і кілька комбінацій, які ми зібрали для бізнесу.<span class="m-hide"> Оберіть один або кілька наборів — повернемось із розрахунком на ваш тираж.</span></p>
+      <div class="cta"><a class="btn btn-gold" href="#request">Обрати набори</a><a class="btn btn-line" href="b2b-atelier">Зібрати свій у 3D</a></div>
+      <p class="fine">Від 1 250 грн за набір резинок до 6 900 грн за «Шовковий сон». Ціни — роздрібні з obiimy.world. Або одразу: <a href="tel:+380739259949">+38 073 925 99 49</a></p>
     </div>
-    <figure class="setsfig"><figure class="setviz" aria-label="«Монопринт»"><span class="box"><img src="brand/logo-ink-480.webp" alt="" width="94" height="20"></span><span class="it" style="left:28%;top:40%;width:40%;transform:translate(-50%,-50%) rotate(-9deg)"><img src="img/tysha-sertsia.webp" srcset="img/tysha-sertsia-480.webp 480w, img/tysha-sertsia.webp 800w" sizes="200px" width="800" height="800" alt="Хустка 65 × 65" loading="lazy" decoding="async"></span><span class="it" style="left:70%;top:38%;width:40%;transform:translate(-50%,-50%) rotate(7deg)"><img src="img/twilly-zolote.webp" srcset="img/twilly-zolote-480.webp 480w, img/twilly-zolote.webp 800w" sizes="200px" width="800" height="800" alt="Твіллі 84 × 5" loading="lazy" decoding="async"></span><span class="it" style="left:50%;top:58%;width:40%;transform:translate(-50%,-50%) rotate(-2deg)"><img src="img/scrunchie-energiia.webp" srcset="img/scrunchie-energiia-480.webp 480w, img/scrunchie-energiia.webp 800w" sizes="200px" width="800" height="800" alt="Резинка для волосся" loading="lazy" decoding="async"></span></figure></figure>
-  </div></section><section class="wrap" aria-label="Коротко про бренд"><div class="facts"><div><b class="num">9 наборів</b><span>Чотири з каталогу Obiimy, п’ять — комбінації під запит</span></div><div><b class="num">700 – 6 000 грн</b><span>Роздрібні ціни; для комбінацій — сума цін речей</span></div><div><b class="num">Жовта коробка</b><span>Кожен набір у фірмовій коробці з листівкою</span></div><div><b class="num">Один принт</b><span>Або різні — узгоджуємо в розрахунку</span></div></div></section>
+    <figure><img src="img/sets/tw44-natkhnennia.webp" srcset="img/sets/tw44-natkhnennia-480.webp 480w, img/sets/tw44-natkhnennia.webp 800w" sizes="(max-width: 960px) 100vw, 50vw" width="800" height="800" alt="Набір твіллі та хустки «Натхнення» у жовтій коробці" fetchpriority="high"><div class="tag">Набір «Натхнення» з каталогу — твіллі й хустка 44 × 44</div></figure>
+  </div></section><section class="wrap" aria-label="Коротко про бренд"><div class="facts"><div><b class="num">8 наборів з каталогу</b><span>Сім сімейств наборів і сертифікати — з цінами obiimy.world</span></div><div><b class="num">4 комбінації</b><span>Для бізнесу з речей каталогу — під запит</span></div><div><b class="num">Десятки принтів</b><span>У кожному сімействі — свій вибір принтів</span></div><div><b class="num">Шоурум у Києві</b><span>Зразки можна подивитися наживо на Сагайдачного, 12</span></div></div></section>
 
   <section class="block" id="sets"><div class="wrap">
     <div class="head"><p class="eyebrow">Набори</p><h2>Оберіть за бюджетом на людину</h2><p class="sub">«Каталог» — набір, який уже є на obiimy.world. «Під запит» — наша комбінація з речей каталогу: склад, принти й ціну на тираж підтвердимо в розрахунку.</p></div>
-    <div class="chips" id="chips" role="group" aria-label="Бюджет на людину"><button type="button" data-b="0" aria-pressed="true">Усі</button><button type="button" data-b="1000">до 1 000 грн</button><button type="button" data-b="3500">до 3 500 грн</button><button type="button" data-b="5000">до 5 000 грн</button><button type="button" data-b="99999">понад 5 000 грн</button></div>
+    <div class="chips" id="chips" role="group" aria-label="Бюджет на людину"><button type="button" data-b="0" aria-pressed="true">Усі</button><button type="button" data-b="1500">до 1 500 грн</button><button type="button" data-b="2500">до 2 500 грн</button><button type="button" data-b="3500">до 3 500 грн</button><button type="button" data-b="5000">до 5 000 грн</button><button type="button" data-b="99999">понад 5 000 грн</button></div>
     <div class="sets" id="setsGrid">
-      <article class="set" data-price="700" id="set-first-day">
-        <figure class="setviz" aria-label="«Перший день»"><span class="box"><img src="brand/logo-ink-480.webp" alt="" width="94" height="20"></span><span class="it" style="left:50%;top:44%;width:58%;transform:translate(-50%,-50%) rotate(-3deg)"><img src="img/scrunchie-energiia.webp" srcset="img/scrunchie-energiia-480.webp 480w, img/scrunchie-energiia.webp 800w" sizes="200px" width="800" height="800" alt="Резинка для волосся" loading="lazy" decoding="async"></span><span class="cardlet">Дякуємо, що цього року ви були поруч.<small>— від вашої компанії</small></span></figure>
-        <div class="in"><span class="who">Новим співробітникам · welcome-box</span><h3>«Перший день»</h3><p class="comp">Резинка для волосся + листівка</p><p class="line">Резинка у фірмовій коробочці й листівка з привітанням від команди. Маленький жест, який запам’ятовується з першого дня.</p>
-          <div class="foot"><b class="num">700 грн</b><span class="tag">Під запит</span></div>
-          <button class="btn btn-line btn-sm pick" type="button" data-set="«Перший день» — 700 грн">Запросити цей набір</button></div>
+      <article class="set" data-price="1250" id="set-scrset">
+        <figure class="setviz" aria-label="Набір шовкових резинок"><span class="ph"><img src="img/sets/scr3.webp" srcset="img/sets/scr3-480.webp 480w, img/sets/scr3.webp 569w" sizes="(max-width: 640px) 100vw, 33vw" width="569" height="800" alt="Набір шовкових резинок" loading="lazy" decoding="async"></span></figure>
+        <div class="in"><span class="who">Welcome-box і великі команди</span><h3>Набір шовкових резинок</h3><p class="comp">Zero waste 3 шт. — 1 250 · 3 шт. — 1 800 · Zero waste 5 шт. — 2 000 грн</p><p class="line">Кілька шовкових резинок у фірмовій коробці: наймасовіший і водночас преміальний подарунок, який не залежить від розміру.</p>
+          <div class="foot"><b class="num">від 1 250 грн</b><span class="tag cat">Каталог</span></div>
+          <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="Набір шовкових резинок" data-price="1250" aria-pressed="false">Додати до запиту</button><a class="more" href="product-maison">На obiimy.world →</a></div></div>
       </article>
-      <article class="set" data-price="2200" id="set-prystrast">
-        <figure class="setviz" aria-label="Набір «Пристрасть»"><span class="box"><img src="brand/logo-ink-480.webp" alt="" width="94" height="20"></span><span class="it" style="left:35%;top:42%;width:46%;transform:translate(-50%,-50%) rotate(-7deg)"><img src="img/twilly-zolote.webp" srcset="img/twilly-zolote-480.webp 480w, img/twilly-zolote.webp 800w" sizes="200px" width="800" height="800" alt="Твіллі 84 × 5" loading="lazy" decoding="async"></span><span class="it" style="left:66%;top:50%;width:46%;transform:translate(-50%,-50%) rotate(6deg)"><img src="img/scrunchie-energiia.webp" srcset="img/scrunchie-energiia-480.webp 480w, img/scrunchie-energiia.webp 800w" sizes="200px" width="800" height="800" alt="Резинка для волосся" loading="lazy" decoding="async"></span></figure>
-        <div class="in"><span class="who">Усій команді</span><h3>Набір «Пристрасть»</h3><p class="comp">Твіллі 84 × 5 + Резинка для волосся</p><p class="line">Твіллі й резинка в одному принті — набір із каталогу Obiimy. Універсальний подарунок, який не залежить від розміру.</p>
+      <article class="set" data-price="2200" id="set-twscr">
+        <figure class="setviz" aria-label="Твіллі та резинка"><span class="ph"><img src="img/sets/twscr-makiv.webp" srcset="img/sets/twscr-makiv-480.webp 480w, img/sets/twscr-makiv.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="800" alt="Твіллі та резинка" loading="lazy" decoding="async"></span></figure>
+        <div class="in"><span class="who">Усій команді</span><h3>Твіллі та резинка</h3><p class="comp">84 × 5 — 2 200 грн · довга 140 × 5 — 2 700 грн</p><p class="comp">Принти: Пристрасть, Сміливість, Літнє поле, Маків цвіт, Енергія, Свобода, Ніжність, Захоплення · 140 × 5: Літній віночок, Спокуса</p><p class="line">Твіллі й резинка в одному принті у святковій коробці, що відкривається, як скринька.</p>
           <div class="foot"><b class="num">2 200 грн</b><span class="tag cat">Каталог</span></div>
-          <button class="btn btn-line btn-sm pick" type="button" data-set="Набір «Пристрасть» — 2 200 грн">Запросити цей набір</button></div>
+          <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="Твіллі та резинка" data-price="2200" aria-pressed="false">Додати до запиту</button><a class="more" href="product-maison">На obiimy.world →</a></div></div>
       </article>
-      <article class="set" data-price="3200" id="set-natkhnennia">
-        <figure class="setviz" aria-label="Набір «Натхнення»"><span class="box"><img src="brand/logo-ink-480.webp" alt="" width="94" height="20"></span><span class="ph"><img src="img/set-natkhnennia.webp" srcset="img/set-natkhnennia-480.webp 480w, img/set-natkhnennia.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="800" alt="Набір «Натхнення»" loading="lazy" decoding="async"></span></figure>
-        <div class="in"><span class="who">Ключовим людям</span><h3>Набір «Натхнення»</h3><p class="comp">Твіллі 84 × 5 + Хустка 44 × 44</p><p class="line">Твіллі й хустка 44 × 44 в одному принті, у жовтій коробці з тонким папером — набір із каталогу.</p>
+      <article class="set" data-price="3100" id="set-maskscr">
+        <figure class="setviz" aria-label="Маска для сну та резинка"><span class="ph"><img src="img/sets/maskscr-litnie-pole.webp" srcset="img/sets/maskscr-litnie-pole-480.webp 480w, img/sets/maskscr-litnie-pole.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="800" alt="Маска для сну та резинка" loading="lazy" decoding="async"></span></figure>
+        <div class="in"><span class="who">Програмам турботи про команду</span><h3>Маска для сну та резинка</h3><p class="comp">Принти: Літнє поле, Енергія, Свобода, Впевненість, Піднесення, Мелодія двох, Сміливість, Серцебиття</p><p class="line">Подарунок про відпочинок, а не про роботу: шовкова маска й резинка в жовтій коробці.</p>
+          <div class="foot"><b class="num">3 100 грн</b><span class="tag cat">Каталог</span></div>
+          <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="Маска для сну та резинка" data-price="3100" aria-pressed="false">Додати до запиту</button><a class="more" href="product-maison">На obiimy.world →</a></div></div>
+      </article>
+      <article class="set" data-price="3200" id="set-tw44">
+        <figure class="setviz" aria-label="Твіллі та хустка 44 × 44"><span class="ph"><img src="img/sets/tw44-vpevnenist.webp" srcset="img/sets/tw44-vpevnenist-480.webp 480w, img/sets/tw44-vpevnenist.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="800" alt="Твіллі та хустка 44 × 44" loading="lazy" decoding="async"></span></figure>
+        <div class="in"><span class="who">Ключовим людям</span><h3>Твіллі та хустка 44 × 44</h3><p class="comp">одностороння — 3 200 грн · двосторонній друк — 3 600 грн</p><p class="comp">Принти: 18 принтів: Впевненість, Натхнення, Грація, Вир почуттів, Сміливий дотик, Баланс, Свобода, Літнє поле… · двосторонні: Пробудження, Ніжність, Пристрасть, Закоханість, Захоплення, Золоте світло</p><p class="line">Найпопулярніший формат Obiimy: стрічка й хустка в одному принті, у довгій жовтій коробці з тонким папером.</p>
           <div class="foot"><b class="num">3 200 грн</b><span class="tag cat">Каталог</span></div>
-          <button class="btn btn-line btn-sm pick" type="button" data-set="Набір «Натхнення» — 3 200 грн">Запросити цей набір</button></div>
+          <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="Твіллі та хустка 44 × 44" data-price="3200" aria-pressed="false">Додати до запиту</button><a class="more" href="product-maison">На obiimy.world →</a></div></div>
       </article>
-      <article class="set" data-price="3600" id="set-son">
-        <figure class="setviz" aria-label="Набір для сну «Піднесення»"><span class="box"><img src="brand/logo-ink-480.webp" alt="" width="94" height="20"></span><span class="ph"><img src="img/set-mask.webp" srcset="img/set-mask-480.webp 480w, img/set-mask.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="800" alt="Набір для сну «Піднесення»" loading="lazy" decoding="async"></span></figure>
-        <div class="in"><span class="who">Wellbeing-програмам</span><h3>Набір для сну «Піднесення»</h3><p class="comp">Маска для сну</p><p class="line">Шовкова маска та аксесуари для сну в одній коробці — подарунок про відпочинок, а не про роботу.</p>
+      <article class="set" data-price="3600" id="set-song">
+        <figure class="setviz" aria-label="Маска, закладка й резинка"><span class="ph"><img src="img/sets/sleep-pidnesennia.webp" srcset="img/sets/sleep-pidnesennia-480.webp 480w, img/sets/sleep-pidnesennia.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="800" alt="Маска, закладка й резинка" loading="lazy" decoding="async"></span></figure>
+        <div class="in"><span class="who">Подарунок із сенсом · «Співоча душа»</span><h3>Маска, закладка й резинка</h3><p class="comp">Принти: «Піднесення», «Мелодія двох»</p><p class="line">Набір із колекції «Співоча душа»: частина прибутку від неї йде на збереження червонокнижних птахів України, зокрема гнізда для сиворакші.</p>
           <div class="foot"><b class="num">3 600 грн</b><span class="tag cat">Каталог</span></div>
-          <button class="btn btn-line btn-sm pick" type="button" data-set="Набір для сну «Піднесення» — 3 600 грн">Запросити цей набір</button></div>
+          <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="Маска, закладка й резинка" data-price="3600" aria-pressed="false">Додати до запиту</button><a class="more" href="product-maison">На obiimy.world →</a></div></div>
       </article>
-      <article class="set" data-price="3200" id="set-song">
-        <figure class="setviz" aria-label="«Співоча душа»"><span class="box"><img src="brand/logo-ink-480.webp" alt="" width="94" height="20"></span><span class="it" style="left:50%;top:44%;width:58%;transform:translate(-50%,-50%) rotate(-3deg)"><img src="img/tysha-sertsia.webp" srcset="img/tysha-sertsia-480.webp 480w, img/tysha-sertsia.webp 800w" sizes="200px" width="800" height="800" alt="Хустка 65 × 65" loading="lazy" decoding="async"></span><span class="cardlet">Дякуємо, що цього року ви були поруч.<small>— від вашої компанії</small></span></figure>
-        <div class="in"><span class="who">Подарунок із сенсом</span><h3>«Співоча душа»</h3><p class="comp">Хустка 65 × 65 + листівка</p><p class="line">Хустка 65 × 65 «Тиша серця» з колекції, частина коштів від якої йде на гніздівлі для сиворакші, і листівка з історією колекції.</p>
-          <div class="foot"><b class="num">3 200 грн</b><span class="tag">Під запит</span></div>
-          <button class="btn btn-line btn-sm pick" type="button" data-set="«Співоча душа» — 3 200 грн">Запросити цей набір</button></div>
+      <article class="set" data-price="4200" id="set-hearts">
+        <figure class="setviz" aria-label="Дві маски «Серцебиття»"><span class="ph"><img src="img/sets/masks-sertsebyttia.webp" srcset="img/sets/masks-sertsebyttia-480.webp 480w, img/sets/masks-sertsebyttia.webp 666w" sizes="(max-width: 640px) 100vw, 33vw" width="666" height="800" alt="Дві маски «Серцебиття»" loading="lazy" decoding="async"></span></figure>
+        <div class="in"><span class="who">Подарунок на двох</span><h3>Дві маски «Серцебиття»</h3><p class="line">Червона й чорна маска у формі серця в одній коробці — подяка партнерові, якого дарують разом із родиною.</p>
+          <div class="foot"><b class="num">4 200 грн</b><span class="tag cat">Каталог</span></div>
+          <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="Дві маски «Серцебиття»" data-price="4200" aria-pressed="false">Додати до запиту</button><a class="more" href="product-maison">На obiimy.world →</a></div></div>
       </article>
       <article class="set" data-price="4800" id="set-three">
-        <figure class="setviz" aria-label="Три твіллі"><span class="box"><img src="brand/logo-ink-480.webp" alt="" width="94" height="20"></span><span class="ph"><img src="img/set-3twilly.webp" srcset="img/set-3twilly-480.webp 480w, img/set-3twilly.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="800" alt="Три твіллі" loading="lazy" decoding="async"></span></figure>
-        <div class="in"><span class="who">Партнерам</span><h3>Три твіллі</h3><p class="comp">Твіллі 84 × 5 + Твіллі 84 × 5 + Твіллі 84 × 5</p><p class="line">Три стрічки в одній коробці — для партнерів, які носять шовк по-різному: на сумці, у волоссі, на зап’ясті.</p>
+        <figure class="setviz" aria-label="Три твіллі на вибір"><span class="ph"><img src="img/sets/three-twilly.webp" srcset="img/sets/three-twilly-480.webp 480w, img/sets/three-twilly.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="800" alt="Три твіллі на вибір" loading="lazy" decoding="async"></span></figure>
+        <div class="in"><span class="who">Партнерам</span><h3>Три твіллі на вибір</h3><p class="comp">Принти: Три стрічки різних принтів — на ваш вибір</p><p class="line">Три твіллі 84 × 5 у святковому пакуванні, які можна зібрати під стиль кожної людини.</p>
           <div class="foot"><b class="num">4 800 грн</b><span class="tag cat">Каталог</span></div>
-          <button class="btn btn-line btn-sm pick" type="button" data-set="Три твіллі — 4 800 грн">Запросити цей набір</button></div>
+          <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="Три твіллі на вибір" data-price="4800" aria-pressed="false">Додати до запиту</button><a class="more" href="product-maison">На obiimy.world →</a></div></div>
       </article>
-      <article class="set" data-price="5000" id="set-trip">
-        <figure class="setviz" aria-label="«Відрядження»"><span class="box"><img src="brand/logo-ink-480.webp" alt="" width="94" height="20"></span><span class="it" style="left:28%;top:40%;width:40%;transform:translate(-50%,-50%) rotate(-9deg)"><img src="img/mask-vpevnenist.webp" srcset="img/mask-vpevnenist-480.webp 480w, img/mask-vpevnenist.webp 800w" sizes="200px" width="800" height="800" alt="Маска для сну" loading="lazy" decoding="async"></span><span class="it" style="left:70%;top:38%;width:40%;transform:translate(-50%,-50%) rotate(7deg)"><img src="img/twilly-zolote.webp" srcset="img/twilly-zolote-480.webp 480w, img/twilly-zolote.webp 800w" sizes="200px" width="800" height="800" alt="Твіллі 84 × 5" loading="lazy" decoding="async"></span><span class="it" style="left:50%;top:58%;width:40%;transform:translate(-50%,-50%) rotate(-2deg)"><img src="img/scrunchie-energiia.webp" srcset="img/scrunchie-energiia-480.webp 480w, img/scrunchie-energiia.webp 800w" sizes="200px" width="800" height="800" alt="Резинка для волосся" loading="lazy" decoding="async"></span></figure>
-        <div class="in"><span class="who">Тим, хто багато літає</span><h3>«Відрядження»</h3><p class="comp">Маска для сну + Твіллі 84 × 5 + Резинка для волосся</p><p class="line">Маска для сну, твіллі й резинка — усе, що займає мало місця у валізі й робить готельний номер своїм.</p>
-          <div class="foot"><b class="num">5 000 грн</b><span class="tag">Під запит</span></div>
-          <button class="btn btn-line btn-sm pick" type="button" data-set="«Відрядження» — 5 000 грн">Запросити цей набір</button></div>
+      <article class="set" data-price="700" id="set-first-day">
+        <figure class="setviz" aria-label="«Перший день»"><span class="mbox"><span class="b3"><i class="fc bt"></i><i class="fc bk"></i><i class="fc lf"></i><i class="fc rt"></i><i class="fc ts"></i><span class="lay"><span style="--x:-6px;--y:4px;--r:-4deg;display:contents"><span class="sk ring" style="--x:-6px;--y:4px;--r:-4deg;background-image:url(tex/litnie-pole.jpg)"></span></span></span><span class="stand" style="--x:40px;--r:4deg"><span class="sk note" style="--nt:96px;position:relative;font-size:.66rem;padding:7px 9px">Ласкаво просимо в команду. Раді, що ви з нами.<small>— ваша команда</small></span></span><i class="fc fr"></i><span class="lid"><i></i></span></span></span><span class="ex">Принт — приклад</span></figure>
+        <div class="in"><span class="who">Новим співробітникам</span><h3>«Перший день»</h3><p class="comp">Резинка в коробочці + листівка</p><p class="line">Шовкова резинка у фірмовій коробочці й листівка «Ласкаво просимо в команду». Маленький жест, з якого новенька людина стає своєю.</p><p class="pack">Комбінація з речей каталогу: принти й пакування підтвердимо в розрахунку.</p>
+          <div class="foot"><b class="num">700 грн</b><span class="tag">Під запит</span></div>
+          <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="«Перший день»" data-price="700" aria-pressed="false">Додати до запиту</button></div></div>
       </article>
-      <article class="set" data-price="5500" id="set-mono">
-        <figure class="setviz" aria-label="«Монопринт»"><span class="box"><img src="brand/logo-ink-480.webp" alt="" width="94" height="20"></span><span class="it" style="left:28%;top:40%;width:40%;transform:translate(-50%,-50%) rotate(-9deg)"><img src="img/tysha-sertsia.webp" srcset="img/tysha-sertsia-480.webp 480w, img/tysha-sertsia.webp 800w" sizes="200px" width="800" height="800" alt="Хустка 65 × 65" loading="lazy" decoding="async"></span><span class="it" style="left:70%;top:38%;width:40%;transform:translate(-50%,-50%) rotate(7deg)"><img src="img/twilly-zolote.webp" srcset="img/twilly-zolote-480.webp 480w, img/twilly-zolote.webp 800w" sizes="200px" width="800" height="800" alt="Твіллі 84 × 5" loading="lazy" decoding="async"></span><span class="it" style="left:50%;top:58%;width:40%;transform:translate(-50%,-50%) rotate(-2deg)"><img src="img/scrunchie-energiia.webp" srcset="img/scrunchie-energiia-480.webp 480w, img/scrunchie-energiia.webp 800w" sizes="200px" width="800" height="800" alt="Резинка для волосся" loading="lazy" decoding="async"></span></figure>
-        <div class="in"><span class="who">Керівникам команд</span><h3>«Монопринт»</h3><p class="comp">Хустка 65 × 65 + Твіллі 84 × 5 + Резинка для волосся</p><p class="line">Хустка 65 × 65, твіллі й резинка в одному принті — набір, який виглядає як колекція, а не як збірка.</p>
-          <div class="foot"><b class="num">5 500 грн</b><span class="tag">Під запит</span></div>
-          <button class="btn btn-line btn-sm pick" type="button" data-set="«Монопринт» — 5 500 грн">Запросити цей набір</button></div>
+      <article class="set" data-price="4200" id="set-ritual">
+        <figure class="setviz dip" aria-label="«Ранковий ритуал»"><span class="d1"><img src="img/sets/turban-bilyi.webp" srcset="img/sets/turban-bilyi-480.webp 480w, img/sets/turban-bilyi.webp 533w" sizes="(max-width: 640px) 50vw, 17vw" width="533" height="800" alt="" loading="lazy" decoding="async"></span><span class="d2"><img src="img/sets/obruch.webp" srcset="img/sets/obruch-480.webp 480w, img/sets/obruch.webp 800w" sizes="(max-width: 640px) 50vw, 17vw" width="800" height="800" alt="" loading="lazy" decoding="async"></span><span class="plus">+</span></figure>
+        <div class="in"><span class="who">Wellbeing для команди</span><h3>«Ранковий ритуал»</h3><p class="comp">Тюрбан для волосся 3 500 + шовковий обруч для вмивання 700</p><p class="line">Дві речі з Obiimy HOME для ранку без поспіху: тюрбан після душу й обруч, щоб вмитися, не мочачи волосся.</p><p class="pack">Комбінація з речей каталогу: принти й пакування підтвердимо в розрахунку.</p>
+          <div class="foot"><b class="num">4 200 грн</b><span class="tag">Під запит</span></div>
+          <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="«Ранковий ритуал»" data-price="4200" aria-pressed="false">Додати до запиту</button></div></div>
       </article>
       <article class="set" data-price="6000" id="set-head">
-        <figure class="setviz" aria-label="«Керівнику»"><span class="box"><img src="brand/logo-ink-480.webp" alt="" width="94" height="20"></span><span class="it" style="left:35%;top:42%;width:46%;transform:translate(-50%,-50%) rotate(-7deg)"><img src="img/kolo-sontsia.webp" srcset="img/kolo-sontsia-480.webp 480w, img/kolo-sontsia.webp 800w" sizes="200px" width="800" height="800" alt="Шаль 88 × 88" loading="lazy" decoding="async"></span><span class="it" style="left:66%;top:50%;width:46%;transform:translate(-50%,-50%) rotate(6deg)"><img src="img/twilly-zolote.webp" srcset="img/twilly-zolote-480.webp 480w, img/twilly-zolote.webp 800w" sizes="200px" width="800" height="800" alt="Твіллі 84 × 5" loading="lazy" decoding="async"></span></figure>
-        <div class="in"><span class="who">Топменеджменту й VIP-клієнтам</span><h3>«Керівнику»</h3><p class="comp">Шаль 88 × 88 + Твіллі 84 × 5</p><p class="line">Шаль 88 × 88 і твіллі в одній коробці — найбільший формат Obiimy і найменший, поруч.</p>
+        <figure class="setviz" aria-label="«Керівнику»"><span class="mbox"><span class="b3"><i class="fc bt"></i><i class="fc bk"></i><i class="fc lf"></i><i class="fc rt"></i><i class="fc ts"></i><span class="lay"><span style="--x:-36px;--y:-4px;--r:-8deg;display:contents"><span class="sk sq big" style="--x:-36px;--y:-4px;--r:-8deg;background-image:url(tex/kolo-sontsia.jpg)"></span></span><span style="--x:46px;--y:12px;--r:10deg;display:contents"><span class="sk strip" style="--x:46px;--y:12px;--r:10deg;background-image:url(tex/kolo-sontsia-strip.jpg)"></span></span></span><i class="fc fr"></i><span class="lid"><i></i></span></span></span><span class="ex">Принт — приклад</span></figure>
+        <div class="in"><span class="who">Топменеджменту й VIP-клієнтам</span><h3>«Керівнику»</h3><p class="comp">Шаль 88 × 88 + твіллі 84 × 5 в одному принті</p><p class="line">Найбільша хустка Obiimy й найтонша стрічка поруч. Наприклад, у принті «Коло сонця» з колекції «Співоча душа».</p><p class="pack">Комбінація з речей каталогу: принти й пакування підтвердимо в розрахунку.</p>
           <div class="foot"><b class="num">6 000 грн</b><span class="tag">Під запит</span></div>
-          <button class="btn btn-line btn-sm pick" type="button" data-set="«Керівнику» — 6 000 грн">Запросити цей набір</button></div>
+          <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="«Керівнику»" data-price="6000" aria-pressed="false">Додати до запиту</button></div></div>
+      </article>
+      <article class="set" data-price="6900" id="set-sleep">
+        <figure class="setviz dip" aria-label="«Шовковий сон»"><span class="d1"><img src="img/sets/pillow-khmara.webp" srcset="img/sets/pillow-khmara-480.webp 480w, img/sets/pillow-khmara.webp 800w" sizes="(max-width: 640px) 50vw, 17vw" width="800" height="800" alt="" loading="lazy" decoding="async"></span><span class="d2"><img src="img/mask-vpevnenist.webp" srcset="img/mask-vpevnenist-480.webp 480w, img/mask-vpevnenist.webp 800w" sizes="(max-width: 640px) 50vw, 17vw" width="800" height="800" alt="" loading="lazy" decoding="async"></span><span class="plus">+</span></figure>
+        <div class="in"><span class="who">Керівникам і VIP-партнерам</span><h3>«Шовковий сон»</h3><p class="comp">Шовкова наволочка 50 × 70 4 200 + маска для сну 2 700</p><p class="line">Наволочка й маска з натурального шовку — подарунок, яким користуються щоночі й щоранку згадують, від кого він.</p><p class="pack">Комбінація з речей каталогу: принти й пакування підтвердимо в розрахунку.</p>
+          <div class="foot"><b class="num">6 900 грн</b><span class="tag">Під запит</span></div>
+          <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="«Шовковий сон»" data-price="6900" aria-pressed="false">Додати до запиту</button></div></div>
+      </article>
+      <article class="set" data-price="1000" id="set-cert">
+        <figure class="setviz" aria-label="Подарунковий сертифікат"><span class="ph"><img src="img/sets/cert-2000.webp" srcset="img/sets/cert-2000-480.webp 480w, img/sets/cert-2000.webp 800w" sizes="(max-width: 640px) 100vw, 33vw" width="800" height="533" alt="Подарунковий сертифікат" loading="lazy" decoding="async"></span></figure>
+        <div class="in"><span class="who">Коли обрати має сама людина</span><h3>Подарунковий сертифікат</h3><p class="comp">1 000 · 1 500 · 2 000 · 2 500 · 4 000 грн · діє 3 місяці</p><p class="line">Електронний або фізичний сертифікат на будь-який товар Obiimy.</p>
+          <div class="foot"><b class="num">1 000 – 4 000 грн</b><span class="tag cat">Каталог</span></div>
+          <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="Подарунковий сертифікат" data-price="1000" aria-pressed="false">Додати до запиту</button><a class="more" href="b2b-certificates">Детальніше →</a></div></div>
       </article></div>
     <p class="note">Не знайшли свій? <a href="b2b-atelier" style="font-weight:600">Зберіть набір у 3D-конструкторі →</a> або <a href="b2b-monoprint" style="font-weight:600">один принт на всю компанію →</a></p>
   </div></section>
@@ -366,6 +441,7 @@
     <div class="faq">
       <details><summary>Чим «Каталог» відрізняється від «Під запит»?</summary><p>Набори «Каталог» уже продаються на obiimy.world. «Під запит» — наші комбінації з речей каталогу: наявність принтів і ціну на тираж підтвердимо в розрахунку.</p></details>
       <details><summary>Чи можна змінити склад набору?</summary><p>Так — замінити річ, принт або додати позицію. Найзручніше зібрати свій варіант у <a href="b2b-atelier">3D-конструкторі</a>.</p></details>
+      <details><summary>Не знаєте, що обрати кожному?</summary><p><a href="b2b-certificates">Сертифікати</a>: людина обирає сама, ви тримаєте бюджет.</p></details>
       <details><summary>Мінімальний тираж?</summary><p>Фіксованого мінімуму немає — обговорюємо кожен запит окремо.</p></details>
       <details><summary>Які документи отримує компанія?</summary><p>Рахунок для безготівкової оплати та видаткова накладна. Працюємо з ТОВ і ФОП. Деталі щодо ПДВ уточнюйте в запиті — відповімо разом із розрахунком.</p></details>
       <details><summary>Чи однакові речі в партії?</summary><p>Принт і колір у межах партії однакові. Розмір може відрізнятися на 0–2,5 см через ручну обробку краю — це особливість шовку, а не брак.</p></details>
@@ -387,17 +463,17 @@
   </div></section>
 
   <section class="form-block alt" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити набір</h2><p>Оберіть набір і кількість — повернемось із розрахунком, принтами та графіком.</p><p class="big"><a href="tel:+380670108525">+38 067 010 85 25</a></p><p><a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a></p></div>
+    <div class="contact"><p class="eyebrow">Ваш запит</p><h2>Набори в запиті</h2><div class="cart" id="cart" aria-live="polite"><p class="empty">Додайте один або кілька наборів кнопкою «Додати до запиту» — наприклад, команді й ключовим людям.</p></div><p class="big"><a href="tel:+380739259949">+38 073 925 99 49</a></p><p><a href="mailto:sale@obiimy.world">sale@obiimy.world</a></p></div>
     <div>
       <form id="f-sets" novalidate>
-        <label><span>Компанія <span class="req">*</span></span><input name="company" data-label="Компанія" type="text" placeholder="Назва компанії" autocomplete="organization" required aria-describedby="f-sets-company-err"><span class="err" id="f-sets-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-sets-name-err"><span class="err" id="f-sets-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-sets-phone-err"><span class="err" id="f-sets-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-sets-email-err"><span class="err" id="f-sets-email-err" role="alert">Вкажіть коректний email</span></label><label class="full"><span>Набір</span><select name="set" data-label="Набір"><option value="">Оберіть</option><option>«Перший день» — 700 грн</option><option>Набір «Пристрасть» — 2 200 грн</option><option>Набір «Натхнення» — 3 200 грн</option><option>Набір для сну «Піднесення» — 3 600 грн</option><option>«Співоча душа» — 3 200 грн</option><option>Три твіллі — 4 800 грн</option><option>«Відрядження» — 5 000 грн</option><option>«Монопринт» — 5 500 грн</option><option>«Керівнику» — 6 000 грн</option><option>Свій варіант</option></select></label><label><span>Кількість наборів</span><input name="qty" data-label="Кількість наборів" type="number" min="1" inputmode="numeric" placeholder="наприклад, 30"></label><label><span>Коли потрібно</span><select name="deadline" data-label="Коли потрібно"><option value="">Оберіть</option><option>До 10 грудня</option><option>До 20 грудня</option><option>Після свят</option><option>Інша дата</option></select></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Нагода, принти, текст листівки…"></textarea></label>
-        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на sale@obiimy-world.com з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="tel:+380670108525">+38 067 010 85 25</a>.</span></div>
+        <label><span>Компанія <span class="req">*</span></span><input name="company" data-label="Компанія" type="text" placeholder="Назва компанії" autocomplete="organization" required aria-describedby="f-sets-company-err"><span class="err" id="f-sets-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-sets-name-err"><span class="err" id="f-sets-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-sets-phone-err"><span class="err" id="f-sets-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-sets-email-err"><span class="err" id="f-sets-email-err" role="alert">Вкажіть коректний email</span></label><label><span>Коли потрібно</span><select name="deadline" data-label="Коли потрібно"><option value="">Оберіть</option><option>До 10 грудня</option><option>До 20 грудня</option><option>Після свят</option><option>Інша дата</option></select></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Нагода, принти, текст листівки…"></textarea></label>
+        <input type="hidden" name="config" data-label="Набори"><div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на sale@obiimy.world з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="tel:+380739259949">+38 073 925 99 49</a>.</span></div>
       </form>
       <div class="done" id="f-sets-done" hidden aria-live="polite">
         <h3 tabindex="-1">Лист підготовлено</h3>
-        <p>Якщо поштова програма не відкрилась — скопіюйте текст нижче й надішліть на <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a>, або подзвоніть <a href="tel:+380670108525">+38 067 010 85 25</a>.</p>
+        <p>Якщо поштова програма не відкрилась — скопіюйте текст нижче й надішліть на <a href="mailto:sale@obiimy.world">sale@obiimy.world</a>, або подзвоніть <a href="tel:+380739259949">+38 073 925 99 49</a>.</p>
         <textarea id="f-sets-txt" readonly rows="8" aria-label="Текст запиту"></textarea>
-        <div class="row"><button class="btn btn-line btn-sm" type="button" id="f-sets-copy">Скопіювати текст</button><a class="btn btn-line btn-sm" href="tel:+380670108525">Подзвонити</a><button class="btn btn-line btn-sm" type="button" id="f-sets-back">Змінити запит</button></div>
+        <div class="row"><button class="btn btn-line btn-sm" type="button" id="f-sets-copy">Скопіювати текст</button><a class="btn btn-line btn-sm" href="tel:+380739259949">Подзвонити</a><button class="btn btn-line btn-sm" type="button" id="f-sets-back">Змінити запит</button></div>
       </div>
       <script>
       (function () {
@@ -420,7 +496,7 @@
           txt.value = body;
           var company = f.querySelector('[name="company"]').value.trim();
           f.hidden = true; done.hidden = false; done.scrollIntoView({ block: 'start', behavior: 'smooth' }); done.querySelector('h3').focus({ preventScroll: true });
-          window.location.href = 'mailto:sale@obiimy-world.com?subject=' + encodeURIComponent('Корпоративні набори — ' + company) + '&body=' + encodeURIComponent(body);
+          window.location.href = 'mailto:sale@obiimy.world?subject=' + encodeURIComponent('Корпоративні набори — ' + company) + '&body=' + encodeURIComponent(body);
         });
         document.getElementById('f-sets-copy').addEventListener('click', function () { var b = this; txt.select(); (navigator.clipboard ? navigator.clipboard.writeText(txt.value) : Promise.reject()).then(function () { b.textContent = 'Скопійовано'; setTimeout(function () { b.textContent = 'Скопіювати текст'; }, 2000); }, function () { document.execCommand('copy'); }); });
         document.getElementById('f-sets-back').addEventListener('click', function () { done.hidden = true; f.hidden = false; f.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
@@ -432,17 +508,36 @@
     var chips = document.getElementById('chips'), cards = [].slice.call(document.querySelectorAll('.set'));
     chips.querySelectorAll('button').forEach(function (b) { b.addEventListener('click', function () {
       var v = +b.dataset.b; chips.querySelectorAll('button').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
-      cards.forEach(function (c) { var p = +c.dataset.price; c.hidden = v === 0 ? false : (v === 99999 ? p <= 5000 : p > v); });
+      cards.forEach(function (c) { var p = +c.dataset.price; c.hidden = c.id === 'set-cert' ? false : (v === 0 ? false : (v === 99999 ? p <= 5000 : p > v)); });
     }); });
+    var cart = [], box = document.getElementById('cart'), hid = document.querySelector('#f-sets [name="config"]');
+    function fmt(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '\u202f') + '\u00a0грн'; }
+    function draw() {
+      document.querySelectorAll('.set .pick').forEach(function (b) { var on = cart.some(function (c) { return c.name === b.dataset.name; }); b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.textContent = on ? 'У запиті ✓' : 'Додати до запиту'; });
+      if (!cart.length) { box.innerHTML = '<p class="empty">Додайте один або кілька наборів кнопкою «Додати до запиту» — наприклад, команді й ключовим людям.</p>'; hid.value = ''; return; }
+      box.innerHTML = ''; var tot = 0;
+      cart.forEach(function (c, i) {
+        var r = document.createElement('div'); r.className = 'row';
+        r.innerHTML = '<span></span><input type="number" min="1" max="5000" inputmode="numeric" aria-label="Кількість"><button type="button" aria-label="Прибрати набір">✕</button>';
+        r.firstChild.textContent = c.name + ' · ' + fmt(c.price); var inp = r.querySelector('input'); inp.value = c.q;
+        inp.addEventListener('input', function () { c.q = Math.max(1, +inp.value || 1); sum(); });
+        r.querySelector('button').addEventListener('click', function () { cart.splice(i, 1); draw(); });
+        box.appendChild(r);
+      });
+      var t = document.createElement('p'); t.className = 'tot num'; box.appendChild(t); sum();
+    }
+    function sum() { var tot = 0; cart.forEach(function (c) { tot += c.q * c.price; }); var t = box.querySelector('.tot'); if (t) t.textContent = 'Разом ≈ ' + fmt(tot) + ' за роздрібом';
+      hid.value = cart.map(function (c) { return c.name + ' × ' + c.q; }).join('; ') + ' · орієнтир ' + fmt(tot); }
     document.querySelectorAll('.set .pick').forEach(function (b) { b.addEventListener('click', function () {
-      var sel = document.querySelector('#f-sets [name="set"]'); for (var i = 0; i < sel.options.length; i++) if (sel.options[i].text === b.dataset.set) sel.selectedIndex = i;
-      document.getElementById('request').scrollIntoView({ behavior: 'smooth' }); setTimeout(function () { var q = document.querySelector('#f-sets [name="qty"]'); if (q) q.focus({ preventScroll: true }); }, 600);
+      var k = cart.findIndex(function (c) { return c.name === b.dataset.name; });
+      if (k >= 0) cart.splice(k, 1); else cart.push({ name: b.dataset.name, price: +b.dataset.price, q: cart.length ? 5 : 30 });
+      draw();
     }); });
   })();
   </script>
 </main>
 <section class="others" aria-label="Інші програми для бізнесу"><div class="wrap"><span class="grp"><b>Набори:</b><a href="b2b-monoprint">Один принт — уся компанія</a><a href="b2b-unboxing">Розпакування</a><a href="b2b-atelier">3D-конструктор подарунка</a></span><span class="grp"><b>Подарунки компаніям:</b><a href="b2b-newyear">Новий рік</a><a href="b2b-calendar">Річна програма</a><a href="b2b-certificates">Сертифікати для команд</a><a href="b2b-speakers">Спікерам і гостям подій</a><a href="b2b-garden">3D-історія</a></span><span class="grp"><b>Бізнесу й партнерам:</b><a href="b2b-horeca">HoReCa й уніформа</a><a href="b2b-wholesale">Опт для магазинів</a><a href="b2b-agencies">Для агенцій</a></span><span class="grp"><a href="b2b-en">English</a></span></div></section>
-<footer><div class="wrap"><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко</span><span><a href="tel:+380670108525">+38 067 010 85 25</a> · <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a> · <a href="https://obiimy.world/pro-nas/">Про нас</a> · <a href="https://obiimy.world/oplata-i-dostavka/">Доставка</a></span></div></footer>
+<footer><div class="wrap"><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко · шоурум: Київ, вул. Петра Сагайдачного, 12</span><span><a href="tel:+380739259949">+38 073 925 99 49</a> · <a href="mailto:sale@obiimy.world">sale@obiimy.world</a> · <a href="https://obiimy.world/pro-nas/">Про нас</a> · <a href="https://obiimy.world/oplata-i-dostavka/">Доставка</a></span></div></footer>
 <div class="sticky" id="sticky"><span>Корпоративні набори · від 700 грн</span><a href="#request">Запит</a></div>
 <script>
 (function () {

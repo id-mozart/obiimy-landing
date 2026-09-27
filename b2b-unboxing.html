@@ -1,7 +1,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Розпакування корпоративного набору — Obiimy</title>
-<meta name="description" content="Відкрийте жовту коробку Obiimy на скролі: чотири корпоративні набори — welcome-box, «Відрядження», «Керівнику», «Співоча душа» — і запит на розрахунок для вашої команди.">
+<meta name="description" content="Відкрийте жовту коробку Obiimy на скролі: чотири подарункові набори з каталогу — твіллі й резинка, маска й резинка, твіллі й хустка 44 × 44, «Співоча душа» — і запит на розрахунок для вашої команди.">
+<meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://obiimy-landing-production.up.railway.app/b2b-unboxing">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="uk_UA">
@@ -64,7 +65,7 @@
   .tissue { transform: translateY(calc(var(--H) / -2 + 26px)) rotateX(90deg); background: linear-gradient(135deg, #D8C4EA, #BFA6D6 60%, #E4D6F0); width: calc(var(--W) - 12px); height: calc(var(--D) - 12px); margin: calc((var(--D) - 12px) / -2) 0 0 calc((var(--W) - 12px) / -2); box-shadow: inset 0 0 30px rgba(60,30,80,.35); }
   .lidg { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; transform: translateY(calc(var(--H) / -2 - 2px)) translateZ(calc(var(--D) / -2 - 4px)) rotateX(var(--open, 0deg)); transition: transform 1.1s cubic-bezier(.3,.8,.2,1); }
   .lid-top { position: absolute; width: calc(var(--W) + 8px); height: calc(var(--D) + 8px); left: calc((var(--W) + 8px) / -2); top: calc((var(--D) + 8px) / -2); transform: translateZ(calc(var(--D) / 2 + 4px)) rotateX(90deg); background: linear-gradient(160deg, #FFD23A, #F2B705 55%, #E3A800); display: grid; place-items: center; }
-  .lid-top img { height: 30px; width: auto; transform: var(--logo-t, none); opacity: .9; }
+  .lid-top img { height: 30px; width: auto; transform: var(--logo-t, none); opacity: .9; transition: opacity .6s ease; }
   .lid-front { position: absolute; width: calc(var(--W) + 8px); height: var(--L); left: calc((var(--W) + 8px) / -2); top: 0; transform: translateZ(calc(var(--D) + 8px)); background: linear-gradient(180deg, #F2B705, #D69C00); }
   .lid-left, .lid-right { position: absolute; width: calc(var(--D) + 8px); height: var(--L); top: 0; left: calc((var(--D) + 8px) / -2); background: linear-gradient(180deg, #E0A600, #C28A00); }
   .lid-left { transform: translateZ(calc(var(--D) / 2 + 4px)) translateX(calc((var(--W) + 8px) / -2)) rotateY(-90deg); }
@@ -72,16 +73,30 @@
   .stage[data-ch="1"], .stage[data-ch="2"], .stage[data-ch="3"], .stage[data-ch="4"] { --open: 104deg; }
   .stage[data-ch="1"] .box3d { --ry: -24deg; } .stage[data-ch="2"] .box3d { --ry: -34deg; } .stage[data-ch="3"] .box3d { --ry: -20deg; } .stage[data-ch="4"] .box3d { --ry: -30deg; } .stage[data-ch="5"] .box3d { --ry: -38deg; }
 
-  /* items rising out of the box (2D overlay, centred over the box) */
-  .items { position: absolute; left: 50%; top: 40%; width: min(560px, 86%); aspect-ratio: 16 / 10; transform: translate(-50%, -50%); pointer-events: none; }
-  .grp { position: absolute; inset: 0; }
-  .grp > * { position: absolute; opacity: 0; transform: translate(-50%, 30%) scale(.55) rotate(0deg); transition: opacity .6s ease, transform 1s cubic-bezier(.2,.8,.2,1); transition-delay: 0s; }
-  .stage[data-ch="1"] .g1 > *, .stage[data-ch="2"] .g2 > *, .stage[data-ch="3"] .g3 > *, .stage[data-ch="4"] .g4 > *, .stage[data-ch="5"] .g5 > * { opacity: 1; transform: translate(-50%, -50%) scale(1) rotate(var(--r, 0deg)); transition-delay: calc(.45s + var(--i, 0) * .12s); }
-  .pk { width: 30%; aspect-ratio: 1; background: #fff; border-radius: 8px; box-shadow: 0 30px 50px -24px rgba(0,0,0,.8); overflow: hidden; }
-  .pk img { width: 100%; height: 100%; object-fit: contain; padding: 6%; }
-  .pk.big { width: 40%; }
-  .note-card { width: 34%; background: #F6F1E7; color: #231E2A; border-radius: 2px; padding: 14px 16px; font-family: var(--display); font-style: italic; font-size: 1rem; line-height: 1.25; box-shadow: 0 24px 40px -20px rgba(0,0,0,.7); display: grid; gap: 8px; }
-  .note-card small { font-family: var(--body); font-style: normal; font-size: .64rem; letter-spacing: .14em; text-transform: uppercase; color: #6B6477; }
+  /* items rising out of the box: flat silk shapes living inside the 3D box */
+
+  .sk { position: absolute; display: block; background-size: cover; background-position: center; }
+  .sk::after { content: ""; position: absolute; inset: 0; background: linear-gradient(115deg, rgba(255,255,255,.32), rgba(255,255,255,0) 38%, rgba(0,0,0,.2)); mix-blend-mode: soft-light; pointer-events: none; border-radius: inherit; }
+  .sk.sq { width: var(--sq, 84px); aspect-ratio: 1; border-radius: 2px; box-shadow: 0 1px 0 rgba(255,255,255,.3) inset; }
+  .sk.sq.s44 { --sq: 66px; } .sk.sq.big { --sq: 104px; }
+  .sk.strip { width: var(--stw, 118px); height: calc(var(--stw, 118px) * .12); background-size: auto 100%; background-repeat: repeat-x; border-radius: 2px; }
+  .sk.strip::before { content: ""; position: absolute; inset: 0; background: inherit; transform: rotate(36deg); border-radius: 2px; }
+  .sk.ring { width: var(--rg, 50px); aspect-ratio: 1; border-radius: 50%;
+    -webkit-mask: radial-gradient(circle, transparent 30%, #000 31%, #000 68%, transparent 70%), repeating-conic-gradient(#000 0 7deg, rgba(0,0,0,.72) 7deg 14deg); -webkit-mask-composite: source-in;
+    mask: radial-gradient(circle, transparent 30%, #000 31%, #000 68%, transparent 70%) intersect, repeating-conic-gradient(#000 0 7deg, rgba(0,0,0,.72) 7deg 14deg); }
+  .sk.mask { width: var(--mk, 84px); aspect-ratio: 2.1 / 1; border-radius: 48% 48% 44% 44% / 62% 62% 38% 38%; }
+  .sk.mask::before { content: ""; position: absolute; left: -12%; right: -12%; top: 38%; height: 9%; background: #1d1a24; border-radius: 4px; z-index: -1; }
+  .sk.bm { width: var(--bw, 26px); height: calc(var(--bw, 26px) * 3.8); background-size: 300% auto; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 90%, 0 100%); }
+  .sk.note { width: var(--nt, 120px); padding: 10px 12px; background: #F6F1E7; color: #231E2A; font-family: var(--display, Georgia), serif; font-style: italic; font-size: .78rem; line-height: 1.25; border-radius: 2px; }
+  .sk.note small { display: block; margin-top: 6px; font-family: var(--body, Arial), sans-serif; font-style: normal; font-size: .56rem; letter-spacing: .12em; text-transform: uppercase; color: #6B6477; }
+
+  .rise { position: absolute; left: 50%; top: 50%; transform-style: preserve-3d; opacity: 0; transform: translate3d(var(--x, 0px), calc(var(--H) / -2 + 30px), var(--z, 0px)) rotateY(22deg); transition: transform 1s cubic-bezier(.2,.8,.2,1), opacity .5s ease; }
+  .rise .sk { transform: translate(-50%, -100%) rotate(var(--r, 0deg)); filter: drop-shadow(0 16px 18px rgba(0,0,0,.45)); }
+  .stage[data-ch="1"] .r1, .stage[data-ch="2"] .r2, .stage[data-ch="3"] .r3, .stage[data-ch="4"] .r4 { opacity: 1; transform: translate3d(var(--x, 0px), calc(var(--H) / -2 - var(--up, 60px)), var(--z, 0px)) rotateY(22deg); transition-delay: calc(.5s + var(--i, 0) * .14s); }
+  .box3d { --sq: 150px; --stw: 210px; --rg: 86px; --mk: 132px; --nt: 150px; }
+  .lidnote { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%) rotate(-6deg) translateZ(1px); opacity: 0; transition: opacity .6s ease .6s; font-size: .9rem !important; }
+  .stage[data-ch="5"] .lidnote { opacity: 1; }
+  .stage[data-ch="5"] .lid-top img { opacity: .25; }
   .caption { position: absolute; left: 50%; bottom: 7%; transform: translateX(-50%); text-align: center; font-size: .78rem; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-3); white-space: nowrap; }
 
   .chaps { position: relative; z-index: 3; }
@@ -124,12 +139,14 @@
   footer a { color: var(--ink); text-decoration: none; display: inline-block; padding: 10px 0; }
 
   @media (max-width: 960px) {
-    :root { --W: 220px; --D: 150px; --H: 70px; --L: 18px; }
+    :root { --W: 200px; --D: 136px; --H: 64px; --L: 16px; }
+    .box3d { --sq: 96px; --stw: 136px; --rg: 56px; --mk: 86px; --nt: 104px; }
+    .rise .sk.note { font-size: .62rem; padding: 6px 8px; }
+    .stage[data-ch="1"], .stage[data-ch="2"], .stage[data-ch="3"], .stage[data-ch="4"] { --open: 96deg !important; }
+    .lidnote { font-size: .6rem !important; }
     .story { grid-template-columns: 1fr; }
     .stage { height: 48svh; z-index: 4; background: radial-gradient(110% 80% at 50% 40%, #241A3E 0%, var(--bg) 75%); border-bottom: 1px solid var(--line); }
-    .box3d { top: 70%; }
-    .items { top: 42%; width: 92%; }
-    .note-card { font-size: .74rem; padding: 8px 10px; } .note-card small { font-size: .52rem; }
+    .box3d { top: 76%; }
     .caption { display: none; }
     .chap { min-height: 72svh; padding: 36px 16px 48px; background: linear-gradient(180deg, rgba(12,9,20,.92), var(--bg)); }
     .req-in { grid-template-columns: 1fr; }
@@ -142,7 +159,7 @@
 <div class="grain" aria-hidden="true"></div>
 <header class="nav">
   <a class="logo" href="https://obiimy.world/" aria-label="Obiimy — на сайт бренду"><img src="brand/logo-white-480.webp" alt="Obiimy" width="94" height="20"></a>
-  <nav class="dots" id="dots" aria-label="Розділи"><a href="#c1">Перший день</a><a href="#c2">Відрядження</a><a href="#c3">Керівнику</a><a href="#c4">Співоча душа</a><a href="#request">Запит</a></nav>
+  <nav class="dots" id="dots" aria-label="Розділи"><a href="#c1">Твіллі й резинка</a><a href="#c2">Маска й резинка</a><a href="#c3">Твіллі й хустка</a><a href="#c4">Співоча душа</a><a href="#request">Запит</a></nav>
   <a class="btn btn-gold btn-sm" href="#request">Запит</a>
 </header>
 
@@ -153,30 +170,18 @@
       <div class="box3d">
         <div class="face f-bottom"></div><div class="face f-back"></div><div class="face f-left"></div><div class="face f-right"></div>
         <div class="face tissue"></div>
+        <span class="rise r1" style="--x:-78px;--z:10px;--up:74px;--r:-4deg;--i:0"><span class="sk note">Ласкаво просимо в команду. Раді, що ви з нами.<small>— ваша команда</small></span></span>
+        <span class="rise r1" style="--x:34px;--z:-16px;--up:96px;--r:5deg;--i:1"><span class="sk strip" style="background-image:url(tex/prystrast-strip.jpg)"></span></span>
+        <span class="rise r1" style="--x:104px;--z:30px;--up:38px;--i:2"><span class="sk ring" style="background-image:url(tex/prystrast.jpg)"></span></span>
+        <span class="rise r2" style="--x:-50px;--z:10px;--up:60px;--r:-6deg;--i:0"><span class="sk mask" style="background-image:url(tex/litnie-pole.jpg);--mk:150px"></span></span>
+        <span class="rise r2" style="--x:92px;--z:34px;--up:36px;--i:1"><span class="sk ring" style="background-image:url(tex/litnie-pole.jpg)"></span></span>
+        <span class="rise r3" style="--x:-44px;--z:-10px;--up:78px;--r:-4deg;--i:0"><span class="sk sq" style="background-image:url(tex/probudzhennia.jpg);--sq:112px"></span></span>
+        <span class="rise r3" style="--x:92px;--z:30px;--up:44px;--r:6deg;--i:1"><span class="sk strip" style="background-image:url(tex/probudzhennia-strip.jpg)"></span></span>
+        <span class="rise r4" style="--x:-72px;--z:10px;--up:52px;--r:-5deg;--i:0"><span class="sk mask" style="background-image:url(tex/pidnesennia.jpg);--mk:124px"></span></span>
+        <span class="rise r4" style="--x:26px;--z:-14px;--up:86px;--r:6deg;--i:1"><span class="sk bm" style="background-image:url(tex/pidnesennia.jpg);--bw:30px"></span></span>
+        <span class="rise r4" style="--x:100px;--z:32px;--up:36px;--i:2"><span class="sk ring" style="background-image:url(tex/pidnesennia.jpg)"></span></span>
         <div class="face f-front"></div>
-        <div class="lidg"><div class="lid-top"><img src="brand/logo-ink-480.webp" alt=""></div><div class="lid-front"></div><div class="lid-left"></div><div class="lid-right"></div></div>
-      </div>
-      <div class="items">
-        <div class="grp g1">
-          <span class="note-card" style="left:34%;top:44%;--r:-5deg;--i:0">Ласкаво просимо в команду. Ми раді, що ти з нами.<small>— команда</small></span>
-          <span class="pk" style="left:66%;top:48%;--r:6deg;--i:1"><img src="img/scrunchie-energiia-480.webp" alt=""></span>
-        </div>
-        <div class="grp g2">
-          <span class="pk" style="left:22%;top:50%;--r:-8deg;--i:0"><img src="img/mask-vpevnenist-480.webp" alt=""></span>
-          <span class="pk big" style="left:52%;top:40%;--r:3deg;--i:1"><img src="img/twilly-zolote-480.webp" alt=""></span>
-          <span class="pk" style="left:80%;top:54%;--r:8deg;--i:2"><img src="img/scrunchie-pole-480.webp" alt=""></span>
-        </div>
-        <div class="grp g3">
-          <span class="pk big" style="left:38%;top:44%;--r:-4deg;--i:0"><img src="img/kolo-sontsia-480.webp" alt=""></span>
-          <span class="pk" style="left:72%;top:52%;--r:7deg;--i:1"><img src="img/twilly-zolote-480.webp" alt=""></span>
-        </div>
-        <div class="grp g4">
-          <span class="pk big" style="left:38%;top:44%;--r:-3deg;--i:0"><img src="tex/tysha-sertsia.jpg" alt="" style="object-fit:cover;padding:0"></span>
-          <span class="note-card" style="left:72%;top:50%;--r:6deg;--i:1">Частина коштів від колекції йде на гніздівлі для сиворакші.<small>— «Співоча душа»</small></span>
-        </div>
-        <div class="grp g5">
-          <span class="note-card" style="left:50%;top:26%;--r:-2deg;--i:0">Дякуємо, що цього року ви були поруч.<small>— від вашої компанії</small></span>
-        </div>
+        <div class="lidg"><div class="lid-top"><img src="brand/logo-ink-480.webp" alt=""><span class="sk note lidnote">Дякуємо, що цього року ви були поруч.<small>— від вашої компанії</small></span></div><div class="lid-front"></div><div class="lid-left"></div><div class="lid-right"></div></div>
       </div>
       <p class="caption" id="cap">Прокрутіть — коробка відкриється</p>
     </div>
@@ -185,46 +190,46 @@
       <section class="chap" id="c0" data-ch="0">
         <p class="eyebrow">Корпоративні набори · розпакування</p>
         <h1>Відкрийте коробку — <em>побачите, що отримає команда</em></h1>
-        <p class="copy">Жовта коробка Obiimy з тонким папером і листівкою. Прокрутіть: у кожному розділі в ній з’являється інший набір — від welcome-box до подарунка керівнику.</p>
+        <p class="copy">Жовта коробка Obiimy з тонким папером і листівкою. Прокрутіть: у кожному розділі в ній з’являється інший набір із каталогу obiimy.world — від твіллі з резинкою до «Співочої душі».</p>
         <p class="hint">Прокрутіть</p>
       </section>
       <section class="chap" id="c1" data-ch="1">
-        <p class="eyebrow">01 · Welcome-box</p>
-        <h2>«Перший день»</h2>
-        <p class="copy">Новому співробітнику — резинка у фірмовій коробочці й листівка від команди. Маленький жест, з якого починається «свої».</p>
-        <div class="comp"><div><span>Резинка для волосся</span><span class="num">700 грн</span></div><div><span>Листівка з вашим текстом</span><span>у коробці</span></div></div>
-        <div class="price"><b class="num">700 грн</b><span>Під запит</span></div>
-        <div class="row"><a class="btn btn-line btn-sm pick" href="#request" data-set="«Перший день» — 700 грн">Запросити цей набір</a></div>
+        <p class="eyebrow">01 · Новим у команді</p>
+        <h2>Твіллі й резинка</h2>
+        <p class="copy">Твіллі 84 × 5 і резинка одного принта у святковій коробці. Додайте листівку від команди — маленький жест, з якого новенька людина стає своєю.</p>
+        <div class="comp"><div><span>Твіллі 84 × 5 + резинка</span><span class="num">2 200 грн</span></div><div><span>З довгою твіллі 140 × 5</span><span class="num">2 700 грн</span></div><div><span>Листівка з вашим текстом</span><span>у коробці</span></div></div>
+        <div class="price"><b class="num">2 200 грн</b><span class="cat">Каталог</span></div>
+        <div class="row"><a class="btn btn-line btn-sm pick" href="#request" data-set="Твіллі й резинка — 2 200 грн">Запросити цей набір</a></div>
       </section>
       <section class="chap" id="c2" data-ch="2">
-        <p class="eyebrow">02 · Для тих, хто багато літає</p>
-        <h2>«Відрядження»</h2>
-        <p class="copy">Маска для сну, твіллі й резинка — усе займає мало місця у валізі й робить готельний номер своїм.</p>
-        <div class="comp"><div><span>Маска для сну</span><span class="num">2 700 грн</span></div><div><span>Твіллі 84 × 5</span><span class="num">1 600 грн</span></div><div><span>Резинка для волосся</span><span class="num">700 грн</span></div></div>
-        <div class="price"><b class="num">5 000 грн</b><span>Під запит</span></div>
-        <div class="row"><a class="btn btn-line btn-sm pick" href="#request" data-set="«Відрядження» — 5 000 грн">Запросити цей набір</a></div>
+        <p class="eyebrow">02 · Тим, хто багато в дорозі</p>
+        <h2>Маска й резинка</h2>
+        <p class="copy">Маска для сну й резинка одного принта займають мало місця у валізі й роблять готельний номер своїм. У каталозі — вісім принтів, серед них «Літнє поле», «Енергія» й «Серцебиття».</p>
+        <div class="comp"><div><span>Маска для сну + резинка</span><span class="num">3 100 грн</span></div><div><span>Листівка з вашим текстом</span><span>у коробці</span></div></div>
+        <div class="price"><b class="num">3 100 грн</b><span class="cat">Каталог</span></div>
+        <div class="row"><a class="btn btn-line btn-sm pick" href="#request" data-set="Маска й резинка — 3 100 грн">Запросити цей набір</a></div>
       </section>
       <section class="chap" id="c3" data-ch="3">
-        <p class="eyebrow">03 · Топменеджменту й VIP</p>
-        <h2>«Керівнику»</h2>
-        <p class="copy">Шаль 88 × 88 і твіллі в одній коробці — найбільший формат Obiimy і найменший, поруч.</p>
-        <div class="comp"><div><span>Шаль 88 × 88</span><span class="num">4 400 грн</span></div><div><span>Твіллі 84 × 5</span><span class="num">1 600 грн</span></div></div>
-        <div class="price"><b class="num">6 000 грн</b><span>Під запит</span></div>
-        <div class="row"><a class="btn btn-line btn-sm pick" href="#request" data-set="«Керівнику» — 6 000 грн">Запросити цей набір</a></div>
+        <p class="eyebrow">03 · Партнерам і клієнтам</p>
+        <h2>Твіллі й хустка 44 × 44</h2>
+        <p class="copy">Маленька хустка — на шию чи в нагрудну кишеню жакета, твіллі — на сумку чи у волосся. У каталозі 18 принтів, шість із них — із двостороннім друком.</p>
+        <div class="comp"><div><span>Твіллі 84 × 5 + хустка 44 × 44</span><span class="num">3 200 грн</span></div><div><span>Із двостороннім друком</span><span class="num">3 600 грн</span></div></div>
+        <div class="price"><b class="num">3 200 грн</b><span class="cat">Каталог</span></div>
+        <div class="row"><a class="btn btn-line btn-sm pick" href="#request" data-set="Твіллі й хустка 44 × 44 — 3 200 грн">Запросити цей набір</a></div>
       </section>
       <section class="chap" id="c4" data-ch="4">
         <p class="eyebrow">04 · Подарунок із сенсом</p>
         <h2>«Співоча душа»</h2>
-        <p class="copy">Хустка 65 × 65 «Тиша серця» з колекції, створеної разом з Українським товариством охорони птахів, і листівка з історією: частина коштів іде на гніздівлі для сиворакші.</p>
-        <div class="comp"><div><span>Хустка 65 × 65 «Тиша серця»</span><span class="num">3 200 грн</span></div><div><span>Листівка з історією колекції</span><span>у коробці</span></div></div>
-        <div class="price"><b class="num">3 200 грн</b><span>Під запит</span></div>
-        <div class="row"><a class="btn btn-line btn-sm pick" href="#request" data-set="«Співоча душа» — 3 200 грн">Запросити цей набір</a></div>
+        <p class="copy">Маска для сну, закладка для книги й резинка з колекції «Співоча душа», створеної разом із художницею Анною Кловак та Українським товариством охорони птахів. Частина коштів від колекції йде на гніздівлі для сиворакші.</p>
+        <div class="comp"><div><span>Маска, закладка й резинка</span><span class="num">3 600 грн</span></div><div><span>Принти</span><span>«Піднесення», «Мелодія двох»</span></div><div><span>Листівка з історією колекції</span><span>у коробці</span></div></div>
+        <div class="price"><b class="num">3 600 грн</b><span class="cat">Каталог</span></div>
+        <div class="row"><a class="btn btn-line btn-sm pick" href="#request" data-set="«Співоча душа»: маска, закладка й резинка — 3 600 грн">Запросити цей набір</a></div>
       </section>
       <section class="chap" id="c5" data-ch="5">
         <p class="eyebrow">05 · Закриваємо коробку</p>
         <h2>Листівка зверху — <em>і в дорогу</em></h2>
-        <p class="copy">Кожен набір — у жовтій коробці з вашим привітанням. В офіс однією посилкою або кожному на відділення Нової пошти. Ціни роздрібні; склад, принти й ціну на тираж підтвердимо в розрахунку.</p>
-        <div class="row"><a class="btn btn-gold" href="#request">Отримати розрахунок</a><a class="btn btn-line" href="b2b-sets">Усі дев’ять наборів</a></div>
+        <p class="copy">Кожен набір — у жовтій коробці з вашим привітанням. В офіс однією посилкою або кожному на відділення Нової пошти. Ціни — роздрібні з obiimy.world; принти, наявність і ціну на тираж підтвердимо в розрахунку.</p>
+        <div class="row"><a class="btn btn-gold" href="#request">Отримати розрахунок</a><a class="btn btn-gold" href="b2b-sets">Усі набори в каталозі</a></div>
       </section>
     </div>
   </div>
@@ -235,14 +240,14 @@
         <p class="others">Інші програми: <a href="b2b-sets">Каталог наборів</a> · <a href="b2b-monoprint">Один принт — уся компанія</a> · <a href="b2b-atelier">3D-конструктор</a> · <a href="b2b-newyear">Новий рік</a></p></div>
       <div>
       <form id="f-unbox" novalidate>
-        <label><span>Компанія <span class="req">*</span></span><input name="company" data-label="Компанія" type="text" placeholder="Назва компанії" autocomplete="organization" required aria-describedby="f-unbox-company-err"><span class="err" id="f-unbox-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-unbox-name-err"><span class="err" id="f-unbox-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-unbox-phone-err"><span class="err" id="f-unbox-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-unbox-email-err"><span class="err" id="f-unbox-email-err" role="alert">Вкажіть коректний email</span></label><label class="full"><span>Набір</span><select name="set" data-label="Набір"><option value="">Оберіть</option><option>«Перший день» — 700 грн</option><option>«Відрядження» — 5 000 грн</option><option>«Керівнику» — 6 000 грн</option><option>«Співоча душа» — 3 200 грн</option><option>Інший</option></select></label><label><span>Кількість наборів</span><input name="qty" data-label="Кількість наборів" type="number" min="1" inputmode="numeric" placeholder="наприклад, 30"></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Нагода, принти, текст листівки…"></textarea></label>
-        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на sale@obiimy-world.com з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="tel:+380670108525">+38 067 010 85 25</a>.</span></div>
+        <label><span>Компанія <span class="req">*</span></span><input name="company" data-label="Компанія" type="text" placeholder="Назва компанії" autocomplete="organization" required aria-describedby="f-unbox-company-err"><span class="err" id="f-unbox-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-unbox-name-err"><span class="err" id="f-unbox-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-unbox-phone-err"><span class="err" id="f-unbox-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для розрахунку" autocomplete="email" required aria-describedby="f-unbox-email-err"><span class="err" id="f-unbox-email-err" role="alert">Вкажіть коректний email</span></label><label class="full"><span>Набір</span><select name="set" data-label="Набір"><option value="">Оберіть</option><option>Твіллі й резинка — 2 200 грн</option><option>Маска й резинка — 3 100 грн</option><option>Твіллі й хустка 44 × 44 — 3 200 грн</option><option>«Співоча душа»: маска, закладка й резинка — 3 600 грн</option><option>Інший набір з каталогу</option></select></label><label><span>Кількість наборів</span><input name="qty" data-label="Кількість наборів" type="number" min="1" inputmode="numeric" placeholder="наприклад, 30"></label><label><span>Коли потрібно</span><select name="deadline" data-label="Коли потрібно"><option value="">Оберіть</option><option>До 10 грудня</option><option>До 20 грудня</option><option>Після свят</option><option>Інша дата</option></select></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Нагода, принти, текст листівки…"></textarea></label>
+        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на sale@obiimy.world з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="tel:+380739259949">+38 073 925 99 49</a>.</span></div>
       </form>
       <div class="done" id="f-unbox-done" hidden aria-live="polite">
         <h3 tabindex="-1">Лист підготовлено</h3>
-        <p>Якщо поштова програма не відкрилась — скопіюйте текст нижче й надішліть на <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a>, або подзвоніть <a href="tel:+380670108525">+38 067 010 85 25</a>.</p>
+        <p>Якщо поштова програма не відкрилась — скопіюйте текст нижче й надішліть на <a href="mailto:sale@obiimy.world">sale@obiimy.world</a>, або подзвоніть <a href="tel:+380739259949">+38 073 925 99 49</a>.</p>
         <textarea id="f-unbox-txt" readonly rows="8" aria-label="Текст запиту"></textarea>
-        <div class="row"><button class="btn btn-line btn-sm" type="button" id="f-unbox-copy">Скопіювати текст</button><a class="btn btn-line btn-sm" href="tel:+380670108525">Подзвонити</a><button class="btn btn-line btn-sm" type="button" id="f-unbox-back">Змінити запит</button></div>
+        <div class="row"><button class="btn btn-line btn-sm" type="button" id="f-unbox-copy">Скопіювати текст</button><a class="btn btn-line btn-sm" href="tel:+380739259949">Подзвонити</a><button class="btn btn-line btn-sm" type="button" id="f-unbox-back">Змінити запит</button></div>
       </div>
       <script>
       (function () {
@@ -261,11 +266,11 @@
           if (first) { first.focus(); first.scrollIntoView({ block: 'center', behavior: 'smooth' }); return; }
           var lines = [];
           f.querySelectorAll('[name]').forEach(function (i) { if (i.value.trim()) lines.push(i.dataset.label + ': ' + i.value.trim()); });
-          var body = 'Набір із розпаковки\n\n' + lines.join('\n') + '\n\nНадіслано зі сторінки ' + location.href;
+          var body = 'Набір зі сторінки «Розпакування»\n\n' + lines.join('\n') + '\n\nНадіслано зі сторінки ' + location.href;
           txt.value = body;
           var company = f.querySelector('[name="company"]').value.trim();
           f.hidden = true; done.hidden = false; done.scrollIntoView({ block: 'start', behavior: 'smooth' }); done.querySelector('h3').focus({ preventScroll: true });
-          window.location.href = 'mailto:sale@obiimy-world.com?subject=' + encodeURIComponent('Набір із розпаковки — ' + company) + '&body=' + encodeURIComponent(body);
+          window.location.href = 'mailto:sale@obiimy.world?subject=' + encodeURIComponent('Набір зі сторінки «Розпакування» — ' + company) + '&body=' + encodeURIComponent(body);
         });
         document.getElementById('f-unbox-copy').addEventListener('click', function () { var b = this; txt.select(); (navigator.clipboard ? navigator.clipboard.writeText(txt.value) : Promise.reject()).then(function () { b.textContent = 'Скопійовано'; setTimeout(function () { b.textContent = 'Скопіювати текст'; }, 2000); }, function () { document.execCommand('copy'); }); });
         document.getElementById('f-unbox-back').addEventListener('click', function () { done.hidden = true; f.hidden = false; f.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
@@ -274,11 +279,11 @@
     </div>
   </section>
 </main>
-<footer><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко</span><span><a href="tel:+380670108525">+38 067 010 85 25</a> · <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a></span></footer>
+<footer><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко</span><span><a href="tel:+380739259949">+38 073 925 99 49</a> · <a href="mailto:sale@obiimy.world">sale@obiimy.world</a></span></footer>
 <script>
 (function () {
   var stage = document.getElementById('stage'), cap = document.getElementById('cap'), dots = [].slice.call(document.querySelectorAll('#dots a'));
-  var caps = ['Прокрутіть — коробка відкриється', 'Welcome-box · 700 грн', 'Відрядження · 5 000 грн', 'Керівнику · 6 000 грн', 'Співоча душа · 3 200 грн', 'Листівка зверху — і в дорогу'];
+  var caps = ['Прокрутіть — коробка відкриється', 'Твіллі й резинка · 2\u202f200\u00a0грн', 'Маска й резинка · 3\u202f100\u00a0грн', 'Твіллі й хустка 44 · 3\u202f200\u00a0грн', 'Співоча душа · 3\u202f600\u00a0грн', 'Листівка зверху — і в дорогу'];
   function set(ch) { stage.dataset.ch = ch; cap.textContent = caps[ch] || ''; dots.forEach(function (a, i) { a.classList.toggle('on', i + 1 === +ch); }); }
   var chaps = [].slice.call(document.querySelectorAll('.chap'));
   if ('IntersectionObserver' in window) {
@@ -287,7 +292,8 @@
   }
   document.querySelectorAll('.pick').forEach(function (b) { b.addEventListener('click', function () {
     var sel = document.querySelector('#f-unbox [name="set"]'); if (!sel) return;
-    for (var i = 0; i < sel.options.length; i++) if (sel.options[i].text === b.dataset.set) sel.selectedIndex = i;
+    var k = function (x) { return x.replace(/[\s\u00a0\u202f]/g, ''); };
+    for (var i = 0; i < sel.options.length; i++) if (k(sel.options[i].text) === k(b.dataset.set)) sel.selectedIndex = i;
   }); });
 })();
 </script>

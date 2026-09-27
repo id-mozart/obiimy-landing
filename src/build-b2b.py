@@ -11,9 +11,11 @@ _ns = {}
 exec(_src[_src.index("SKINS = {"):_src.index("BASE_CSS = ")], {}, _ns)
 SKINS = _ns["SKINS"]
 
-PHONE = "+38 067 010 85 25"
-PHONE_HREF = "tel:+380670108525"
-MAIL = "sale@obiimy-world.com"
+PHONE = "+38 073 925 99 49"          # «Співпраця» on obiimy.world/kontaktna-informatsiya
+PHONE_HREF = "tel:+380739259949"
+MAIL = "sale@obiimy.world"
+TG = "https://t.me/OBIIMY_sales"
+SHOWROOM = "Київ, вул. Петра Сагайдачного, 12"
 SITE_URL = "https://obiimy-landing-production.up.railway.app"
 SAMPLE_URL = "https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/"
 
@@ -162,6 +164,7 @@ CSS = """
   .contact { display: grid; gap: 14px; color: var(--ink2); }
   .contact a { color: var(--ink); text-decoration: none; font-weight: 500; display: inline-block; padding: 10px 0; }
   .contact .big { font-family: var(--display); font-size: 1.6rem; }
+  .contact .show { font-size: .9rem; }
   form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 3vw, 32px); }
   form label { display: grid; gap: 6px; font-size: .82rem; color: var(--ink2); letter-spacing: .03em; }
   form label.full { grid-column: 1 / -1; }
@@ -379,7 +382,7 @@ def shell(page, body):
 {body}
 </main>
 <section class="others" aria-label="{L["others_aria"]}"><div class="wrap">{"<span>" + L["others"] + "</span>" if L is EN else ""}{others}</div></section>
-<footer><div class="wrap"><span>{L["footer_l"]}</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a> · <a href="{L["about_url"]}">{L["about"]}</a> · <a href="{L["deliv_url"]}">{L["delivery"]}</a></span></div></footer>
+<footer><div class="wrap"><span>{L["footer_l"]}{"" if L is EN else " · шоурум: " + SHOWROOM}</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a> · <a href="{L["about_url"]}">{L["about"]}</a> · <a href="{L["deliv_url"]}">{L["delivery"]}</a></span></div></footer>
 <div class="sticky" id="sticky"><span>{page["sticky"]}</span><a href="#request">{page["cta"]}</a></div>
 <script>
 (function () {{
@@ -392,7 +395,7 @@ def shell(page, body):
 </html>
 '''
 
-def hero(eyebrow, h1, lead, cta1, cta2, cta2_href, fine, photo, alt, tag, cls="", pos="50% 18%", L=None, figure=None):
+def hero(eyebrow, h1, lead, cta1, cta2, cta2_href, fine, photo, alt, tag, cls="", pos="50% 18%", L=None, figure=None, cta1_href="#request"):
     L = L or UK
     fig = figure or ('<figure>' + img(photo, alt, sizes="(max-width: 960px) 100vw, 50vw", lazy=False, eager_priority=True) + '<div class="tag">' + tag + '</div></figure>')
     dl = (' download="' + ('Obiimy-lookbook-dlia-klienta.pdf' if 'noprice' in cta2_href else 'Obiimy-lookbook-RRC.pdf') + '" type="application/pdf"') if cta2_href.endswith(".pdf") else ""
@@ -402,7 +405,7 @@ def hero(eyebrow, h1, lead, cta1, cta2, cta2_href, fine, photo, alt, tag, cls=""
       <p class="eyebrow">{eyebrow}</p>
       <h1 style="margin-top:14px">{h1}</h1>
       <p class="lead">{lead}</p>
-      <div class="cta"><a class="btn btn-gold" href="#request">{cta1}</a><a class="btn btn-line" href="{cta2_href}"{dl}>{cta2}</a></div>
+      <div class="cta"><a class="btn btn-gold" href="{cta1_href}">{cta1}</a><a class="btn btn-line" href="{cta2_href}"{dl}>{cta2}</a></div>
       <p class="fine">{fine} {L["or_call"]} <a href="{PHONE_HREF}">{PHONE}</a></p>
     </div>
     {fig}
@@ -491,7 +494,7 @@ def newyear():
   </div></section>
 
   <section class="form-block alt" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Отримати добірку і розрахунок</h2><p>Розкажіть про команду й бюджет — повернемось із добіркою принтів, цінами на тираж і графіком.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p></div>
+    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Отримати добірку і розрахунок</h2><p>Розкажіть про команду й бюджет — повернемось із добіркою принтів, цінами на тираж і графіком.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й помацати наживо.</p></div>
     <div>{form_html("f-ny", "Корпоративні подарунки до Нового року", [
         ("company", "Компанія", "input", True, {"ph": "Назва компанії", "ac": "organization"}),
         ("name", "Ваше ім’я", "input", True, {"ph": "Як до вас звертатись", "ac": "name"}),
@@ -602,7 +605,7 @@ def horeca():
   {proof_html("Де вже є Obiimy", "Obiimy продається у роздрібних партнерів в Україні та за кордоном, а історію бренду розповідали LIGA.net та INSIDER UA.")}
 
   <section class="form-block" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити капсулу принтів</h2><p>Напишіть, що за заклад і скільки людей — повернемось із добіркою принтів під ваші кольори та розрахунком.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p></div>
+    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити капсулу принтів</h2><p>Напишіть, що за заклад і скільки людей — повернемось із добіркою принтів під ваші кольори та розрахунком.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й помацати наживо.</p></div>
     <div>{form_html("f-hr", "Шовк для уніформи / HoReCa", [
         ("company", "Заклад або компанія", "input", True, {"ph": "Назва", "ac": "organization"}),
         ("name", "Ваше ім’я", "input", True, {"ph": "Як до вас звертатись", "ac": "name"}),
@@ -675,7 +678,7 @@ def wholesale():
   </div></section>
 
   <section class="form-block alt" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити оптовий прайс</h2><p>Розкажіть про магазин і місто. У відповідь надішлемо оптовий прайс із мінімальною партією та знижкою за категоріями, каталог із фото та умови для вашого формату — корнер чи ексклюзив у місті.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p></div>
+    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити оптовий прайс</h2><p>Розкажіть про магазин і місто. У відповідь надішлемо оптовий прайс із мінімальною партією та знижкою за категоріями, каталог із фото та умови для вашого формату — корнер чи ексклюзив у місті.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й помацати наживо.</p></div>
     <div>{form_html("f-ws", "Оптова співпраця", [
         ("company", "Магазин або компанія", "input", True, {"ph": "Назва", "ac": "organization"}),
         ("name", "Ваше ім’я", "input", True, {"ph": "Як до вас звертатись", "ac": "name"}),
@@ -759,7 +762,7 @@ def calendar():
   {proof_html("Де вже є Obiimy", "Obiimy продається у роздрібних партнерів в Україні та за кордоном, а історію бренду розповідали LIGA.net та INSIDER UA.", first=True)}
 
   <section class="form-block alt" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Скласти річний план подарунків</h2><p>Кілька фактів про компанію — і ми запропонуємо календар, добірку та розрахунок на рік.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p></div>
+    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Скласти річний план подарунків</h2><p>Кілька фактів про компанію — і ми запропонуємо календар, добірку та розрахунок на рік.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й помацати наживо.</p></div>
     <div>{form_html("f-cal", "Річна програма корпоративних подарунків", [
         ("company", "Компанія", "input", True, {"ph": "Назва компанії", "ac": "organization"}),
         ("name", "Ваше ім’я", "input", True, {"ph": "Як до вас звертатись", "ac": "name"}),

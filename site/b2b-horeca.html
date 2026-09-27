@@ -165,6 +165,7 @@
   .contact { display: grid; gap: 14px; color: var(--ink2); }
   .contact a { color: var(--ink); text-decoration: none; font-weight: 500; display: inline-block; padding: 10px 0; }
   .contact .big { font-family: var(--display); font-size: 1.6rem; }
+  .contact .show { font-size: .9rem; }
   form { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: clamp(18px, 3vw, 32px); }
   form label { display: grid; gap: 6px; font-size: .82rem; color: var(--ink2); letter-spacing: .03em; }
   form label.full { grid-column: 1 / -1; }
@@ -252,7 +253,7 @@
       <h1 style="margin-top:14px">Шовк у вашому дрес-коді</h1>
       <p class="lead">Хустка на шиї хостес, твіллі на рецепції, маска для сну у VIP-номері — принти Obiimy під кольори вашого бренду.<span class="m-hide"> Одна деталь зі 100% італійського шовку робить уніформу впізнаваною.</span></p>
       <div class="cta"><a class="btn btn-gold" href="#request">Запросити капсулу принтів</a><a class="btn btn-line" href="product-noir">Замовити зразок у роздріб</a></div>
-      <p class="fine">Виготовлено в Україні. Дозамовлення при зміні складу команди — з тих самих принтів. Або одразу: <a href="tel:+380670108525">+38 067 010 85 25</a></p>
+      <p class="fine">Виготовлено в Україні. Дозамовлення при зміні складу команди — з тих самих принтів. Або одразу: <a href="tel:+380739259949">+38 073 925 99 49</a></p>
     </div>
     <figure><img src="photo/paris-blazer-800.webp" srcset="photo/paris-blazer-480.webp 480w, photo/paris-blazer-800.webp 800w, photo/paris-blazer-1200.webp 1200w, photo/paris-blazer.jpg 1856w" sizes="(max-width: 960px) 100vw, 50vw" width="1856" height="2304" alt="Червона шовкова хустка на чорному жакеті" fetchpriority="high"><div class="tag">Хустка 44 × 44 · один вузол — і образ зібраний</div></figure>
   </div></section><section class="wrap" aria-label="Коротко про бренд"><div class="facts"><div><b class="num">100% шовк</b><span>Італійський шовк, авторські принти, обробка вручну</span></div><div><b class="num">від 1 600 грн</b><span>Роздрібна ціна паше або твіллі на одну людину</span></div><div><b class="num">Поштучно</b><span>Дозамовлення з наявності на складі — того ж дня, якщо до 16:00</span></div><div><b class="num">30 °C</b><span>Ручне прання, сушити в тіні — картка догляду в коробці</span></div></div></section>
@@ -334,17 +335,17 @@
   </div></section>
 
   <section class="form-block" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити капсулу принтів</h2><p>Напишіть, що за заклад і скільки людей — повернемось із добіркою принтів під ваші кольори та розрахунком.</p><p class="big"><a href="tel:+380670108525">+38 067 010 85 25</a></p><p><a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a></p></div>
+    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити капсулу принтів</h2><p>Напишіть, що за заклад і скільки людей — повернемось із добіркою принтів під ваші кольори та розрахунком.</p><p class="big"><a href="tel:+380739259949">+38 073 925 99 49</a></p><p><a href="mailto:sale@obiimy.world">sale@obiimy.world</a> · <a href="https://t.me/OBIIMY_sales">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: Київ, вул. Петра Сагайдачного, 12 — шовк можна подивитися й помацати наживо.</p></div>
     <div>
       <form id="f-hr" novalidate>
         <label><span>Заклад або компанія <span class="req">*</span></span><input name="company" data-label="Заклад або компанія" type="text" placeholder="Назва" autocomplete="organization" required aria-describedby="f-hr-company-err"><span class="err" id="f-hr-company-err" role="alert">Заповніть це поле</span></label><label><span>Ваше ім’я <span class="req">*</span></span><input name="name" data-label="Ваше ім’я" type="text" placeholder="Як до вас звертатись" autocomplete="name" required aria-describedby="f-hr-name-err"><span class="err" id="f-hr-name-err" role="alert">Заповніть це поле</span></label><label><span>Телефон <span class="req">*</span></span><input name="phone" data-label="Телефон" type="tel" placeholder="+380" autocomplete="tel" required aria-describedby="f-hr-phone-err"><span class="err" id="f-hr-phone-err" role="alert">Вкажіть номер телефону</span></label><label><span>Email <span class="req">*</span></span><input name="email" data-label="Email" type="email" placeholder="для капсули та розрахунку" autocomplete="email" required aria-describedby="f-hr-email-err"><span class="err" id="f-hr-email-err" role="alert">Вкажіть коректний email</span></label><label><span>Людей у команді</span><input name="people" data-label="Людей у команді" type="number" min="1" inputmode="numeric" placeholder="наприклад, 12"></label><label><span>Що цікавить</span><select name="items" data-label="Що цікавить"><option value="">Оберіть</option><option>Паше 44 × 44</option><option>Твіллі 84 × 5</option><option>Хустка 65 × 65</option><option>Маска для сну (amenity)</option><option>Комбінація</option></select></label><label class="full"><span>Тип закладу та кольори бренду</span><input name="venue" data-label="Тип закладу та кольори бренду" type="text" placeholder="наприклад, готель 5*, бордовий і золото"></label><label><span>Оплата</span><select name="payment" data-label="Оплата"><option value="">Оберіть</option><option>Безготівково, ТОВ</option><option>Безготівково, ФОП</option><option>Карткою</option></select></label><label><span>Коли потрібна перша партія</span><input name="start" data-label="Коли потрібна перша партія" type="text" placeholder="наприклад, до відкриття 1 грудня"></label><label class="full"><span>Коментар</span><textarea name="note" data-label="Коментар" placeholder="Кількість змін, терміни, побажання до принтів…"></textarea></label>
-        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на sale@obiimy-world.com з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="tel:+380670108525">+38 067 010 85 25</a>.</span></div>
+        <div class="actions"><button class="btn btn-gold" type="submit">Надіслати запит</button><span class="hint">Відкриється лист на sale@obiimy.world з вашими даними — нічого не надішлеться без вашого підтвердження. Або телефонуйте: <a href="tel:+380739259949">+38 073 925 99 49</a>.</span></div>
       </form>
       <div class="done" id="f-hr-done" hidden aria-live="polite">
         <h3 tabindex="-1">Лист підготовлено</h3>
-        <p>Якщо поштова програма не відкрилась — скопіюйте текст нижче й надішліть на <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a>, або подзвоніть <a href="tel:+380670108525">+38 067 010 85 25</a>.</p>
+        <p>Якщо поштова програма не відкрилась — скопіюйте текст нижче й надішліть на <a href="mailto:sale@obiimy.world">sale@obiimy.world</a>, або подзвоніть <a href="tel:+380739259949">+38 073 925 99 49</a>.</p>
         <textarea id="f-hr-txt" readonly rows="8" aria-label="Текст запиту"></textarea>
-        <div class="row"><button class="btn btn-line btn-sm" type="button" id="f-hr-copy">Скопіювати текст</button><a class="btn btn-line btn-sm" href="tel:+380670108525">Подзвонити</a><button class="btn btn-line btn-sm" type="button" id="f-hr-back">Змінити запит</button></div>
+        <div class="row"><button class="btn btn-line btn-sm" type="button" id="f-hr-copy">Скопіювати текст</button><a class="btn btn-line btn-sm" href="tel:+380739259949">Подзвонити</a><button class="btn btn-line btn-sm" type="button" id="f-hr-back">Змінити запит</button></div>
       </div>
       <script>
       (function () {
@@ -367,7 +368,7 @@
           txt.value = body;
           var company = f.querySelector('[name="company"]').value.trim();
           f.hidden = true; done.hidden = false; done.scrollIntoView({ block: 'start', behavior: 'smooth' }); done.querySelector('h3').focus({ preventScroll: true });
-          window.location.href = 'mailto:sale@obiimy-world.com?subject=' + encodeURIComponent('Шовк для уніформи / HoReCa — ' + company) + '&body=' + encodeURIComponent(body);
+          window.location.href = 'mailto:sale@obiimy.world?subject=' + encodeURIComponent('Шовк для уніформи / HoReCa — ' + company) + '&body=' + encodeURIComponent(body);
         });
         document.getElementById('f-hr-copy').addEventListener('click', function () { var b = this; txt.select(); (navigator.clipboard ? navigator.clipboard.writeText(txt.value) : Promise.reject()).then(function () { b.textContent = 'Скопійовано'; setTimeout(function () { b.textContent = 'Скопіювати текст'; }, 2000); }, function () { document.execCommand('copy'); }); });
         document.getElementById('f-hr-back').addEventListener('click', function () { done.hidden = true; f.hidden = false; f.scrollIntoView({ block: 'start', behavior: 'smooth' }); });
@@ -376,7 +377,7 @@
   </div></section>
 </main>
 <section class="others" aria-label="Інші програми для бізнесу"><div class="wrap"><span class="grp"><b>Набори:</b><a href="b2b-sets">Каталог наборів</a><a href="b2b-monoprint">Один принт — уся компанія</a><a href="b2b-unboxing">Розпакування</a><a href="b2b-atelier">3D-конструктор подарунка</a></span><span class="grp"><b>Подарунки компаніям:</b><a href="b2b-newyear">Новий рік</a><a href="b2b-calendar">Річна програма</a><a href="b2b-certificates">Сертифікати для команд</a><a href="b2b-speakers">Спікерам і гостям подій</a><a href="b2b-garden">3D-історія</a></span><span class="grp"><b>Бізнесу й партнерам:</b><a href="b2b-wholesale">Опт для магазинів</a><a href="b2b-agencies">Для агенцій</a></span><span class="grp"><a href="b2b-en">English</a></span></div></section>
-<footer><div class="wrap"><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко</span><span><a href="tel:+380670108525">+38 067 010 85 25</a> · <a href="mailto:sale@obiimy-world.com">sale@obiimy-world.com</a> · <a href="https://obiimy.world/pro-nas/">Про нас</a> · <a href="https://obiimy.world/oplata-i-dostavka/">Доставка</a></span></div></footer>
+<footer><div class="wrap"><span>© Obiimy · 100% італійський шовк · виготовлено в Україні · художниця та засновниця — Світлана Сніжко · шоурум: Київ, вул. Петра Сагайдачного, 12</span><span><a href="tel:+380739259949">+38 073 925 99 49</a> · <a href="mailto:sale@obiimy.world">sale@obiimy.world</a> · <a href="https://obiimy.world/pro-nas/">Про нас</a> · <a href="https://obiimy.world/oplata-i-dostavka/">Доставка</a></span></div></footer>
 <div class="sticky" id="sticky"><span>Шовк для уніформи · капсула принтів</span><a href="#request">Запит</a></div>
 <script>
 (function () {

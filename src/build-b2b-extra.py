@@ -7,12 +7,12 @@ OUT = ROOT.parent
 _spec = importlib.util.spec_from_file_location("b2b", ROOT / "build-b2b.py")
 b2b = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(b2b)
 img, typo, hero, facts_html, proof_html, form_html, shell = b2b.img, b2b.typo, b2b.hero, b2b.facts_html, b2b.proof_html, b2b.form_html, b2b.shell
-PHONE, PHONE_HREF, MAIL, SAMPLE_URL, EN = b2b.PHONE, b2b.PHONE_HREF, b2b.MAIL, b2b.SAMPLE_URL, b2b.EN
+PHONE, PHONE_HREF, MAIL, SAMPLE_URL, EN, TG, SHOWROOM = b2b.PHONE, b2b.PHONE_HREF, b2b.MAIL, b2b.SAMPLE_URL, b2b.EN, b2b.TG, b2b.SHOWROOM
 DOCS_FAQ, BATCH_FAQ = b2b.DOCS_FAQ, b2b.BATCH_FAQ
 PROOF = proof_html("Де вже є Obiimy", "Obiimy продається у роздрібних партнерів в Україні та за кордоном, а історію бренду розповідали LIGA.net та INSIDER UA.", first=True)
 
 def contact(title, text):
-    return f'<div class="contact"><p class="eyebrow">Напишіть нам</p><h2>{title}</h2><p>{text}</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p></div>'
+    return f'<div class="contact"><p class="eyebrow">Напишіть нам</p><h2>{title}</h2><p>{text}</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й помацати наживо.</p></div>'
 
 BASE_FIELDS = [
     ("company", "Компанія", "input", True, {"ph": "Назва компанії", "ac": "organization"}),
@@ -26,48 +26,50 @@ PAY = ("payment", "Оплата", "select:Безготівково, ТОВ|Бе�
 CERT_FIG = ('<figure class="cert" aria-label="Приклад подарункового сертифіката Obiimy у жовтому конверті">'
     '<img class="silk" src="tex/tysha-sertsia.jpg" alt="" width="1024" height="1024">'
     '<div class="env"></div>'
-    '<div class="card"><img src="brand/logo-ink-480.webp" alt="Obiimy" width="75" height="16"><span class="k">Подарунковий сертифікат</span><span class="v">1 600 грн</span><small>На вибір на obiimy.world · приклад оформлення</small></div>'
+    '<div class="card"><img src="brand/logo-ink-480.webp" alt="Obiimy" width="75" height="16"><span class="k">Подарунковий сертифікат</span><span class="v">2 000 грн</span><small>На будь-який товар obiimy.world · діє 3 місяці</small></div>'
     '</figure>')
 
 # ---------------------------------------------------------------- certificates (Studio)
 def certificates():
     body = hero("Сертифікати · для команд і віддалених колег", "Подарунок, який людина обирає сама",
-        "Подарунковий сертифікат Obiimy: ви тримаєте бюджет, а людина обирає хустку, твіллі чи маску для сну під себе. Без збору розмірів і адрес.<span class=\"m-hide\"> Для команд у різних містах і країнах — найпростіший корпоративний подарунок.</span>",
+        "Подарунковий сертифікат Obiimy на будь-який товар каталогу: ви тримаєте бюджет, а людина обирає хустку, твіллі, маску для сну чи набір під себе.<span class=\"m-hide\"> Без збору розмірів і адрес — для команд у різних містах.</span>",
         "Отримати умови для команди", "Сертифікати на obiimy.world", "https://obiimy.world/sertyfikaty/",
-        "Номінали під ціни речей: від 700 до 4 400 грн.", "photo/kolo-1.webp", "Жінка в шовковій хустці біля вікна", "Сертифікат — коли важливо, щоб обрали самі", pos="50% 12%", figure=CERT_FIG) + facts_html([
-        ("Без адрес", "Не потрібно збирати розміри, кольори й відділення пошти"),
-        ("700 – 4 400 грн", "Номінали під роздрібні ціни речей"),
-        ("Будь-де", "Для команд у різних містах і за кордоном"),
-        ("Один запит", "Список імен, email і номінал — решту робимо ми"),
-    ]) + f'''
-  <section class="block" id="how"><div class="wrap">
-    <div class="head"><p class="eyebrow">Як це працює</p><h2>Три кроки замість таблиці розмірів</h2><p class="sub">Хочете подарувати конкретну річ, а не вибір? Зберіть її в <a href="b2b-atelier">3D-конструкторі подарунка</a>.</p></div>
-    <div class="steps" style="grid-template-columns:repeat(3,minmax(0,1fr))">
-      <div><h3>Номінал і список</h3><p>Оберіть суму на людину й надішліть список імен та email. Для ключових людей — інший номінал.</p></div>
-      <div><h3>Сертифікати</h3><p>Електронний на email кожному або друкований у фірмовій коробці — формат узгоджуємо в запиті.</p></div>
-      <div><h3>Вибір і доставка</h3><p>Людина обирає річ на obiimy.world; замовлення до 16:00 відправляємо того ж дня.</p></div>
+        "Номінали 1 000, 1 500, 2 000, 2 500 і 4 000 грн · діють 3 місяці.", "photo/kolo-1.webp", "", "", pos="50% 12%", figure=CERT_FIG) + facts_html([
+        ("5 номіналів", "1 000 · 1 500 · 2 000 · 2 500 · 4 000 грн"),
+        ("3 місяці", "Строк, протягом якого людина обирає подарунок"),
+        ("2 формати", "Електронний або фізичний — у святковому оформленні"),
+        ("Будь-який товар", "Хустки, твіллі, маски, набори, Obiimy HOME"),
+    ]) + f"""
+  <section class="block" id="how"><div class="wrap grid2">
+    <div><p class="eyebrow">Як це працює</p><h2 style="margin-top:10px">Три кроки замість таблиці розмірів</h2>
+      <div class="steps" style="grid-template-columns:1fr;gap:18px;margin-top:22px">
+        <div><h3>Номінал і список</h3><p>Оберіть номінал на людину й надішліть список імен та email. Для ключових людей — більший номінал.</p></div>
+        <div><h3>Електронний чи фізичний</h3><p>Електронний сертифікат — на email кожному; фізичний — у святковому оформленні, в офіс або кожному на відділення.</p></div>
+        <div><h3>Вибір протягом 3 місяців</h3><p>Людина сама обирає будь-який товар на obiimy.world у зручний час.</p></div>
+      </div>
+      <p class="note">Хочете подарувати конкретну річ? Зберіть її в <a href="b2b-atelier">3D-конструкторі</a> або оберіть <a href="b2b-sets">готовий набір</a>.</p>
     </div>
+    <figure>{img("img/sets/cert-2000.webp", "Подарунковий сертифікат Obiimy у руках", sizes="(max-width: 960px) 100vw, 50vw")}</figure>
   </div></section>
 
   <section class="block alt" id="nominals"><div class="wrap">
-    <div class="head"><p class="eyebrow">Номінали</p><h2>Що можна обрати на кожну суму</h2><p class="sub">Номінали прив’язані до роздрібних цін, щоб сертифікат покривав річ повністю.</p></div>
+    <div class="head"><p class="eyebrow">Номінали</p><h2>Що можна обрати на кожну суму</h2><p class="sub">Приклади з каталогу Obiimy — сертифікат діє на будь-який товар.</p></div>
     <div class="grid4">
-      <div class="card photo">{img("photo/scrunchie.jpg", "Резинка у фірмовій коробочці", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">700 грн</p><h3>Резинка</h3><p>Шовкова резинка у фірмовій коробочці.</p></div></div>
-      <div class="card photo">{img("photo/paris-bun.jpg", "Твіллі у волоссі", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">1 600 грн</p><h3>Твіллі або паше</h3><p>Твіллі 84 × 5 чи хустка 44 × 44 — будь-який принт.</p></div></div>
-      <div class="card photo">{img("photo/box-green.jpg", "Набір у жовтій коробці", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">3 200 грн</p><h3>Хустка 65 або набір</h3><p>Хустка 65 × 65 або набір «Натхнення».</p></div></div>
-      <div class="card photo">{img("photo/kolo-3.webp", "Хустка на пальті", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">4 400 грн</p><h3>Шаль 88 × 88</h3><p>Велика хустка — на плечі, як топ або тюрбан.</p></div></div>
+      <div class="card photo">{img("img/sets/scr3.webp", "Набір шовкових резинок у коробці", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">1 000 грн</p><h3>Резинка або обруч</h3><p>Шовкова резинка чи обруч для вмивання — 700 грн.</p></div></div>
+      <div class="card photo">{img("photo/paris-bun.jpg", "Твіллі у волоссі", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">2 000 грн</p><h3>Твіллі або паше</h3><p>Твіллі 84 × 5 чи хустка 44 × 44 — 1 600 грн; набір резинок Zero waste — 2 000.</p></div></div>
+      <div class="card photo">{img("img/sets/twscr-makiv.webp", "Твіллі й резинка у святковій коробці", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">2 500 грн</p><h3>Твіллі й резинка</h3><p>Подарунковий набір у коробці — 2 200 грн.</p></div></div>
+      <div class="card photo">{img("img/sets/tw44-vpevnenist.webp", "Твіллі й хустка у жовтій коробці", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">4 000 грн</p><h3>Набір або маска</h3><p>Твіллі й хустка 44 — 3 200–3 600, маска й резинка — 3 100, хустка 65 — 3 200.</p></div></div>
     </div>
-    <p class="note">Номінал може бути будь-яким — це орієнтири, з якими зручно працювати.</p>
   </div></section>
 
   <section class="block" id="cases"><div class="wrap grid2">
     <figure>{img("photo/mizh-2.webp", "Шовкова хустка на голові, біле пальто", sizes="(max-width: 960px) 100vw, 50vw")}</figure>
     <div><p class="eyebrow">Коли сертифікат кращий за коробку</p><h2 style="margin-top:10px">Чотири ситуації</h2>
       <div class="faq" style="margin-top:22px">
-        <details open><summary>Віддалена команда</summary><p>Люди в різних містах і країнах — сертифікат приходить на email, а річ людина замовляє сама, куди зручно.</p></details>
+        <details open><summary>Віддалена команда</summary><p>Люди в різних містах і країнах — електронний сертифікат приходить на email, а річ людина замовляє сама.</p></details>
         <details><summary>Різні смаки</summary><p>Один принт на всіх не завжди працює. Із сертифікатом кожен обирає свій — і подарунок не доводиться передаровувати.</p></details>
         <details><summary>Коли часу обмаль</summary><p>Електронний сертифікат не залежить від пакування й пошти — зручно, коли до події лишилося кілька днів.</p></details>
-        <details><summary>Подяка клієнту</summary><p>Сертифікат на шаль 88 × 88 — стриманий жест, який не виглядає як реклама.</p></details>
+        <details><summary>Подяка клієнту</summary><p>Сертифікат на 4 000 грн — стриманий жест, який не виглядає як реклама.</p></details>
       </div>
     </div>
   </div></section>
@@ -75,10 +77,11 @@ def certificates():
   <section class="block alt" id="faq"><div class="wrap">
     <div class="head"><p class="eyebrow">Питання</p><h2>Що зазвичай питають</h2></div>
     <div class="faq">
-      <details><summary>Як людина використовує сертифікат?</summary><p>Отримує його на email або в коробці й оформлює замовлення на obiimy.world. Механіку погашення — код, термін дії, формат — фіксуємо в розрахунку.</p></details>
-      <details><summary>Якщо річ дорожча за номінал?</summary><p>Можливість доплати різниці підтвердимо в розрахунку разом з іншими умовами сертифіката.</p></details>
+      <details><summary>Скільки діє сертифікат?</summary><p>Три місяці з моменту отримання — за цей час людина обирає будь-який товар каталогу.</p></details>
+      <details><summary>Електронний чи фізичний?</summary><p>Обидва варіанти: електронний — на email, фізичний — у святковому оформленні, готовий до вручення.</p></details>
+      <details><summary>Якщо річ дорожча за номінал?</summary><p>Умови доплати різниці підтвердимо в розрахунку.</p></details>
+      <details><summary>Чи можна інший номінал?</summary><p>На сайті — 1 000, 1 500, 2 000, 2 500 і 4 000 грн. Інший номінал для компанії обговорюємо в запиті.</p></details>
       {DOCS_FAQ}
-      <details><summary>Чи працює за кордоном?</summary><p>Так. Людина обирає річ на obiimy.world або в міжнародному магазині obiimy-world.com — де саме погашається сертифікат, підтвердимо в розрахунку. Доставка за кордон — за тарифами перевізника.</p></details>
     </div>
   </div></section>
   {PROOF}
@@ -87,16 +90,16 @@ def certificates():
     {contact("Отримати умови для команди", "Кількість людей і номінал — повернемось із розрахунком і форматом сертифікатів.")}
     <div>{form_html("f-cert", "Сертифікати для команди", BASE_FIELDS + [
         ("qty", "Кількість сертифікатів", "number", False, {"ph": "наприклад, 25"}),
-        ("nominal", "Номінал", "select:700 грн|1 600 грн|3 200 грн|4 400 грн|інший", False, {}),
-        ("format", "Формат", "select:Електронний на email|Друкований у коробці|Ще не знаю", False, {}),
+        ("nominal", "Номінал", "select:1 000 грн|1 500 грн|2 000 грн|2 500 грн|4 000 грн|Різні номінали", False, {}),
+        ("format", "Формат", "select:Електронний на email|Фізичний у святковому оформленні|Ще не знаю", False, {}),
         PAY,
         ("note", "Коментар", "textarea", False, {"ph": "Нагода, терміни, різні номінали для різних людей…"}),
     ], "")}</div>
-  </div></section>'''
+  </div></section>"""
     return dict(slug="b2b-certificates", skin="studio", title="Подарункові сертифікати Obiimy для команд",
-        desc="Корпоративні сертифікати на шовкові хустки: номінали від 700 до 4 400 грн, електронні або друковані, без збору розмірів і адрес. Для віддалених команд і клієнтів.",
+        desc="Корпоративні сертифікати Obiimy на будь-який товар: 1 000, 1 500, 2 000, 2 500 і 4 000 грн, діють 3 місяці, електронні або фізичні. Для віддалених команд і клієнтів.",
         og="photo/kolo-1.webp", nav=[("Як це працює", "how"), ("Номінали", "nominals"), ("Коли доречно", "cases"), ("Питання", "faq"), ("Контакт", "request")],
-        cta="Запит", sticky="Сертифікати для команд · від 700 грн", body=body)
+        cta="Запит", sticky="Сертифікати для команд · від 1 000 грн", body=body)
 
 
 # ---------------------------------------------------------------- agencies (Form)
@@ -336,7 +339,7 @@ def english():
   </div></section>
 
   <section class="form-block alt" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Write to us</p><h2>Request a curated selection</h2><p>Tell us about the team and the budget — we’ll come back to you with prints, a quote and shipping options.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p></div>
+    <div class="contact"><p class="eyebrow">Write to us</p><h2>Request a curated selection</h2><p>Tell us about the team and the budget — we’ll come back to you with prints, a quote and shipping options.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram</a></p><p class="show">Showroom: Kyiv, 12 Petra Sahaidachnoho St.</p></div>
     <div>{form_html("f-en", "Corporate gifts request", [
         ("company", "Company", "input", True, {"ph": "Company name", "ac": "organization", "err": "Please fill in this field"}),
         ("name", "Your name", "input", True, {"ph": "How should we address you", "ac": "name", "err": "Please fill in this field"}),

@@ -40,9 +40,20 @@ def band(top, height, b, n=3):
     if n == 4: size = min(size, 84)
     if n == 1 and look not in ("grid",): size = extra.get("size", 130)
     tag = f'<p class="tag">{extra["tag"]}</p>' if extra.get("tag") else ""
+    if look == "spec":
+        rows = photo
+        def row(r):
+            img = f'<img src="{CUT(r[2])}" alt="" style="height:120px;width:120px;object-fit:contain;flex:none;filter:drop-shadow(0 8px 10px rgba(40,25,10,.3))">' if len(r) > 2 else ""
+            return (f'<div style="display:flex;align-items:center;gap:26px;flex:1;border-bottom:1.5px solid rgba(27,22,19,.18)">{img}'
+                    f'<p style="font-family:Onest;font-size:26px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#6B5F55;width:{extra.get("lw", 250)}px;flex:none">{r[0]}</p>'
+                    f'<p style="font-family:Onest;font-size:{extra.get("fs", 36)}px;line-height:1.2;font-weight:500;color:#1B1613;flex:1;text-align:right">{r[1]}</p></div>')
+        title = f'<p class="big" style="font-size:{size}px;color:#1B1613;padding:14px 0 18px">{big}</p>' if big else ""
+        return f'''
+  <div class="band" style="top:{top}px;height:{height}px;background:{pos or "#F3EADB"}">
+    <div style="position:absolute;left:64px;right:64px;top:16px;bottom:22px;display:flex;flex-direction:column">{title}{"".join(row(r) for r in rows)}</div></div>'''
     if look == "cut":
         cuts = photo if isinstance(photo, list) else [photo]
-        imgs = "".join(f'<img src="{CUT(c)}" alt="" style="height:{int(height * (0.8 if len(cuts) == 1 else 0.72))}px;width:auto;max-width:{560 if len(cuts) == 1 else 300}px;object-fit:contain;margin-left:{0 if i == 0 else -40}px;filter:drop-shadow(0 26px 30px rgba(0,0,0,.45));transform:rotate({(-6, 7, -3)[i % 3]}deg)">' for i, c in enumerate(cuts))
+        imgs = "".join(f'<img src="{CUT(c)}" alt="" style="height:{int(height * extra.get("frac", 0.8 if len(cuts) == 1 else 0.72))}px;width:auto;max-width:{560 if len(cuts) == 1 else 300}px;object-fit:contain;margin-left:{0 if i == 0 else -40}px;filter:drop-shadow(0 26px 30px rgba(0,0,0,.45));transform:rotate({(-6, 7, -3)[i % 3]}deg)">' for i, c in enumerate(cuts))
         pic = (f'<div style="position:absolute;inset:0;background:radial-gradient(70% 90% at 72% 50%,rgba(255,255,255,.2),rgba(0,0,0,0) 70%),{pos}"></div>'
                f'<div style="position:absolute;right:40px;top:0;bottom:0;display:flex;align-items:center">{imgs}</div>')
         return f'''
@@ -271,6 +282,90 @@ for k, (pid, cut, fmt, pr, total) in enumerate(SETS, 13):
         (p["tw"], f"linear-gradient(200deg,{p['c']},{p['deep']})", "Твіллі", f"«{p['name']}»", "cut", {"tag": "84 × 5 · 1 600 грн", "size": 110}),
     ], "Один принт — хустка на шию, стрічка у волосся чи на сумку." + (" Доставка безкоштовна." if int(total.replace(" ", "")) >= 5000 else ""),
        ([cut, p["tw"]], f"Образ «{p['name']}»", f"{total} грн"), "Зібрати образ", f"Set: {p['name']}")
+
+
+# ================================================================= DOWN-TO-EARTH product banners: what it is, size, price, how to buy
+def grad(pid, a=160): return f"linear-gradient({a}deg,{PP[pid]['c']},{PP[pid]['deep']})"
+DARK = "linear-gradient(170deg,#2A2320,#141110)"
+CARD = [("iskra", "iskra-65-1", "65 × 65 см", "4 800 грн", "iskra-65-3", "55% 50%", "На сумці чи на плечах"),
+        ("flirt", "flirt-65-1", "65 × 65 см", "4 800 грн", "flirt-65-3", "35% 28%", "На голові чи на шиї"),
+        ("puls", "puls-44-1", "44 × 44 см", "2 400 грн", "puls-44-5", "45% 60%", "На зап’ясті чи на шиї"),
+        ("zolote", "zolote-44-1", "44 × 44 см", "2 400 грн", "zolote-44-2", "50% 22%", "На шиї"),
+        ("avantiura", "avantiura-88-1", "88 × 88 см", "6 600 грн", "avantiura-88-2", "45% 50%", "Поясом, на шиї, у волоссі"),
+        ("tysha", "tysha-88-1", "88 × 88 см", "6 600 грн", "tysha-88-2", "50% 5%", "На плечах чи на голові"),
+        ("krok", "krok-44-1", "44 × 44 см", "2 400 грн", "krok-44-3", "50% 22%", "На шиї чи на зап’ясті")]
+for i, (pid, cut, size_, price, ph, pos, how) in enumerate(CARD, 1):
+    p = PP[pid]
+    triptych(f"k{i:02d}-card-{pid}", "Шовкова хустка", [
+        (cut, grad(pid), f"«{p['name']}»", "Шовкова хустка.", "cut", {"tag": f"{size_} · {price}", "size": 92 if len(p["name"]) < 9 else 76}),
+        ([("Розмір", size_), ("Матеріал", "100% натуральний шовк"), ("Друк", "двосторонній"), ("Край", "оброблений вручну"), ("Принт", "авторський")], "", "", "", "spec"),
+        (ph, pos, "Як носити", how + ".", "raw", {"size": 92}),
+    ], "Шовкова хустка з авторським принтом. Зроблено в Україні.", ([cut], f"Хустка «{p['name']}»", price), "Купити", f"Product card: {p['name']}")
+
+triptych("k08-card-twilly", "Шовкова твіллі", [
+    (["iskra-tw-1", "avantiura-tw-2", "zolote-tw-1"], DARK, "Твіллі", "Вузька шовкова стрічка.", "cut", {"tag": "84 × 5 см · 1 600 грн", "frac": .8}),
+    ([("Розмір", "84 × 5 см"), ("Матеріал", "натуральний шовк"), ("Принти", "7 на вибір"), ("Як носити", "волосся, шия, сумка, зап’ястя"), ("Ціна", "1 600 грн")], "", "", "", "spec"),
+    ("krok-tw-2", "50% 40%", "У волоссі", "Замість звичайної резинки.", "raw", {"size": 100}),
+], "Одна ціна для всіх семи принтів колекції.", (["iskra-tw-1", "avantiura-tw-2", "krok-tw-1"], "Шовкова твіллі", "1 600 грн"), "Купити", "Twilly card")
+
+triptych("k09-card-scrunchie", "Шовкова резинка", [
+    ("url(src/flirt-scr-1-2k.webp)", "50% 55%/cover", "Резинка", "Шовкова, для волосся.", "raw", {"tag": "700 грн", "size": 110}),
+    ([("Виріб", "резинка для волосся"), ("Матеріал", "натуральний шовк"), ("Принт", "«Флірт»"), ("Упаковка", "фірмова жовта коробочка"), ("Ціна", "700 грн")], "", "", "", "spec"),
+    ("flirt-scr-3", "50% 40%", "На щодень", "І як невеликий подарунок.", "raw", {"size": 100}),
+], "Найдоступніша річ колекції SOLO.", (["flirt-scr-1"], "Шовкова резинка «Флірт»", "700 грн"), "Купити", "Scrunchie card")
+
+triptych("k10-sizes", "Який розмір обрати?", [
+    ("puls-44-1", grad("puls"), "44 × 44", "На шию, на зап’ястя, на ручку сумки.", "cut", {"tag": "2 400 грн", "frac": .5}),
+    ("iskra-65-1", grad("iskra"), "65 × 65", "На шию, на голову, на плечі.", "cut", {"tag": "4 800 грн", "frac": .72}),
+    ("avantiura-88-1", grad("avantiura"), "88 × 88", "На плечі, на голову, поясом.", "cut", {"tag": "6 600 грн", "frac": .96}),
+], "Що більша хустка, то більше способів її зав’язати.", (["puls-44-1", "iskra-65-1", "avantiura-88-1"], "Шовкові хустки SOLO", "від 2 400 грн"), "Обрати розмір", "Which size")
+
+triptych("k11-what-is-twilly", "Що таке твіллі?", [
+    ("krok-tw-1", grad("krok"), "Твіллі", "Вузька шовкова стрічка 84 × 5 см.", "cut", {"tag": "1 600 грн", "frac": .86}),
+    ("avantiura-tw-3", "50% 40%", "У волосся", "Бантом на хвіст чи косу.", "raw"),
+    ("iskra-tw-3", "50% 60%", "На сумку", "На ручку — бантом або обмоткою.", "raw"),
+    ("iskra-tw-2", "50% 28%", "На шию", "Як тонка краватка чи бант.", "raw"),
+], "Сім принтів, одна ціна — 1 600 грн.", (["krok-tw-1", "avantiura-tw-2", "iskra-tw-1"], "Шовкова твіллі", "1 600 грн"), "Обрати твіллі", "What is a twilly")
+
+triptych("k12-how-to-order", "Як замовити", [
+    ("iskra-65-1", grad("iskra"), "1", "Оберіть принт і формат на obiimy.world.", "cut", {"size": 150, "frac": .7}),
+    ("zolote-44-1", grad("zolote"), "2", "Оплатіть карткою або частинами — через ПриватБанк чи monobank.", "cut", {"size": 150, "frac": .7}),
+    ("krok-44-1", grad("krok"), "3", "Відправимо Новою поштою в день замовлення — якщо замовити до 16:00.", "cut", {"size": 150, "frac": .7}),
+], "Від 5 000 грн доставка по Україні безкоштовна.", (["iskra-65-1", "zolote-44-1", "krok-44-1"], "Шовкові хустки SOLO", "від 2 400 грн"), "Замовити", "How to order")
+
+triptych("k13-prices", "Ціни колекції", [
+    ([("Резинка для волосся", "700 грн", "flirt-scr-1"), ("Твіллі 84 × 5", "1 600 грн", "iskra-tw-1"), ("Хустка 44 × 44", "2 400 грн", "puls-44-1"),
+      ("Хустка 65 × 65", "4 800 грн", "flirt-65-1"), ("Хустка 88 × 88", "6 600 грн", "tysha-88-1")], "", "Скільки коштує SOLO", "", "spec", {"size": 84, "fs": 50, "lw": 400}),
+], "Натуральний шовк, авторські принти, двосторонній друк хусток.", (["flirt-scr-1", "iskra-tw-1", "tysha-88-1"], "Шовкові вироби SOLO", "від 700 грн"), "До каталогу", "Price list")
+
+triptych("k14-budget", "Подарунок за бюджетом", [
+    ("flirt-scr-1", DARK, "До 1 000", "Шовкова резинка «Флірт».", "cut", {"tag": "700 грн", "frac": .7}),
+    ("zolote-tw-1", grad("zolote"), "До 2 000", "Шовкова твіллі, 7 принтів.", "cut", {"tag": "1 600 грн", "frac": .86}),
+    ("krok-44-1", grad("krok"), "До 3 000", "Шовкова хустка 44 × 44.", "cut", {"tag": "2 400 грн", "frac": .8}),
+    ("iskra-65-1", grad("iskra"), "До 5 000", "Шовкова хустка 65 × 65.", "cut", {"tag": "4 800 грн", "frac": .86}),
+], "Підпишемо подарунок вашими словами — напишіть текст у замовленні.", (["flirt-scr-1", "zolote-tw-1", "iskra-65-1"], "Шовкові вироби SOLO", "від 700 грн"), "Обрати подарунок", "Gift by budget")
+
+triptych("k15-scarves-44", "Хустки 44 × 44 см", [
+    ("puls-44-1", grad("puls"), "«Пульс»", "Зелена, з квітковим малюнком.", "cut", {"tag": "2 400 грн"}),
+    ("zolote-44-1", grad("zolote"), "«Золоте світло»", "Карамельна, з геометрією.", "cut", {"tag": "2 400 грн", "size": 72}),
+    ("krok-44-1", grad("krok"), "«Сміливий крок»", "Бордова, з монограмою.", "cut", {"tag": "2 400 грн", "size": 72}),
+], "Маленька шовкова хустка: на шию, зап’ястя чи сумку.", (["puls-44-1", "zolote-44-1", "krok-44-1"], "Хустка 44 × 44", "2 400 грн"), "Обрати принт", "Scarves 44")
+
+triptych("k16-scarves-65", "Хустки 65 × 65 см", [
+    ("iskra-65-1", grad("iskra"), "«Іскра»", "Великий синій горох, помаранчевий край.", "cut", {"tag": "4 800 грн", "frac": .86}),
+    ("flirt-65-1", grad("flirt"), "«Флірт»", "Дрібний горох, оливковий край.", "cut", {"tag": "4 800 грн", "frac": .86}),
+], "Класичний розмір: на шию, на голову, на плечі.", (["iskra-65-1", "flirt-65-1"], "Хустка 65 × 65", "4 800 грн"), "Обрати принт", "Scarves 65")
+
+triptych("k17-scarves-88", "Хустки 88 × 88 см", [
+    ("avantiura-88-1", grad("avantiura"), "«Авантюра»", "Білі іриси на бордовому.", "cut", {"tag": "6 600 грн", "frac": .86}),
+    ("tysha-88-1", grad("tysha"), "«Тиша всередині»", "Графічні іриси на білому.", "cut", {"tag": "6 600 грн", "frac": .86, "size": 72}),
+], "Велика хустка: на плечі, на голову, поясом. Можна частинами.", (["avantiura-88-1", "tysha-88-1"], "Хустка 88 × 88", "6 600 грн"), "Обрати принт", "Scarves 88")
+
+triptych("k18-delivery-payment", "Доставка й оплата", [
+    ([("Нова пошта", "відправка в день замовлення до 16:00"), ("Безкоштовно", "від 5 000 грн"), ("За кордон", "за тарифами перевізника"),
+      ("Оплата", "карткою Visa / Mastercard"), ("Частинами", "ПриватБанк — 4, monobank — 3"), ("Шоурум", "Київ, вул. П. Сагайдачного, 12")], "", "", "", "spec", {"fs": 34, "lw": 280}),
+    (["puls-44-1", "avantiura-tw-2"], DARK, "Хустки й твіллі", "Сім авторських принтів.", "cut", {"tag": "від 1 600 грн", "frac": .62, "size": 80}),
+], "Замовляйте на obiimy.world або приходьте приміряти в шоурум.", (["puls-44-1", "avantiura-tw-2"], "Шовкові вироби SOLO", "від 1 600 грн"), "Замовити", "Delivery and payment")
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO triptych</title>

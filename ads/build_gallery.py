@@ -40,10 +40,13 @@ def build(site: pathlib.Path):
     out = site / "creatives"; out.mkdir(exist_ok=True)
     sections = []
     toc = []
+    HOME = {"out4": "solo-main", "out5": "solo-yellow", "out6": "solo-tri", "out7": "solo-tri-y", "out8": "solo-one"}
     def add(title, desc, files, series):
-        d = out / series; d.mkdir(exist_ok=True)
         cards = []
         for f in files:
+            # a banner shown in two groups is stored once, in the folder of its own series
+            series = HOME.get(f.parent.name, series)
+            d = out / series; d.mkdir(exist_ok=True)
             shutil.copy(f, d / f.name)
             im = Image.open(f).convert("RGB"); label, cls = fmt(im)
             prev = d / (f.stem + "-540.webp")

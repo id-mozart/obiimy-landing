@@ -4,3 +4,10 @@ review/
 node_modules/
 .git/
 tmp-*.html
+/photo/
+/img/
+/tex/
+/brand/
+/src/
+/shopify/
+/*.pdf

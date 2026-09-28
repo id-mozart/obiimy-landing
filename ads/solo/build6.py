@@ -33,10 +33,11 @@ def ad(id, body, note=""):
 
 FILTERS = {"bw": "filter:grayscale(1) contrast(1.12)", "sepia": "filter:sepia(.4) saturate(1.1) contrast(1.05)", "raw": "", "": ""}
 
-def band(top, height, b):
+def band(top, height, b, n=3):
     photo, pos, big, small, look = b[:5]
     extra = b[5] if len(b) > 5 else {}
     size = extra.get("size", 118 if len(big) <= 8 else 84)
+    if n == 4: size = min(size, 84)
     tag = f'<p class="tag">{extra["tag"]}</p>' if extra.get("tag") else ""
     if look == "spot":
         pic = spot_photo(photo, pos, style="position:absolute;inset:0")
@@ -46,18 +47,19 @@ def band(top, height, b):
         pic = f'<img src="{S(photo)}" alt="" style="object-position:{pos};{FILTERS[look]}">'
     return f'''
   <div class="band" style="top:{top}px;height:{height}px">{pic}<div class="veil"></div>
-    <div class="txt"><p class="big" style="font-size:{size}px">{big}</p><p class="small">{nb(small)}</p>{tag}</div></div>'''
+    <div class="txt"><p class="big" style="font-size:{size}px">{big}</p>{f'<p class="small" style="font-size:{38 if n == 4 else 44}px">{nb(small)}</p>' if small else ""}{tag}</div></div>'''
 
 def triptych(id, kicker, bands, tagline, product, cta, note=""):
     """bands: 3 × (photo, object-position, big label, small line, look[, {tag, size}]); product: (cutouts, title, price)."""
-    top, h, gap = 280, 406, 12
-    body = "".join(band(top + k * (h + gap), h, b) for k, b in enumerate(bands))
+    n = len(bands); top, gap = 280, 12
+    h = (1242 - (n - 1) * gap) // n
+    body = "".join(band(top + k * (h + gap), h, b, n) for k, b in enumerate(bands))
     cuts, title, price = product
     thumbs = "".join(f'<img src="{CUT(c)}" alt="" style="height:118px;width:auto;max-width:124px;object-fit:contain;margin-left:{0 if i == 0 else -44}px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.4));transform:rotate({(-6, 5, -3)[i]}deg)">' for i, c in enumerate(cuts))
     plate_bg = "#F2B705" if YELLOW else "rgba(243,234,219,.1)"
     plate_fg = "#141216" if YELLOW else "#F3EADB"
     plate_bd = "none" if YELLOW else "1.5px solid rgba(243,234,219,.3)"
-    y0 = top + 3 * h + 2 * gap
+    y0 = top + n * h + (n - 1) * gap
     ad(id, f'''
   <div style="left:0;right:0;top:0;height:{top}px;background:#141110"></div>
   <div style="left:64px;top:44px;font-family:Montserrat,sans-serif;text-transform:uppercase;color:#fff;line-height:1">
@@ -139,6 +141,68 @@ triptych("t09-then-now", "Тоді й тепер", [
     (f"url({HI(PP['zolote'])})", "center/160%", "Шовк", "Хустка «Золоте світло».", "raw", {"size": 118}),
     ("zolote-44-2", "50% 22%", "Тепер", "Та сама сила — ваш образ.", "raw", {"size": 118}),
 ], "Колекцію натхнили ретро-обкладинки модних журналів.", (["zolote-44-1"], "Шовкова хустка «Золоте світло»", "2 400 грн"), "Обрати «Золоте світло»", "Then and now")
+
+
+# ---------------------------------------------------------------- more stories
+triptych("t10-four-states", "Знайдіть свій стан", [
+    ("iskra-65-2", "40% 28%", "Іскра", "Сміливість бути помітною.", "raw"),
+    ("flirt-65-3", "35% 28%", "Флірт", "Насолоджуватися моментом.", "raw"),
+    ("puls-44-4", "50% 22%", "Пульс", "Свій ритм, що б не сталося.", "raw"),
+    ("avantiura-88-5", "62% 35%", "Авантюра", "За межі звичного.", "raw"),
+], "Сім авторських принтів — сім станів на шляху жінки до себе.", (["iskra-65-1", "flirt-65-1", "puls-44-1"], "Шовкові хустки SOLO", "від 2 400 грн"), "Знайти свій", "Four states")
+
+triptych("t11-acts-of-freedom", "Маленькі акти свободи", [
+    ("puls-44-2", "42% 40%", "Сукня", "Улюблена — як нагадування: я є.", "raw"),
+    ("krok-44-2", "50% 30%", "Хустка", "Шовкова — щоранку, для себе.", "raw"),
+    ("tysha-88-3", "50% 45%", "Помада", "Червона — навіть коли світ сірий.", "raw"),
+], "Я є. Я продовжую жити. Я обираю себе.", (["krok-44-1"], "Шовкова хустка «Сміливий крок»", "2 400 грн"), "Обрати для себе", "Small acts of freedom")
+
+triptych("t12-one-print-look", "Хустка й твіллі одного принту", [
+    ("iskra-65-2", "40% 28%", "Хустка", "«Іскра» на плечах.", "raw", {"tag": "65 × 65 · 4 800 грн", "size": 110}),
+    ("iskra-tw-3", "50% 60%", "Твіллі", "Та сама «Іскра» — на сумці.", "raw", {"tag": "84 × 5 · 1 600 грн", "size": 110}),
+], "Разом — 6 400 грн, доставка безкоштовна.", (["iskra-65-1", "iskra-tw-1"], "Образ «Іскра»", "6 400 грн"), "Зібрати образ", "One print, whole look")
+
+triptych("t13-through-the-day", "Шовк на весь день", [
+    ("puls-44-2", "42% 40%", "Ранок", "Кава й хустка на зап’ясті.", "raw"),
+    ("iskra-tw-2", "50% 25%", "День", "Твіллі до ділового образу.", "raw"),
+    ("zolote-44-3", "50% 22%", "Вечір", "Хустка, що ловить світло.", "raw"),
+], "Одна колекція — від ранку до вечора.", (["puls-44-1", "iskra-tw-1", "zolote-44-1"], "Шовк SOLO", "від 1 600 грн"), "Обрати свій", "Through the day")
+
+triptych("t14-where-to-wear", "Як носити шовк", [
+    ("zolote-44-2", "50% 22%", "На шиї", "", "raw", {"tag": "Хустка · 2 400 грн"}),
+    ("avantiura-tw-3", "50% 40%", "У волоссі", "", "raw", {"tag": "Твіллі · 1 600 грн"}),
+    ("iskra-tw-3", "50% 60%", "На сумці", "", "raw", {"tag": "Твіллі · 1 600 грн"}),
+    ("puls-44-5", "45% 60%", "На зап’ясті", "", "raw", {"tag": "Хустка · 2 400 грн"}),
+], "Традиційно на шиї, у волоссі, на сумці чи зап’ясті.", (["zolote-44-1", "avantiura-tw-2", "puls-44-1"], "Хустки й твіллі SOLO", "від 1 600 грн"), "Спробувати", "Where to wear")
+
+triptych("t15-for-whom", "Для кого", [
+    ("tysha-88-2", "50% 5%", "Мамі", "«Тиша всередині» — спокій і гідність.", "raw", {"size": 118}),
+    ("flirt-65-3", "35% 28%", "Подрузі", "«Флірт» — легкість і усмішка.", "raw", {"size": 118}),
+    ("krok-44-3", "50% 22%", "Собі", "«Сміливий крок» — бо час.", "raw", {"size": 118}),
+], "Шовкова хустка у фірмовій жовтій коробці.", (["tysha-88-1", "flirt-65-1", "krok-44-1"], "Шовкові хустки SOLO", "від 2 400 грн"), "Обрати подарунок", "For whom")
+
+triptych("t16-ua-it-you", "Український преміум", [
+    (f"url({HI(PP['tysha'])})", "center/140%", "Україна", "Авторський принт і ручна обробка краю.", "raw", {"size": 104}),
+    ("url(src/avantiura-88-5-2k.webp)", "70% 50%/cover", "Італія", "100% натуральний шовк.", "raw", {"size": 118}),
+    ("avantiura-88-4", "50% 22%", "Ви", "І ваш образ.", "raw", {"size": 130}),
+], "Український бренд Obiimy — шовкові вироби з авторськими принтами.", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Роздивитися", "UA · IT · You")
+
+triptych("t17-grey-colour", "Шовкова свобода", [
+    ("puls-44-2", "42% 40%", "Сірий світ", "Коли навколо тривоги й невизначеність…", "bw", {"size": 96}),
+    ("puls-44-2", "42% 40%", "Ваш колір", "…краса стає способом зберегти себе.", "spot", {"size": 96}),
+], "Мода — це про гідність і право на жіночність.", (["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн"), "Знайти свій колір", "Grey world, your colour")
+
+triptych("t18-twilly-three-ways", "Одна стрічка — три образи", [
+    ("krok-tw-2", "50% 40%", "У волоссі", "Замість резинки — шовк.", "raw", {"size": 100}),
+    ("iskra-tw-3", "50% 60%", "На сумці", "Акцент, що оживляє класику.", "raw", {"size": 100}),
+    ("flirt-tw-4", "50% 72%", "Поясом", "На тренчі — як у п’ятдесятих.", "raw", {"size": 100}),
+], "Твіллі — у кожному з семи принтів колекції.", (["krok-tw-1", "iskra-tw-1", "flirt-tw-2"], "Шовкова твіллі", "1 600 грн"), "Обрати стрічку", "Twilly three ways")
+
+triptych("t19-krok-path", "«Сміливий крок»", [
+    ("krok-44-3", "50% 20%", "Пошук", "Сумніви й відкриття.", "bw"),
+    ("krok-tw-3", "50% 40%", "Тиша", "Почути себе.", "sepia"),
+    ("krok-44-2", "50% 30%", "Крок", "Бо з’являється довіра до себе.", "raw"),
+], "Після пошуку й внутрішньої тиші настає момент руху вперед.", (["krok-44-1", "krok-tw-1"], "«Сміливий крок»", "від 1 600 грн"), "Зробити крок", "Krok path")
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO triptych</title>

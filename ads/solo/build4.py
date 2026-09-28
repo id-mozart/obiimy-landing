@@ -8,7 +8,7 @@ HERE = pathlib.Path(__file__).parent
 sys.path.insert(0, str(HERE))
 from kit import P, PP, S, CUT, HI, spot_photo, nb, LOGO_W, LOGO_K, GRAIN
 
-def S2(name): return f"src/{name}-2k.webp"
+def S2(name): return f"src/{name}-2k.webp" if (HERE / f"src/{name}-2k.webp").exists() else f"src/{name}.webp"
 
 CSS = """
 :root { --ivory: #F4F2ED; --stone: #E8E2D8; --ink: #141216; --ink-2: #4A4750; --ink-3: #8A8592; --gold: #F2B705; --plum: #1B1430; --line: rgba(20,18,22,.16); }
@@ -233,11 +233,12 @@ look = f"""<div style="position:absolute;inset:0 20px;display:grid;grid-template
 ivory("c18-look", "Шовкова хустка + твіллі", "Хустка й твіллі", "одного принту.", look,
       "Один принт — на плечах і на сумці.", "6 400 грн", "хустка + твіллі · доставка безкоштовна", "Зібрати образ", note="Complete look")
 cert = f"""<div style="position:absolute;inset:0 20px;background:url(src/{PP['zolote']['flat']}-hi.webp) center/170%"></div>
-  <div style="position:absolute;left:150px;right:150px;top:110px;bottom:110px;background:#fff;box-shadow:0 30px 60px -24px rgba(0,0,0,.5);transform:rotate(-3deg);display:grid;place-items:center;text-align:center">
-    <div><img src="{LOGO_K}" alt="" style="height:40px;margin:0 auto"><p style="font-family:Prata,serif;font-size:72px;line-height:1;margin-top:26px">Сертифікат</p>
-    <p style="margin-top:18px;font-size:28px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)">на будь-який товар</p></div></div>"""
+  <div style="position:absolute;left:150px;right:150px;top:110px;bottom:110px;background:#fff;box-shadow:0 30px 60px -24px rgba(0,0,0,.5);display:grid;place-items:center;text-align:center">
+    <div><p style="font-size:26px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)">Номінали, грн</p>
+    <p style="font-family:Prata,serif;font-size:64px;line-height:1.12;margin-top:14px">1 000 · 1 500<br>2 000 · 2 500<br>4 000</p>
+    <p style="margin-top:18px;font-size:26px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)">на будь-який товар</p></div></div>"""
 ivory("c19-certificate", "Подарунковий сертифікат Obiimy", "Нехай обере", "сама.", cert,
-      "Номінали 1 000, 1 500, 2 000, 2 500 і 4 000 грн. Електронний або фізичний. Діє 3 місяці.", "від 1 000 грн", "подарунковий сертифікат Obiimy", "Подарувати сертифікат", bg="var(--stone)", note="Certificate")
+      "Електронний або фізичний. Діє 3 місяці.", "від 1 000 грн", "подарунковий сертифікат Obiimy", "Подарувати сертифікат", bg="var(--stone)", note="Certificate")
 trio2 = "".join(f'<img class="cut" src="{CUT(PP[i]["flat"])}" alt="" style="width:400px;transform:rotate({r}deg);margin:0 -56px">' for i, r in (("puls", -9), ("avantiura", 3), ("zolote", 10)))
 ivory("c20-showroom", "Шовкові хустки · шоурум у Києві", "Приміряйте", "наживо.", V(f'<div style="display:flex;align-items:center">{trio2}</div>'),
       "Вул. Петра Сагайдачного, 12. Пн–пт 10:00–18:00, сб 11:00–18:00.", "від 2 400 грн", "хустки SOLO", "Приміряти в шоурумі", note="Showroom")
@@ -257,9 +258,9 @@ full("u01-buy-ukrainian", "flirt-tw-1", "50% 30%", "Купуйте україн�
      "Obiimy — український бренд шовкових аксесуарів з авторськими принтами.", "1 600 грн", "", "Обрати твіллі «Флірт»", note="Buy Ukrainian")
 full("u02-london", "zolote-44-2", "50% 20%", "Українська хустка,", "яку продають у\u00a0Лондоні.",
      "Obiimy — в UFD London, Be Brave (Канада), INTERTOP і Hram.", "2 400 грн", "", "Обрати «Золоте світло»", note="Sold abroad", hs=76)
-full("u03-made-in-ua", "krok-44-2", "50% 30%", "Зроблено в Україні.", "Відчувається на дотик.",
+full("u03-made-in-ua", "krok-44-4", "45% 20%", "Зроблено в Україні.", "Відчувається на дотик.",
      "100% італійський шовк, авторський принт, двосторонній друк.", "2 400 грн", "", "Обрати «Сміливий крок»", note="Made in Ukraine", hs=78)
-full("u04-not-mass", "puls-tw-3", "50% 20%", "Не масмаркет.", "Авторський шовк українського бренду.",
+full("u04-not-mass", "puls-tw-3", "50% 20%", "Авторський принт.", "Український бренд.",
      "Принти художниці й засновниці бренду Світлани Сніжко — на натуральному шовку.", "1 600 грн", "", "Обрати «Пульс»", note="Not mass market", hs=76)
 full("u05-luxury", "tysha-88-2", "50% 50%", "Українське —", "це розкіш.",
      "Натуральний шовк, ручна обробка краю, двосторонній друк.", "6 600 грн", "", "Обрати «Тишу всередині»", note="Ukrainian is luxury")
@@ -306,8 +307,8 @@ QUIET = [
     ("p06-noticed", "avantiura-tw-3", "50% 40%", False, "Деталь,", "яку помічають.", "", ["avantiura-tw-5"], "Шовкова твіллі «Авантюра»", "1 600 грн", "Подарувати собі"),
     ("p07-whole-look", "iskra-tw-2", "50% 25%", False, "Один аксесуар —", "весь образ.", "", ["iskra-tw-4"], "Шовкова твіллі «Іскра»", "1 600 грн", "Подивитися образ"),
     ("p08-touch", "flirt-65-3", "38% 30%", False, "Шовк, до якого", "хочеться торкатися.", "«Флірт» — це насамперед стан.", ["flirt-65-1"], "Шовкова хустка «Флірт»", "4 800 грн", "Відкрити колекцію"),
-    ("p09-for-her", "puls-44-4", "50% 20%", True, "Для неї.", "Або для себе.", "Індивідуальне пакування.<br>Підпишемо вашими словами.", ["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн", "Обрати подарунок"),
-    ("p11-italian-silk", "zolote-44-2", "50% 20%", False, "Італійський шовк.", "Український характер.", "", ["zolote-44-1"], "Шовкова хустка «Золоте світло»", "2 400 грн", "Детальніше"),
+    ("p09-for-her", "puls-44-4", "50% 20%", False, "Для неї.", "Або для себе.", "Індивідуальне пакування.<br>Підпишемо вашими словами.", ["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн", "Обрати подарунок"),
+    ("p11-italian-silk", "avantiura-88-4", "38% 50%", False, "Італійський шовк.", "Український характер.", "", ["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн", "Детальніше"),
     ("p12-wearable-art", "puls-44-2", "42% 40%", False, "Мистецтво,", "яке можна носити.", "Принти художниці Світлани Сніжко.", ["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн", "Переглянути SOLO"),
     ("p15-iskra", "iskra-65-2", "40% 0%", False, "Колір, який", "обирають сміливі.", "Принт «Іскра» — сміливість бути помітною.", ["iskra-65-1"], "Шовкова хустка «Іскра»", "4 800 грн", "Роздивитися «Іскру»"),
 ]

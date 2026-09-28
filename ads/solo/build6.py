@@ -21,7 +21,7 @@ body { margin: 0; background: #555; font-family: 'Onest', Arial, sans-serif; -we
 .band .veil { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(12,9,8,.9) 0%, rgba(12,9,8,.66) 42%, rgba(12,9,8,0) 76%); }
 .band .txt { position: absolute; left: 64px; top: 50%; transform: translateY(-50%); width: 620px; }
 .big { font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic; line-height: .95; letter-spacing: -.01em; text-wrap: balance; }
-.small { font-family: 'Cormorant Garamond', serif; font-weight: 600; font-size: 44px; line-height: 1.12; margin-top: 26px; text-wrap: pretty; text-shadow: 0 1px 10px rgba(0,0,0,.55); }
+.small { font-family: 'EB Garamond', 'Cormorant Garamond', serif; font-weight: 500; font-size: 40px; line-height: 1.14; margin-top: 26px; text-wrap: pretty; text-shadow: 0 1px 10px rgba(0,0,0,.55); }
 .kicker { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: .14em; font-size: 28px; color: #E0B040; white-space: nowrap; }
 .tag { display: inline-block; margin-top: 16px; font-family: 'Onest'; font-weight: 600; font-size: 28px; letter-spacing: .04em; padding: 10px 20px; border-radius: 999px; background: rgba(243,234,219,.16); border: 1.5px solid rgba(243,234,219,.4); }
 .cta { font-family: 'Onest'; font-weight: 600; font-size: 30px; padding: 24px 38px; border-radius: 999px; background: #F2B705; color: #141216; white-space: nowrap; flex: none; }
@@ -39,7 +39,8 @@ def band(top, height, b, n=3):
     size = extra.get("size", 118 if len(big) <= 6 else 100 if len(big) <= 8 else 84)
     if n == 4: size = min(size, 84)
     if n == 1 and look not in ("grid",): size = extra.get("size", 130)
-    tag = f'<p class="tag">{extra["tag"]}</p>' if extra.get("tag") else ""
+    tag_style = "" if small else ' style="margin-top:30px"'
+    tag = f'<p class="tag"{tag_style}>{extra["tag"]}</p>' if extra.get("tag") else ""
     if look == "spec":
         rows = photo
         def row(r):
@@ -57,6 +58,12 @@ def band(top, height, b, n=3):
   <div class="band" style="top:{top}px;height:{height}px;background:{pos}">
     <img src="{photo}" alt="" style="position:absolute;right:0;top:0;width:{height}px;height:{height}px;object-fit:cover;object-position:{extra.get("at", "50% 50%")}">
     <div class="txt" style="width:{1080 - height - 64 - 40}px;color:#141216"><p class="big" style="font-size:{min(size, 96)}px">{big}</p>{f'<p class="small" style="text-shadow:none;margin-top:{extra.get("gap", 26)}px">{nb(small)}</p>' if small else ""}{tag.replace('class="tag"', 'class="tag" style="background:#141216;color:#F3EADB;border-color:#141216"')}</div></div>'''
+    if look == "one":
+        src = f"src/{photo}-2k.webp" if (HERE / f"src/{photo}-2k.webp").exists() else S(photo)
+        return f'''
+  <div class="band" style="top:{top}px;height:{height}px"><img src="{src}" alt="" style="object-position:{pos}">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(12,9,8,0) 52%,rgba(12,9,8,.62) 74%,rgba(12,9,8,.9) 100%)"></div>
+    <div style="position:absolute;left:64px;right:64px;bottom:54px"><p class="big" style="font-size:{extra.get("size", 120)}px">{big}</p>{f'<p class="small" style="font-size:44px;margin-top:22px">{nb(small)}</p>' if small else ""}{tag}</div></div>'''
     if look == "html":
         return f'''
   <div class="band" style="top:{top}px;height:{height}px;background:{pos}">{photo}
@@ -94,7 +101,7 @@ def band(top, height, b, n=3):
         pic = f'<img src="{S(photo)}" alt="" style="object-position:{pos};{FILTERS[look]}{more}">'
     return f'''
   <div class="band" style="top:{top}px;height:{height}px">{pic}<div class="veil"{' style="background:' + extra["veil"] + '"' if extra.get("veil") else ""}></div>
-    <div class="txt"><p class="big" style="font-size:{size}px">{big}</p>{f'<p class="small" style="font-size:{38 if n == 4 else 44}px;margin-top:{extra.get("gap", 26)}px">{nb(small)}</p>' if small else ""}{tag}</div></div>'''
+    <div class="txt"><p class="big" style="font-size:{size}px">{big}</p>{f'<p class="small" style="font-size:{36 if n == 4 else 40}px;max-width:{extra.get("cw", 480)}px;margin-top:{extra.get("gap", 26)}px">{nb(small)}</p>' if small else ""}{tag}</div></div>'''
 
 def triptych(id, kicker, bands, tagline, product, cta, note=""):
     """bands: 3 × (photo, object-position, big label, small line, look[, {tag, size}]); product: (cutouts, title, price)."""
@@ -137,12 +144,6 @@ triptych("t01-decades", "Жіноча сила крізь десятиліття
     ("iskra-65-4", "55% 28%", "1950-ті", "Правила починають руйнуватися. Колір, форма, сміливість.", "sepia"),
     ("puls-44-4", "50% 12%", "2026", "Свобода — самій обирати, якою бути.", "raw"),
 ], "Змінювалися епохи й силуети. Хустка залишалася поруч.", SCARVES, "Обрати хустку", "Decades")
-
-triptych("t02-avantiura-decades", "«Авантюра» крізь десятиліття", [
-    ("avantiura-88-5", "62% 35%", "1940-ві", "За м’якістю шовку приховувався характер.", "spot"),
-    ("avantiura-88-2", "45% 72%", "1950-ті", "Хустка ставала яскравим акцентом.", "sepia"),
-    ("avantiura-88-4", "50% 13%", "2026", "Готовність виходити за межі звичного.", "raw", {"wide": 125}),
-], "Жіноча сила крізь десятиліття.", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Обрати хустку", "One scarf, three decades")
 
 triptych("t03-three-states", "Три стани", [
     ("tysha-88-3", "50% 45%", "Тиша", "Почути себе серед зовнішнього шуму.", "raw", {"size": 118}),
@@ -222,7 +223,7 @@ triptych("t15-for-whom", "Кому подарувати", [
 ], "Індивідуальне пакування. Підпишемо вашими словами.", (["tysha-88-1", "flirt-65-1", "krok-44-1"], "Хустки SOLO", "від 2 400 грн"), "Обрати подарунок", "For whom")
 
 triptych("t16-ua-it-you", "Український преміум", [
-    (f"url({HI(PP['tysha'])})", "center/140%", "Україна", "Авторський принт і ручна обробка краю.", "raw", {"size": 104}),
+    (f"url({HI(PP['avantiura'])})", "center/140%", "Україна", "Авторський принт і ручна обробка краю.", "raw", {"size": 104}),
     ("url(src/avantiura-88-5-2k.webp)", "70% 50%/cover", "Італія", "100% італійський шовк.", "raw", {"size": 118}),
     ("avantiura-88-2", "45% 72%", "Ви", "Хустка «Авантюра» — поясом.", "raw", {"size": 130}),
 ], "Український бренд Obiimy — шовкові вироби з авторськими принтами.", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Роздивитися", "UA · IT · You")
@@ -246,6 +247,7 @@ triptych("t19-krok-path", "«Сміливий крок»", [
 
 
 # ================================================================= PRODUCT-FIRST banners (colour of the print + the product)
+SIZE = {"iskra": "65 × 65 см", "flirt": "65 × 65 см", "puls": "44 × 44 см", "zolote": "44 × 44 см", "avantiura": "88 × 88 см", "tysha": "88 × 88 см", "krok": "44 × 44 см"}
 HERO = [("iskra", "iskra-65-1", "4 800 грн", "iskra-65-2", "40% 28%", "На плечах", "Накиньте на жакет — як акцент кольору."),
         ("flirt", "flirt-65-1", "4 800 грн", "flirt-65-3", "35% 28%", "На голові", "Вузол на потилиці, кінці — на плечі."),
         ("puls", "puls-44-1", "2 400 грн", "puls-44-4", "50% 22%", "На шиї", "Вузол спереду, кінці — вільно."),
@@ -256,7 +258,7 @@ HERO = [("iskra", "iskra-65-1", "4 800 грн", "iskra-65-2", "40% 28%", "На �
 for i, (pid, cut, price, ph, pos, how, line) in enumerate(HERO, 1):
     p = PP[pid]
     triptych(f"q{i:02d}-{pid}", "Шовкова хустка", [
-        (cut, grad(pid), f"«{p['name']}»", "Шовкова хустка.", "cut", {"tag": price, "size": 96}),
+        (cut, grad(pid), f"«{p['name']}»", "Шовкова хустка.", "cut", {"tag": f"{SIZE[pid]} · {price}", "size": 96}),
         (ph, pos, how, line, "raw", {"size": 104}),
     ], p["state"].split(". ")[0].rstrip(".") + ".", ([cut], f"Хустка «{p['name']}»", price), "Обрати хустку", f"Product hero: {p['name']}")
 
@@ -321,7 +323,7 @@ triptych("k08-card-twilly", "Шовкова твіллі", [
 
 triptych("k09-card-scrunchie", "Шовкова резинка", [
     ("src/flirt-scr-1-2k.webp", "linear-gradient(160deg,#F7C928,#EDB400)", "Резинка", "Шовкова, для волосся.", "side", {"tag": "700 грн", "at": "50% 50%"}),
-    ([("Матеріал", "натуральний шовк"), ("Принт", "«Флірт»"), ("Упаковка", "фірмова жовта коробочка"), ("Зроблено", "в Україні")], "", "", "", "spec", {"fs": 44, "lw": 300}),
+    ([("Матеріал", "натуральний шовк"), ("Принт", "«Флірт»"), ("Пакування", "фірмова жовта коробочка"), ("Зроблено", "в Україні")], "", "", "", "spec", {"fs": 44, "lw": 300}),
 ], "Маленький подарунок у фірмовій жовтій коробочці.", (["flirt-scr-1"], "Шовкова резинка «Флірт»", "700 грн"), "Купити", "Scrunchie card")
 
 triptych("k10-sizes", "Який розмір обрати?", [
@@ -376,17 +378,33 @@ triptych("k18-delivery-payment", "Доставка й оплата", [
     (["puls-44-1", "avantiura-tw-5"], DARK, "Хустки й твіллі", "Сім авторських принтів.", "cut", {"tag": "від 1 600 грн", "frac": .62, "size": 80}),
 ], "Замовляйте на obiimy.world або приходьте приміряти в шоурум.", (["puls-44-1", "avantiura-tw-5"], "Шовкові вироби SOLO", "від 1 600 грн"), "Замовити", "Delivery and payment")
 
+# ───────── one look, one photo: a single large frame, the print, its state and the price
+ONE = [("iskra", "iskra-65-2", "38% 50%", "Хустка", "65 × 65 см", "4 800 грн", "iskra-65-1", "Накиньте на жакет — як акцент кольору."),
+       ("flirt", "flirt-65-3", "36% 50%", "Хустка", "65 × 65 см", "4 800 грн", "flirt-65-1", "На голові: вузол на потилиці, кінці — на плечі."),
+       ("puls", "puls-44-4", "50% 50%", "Хустка", "44 × 44 см", "2 400 грн", "puls-44-1", "На шиї: вузол спереду, кінці — вільно."),
+       ("zolote", "zolote-44-3", "50% 50%", "Хустка", "44 × 44 см", "2 400 грн", "zolote-44-1", "На шиї: вузол збоку, під жакет."),
+       ("avantiura", "avantiura-88-5", "62% 50%", "Хустка", "88 × 88 см", "6 600 грн", "avantiura-88-1", "У волоссі: складіть стрічкою й зав’яжіть на хвіст."),
+       ("tysha", "tysha-88-2", "50% 50%", "Хустка", "88 × 88 см", "6 600 грн", "tysha-88-1", "Велика хустка — на плечі."),
+       ("krok", "krok-44-2", "50% 50%", "Хустка", "44 × 44 см", "2 400 грн", "krok-44-1", "На шиї: вузол спереду, кінці — вільно."),
+       ("iskra", "iskra-tw-2", "50% 50%", "Твіллі", "", "1 600 грн", "iskra-tw-4", "Твіллі на шиї — до жакета й сорочки."),
+       ("avantiura", "avantiura-tw-3", "50% 50%", "Твіллі", "", "1 600 грн", "avantiura-tw-5", "Твіллі у волоссі — бантом на хвіст."),
+       ("flirt", "flirt-tw-1", "50% 50%", "Твіллі", "", "1 600 грн", "flirt-tw-5", "Твіллі у волоссі — навколо пучка.")]
+for i, (pid, ph, pos, kind, size_, price, cut, how) in enumerate(ONE, 1):
+    p = PP[pid]
+    triptych(f"s{i:02d}-{'twilly' if kind == 'Твіллі' else 'scarf'}-{pid}", f"Шовкова {'твіллі' if kind == 'Твіллі' else 'хустка'}", [
+        (ph, pos, f"«{p['name']}»", p["short"] + ".", "one", {"size": 120 if len(p["name"]) <= 9 else 92, "tag": f"{size_} · {price}" if size_ else price}),
+    ], how, ([cut], f"{kind} «{p['name']}»", price), "Обрати твіллі" if kind == "Твіллі" else "Обрати хустку", f"One look: {p['name']} {kind}")
+
 # ───────── gifts: every banner answers a giver's question
 CERT = f'''<div style="position:absolute;inset:0;background:url({HI(PP['zolote'])}) center/130%"></div>
-    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,9,8,.94) 0%,rgba(12,9,8,.88) 50%,rgba(12,9,8,.25) 72%,rgba(12,9,8,0) 90%)"></div>
-    <div style="position:absolute;right:56px;top:50%;width:430px;height:290px;margin-top:-145px;background:#fff;color:#1B1613;box-shadow:0 30px 60px -20px rgba(0,0,0,.6);transform:rotate(-4deg);display:grid;place-items:center;text-align:center">
-      <div><img src="{LOGO_K}" alt="" style="position:static;height:30px;width:auto;margin:0 auto;display:block">
-      <p style="font-family:'Playfair Display',serif;font-size:60px;line-height:1;margin-top:22px">Сертифікат</p>
-      <p style="font-family:Onest;font-weight:600;font-size:21px;letter-spacing:.14em;text-transform:uppercase;color:#6B5F55;margin-top:16px">на будь-який товар</p></div></div>'''
+    <div style="position:absolute;inset:0;background:linear-gradient(90deg,rgba(12,9,8,.94) 0%,rgba(12,9,8,.9) 55%,rgba(12,9,8,.72) 100%)"></div>
+    <div style="position:absolute;right:64px;top:50%;transform:translateY(-50%);width:400px;text-align:right;color:#F3EADB">
+      <p style="font-family:Onest;font-weight:600;font-size:24px;letter-spacing:.14em;text-transform:uppercase;color:#E0B040">Номінали, грн</p>
+      <p style="font-family:'Playfair Display',serif;font-weight:700;font-size:72px;line-height:1.08;margin-top:14px">1 000<br>1 500<br>2 000<br>2 500<br>4 000</p></div>'''
 triptych("g01-certificate", "Подарунковий сертифікат", [
     (["iskra-65-1", "avantiura-88-1", "puls-44-1"], DARK, "Який принт її?", "Сім принтів — і не треба вгадувати.", "cut", {"size": 84, "frac": .6}),
     (CERT, "#141110", "Нехай обере сама", "Сертифікат у подарунок.", "html", {"size": 84, "tag": "від 1 000 грн", "tw": 500}),
-], "1 000–4 000 грн. На будь-який товар. Електронний або фізичний. Діє 3 місяці.", ([], "Сертифікат Obiimy", "від 1 000 грн"), "Подарувати", "Gift certificate")
+], "На будь-який товар. Електронний або фізичний. Діє 3 місяці.", ([], "Сертифікат Obiimy", "від 1 000 грн"), "Подарувати", "Gift certificate")
 
 triptych("g02-no-worries", "Подарунок без клопоту", [
     (["flirt-scr-1", "iskra-tw-4", "tysha-88-1"], DARK, "Шовк у\u00a0подарунок", "Резинка, твіллі або хустка.", "cut", {"tag": "від 700 грн", "frac": .6, "size": 70}),
@@ -412,7 +430,7 @@ triptych("g06-twilly-gift", "Твіллі в подарунок", [
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO triptych</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Oswald:wght@500&family=Montserrat:wght@300;400;500&family=Onest:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=EB+Garamond:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Oswald:wght@500&family=Montserrat:wght@300;400;500&family=Onest:wght@400;600&display=swap">
 <style>""" + CSS + "</style></head><body>"
 (HERE / ("solo7.html" if YELLOW else "solo6.html")).write_text(HEAD + "".join(ads) + "\n</body></html>")
 print(len(ads), "triptych banners", "(yellow)" if YELLOW else "")

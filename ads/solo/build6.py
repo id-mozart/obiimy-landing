@@ -65,6 +65,7 @@ def triptych(id, kicker, bands, tagline, product, cta, note=""):
     <p style="font-size:132px;font-weight:300;letter-spacing:-.01em;margin-top:6px">Соло</p>
     <p style="font-size:34px;font-weight:400;letter-spacing:.02em;margin-top:8px">Шлях до себе</p></div>
   <img src="{LOGO_W}" alt="" style="right:64px;top:50px;height:40px">
+  <p style="right:64px;top:106px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;color:#F3EADB">Шовкові вироби</p>
   <p style="right:64px;top:176px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;padding:16px 28px;border-radius:999px;background:#F2B705;color:#141216;white-space:nowrap">{kicker}</p>
   {body}
   <p style="left:64px;right:64px;top:{y0 + 34}px;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:44px;line-height:1.15;text-wrap:balance">{nb(tagline)}</p>

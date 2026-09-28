@@ -140,6 +140,7 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
   {ph}
   {shade}
   <img src="{LOGO_W}" alt="" style="left:70px;top:70px;height:44px;display:block">
+  <p style="right:70px;top:80px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.45)">Шовкові вироби</p>
   <div style="left:70px;right:70px;{pos_block};display:flex;flex-direction:column;align-items:center;text-align:center">
     {block}
   </div>""", note)
@@ -174,6 +175,7 @@ full("c13-parts", "avantiura-88-2", "40% 0%", "Найбільша хустка."
 def ivory(id, eyebrow, h, em, visual, body, price_main, price_small, cta, bg="var(--ivory)", note="", hs=100):
     ad(id, "", f'''
   <div style="left:0;right:0;top:0;bottom:0;background:{bg}"></div>
+  <p style="right:70px;top:94px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;font-size:24px;color:var(--ink-2)">Шовкові вироби</p>
   <div style="left:70px;right:70px;top:80px;bottom:96px;display:flex;flex-direction:column;align-items:center;text-align:center">
     <img src="{LOGO_K}" alt="" style="height:48px;display:block">
     {'' if YELLOW else f'<p class="eyebrow" style="position:static;margin-top:52px">{eyebrow}</p>'}

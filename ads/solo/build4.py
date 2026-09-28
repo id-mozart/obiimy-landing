@@ -84,7 +84,17 @@ PROD = {
     "u06-abroad": (["iskra-tw-1"], "Шовкова твіллі-стрічка", "«Іскра» · 84 × 5 см"),
 }
 
+MIN = {}   # id -> (cutouts, "Шовкова хустка «…»") for the minimal premium banners
+
 def product_card(id, price_main, price_small):
+    if id in MIN:
+        cuts, title = MIN[id]
+        img = "".join(f'<img src="{CUT(c)}" alt="" style="height:150px;width:auto;max-width:170px;object-fit:contain;filter:drop-shadow(0 10px 12px rgba(0,0,0,.4));transform:rotate(-6deg)">' for c in cuts)
+        bg, c1 = ("#F2B705", "#141216") if YELLOW else ("rgba(244,242,237,.1)", "#fff")
+        bd = "none" if YELLOW else "1.5px solid rgba(244,242,237,.3)"
+        return f"""<div style="display:flex;align-items:center;gap:28px;margin-top:30px;padding:14px 38px 14px 16px;border-radius:{6 if YELLOW else 22}px;background:{bg};border:{bd};text-align:left">
+      {img}<div><p style="font-size:36px;line-height:1.2;font-weight:600;color:{c1}">{title}</p>
+      <p style="font-family:Prata,serif;font-size:50px;line-height:1;color:{c1};margin-top:10px">{price_main}</p></div></div>"""
     cuts, kind, name = PROD[id]
     imgs = "".join(f'<img src="{CUT(c)}" alt="" style="height:200px;width:auto;max-width:{220 if len(cuts) == 1 else 140}px;object-fit:contain;margin-left:{0 if k == 0 else -40}px;filter:drop-shadow(0 12px 14px rgba(0,0,0,.4));transform:rotate({(-6, 5, -3)[k]}deg)">' for k, c in enumerate(cuts))
     if YELLOW:
@@ -109,7 +119,7 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
     fill = f'<div style="left:0;right:0;top:0;height:{t + 160}px;background:{top_rgb}"></div>' if t > 0 else ""
     pr = product_card(id, price_main, price_small)
     block = f"""<h1 class="h" style="position:static;color:#fff;font-size:{hs}px">{h}<br><em style="color:#E9D7A6">{em}</em></h1>
-    <p class="body" style="position:static;margin-top:18px;max-width:900px">{nb(body)}</p>
+    {f'<p class="body" style="position:static;margin-top:18px;max-width:900px">{nb(body)}</p>' if body else ""}
     {pr}
     <div class="cta" style="position:static;transform:none;margin-top:26px">{cta}</div>"""
     if top_text:
@@ -277,6 +287,32 @@ ivory("u10-trust", "Український бренд шовку", "Про на�
 ivory("u11-slow", "Шовкова хустка «Золоте світло»", "Одна хустка з України", "замість десяти випадкових.",
       V(f'<div style="display:flex;align-items:center;gap:20px"><img class="cut" src="{CUT("zolote-44-1")}" alt="" style="width:520px;transform:rotate(-5deg)"><img class="cut" src="{CUT("zolote-tw-1")}" alt="" style="height:460px;transform:rotate(9deg)"></div>'),
       "У світі швидких трендів — речі зі змістом: натуральний шовк, що стає частиною вашої історії.", "2 400 грн", "«Золоте світло» · 44 × 44", "Обрати назавжди", note="Slow fashion", hs=78)
+
+
+# =====================================================================================
+# «Тихий преміум» — short lines, one product line without sizes, delicate CTAs
+# =====================================================================================
+QUIET = [
+    ("p01-quiet-luxury", "zolote-44-3", "50% 25%", False, "Тихий люкс.", "Український шовк.", "Авторські принти на натуральному шовку.", ["zolote-44-1"], "Шовкова хустка «Золоте світло»", "2 400 грн", "Подивитися ближче"),
+    ("p02-speaks", "avantiura-88-5", "62% 30%", True, "Шовк, який", "говорить за вас.", "", ["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн", "Знайти свій принт"),
+    ("p03-understand", "tysha-88-2", "50% 0%", False, "Зроблено в Україні", "для тих, хто розуміє.", "", ["tysha-88-1"], "Шовкова хустка «Тиша всередині»", "6 600 грн", "Дізнатися більше"),
+    ("p04-not-loud", "krok-44-3", "50% 20%", False, "Преміум,", "який не кричить.", "", ["krok-44-1"], "Шовкова хустка «Сміливий крок»", "2 400 грн", "Роздивитися принт"),
+    ("p05-character", "krok-44-2", "50% 30%", False, "Українська хустка", "з характером.", "", ["krok-44-1"], "Шовкова хустка «Сміливий крок»", "2 400 грн", "Знайти свою"),
+    ("p06-noticed", "avantiura-tw-3", "50% 40%", False, "Дрібниця,", "яку помічають.", "", ["avantiura-tw-2"], "Шовкова твіллі «Авантюра»", "1 600 грн", "Подарувати собі"),
+    ("p07-whole-look", "iskra-tw-2", "50% 25%", False, "Один аксесуар —", "весь образ.", "", ["iskra-tw-1"], "Шовкова твіллі «Іскра»", "1 600 грн", "Приміряти образ"),
+    ("p08-touch", "flirt-65-3", "38% 30%", False, "Шовк, до якого", "хочеться торкатися.", "", ["flirt-65-1"], "Шовкова хустка «Флірт»", "4 800 грн", "Відкрити колекцію"),
+    ("p09-for-her", "puls-44-4", "50% 20%", True, "Для себе.", "Або для неї.", "", ["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн", "Обрати подарунок"),
+    ("p10-yours", "tysha-88-3", "50% 45%", False, "Українське. Вишукане.", "Ваше.", "", ["tysha-88-1"], "Шовкова хустка «Тиша всередині»", "6 600 грн", "Обрати для себе"),
+    ("p11-italian-silk", "zolote-44-2", "50% 20%", False, "Італійський шовк.", "Український характер.", "", ["zolote-44-1"], "Шовкова хустка «Золоте світло»", "2 400 грн", "Детальніше"),
+    ("p12-wearable-art", "puls-44-2", "42% 40%", True, "Мистецтво,", "яке можна носити.", "Принти художниці Світлани Сніжко.", ["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн", "Переглянути SOLO"),
+    ("p13-classic", "zolote-44-4", "50% 20%", False, "Шовкова класика", "українського бренду.", "", ["zolote-tw-1"], "Шовкова твіллі «Золоте світло»", "1 600 грн", "Подивитися"),
+    ("p14-real", "avantiura-88-4", "50% 25%", False, "Коли хочеться", "чогось справжнього.", "", ["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн", "Обрати хустку"),
+    ("p15-iskra", "iskra-65-2", "40% 0%", True, "Колір, який", "обирають сміливі.", "", ["iskra-65-1"], "Шовкова хустка «Іскра»", "4 800 грн", "Роздивитися «Іскру»"),
+]
+for id, ph, pos, spot, h, em, body, cuts, title, price, cta in QUIET:
+    MIN[id] = (cuts, title)
+    full(id, ph, pos, h, em, body, price, "", cta, spot=spot, note=f"Quiet premium: {h} {em}", hs=86,
+         shade_from=980 if spot else 1040)
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO classic</title>

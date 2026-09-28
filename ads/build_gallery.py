@@ -56,6 +56,9 @@ def build(site: pathlib.Path):
     classic = sorted((ROOT / "ads/solo/out4").glob("*.jpg"))
     yellow = sorted((ROOT / "ads/solo/out5").glob("*.jpg"))
     isc = lambda f, lo, hi: f.name[0] == "c" and lo <= f.name[:3] <= hi
+    tri = sorted((ROOT / "ads/solo/out6").glob("*.jpg")); tri_y = sorted((ROOT / "ads/solo/out7").glob("*.jpg"))
+    add("Триптих · варіант A", "Три смуги — одна історія: крізь десятиліття, три стани, три образи, формати, кому подарувати, деталі преміуму. Унизу — товар і кнопка.", tri, "solo-tri")
+    add("Триптих · варіант B", "Те саме з жовтою плашкою товару.", tri_y, "solo-tri-y")
     add("Варіант A · тихий преміум", "Коротко й делікатно: один рядок, товар і ціна без розмірів, м’які заклики.", [f for f in classic if f.name[0] == "p"], "solo-main")
     add("Варіант B · тихий преміум", "Тихий преміум з жовтою плашкою товару.", [f for f in yellow if f.name[0] == "p"], "solo-yellow")
     add("Варіант A · український преміум", "Одне повідомлення, розказане по-різному: це українські шовкові аксесуари преміум-класу.", [f for f in classic if f.name[0] == "u"], "solo-main")

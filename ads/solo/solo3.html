@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO creatives</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@400;500;600&display=swap">
+<style>
+:root { --paper: #F1E8D8; --paper2: #E6D9C2; --card: #FBF6EC; --ink: #1B1613; --ink2: #4B423B; --ink3: #7A6E63; --wine: #7B1F24; --yellow: #F2B705; --cream: #F3EADB; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #555; font-family: 'Cormorant Garamond', serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+.ad { position: relative; overflow: hidden; background: var(--paper); margin: 24px auto; }
+.st { width: 1080px; height: 1920px; } .fd { width: 1080px; height: 1350px; } .sq { width: 1080px; height: 1080px; }
+.ad > *, .page > * { position: absolute; margin: 0; }
+.ad p, .ad h1, .ad h2 { margin: 0; }
+/* one print-like grain over the whole layout, photos included */
+.ad::after { content: ""; position: absolute; inset: 0; z-index: 90; pointer-events: none; opacity: .2; mix-blend-mode: multiply; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+.ad.dark::after { mix-blend-mode: soft-light; opacity: .5; }
+.page { position: absolute; overflow: hidden; background: var(--paper); }
+.fill { inset: 0; }
+.col { display: flex; flex-direction: column; }
+.row { display: flex; }
+.safe { left: 80px; right: 80px; top: 280px; bottom: 380px; }
+.box { left: 64px; right: 64px; top: 64px; bottom: 64px; }
+.ph { overflow: hidden; }
+.col > .ph, .row > .ph { position: relative; min-height: 0; }
+.ph img { width: 100%; height: 100%; object-fit: cover; display: block; filter: contrast(1.05) saturate(.84) sepia(.12); }
+.ph.bw img { filter: grayscale(1) contrast(1.16) brightness(1.04); }
+.ph.raw img { filter: none; }
+.cut { display: block; filter: drop-shadow(0 26px 30px rgba(40,25,10,.32)); }
+.h { font-family: 'Playfair Display', serif; text-wrap: balance; }
+.t { font-family: 'Cormorant Garamond', serif; font-weight: 500; text-wrap: pretty; }
+.lbl { font-family: 'Jost', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: .14em; font-size: 30px; line-height: 1.3; }
+.solo { font-family: 'Bodoni Moda', 'Playfair Display', serif; font-weight: 900; font-style: italic; letter-spacing: -.02em; line-height: .78; }
+.lg { display: block; width: auto; flex: none; }
+.foot { justify-content: space-between; align-items: center; gap: 30px; }
+.prow { display: flex; justify-content: space-between; gap: 30px; border-bottom: 2px solid; padding: 12px 0; font-family: 'Jost', sans-serif; font-size: 32px; letter-spacing: .04em; }
+.prow b { font-weight: 600; }
+.pill { font-family: 'Jost', sans-serif; font-weight: 600; font-size: 32px; letter-spacing: .04em; padding: 24px 46px; border-radius: 999px; background: var(--ink); color: var(--cream); white-space: nowrap; display: inline-block; }
+.rule { height: 3px; width: 70px; }
+.frame2::before { content: ""; position: absolute; inset: 18px; border: 2px solid rgba(27,22,19,.55); pointer-events: none; }
+.frame2::after { content: ""; position: absolute; inset: 27px; border: 1px solid rgba(27,22,19,.35); pointer-events: none; }
+.shadow { box-shadow: 0 40px 70px -30px rgba(0,0,0,.5); }
+</style></head><body>
+<!-- Launch: collection on sale -->
+<section class="ad st" id="sale-01-launch">
+  <div class="fill" style="background:url(src/krok-44-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="safe col">
+    <div class="row foot"><p class="lbl" style="color:var(--ink3)">Нова колекція · осінь 2026</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+    <p class="solo" style="font-size:190px;color:var(--wine);margin:24px 0 0 -6px">SOLO</p>
+    <p class="h" style="font-size:54px;line-height:1.08;margin-top:12px">Сім авторських принтів на натуральному шовку — <i>уже на сайті</i></p>
+    <div style="margin-top:30px;display:grid;grid-template-columns:repeat(4,1fr);gap:18px 6px;justify-items:center"><div style="display:grid;justify-items:center;gap:6px"><span style="width:250px;height:250px;background:url(src/iskra-65-1-hi.webp) center/150%;box-shadow:0 14px 22px -12px rgba(0,0,0,.5)"></span><span class="t" style="font-size:32px;font-style:italic;white-space:nowrap">«Іскра»</span></div><div style="display:grid;justify-items:center;gap:6px"><span style="width:250px;height:250px;background:url(src/flirt-65-1-hi.webp) center/150%;box-shadow:0 14px 22px -12px rgba(0,0,0,.5)"></span><span class="t" style="font-size:32px;font-style:italic;white-space:nowrap">«Флірт»</span></div><div style="display:grid;justify-items:center;gap:6px"><span style="width:250px;height:250px;background:url(src/puls-44-1-hi.webp) center/150%;box-shadow:0 14px 22px -12px rgba(0,0,0,.5)"></span><span class="t" style="font-size:32px;font-style:italic;white-space:nowrap">«Пульс»</span></div><div style="display:grid;justify-items:center;gap:6px"><span style="width:250px;height:250px;background:url(src/zolote-44-1-hi.webp) center/150%;box-shadow:0 14px 22px -12px rgba(0,0,0,.5)"></span><span class="t" style="font-size:32px;font-style:italic;white-space:nowrap">«Золоте світло»</span></div><div style="display:grid;justify-items:center;gap:6px"><span style="width:250px;height:250px;background:url(src/avantiura-88-1-hi.webp) center/150%;box-shadow:0 14px 22px -12px rgba(0,0,0,.5)"></span><span class="t" style="font-size:32px;font-style:italic;white-space:nowrap">«Авантюра»</span></div><div style="display:grid;justify-items:center;gap:6px"><span style="width:250px;height:250px;background:url(src/tysha-88-1-hi.webp) center/150%;box-shadow:0 14px 22px -12px rgba(0,0,0,.5)"></span><span class="t" style="font-size:32px;font-style:italic;white-space:nowrap">«Тиша всередині»</span></div><div style="display:grid;justify-items:center;gap:6px"><span style="width:250px;height:250px;background:url(src/krok-44-1-hi.webp) center/150%;box-shadow:0 14px 22px -12px rgba(0,0,0,.5)"></span><span class="t" style="font-size:32px;font-style:italic;white-space:nowrap">«Сміливий крок»</span></div></div>
+    <p class="lbl" style="margin-top:auto;font-weight:600;letter-spacing:.08em">Твіллі — 1 600 грн · хустки — від 2 400 грн</p>
+    <p class="lbl" style="margin-top:14px;font-size:30px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Gift by budget -->
+<section class="ad st" id="sale-02-budget">
+  <div class="fill" style="background:url(src/zolote-44-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="safe col">
+    <div class="row foot"><p class="lbl" style="color:var(--ink3)">SOLO · подарунок</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+    <p class="h" style="font-size:84px;line-height:1.02;font-weight:700;margin-top:24px">Подарунок <i style="font-weight:400;color:var(--wine)">під ваш бюджет</i></p>
+    <div style="margin-top:22px;border-top:3px solid var(--ink)"><div class="row" style="align-items:center;gap:26px;border-bottom:1px solid rgba(27,22,19,.3);padding:16px 0"><span style="width:124px;height:124px;flex:none;background:url(src/flirt-scr-1.webp) center/cover;box-shadow:0 8px 14px -8px rgba(0,0,0,.5)"></span>
+      <p style="flex:1"><span class="lbl" style="font-size:28px;color:var(--wine);font-weight:600">до 1 000 грн</span><br><span class="t" style="font-size:36px;line-height:1.1">Резинка «Флірт»</span></p>
+      <p class="h" style="font-size:52px;flex:none">700</p></div><div class="row" style="align-items:center;gap:26px;border-bottom:1px solid rgba(27,22,19,.3);padding:16px 0"><img src="src/zolote-tw-1-cut.webp" alt="" style="width:124px;height:124px;object-fit:contain;flex:none;filter:drop-shadow(0 10px 12px rgba(40,25,10,.3))">
+      <p style="flex:1"><span class="lbl" style="font-size:28px;color:var(--wine);font-weight:600">до 2 000 грн</span><br><span class="t" style="font-size:36px;line-height:1.1">Твіллі 84 × 5 · будь-який із 7 принтів</span></p>
+      <p class="h" style="font-size:52px;flex:none">1 600</p></div><div class="row" style="align-items:center;gap:26px;border-bottom:1px solid rgba(27,22,19,.3);padding:16px 0"><img src="src/puls-44-1-cut.webp" alt="" style="width:124px;height:124px;object-fit:contain;flex:none;filter:drop-shadow(0 10px 12px rgba(40,25,10,.3))">
+      <p style="flex:1"><span class="lbl" style="font-size:28px;color:var(--wine);font-weight:600">до 3 000 грн</span><br><span class="t" style="font-size:36px;line-height:1.1">Хустка 44 × 44 · «Пульс», «Золоте світло», «Сміливий крок»</span></p>
+      <p class="h" style="font-size:52px;flex:none">2 400</p></div><div class="row" style="align-items:center;gap:26px;border-bottom:1px solid rgba(27,22,19,.3);padding:16px 0"><img src="src/iskra-65-1-cut.webp" alt="" style="width:124px;height:124px;object-fit:contain;flex:none;filter:drop-shadow(0 10px 12px rgba(40,25,10,.3))">
+      <p style="flex:1"><span class="lbl" style="font-size:28px;color:var(--wine);font-weight:600">до 5 000 грн</span><br><span class="t" style="font-size:36px;line-height:1.1">Хустка 65 × 65 · «Іскра», «Флірт»</span></p>
+      <p class="h" style="font-size:52px;flex:none">4 800</p></div><div class="row" style="align-items:center;gap:26px;border-bottom:1px solid rgba(27,22,19,.3);padding:16px 0"><img src="src/avantiura-88-1-cut.webp" alt="" style="width:124px;height:124px;object-fit:contain;flex:none;filter:drop-shadow(0 10px 12px rgba(40,25,10,.3))">
+      <p style="flex:1"><span class="lbl" style="font-size:28px;color:var(--wine);font-weight:600">особливий</span><br><span class="t" style="font-size:36px;line-height:1.1">Хустка 88 × 88 · «Авантюра», «Тиша всередині»</span></p>
+      <p class="h" style="font-size:52px;flex:none">6 600</p></div></div>
+    <p class="lbl" style="margin-top:auto;font-size:28px;color:var(--ink2)">Ціни в гривнях · натуральний шовк</p>
+    <p class="lbl" style="margin-top:8px;font-weight:600">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Gift by character -->
+<section class="ad st" id="sale-03-character">
+  <div class="fill" style="background:url(src/flirt-65-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="safe col">
+    <div class="row foot"><p class="lbl" style="color:var(--ink3)">SOLO · подарунок</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+    <p class="h" style="font-size:76px;line-height:1.02;font-weight:700;margin-top:20px">Подаруйте їй <i style="font-weight:400;color:var(--wine)">її стан</i></p>
+    <div style="margin-top:16px"><div class="row" style="align-items:center;gap:22px;padding:11px 0;border-bottom:1px solid rgba(27,22,19,.25)">
+      <span style="width:92px;height:92px;border-radius:50%;flex:none;background:url(src/iskra-65-1-hi.webp) center/230%"></span>
+      <p class="t" style="flex:1;font-size:37px;line-height:1.08">Якщо вона любить бути помітною —<br><b class="h" style="font-style:italic;color:#2F63A8">«Іскра»</b></p></div><div class="row" style="align-items:center;gap:22px;padding:11px 0;border-bottom:1px solid rgba(27,22,19,.25)">
+      <span style="width:92px;height:92px;border-radius:50%;flex:none;background:url(src/flirt-65-1-hi.webp) center/230%"></span>
+      <p class="t" style="flex:1;font-size:37px;line-height:1.08">Якщо вона вміє насолоджуватися моментом —<br><b class="h" style="font-style:italic;color:#6F8A58">«Флірт»</b></p></div><div class="row" style="align-items:center;gap:22px;padding:11px 0;border-bottom:1px solid rgba(27,22,19,.25)">
+      <span style="width:92px;height:92px;border-radius:50%;flex:none;background:url(src/puls-44-1-hi.webp) center/230%"></span>
+      <p class="t" style="flex:1;font-size:37px;line-height:1.08">Якщо вона тримає свій ритм, що б не сталося —<br><b class="h" style="font-style:italic;color:#4E8B3A">«Пульс»</b></p></div><div class="row" style="align-items:center;gap:22px;padding:11px 0;border-bottom:1px solid rgba(27,22,19,.25)">
+      <span style="width:92px;height:92px;border-radius:50%;flex:none;background:url(src/zolote-44-1-hi.webp) center/230%"></span>
+      <p class="t" style="flex:1;font-size:37px;line-height:1.08">Якщо вона цінує ясність і спокій —<br><b class="h" style="font-style:italic;color:#B8741F">«Золоте світло»</b></p></div><div class="row" style="align-items:center;gap:22px;padding:11px 0;border-bottom:1px solid rgba(27,22,19,.25)">
+      <span style="width:92px;height:92px;border-radius:50%;flex:none;background:url(src/avantiura-88-1-hi.webp) center/230%"></span>
+      <p class="t" style="flex:1;font-size:37px;line-height:1.08">Якщо вона легко йде за межі звичного —<br><b class="h" style="font-style:italic;color:#8A2226">«Авантюра»</b></p></div><div class="row" style="align-items:center;gap:22px;padding:11px 0;border-bottom:1px solid rgba(27,22,19,.25)">
+      <span style="width:92px;height:92px;border-radius:50%;flex:none;background:url(src/tysha-88-1-hi.webp) center/230%"></span>
+      <p class="t" style="flex:1;font-size:37px;line-height:1.08">Якщо вона вміє чути себе в шумі —<br><b class="h" style="font-style:italic;color:#26231F">«Тиша всередині»</b></p></div><div class="row" style="align-items:center;gap:22px;padding:11px 0;border-bottom:1px solid rgba(27,22,19,.25)">
+      <span style="width:92px;height:92px;border-radius:50%;flex:none;background:url(src/krok-44-1-hi.webp) center/230%"></span>
+      <p class="t" style="flex:1;font-size:37px;line-height:1.08">Якщо вона наважується на новий крок —<br><b class="h" style="font-style:italic;color:#8E2A2C">«Сміливий крок»</b></p></div></div>
+    <div class="row foot" style="margin-top:auto;padding-top:16px"><p class="lbl" style="font-size:28px;color:var(--ink)">Обрати свій принт · obiimy.world</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+  </div>
+</section>
+<!-- Gift certificate -->
+<section class="ad st" id="sale-04-certificate">
+  <div class="fill" style="background:url(src/tysha-88-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="safe col">
+    <div class="row foot"><p class="lbl" style="color:var(--ink3)">Не знаєте, який стан їй ближчий?</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+    <p class="h" style="font-size:96px;line-height:1;font-weight:700;margin-top:30px">Нехай обере <i style="font-weight:400;color:var(--wine)">сама</i></p>
+    <div style="flex:1;min-height:0;display:grid;place-items:center">
+      <div class="shadow frame2" style="position:relative;width:820px;height:500px;background:var(--card);transform:rotate(-3deg);display:grid;place-items:center;text-align:center">
+        <div><img src="../../brand/logo-ink.png" alt="" style="height:44px;margin:0 auto"><p class="lbl" style="margin-top:34px;color:var(--ink3)">Подарунковий сертифікат</p>
+        <p class="h" style="font-size:120px;line-height:1;font-weight:700;margin-top:20px">від 1 000 <span style="font-size:56px">грн</span></p>
+        <p class="t" style="font-size:36px;font-style:italic;color:var(--ink2);margin-top:14px">на будь-який товар Obiimy</p></div>
+      </div>
+    </div>
+    <p class="t" style="font-size:42px;line-height:1.16">Номінали 1 000, 1 500, 2 000, 2 500 і 4 000 грн. Електронний або фізичний, діє 3 місяці.</p>
+    <div class="row foot" style="margin-top:24px;border-top:1px solid var(--ink);padding-top:16px"><p class="lbl" style="font-size:28px;color:var(--ink)">Обрати сертифікат · obiimy.world</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+  </div>
+</section>
+<!-- Wardrobe match -->
+<section class="ad st" id="sale-05-wardrobe">
+  <div class="fill" style="background:url(src/iskra-65-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="safe col">
+    <div class="row foot"><p class="lbl" style="color:var(--ink3)">SOLO · до вашого гардероба</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+    <p class="h" style="font-size:80px;line-height:1.02;font-weight:700;margin-top:18px">Уже маєте, <i style="font-weight:400;color:var(--wine)">з чим носити</i></p>
+    <div style="flex:1;min-height:0;margin-top:22px;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:22px 18px"><div class="col" style="min-height:0"><div class="ph" style="flex:1;min-height:0;position:relative"><img src="src/flirt-tw-3.webp" alt="" style="object-position:50% 30%"></div>
+      <p class="lbl" style="font-size:28px;margin-top:12px;letter-spacing:.08em">До бежевого тренчу</p>
+      <p class="t" style="font-size:36px;line-height:1.05"><i class="h" style="color:#6F8A58">«Флірт»</i></p>
+      <p class="lbl" style="font-size:28px;color:var(--ink2);letter-spacing:.04em">Твіллі 84 × 5 · 1 600 грн</p></div><div class="col" style="min-height:0"><div class="ph" style="flex:1;min-height:0;position:relative"><img src="src/zolote-44-4.webp" alt="" style="object-position:50% 25%"></div>
+      <p class="lbl" style="font-size:28px;margin-top:12px;letter-spacing:.08em">До чорного жакета</p>
+      <p class="t" style="font-size:36px;line-height:1.05"><i class="h" style="color:#B8741F">«Золоте світло»</i></p>
+      <p class="lbl" style="font-size:28px;color:var(--ink2);letter-spacing:.04em">Хустка 44 × 44 · 2 400 грн</p></div><div class="col" style="min-height:0"><div class="ph" style="flex:1;min-height:0;position:relative"><img src="src/iskra-tw-2.webp" alt="" style="object-position:50% 30%"></div>
+      <p class="lbl" style="font-size:28px;margin-top:12px;letter-spacing:.08em">До блакитного костюма</p>
+      <p class="t" style="font-size:36px;line-height:1.05"><i class="h" style="color:#2F63A8">«Іскра»</i></p>
+      <p class="lbl" style="font-size:28px;color:var(--ink2);letter-spacing:.04em">Твіллі 84 × 5 · 1 600 грн</p></div><div class="col" style="min-height:0"><div class="ph" style="flex:1;min-height:0;position:relative"><img src="src/puls-tw-1.webp" alt="" style="object-position:50% 35%"></div>
+      <p class="lbl" style="font-size:28px;margin-top:12px;letter-spacing:.08em">До білої сорочки</p>
+      <p class="t" style="font-size:36px;line-height:1.05"><i class="h" style="color:#4E8B3A">«Пульс»</i></p>
+      <p class="lbl" style="font-size:28px;color:var(--ink2);letter-spacing:.04em">Твіллі 84 × 5 · 1 600 грн</p></div></div>
+    <p class="lbl" style="margin-top:20px;font-weight:600">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Complete look: Іскра -->
+<section class="ad st" id="sale-06-look-iskra">
+  <div class="fill" style="background:url(src/iskra-65-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="safe col">
+    <div class="row foot"><p class="lbl" style="color:var(--ink3)">SOLO · образ цілком</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+    <p class="h" style="font-size:80px;line-height:1.02;font-weight:700;margin-top:18px">Один принт — <i style="font-weight:400;color:#2F63A8">«Іскра»</i></p>
+    <div class="row" style="flex:1;min-height:0;gap:18px;margin-top:24px">
+      <div class="col" style="flex:1.25;min-height:0"><div class="ph " style="flex:1"><img src="src/iskra-65-4.webp" alt="" style="object-position:55% 30%;"></div><p class="t" style="font-size:36px;margin-top:10px">Хустка 65 × 65 — <b>4 800 грн</b></p></div>
+      <div class="col" style="flex:1;min-height:0"><div class="ph " style="flex:1"><img src="src/iskra-tw-3.webp" alt="" style="object-position:50% 60%;"></div><p class="t" style="font-size:36px;margin-top:10px">Твіллі 84 × 5 — <b>1 600 грн</b></p></div>
+    </div>
+    <div class="row" style="justify-content:space-between;align-items:flex-end;margin-top:22px;border-top:3px solid var(--ink);padding-top:16px">
+      <p class="t" style="font-size:40px;line-height:1.1">Разом<br><span class="lbl" style="font-size:28px;color:var(--wine);font-weight:600">доставка безкоштовна</span></p>
+      <p class="h" style="font-size:96px;line-height:1;font-weight:700;color:var(--ink);flex:none">6 400 <span style="font-size:46px">грн</span></p>
+    </div>
+    <p class="lbl" style="margin-top:16px;font-weight:600">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Complete look: Авантюра -->
+<section class="ad st" id="sale-06-look-avantiura">
+  <div class="fill" style="background:url(src/avantiura-88-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="safe col">
+    <div class="row foot"><p class="lbl" style="color:var(--ink3)">SOLO · образ цілком</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+    <p class="h" style="font-size:80px;line-height:1.02;font-weight:700;margin-top:18px">Один принт — <i style="font-weight:400;color:#8A2226">«Авантюра»</i></p>
+    <div class="row" style="flex:1;min-height:0;gap:18px;margin-top:24px">
+      <div class="col" style="flex:1.25;min-height:0"><div class="ph " style="flex:1"><img src="src/avantiura-88-2.webp" alt="" style="object-position:40% 35%;"></div><p class="t" style="font-size:36px;margin-top:10px">Хустка 88 × 88 — <b>6 600 грн</b></p></div>
+      <div class="col" style="flex:1;min-height:0"><div class="ph " style="flex:1"><img src="src/avantiura-tw-3.webp" alt="" style="object-position:50% 40%;"></div><p class="t" style="font-size:36px;margin-top:10px">Твіллі 84 × 5 — <b>1 600 грн</b></p></div>
+    </div>
+    <div class="row" style="justify-content:space-between;align-items:flex-end;margin-top:22px;border-top:3px solid var(--ink);padding-top:16px">
+      <p class="t" style="font-size:40px;line-height:1.1">Разом<br><span class="lbl" style="font-size:28px;color:var(--wine);font-weight:600">доставка безкоштовна</span></p>
+      <p class="h" style="font-size:96px;line-height:1;font-weight:700;color:var(--ink);flex:none">8 200 <span style="font-size:46px">грн</span></p>
+    </div>
+    <p class="lbl" style="margin-top:16px;font-weight:600">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Same-day dispatch and free delivery -->
+<section class="ad st" id="sale-07-delivery">
+  <div class="fill" style="background:url(src/puls-44-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="safe col">
+    <div class="row foot"><p class="lbl" style="color:var(--ink3)">SOLO · доставка</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+    <p class="h" style="font-size:96px;line-height:1;font-weight:700;margin-top:24px">Замовте до 16:00 —</p>
+    <p class="h" style="font-size:96px;line-height:1;font-style:italic;color:var(--wine);margin-top:8px">відправимо сьогодні</p>
+    <p class="t" style="font-size:44px;line-height:1.15;color:var(--ink2);margin-top:22px">Новою поштою в день замовлення. Від 5 000 грн — доставка безкоштовна.</p>
+    <div style="flex:1;min-height:0;display:grid;place-items:center">
+      <div style="position:relative;width:820px;height:560px">
+        <div class="ph shadow" style="position:absolute;left:0;top:30px;width:520px;height:520px;transform:rotate(-4deg)"><img src="src/flirt-scr-2.webp" alt="" style="object-position:50% 40%"></div>
+        <img class="cut" src="src/puls-44-1-cut.webp" alt="" style="position:absolute;right:0;top:0;width:420px;transform:rotate(8deg)">
+      </div>
+    </div>
+    <p class="lbl" style="font-weight:600">Хустка «Пульс» 44 × 44 — 2 400 грн · резинка «Флірт» — 700 грн</p>
+    <p class="lbl" style="margin-top:8px;font-size:28px;color:var(--ink2)">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Pay in parts -->
+<section class="ad st dark" id="sale-08-parts">
+  <div class="fill" style="background:#26231F"></div>
+  <div class="fill" style="background:radial-gradient(70% 45% at 50% 50%,rgba(255,255,255,.14),rgba(0,0,0,.25))"></div>
+  <div class="safe col" style="color:var(--cream)">
+    <div class="row foot"><p class="lbl" style="color:rgba(243,234,219,.75)">SOLO · оплата</p><img class="lg" src="../../brand/logo-white.png" alt="Obiimy" style="height:40px;"></div>
+    <p class="h" style="font-size:84px;line-height:1.02;font-weight:700;margin-top:24px">Найбільша хустка колекції — <i style="font-weight:400">частинами</i></p>
+    <div style="flex:1;min-height:0;display:grid;place-items:center"><img class="cut" src="src/tysha-88-1-cut.webp" alt="" style="height:620px;transform:rotate(-6deg);filter:drop-shadow(0 50px 60px rgba(0,0,0,.6))"></div>
+    <p class="h" style="font-size:64px;line-height:1;font-style:italic">«Тиша всередині» · 88 × 88</p>
+    <p class="lbl" style="margin-top:14px;color:var(--yellow);font-weight:600">6 600 грн · оплата частинами</p>
+    <p class="t" style="font-size:40px;line-height:1.15;margin-top:8px">ПриватБанк — 4 платежі, monobank — 3 платежі</p>
+    <p class="lbl" style="margin-top:18px;font-size:28px;border-top:1px solid rgba(243,234,219,.5);padding-top:16px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Showroom -->
+<section class="ad st" id="sale-09-showroom">
+  <div class="fill" style="background:url(src/iskra-65-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="ph " style="left:0;right:0;top:236px;height:744px"><img src="src/iskra-tw-2.webp" alt="" style="object-position:50% 35%;"></div>
+  <div class="col" style="left:80px;right:80px;top:1020px;bottom:380px">
+    <p class="lbl" style="color:var(--ink3)">SOLO · шоурум</p>
+    <p class="h" style="font-size:80px;line-height:1.02;font-weight:700;margin-top:12px">Приміряйте <i style="font-weight:400;color:var(--wine)">наживо</i></p>
+    <p class="t" style="font-size:40px;line-height:1.15;margin-top:12px">Шовк Obiimy можна подивитися й приміряти в шоурумі: Київ, вул. Петра Сагайдачного, 12.</p>
+    <p class="lbl" style="margin-top:auto;font-weight:600;letter-spacing:.08em">Пн–пт 10:00–18:00 · сб 11:00–18:00</p>
+    <div class="row foot" style="margin-top:12px;border-top:1px solid var(--ink);padding-top:16px"><p class="lbl" style="font-size:28px">або obiimy.world</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+  </div>
+</section>
+<!-- Trust: retail and press -->
+<section class="ad st" id="sale-10-trust">
+  <div class="fill" style="background:url(src/avantiura-88-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="safe col">
+    <div class="row foot"><p class="lbl" style="color:var(--ink3)">Obiimy · український бренд шовку</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+    <p class="h" style="font-size:82px;line-height:1.02;font-weight:700;margin-top:22px">Obiimy обирають <i style="font-weight:400;color:var(--wine)">не лише в Україні</i></p>
+    <div class="ph " style="height:560px;margin-top:26px"><img src="src/avantiura-tw-4.webp" alt="" style="object-position:50% 30%;"></div>
+    <div class="row" style="gap:40px;margin-top:26px">
+      <div style="flex:1"><p class="lbl" style="font-size:28px;color:var(--ink3)">Продається в</p><p class="t" style="font-size:40px;line-height:1.15;margin-top:6px">INTERTOP, Hram, Be Brave (Канада), UFD London</p></div>
+      <div style="flex:1"><p class="lbl" style="font-size:28px;color:var(--ink3)">Про бренд писали</p><p class="t" style="font-size:40px;line-height:1.15;margin-top:6px">LIGA.net, INSIDER UA</p></div>
+    </div>
+    <p class="t" style="font-size:38px;line-height:1.15;color:var(--ink2);margin-top:auto">Натуральний шовк, авторські принти художниці Світлани Сніжко, зроблено в Україні.</p>
+    <p class="lbl" style="margin-top:16px;font-weight:600;border-top:1px solid var(--ink);padding-top:16px">Колекція SOLO · obiimy.world</p>
+  </div>
+</section>
+<!-- Gift note -->
+<section class="ad st" id="sale-11-note">
+  <div class="fill" style="background:url(src/avantiura-88-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="ph " style="left:0;right:0;top:236px;height:664px"><img src="src/avantiura-tw-1.webp" alt="" style="object-position:50% 30%;"></div>
+  <div class="page shadow" style="left:560px;top:700px;width:440px;height:300px;background:var(--card);transform:rotate(-5deg)">
+    <p class="t" style="position:absolute;left:34px;right:30px;top:30px;font-size:40px;line-height:1.14;font-style:italic">«Обирай себе. Завжди.»</p>
+    <p class="lbl" style="position:absolute;left:34px;bottom:30px;font-size:26px;color:var(--ink3)">— ваш текст</p>
+  </div>
+  <div class="col" style="left:80px;right:80px;top:1050px;bottom:380px">
+    <p class="h" style="font-size:78px;line-height:1.02;font-weight:700">Підпис до подарунка — <i style="font-weight:400;color:var(--wine)">вашими словами</i></p>
+    <p class="t" style="font-size:40px;line-height:1.15;color:var(--ink2);margin-top:14px">Напишіть текст у коментарі до замовлення — ми підпишемо подарунок.</p>
+    <p class="lbl" style="margin-top:auto;font-weight:600">Твіллі «Авантюра» · 84 × 5 · 1 600 грн</p>
+    <div class="row foot" style="margin-top:12px;border-top:1px solid var(--ink);padding-top:16px"><p class="lbl" style="font-size:28px;color:var(--ink)">Обрати свій принт · obiimy.world</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+  </div>
+</section>
+<!-- Twilly as entry -->
+<section class="ad st" id="sale-12-first">
+  <div class="fill" style="background:url(src/krok-44-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="ph " style="left:0;right:0;top:236px;height:764px"><img src="src/krok-tw-2.webp" alt="" style="object-position:50% 40%;"></div>
+  <div class="col" style="left:80px;right:80px;top:1040px;bottom:380px">
+    <p class="lbl" style="color:var(--ink3)">SOLO · твіллі</p>
+    <div class="row" style="justify-content:space-between;align-items:flex-end;gap:30px;margin-top:10px">
+      <p class="h" style="font-size:76px;line-height:1.02;font-weight:700">Почніть <i style="font-weight:400;color:var(--wine)">зі стрічки</i></p>
+      <p class="h" style="font-size:96px;line-height:1;font-weight:700;color:var(--ink);flex:none">1 600 <span style="font-size:46px">грн</span></p>
+    </div>
+    <p class="t" style="font-size:40px;line-height:1.15;color:var(--ink2);margin-top:14px">Твіллі 84 × 5 у кожному з семи принтів: у волосся, на шию, на сумку чи зап’ястя.</p>
+    <div class="row foot" style="margin-top:auto;border-top:1px solid var(--ink);padding-top:16px"><p class="lbl" style="font-size:28px;color:var(--ink)">Обрати свій принт · obiimy.world</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+  </div>
+</section>
+<!-- Twilly on the bag -->
+<section class="ad st" id="sale-13-bag">
+  <div class="fill" style="background:url(src/tysha-88-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="ph " style="left:0;right:0;top:236px;height:804px"><img src="src/tysha-tw-2.webp" alt="" style="object-position:50% 45%;"></div>
+  <div class="col" style="left:80px;right:80px;top:1080px;bottom:380px">
+    <p class="lbl" style="color:var(--ink3)">SOLO · твіллі</p>
+    <div class="row" style="justify-content:space-between;align-items:flex-end;gap:30px;margin-top:10px">
+      <p class="h" style="font-size:72px;line-height:1.02;font-weight:700">Одна стрічка — <i style="font-weight:400;color:var(--wine)">нова сумка</i></p>
+      <p class="h" style="font-size:96px;line-height:1;font-weight:700;color:var(--ink);flex:none">1 600 <span style="font-size:46px">грн</span></p>
+    </div>
+    <p class="t" style="font-size:40px;line-height:1.15;color:var(--ink2);margin-top:14px">Твіллі «Тиша всередині» 84 × 5 на ручці сумки — найпростіший спосіб змінити образ.</p>
+    <div class="row foot" style="margin-top:auto;border-top:1px solid var(--ink);padding-top:16px"><p class="lbl" style="font-size:28px;color:var(--ink)">Обрати свій принт · obiimy.world</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+  </div>
+</section>
+</body></html>

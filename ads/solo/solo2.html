@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO creatives</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@1,6..96,900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Jost:wght@400;500;600&display=swap">
+<style>
+:root { --paper: #F1E8D8; --paper2: #E6D9C2; --card: #FBF6EC; --ink: #1B1613; --ink2: #4B423B; --ink3: #7A6E63; --wine: #7B1F24; --yellow: #F2B705; --cream: #F3EADB; }
+* { box-sizing: border-box; }
+body { margin: 0; background: #555; font-family: 'Cormorant Garamond', serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+.ad { position: relative; overflow: hidden; background: var(--paper); margin: 24px auto; }
+.st { width: 1080px; height: 1920px; } .fd { width: 1080px; height: 1350px; } .sq { width: 1080px; height: 1080px; }
+.ad > *, .page > * { position: absolute; margin: 0; }
+.ad p, .ad h1, .ad h2 { margin: 0; }
+/* one print-like grain over the whole layout, photos included */
+.ad::after { content: ""; position: absolute; inset: 0; z-index: 90; pointer-events: none; opacity: .2; mix-blend-mode: multiply; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .9 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
+.ad.dark::after { mix-blend-mode: soft-light; opacity: .5; }
+.page { position: absolute; overflow: hidden; background: var(--paper); }
+.fill { inset: 0; }
+.col { display: flex; flex-direction: column; }
+.row { display: flex; }
+.safe { left: 80px; right: 80px; top: 280px; bottom: 380px; }
+.box { left: 64px; right: 64px; top: 64px; bottom: 64px; }
+.ph { overflow: hidden; }
+.col > .ph, .row > .ph { position: relative; min-height: 0; }
+.ph img { width: 100%; height: 100%; object-fit: cover; display: block; filter: contrast(1.05) saturate(.84) sepia(.12); }
+.ph.bw img { filter: grayscale(1) contrast(1.16) brightness(1.04); }
+.ph.raw img { filter: none; }
+.cut { display: block; filter: drop-shadow(0 26px 30px rgba(40,25,10,.32)); }
+.h { font-family: 'Playfair Display', serif; text-wrap: balance; }
+.t { font-family: 'Cormorant Garamond', serif; font-weight: 500; text-wrap: pretty; }
+.lbl { font-family: 'Jost', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: .14em; font-size: 30px; line-height: 1.3; }
+.solo { font-family: 'Bodoni Moda', 'Playfair Display', serif; font-weight: 900; font-style: italic; letter-spacing: -.02em; line-height: .78; }
+.lg { display: block; width: auto; flex: none; }
+.foot { justify-content: space-between; align-items: center; gap: 30px; }
+.prow { display: flex; justify-content: space-between; gap: 30px; border-bottom: 2px solid; padding: 12px 0; font-family: 'Jost', sans-serif; font-size: 32px; letter-spacing: .04em; }
+.prow b { font-weight: 600; }
+.pill { font-family: 'Jost', sans-serif; font-weight: 600; font-size: 32px; letter-spacing: .04em; padding: 24px 46px; border-radius: 999px; background: var(--ink); color: var(--cream); white-space: nowrap; display: inline-block; }
+.rule { height: 3px; width: 70px; }
+.frame2::before { content: ""; position: absolute; inset: 18px; border: 2px solid rgba(27,22,19,.55); pointer-events: none; }
+.frame2::after { content: ""; position: absolute; inset: 27px; border: 1px solid rgba(27,22,19,.35); pointer-events: none; }
+.shadow { box-shadow: 0 40px 70px -30px rgba(0,0,0,.5); }
+</style></head><body>
+<!-- Route: seven stops -->
+<section class="ad st" id="route-01">
+  <div class="fill" style="background:url(src/puls-44-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="safe col">
+    <div class="row foot"><p class="lbl" style="color:var(--ink3)">SOLO · колекція Obiimy</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+    <p class="h" style="font-size:110px;line-height:1;font-weight:700;margin-top:22px">Шлях <i style="font-weight:400;color:var(--wine)">до себе</i></p>
+    <p class="t" style="font-size:42px;line-height:1.15;color:var(--ink2);margin-top:10px">Сім авторських принтів — сім етапів внутрішньої подорожі.</p>
+    <div style="position:relative;margin-top:18px">
+      <div style="position:absolute;left:133px;top:60px;bottom:60px;border-left:3px dashed rgba(27,22,19,.35)"></div>
+      <div style="position:relative"><div class="row" style="align-items:center;gap:30px;height:128px">
+      <p class="lbl" style="width:56px;color:var(--ink3);font-size:30px">01</p>
+      <span style="width:96px;height:96px;flex:none;background:url(src/iskra-65-1-hi.webp) center/230%"></span>
+      <p style="flex:1"><span class="h" style="font-size:54px;line-height:1;font-style:italic;font-weight:700;color:#2F63A8">«Іскра»</span><br><span class="t" style="font-size:36px;line-height:1.1;color:var(--ink2)">сміливість бути помітною</span></p>
+    </div><div class="row" style="align-items:center;gap:30px;height:128px">
+      <p class="lbl" style="width:56px;color:var(--ink3);font-size:30px">02</p>
+      <span style="width:96px;height:96px;flex:none;background:url(src/flirt-65-1-hi.webp) center/230%"></span>
+      <p style="flex:1"><span class="h" style="font-size:54px;line-height:1;font-style:italic;font-weight:700;color:#6F8A58">«Флірт»</span><br><span class="t" style="font-size:36px;line-height:1.1;color:var(--ink2)">флірт — це насамперед стан</span></p>
+    </div><div class="row" style="align-items:center;gap:30px;height:128px">
+      <p class="lbl" style="width:56px;color:var(--ink3);font-size:30px">03</p>
+      <span style="width:96px;height:96px;flex:none;background:url(src/puls-44-1-hi.webp) center/230%"></span>
+      <p style="flex:1"><span class="h" style="font-size:54px;line-height:1;font-style:italic;font-weight:700;color:#4E8B3A">«Пульс»</span><br><span class="t" style="font-size:36px;line-height:1.1;color:var(--ink2)">внутрішній ритм</span></p>
+    </div><div class="row" style="align-items:center;gap:30px;height:128px">
+      <p class="lbl" style="width:56px;color:var(--ink3);font-size:30px">04</p>
+      <span style="width:96px;height:96px;flex:none;background:url(src/zolote-44-1-hi.webp) center/230%"></span>
+      <p style="flex:1"><span class="h" style="font-size:54px;line-height:1;font-style:italic;font-weight:700;color:#B8741F">«Золоте світло»</span><br><span class="t" style="font-size:36px;line-height:1.1;color:var(--ink2)">момент ясності</span></p>
+    </div><div class="row" style="align-items:center;gap:30px;height:128px">
+      <p class="lbl" style="width:56px;color:var(--ink3);font-size:30px">05</p>
+      <span style="width:96px;height:96px;flex:none;background:url(src/avantiura-88-1-hi.webp) center/230%"></span>
+      <p style="flex:1"><span class="h" style="font-size:54px;line-height:1;font-style:italic;font-weight:700;color:#8A2226">«Авантюра»</span><br><span class="t" style="font-size:36px;line-height:1.1;color:var(--ink2)">за межі звичного</span></p>
+    </div><div class="row" style="align-items:center;gap:30px;height:128px">
+      <p class="lbl" style="width:56px;color:var(--ink3);font-size:30px">06</p>
+      <span style="width:96px;height:96px;flex:none;background:url(src/tysha-88-1-hi.webp) center/230%"></span>
+      <p style="flex:1"><span class="h" style="font-size:54px;line-height:1;font-style:italic;font-weight:700;color:#26231F">«Тиша всередині»</span><br><span class="t" style="font-size:36px;line-height:1.1;color:var(--ink2)">чути себе</span></p>
+    </div><div class="row" style="align-items:center;gap:30px;height:128px">
+      <p class="lbl" style="width:56px;color:var(--ink3);font-size:30px">07</p>
+      <span style="width:96px;height:96px;flex:none;background:url(src/krok-44-1-hi.webp) center/230%"></span>
+      <p style="flex:1"><span class="h" style="font-size:54px;line-height:1;font-style:italic;font-weight:700;color:#8E2A2C">«Сміливий крок»</span><br><span class="t" style="font-size:36px;line-height:1.1;color:var(--ink2)">довіра до себе</span></p>
+    </div></div>
+    </div>
+    <p class="lbl" style="margin-top:auto;font-weight:600;border-top:1px solid var(--ink);padding-top:16px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Brand word: resilience (organic, no price) -->
+<section class="ad st" id="editor-01">
+  <div class="fill" style="background:url(src/zolote-44-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="safe col">
+    <div class="row foot" style="border-bottom:3px solid var(--ink);padding-bottom:12px"><p class="lbl">SOLO · слово бренду</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+    <p class="h" style="font-size:58px;line-height:1.14;font-style:italic;margin-top:40px">«Кожна українська жінка під час війни щодня демонструє особливу стійкість. Ми волонтеримо, працюємо, виховуємо дітей, допомагаємо армії, а також знаходимо сили залишатися красивими, мріяти, створювати, кохати.»</p>
+    <p class="h" style="font-size:66px;line-height:1.06;font-weight:700;color:var(--wine);margin-top:36px">Для жінки краса — це спосіб зберегти себе.</p>
+    <div style="flex:1;min-height:0;display:grid;place-items:center end"><img class="cut" src="src/zolote-tw-1-cut.webp" alt="" style="height:100%;max-height:330px;transform:rotate(-12deg);margin-right:40px"></div>
+    <p class="lbl" style="font-size:28px;color:var(--ink2);border-top:1px solid var(--ink);padding-top:16px">Колекція SOLO. Шлях до себе · obiimy.world</p>
+  </div>
+</section>
+<!-- Back cover: Іскра -->
+<section class="ad st dark" id="back-01-iskra">
+  <div class="fill" style="background:#1E4A86"></div>
+  <div class="fill" style="background:radial-gradient(70% 45% at 50% 46%,rgba(255,255,255,.16),rgba(0,0,0,.25))"></div>
+  <div class="safe col" style="align-items:center;color:var(--cream);text-align:center">
+    <img class="lg" src="../../brand/logo-white.png" alt="Obiimy" style="height:44px;">
+    <div style="flex:1;min-height:0;display:grid;place-items:center"><img class="cut" src="src/iskra-65-1-cut.webp" alt="" style="height:760px;transform:rotate(-6deg);filter:drop-shadow(0 50px 60px rgba(0,0,0,.55))"></div>
+    <p class="h" style="font-size:110px;line-height:1;font-style:italic;font-weight:700">«Іскра»</p>
+    <p class="lbl" style="margin-top:16px;color:var(--yellow);font-weight:600">Хустка 65 × 65 · 4 800 грн</p>
+    <p class="lbl" style="margin-top:8px;font-size:28px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Back cover: Пульс -->
+<section class="ad st dark" id="back-03-puls">
+  <div class="fill" style="background:#35692A"></div>
+  <div class="fill" style="background:radial-gradient(70% 45% at 50% 46%,rgba(255,255,255,.16),rgba(0,0,0,.25))"></div>
+  <div class="safe col" style="align-items:center;color:var(--cream);text-align:center">
+    <img class="lg" src="../../brand/logo-white.png" alt="Obiimy" style="height:44px;">
+    <div style="flex:1;min-height:0;display:grid;place-items:center"><img class="cut" src="src/puls-44-1-cut.webp" alt="" style="height:760px;transform:rotate(-6deg);filter:drop-shadow(0 50px 60px rgba(0,0,0,.55))"></div>
+    <p class="h" style="font-size:110px;line-height:1;font-style:italic;font-weight:700">«Пульс»</p>
+    <p class="lbl" style="margin-top:16px;color:var(--yellow);font-weight:600">Хустка 44 × 44 · 2 400 грн</p>
+    <p class="lbl" style="margin-top:8px;font-size:28px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Back cover: Золоте світло -->
+<section class="ad st dark" id="back-04-zolote">
+  <div class="fill" style="background:#8F5A17"></div>
+  <div class="fill" style="background:radial-gradient(70% 45% at 50% 46%,rgba(255,255,255,.16),rgba(0,0,0,.25))"></div>
+  <div class="safe col" style="align-items:center;color:var(--cream);text-align:center">
+    <img class="lg" src="../../brand/logo-white.png" alt="Obiimy" style="height:44px;">
+    <div style="flex:1;min-height:0;display:grid;place-items:center"><img class="cut" src="src/zolote-44-1-cut.webp" alt="" style="height:760px;transform:rotate(6deg);filter:drop-shadow(0 50px 60px rgba(0,0,0,.55))"></div>
+    <p class="h" style="font-size:92px;line-height:1;font-style:italic;font-weight:700">«Золоте світло»</p>
+    <p class="lbl" style="margin-top:16px;color:var(--yellow);font-weight:600">Хустка 44 × 44 · 2 400 грн</p>
+    <p class="lbl" style="margin-top:8px;font-size:28px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Back cover: Тиша всередині -->
+<section class="ad st dark" id="back-06-tysha">
+  <div class="fill" style="background:#26231F"></div>
+  <div class="fill" style="background:radial-gradient(70% 45% at 50% 46%,rgba(255,255,255,.16),rgba(0,0,0,.25))"></div>
+  <div class="safe col" style="align-items:center;color:var(--cream);text-align:center">
+    <img class="lg" src="../../brand/logo-white.png" alt="Obiimy" style="height:44px;">
+    <div style="flex:1;min-height:0;display:grid;place-items:center"><img class="cut" src="src/tysha-88-1-cut.webp" alt="" style="height:760px;transform:rotate(6deg);filter:drop-shadow(0 50px 60px rgba(0,0,0,.55))"></div>
+    <p class="h" style="font-size:92px;line-height:1;font-style:italic;font-weight:700">«Тиша всередині»</p>
+    <p class="lbl" style="margin-top:16px;color:var(--yellow);font-weight:600">Хустка 88 × 88 · 6 600 грн</p>
+    <p class="lbl" style="margin-top:8px;font-size:28px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Word in silk: Пульс -->
+<section class="ad st dark" id="word-03-puls">
+  <div class="fill" style="background:#141110"></div>
+  <div class="safe col" style="color:var(--cream)">
+    <div class="row foot"><p class="lbl" style="color:rgba(243,234,219,.75)">SOLO · стан 03 / 07</p><img class="lg" src="../../brand/logo-white.png" alt="Obiimy" style="height:40px;"></div>
+    <div style="margin-top:50px"><div style="position:relative"><p class="h" style="font-size:243px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;color:var(--cream);-webkit-text-stroke:5px var(--cream)">ПУЛЬС</p>
+      <p class="h" style="position:absolute;left:0;top:0;font-size:243px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;background:url(src/puls-44-1-hi.webp) center/1100px;-webkit-background-clip:text;background-clip:text;color:transparent">ПУЛЬС</p></div></div>
+    <p class="t" style="font-size:44px;line-height:1.16;margin-top:20px">Природна сила та внутрішня опора. Внутрішній ритм, що залишається незмінним, навіть коли навколо змінюється все.</p>
+    <div style="flex:1;min-height:0;display:grid;place-items:center"><img class="cut" src="src/puls-44-1-cut.webp" alt="" style="height:100%;max-height:380px;transform:rotate(-6deg);filter:drop-shadow(0 30px 40px rgba(0,0,0,.6))"></div>
+    <p class="lbl" style="color:var(--yellow);font-weight:600;letter-spacing:.06em;border-top:1px solid rgba(243,234,219,.5);padding-top:16px">Хустка «Пульс» · 44 × 44 · 2 400 грн</p>
+    <p class="lbl" style="margin-top:8px;font-size:28px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Word in silk: Золоте світло -->
+<section class="ad st dark" id="word-04-zolote">
+  <div class="fill" style="background:#141110"></div>
+  <div class="safe col" style="color:var(--cream)">
+    <div class="row foot"><p class="lbl" style="color:rgba(243,234,219,.75)">SOLO · стан 04 / 07</p><img class="lg" src="../../brand/logo-white.png" alt="Obiimy" style="height:40px;"></div>
+    <div style="margin-top:50px"><div style="position:relative"><p class="h" style="font-size:202px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;color:var(--cream);-webkit-text-stroke:5px var(--cream)">ЗОЛОТЕ</p>
+      <p class="h" style="position:absolute;left:0;top:0;font-size:202px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;background:url(src/zolote-44-1-hi.webp) center/1300px;-webkit-background-clip:text;background-clip:text;color:transparent">ЗОЛОТЕ</p></div><div style="position:relative"><p class="h" style="font-size:202px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;color:var(--cream);-webkit-text-stroke:5px var(--cream)">СВІТЛО</p>
+      <p class="h" style="position:absolute;left:0;top:0;font-size:202px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;background:url(src/zolote-44-1-hi.webp) center/1300px;-webkit-background-clip:text;background-clip:text;color:transparent">СВІТЛО</p></div></div>
+    <p class="t" style="font-size:44px;line-height:1.16;margin-top:20px">Моменти ясності, коли все стає на свої місця.</p>
+    <div style="flex:1;min-height:0;display:grid;place-items:center"><img class="cut" src="src/zolote-44-1-cut.webp" alt="" style="height:100%;max-height:380px;transform:rotate(-6deg);filter:drop-shadow(0 30px 40px rgba(0,0,0,.6))"></div>
+    <p class="lbl" style="color:var(--yellow);font-weight:600;letter-spacing:.06em;border-top:1px solid rgba(243,234,219,.5);padding-top:16px">Хустка «Золоте світло» · 44 × 44 · 2 400 грн</p>
+    <p class="lbl" style="margin-top:8px;font-size:28px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Word in silk: Тиша всередині -->
+<section class="ad st dark" id="word-06-tysha">
+  <div class="fill" style="background:#141110"></div>
+  <div class="safe col" style="color:var(--cream)">
+    <div class="row foot"><p class="lbl" style="color:rgba(243,234,219,.75)">SOLO · стан 06 / 07</p><img class="lg" src="../../brand/logo-white.png" alt="Obiimy" style="height:40px;"></div>
+    <div style="margin-top:50px"><div style="position:relative"><p class="h" style="font-size:135px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;color:var(--cream);-webkit-text-stroke:5px var(--cream)">ТИША</p>
+      <p class="h" style="position:absolute;left:0;top:0;font-size:135px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;background:url(src/tysha-88-1-hi.webp) center/1200px;-webkit-background-clip:text;background-clip:text;color:transparent">ТИША</p></div><div style="position:relative"><p class="h" style="font-size:135px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;color:var(--cream);-webkit-text-stroke:5px var(--cream)">ВСЕРЕДИНІ</p>
+      <p class="h" style="position:absolute;left:0;top:0;font-size:135px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;background:url(src/tysha-88-1-hi.webp) center/1200px;-webkit-background-clip:text;background-clip:text;color:transparent">ВСЕРЕДИНІ</p></div></div>
+    <p class="t" style="font-size:44px;line-height:1.16;margin-top:20px">Баланс і здатність чути себе серед зовнішнього шуму. Стан, у якому більше не потрібно доводити, поспішати чи відповідати чужим очікуванням.</p>
+    <div style="flex:1;min-height:0;display:grid;place-items:center"><img class="cut" src="src/tysha-88-1-cut.webp" alt="" style="height:100%;max-height:380px;transform:rotate(-6deg);filter:drop-shadow(0 30px 40px rgba(0,0,0,.6))"></div>
+    <p class="lbl" style="color:var(--yellow);font-weight:600;letter-spacing:.06em;border-top:1px solid rgba(243,234,219,.5);padding-top:16px">Хустка «Тиша всередині» · 88 × 88 · 6 600 грн</p>
+    <p class="lbl" style="margin-top:8px;font-size:28px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Word in silk: Сміливий крок -->
+<section class="ad st dark" id="word-07-krok">
+  <div class="fill" style="background:#141110"></div>
+  <div class="safe col" style="color:var(--cream)">
+    <div class="row foot"><p class="lbl" style="color:rgba(243,234,219,.75)">SOLO · стан 07 / 07</p><img class="lg" src="../../brand/logo-white.png" alt="Obiimy" style="height:40px;"></div>
+    <div style="margin-top:50px"><div style="position:relative"><p class="h" style="font-size:152px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;color:var(--cream);-webkit-text-stroke:5px var(--cream)">СМІЛИВИЙ</p>
+      <p class="h" style="position:absolute;left:0;top:0;font-size:152px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;background:url(src/krok-44-1-hi.webp) center/2000px;-webkit-background-clip:text;background-clip:text;color:transparent">СМІЛИВИЙ</p></div><div style="position:relative"><p class="h" style="font-size:152px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;color:var(--cream);-webkit-text-stroke:5px var(--cream)">КРОК</p>
+      <p class="h" style="position:absolute;left:0;top:0;font-size:152px;line-height:1;padding-bottom:.12em;font-weight:900;white-space:nowrap;background:url(src/krok-44-1-hi.webp) center/2000px;-webkit-background-clip:text;background-clip:text;color:transparent">КРОК</p></div></div>
+    <p class="t" style="font-size:44px;line-height:1.16;margin-top:20px">Рішення рухатися вперед, навіть коли немає повної визначеності. Не тому, що страх зникає, а тому, що з’являється щось важливіше — довіра до себе.</p>
+    <div style="flex:1;min-height:0;display:grid;place-items:center"><img class="cut" src="src/krok-44-1-cut.webp" alt="" style="height:100%;max-height:380px;transform:rotate(-6deg);filter:drop-shadow(0 30px 40px rgba(0,0,0,.6))"></div>
+    <p class="lbl" style="color:var(--yellow);font-weight:600;letter-spacing:.06em;border-top:1px solid rgba(243,234,219,.5);padding-top:16px">Хустка «Сміливий крок» · 44 × 44 · 2 400 грн</p>
+    <p class="lbl" style="margin-top:8px;font-size:28px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Colour spot: Пульс -->
+<section class="ad st dark" id="spot-01-puls">
+  <div class="fill" style="background:#111"></div>
+  <div style="position:absolute;left:0;right:0;top:236px;height:1368px;overflow:hidden"><div style="position:absolute;inset:0;background:url(src/puls-44-4.webp) 50% 20%/cover no-repeat;filter:grayscale(1) contrast(1.12) brightness(1.02)"></div><div style="position:absolute;inset:0;background:url(src/puls-44-4.webp) 50% 20%/cover no-repeat;-webkit-mask:url(src/puls-44-4-mask.png) 50% 20%/cover no-repeat;mask:url(src/puls-44-4-mask.png) 50% 20%/cover no-repeat;mask-mode:alpha;filter:saturate(.95)"></div></div>
+  <div style="left:0;right:0;top:1000px;height:604px;background:linear-gradient(180deg,transparent,rgba(10,8,7,.86) 55%)"></div>
+  <div class="row foot" style="left:80px;right:80px;top:280px"><p class="lbl" style="color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6)">SOLO · Шлях до себе</p><img class="lg" src="../../brand/logo-white.png" alt="Obiimy" style="height:40px;"></div>
+  <div class="col" style="left:80px;right:80px;top:1150px;height:390px;color:var(--cream)">
+    <p class="h" style="font-size:70px;line-height:1.02;font-style:italic;font-weight:700;margin-top:auto">Хустка ставала яскравим акцентом, сміливою деталлю образу.</p>
+    <p class="lbl" style="margin-top:22px;color:var(--yellow);font-weight:600">Хустка «Пульс» · 44 × 44 · 2 400 грн</p>
+    <p class="lbl" style="margin-top:6px;font-size:28px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Colour spot: Авантюра -->
+<section class="ad st dark" id="spot-02-avantiura">
+  <div class="fill" style="background:#111"></div>
+  <div style="position:absolute;left:0;right:0;top:236px;height:1368px;overflow:hidden"><div style="position:absolute;inset:0;background:url(src/avantiura-88-5.webp) 62% 30%/cover no-repeat;filter:grayscale(1) contrast(1.12) brightness(1.02)"></div><div style="position:absolute;inset:0;background:url(src/avantiura-88-5.webp) 62% 30%/cover no-repeat;-webkit-mask:url(src/avantiura-88-5-mask.png) 62% 30%/cover no-repeat;mask:url(src/avantiura-88-5-mask.png) 62% 30%/cover no-repeat;mask-mode:alpha;filter:saturate(.95)"></div></div>
+  <div style="left:0;right:0;top:1000px;height:604px;background:linear-gradient(180deg,transparent,rgba(10,8,7,.86) 55%)"></div>
+  <div class="row foot" style="left:80px;right:80px;top:280px"><p class="lbl" style="color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6)">SOLO · Шлях до себе</p><img class="lg" src="../../brand/logo-white.png" alt="Obiimy" style="height:40px;"></div>
+  <div class="col" style="left:80px;right:80px;top:1150px;height:390px;color:var(--cream)">
+    <p class="h" style="font-size:96px;line-height:1.02;font-style:italic;font-weight:700;margin-top:auto">Мода завжди була більше, ніж одяг.</p>
+    <p class="lbl" style="margin-top:22px;color:var(--yellow);font-weight:600">Хустка «Авантюра» · 88 × 88 · 6 600 грн</p>
+    <p class="lbl" style="margin-top:6px;font-size:28px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Colour spot: Іскра -->
+<section class="ad st dark" id="spot-03-iskra">
+  <div class="fill" style="background:#111"></div>
+  <div style="position:absolute;left:0;right:0;top:236px;height:1368px;overflow:hidden"><div style="position:absolute;inset:0;background:url(src/iskra-65-2.webp) 40% 30%/cover no-repeat;filter:grayscale(1) contrast(1.12) brightness(1.02)"></div><div style="position:absolute;inset:0;background:url(src/iskra-65-2.webp) 40% 30%/cover no-repeat;-webkit-mask:url(src/iskra-65-2-mask.png) 40% 30%/cover no-repeat;mask:url(src/iskra-65-2-mask.png) 40% 30%/cover no-repeat;mask-mode:alpha;filter:saturate(.95)"></div></div>
+  <div style="left:0;right:0;top:1000px;height:604px;background:linear-gradient(180deg,transparent,rgba(10,8,7,.86) 55%)"></div>
+  <div class="row foot" style="left:80px;right:80px;top:280px"><p class="lbl" style="color:#fff;text-shadow:0 2px 10px rgba(0,0,0,.6)">SOLO · Шлях до себе</p><img class="lg" src="../../brand/logo-white.png" alt="Obiimy" style="height:40px;"></div>
+  <div class="col" style="left:80px;right:80px;top:1150px;height:390px;color:var(--cream)">
+    <p class="h" style="font-size:96px;line-height:1.02;font-style:italic;font-weight:700;margin-top:auto">Сміливість бути помітною.</p>
+    <p class="lbl" style="margin-top:22px;color:var(--yellow);font-weight:600">Хустка «Іскра» · 65 × 65 · 4 800 грн</p>
+    <p class="lbl" style="margin-top:6px;font-size:28px">Обрати свій принт · obiimy.world</p>
+  </div>
+</section>
+<!-- Sequence: Я є. -->
+<section class="ad st" id="ya-01">
+  <div class="fill" style="background:url(src/zolote-44-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="ph " style="left:0;right:0;top:236px;height:844px"><img src="src/zolote-44-2.webp" alt="" style="object-position:50% 20%;"></div>
+  <div class="col" style="left:80px;right:80px;top:1110px;bottom:380px">
+    <div class="row" style="justify-content:space-between"><p class="lbl" style="color:var(--ink3)">SOLO · Шлях до себе</p><p class="lbl" style="color:var(--ink3)">1 / 3</p></div>
+    <p class="h" style="font-size:190px;line-height:.98;font-weight:900;color:var(--ink);margin-top:14px;">Я є.</p>
+    <p class="lbl" style="margin-top:auto;font-weight:600;color:#B8741F;letter-spacing:.06em">Хустка «Золоте світло» · 44 × 44 · 2 400 грн</p>
+    <div class="row foot" style="margin-top:10px;border-top:1px solid var(--ink);padding-top:14px"><p class="lbl" style="font-size:28px;color:var(--ink)">Обрати свій принт · obiimy.world</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+  </div>
+</section>
+<!-- Sequence: Я продовжую жити. -->
+<section class="ad st" id="ya-02">
+  <div class="fill" style="background:url(src/puls-44-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="ph " style="left:0;right:0;top:236px;height:844px"><img src="src/puls-44-2.webp" alt="" style="object-position:50% 35%;"></div>
+  <div class="col" style="left:80px;right:80px;top:1110px;bottom:380px">
+    <div class="row" style="justify-content:space-between"><p class="lbl" style="color:var(--ink3)">SOLO · Шлях до себе</p><p class="lbl" style="color:var(--ink3)">2 / 3</p></div>
+    <p class="h" style="font-size:120px;line-height:.98;font-weight:900;color:var(--ink);margin-top:14px;font-style:italic;font-weight:700">Я продовжую жити.</p>
+    <p class="lbl" style="margin-top:auto;font-weight:600;color:#4E8B3A;letter-spacing:.06em">Хустка «Пульс» · 44 × 44 · 2 400 грн</p>
+    <div class="row foot" style="margin-top:10px;border-top:1px solid var(--ink);padding-top:14px"><p class="lbl" style="font-size:28px;color:var(--ink)">Обрати свій принт · obiimy.world</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+  </div>
+</section>
+<!-- Sequence: Я обираю себе. -->
+<section class="ad st" id="ya-03">
+  <div class="fill" style="background:url(src/tysha-88-1-hi.webp) center/auto 190%"></div><div class="fill" style="background:rgba(0,0,0,.12)"></div><div class="fill" style="top:236px;bottom:316px;background:var(--paper);box-shadow:0 0 70px rgba(0,0,0,.5)"></div>
+  <div class="ph " style="left:0;right:0;top:236px;height:844px"><img src="src/tysha-88-3.webp" alt="" style="object-position:50% 45%;"></div>
+  <div class="col" style="left:80px;right:80px;top:1110px;bottom:380px">
+    <div class="row" style="justify-content:space-between"><p class="lbl" style="color:var(--ink3)">SOLO · Шлях до себе</p><p class="lbl" style="color:var(--ink3)">3 / 3</p></div>
+    <p class="h" style="font-size:140px;line-height:.98;font-weight:900;color:var(--wine);margin-top:14px;">Я обираю себе.</p>
+    <p class="lbl" style="margin-top:auto;font-weight:600;color:#26231F;letter-spacing:.06em">Хустка «Тиша всередині» · 88 × 88 · 6 600 грн</p>
+    <div class="row foot" style="margin-top:10px;border-top:1px solid var(--ink);padding-top:14px"><p class="lbl" style="font-size:28px;color:var(--ink)">Обрати свій принт · obiimy.world</p><img class="lg" src="../../brand/logo-ink.png" alt="Obiimy" style="height:40px;"></div>
+  </div>
+</section>
+</body></html>

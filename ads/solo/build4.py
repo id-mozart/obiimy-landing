@@ -1,0 +1,180 @@
+"""SOLO in the classic Obiimy ad style (series 1–2 look: full-bleed photo or ivory product frame,
+Prata headline with a muted accent, Onest body, pill CTA), with copy written from the press release.
+Rules kept from the audits: all text and logo inside the story safe zone (y 280…1540), price = product in frame,
+no third-party brands, verbatim quotes, no price next to war-related lines. Output: solo4.html → out4/*.jpg"""
+import pathlib, sys
+HERE = pathlib.Path(__file__).parent
+sys.path.insert(0, str(HERE))
+from kit import P, PP, S, CUT, HI, spot_photo, nb, LOGO_W, LOGO_K, GRAIN
+
+def S2(name): return f"src/{name}-2k.webp"
+
+CSS = """
+:root { --ivory: #F4F2ED; --stone: #E8E2D8; --ink: #141216; --ink-2: #4A4750; --ink-3: #8A8592; --gold: #F2B705; --plum: #1B1430; --line: rgba(20,18,22,.16); }
+* { box-sizing: border-box; }
+body { margin: 0; background: #666; font-family: 'Onest', 'Helvetica Neue', Arial, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
+.ad { width: 1080px; height: 1920px; position: relative; overflow: hidden; background: var(--ivory); margin: 20px auto; }
+.ad > * { position: absolute; margin: 0; }
+.ad p, .ad h1 { margin: 0; }
+.ad::after { content: ""; position: absolute; inset: 0; z-index: 90; pointer-events: none; opacity: .12; mix-blend-mode: multiply; background-image: GRAIN; }
+.dark::after { mix-blend-mode: soft-light; opacity: .35; }
+.logo { left: 50%; transform: translateX(-50%); height: 44px; }
+.logo img { display: block; height: 44px; width: auto; }
+.eyebrow { font-size: 28px; letter-spacing: .3em; text-transform: uppercase; font-weight: 500; color: var(--ink-3); left: 80px; right: 80px; text-align: center; }
+.h { font-family: 'Prata', serif; font-size: 100px; line-height: 1.04; text-align: center; left: 70px; right: 70px; letter-spacing: -0.01em; text-wrap: balance; }
+.h em { font-style: normal; color: var(--ink-3); }
+.body { font-size: 36px; line-height: 1.45; font-weight: 300; color: var(--ink-2); left: 120px; right: 120px; text-align: center; text-wrap: pretty; }
+.price { font-family: 'Prata', serif; font-size: 46px; text-align: center; left: 80px; right: 80px; }
+.price small { max-width: 840px; margin-left: auto; margin-right: auto; font-family: 'Onest'; font-size: 28px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); display: block; margin-top: 8px; font-weight: 500; }
+.cta { left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--ivory); font-size: 32px; font-weight: 600; letter-spacing: .03em; padding: 28px 60px; border-radius: 999px; white-space: nowrap; }
+.full > .photo { position: absolute; left: 0; right: 0; top: 200px; height: 1720px; }
+.photo { overflow: hidden; }
+.photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.dark { background: #141216; color: #F4F2ED; }
+.dark .eyebrow { color: rgba(244,242,237,.75); }
+.dark .body { color: rgba(244,242,237,.88); }
+.dark .h em { color: rgba(244,242,237,.62); }
+.dark .price small { color: rgba(244,242,237,.86); }
+.dark .cta { background: var(--gold); color: var(--ink); }
+.shade { left: 0; right: 0; bottom: 0; height: 1080px; background: linear-gradient(180deg, rgba(20,18,22,0) 0%, rgba(20,18,22,.55) 40%, rgba(20,18,22,.92) 100%); }
+.shade-top { left: 0; right: 0; top: 0; height: 560px; background: linear-gradient(180deg, #141216 0%, #141216 36%, rgba(20,18,22,0) 100%); }
+.frame { left: 90px; right: 90px; overflow: hidden; }
+.frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.cut { display: block; filter: drop-shadow(0 28px 32px rgba(40,25,10,.28)); }
+""".replace("GRAIN", GRAIN)
+
+ads = []
+def ad(id, cls, body, note=""):
+    ads.append(f'\n<!-- {note} -->\n<section class="ad {cls}" id="{id}">{body}\n</section>')
+
+def price(main, small=""):
+    return f'<p class="price" style="top:{{y}}px">{main}{f"<small>{small}</small>" if small else ""}</p>'
+
+# ---------------------------------------------------------------- FULL-BLEED (dark)
+from PIL import Image as _Im
+def edge_tone(photo, spot):
+    """Average colour of the photo's top edge — fills the story header zone so there is no seam or black bar."""
+    im = _Im.open(HERE / f"src/{photo}.webp").convert("L" if spot else "RGB")
+    row = im.crop((0, 0, im.width, 24)).resize((1, 1)).getpixel((0, 0))
+    r, g, b = (row, row, row) if spot else row
+    k = .8
+    return f"rgb({int(r * k)},{int(g * k)},{int(b * k)})"
+
+def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, note="", hs=88, box=(236, 1260), top_text=False, shade_from=900):
+    """Photo sharp in `box`, the rest of the frame is a blurred continuation of the same photo (no black bars).
+    Text block at the bottom of the safe zone, or at the top for back-view frames (top_text)."""
+    t, hgt = box
+    top_rgb = edge_tone(photo, spot)
+    feather = "-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 160px,#000 calc(100% - 260px),transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 160px,#000 calc(100% - 260px),transparent 100%)"
+    st = f"position:absolute;left:0;right:0;top:{t}px;height:{hgt}px;{feather}"
+    ph = (spot_photo(photo, pos, style=st) if spot
+          else f'<div class="photo" style="{st}"><img src="{S2(photo)}" alt="" style="object-position:{pos}"></div>')
+    blur = f'<div style="left:0;right:0;top:0;height:{t + 200}px;background:{top_rgb}"></div>'
+    pr = f'<p class="price" style="position:static;margin-top:20px">{price_main}<small>{price_small}</small></p>' if price_main else f'<p class="price" style="position:static;margin-top:20px"><small style="margin-top:0">{price_small}</small></p>'
+    block = f"""<h1 class="h" style="position:static;color:#fff;font-size:{hs}px">{h}<br><em style="color:#E9D7A6">{em}</em></h1>
+    <p class="body" style="position:static;margin-top:18px;max-width:900px">{nb(body)}</p>
+    {pr}
+    <div class="cta" style="position:static;transform:none;margin-top:24px">{cta}</div>"""
+    if top_text:
+        shade = '<div style="left:0;right:0;top:0;height:1000px;background:linear-gradient(180deg,#141216 0%,rgba(20,18,22,.9) 40%,rgba(20,18,22,.55) 70%,rgba(20,18,22,0) 100%)"></div>'
+        pos_block = "top:440px"
+    else:
+        shade = ('<div style="left:0;right:0;top:0;height:430px;background:linear-gradient(180deg,rgba(20,18,22,.55) 0%,rgba(20,18,22,.25) 55%,rgba(20,18,22,0) 100%)"></div>'
+                 f'<div style="left:0;right:0;top:{shade_from}px;bottom:0;background:linear-gradient(180deg,rgba(20,18,22,0) 0%,rgba(20,18,22,.78) 24%,rgba(20,18,22,.9) 50%,rgba(20,18,22,.86) 100%)"></div>')
+        pos_block = "bottom:380px"
+    ad(id, "full dark", f"""
+  <div style="left:0;right:0;top:0;bottom:0;background:#141216"></div>
+  {blur}
+  {ph}
+  {shade}
+  <img src="{LOGO_W}" alt="" style="left:80px;top:290px;height:40px;display:block">
+  <div style="left:70px;right:70px;{pos_block};display:flex;flex-direction:column;align-items:center;text-align:center">
+    {block}
+  </div>""", note)
+
+full("c01-launch", "tysha-88-2", "50% 0%", "SOLO.", "Шлях до себе.",
+     "Шовкова свобода: жіноча сила крізь десятиліття. Сім авторських принтів — сім станів жінки.",
+     "від 1 600 грн", "твіллі · хустки 44, 65 і 88 см", "Дивитися колекцію", note="Launch")
+full("c02-iskra", "iskra-65-2", "40% 0%", "Сміливість", "бути помітною.",
+     "Внутрішня енергія та здатність запалювати зміни навколо себе.", "4 800 грн", "«Іскра» · хустка 65 × 65", "Обрати «Іскру»", spot=True, note="Iskra, colour spot", shade_from=700)
+full("c03-flirt", "flirt-65-3", "38% 30%", "Флірт — це", "насамперед стан.",
+     "Віра в перемогу, оптимізм і мистецтво невимушеної жіночності.", "4 800 грн", "«Флірт» · хустка 65 × 65", "Обрати «Флірт»", note="Flirt")
+full("c05-zolote", "zolote-44-3", "50% 25%", "Коли все стає", "на свої місця.",
+     "«Золоте світло» — хустка для моментів ясності.", "2 400 грн", "«Золоте світло» · хустка 44 × 44", "Обрати «Золоте світло»", note="Zolote")
+full("c06-avantiura", "avantiura-88-5", "62% 30%", "За межі", "звичного.",
+     "Готовність виходити за межі звичного та відкриватися новому досвіду.", "6 600 грн", "«Авантюра» · хустка 88 × 88", "Обрати «Авантюру»", spot=True, note="Avantiura, colour spot")
+full("c07-tysha", "tysha-88-3", "50% 45%", "Тиша", "всередині.",
+     "Стан, у якому більше не потрібно доводити, поспішати чи відповідати чужим очікуванням.", "6 600 грн", "«Тиша всередині» · хустка 88 × 88", "Обрати «Тишу всередині»", note="Tysha")
+full("c08-krok", "krok-44-2", "50% 30%", "Сміливий", "крок.",
+     "Не тому, що страх зникає, а тому, що з’являється щось важливіше — довіра до себе.", "2 400 грн", "«Сміливий крок» · хустка 44 × 44", "Обрати «Сміливий крок»", note="Krok")
+full("c09-ya-ie", "zolote-44-2", "50% 20%", "Я є.<br>Я продовжую жити.", "Я обираю себе.",
+     "Улюблена сукня, шовкова хустка, червона помада стають маленькими актами свободи.", "", "SOLO · шлях до себе", "Дивитися колекцію", note="Manifesto, organic", hs=80)
+full("c10-grey", "puls-44-2", "42% 40%", "Мода — це", "про гідність.",
+     "Про право на жіночність навіть тоді, коли світ навколо стає темно-сірим.", "", "SOLO · шовкова свобода", "Дивитися колекцію", spot=True, note="Dignity, organic")
+full("c11-decades", "flirt-tw-4", "50% 40%", "Змінювалися епохи й силуети.", "Хустка залишалася поруч.",
+     "Натхнення — обкладинки <span style=\"white-space:nowrap\">40–50-х</span>.", "1 600 грн", "твіллі «Флірт» · 84 × 5", "Обрати твіллі", note="Decades", hs=64, box=(0, 1920), top_text=True)
+full("c12-hair", "avantiura-tw-3", "50% 40%", "У волоссі.", "Як у п’ятдесятих.",
+     "Шовкова стрічка «Авантюра» — у волосся, на сумку чи на зап’ястя.", "1 600 грн", "твіллі «Авантюра» · 84 × 5", "Обрати твіллі", note="Twilly in hair", box=(560, 1360), top_text=True)
+full("c13-parts", "avantiura-88-2", "40% 0%", "Найбільша хустка.", "Можна частинами.",
+     "ПриватБанк — 4 платежі, monobank — 3 платежі.", "6 600 грн", "«Авантюра» · хустка 88 × 88", "Обрати «Авантюру»", note="Pay in parts", box=(236, 1040))
+
+# ---------------------------------------------------------------- IVORY (product)
+def ivory(id, eyebrow, h, em, visual, body, price_main, price_small, cta, bg="var(--ivory)", note="", hs=92):
+    ad(id, "", f'''
+  <div style="left:0;right:0;top:0;bottom:0;background:{bg}"></div>
+  <div style="left:70px;right:70px;top:290px;bottom:380px;display:flex;flex-direction:column;align-items:center;text-align:center">
+    <img src="{LOGO_K}" alt="" style="height:44px;display:block">
+    <p class="eyebrow" style="position:static;margin-top:40px">{eyebrow}</p>
+    <h1 class="h" style="position:static;margin-top:14px;font-size:{hs}px">{h}<br><em>{em}</em></h1>
+    <div style="flex:1;min-height:0;align-self:stretch;margin-top:30px;position:relative">{visual}</div>
+    <p class="body" style="position:static;margin-top:28px;max-width:880px">{nb(body)}</p>
+    <p class="price" style="position:static;margin-top:18px">{price_main}{f"<small>{price_small}</small>" if price_small else ""}</p>
+    <div class="cta" style="position:static;transform:none;margin-top:26px">{cta}</div>
+  </div>''', note)
+
+V = lambda inner: f'<div style="position:absolute;inset:0;display:grid;place-items:center">{inner}</div>'
+FRAME = lambda name, pos="50% 50%": f'<div class="frame" style="position:absolute;inset:0 20px"><img src="{S2(name)}" alt="" style="object-position:{pos}"></div>'
+
+tw_img = lambda p: f'<img class="cut" src="{CUT(p["tw"])}" alt="" style="height:250px">'
+tw = f'<div style="display:grid;gap:18px;justify-items:center"><div style="display:flex;gap:34px">{"".join(tw_img(p) for p in P[:4])}</div><div style="display:flex;gap:34px">{"".join(tw_img(p) for p in P[4:])}</div></div>'
+ivory("c14-twilly", "Твіллі 84 × 5", "Сім станів.", "Одна ціна.",
+      V(tw),
+      "Шовкова стрічка в кожному з семи принтів колекції SOLO.", "1 600 грн", "натуральний шовк", "Обрати твіллі", note="Seven twillies")
+ivory("c15-box", "Маленький подарунок", "Жовта коробка,", "а в ній — «Флірт».",
+      f'<div class="frame" style="position:absolute;inset:0 20px;mix-blend-mode:multiply;-webkit-mask-image:radial-gradient(75% 80% at 50% 50%,#000 70%,transparent 100%);mask-image:radial-gradient(75% 80% at 50% 50%,#000 70%,transparent 100%)"><img src="{S2("flirt-scr-1")}" alt="" style="object-position:50% 62%"></div>',
+      "Шовкова резинка у фірмовій коробочці — перше знайомство з Obiimy.", "700 грн", "резинка для волосся «Флірт»", "Обрати резинку", bg="#F1F1F1", note="Yellow box")
+trio = "".join(f'<img class="cut" src="{CUT(PP[i]["flat"])}" alt="" style="width:320px;transform:rotate({r}deg);margin:0 -36px">' for i, r in (("iskra", -10), ("tysha", 2), ("krok", 11)))
+ivory("c16-gift", "Подарунок", "Подаруйте", "не річ, а стан.",
+      V(f'<div style="display:flex;align-items:center">{trio}</div>'),
+      "«Іскра» — для сміливої, «Тиша всередині» — для тієї, що вміє чути себе, «Сміливий крок» — для нових починань.",
+      "від 2 400 грн", "хустки 44, 65 і 88 см", "Обрати подарунок", note="Gift a state")
+ivory("c17-double", "Двосторонній друк", "Жодного", "вивороту.",
+      f'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden"><img class="cut" src="{CUT("iskra-65-5")}" alt="" style="height:96%;width:auto"></div>',
+      "Авторський принт на обох боках натурального шовку — зав’язуйте як завгодно.", "4 800 грн", "«Іскра» · хустка 65 × 65", "Обрати «Іскру»", note="Double-sided")
+look = f"""<div style="position:absolute;inset:0 20px;display:grid;grid-template-columns:1.2fr 1fr;gap:14px">
+    <div class="photo"><img src="{S2('iskra-65-2')}" alt="" style="object-position:40% 35%"></div><div class="photo"><img src="{S2('iskra-tw-3')}" alt="" style="object-position:50% 60%"></div></div>"""
+ivory("c18-look", "Образ цілком", "Хустка й твіллі", "одного принту.", look,
+      "Один принт — на плечах і на сумці.", "6 400 грн", "хустка + твіллі · доставка безкоштовна", "Обрати образ", note="Complete look")
+cert = f"""<div style="position:absolute;inset:0 20px;background:url(src/{PP['zolote']['flat']}-hi.webp) center/170%"></div>
+  <div style="position:absolute;left:150px;right:150px;top:70px;bottom:70px;background:#fff;box-shadow:0 30px 60px -24px rgba(0,0,0,.5);transform:rotate(-3deg);display:grid;place-items:center;text-align:center">
+    <div><img src="{LOGO_K}" alt="" style="height:40px;margin:0 auto"><p style="font-family:Prata,serif;font-size:72px;line-height:1;margin-top:26px">Сертифікат</p>
+    <p style="margin-top:18px;font-size:28px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)">на будь-який товар</p></div></div>"""
+ivory("c19-certificate", "Не знаєте, який стан їй ближчий?", "Нехай обере", "сама.", cert,
+      "Номінали 1 000, 1 500, 2 000, 2 500 і 4 000 грн. Діє 3 місяці.", "від 1 000 грн", "подарунковий сертифікат Obiimy", "Обрати сертифікат", bg="var(--stone)", note="Certificate")
+trio2 = "".join(f'<img class="cut" src="{CUT(PP[i]["flat"])}" alt="" style="width:320px;transform:rotate({r}deg);margin:0 -36px">' for i, r in (("puls", -9), ("avantiura", 3), ("zolote", 10)))
+ivory("c20-showroom", "Шоурум у Києві", "Приміряйте", "наживо.", V(f'<div style="display:flex;align-items:center">{trio2}</div>'),
+      "Вул. Петра Сагайдачного, 12. Пн–пт 10:00–18:00, сб 11:00–18:00.", "від 2 400 грн", "хустки SOLO", "Дивитися колекцію", note="Showroom")
+sw = lambda p: f'<span style="width:190px;height:190px;background:url({HI(p)}) center/220%;box-shadow:0 14px 22px -12px rgba(0,0,0,.4)"></span>'
+seven = f'<div style="display:grid;gap:18px;justify-items:center"><div style="display:flex;gap:18px">{"".join(sw(p) for p in P[:4])}</div><div style="display:flex;gap:18px">{"".join(sw(p) for p in P[4:])}</div></div>'
+ivory("c21-art", "Авторські принти", "Сім принтів.", "Сім станів.", V(seven),
+      "«Іскра», «Флірт», «Пульс», «Золоте світло», «Авантюра», «Тиша всередині», «Сміливий крок».", "від 1 600 грн", "твіллі 1 600 · хустки від 2 400", "Дивитися колекцію", bg="var(--stone)", note="Seven prints")
+ivory("c22-delivery", "Доставка", "Замовте до 16:00 —", "відправимо сьогодні.",
+      V(f'<div style="display:flex;align-items:center;gap:30px"><img class="cut" src="{CUT("puls-44-1")}" alt="" style="width:360px;transform:rotate(-6deg)"><img class="cut" src="{CUT("zolote-tw-1")}" alt="" style="height:380px;transform:rotate(8deg)"></div>'),
+      "Новою поштою в день замовлення.", "4 000 грн", "«Пульс» 44 × 44 + твіллі «Золоте світло»", "Замовити", note="Delivery", hs=84)
+
+HEAD = """<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO classic</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Onest:wght@300;400;500;600&display=swap">
+<style>""" + CSS + "</style></head><body>"
+(HERE / "solo4.html").write_text(HEAD + "".join(ads) + "\n</body></html>")
+print(len(ads), "creatives (classic)")

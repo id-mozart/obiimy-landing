@@ -38,7 +38,23 @@ def band(top, height, b, n=3):
     extra = b[5] if len(b) > 5 else {}
     size = extra.get("size", 118 if len(big) <= 8 else 84)
     if n == 4: size = min(size, 84)
+    if n == 1 and look not in ("grid",): size = extra.get("size", 130)
     tag = f'<p class="tag">{extra["tag"]}</p>' if extra.get("tag") else ""
+    if look == "cut":
+        cuts = photo if isinstance(photo, list) else [photo]
+        imgs = "".join(f'<img src="{CUT(c)}" alt="" style="height:{int(height * (0.8 if len(cuts) == 1 else 0.72))}px;width:auto;max-width:{560 if len(cuts) == 1 else 300}px;object-fit:contain;margin-left:{0 if i == 0 else -40}px;filter:drop-shadow(0 26px 30px rgba(0,0,0,.45));transform:rotate({(-6, 7, -3)[i % 3]}deg)">' for i, c in enumerate(cuts))
+        pic = (f'<div style="position:absolute;inset:0;background:radial-gradient(70% 90% at 72% 50%,rgba(255,255,255,.2),rgba(0,0,0,0) 70%),{pos}"></div>'
+               f'<div style="position:absolute;right:40px;top:0;bottom:0;display:flex;align-items:center">{imgs}</div>')
+        return f'''
+  <div class="band" style="top:{top}px;height:{height}px">{pic}
+    <div class="txt" style="width:470px"><p class="big" style="font-size:{size}px">{big}</p>{f'<p class="small">{nb(small)}</p>' if small else ""}{tag}</div></div>'''
+    if look == "grid":
+        cells = "".join(f'<div style="display:grid;justify-items:center;gap:8px;text-align:center"><img src="{CUT(c)}" alt="" style="height:{extra.get("h", 230)}px;width:auto;max-width:230px;object-fit:contain;filter:drop-shadow(0 16px 18px rgba(0,0,0,.45))"><p style="font-family:Cormorant Garamond,serif;font-style:italic;font-size:34px;line-height:1">{n}</p><p style="font-family:Onest;font-weight:600;font-size:26px;line-height:1.3;color:#E9D7A6">{pr.replace(" · ", "<br>")}</p></div>' for c, n, pr in photo)
+        cols = extra.get("cols", 4)
+        return f'''
+  <div class="band" style="top:{top}px;height:{height}px;background:{pos}">
+    <div style="position:absolute;left:64px;top:44px"><p class="big" style="font-size:{size}px">{big}</p>{f'<p class="small">{nb(small)}</p>' if small else ""}</div>
+    <div style="position:absolute;left:40px;right:40px;top:{extra.get("gtop", 250)}px;bottom:40px;display:grid;grid-template-columns:repeat({cols},1fr);align-content:center;gap:40px 10px">{cells}</div></div>'''
     if look == "spot":
         pic = spot_photo(photo, pos, style="position:absolute;inset:0")
     elif photo.startswith("url("):
@@ -203,6 +219,58 @@ triptych("t19-krok-path", "«Сміливий крок»", [
     ("krok-tw-3", "50% 40%", "Тиша", "Почути себе.", "sepia"),
     ("krok-44-2", "50% 30%", "Крок", "Бо з’являється довіра до себе.", "raw"),
 ], "Після пошуку й внутрішньої тиші настає момент руху вперед.", (["krok-44-1", "krok-tw-1"], "«Сміливий крок»", "від 1 600 грн"), "Зробити крок", "Krok path")
+
+
+# ================================================================= PRODUCT-FIRST banners (colour of the print + the product)
+def deep(pid): return PP[pid]["deep"]
+HERO = [("iskra", "iskra-65-1", "Хустка 65 × 65", "4 800 грн", "iskra-65-2", "40% 28%", "На плечах", "Обрати «Іскру»"),
+        ("flirt", "flirt-65-1", "Хустка 65 × 65", "4 800 грн", "flirt-65-3", "35% 28%", "На голові", "Обрати «Флірт»"),
+        ("puls", "puls-44-1", "Хустка 44 × 44", "2 400 грн", "puls-44-4", "50% 22%", "На шиї", "Обрати «Пульс»"),
+        ("zolote", "zolote-44-1", "Хустка 44 × 44", "2 400 грн", "zolote-44-3", "50% 22%", "На шиї", "Обрати «Золоте світло»"),
+        ("avantiura", "avantiura-88-1", "Хустка 88 × 88", "6 600 грн", "avantiura-88-5", "62% 35%", "У волоссі", "Обрати «Авантюру»"),
+        ("tysha", "tysha-88-1", "Хустка 88 × 88", "6 600 грн", "tysha-88-3", "50% 45%", "На голові", "Обрати «Тишу всередині»"),
+        ("krok", "krok-44-1", "Хустка 44 × 44", "2 400 грн", "krok-44-2", "50% 30%", "На шиї", "Обрати «Сміливий крок»")]
+for i, (pid, cut, fmt, price, ph, pos, how, cta) in enumerate(HERO, 1):
+    p = PP[pid]
+    triptych(f"q{i:02d}-{pid}", "Шовкова хустка", [
+        (cut, f"linear-gradient(160deg,{p['c']},{p['deep']})", f"«{p['name']}»", p["short"] + ".", "cut", {"tag": f"{fmt} · {price}", "size": 92 if len(p["name"]) < 9 else 76}),
+        (ph, pos, how, "Натуральний шовк, двосторонній друк.", "raw", {"size": 104}),
+    ], p["state"].split(". ")[0].rstrip(".") + ".", ([cut], f"Хустка «{p['name']}»", price), "Обрати хустку" if len(p["name"]) > 8 else cta, f"Product hero: {p['name']}")
+
+triptych("q08-ladder", "Оберіть свій формат", [
+    ("krok-tw-1", f"linear-gradient(160deg,{PP['krok']['c']},{deep('krok')})", "Твіллі", "84 × 5 см", "cut", {"tag": "1 600 грн"}),
+    ("puls-44-1", f"linear-gradient(160deg,{PP['puls']['c']},{deep('puls')})", "44 × 44", "Маленька хустка", "cut", {"tag": "2 400 грн"}),
+    ("iskra-65-1", f"linear-gradient(160deg,{PP['iskra']['c']},{deep('iskra')})", "65 × 65", "Класична хустка", "cut", {"tag": "4 800 грн"}),
+    ("avantiura-88-1", f"linear-gradient(160deg,{PP['avantiura']['c']},{deep('avantiura')})", "88 × 88", "Велика хустка", "cut", {"tag": "6 600 грн"}),
+], "Сім авторських принтів — від стрічки до великої хустки.", (["krok-tw-1", "puls-44-1", "avantiura-88-1"], "Шовк SOLO", "від 1 600 грн"), "Обрати формат", "Format ladder")
+
+triptych("q09-twillies", "Твіллі SOLO", [
+    ([(p["tw"], f"«{p['name']}»", "1 600 грн") for p in P], "linear-gradient(170deg,#2A2320,#141110)", "Сім стрічок.", "Одна ціна — 1 600 грн.", "grid", {"size": 104, "h": 300, "gtop": 300}),
+], "Шовкова твіллі 84 × 5 см — у волосся, на шию, на сумку чи зап’ястя.", ([P[0]["tw"], P[4]["tw"], P[6]["tw"]], "Шовкова твіллі", "1 600 грн"), "Обрати стрічку", "Twilly catalogue")
+
+SC = [("iskra", "65 × 65", "4 800"), ("flirt", "65 × 65", "4 800"), ("puls", "44 × 44", "2 400"), ("zolote", "44 × 44", "2 400"), ("avantiura", "88 × 88", "6 600"), ("tysha", "88 × 88", "6 600"), ("krok", "44 × 44", "2 400")]
+triptych("q10-scarves", "Хустки SOLO", [
+    ([(PP[i]["flat"], f"«{PP[i]['name']}»", f"{f} · {pr} грн") for i, f, pr in SC], "linear-gradient(170deg,#2A2320,#141110)", "Сім хусток.", "Сім станів.", "grid", {"size": 104, "h": 210, "gtop": 300}),
+], "Натуральний шовк, двосторонній друк, авторські принти.", (["iskra-65-1", "tysha-88-1", "krok-44-1"], "Шовкові хустки SOLO", "від 2 400 грн"), "Обрати хустку", "Scarf catalogue")
+
+triptych("q11-double", "Двосторонній друк", [
+    ("iskra-65-1", f"linear-gradient(160deg,{PP['iskra']['c']},{deep('iskra')})", "Лицьовий бік", "Принт «Іскра».", "cut", {"size": 84}),
+    ("iskra-65-5", f"linear-gradient(200deg,{PP['iskra']['c']},{deep('iskra')})", "І зворот", "Такий самий яскравий.", "cut", {"size": 96}),
+], "Жодного вивороту — зав’язуйте як завгодно.", (["iskra-65-1"], "Шовкова хустка «Іскра»", "4 800 грн"), "Роздивитися «Іскру»", "Double-sided")
+
+triptych("q12-box", "Маленький подарунок", [
+    ("url(src/flirt-scr-1-2k.webp)", "50% 55%/cover", "700 грн", "", "raw", {"size": 118}),
+    ("flirt-scr-3", "50% 40%", "Резинка", "Шовкова «Флірт» — у фірмовій жовтій коробочці.", "raw", {"size": 110}),
+], "Перше знайомство з Obiimy — шовк, який не лишає заломів.", (["flirt-scr-1"], "Шовкова резинка «Флірт»", "700 грн"), "Подарувати «Флірт»", "Yellow box")
+
+SETS = [("avantiura", "avantiura-88-1", "Хустка 88 × 88", "6 600", "8 200"), ("tysha", "tysha-88-1", "Хустка 88 × 88", "6 600", "8 200"), ("krok", "krok-44-1", "Хустка 44 × 44", "2 400", "4 000")]
+for k, (pid, cut, fmt, pr, total) in enumerate(SETS, 13):
+    p = PP[pid]
+    triptych(f"q{k:02d}-set-{pid}", "Хустка + твіллі одного принту", [
+        (cut, f"linear-gradient(160deg,{p['c']},{p['deep']})", "Хустка", f"«{p['name']}»", "cut", {"tag": f"{fmt} · {pr} грн", "size": 110}),
+        (p["tw"], f"linear-gradient(200deg,{p['c']},{p['deep']})", "Твіллі", f"«{p['name']}»", "cut", {"tag": "84 × 5 · 1 600 грн", "size": 110}),
+    ], "Один принт — хустка на шию, стрічка у волосся чи на сумку." + (" Доставка безкоштовна." if int(total.replace(" ", "")) >= 5000 else ""),
+       ([cut, p["tw"]], f"Образ «{p['name']}»", f"{total} грн"), "Зібрати образ", f"Set: {p['name']}")
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO triptych</title>

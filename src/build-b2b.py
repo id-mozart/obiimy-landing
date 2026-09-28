@@ -494,7 +494,7 @@ def newyear():
   </div></section>
 
   <section class="form-block alt" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Отримати добірку і розрахунок</h2><p>Розкажіть про команду й бюджет — повернемось із добіркою принтів, цінами на тираж і графіком.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й помацати наживо.</p></div>
+    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Отримати добірку і розрахунок</h2><p>Розкажіть про команду й бюджет — повернемось із добіркою принтів, цінами на тираж і графіком.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й торкнутися наживо.</p></div>
     <div>{form_html("f-ny", "Корпоративні подарунки до Нового року", [
         ("company", "Компанія", "input", True, {"ph": "Назва компанії", "ac": "organization"}),
         ("name", "Ваше ім’я", "input", True, {"ph": "Як до вас звертатись", "ac": "name"}),
@@ -605,7 +605,7 @@ def horeca():
   {proof_html("Де вже є Obiimy", "Obiimy продається у роздрібних партнерів в Україні та за кордоном, а історію бренду розповідали LIGA.net та INSIDER UA.")}
 
   <section class="form-block" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити капсулу принтів</h2><p>Напишіть, що за заклад і скільки людей — повернемось із добіркою принтів під ваші кольори та розрахунком.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й помацати наживо.</p></div>
+    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити капсулу принтів</h2><p>Напишіть, що за заклад і скільки людей — повернемось із добіркою принтів під ваші кольори та розрахунком.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й торкнутися наживо.</p></div>
     <div>{form_html("f-hr", "Шовк для уніформи / HoReCa", [
         ("company", "Заклад або компанія", "input", True, {"ph": "Назва", "ac": "organization"}),
         ("name", "Ваше ім’я", "input", True, {"ph": "Як до вас звертатись", "ac": "name"}),
@@ -678,7 +678,7 @@ def wholesale():
   </div></section>
 
   <section class="form-block alt" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити оптовий прайс</h2><p>Розкажіть про магазин і місто. У відповідь надішлемо оптовий прайс із мінімальною партією та знижкою за категоріями, каталог із фото та умови для вашого формату — корнер чи ексклюзив у місті.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й помацати наживо.</p></div>
+    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Запросити оптовий прайс</h2><p>Розкажіть про магазин і місто. У відповідь надішлемо оптовий прайс із мінімальною партією та знижкою за категоріями, каталог із фото та умови для вашого формату — корнер чи ексклюзив у місті.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й торкнутися наживо.</p></div>
     <div>{form_html("f-ws", "Оптова співпраця", [
         ("company", "Магазин або компанія", "input", True, {"ph": "Назва", "ac": "organization"}),
         ("name", "Ваше ім’я", "input", True, {"ph": "Як до вас звертатись", "ac": "name"}),
@@ -762,7 +762,7 @@ def calendar():
   {proof_html("Де вже є Obiimy", "Obiimy продається у роздрібних партнерів в Україні та за кордоном, а історію бренду розповідали LIGA.net та INSIDER UA.", first=True)}
 
   <section class="form-block alt" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Скласти річний план подарунків</h2><p>Кілька фактів про компанію — і ми запропонуємо календар, добірку та розрахунок на рік.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й помацати наживо.</p></div>
+    <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Скласти річний план подарунків</h2><p>Кілька фактів про компанію — і ми запропонуємо календар, добірку та розрахунок на рік.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й торкнутися наживо.</p></div>
     <div>{form_html("f-cal", "Річна програма корпоративних подарунків", [
         ("company", "Компанія", "input", True, {"ph": "Назва компанії", "ac": "organization"}),
         ("name", "Ваше ім’я", "input", True, {"ph": "Як до вас звертатись", "ac": "name"}),

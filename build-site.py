@@ -134,12 +134,17 @@ def main():
   <div class="grid b2b">
 {b2b_cards}
   </div>
+  <h1 style="margin-top:72px">Рекламні креативи</h1>
+  <p class="lede">Колекція SOLO. Шлях до себе — 35 креативів у 14 концепціях за прес-релізом: ретро-обкладинки, сім станів, маніфести, кадри з фільму, квиток до себе. Плюс 20 сторіс попередніх серій. <a href="creatives" style="color:inherit;font-weight:600">Відкрити галерею →</a></p>
   <footer><span>Фото та логотип — obiimy.world.</span><span>Зроблено за допомогою Claude Code.</span></footer>
 </div>
 </body>
 </html>
 '''
     (SITE / "index.html").write_text(hub)
+    import importlib.util
+    spec = importlib.util.spec_from_file_location("gallery", ROOT / "ads" / "build_gallery.py"); g = importlib.util.module_from_spec(spec); spec.loader.exec_module(g)
+    print("creatives:", g.build(SITE))
     # thumbnails via headless chrome (first screen, 1440x900)
     chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     thumbs = SITE / "thumbs"; thumbs.mkdir()

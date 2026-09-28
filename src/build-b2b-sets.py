@@ -32,37 +32,37 @@ SITE = "https://obiimy.world"
 SETS = [
     dict(id="scrset", name="Набір шовкових резинок", who="Welcome-box і великі команди", price=1250, price_label="від 1 250 грн",
          prices="Zero waste 3 шт. — 1 250 · 3 шт. — 1 800 · Zero waste 5 шт. — 2 000 грн", photo="img/sets/scr3.webp", kind="Каталог",
-         line="Кілька шовкових резинок у фірмовій коробці: наймасовіший і водночас преміальний подарунок, який не залежить від розміру.", link=SITE + "/nabir-3-shovkovykh-rezynky/"),
+         line="Кілька шовкових резинок у фірмовому стилі: найдоступніший подарунок Obiimy, який не залежить від розміру.", link=SITE + "/nabir-3-shovkovykh-rezynky/"),
     dict(id="twscr", name="Твіллі та резинка", who="Усій команді", price=2200, price_label="2 200 грн",
          prices="84 × 5 — 2 200 грн · довга 140 × 5 — 2 700 грн", photo="img/sets/twscr-makiv.webp", kind="Каталог",
          prints="Пристрасть, Сміливість, Літнє поле, Маків цвіт, Енергія, Свобода, Ніжність, Захоплення · 140 × 5: Літній віночок, Спокуса",
-         line="Твіллі й резинка в одному принті у святковій коробці, що відкривається, як скринька.", link=SITE + "/tvilli-ta-rezynka-prystrast/"),
+         line="Твіллі й резинка в одному принті у святковій коробці.", link=SITE + "/tvilli-ta-rezynka-prystrast/"),
     dict(id="maskscr", name="Маска для сну та резинка", who="Програмам турботи про команду", price=3100, price_label="3 100 грн",
          photo="img/sets/maskscr-litnie-pole.webp", kind="Каталог",
          prints="Літнє поле, Енергія, Свобода, Впевненість, Піднесення, Мелодія двох, Сміливість, Серцебиття",
          line="Подарунок про відпочинок, а не про роботу: шовкова маска й резинка в жовтій коробці.", link=SITE + "/maska-dlia-snu-ta-rezynka-litnie-pole/"),
     dict(id="tw44", name="Твіллі та хустка 44 × 44", who="Ключовим людям", price=3200, price_label="3 200 грн",
          prices="одностороння — 3 200 грн · двосторонній друк — 3 600 грн", photo="img/sets/tw44-vpevnenist.webp", kind="Каталог",
-         prints="18 принтів: Впевненість, Натхнення, Грація, Вир почуттів, Сміливий дотик, Баланс, Свобода, Літнє поле… · двосторонні: Пробудження, Ніжність, Пристрасть, Закоханість, Захоплення, Золоте світло",
-         line="Найпопулярніший формат Obiimy: стрічка й хустка в одному принті, у довгій жовтій коробці з тонким папером.", link=SITE + "/nabir-tvilli-845-ta-khustky-4444-vpevnenist/"),
+         prints="18 принтів: Впевненість, Натхнення, Грація, Вир почуттів, Сміливий дотик, Баланс, Свобода, Літнє поле… · двосторонні: Пробудження, Ніжність, Пристрасть, Закоханість, Захоплення, Літній віночок; новинка — Золоте світло (3 600 грн)",
+         line="Класичне поєднання: стрічка й хустка в одному принті, у довгій жовтій коробці з тонким папером.", link=SITE + "/nabir-tvilli-845-ta-khustky-4444-vpevnenist/"),
     dict(id="song", name="Маска, закладка й резинка", who="Подарунок із сенсом · «Співоча душа»", price=3600, price_label="3 600 грн",
          photo="img/sets/sleep-pidnesennia.webp", kind="Каталог", prints="«Піднесення», «Мелодія двох»",
-         line="Набір із колекції «Співоча душа»: частина прибутку від неї йде на збереження червонокнижних птахів України, зокрема гнізда для сиворакші.", link=SITE + "/maska-dlia-snu-zakladka-dlia-knyhy-ta-shovkova-rezynka-dlia-volossia-pidnesennia/"),
+         line="Набір із колекції «Співоча душа»: частина коштів від колекції йде на гнізда для сиворакші — птаха з Червоної книги України.", link=SITE + "/maska-dlia-snu-zakladka-dlia-knyhy-ta-shovkova-rezynka-dlia-volossia-pidnesennia/"),
     dict(id="hearts", name="Дві маски «Серцебиття»", who="Подарунок на двох", price=4200, price_label="4 200 грн",
          photo="img/sets/masks-sertsebyttia.webp", kind="Каталог",
-         line="Червона й чорна маска у формі серця в одній коробці — подяка партнерові, якого дарують разом із родиною.", link=SITE + "/nabir-masok-dlia-snu-sertsebyttia-chervone-ta-chorne/"),
+         line="Червона й чорна маска в одній коробці — подарунок на двох: партнерові та близькій людині.", link=SITE + "/nabir-masok-dlia-snu-sertsebyttia-chervone-ta-chorne/"),
     dict(id="three", name="Три твіллі на вибір", who="Партнерам", price=4800, price_label="4 800 грн",
-         photo="img/sets/three-twilly.webp", kind="Каталог", prints="Три стрічки різних принтів — на ваш вибір",
+         photo="img/sets/three-twilly.webp", kind="Каталог", note="Три стрічки — принти на ваш вибір",
          line="Три твіллі 84 × 5 у святковому пакуванні, які можна зібрати під стиль кожної людини.", link=SITE + "/nabir-3-shovkovykh-tvilli/"),
-    dict(id="first-day", name="«Перший день»", who="Новим співробітникам", items=["scr"], card="Ласкаво просимо в команду. Раді, що ви з нами.", sign="— ваша команда",
+    dict(id="first-day", name="«Перший день»", who="Новим співробітникам", photo="img/scrunchie-pole.webp", card="Ласкаво просимо в команду. Раді, що ви з нами.", sign="— ваша команда",
          price=700, price_label="700 грн", kind="Під запит", tex="litnie-pole",
          comp="Резинка в коробочці + листівка", line="Шовкова резинка у фірмовій коробочці й листівка «Ласкаво просимо в команду». Маленький жест, з якого новенька людина стає своєю."),
-    dict(id="ritual", name="«Ранковий ритуал»", who="Wellbeing для команди", photos=["img/sets/turban-bilyi.webp", "img/sets/obruch.webp"],
+    dict(id="ritual", name="«Ранковий ритуал»", who="Wellbeing для команди", confirm="колір", photos=["img/sets/turban-bilyi.webp", "img/sets/obruch.webp"],
          price=4200, price_label="4 200 грн", kind="Під запит", comp="Тюрбан для волосся 3 500 + шовковий обруч для вмивання 700",
          line="Дві речі з Obiimy HOME для ранку без поспіху: тюрбан після душу й обруч, щоб вмитися, не мочачи волосся."),
     dict(id="head", name="«Керівнику»", who="Топменеджменту й VIP-клієнтам", items=["h88", "tw"], price=6000, price_label="6 000 грн", kind="Під запит", tex="kolo-sontsia",
          comp="Шаль 88 × 88 + твіллі 84 × 5 в одному принті", line="Найбільша хустка Obiimy й найтонша стрічка поруч. Наприклад, у принті «Коло сонця» з колекції «Співоча душа»."),
-    dict(id="sleep", name="«Шовковий сон»", who="Керівникам і VIP-партнерам", photos=["img/sets/pillow-khmara.webp", "img/mask-vpevnenist.webp"],
+    dict(id="sleep", name="«Шовковий сон»", confirm="колір, принт", who="Керівникам і VIP-партнерам", photos=["img/sets/pillow-khmara.webp", "img/mask-vpevnenist.webp"],
          price=6900, price_label="6 900 грн", kind="Під запит", comp="Шовкова наволочка 50 × 70 4 200 + маска для сну 2 700",
          line="Наволочка й маска з натурального шовку — подарунок, яким користуються щоночі й щоранку згадують, від кого він."),
     dict(id="cert", name="Подарунковий сертифікат", who="Коли обрати має сама людина", price=1000, price_label="1 000 – 4 000 грн",
@@ -83,8 +83,7 @@ SILK_CSS = """
   .sk.ring { width: var(--rg, 50px); aspect-ratio: 1; border-radius: 50%;
     -webkit-mask: radial-gradient(circle, transparent 30%, #000 31%, #000 68%, transparent 70%), repeating-conic-gradient(#000 0 7deg, rgba(0,0,0,.72) 7deg 14deg); -webkit-mask-composite: source-in;
     mask: radial-gradient(circle, transparent 30%, #000 31%, #000 68%, transparent 70%) intersect, repeating-conic-gradient(#000 0 7deg, rgba(0,0,0,.72) 7deg 14deg); }
-  .sk.mask { width: var(--mk, 84px); aspect-ratio: 2.1 / 1; border-radius: 48% 48% 44% 44% / 62% 62% 38% 38%; }
-  .sk.mask::before { content: ""; position: absolute; left: -12%; right: -12%; top: 38%; height: 9%; background: #1d1a24; border-radius: 4px; z-index: -1; }
+  .sk.mask { width: var(--mk, 84px); aspect-ratio: 2.3 / 1; border-radius: 50% 50% 46% 46% / 58% 58% 42% 42%; -webkit-mask: radial-gradient(38% 46% at 50% 112%, transparent 98%, #000 100%); mask: radial-gradient(38% 46% at 50% 112%, transparent 98%, #000 100%); }
   .sk.bm { width: var(--bw, 26px); height: calc(var(--bw, 26px) * 3.8); background-size: 300% auto; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 90%, 0 100%); }
   .sk.note { width: var(--nt, 120px); padding: 10px 12px; background: #F6F1E7; color: #231E2A; font-family: var(--display, Georgia), serif; font-style: italic; font-size: .78rem; line-height: 1.25; border-radius: 2px; }
   .sk.note small { display: block; margin-top: 6px; font-family: var(--body, Arial), sans-serif; font-style: normal; font-size: .56rem; letter-spacing: .12em; text-transform: uppercase; color: #6B6477; }
@@ -118,10 +117,12 @@ def setviz(s, sizes="(max-width: 640px) 100vw, 33vw"):
     card = s.get("card")
     if s.get("photos"):
         a, b = s["photos"]
-        return f'<figure class="setviz dip" aria-label="{s["name"]}"><span class="d1">{img(a, "", sizes="(max-width: 640px) 50vw, 17vw")}</span><span class="d2">{img(b, "", sizes="(max-width: 640px) 50vw, 17vw")}</span><span class="plus">+</span></figure>'
+        return f'<figure class="setviz dip" aria-label="{s["name"]}"><span class="d1">{img(a, "", sizes="(max-width: 640px) 50vw, 17vw")}</span><span class="d2">{img(b, "", sizes="(max-width: 640px) 50vw, 17vw")}</span></figure>'
     if s.get("photo"):
         fit = ' style="object-fit:contain;padding:8%"' if s.get("photo_fit") == "contain" else ""
         inner = f'<span class="ph">{img(s["photo"], s["name"], sizes=sizes).replace("<img ", "<img" + fit + " ", 1)}</span>'
+        if card:
+            inner += f'<span class="cardlet">{card}<small>{s.get("sign", "— від вашої компанії")}</small></span>'
         return f'<figure class="setviz" aria-label="{s["name"]}">{inner}</figure>'
     t = s.get("tex", "tysha-sertsia"); items = s["items"]
     lay = "".join(f'<span style="--x:{x}px;--y:{y}px;--r:{r}deg;display:contents">{silk(k, t).replace(chr(34) + " style=" + chr(34), chr(34) + " style=" + chr(34) + f"--x:{x}px;--y:{y}px;--r:{r}deg;", 1)}</span>' for k, (x, y, r) in zip(items, LAY[len(items)]))
@@ -133,9 +134,9 @@ SET_CSS = "\n<style>" + SILK_CSS + MBOX_CSS + """
   .setviz { position: relative; margin: 0; aspect-ratio: 4 / 3; overflow: hidden; border-radius: var(--radius); background: radial-gradient(90% 80% at 50% 30%, var(--card), var(--bg2)); }
   .setviz .box { position: absolute; left: 12%; right: 12%; bottom: -10%; height: 30%; background: linear-gradient(180deg, #F7C928, #EDB400); border-radius: 4px; box-shadow: 0 -10px 30px -12px rgba(60,40,0,.35), inset 0 10px 14px rgba(120,80,0,.18); display: grid; place-items: center; }
   .setviz .box img { height: 16px; width: auto; opacity: .85; margin-top: 18%; }
-  .setviz.dip { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10% 8%; background: var(--bg2); }
-  .setviz.dip span.d1, .setviz.dip span.d2 { background: #fff; border-radius: 6px; overflow: hidden; box-shadow: 0 18px 30px -18px rgba(0,0,0,.45); display: block; }
-  .setviz.dip img { width: 100%; height: 100%; object-fit: contain; }
+  .setviz.dip { display: grid; grid-template-columns: 1fr 1fr; gap: 0; padding: 4% 6%; background: #fff; }
+  .setviz.dip span.d1, .setviz.dip span.d2 { display: block; overflow: hidden; }
+  .setviz.dip img { width: 100%; height: 100%; object-fit: contain; mix-blend-mode: multiply; }
   .setviz.dip .plus { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 32px; height: 32px; border-radius: 50%; background: var(--gold); color: #17151A; display: grid; place-items: center; font-weight: 600; }
   .set .acts { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
   .set .acts .pick { margin-top: 0; }
@@ -150,7 +151,7 @@ SET_CSS = "\n<style>" + SILK_CSS + MBOX_CSS + """
   .setviz .ex { position: absolute; left: 10px; top: 10px; font-size: .66rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink3); background: color-mix(in srgb, var(--card) 80%, transparent); padding: 3px 8px; border-radius: 999px; }
   .setviz .it { position: absolute; aspect-ratio: 1; background: #fff; border-radius: 6px; box-shadow: 0 18px 30px -16px rgba(0,0,0,.45); overflow: hidden; }
   .setviz .it img { width: 100%; height: 100%; object-fit: contain; padding: 6%; }
-  .setviz .ph { position: absolute; inset: 6% 14% 16% 14%; border-radius: 6px; overflow: hidden; box-shadow: 0 18px 30px -16px rgba(0,0,0,.45); background: #fff; }
+  .setviz .ph { position: absolute; inset: 0; overflow: hidden; background: #fff; }
   .setviz .ph img { width: 100%; height: 100%; object-fit: cover; }
   .setviz .cardlet { position: absolute; right: 8%; top: 12%; width: 38%; background: #F6F1E7; color: #231E2A; font-family: var(--display); font-style: italic; font-size: .82rem; line-height: 1.25; padding: 10px 12px; border-radius: 2px; transform: rotate(5deg); box-shadow: 0 14px 24px -14px rgba(0,0,0,.45); display: grid; gap: 6px; }
   .setviz .cardlet small { font-family: var(--body); font-style: normal; font-size: .62rem; letter-spacing: .12em; text-transform: uppercase; color: #6B6477; }
@@ -189,8 +190,12 @@ def sets_catalogue():
     cards = []
     for s in SETS:
         comp = s.get("comp", "")
-        extra = "".join(f'<p class="comp">{x}</p>' for x in [s.get("prices"), (("Принти: " + s["prints"]) if s.get("prints") else None)] if x)
-        pack = '' if s["kind"].startswith("Каталог") else '<p class="pack">Комбінація з речей каталогу: принти й пакування підтвердимо в розрахунку.</p>'
+        extra = "".join(f'<p class="comp">{x}</p>' for x in [s.get("prices"), s.get("note")] if x)
+        pr = s.get("prints")
+        if pr:
+            n = pr.count(",") + 1 + pr.count("·") if not pr.startswith("18") else 18
+            extra += f'<p class="comp">Принти: {pr}</p>' if n <= 3 else f'<details class="prints"><summary>Принти в каталозі · {n}</summary><p>{pr}</p></details>'
+        pack = '' if s["kind"].startswith("Каталог") else '<p class="pack">Комбінація з речей каталогу: ' + s.get("confirm", "принти") + ' й пакування підтвердимо в розрахунку.</p>'
         link = f'<a class="more" href="{s["link"]}">{"Детальніше" if s["link"].startswith("b2b") else "На obiimy.world"} →</a>' if s.get("link") else ""
         cards.append(f'''
       <article class="set" data-price="{s["price"]}" id="set-{s["id"]}">
@@ -200,8 +205,8 @@ def sets_catalogue():
           <div class="acts"><button class="btn btn-line btn-sm pick" type="button" data-name="{s["name"]}" data-price="{s["price"]}" aria-pressed="false">Додати до запиту</button>{link}</div></div>
       </article>''')
     body = SET_CSS + hero("Корпоративні набори · Новий рік і не тільки", "Набори Obiimy для команди, партнерів і клієнтів",
-        "Справжні подарункові набори з каталогу Obiimy — у фірмових жовтих коробках — і кілька комбінацій, які ми зібрали для бізнесу.<span class=\"m-hide\"> Оберіть один або кілька наборів — повернемось із розрахунком на ваш тираж.</span>",
-        "Обрати набори", "Зібрати свій у 3D", "b2b-atelier", "Від 1 250 грн за набір резинок до 6 900 грн за «Шовковий сон». Ціни — роздрібні з obiimy.world.", "img/sets/tw44-natkhnennia.webp", "Набір твіллі та хустки «Натхнення» у жовтій коробці", "Набір «Натхнення» з каталогу — твіллі й хустка 44 × 44", pos="50% 50%") + facts_html([
+        "Подарункові набори з каталогу Obiimy у фірмових коробках і кілька комбінацій, які ми зібрали для бізнесу.<span class=\"m-hide\"> Оберіть один або кілька наборів — повернемось із розрахунком на ваш тираж.</span>",
+        "Обрати набори", "Зібрати свій у 3D", "b2b-atelier", "Від 700 грн за «Перший день» до 6 900 грн за «Шовковий сон». Ціни — роздрібні з obiimy.world.", "img/sets/tw44-natkhnennia.webp", "Набір твіллі та хустки «Натхнення» у жовтій коробці", "Набір «Натхнення» з каталогу — твіллі й хустка 44 × 44", pos="50% 50%") + facts_html([
         ("8 наборів з каталогу", "Сім сімейств наборів і сертифікати — з цінами obiimy.world"),
         ("4 комбінації", "Для бізнесу з речей каталогу — під запит"),
         ("Десятки принтів", "У кожному сімействі — свій вибір принтів"),
@@ -280,8 +285,8 @@ def sets_catalogue():
     }}); }});
   }})();
   </script>'''
-    return dict(slug="b2b-sets", skin="maison", title="Корпоративні подарункові набори на Новий рік і не тільки — Obiimy",
-        desc="Подарункові набори Obiimy для компаній: твіллі й резинка, твіллі й хустка, маска й резинка, набори резинок і сертифікати з каталогу, а також комбінації з Obiimy HOME. Від 1 250 грн, жовта коробка, листівка від компанії.",
+    return dict(slug="b2b-sets", skin="maison", title="Корпоративні подарункові набори — Obiimy",
+        desc="Подарункові набори Obiimy для компаній: твіллі й резинка, маска й резинка, твіллі й хустка, сертифікати та комбінації з Obiimy HOME. Від 700 грн, листівка від компанії.",
         og="photo/box-dots.jpg", nav=[("Набори", "sets"), ("Що всередині", "personal"), ("Питання", "faq"), ("Контакт", "request")],
         cta="Запит", sticky="Корпоративні набори · від 700 грн", body=body)
 
@@ -342,8 +347,8 @@ def monoprint():
     hero_fig = f'<figure class="mphero" style="margin:0;position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:var(--radius)">{img("photo/paris-green.jpg", "Шовкова хустка на жакеті", sizes="(max-width: 960px) 100vw, 50vw", lazy=False, eager_priority=True)}<div class="tag">Один принт на всіх читається як подарунок від команди</div></figure>'
     body = css + hero("Монопринт · корпоративні подарунки", "Один принт — уся компанія",
         "Один принт — у чотирьох форматах: твіллі для команди, хустка для ключових людей, шаль для керівників, резинка для новеньких.<span class=\"m-hide\"> Разом це виглядає як колекція вашої компанії, а не як набір випадкових подарунків.</span>",
-        "Обрати принт", "Готові набори", "b2b-sets", "Твіллі й резинки є в каталозі в усіх 9 принтах. Роздрібні ціни — від 700 до 4 800 грн за річ.", "photo/paris-green.jpg", "", "", pos="50% 14%", figure=hero_fig, cta1_href="#print") + facts_html([
-        ("9 принтів", "Авторські картини на шовку художниці Світлани Сніжко"),
+        "Обрати принт", "Готові набори", "b2b-sets", "Роздрібні ціни — від 700 до 4 800 грн за річ.", "photo/paris-green.jpg", "", "", pos="50% 14%", figure=hero_fig, cta1_href="#print") + facts_html([
+        ("9 принтів", "Авторські картини на шовку"),
         ("4 рівні", "Команда, ключові люди, керівники, нові співробітники"),
         ("Одна історія", "Той самий принт у різних форматах і на різних людях"),
         ("3 формати в кожному", "Твіллі, резинка й двостороння хустка 65 × 65 є в каталозі для всіх 9 принтів"),
@@ -376,7 +381,7 @@ def monoprint():
     <div class="head"><p class="eyebrow">Питання</p><h2>Що зазвичай питають</h2></div>
     <div class="faq">
       <details><summary>Чи є кожен принт у кожному форматі?</summary><p>Твіллі 84 × 5 і резинка є в каталозі в усіх дев’яти принтах, двостороння хустка 65 × 65 — теж. Шаль 88 × 88 у каталозі — «Коло сонця» й «Між нами»; для інших принтів шаль — під запит: наявність і терміни підтвердимо в розрахунку.</p></details>
-      <details><summary>Чи можна два принти — для жінок і чоловіків?</summary><p>Так, додайте в коментарі — підберемо пару принтів, які поєднуються.</p></details>
+      <details><summary>Чи можна два принти — наприклад, для різних команд?</summary><p>Так, напишіть у коментарі — підберемо пару принтів, які поєднуються.</p></details>
       {DOCS_FAQ}
       {BATCH_FAQ}
     </div>
@@ -427,7 +432,7 @@ def monoprint():
   }})();
   </script>'''
     return dict(slug="b2b-monoprint", skin="journal", title="Один принт на всю компанію — корпоративні подарунки Obiimy",
-        desc="Один принт Obiimy для всієї компанії: твіллі команді, хустка ключовим людям, шаль керівникам, резинка новеньким. Твіллі й резинки — у всіх 9 принтах каталогу. Калькулятор за роздрібними цінами.",
+        desc="Один принт Obiimy для всієї компанії: твіллі команді, хустка ключовим людям, шаль керівникам, резинка новеньким. Калькулятор за роздрібними цінами.",
         og="photo/paris-green.jpg", nav=[("Принт", "print"), ("Рівні", "tiers"), ("Чому один принт", "why"), ("Питання", "faq"), ("Контакт", "request")],
         cta="Запит", sticky="Один принт — уся компанія", body=body)
 

@@ -9,3 +9,8 @@ ads/src/
 ads/src2/
 ads/out/
 ads/out2/
+shopify/*.json
+shopify/
+ads/solo/src/
+ads/solo/cs-*.jpg
+ads/solo/sheet.jpg

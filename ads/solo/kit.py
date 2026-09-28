@@ -8,31 +8,31 @@ LOGO_K = "../../brand/logo-ink.png"
 
 # press-release order = the journey
 P = [
-    dict(id="iskra", name="Іскра", c="#2F63A8", deep="#1E4A86", flat="iskra-65-1", tw="iskra-tw-1",
+    dict(id="iskra", name="Іскра", c="#2F63A8", deep="#1E4A86", flat="iskra-65-1", tw="iskra-tw-4",
          short="Сміливість бути помітною",
          state="Внутрішня енергія, сміливість бути помітною та здатність запалювати зміни навколо себе.",
          formats=[("Хустка", "65 × 65", "4 800"), ("Твіллі", "84 × 5", "1 600")]),
-    dict(id="flirt", name="Флірт", c="#6F8A58", deep="#566F42", flat="flirt-65-1", tw="flirt-tw-2",
+    dict(id="flirt", name="Флірт", c="#6F8A58", deep="#566F42", flat="flirt-65-1", tw="flirt-tw-5",
          short="Флірт — це насамперед стан",
          state="Віра в перемогу, оптимізм і мистецтво невимушеної жіночності. Флірт — це насамперед стан, уміння насолоджуватися собою, життям і моментом.",
          formats=[("Хустка", "65 × 65", "4 800"), ("Твіллі", "84 × 5", "1 600"), ("Резинка", "для волосся", "700")]),
-    dict(id="puls", name="Пульс", c="#4E8B3A", deep="#35692A", flat="puls-44-1", tw="puls-tw-2",
+    dict(id="puls", name="Пульс", c="#4E8B3A", deep="#35692A", flat="puls-44-1", tw="puls-tw-4",
          short="Внутрішній ритм",
          state="Природна сила та внутрішня опора. Внутрішній ритм, що залишається незмінним, навіть коли навколо змінюється все.",
          formats=[("Хустка", "44 × 44", "2 400"), ("Твіллі", "84 × 5", "1 600")]),
-    dict(id="zolote", name="Золоте світло", c="#B8741F", deep="#8F5A17", flat="zolote-44-1", tw="zolote-tw-1",
+    dict(id="zolote", name="Золоте світло", c="#B8741F", deep="#8F5A17", flat="zolote-44-1", tw="zolote-tw-3",
          short="Момент ясності",
          state="Моменти ясності, коли все стає на свої місця.",
          formats=[("Хустка", "44 × 44", "2 400"), ("Твіллі", "84 × 5", "1 600")]),
-    dict(id="avantiura", name="Авантюра", c="#8A2226", deep="#6E1B1F", flat="avantiura-88-1", tw="avantiura-tw-2",
+    dict(id="avantiura", name="Авантюра", c="#8A2226", deep="#6E1B1F", flat="avantiura-88-1", tw="avantiura-tw-5",
          short="За межі звичного",
          state="Готовність виходити за межі звичного та відкриватися новому досвіду.",
          formats=[("Хустка", "88 × 88", "6 600"), ("Твіллі", "84 × 5", "1 600")]),
-    dict(id="tysha", name="Тиша всередині", c="#26231F", deep="#26231F", flat="tysha-88-1", tw="tysha-tw-1",
+    dict(id="tysha", name="Тиша всередині", c="#26231F", deep="#26231F", flat="tysha-88-1", tw="tysha-tw-3",
          short="Чути себе",
          state="Баланс і здатність чути себе серед зовнішнього шуму. Стан, у якому більше не потрібно доводити, поспішати чи відповідати чужим очікуванням.",
          formats=[("Хустка", "88 × 88", "6 600"), ("Твіллі", "84 × 5", "1 600")]),
-    dict(id="krok", name="Сміливий крок", c="#8E2A2C", deep="#6F2022", flat="krok-44-1", tw="krok-tw-1",
+    dict(id="krok", name="Сміливий крок", c="#8E2A2C", deep="#6F2022", flat="krok-44-1", tw="krok-tw-5",
          short="Довіра до себе",
          state="Рішення рухатися вперед, навіть коли немає повної визначеності. Не тому, що страх зникає, а тому, що з’являється щось важливіше — довіра до себе.",
          formats=[("Хустка", "44 × 44", "2 400"), ("Твіллі", "84 × 5", "1 600")]),
@@ -119,10 +119,14 @@ def spot_photo(name, pos="50% 50%", style=""):
     bg = f"background:url(src/{name}.webp) {pos}/cover no-repeat"
     mk = f"-webkit-mask:url(src/{name}-mask.png) {pos}/cover no-repeat;mask:url(src/{name}-mask.png) {pos}/cover no-repeat;mask-mode:alpha"
     return (f'<div style="{style};overflow:hidden">'
-            f'<div style="position:absolute;inset:0;{bg};filter:grayscale(1) contrast(1.12) brightness(1.02)"></div>'
+            f'<div style="position:absolute;inset:0;{bg};filter:grayscale(1) contrast(1.04) brightness(1.02)"></div>'
             f'<div style="position:absolute;inset:0;{bg};{mk};filter:saturate(.95)"></div></div>')
 
 def nb(text):
-    """Non-breaking space before the last word, so no single word hangs on the last line."""
+    """Ukrainian line-break hygiene: short prepositions and conjunctions stick to the next word,
+    a dash sticks to the previous word, and the last word never hangs alone."""
+    import re
+    text = re.sub(r"(?<![\w’'])(у|в|з|і|й|а|о|на|до|за|та|не|чи|із|зі|від|для|що|як|це)\s+(?=[^\s<])", lambda m: m.group(1) + "\u00a0", text, flags=re.I)
+    text = re.sub(r"\s+([—–])", lambda m: "\u00a0" + m.group(1), text)
     i = text.rstrip().rfind(" ")
     return text if i < 0 else text[:i] + "\u00a0" + text[i + 1:]

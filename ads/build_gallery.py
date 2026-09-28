@@ -57,7 +57,14 @@ def build(site: pathlib.Path):
     yellow = sorted((ROOT / "ads/solo/out5").glob("*.jpg"))
     isc = lambda f, lo, hi: f.name[0] == "c" and lo <= f.name[:3] <= hi
     tri = sorted((ROOT / "ads/solo/out6").glob("*.jpg")); tri_y = sorted((ROOT / "ads/solo/out7").glob("*.jpg"))
-    mono = sorted((ROOT / "ads/solo/out8").glob("*.jpg"))
+    mono = sorted((ROOT / "ads/solo/out8").glob("m*.jpg"))
+    gift_names = ["k14", "t15", "t07"]
+    pick = lambda fs, names: [f for n in names for f in fs if f.name.startswith(n)]
+    gifts = ([f for f in tri if f.name[0] == "g"] + sorted((ROOT / "ads/solo/out8").glob("g*.jpg")) + pick(tri, gift_names)
+             + pick(classic, ["p09", "u06"]))
+    gifts_y = [f for f in tri_y if f.name[0] == "g"] + pick(tri_y, gift_names) + pick(yellow, ["p09", "u06"])
+    add("Подарункові · варіант A", "Для того, хто дарує: сертифікат, подарунок за бюджетом, кому що подарувати, підпис вашими словами, жовта коробочка, відправка в день замовлення.", gifts, "solo-gift")
+    add("Подарункові · варіант B", "Те саме з жовтою плашкою товару.", gifts_y, "solo-gift-y")
     add("Лаконічні · один товар", "Одна річ, назва, ціна й кнопка — без розмірів та описів. Хустки на кольорі свого принту й на темному, твіллі на світлому, резинка.", mono, "solo-one")
     add("Приземлені про товар · варіант A", "Без лірики: картка кожної хустки з характеристиками, твіллі й резинка, який розмір обрати, що таке твіллі, як замовити, ціни, подарунок за бюджетом, доставка й оплата.", [f for f in tri if f.name[0] == "k"], "solo-tri")
     add("Приземлені про товар · варіант B", "Те саме з жовтою плашкою товару.", [f for f in tri_y if f.name[0] == "k"], "solo-tri-y")

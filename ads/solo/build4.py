@@ -64,7 +64,7 @@ def edge_tone(photo, spot):
 
 # what is sold in each full-frame banner: cutout, product type, print · size
 PROD = {
-    "c01-launch": (["tysha-88-1", "iskra-tw-1", "krok-44-1"], "Шовкові хустки й твіллі", "7 авторських принтів"),
+    "c01-launch": (["tysha-88-1", "iskra-tw-4", "krok-44-1"], "Шовкові хустки й твіллі", "7 авторських принтів"),
     "c02-iskra": (["iskra-65-1"], "Шовкова хустка", "«Іскра» · 65 × 65 см"),
     "c03-flirt": (["flirt-65-1"], "Шовкова хустка", "«Флірт» · 65 × 65 см"),
     "c05-zolote": (["zolote-44-1"], "Шовкова хустка", "«Золоте світло» · 44 × 44 см"),
@@ -73,15 +73,15 @@ PROD = {
     "c08-krok": (["krok-44-1"], "Шовкова хустка", "«Сміливий крок» · 44 × 44 см"),
     "c09-ya-ie": (["zolote-44-1"], "Шовкова хустка", "«Золоте світло» · 44 × 44 см"),
     "c10-grey": (["puls-44-1"], "Шовкова хустка", "«Пульс» · 44 × 44 см"),
-    "c11-decades": (["flirt-tw-2"], "Шовкова твіллі-стрічка", "«Флірт» · 84 × 5 см"),
-    "c12-hair": (["avantiura-tw-2"], "Шовкова твіллі-стрічка", "«Авантюра» · 84 × 5 см"),
+    "c11-decades": (["flirt-tw-5"], "Шовкова твіллі", "«Флірт»"),
+    "c12-hair": (["avantiura-tw-5"], "Шовкова твіллі", "«Авантюра»"),
     "c13-parts": (["avantiura-88-1"], "Шовкова хустка", "«Авантюра» · 88 × 88 см"),
-    "u01-buy-ukrainian": (["flirt-tw-2"], "Шовкова твіллі-стрічка", "«Флірт» · 84 × 5 см"),
+    "u01-buy-ukrainian": (["flirt-tw-5"], "Шовкова твіллі", "«Флірт»"),
     "u02-london": (["zolote-44-1"], "Шовкова хустка", "«Золоте світло» · 44 × 44 см"),
     "u03-made-in-ua": (["krok-44-1"], "Шовкова хустка", "«Сміливий крок» · 44 × 44 см"),
-    "u04-not-mass": (["puls-tw-2"], "Шовкова твіллі-стрічка", "«Пульс» · 84 × 5 см"),
+    "u04-not-mass": (["puls-tw-4"], "Шовкова твіллі", "«Пульс»"),
     "u05-luxury": (["tysha-88-1"], "Шовкова хустка", "«Тиша всередині» · 88 × 88 см"),
-    "u06-abroad": (["iskra-tw-1"], "Шовкова твіллі-стрічка", "«Іскра» · 84 × 5 см"),
+    "u06-abroad": (["iskra-tw-4"], "Шовкова твіллі", "«Іскра»"),
 }
 
 MIN = {}   # id -> (cutouts, "Шовкова хустка «…»") for the minimal premium banners
@@ -129,7 +129,7 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
     <div class="cta" style="position:static;transform:none;margin-top:26px">{cta}</div>"""
     if top_text:
         shade = '<div style="left:0;right:0;top:0;height:900px;background:linear-gradient(180deg,#141216 0%,rgba(20,18,22,.88) 42%,rgba(20,18,22,.5) 72%,rgba(20,18,22,0) 100%)"></div>'
-        pos_block = "top:170px"
+        pos_block = "top:200px"
     else:
         shade = ('<div style="left:0;right:0;top:0;height:260px;background:linear-gradient(180deg,rgba(20,18,22,.55) 0%,rgba(20,18,22,0) 100%)"></div>'
                  f'<div style="left:0;right:0;top:{shade_from}px;bottom:0;background:linear-gradient(180deg,rgba(20,18,22,0) 0%,rgba(20,18,22,.78) 28%,rgba(20,18,22,.92) 58%,rgba(20,18,22,.95) 100%)"></div>')
@@ -175,10 +175,10 @@ full("c13-parts", "avantiura-88-2", "40% 0%", "Найбільша хустка."
 def ivory(id, eyebrow, h, em, visual, body, price_main, price_small, cta, bg="var(--ivory)", note="", hs=100):
     ad(id, "", f'''
   <div style="left:0;right:0;top:0;bottom:0;background:{bg}"></div>
-  <p style="right:70px;top:94px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;font-size:24px;color:var(--ink-2)">Шовкові вироби</p>
+  <img src="{LOGO_K}" alt="" style="left:70px;top:70px;height:44px;display:block">
+  <p style="right:70px;top:80px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;font-size:24px;color:var(--ink-2)">Шовкові вироби</p>
   <div style="left:70px;right:70px;top:80px;bottom:96px;display:flex;flex-direction:column;align-items:center;text-align:center">
-    <img src="{LOGO_K}" alt="" style="height:48px;display:block">
-    {'' if YELLOW else f'<p class="eyebrow" style="position:static;margin-top:52px">{eyebrow}</p>'}
+    {'<div style="height:60px"></div>' if YELLOW else f'<p class="eyebrow" style="position:static;margin-top:90px">{eyebrow}</p>'}
     <h1 class="h" style="position:static;margin-top:16px;font-size:{hs}px">{h}<br><em>{em}</em></h1>
     <div style="flex:1;min-height:0;align-self:stretch;margin-top:44px;position:relative">{visual}</div>
     <p class="body" style="position:static;margin-top:40px;max-width:880px">{nb(body)}</p>
@@ -237,7 +237,7 @@ cert = f"""<div style="position:absolute;inset:0 20px;background:url(src/{PP['zo
     <div><img src="{LOGO_K}" alt="" style="height:40px;margin:0 auto"><p style="font-family:Prata,serif;font-size:72px;line-height:1;margin-top:26px">Сертифікат</p>
     <p style="margin-top:18px;font-size:28px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)">на будь-який товар</p></div></div>"""
 ivory("c19-certificate", "Подарунковий сертифікат Obiimy", "Нехай обере", "сама.", cert,
-      "Номінали 1 000, 1 500, 2 000, 2 500 і 4 000 грн. Діє 3 місяці.", "від 1 000 грн", "подарунковий сертифікат Obiimy", "Подарувати сертифікат", bg="var(--stone)", note="Certificate")
+      "Номінали 1 000, 1 500, 2 000, 2 500 і 4 000 грн. Електронний або фізичний. Діє 3 місяці.", "від 1 000 грн", "подарунковий сертифікат Obiimy", "Подарувати сертифікат", bg="var(--stone)", note="Certificate")
 trio2 = "".join(f'<img class="cut" src="{CUT(PP[i]["flat"])}" alt="" style="width:400px;transform:rotate({r}deg);margin:0 -56px">' for i, r in (("puls", -9), ("avantiura", 3), ("zolote", 10)))
 ivory("c20-showroom", "Шовкові хустки · шоурум у Києві", "Приміряйте", "наживо.", V(f'<div style="display:flex;align-items:center">{trio2}</div>'),
       "Вул. Петра Сагайдачного, 12. Пн–пт 10:00–18:00, сб 11:00–18:00.", "від 2 400 грн", "хустки SOLO", "Приміряти в шоурумі", note="Showroom")
@@ -246,7 +246,7 @@ seven = f'<div style="display:grid;gap:18px;justify-items:center"><div style="di
 ivory("c21-art", "Шовкові хустки й твіллі SOLO", "Сім принтів.", "Сім станів.", V(seven),
       "«Іскра», «Флірт», «Пульс», «Золоте світло», «Авантюра», «Тиша всередині», «Сміливий крок».", "від 1 600 грн", "твіллі 1 600 · хустки від 2 400", "Дивитися всі 7 принтів", bg="var(--stone)", note="Seven prints")
 ivory("c22-delivery", "Шовкова хустка й твіллі · доставка", "Замовте до 16:00 —", "відправимо сьогодні.",
-      V(f'<div style="display:flex;align-items:center;gap:30px"><img class="cut" src="{CUT("puls-44-1")}" alt="" style="width:470px;transform:rotate(-6deg)"><img class="cut" src="{CUT("zolote-tw-1")}" alt="" style="height:500px;transform:rotate(8deg)"></div>'),
+      V(f'<div style="display:flex;align-items:center;gap:30px"><img class="cut" src="{CUT("puls-44-1")}" alt="" style="width:470px;transform:rotate(-6deg)"><img class="cut" src="{CUT("zolote-tw-3")}" alt="" style="height:500px;transform:rotate(8deg)"></div>'),
       "Новою поштою в день замовлення.", "4 000 грн", "«Пульс» 44 × 44 + твіллі «Золоте світло»", "Замовити до 16:00", note="Delivery", hs=84)
 
 
@@ -255,71 +255,66 @@ ivory("c22-delivery", "Шовкова хустка й твіллі · доста
 # =====================================================================================
 full("u01-buy-ukrainian", "flirt-tw-1", "50% 30%", "Купуйте українське.", "Носіть красиве.",
      "Obiimy — український бренд шовкових аксесуарів з авторськими принтами.", "1 600 грн", "", "Обрати твіллі «Флірт»", note="Buy Ukrainian")
-full("u02-london", "zolote-44-4", "50% 20%", "Український шовк,", "який продають у Лондоні.",
+full("u02-london", "zolote-44-2", "50% 20%", "Українська хустка,", "яку продають у\u00a0Лондоні.",
      "Obiimy — в UFD London, Be Brave (Канада), INTERTOP і Hram.", "2 400 грн", "", "Обрати «Золоте світло»", note="Sold abroad", hs=76)
-full("u03-made-in-ua", "krok-44-3", "50% 20%", "Зроблено в Україні.", "Відчувається з дотику.",
+full("u03-made-in-ua", "krok-44-2", "50% 30%", "Зроблено в Україні.", "Відчувається на дотик.",
      "100% італійський шовк, авторський принт, двосторонній друк.", "2 400 грн", "", "Обрати «Сміливий крок»", note="Made in Ukraine", hs=78)
-full("u04-not-mass", "puls-tw-3", "50% 20%", "Не масмаркет.", "Авторський шовк з України.",
+full("u04-not-mass", "puls-tw-3", "50% 20%", "Не масмаркет.", "Авторський шовк українського бренду.",
      "Принти художниці й засновниці бренду Світлани Сніжко — на натуральному шовку.", "1 600 грн", "", "Обрати «Пульс»", note="Not mass market", hs=76)
-full("u05-luxury", "tysha-88-4", "40% 15%", "Українське —", "це розкішно.",
+full("u05-luxury", "tysha-88-2", "50% 50%", "Українське —", "це розкіш.",
      "Натуральний шовк, ручна обробка краю, двосторонній друк.", "6 600 грн", "", "Обрати «Тишу всередині»", note="Ukrainian is luxury")
 full("u06-abroad", "iskra-tw-2", "50% 25%", "Подарунок з України,", "яким пишаються.",
-     "Для рідних за кордоном — надсилаємо міжнародною доставкою.", "1 600 грн", "", "Надіслати подарунок", note="Gift abroad", hs=78)
+     "Для рідних за кордоном. Міжнародна доставка — за тарифами перевізника.", "1 600 грн", "", "Надіслати подарунок", note="Gift abroad", hs=78)
 
-ivory("u07-hand-edge", "Шовкова хустка · ручна робота", "Ручна робота там,", "де її не видно.",
+ivory("u07-hand-edge", "Шовкова хустка «Іскра»", "Ручна робота там,", "де її не видно.",
       f'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;overflow:hidden"><img class="cut" src="{CUT("iskra-65-5")}" alt="" style="height:96%;width:auto"></div>',
-      "Край кожної хустки обробляють вручну — тому розмір може відрізнятися на 0–2,5 см.", "4 800 грн", "«Іскра» · 65 × 65", "Роздивитися хустку", note="Hand-finished edge")
+      "Край кожної хустки обробляють вручну.", "4 800 грн", "«Іскра» · 65 × 65", "Роздивитися хустку", note="Hand-finished edge")
 tags = [("100% італійський шовк", "left:0;top:6%"), ("Авторський принт", "right:0;top:6%"), ("Двосторонній друк", "left:0;bottom:8%"), ("Ручна обробка краю", "right:0;bottom:8%")]
 details = (f'<div style="position:absolute;inset:0;display:grid;place-items:center"><img class="cut" src="{CUT("tysha-88-1")}" alt="" style="max-height:74%;max-width:66%;width:auto;height:auto;transform:rotate(-4deg)"></div>'
            + "".join(f'<p style="position:absolute;{pos};background:#fff;padding:14px 24px;border-radius:999px;font-size:30px;font-weight:600;box-shadow:0 14px 26px -16px rgba(0,0,0,.4)">{t}</p>' for t, pos in tags))
 ivory("u08-details", "Шовкова хустка «Тиша всередині»", "Преміум —", "це деталі.", details,
-      "Усе, за що платять у шовку, — в одній хустці.", "6 600 грн", "«Тиша всередині» · 88 × 88", "Обрати хустку", note="Premium is details")
-step = lambda img, label, extra="": f'<div style="display:grid;justify-items:center;gap:18px"><div style="width:270px;height:270px;{img};box-shadow:0 18px 28px -18px rgba(0,0,0,.45){extra}"></div><p style="font-size:30px;font-weight:600">{label}</p></div>'
-process = (f'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:26px">'
-           + step(f"background:url({HI(PP['avantiura'])}) center/260%", "Картина художниці")
-           + '<p style="font-size:60px;color:var(--ink-3)">→</p>'
-           + step(f"background:url({CUT('avantiura-88-1')}) center/contain no-repeat", "Шовкова хустка", ";box-shadow:none")
-           + '<p style="font-size:60px;color:var(--ink-3)">→</p>'
-           + step(f"background:url({S2('flirt-scr-1')}) 50% 40%/cover", "Жовта коробка")
+      "Усе, що робить шовк преміальним, — в одній хустці.", "6 600 грн", "«Тиша всередині» · 88 × 88", "Обрати хустку", note="Premium is details")
+step = lambda img, label, extra="": f'<div style="display:grid;justify-items:center;gap:18px"><div style="width:290px;height:620px;{img};box-shadow:0 18px 28px -18px rgba(0,0,0,.45){extra}"></div><p style="font-size:30px;font-weight:600">{label}</p></div>'
+process = (f'<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:space-between">'
+           + step(f"background:url({HI(PP['avantiura'])}) center/330%", "Авторський принт")
+           + '<p style="font-size:50px;color:var(--ink-3)">→</p>'
+           + step(f"background:url({CUT('avantiura-88-1')}) center/92% no-repeat,linear-gradient(165deg,{PP['avantiura']['c']},{PP['avantiura']['deep']})", "Шовкова хустка")
+           + '<p style="font-size:50px;color:var(--ink-3)">→</p>'
+           + step(f"background:url({S2('avantiura-88-2')}) 42% 40%/cover", "Ваш образ")
            + '</div>')
-ivory("u09-from-painting", "Шовкові хустки з України", "Від картини художниці", "до вашої хустки.", process,
-      "Авторський принт, натуральний шовк, ручна обробка краю — і фірмова коробка Obiimy.", "від 2 400 грн", "хустки SOLO", "Дивитися колекцію", bg="var(--stone)", note="From painting to scarf", hs=88)
+ivory("u09-from-painting", "Шовкова хустка «Авантюра»", "Від принту художниці", "до вашого образу.", process,
+      "Авторський принт, натуральний шовк, ручна обробка краю.", "6 600 грн", "хустка «Авантюра»", "Обрати хустку", bg="var(--stone)", note="From painting to scarf", hs=88)
 logos = "".join(f'<p style="font-family:Prata,serif;font-size:50px;line-height:1.3">{n}</p>' for n in ["UFD London", "Be Brave · Канада", "INTERTOP", "Hram"])
 trust = (f'<div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:30px">'
          f'<div style="display:grid;place-items:center"><img class="cut" src="{CUT("krok-44-1")}" alt="" style="width:100%;max-width:440px;transform:rotate(-5deg)"></div>'
          f'<div style="text-align:left"><p style="font-size:28px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-3)">Продається в</p>{logos}'
-         f'<p style="font-size:28px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-3);margin-top:30px">Про нас писали</p><p style="font-family:Prata,serif;font-size:44px;line-height:1.3">LIGA.net · INSIDER UA</p></div></div>')
+         f'<p style="font-size:28px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-3);margin-top:30px">Про нас писали</p><p style="font-family:Prata,serif;font-size:44px;line-height:1.3">LIGA.net<br>INSIDER\u00a0UA</p></div></div>')
 ivory("u10-trust", "Український бренд шовку", "Про нас пишуть.", "Нас носять.", trust,
-      "Obiimy — український бренд шовкових хусток, твіллі й аксесуарів з авторськими принтами.", "від 1 600 грн", "твіллі · хустки SOLO", "Обрати свою хустку", note="Press and retail")
+      "Obiimy — український бренд шовкових хусток, твіллі й аксесуарів з авторськими принтами.", "2 400 грн", "хустка «Сміливий крок»", "Обрати хустку", note="Press and retail")
 ivory("u11-slow", "Шовкова хустка «Золоте світло»", "Одна хустка з України", "замість десяти випадкових.",
-      V(f'<div style="display:flex;align-items:center;gap:20px"><img class="cut" src="{CUT("zolote-44-1")}" alt="" style="width:520px;transform:rotate(-5deg)"><img class="cut" src="{CUT("zolote-tw-1")}" alt="" style="height:460px;transform:rotate(9deg)"></div>'),
-      "У світі швидких трендів — речі зі змістом: натуральний шовк, що стає частиною вашої історії.", "2 400 грн", "«Золоте світло» · 44 × 44", "Обрати назавжди", note="Slow fashion", hs=78)
+      f'<div style="position:absolute;inset:0;display:grid;place-items:start center"><img class="cut" src="{CUT("zolote-44-1")}" alt="" style="width:700px;transform:rotate(-5deg);margin-top:30px"></div>',
+      "У світі швидких трендів — речі зі змістом: натуральний шовк, що стає частиною вашої історії.", "2 400 грн", "«Золоте світло» · 44 × 44", "Обрати хустку", note="Slow fashion", hs=78)
 
 
 # =====================================================================================
 # «Тихий преміум» — short lines, one product line without sizes, delicate CTAs
 # =====================================================================================
 QUIET = [
-    ("p01-quiet-luxury", "zolote-44-3", "50% 25%", False, "Тихий люкс.", "Український шовк.", "Авторські принти на натуральному шовку.", ["zolote-44-1"], "Шовкова хустка «Золоте світло»", "2 400 грн", "Подивитися ближче"),
-    ("p02-speaks", "avantiura-88-5", "62% 30%", True, "Шовк, який", "говорить за вас.", "", ["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн", "Знайти свій принт"),
-    ("p03-understand", "tysha-88-2", "50% 0%", False, "Зроблено в Україні", "для тих, хто розуміє.", "", ["tysha-88-1"], "Шовкова хустка «Тиша всередині»", "6 600 грн", "Дізнатися більше"),
-    ("p04-not-loud", "krok-44-3", "50% 20%", False, "Преміум,", "який не кричить.", "", ["krok-44-1"], "Шовкова хустка «Сміливий крок»", "2 400 грн", "Роздивитися принт"),
-    ("p05-character", "krok-44-2", "50% 30%", False, "Українська хустка", "з характером.", "", ["krok-44-1"], "Шовкова хустка «Сміливий крок»", "2 400 грн", "Знайти свою"),
-    ("p06-noticed", "avantiura-tw-3", "50% 40%", False, "Дрібниця,", "яку помічають.", "", ["avantiura-tw-2"], "Шовкова твіллі «Авантюра»", "1 600 грн", "Подарувати собі"),
-    ("p07-whole-look", "iskra-tw-2", "50% 25%", False, "Один аксесуар —", "весь образ.", "", ["iskra-tw-1"], "Шовкова твіллі «Іскра»", "1 600 грн", "Приміряти образ"),
-    ("p08-touch", "flirt-65-3", "38% 30%", False, "Шовк, до якого", "хочеться торкатися.", "", ["flirt-65-1"], "Шовкова хустка «Флірт»", "4 800 грн", "Відкрити колекцію"),
-    ("p09-for-her", "puls-44-4", "50% 20%", True, "Для себе.", "Або для неї.", "", ["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн", "Обрати подарунок"),
-    ("p10-yours", "tysha-88-3", "50% 45%", False, "Українське. Вишукане.", "Ваше.", "", ["tysha-88-1"], "Шовкова хустка «Тиша всередині»", "6 600 грн", "Обрати для себе"),
+    ("p01-quiet-luxury", "zolote-44-3", "50% 25%", False, "Бездоганна елегантність.", "Український бренд.", "Авторські принти на натуральному шовку.", ["zolote-44-1"], "Шовкова хустка «Золоте світло»", "2 400 грн", "Подивитися ближче"),
+    ("p02-speaks", "avantiura-88-5", "62% 30%", False, "Шовк, який", "говорить за вас.", "", ["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн", "Знайти свій принт"),
+    ("p05-character", "krok-44-2", "50% 30%", True, "Українська хустка", "з характером.", "Принт «Сміливий крок» — довіра до себе.", ["krok-44-1"], "Шовкова хустка «Сміливий крок»", "2 400 грн", "Знайти свою"),
+    ("p06-noticed", "avantiura-tw-3", "50% 40%", False, "Деталь,", "яку помічають.", "", ["avantiura-tw-5"], "Шовкова твіллі «Авантюра»", "1 600 грн", "Подарувати собі"),
+    ("p07-whole-look", "iskra-tw-2", "50% 25%", False, "Один аксесуар —", "весь образ.", "", ["iskra-tw-4"], "Шовкова твіллі «Іскра»", "1 600 грн", "Подивитися образ"),
+    ("p08-touch", "flirt-65-3", "38% 30%", False, "Шовк, до якого", "хочеться торкатися.", "«Флірт» — це насамперед стан.", ["flirt-65-1"], "Шовкова хустка «Флірт»", "4 800 грн", "Відкрити колекцію"),
+    ("p09-for-her", "puls-44-4", "50% 20%", True, "Для неї.", "Або для себе.", "Індивідуальне пакування.<br>Підпишемо вашими словами.", ["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн", "Обрати подарунок"),
     ("p11-italian-silk", "zolote-44-2", "50% 20%", False, "Італійський шовк.", "Український характер.", "", ["zolote-44-1"], "Шовкова хустка «Золоте світло»", "2 400 грн", "Детальніше"),
-    ("p12-wearable-art", "puls-44-2", "42% 40%", True, "Мистецтво,", "яке можна носити.", "Принти художниці Світлани Сніжко.", ["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн", "Переглянути SOLO"),
-    ("p13-classic", "zolote-44-4", "50% 20%", False, "Шовкова класика", "українського бренду.", "", ["zolote-tw-1"], "Шовкова твіллі «Золоте світло»", "1 600 грн", "Подивитися"),
-    ("p14-real", "avantiura-88-4", "50% 25%", False, "Коли хочеться", "чогось справжнього.", "", ["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн", "Обрати хустку"),
-    ("p15-iskra", "iskra-65-2", "40% 0%", True, "Колір, який", "обирають сміливі.", "", ["iskra-65-1"], "Шовкова хустка «Іскра»", "4 800 грн", "Роздивитися «Іскру»"),
+    ("p12-wearable-art", "puls-44-2", "42% 40%", False, "Мистецтво,", "яке можна носити.", "Принти художниці Світлани Сніжко.", ["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн", "Переглянути SOLO"),
+    ("p15-iskra", "iskra-65-2", "40% 0%", False, "Колір, який", "обирають сміливі.", "Принт «Іскра» — сміливість бути помітною.", ["iskra-65-1"], "Шовкова хустка «Іскра»", "4 800 грн", "Роздивитися «Іскру»"),
 ]
 for id, ph, pos, spot, h, em, body, cuts, title, price, cta in QUIET:
     MIN[id] = (cuts, title)
     full(id, ph, pos, h, em, body, price, "", cta, spot=spot, note=f"Quiet premium: {h} {em}", hs=86,
-         shade_from=980 if spot else 1040)
+         shade_from=980 if spot else 1040, top_text=id == "p06-noticed", **({"box": (300, 1620)} if id == "p06-noticed" else {"box": (190, 1730)} if id == "p09-for-her" else {}))
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO classic</title>

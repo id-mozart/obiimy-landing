@@ -1,6 +1,6 @@
 """Creatives gallery page for the Railway hub: site/creatives.html + site/creatives/<series>/<file>.
 Called from build-site.py; images: full JPG for download, 540px WebP preview for the grid."""
-import html, pathlib, shutil
+import hashlib, html, pathlib, shutil
 from PIL import Image
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -39,6 +39,7 @@ def fmt(im):
 def build(site: pathlib.Path):
     out = site / "creatives"; out.mkdir(exist_ok=True)
     sections = []
+    toc = []
     def add(title, desc, files, series):
         d = out / series; d.mkdir(exist_ok=True)
         cards = []
@@ -47,21 +48,24 @@ def build(site: pathlib.Path):
             im = Image.open(f).convert("RGB"); label, cls = fmt(im)
             prev = d / (f.stem + "-540.webp")
             t = im.copy(); t.thumbnail((540, 960)); t.save(prev, quality=80)
-            cards.append(f'''<figure class="c {cls}" data-f="{cls}"><a href="creatives/{series}/{f.name}" target="_blank" rel="noopener"><img src="creatives/{series}/{prev.name}" alt="{html.escape(title)}" loading="lazy" width="{t.width}" height="{t.height}"></a>
-        <figcaption><span>{label}</span><a href="creatives/{series}/{f.name}" download>JPG ↓</a></figcaption></figure>''')
-        sections.append(f'''<section class="grp"><div class="gh"><h3>{title}</h3><p>{desc}</p></div><div class="grid">{"".join(cards)}</div></section>''')
+            v = hashlib.md5(f.read_bytes()).hexdigest()[:8]
+            cards.append(f'''<figure class="c {cls}" data-f="{cls}"><a href="creatives/{series}/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/{series}/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="{t.width}" height="{t.height}"></a>
+        <figcaption><span>{label}</span><a href="creatives/{series}/{f.name}?v={v}" download="{f.name}">JPG ↓</a></figcaption></figure>''')
+        anchor = f"s{len(toc) + 1}"; toc.append((anchor, title, len(cards)))
+        sections.append(f'''<section class="grp" id="{anchor}"><div class="gh"><h3>{title} <span style="font-weight:400;color:var(--ink2)">· {len(cards)}</span></h3><p>{desc}</p></div><div class="grid">{"".join(cards)}</div></section>''')
     classic = sorted((ROOT / "ads/solo/out4").glob("*.jpg"))
     yellow = sorted((ROOT / "ads/solo/out5").glob("*.jpg"))
     isc = lambda f, lo, hi: f.name[0] == "c" and lo <= f.name[:3] <= hi
-    add("Варіант A · повноекранні", "Героїня на весь кадр, внизу — картка товару: вирізана хустка чи твіллі, назва, принт, розмір, ціна.", [f for f in classic if isc(f, "c01", "c13")], "solo-main")
-    add("Варіант A · товарні", "Хустка, твіллі, подарунок, доставка, шоурум — світлий кадр і ціна.", [f for f in classic if isc(f, "c14", "c99")], "solo-main")
-    add("Варіант A · український преміум", "Одне повідомлення, розказане по-різному: це українські шовкові аксесуари преміум-класу.", [f for f in classic if f.name[0] == "u"], "solo-main")
     add("Варіант A · тихий преміум", "Коротко й делікатно: один рядок, товар і ціна без розмірів, м’які заклики.", [f for f in classic if f.name[0] == "p"], "solo-main")
-    add("Варіант B · повноекранні", "Те саме, але товар названо на жовтій фірмовій плашці.", [f for f in yellow if isc(f, "c01", "c13")], "solo-yellow")
-    add("Варіант B · товарні", "Світлі кадри з жовтою плашкою: що продаємо, деталі й ціна.", [f for f in yellow if isc(f, "c14", "c99")], "solo-yellow")
-    add("Варіант B · український преміум", "Український преміум з жовтою плашкою товару.", [f for f in yellow if f.name[0] == "u"], "solo-yellow")
     add("Варіант B · тихий преміум", "Тихий преміум з жовтою плашкою товару.", [f for f in yellow if f.name[0] == "p"], "solo-yellow")
+    add("Варіант A · український преміум", "Одне повідомлення, розказане по-різному: це українські шовкові аксесуари преміум-класу.", [f for f in classic if f.name[0] == "u"], "solo-main")
+    add("Варіант B · український преміум", "Український преміум з жовтою плашкою товару.", [f for f in yellow if f.name[0] == "u"], "solo-yellow")
+    add("Варіант A · повноекранні", "Героїня на весь кадр, внизу — картка товару: вирізана хустка чи твіллі, назва, принт, розмір, ціна.", [f for f in classic if isc(f, "c01", "c13")], "solo-main")
+    add("Варіант B · повноекранні", "Те саме, але товар названо на жовтій фірмовій плашці.", [f for f in yellow if isc(f, "c01", "c13")], "solo-yellow")
+    add("Варіант A · товарні", "Хустка, твіллі, подарунок, доставка, шоурум — світлий кадр і ціна.", [f for f in classic if isc(f, "c14", "c99")], "solo-main")
+    add("Варіант B · товарні", "Світлі кадри з жовтою плашкою: що продаємо, деталі й ціна.", [f for f in yellow if isc(f, "c14", "c99")], "solo-yellow")
     main_html = "".join(sections); sections.clear()
+    main_ids = {a for a, _, _ in toc}
     solo = sorted((ROOT / "ads/solo/out").glob("*.jpg"))
     n_solo = len(classic)
     for prefix, title, desc in SOLO_GROUPS:
@@ -93,7 +97,10 @@ h2 {{ font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2r
 .bar {{ position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); margin: 28px -24px 0; padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 8px; }}
 .bar button {{ font: inherit; font-size: .88rem; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 10px 16px; cursor: pointer; }}
 .bar button[aria-pressed="true"] {{ background: var(--ink); color: var(--bg); border-color: var(--ink); }}
-.grp {{ margin-top: 40px; }}
+.grp {{ margin-top: 40px; scroll-margin-top: 20px; }}
+.toc {{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }}
+.toc a {{ font-size: .88rem; border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; color: var(--ink); text-decoration: none; }}
+.toc a span {{ color: var(--ink2); }}
 .gh h3 {{ margin: 0 0 4px; font-size: 1.15rem; }}
 .gh p {{ margin: 0 0 16px; color: var(--ink2); font-size: .92rem; max-width: 60em; line-height: 1.5; }}
 .grid {{ display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; align-items: start; }}
@@ -109,6 +116,7 @@ footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1
 <h1>SOLO</h1>
 <p class="lede"><b>Шлях до себе.</b> Основна серія — {n_solo} банерів 1080 × 1920 для запуску нової колекції Obiimy у стилі попередніх кампаній бренду, у двох варіантах подачі товару: сім авторських принтів — сім станів на шляху жінки до себе. Тексти — за прес-релізом колекції, фото й ціни — з obiimy.world. Увесь текст стоїть у безпечній зоні сторіс. Натисніть на картинку, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>
 
+<nav class="toc">{"".join(f'<a href="#{a}">{t} <span>{n}</span></a>' for a, t, n in toc if a in main_ids)}</nav>
 {main_html}
 <h2>Альтернативні напрями SOLO</h2>
 <p class="lede">Інші підходи до тієї ж колекції: обкладинки журналу, сім станів, кіно, продажні сторіс.</p>

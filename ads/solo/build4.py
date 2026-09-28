@@ -60,34 +60,34 @@ def edge_tone(photo, spot):
     k = .8
     return f"rgb({int(r * k)},{int(g * k)},{int(b * k)})"
 
-def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, note="", hs=88, box=(236, 1260), top_text=False, shade_from=900):
-    """Photo sharp in `box`, the rest of the frame is a blurred continuation of the same photo (no black bars).
-    Text block at the bottom of the safe zone, or at the top for back-view frames (top_text)."""
+def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, note="", hs=92, box=(0, 1920), top_text=False, shade_from=1040):
+    """Plain banner: the photo fills the frame, logo at the top edge, text block at the bottom edge
+    (or at the top for back-view frames). If the photo box does not start at 0, the gap takes the photo's edge tone."""
     t, hgt = box
     top_rgb = edge_tone(photo, spot)
-    feather = "-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 160px,#000 calc(100% - 260px),transparent 100%);mask-image:linear-gradient(180deg,transparent 0,#000 160px,#000 calc(100% - 260px),transparent 100%)"
+    feather = ("-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 140px);mask-image:linear-gradient(180deg,transparent 0,#000 140px)" if t > 0 else "")
     st = f"position:absolute;left:0;right:0;top:{t}px;height:{hgt}px;{feather}"
     ph = (spot_photo(photo, pos, style=st) if spot
           else f'<div class="photo" style="{st}"><img src="{S2(photo)}" alt="" style="object-position:{pos}"></div>')
-    blur = f'<div style="left:0;right:0;top:0;height:{t + 200}px;background:{top_rgb}"></div>'
+    fill = f'<div style="left:0;right:0;top:0;height:{t + 160}px;background:{top_rgb}"></div>' if t > 0 else ""
     pr = f'<p class="price" style="position:static;margin-top:20px">{price_main}<small>{price_small}</small></p>' if price_main else f'<p class="price" style="position:static;margin-top:20px"><small style="margin-top:0">{price_small}</small></p>'
     block = f"""<h1 class="h" style="position:static;color:#fff;font-size:{hs}px">{h}<br><em style="color:#E9D7A6">{em}</em></h1>
     <p class="body" style="position:static;margin-top:18px;max-width:900px">{nb(body)}</p>
     {pr}
-    <div class="cta" style="position:static;transform:none;margin-top:24px">{cta}</div>"""
+    <div class="cta" style="position:static;transform:none;margin-top:26px">{cta}</div>"""
     if top_text:
-        shade = '<div style="left:0;right:0;top:0;height:1000px;background:linear-gradient(180deg,#141216 0%,rgba(20,18,22,.9) 40%,rgba(20,18,22,.55) 70%,rgba(20,18,22,0) 100%)"></div>'
-        pos_block = "top:440px"
+        shade = '<div style="left:0;right:0;top:0;height:900px;background:linear-gradient(180deg,#141216 0%,rgba(20,18,22,.88) 42%,rgba(20,18,22,.5) 72%,rgba(20,18,22,0) 100%)"></div>'
+        pos_block = "top:170px"
     else:
-        shade = ('<div style="left:0;right:0;top:0;height:430px;background:linear-gradient(180deg,rgba(20,18,22,.55) 0%,rgba(20,18,22,.25) 55%,rgba(20,18,22,0) 100%)"></div>'
-                 f'<div style="left:0;right:0;top:{shade_from}px;bottom:0;background:linear-gradient(180deg,rgba(20,18,22,0) 0%,rgba(20,18,22,.78) 24%,rgba(20,18,22,.9) 50%,rgba(20,18,22,.86) 100%)"></div>')
-        pos_block = "bottom:380px"
+        shade = ('<div style="left:0;right:0;top:0;height:260px;background:linear-gradient(180deg,rgba(20,18,22,.55) 0%,rgba(20,18,22,0) 100%)"></div>'
+                 f'<div style="left:0;right:0;top:{shade_from}px;bottom:0;background:linear-gradient(180deg,rgba(20,18,22,0) 0%,rgba(20,18,22,.78) 28%,rgba(20,18,22,.92) 58%,rgba(20,18,22,.95) 100%)"></div>')
+        pos_block = "bottom:96px"
     ad(id, "full dark", f"""
   <div style="left:0;right:0;top:0;bottom:0;background:#141216"></div>
-  {blur}
+  {fill}
   {ph}
   {shade}
-  <img src="{LOGO_W}" alt="" style="left:80px;top:290px;height:40px;display:block">
+  <img src="{LOGO_W}" alt="" style="left:70px;top:70px;height:44px;display:block">
   <div style="left:70px;right:70px;{pos_block};display:flex;flex-direction:column;align-items:center;text-align:center">
     {block}
   </div>""", note)
@@ -96,7 +96,7 @@ full("c01-launch", "tysha-88-2", "50% 0%", "SOLO.", "Шлях до себе.",
      "Шовкова свобода: жіноча сила крізь десятиліття. Сім авторських принтів — сім станів жінки.",
      "від 1 600 грн", "твіллі · хустки 44, 65 і 88 см", "Дивитися колекцію", note="Launch")
 full("c02-iskra", "iskra-65-2", "40% 0%", "Сміливість", "бути помітною.",
-     "Внутрішня енергія та здатність запалювати зміни навколо себе.", "4 800 грн", "«Іскра» · хустка 65 × 65", "Обрати «Іскру»", spot=True, note="Iskra, colour spot", shade_from=700)
+     "Внутрішня енергія та здатність запалювати зміни навколо себе.", "4 800 грн", "«Іскра» · хустка 65 × 65", "Обрати «Іскру»", spot=True, note="Iskra, colour spot", shade_from=980)
 full("c03-flirt", "flirt-65-3", "38% 30%", "Флірт — це", "насамперед стан.",
      "Віра в перемогу, оптимізм і мистецтво невимушеної жіночності.", "4 800 грн", "«Флірт» · хустка 65 × 65", "Обрати «Флірт»", note="Flirt")
 full("c05-zolote", "zolote-44-3", "50% 25%", "Коли все стає", "на свої місця.",
@@ -108,26 +108,26 @@ full("c07-tysha", "tysha-88-3", "50% 45%", "Тиша", "всередині.",
 full("c08-krok", "krok-44-2", "50% 30%", "Сміливий", "крок.",
      "Не тому, що страх зникає, а тому, що з’являється щось важливіше — довіра до себе.", "2 400 грн", "«Сміливий крок» · хустка 44 × 44", "Обрати «Сміливий крок»", note="Krok")
 full("c09-ya-ie", "zolote-44-2", "50% 20%", "Я є.<br>Я продовжую жити.", "Я обираю себе.",
-     "Улюблена сукня, шовкова хустка, червона помада стають маленькими актами свободи.", "", "SOLO · шлях до себе", "Дивитися колекцію", note="Manifesto, organic", hs=80)
+     "Улюблена сукня, шовкова хустка, червона помада стають маленькими актами свободи.", "", "SOLO · шлях до себе", "Дивитися колекцію", note="Manifesto, organic", hs=84)
 full("c10-grey", "puls-44-2", "42% 40%", "Мода — це", "про гідність.",
      "Про право на жіночність навіть тоді, коли світ навколо стає темно-сірим.", "", "SOLO · шовкова свобода", "Дивитися колекцію", spot=True, note="Dignity, organic")
 full("c11-decades", "flirt-tw-4", "50% 40%", "Змінювалися епохи й силуети.", "Хустка залишалася поруч.",
      "Натхнення — обкладинки <span style=\"white-space:nowrap\">40–50-х</span>.", "1 600 грн", "твіллі «Флірт» · 84 × 5", "Обрати твіллі", note="Decades", hs=64, box=(0, 1920), top_text=True)
 full("c12-hair", "avantiura-tw-3", "50% 40%", "У волоссі.", "Як у п’ятдесятих.",
-     "Шовкова стрічка «Авантюра» — у волосся, на сумку чи на зап’ястя.", "1 600 грн", "твіллі «Авантюра» · 84 × 5", "Обрати твіллі", note="Twilly in hair", box=(560, 1360), top_text=True)
+     "Шовкова стрічка «Авантюра» — у волосся, на сумку чи на зап’ястя.", "1 600 грн", "твіллі «Авантюра» · 84 × 5", "Обрати твіллі", note="Twilly in hair", box=(300, 1620), top_text=True)
 full("c13-parts", "avantiura-88-2", "40% 0%", "Найбільша хустка.", "Можна частинами.",
-     "ПриватБанк — 4 платежі, monobank — 3 платежі.", "6 600 грн", "«Авантюра» · хустка 88 × 88", "Обрати «Авантюру»", note="Pay in parts", box=(236, 1040))
+     "ПриватБанк — 4 платежі, monobank — 3 платежі.", "6 600 грн", "«Авантюра» · хустка 88 × 88", "Обрати «Авантюру»", note="Pay in parts", box=(0, 1920), shade_from=1000)
 
 # ---------------------------------------------------------------- IVORY (product)
-def ivory(id, eyebrow, h, em, visual, body, price_main, price_small, cta, bg="var(--ivory)", note="", hs=92):
+def ivory(id, eyebrow, h, em, visual, body, price_main, price_small, cta, bg="var(--ivory)", note="", hs=100):
     ad(id, "", f'''
   <div style="left:0;right:0;top:0;bottom:0;background:{bg}"></div>
-  <div style="left:70px;right:70px;top:290px;bottom:380px;display:flex;flex-direction:column;align-items:center;text-align:center">
-    <img src="{LOGO_K}" alt="" style="height:44px;display:block">
-    <p class="eyebrow" style="position:static;margin-top:40px">{eyebrow}</p>
-    <h1 class="h" style="position:static;margin-top:14px;font-size:{hs}px">{h}<br><em>{em}</em></h1>
-    <div style="flex:1;min-height:0;align-self:stretch;margin-top:30px;position:relative">{visual}</div>
-    <p class="body" style="position:static;margin-top:28px;max-width:880px">{nb(body)}</p>
+  <div style="left:70px;right:70px;top:80px;bottom:96px;display:flex;flex-direction:column;align-items:center;text-align:center">
+    <img src="{LOGO_K}" alt="" style="height:48px;display:block">
+    <p class="eyebrow" style="position:static;margin-top:52px">{eyebrow}</p>
+    <h1 class="h" style="position:static;margin-top:16px;font-size:{hs}px">{h}<br><em>{em}</em></h1>
+    <div style="flex:1;min-height:0;align-self:stretch;margin-top:44px;position:relative">{visual}</div>
+    <p class="body" style="position:static;margin-top:40px;max-width:880px">{nb(body)}</p>
     <p class="price" style="position:static;margin-top:18px">{price_main}{f"<small>{price_small}</small>" if price_small else ""}</p>
     <div class="cta" style="position:static;transform:none;margin-top:26px">{cta}</div>
   </div>''', note)
@@ -135,7 +135,7 @@ def ivory(id, eyebrow, h, em, visual, body, price_main, price_small, cta, bg="va
 V = lambda inner: f'<div style="position:absolute;inset:0;display:grid;place-items:center">{inner}</div>'
 FRAME = lambda name, pos="50% 50%": f'<div class="frame" style="position:absolute;inset:0 20px"><img src="{S2(name)}" alt="" style="object-position:{pos}"></div>'
 
-tw_img = lambda p: f'<img class="cut" src="{CUT(p["tw"])}" alt="" style="height:250px">'
+tw_img = lambda p: f'<img class="cut" src="{CUT(p["tw"])}" alt="" style="height:330px">'
 tw = f'<div style="display:grid;gap:18px;justify-items:center"><div style="display:flex;gap:34px">{"".join(tw_img(p) for p in P[:4])}</div><div style="display:flex;gap:34px">{"".join(tw_img(p) for p in P[4:])}</div></div>'
 ivory("c14-twilly", "Твіллі 84 × 5", "Сім станів.", "Одна ціна.",
       V(tw),
@@ -143,7 +143,7 @@ ivory("c14-twilly", "Твіллі 84 × 5", "Сім станів.", "Одна ц
 ivory("c15-box", "Маленький подарунок", "Жовта коробка,", "а в ній — «Флірт».",
       f'<div class="frame" style="position:absolute;inset:0 20px;mix-blend-mode:multiply;-webkit-mask-image:radial-gradient(75% 80% at 50% 50%,#000 70%,transparent 100%);mask-image:radial-gradient(75% 80% at 50% 50%,#000 70%,transparent 100%)"><img src="{S2("flirt-scr-1")}" alt="" style="object-position:50% 62%"></div>',
       "Шовкова резинка у фірмовій коробочці — перше знайомство з Obiimy.", "700 грн", "резинка для волосся «Флірт»", "Обрати резинку", bg="#F1F1F1", note="Yellow box")
-trio = "".join(f'<img class="cut" src="{CUT(PP[i]["flat"])}" alt="" style="width:320px;transform:rotate({r}deg);margin:0 -36px">' for i, r in (("iskra", -10), ("tysha", 2), ("krok", 11)))
+trio = "".join(f'<img class="cut" src="{CUT(PP[i]["flat"])}" alt="" style="width:400px;transform:rotate({r}deg);margin:0 -56px">' for i, r in (("iskra", -10), ("tysha", 2), ("krok", 11)))
 ivory("c16-gift", "Подарунок", "Подаруйте", "не річ, а стан.",
       V(f'<div style="display:flex;align-items:center">{trio}</div>'),
       "«Іскра» — для сміливої, «Тиша всередині» — для тієї, що вміє чути себе, «Сміливий крок» — для нових починань.",
@@ -156,20 +156,20 @@ look = f"""<div style="position:absolute;inset:0 20px;display:grid;grid-template
 ivory("c18-look", "Образ цілком", "Хустка й твіллі", "одного принту.", look,
       "Один принт — на плечах і на сумці.", "6 400 грн", "хустка + твіллі · доставка безкоштовна", "Обрати образ", note="Complete look")
 cert = f"""<div style="position:absolute;inset:0 20px;background:url(src/{PP['zolote']['flat']}-hi.webp) center/170%"></div>
-  <div style="position:absolute;left:150px;right:150px;top:70px;bottom:70px;background:#fff;box-shadow:0 30px 60px -24px rgba(0,0,0,.5);transform:rotate(-3deg);display:grid;place-items:center;text-align:center">
+  <div style="position:absolute;left:150px;right:150px;top:110px;bottom:110px;background:#fff;box-shadow:0 30px 60px -24px rgba(0,0,0,.5);transform:rotate(-3deg);display:grid;place-items:center;text-align:center">
     <div><img src="{LOGO_K}" alt="" style="height:40px;margin:0 auto"><p style="font-family:Prata,serif;font-size:72px;line-height:1;margin-top:26px">Сертифікат</p>
     <p style="margin-top:18px;font-size:28px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)">на будь-який товар</p></div></div>"""
 ivory("c19-certificate", "Не знаєте, який стан їй ближчий?", "Нехай обере", "сама.", cert,
       "Номінали 1 000, 1 500, 2 000, 2 500 і 4 000 грн. Діє 3 місяці.", "від 1 000 грн", "подарунковий сертифікат Obiimy", "Обрати сертифікат", bg="var(--stone)", note="Certificate")
-trio2 = "".join(f'<img class="cut" src="{CUT(PP[i]["flat"])}" alt="" style="width:320px;transform:rotate({r}deg);margin:0 -36px">' for i, r in (("puls", -9), ("avantiura", 3), ("zolote", 10)))
+trio2 = "".join(f'<img class="cut" src="{CUT(PP[i]["flat"])}" alt="" style="width:400px;transform:rotate({r}deg);margin:0 -56px">' for i, r in (("puls", -9), ("avantiura", 3), ("zolote", 10)))
 ivory("c20-showroom", "Шоурум у Києві", "Приміряйте", "наживо.", V(f'<div style="display:flex;align-items:center">{trio2}</div>'),
       "Вул. Петра Сагайдачного, 12. Пн–пт 10:00–18:00, сб 11:00–18:00.", "від 2 400 грн", "хустки SOLO", "Дивитися колекцію", note="Showroom")
-sw = lambda p: f'<span style="width:190px;height:190px;background:url({HI(p)}) center/220%;box-shadow:0 14px 22px -12px rgba(0,0,0,.4)"></span>'
+sw = lambda p: f'<span style="width:216px;height:216px;background:url({HI(p)}) center/220%;box-shadow:0 14px 22px -12px rgba(0,0,0,.4)"></span>'
 seven = f'<div style="display:grid;gap:18px;justify-items:center"><div style="display:flex;gap:18px">{"".join(sw(p) for p in P[:4])}</div><div style="display:flex;gap:18px">{"".join(sw(p) for p in P[4:])}</div></div>'
 ivory("c21-art", "Авторські принти", "Сім принтів.", "Сім станів.", V(seven),
       "«Іскра», «Флірт», «Пульс», «Золоте світло», «Авантюра», «Тиша всередині», «Сміливий крок».", "від 1 600 грн", "твіллі 1 600 · хустки від 2 400", "Дивитися колекцію", bg="var(--stone)", note="Seven prints")
 ivory("c22-delivery", "Доставка", "Замовте до 16:00 —", "відправимо сьогодні.",
-      V(f'<div style="display:flex;align-items:center;gap:30px"><img class="cut" src="{CUT("puls-44-1")}" alt="" style="width:360px;transform:rotate(-6deg)"><img class="cut" src="{CUT("zolote-tw-1")}" alt="" style="height:380px;transform:rotate(8deg)"></div>'),
+      V(f'<div style="display:flex;align-items:center;gap:30px"><img class="cut" src="{CUT("puls-44-1")}" alt="" style="width:470px;transform:rotate(-6deg)"><img class="cut" src="{CUT("zolote-tw-1")}" alt="" style="height:500px;transform:rotate(8deg)"></div>'),
       "Новою поштою в день замовлення.", "4 000 грн", "«Пульс» 44 × 44 + твіллі «Золоте світло»", "Замовити", note="Delivery", hs=84)
 
 HEAD = """<!DOCTYPE html>

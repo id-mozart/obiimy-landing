@@ -51,8 +51,11 @@ def build(site: pathlib.Path):
         <figcaption><span>{label}</span><a href="creatives/{series}/{f.name}" download>JPG ↓</a></figcaption></figure>''')
         sections.append(f'''<section class="grp"><div class="gh"><h3>{title}</h3><p>{desc}</p></div><div class="grid">{"".join(cards)}</div></section>''')
     classic = sorted((ROOT / "ads/solo/out4").glob("*.jpg"))
-    add("Повноекранні", "Героїня колекції на весь кадр; у п’яти сторіс кольорова лише хустка — «світ навколо стає темно-сірим».", [f for f in classic if f.name[:3] <= "c13"], "solo-main")
-    add("Товарні", "Хустка, твіллі, подарунок, доставка, шоурум — світлий кадр і ціна.", [f for f in classic if f.name[:3] > "c13"], "solo-main")
+    yellow = sorted((ROOT / "ads/solo/out5").glob("*.jpg"))
+    add("Варіант A · повноекранні", "Героїня на весь кадр, внизу — картка товару: вирізана хустка чи твіллі, назва, принт, розмір, ціна.", [f for f in classic if f.name[:3] <= "c13"], "solo-main")
+    add("Варіант A · товарні", "Хустка, твіллі, подарунок, доставка, шоурум — світлий кадр і ціна.", [f for f in classic if f.name[:3] > "c13"], "solo-main")
+    add("Варіант B · повноекранні", "Те саме, але товар названо на жовтій фірмовій плашці.", [f for f in yellow if f.name[:3] <= "c13"], "solo-yellow")
+    add("Варіант B · товарні", "Світлі кадри з жовтою плашкою: що продаємо, деталі й ціна.", [f for f in yellow if f.name[:3] > "c13"], "solo-yellow")
     main_html = "".join(sections); sections.clear()
     solo = sorted((ROOT / "ads/solo/out").glob("*.jpg"))
     n_solo = len(classic)
@@ -99,7 +102,7 @@ footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1
 </style></head><body><div class="wrap">
 <header><a href="./">← Усі лендинги Obiimy</a><a href="https://obiimy.world/solo-shliakh-do-sebe/" target="_blank" rel="noopener">Колекція на obiimy.world ↗</a></header>
 <h1>SOLO</h1>
-<p class="lede"><b>Шлях до себе.</b> Основна серія — {n_solo} сторіс 1080 × 1920 для запуску нової колекції Obiimy у стилі попередніх кампаній бренду: сім авторських принтів — сім станів на шляху жінки до себе. Тексти — за прес-релізом колекції, фото й ціни — з obiimy.world. Увесь текст стоїть у безпечній зоні сторіс. Натисніть на картинку, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>
+<p class="lede"><b>Шлях до себе.</b> Основна серія — {n_solo} банерів 1080 × 1920 для запуску нової колекції Obiimy у стилі попередніх кампаній бренду, у двох варіантах подачі товару: сім авторських принтів — сім станів на шляху жінки до себе. Тексти — за прес-релізом колекції, фото й ціни — з obiimy.world. Увесь текст стоїть у безпечній зоні сторіс. Натисніть на картинку, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>
 
 {main_html}
 <h2>Альтернативні напрями SOLO</h2>

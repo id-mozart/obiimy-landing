@@ -107,6 +107,11 @@ def product_card(id, price_main, price_small):
       <div><p style="font-size:30px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:{c1}">{kind}</p>
         <p style="font-size:38px;line-height:1.2;color:{c2};margin-top:6px;font-weight:{500 if YELLOW else 400}">{name}</p>{price}</div></div>"""
 
+LOCKUP = ('<span style="display:block;font-family:Montserrat,sans-serif;text-transform:uppercase;line-height:1;color:#fff">'
+          '<span style="display:block;font-size:40px;font-weight:400">Колекція</span>'
+          '<span style="display:block;font-size:170px;font-weight:300;margin-top:6px">Соло</span>'
+          '<span style="display:block;font-size:40px;font-weight:400;margin-top:10px">Шлях до себе</span></span>')
+
 def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, note="", hs=92, box=(0, 1920), top_text=False, shade_from=1040):
     """Plain banner: the photo fills the frame, logo at the top edge, text block at the bottom edge
     (or at the top for back-view frames). If the photo box does not start at 0, the gap takes the photo's edge tone."""
@@ -118,7 +123,7 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
           else f'<div class="photo" style="{st}"><img src="{S2(photo)}" alt="" style="object-position:{pos}"></div>')
     fill = f'<div style="left:0;right:0;top:0;height:{t + 160}px;background:{top_rgb}"></div>' if t > 0 else ""
     pr = product_card(id, price_main, price_small)
-    block = f"""<h1 class="h" style="position:static;color:#fff;font-size:{hs}px">{h}<br><em style="color:#E9D7A6">{em}</em></h1>
+    block = f"""<h1 class="h" style="position:static;color:#fff;font-size:{hs}px">{h}{f'<br><em style="color:#E9D7A6">{em}</em>' if em else ''}</h1>
     {f'<p class="body" style="position:static;margin-top:18px;max-width:900px">{nb(body)}</p>' if body else ""}
     {pr}
     <div class="cta" style="position:static;transform:none;margin-top:26px">{cta}</div>"""
@@ -139,8 +144,8 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
     {block}
   </div>""", note)
 
-full("c01-launch", "tysha-88-2", "50% 0%", "SOLO.", "Шлях до себе.",
-     "Шовкова свобода: жіноча сила крізь десятиліття. Сім авторських принтів — сім станів жінки.",
+full("c01-launch", "tysha-88-2", "50% 0%", LOCKUP, "",
+     "<span style=\"display:inline-block;font-family:Montserrat,sans-serif;font-size:30px;font-weight:500;padding:14px 28px;border-radius:999px;background:#F2B705;color:#141216\">Жіноча сила крізь десятиліття</span>",
      "від 1 600 грн", "твіллі · хустки 44, 65 і 88 см", "Дивитися всі 7 принтів", note="Launch")
 full("c02-iskra", "iskra-65-2", "40% 0%", "Сміливість", "бути помітною.",
      "Внутрішня енергія та здатність запалювати зміни навколо себе.", "4 800 грн", "«Іскра» · хустка 65 × 65", "Обрати «Іскру»", spot=True, note="Iskra, colour spot", shade_from=980)
@@ -316,7 +321,7 @@ for id, ph, pos, spot, h, em, body, cuts, title, price, cta in QUIET:
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO classic</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Onest:wght@300;400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Onest:wght@300;400;500;600&family=Montserrat:wght@300;400;500&display=swap">
 <style>""" + CSS + "</style></head><body>"
 (HERE / ("solo5.html" if YELLOW else "solo4.html")).write_text(HEAD + "".join(ads) + "\n</body></html>")
 print(len(ads), "creatives (classic)")

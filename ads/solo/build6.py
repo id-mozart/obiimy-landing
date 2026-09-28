@@ -50,7 +50,7 @@ def band(top, height, b):
 
 def triptych(id, kicker, bands, tagline, product, cta, note=""):
     """bands: 3 × (photo, object-position, big label, small line, look[, {tag, size}]); product: (cutouts, title, price)."""
-    top, h, gap = 110, 462, 12
+    top, h, gap = 280, 406, 12
     body = "".join(band(top + k * (h + gap), h, b) for k, b in enumerate(bands))
     cuts, title, price = product
     thumbs = "".join(f'<img src="{CUT(c)}" alt="" style="height:118px;width:auto;max-width:124px;object-fit:contain;margin-left:{0 if i == 0 else -44}px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.4));transform:rotate({(-6, 5, -3)[i]}deg)">' for i, c in enumerate(cuts))
@@ -60,8 +60,12 @@ def triptych(id, kicker, bands, tagline, product, cta, note=""):
     y0 = top + 3 * h + 2 * gap
     ad(id, f'''
   <div style="left:0;right:0;top:0;height:{top}px;background:#141110"></div>
-  <p class="kicker" style="left:64px;top:44px">{kicker}</p>
-  <img src="{LOGO_W}" alt="" style="right:64px;top:40px;height:40px">
+  <div style="left:64px;top:44px;font-family:Montserrat,sans-serif;text-transform:uppercase;color:#fff;line-height:1">
+    <p style="font-size:34px;font-weight:400;letter-spacing:.02em">Колекція</p>
+    <p style="font-size:132px;font-weight:300;letter-spacing:-.01em;margin-top:6px">Соло</p>
+    <p style="font-size:34px;font-weight:400;letter-spacing:.02em;margin-top:8px">Шлях до себе</p></div>
+  <img src="{LOGO_W}" alt="" style="right:64px;top:50px;height:40px">
+  <p style="right:64px;top:176px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;padding:16px 28px;border-radius:999px;background:#F2B705;color:#141216;white-space:nowrap">{kicker}</p>
   {body}
   <p style="left:64px;right:64px;top:{y0 + 34}px;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:44px;line-height:1.15;text-wrap:balance">{nb(tagline)}</p>
   <div style="left:64px;right:64px;bottom:60px;display:flex;align-items:center;justify-content:space-between;gap:24px">
@@ -73,7 +77,7 @@ def triptych(id, kicker, bands, tagline, product, cta, note=""):
   </div>''', note)
 
 # 1 — decades (the layout the client liked), now with product and CTA
-triptych("t01-decades", "SOLO · жіноча сила крізь десятиліття", [
+triptych("t01-decades", "Жіноча сила крізь десятиліття", [
     ("zolote-44-3", "50% 22%", "1940-ві", "Сила — у бездоганній елегантності.", "bw"),
     ("iskra-65-4", "55% 28%", "1950-ті", "Правила починають руйнуватися. Колір, форма, сміливість.", "sepia"),
     ("puls-44-4", "50% 12%", "2026", "Свобода — самій обирати, якою бути.", "raw"),
@@ -87,7 +91,7 @@ triptych("t02-avantiura-decades", "«Авантюра» крізь десяти�
 ], "Одна хустка — три епохи жіночої сили.", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Обрати «Авантюру»", "One scarf, three decades")
 
 # 3 — the path to yourself in three states
-triptych("t03-three-states", "SOLO · шлях до себе", [
+triptych("t03-three-states", "Три стани", [
     ("tysha-88-3", "50% 45%", "Тиша", "Почути себе серед зовнішнього шуму.", "raw", {"size": 118}),
     ("zolote-44-2", "50% 22%", "Ясність", "Момент, коли все стає на свої місця.", "raw", {"size": 110}),
     ("krok-44-2", "50% 30%", "Крок", "Рух уперед — з довірою до себе.", "raw", {"size": 118}),
@@ -108,14 +112,14 @@ triptych("t05-avantiura-ways", "Одна хустка — три способи"
 ], "Велика хустка 88 × 88 — стільки образів, скільки захочете.", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Обрати «Авантюру»", "Avantiura three ways")
 
 # 6 — formats: from twilly to 88 × 88
-triptych("t06-formats", "SOLO · оберіть свій формат", [
+triptych("t06-formats", "Оберіть свій формат", [
     ("krok-tw-2", "50% 45%", "Твіллі", "Стрічка у волосся, на сумку чи зап’ястя.", "raw", {"tag": "84 × 5 см · 1 600 грн", "size": 110}),
     ("krok-44-2", "50% 30%", "44 × 44", "Маленька хустка на шию.", "raw", {"tag": "Хустка · 2 400 грн", "size": 110}),
     ("tysha-88-4", "40% 30%", "88 × 88", "Велика хустка — на плечі, поясом, на голову.", "raw", {"tag": "Хустка · 6 600 грн", "size": 110}),
 ], "Сім принтів у різних форматах — від стрічки до великої хустки.", (["krok-tw-1", "krok-44-1", "tysha-88-1"], "Шовк SOLO", "від 1 600 грн"), "Обрати формат", "Formats")
 
 # 7 — who to give it to
-triptych("t07-gift", "SOLO · кому подарувати", [
+triptych("t07-gift", "Кому подарувати", [
     ("iskra-65-2", "40% 28%", "Сміливій", "«Іскра» — сміливість бути помітною.", "raw", {"size": 104}),
     ("tysha-88-3", "50% 45%", "Спокійній", "«Тиша всередині» — чути себе.", "raw", {"size": 104}),
     ("krok-44-3", "50% 25%", "Рішучій", "«Сміливий крок» — довіра до себе.", "raw", {"size": 104}),
@@ -129,7 +133,7 @@ triptych("t08-premium-details", "Український шовк преміум-
 ], "Зроблено в Україні — від картини до жовтої коробки.", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Роздивитися деталі", "Premium details")
 
 # 9 — then and now (two bands would break the rhythm: three bands, the middle one is the product)
-triptych("t09-then-now", "SOLO · тоді й тепер", [
+triptych("t09-then-now", "Тоді й тепер", [
     ("zolote-44-3", "50% 22%", "Тоді", "Образи акторок 40–50-х.", "bw", {"size": 118}),
     (f"url({HI(PP['zolote'])})", "center/160%", "Шовк", "Хустка «Золоте світло».", "raw", {"size": 118}),
     ("zolote-44-2", "50% 22%", "Тепер", "Та сама сила — ваш образ.", "raw", {"size": 118}),
@@ -137,7 +141,7 @@ triptych("t09-then-now", "SOLO · тоді й тепер", [
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO triptych</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Oswald:wght@500&family=Onest:wght@400;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Oswald:wght@500&family=Montserrat:wght@300;400;500&family=Onest:wght@400;600&display=swap">
 <style>""" + CSS + "</style></head><body>"
 (HERE / ("solo7.html" if YELLOW else "solo6.html")).write_text(HEAD + "".join(ads) + "\n</body></html>")
 print(len(ads), "triptych banners", "(yellow)" if YELLOW else "")

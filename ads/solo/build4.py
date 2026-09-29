@@ -119,7 +119,9 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
     (or at the top for back-view frames). If the photo box does not start at 0, the gap takes the photo's edge tone."""
     t, hgt = box
     top_rgb = edge_tone(photo, spot)
-    feather = ("-webkit-mask-image:linear-gradient(180deg,transparent 0,#000 140px);mask-image:linear-gradient(180deg,transparent 0,#000 140px)" if t > 0 else "")
+    grad = ("linear-gradient(180deg,transparent 0,#000 140px,#000 calc(100% - 300px),transparent 100%)" if t + hgt < 1920
+            else "linear-gradient(180deg,transparent 0,#000 140px)")      # the photo melts into the dark ground where it ends inside the frame
+    feather = (f"-webkit-mask-image:{grad};mask-image:{grad}" if t > 0 else "")
     st = f"position:absolute;left:0;right:0;top:{t}px;height:{hgt}px;{feather}"
     ph = (spot_photo(photo, pos, style=st) if spot
           else f'<div class="photo" style="{st}"><img src="{S2(photo)}" alt="" style="object-position:{pos}"></div>')
@@ -322,7 +324,7 @@ QUIET = [
 for id, ph, pos, spot, h, em, body, cuts, title, price, cta in QUIET:
     MIN[id] = (cuts, title)
     full(id, ph, pos, h, em, body, price, "", cta, spot=spot, note=f"Quiet premium: {h} {em}", hs=86,
-         shade_from=980 if spot else 1040, top_text=id == "p06-noticed", **({"box": (300, 1620)} if id == "p06-noticed" else {"box": (190, 1730)} if id == "p09-for-her" else {}))
+         shade_from=1120 if id == "p06-noticed" else 980 if spot else 1040, **({"box": (110, 1320)} if id == "p06-noticed" else {"box": (190, 1730)} if id == "p09-for-her" else {}))
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO classic</title>

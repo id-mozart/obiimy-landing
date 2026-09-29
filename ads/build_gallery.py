@@ -122,12 +122,19 @@ def build(site: pathlib.Path):
                 html_ += secs
         toc_html = "".join(f'<a href="#{a}">{t} <span>{k}</span></a>' for a, t, k, pt in toc)
         return toc_html, "\n".join(html_), len(seen)
+    def flat(select):
+        """One gallery without groups: every selected banner once, in the order of the series."""
+        seen, cards = set(), []
+        for g in groups:
+            for i, c in g["cards"]:
+                if select(i) and i not in seen: seen.add(i); cards.append(c)
+        return f'<section class="grp flat"><div class="grid">{"".join(cards)}</div></section>', len(cards)
     all_ids = {i for g in groups for i, _ in g["cards"]}
     n_keep = len(keep_set & all_ids)
     import json
     defaults = json.dumps(sorted(keep_set & all_ids), ensure_ascii=False)
 
-    def render(lede, nav, toc_html, body_html):
+    def render(top, toc_html, body_html):
         return f'''<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Креативи Obiimy</title>
@@ -148,6 +155,28 @@ h2 {{ font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2r
 .bar {{ position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); margin: 28px -24px 0; padding: 12px 24px; display: flex; flex-wrap: wrap; gap: 8px; }}
 .bar button {{ font: inherit; font-size: .88rem; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 10px 16px; cursor: pointer; }}
 .bar button[aria-pressed="true"] {{ background: var(--ink); color: var(--bg); border-color: var(--ink); }}
+.grp.flat {{ margin-top: 28px; }}
+header.solo {{ justify-content: flex-end; }}
+.vh {{ position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; font-size: 1rem; }}
+.c > a {{ display: block; cursor: zoom-in; }}
+#lb {{ border: 0; padding: 0; margin: 0; background: transparent; color: #F3EADB; width: 100vw; height: 100dvh; max-width: 100vw; max-height: 100dvh; overflow: hidden; }}
+#lb::backdrop {{ background: rgba(10,8,7,.88); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }}
+#lb .stage {{ position: absolute; inset: 0; display: grid; grid-template-rows: 1fr auto; justify-items: center; align-items: center; gap: 14px; padding: 20px 16px 18px; }}
+#lb img {{ display: block; max-width: min(100%, calc(100vw - 32px)); max-height: calc(100dvh - 118px); width: auto; height: auto; border-radius: 10px; box-shadow: 0 30px 80px rgba(0,0,0,.6); background: #1F1B18; }}
+#lb[open] img {{ animation: lbin .28s cubic-bezier(.2,.7,.2,1); }}
+@keyframes lbin {{ from {{ opacity: .35; transform: scale(.96) translateY(8px); }} to {{ opacity: 1; transform: none; }} }}
+@media (prefers-reduced-motion: reduce) {{ #lb[open] img {{ animation: none; }} }}
+#lb .row {{ display: flex; align-items: center; gap: 18px; flex-wrap: wrap; justify-content: center; font-size: .95rem; }}
+#lb .row a {{ color: #E3A15A; font-weight: 600; text-decoration: none; padding: 10px 4px; }}
+#lb .row .pick {{ color: #F3EADB; }}
+#lb .n {{ opacity: .7; font-variant-numeric: tabular-nums; }}
+#lb button {{ font: inherit; color: #F3EADB; background: rgba(243,234,219,.12); border: 1px solid rgba(243,234,219,.28); border-radius: 999px; width: 52px; height: 52px; font-size: 1.4rem; line-height: 1; cursor: pointer; position: absolute; z-index: 2; display: grid; place-items: center; }}
+#lb button:hover {{ background: rgba(243,234,219,.22); }}
+#lb button:focus-visible, #lb a:focus-visible {{ outline: 2px solid #E3A15A; outline-offset: 2px; }}
+#lb .x {{ top: 16px; right: 16px; }}
+#lb .pv {{ left: 16px; top: 50%; margin-top: -26px; }}
+#lb .nx {{ right: 16px; top: 50%; margin-top: -26px; }}
+@media (max-width: 640px) {{ #lb .pv, #lb .nx {{ top: auto; bottom: 70px; margin: 0; }} #lb img {{ max-height: calc(100dvh - 190px); }} #lb .stage {{ padding-bottom: 14px; }} }}
 .grp {{ margin-top: 40px; scroll-margin-top: 20px; }}
 .toc {{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }}
 .toc a {{ font-size: .88rem; border: 1px solid var(--line); border-radius: 999px; padding: 10px 16px; color: var(--ink); text-decoration: none; }}
@@ -168,14 +197,18 @@ h2 {{ font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2r
 .pick input {{ width: 22px; height: 22px; accent-color: var(--acc); cursor: pointer; margin: 0; }}
 .fid {{ font-variant-numeric: tabular-nums; opacity: .7; }}
 .c.on {{ outline: 3px solid var(--acc); outline-offset: -1px; }}
+.c .pick {{ opacity: 0; transition: opacity .15s; }}
+.c:hover .pick, .c:focus-within .pick {{ opacity: 1; }}
+@media (hover: none) {{ .c .pick {{ opacity: 1; }} }}
+.grp.flat .c.on {{ outline: none; }}
+.grp.flat .c:not(.on) {{ opacity: .45; }}
+.grp.flat .c:not(.on):hover, .grp.flat .c:not(.on):focus-within {{ opacity: 1; }}
 .grp, h2 {{ scroll-margin-top: 76px; }}
 #out {{ display: none; width: 100%; min-height: 120px; margin-top: 8px; font: .85rem/1.4 ui-monospace, Menlo, monospace; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--ink); }}
 footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 20px; }}
 @media (max-width: 560px) {{ .grid {{ grid-template-columns: 1fr 1fr; gap: 10px; }} }}
 </style></head><body><div class="wrap">
-<header><a href="./">← Усі лендинги Obiimy</a>{nav}</header>
-<h1>SOLO</h1>
-{lede}
+{top}
 
 <div class="picks" role="region" aria-label="Відбір банерів"><b id="pn">Відмічено: 0</b>
 <button type="button" id="only" aria-pressed="false">Лише відмічені</button>
@@ -183,10 +216,19 @@ footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1
 <button type="button" id="link">Скопіювати посилання з відбором</button>
 <button type="button" id="clear">Очистити</button>
 <textarea id="out" readonly aria-label="Список відмічених банерів"></textarea></div>
-<nav class="toc">{toc_html}</nav>
+{f'<nav class="toc">{toc_html}</nav>' if toc_html else ""}
 {body_html}
 <footer>Фото й логотип — obiimy.world. Креативи зроблено за допомогою Claude Code.</footer>
 </div>
+<dialog id="lb" aria-label="Перегляд банера">
+  <div class="stage">
+    <img alt="" width="1080" height="1920">
+    <div class="row"><label class="pick"><input type="checkbox" id="lbc"><span>Залишити</span></label><span class="n" id="lbn"></span><a id="lbd" download>JPG ↓</a></div>
+  </div>
+  <button type="button" class="pv" aria-label="Попередній банер">←</button>
+  <button type="button" class="nx" aria-label="Наступний банер">→</button>
+  <button type="button" class="x" aria-label="Закрити">×</button>
+</dialog>
 <script>
 document.querySelectorAll('.bar button').forEach(function (b) {{
   b.addEventListener('click', function () {{
@@ -203,7 +245,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
   try {{ (stored ? JSON.parse(stored) : DEF).forEach(function (x) {{ picks.add(x); }}); }} catch (e) {{}}
   var m = location.hash.match(/sel=([^&]+)/);
   if (m) decodeURIComponent(m[1]).split(',').forEach(function (x) {{ if (x) picks.add(x); }});
-  var boxes = [].slice.call(document.querySelectorAll('.pick input'));
+  var boxes = [].slice.call(document.querySelectorAll('.c .pick input'));
   function list() {{
     var seen = new Set(), out = [];
     boxes.forEach(function (b) {{ if (b.checked && !seen.has(b.dataset.id)) {{ seen.add(b.dataset.id); out.push(b.dataset.id); }} }});
@@ -232,6 +274,36 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
   document.getElementById('link').addEventListener('click', function () {{ copy(location.origin + location.pathname + '#sel=' + encodeURIComponent(list().join(',')), this); }});
   document.getElementById('clear').addEventListener('click', function () {{ if (confirm('Зняти всі позначки?')) {{ picks.clear(); paint(); }} }});
   paint();
+
+  // popup viewer
+  var lb = document.getElementById('lb'), im = lb.querySelector('img'), items = [], cur = 0;
+  var lbc = document.getElementById('lbc'), lbn = document.getElementById('lbn'), lbd = document.getElementById('lbd');
+  function show(i) {{
+    items = [].slice.call(document.querySelectorAll('.c:not(.hide)'));
+    if (!items.length) return;
+    cur = (i + items.length) % items.length;
+    var c = items[cur], a = c.querySelector('a');
+    im.style.animation = 'none'; im.offsetWidth; im.style.animation = '';
+    im.src = a.href; im.alt = 'Банер ' + c.querySelector('.fid').textContent;
+    lbd.href = a.href; lbd.setAttribute('download', c.dataset.id.split('/').pop());
+    lbc.checked = picks.has(c.dataset.id);
+    lbn.textContent = c.querySelector('.fid').textContent + ' · ' + (cur + 1) + ' / ' + items.length;
+    var nx = items[(cur + 1) % items.length].querySelector('a'); (new Image()).src = nx.href;
+  }}
+  document.addEventListener('click', function (e) {{
+    var a = e.target.closest ? e.target.closest('.c > a') : null;
+    if (!a || e.metaKey || e.ctrlKey || e.shiftKey || e.button) return;
+    if (!lb.showModal) return;
+    e.preventDefault();
+    var all = [].slice.call(document.querySelectorAll('.c:not(.hide)'));
+    show(all.indexOf(a.parentNode)); lb.showModal();
+  }});
+  lb.querySelector('.x').addEventListener('click', function () {{ lb.close(); }});
+  lb.querySelector('.pv').addEventListener('click', function () {{ show(cur - 1); }});
+  lb.querySelector('.nx').addEventListener('click', function () {{ show(cur + 1); }});
+  lb.addEventListener('click', function (e) {{ if (e.target === lb || e.target.classList.contains('stage')) lb.close(); }});
+  lb.addEventListener('keydown', function (e) {{ if (e.key === 'ArrowLeft') show(cur - 1); else if (e.key === 'ArrowRight') show(cur + 1); }});
+  lbc.addEventListener('change', function () {{ var id = items[cur].dataset.id; if (lbc.checked) picks.add(id); else picks.delete(id); paint(); }});
 }})();
 </script>
 </body></html>
@@ -239,18 +311,18 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
     lede_main = '''<p class="lede"><b>Шлях до себе.</b> Основна серія — {n_solo} банерів 1080 × 1920 для запуску нової колекції Obiimy у стилі попередніх кампаній бренду, у двох варіантах подачі товару: сім авторських принтів — сім станів на шляху жінки до себе. Тексти — за прес-релізом колекції, фото й ціни — з obiimy.world. Увесь текст стоїть у безпечній зоні сторіс. Натисніть на картинку, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>'''.replace("{n_solo}", str(n_solo))
     arch_nav = '<a href="https://obiimy.world/solo-shliakh-do-sebe/" target="_blank" rel="noopener">Колекція на obiimy.world ↗</a>'
     if n_keep:
-        toc_html, body_html, n = body(lambda i: i in keep_set)
+        body_html, n = flat(lambda i: i in keep_set); toc_html = ""
         lede = (f'<p class="lede"><b>Шлях до себе.</b> Відібрано для подальшої роботи — {n} {pl(n)} 1080 × 1920. Решта не видалена: вона лежить в архіві. '
                 f'Натисніть на картинку, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>')
         a_toc, a_body, a_n = body(lambda i: i not in keep_set)
         nav = f'<a href="creatives-archive">Архів · {a_n} {pl(a_n)} →</a>'
-        (site / "creatives.html").write_text(render(lede, nav, toc_html, body_html))
+        (site / "creatives.html").write_text(render(f'<header class="solo">{nav}</header>\n<h1 class="vh">Відібрані банери колекції SOLO</h1>', toc_html, body_html))
         a_lede = (f'<p class="lede"><b>Архів.</b> {a_n} {pl(a_n)} поза відбором. Нічого не видалено: файли можна відкрити й завантажити. '
                   f'Позначте «Залишити», щоб повернути банер до відібраних, і надішліть оновлений список.</p>')
-        (site / "creatives-archive.html").write_text(render(a_lede, '<a href="creatives">← До відібраних</a>', a_toc, a_body).replace("<h1>SOLO</h1>", "<h1>Архів</h1>").replace("<title>Креативи Obiimy</title>", "<title>Архів креативів Obiimy</title>"))
+        (site / "creatives-archive.html").write_text(render(f'<header><a href="creatives">← До відібраних</a></header>\n<h1>Архів</h1>\n{a_lede}', a_toc, a_body).replace("<title>Креативи Obiimy</title>", "<title>Архів креативів Obiimy</title>"))
     else:
         toc_html, body_html, n = body(lambda i: True)
-        (site / "creatives.html").write_text(render(lede_main, arch_nav, toc_html, body_html))
+        (site / "creatives.html").write_text(render(f'<header><a href="./">← Усі лендинги Obiimy</a>{arch_nav}</header>\n<h1>SOLO</h1>\n{lede_main}', toc_html, body_html))
         (site / "creatives-archive.html").unlink(missing_ok=True)
     return n_solo + n_old
 

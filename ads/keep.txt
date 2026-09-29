@@ -17,7 +17,6 @@ solo-main/u05-luxury.jpg
 solo-main/c02-iskra.jpg
 solo-main/c05-zolote.jpg
 solo-main/c06-avantiura.jpg
-solo-main/c09-ya-ie.jpg
 solo-main/c10-grey.jpg
 solo-main/c18-look.jpg
 solo-main/c23-look-dark.jpg

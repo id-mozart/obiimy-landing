@@ -197,14 +197,21 @@ header.solo {{ justify-content: flex-end; }}
 .pick input {{ width: 22px; height: 22px; accent-color: var(--acc); cursor: pointer; margin: 0; }}
 .fid {{ font-variant-numeric: tabular-nums; opacity: .7; }}
 .c.on {{ outline: 3px solid var(--acc); outline-offset: -1px; }}
+.grp.flat .c {{ position: relative; border: 0; background: transparent; }}
+.grp.flat .c img {{ border-radius: 6px; }}
+.grp.flat .c figcaption {{ position: absolute; left: 0; right: 0; bottom: 0; border-radius: 0 0 6px 6px; color: #F3EADB; background: linear-gradient(180deg, rgba(12,9,8,0), rgba(12,9,8,.86) 46%); padding: 34px 14px 10px; opacity: 0; transition: opacity .15s; }}
+.grp.flat .c figcaption a {{ color: #E3A15A; }}
+.grp.flat .c .pick {{ color: #F3EADB; }}
+.grp.flat .c:hover figcaption, .grp.flat .c:focus-within figcaption {{ opacity: 1; }}
+@media (hover: none) {{ .grp.flat .c figcaption {{ opacity: 1; }} }}
 .c .pick {{ opacity: 0; transition: opacity .15s; }}
 .c figcaption a {{ white-space: nowrap; }}
 @media (max-width: 560px) {{ .c .pick span {{ display: none; }} .c figcaption {{ padding: 6px 10px; }} }}
 .c:hover .pick, .c:focus-within .pick {{ opacity: 1; }}
 @media (hover: none) {{ .c .pick {{ opacity: 1; }} }}
 .grp.flat .c.on {{ outline: none; }}
-.grp.flat .c:not(.on) {{ opacity: .45; }}
-.grp.flat .c:not(.on):hover, .grp.flat .c:not(.on):focus-within {{ opacity: 1; }}
+.grp.flat .c:not(.on) img {{ opacity: .45; }}
+.grp.flat .c:not(.on):hover img, .grp.flat .c:not(.on):focus-within img {{ opacity: 1; }}
 .grp, h2 {{ scroll-margin-top: 76px; }}
 #out {{ display: none; width: 100%; min-height: 120px; margin-top: 8px; font: .85rem/1.4 ui-monospace, Menlo, monospace; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--ink); }}
 footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 20px; }}
@@ -317,8 +324,8 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
         lede = (f'<p class="lede"><b>Шлях до себе.</b> Відібрано для подальшої роботи — {n} {pl(n)} 1080 × 1920. Решта не видалена: вона лежить в архіві. '
                 f'Натисніть на картинку, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>')
         a_toc, a_body, a_n = body(lambda i: i not in keep_set)
-        nav = f'<a href="creatives-archive">Архів · {a_n} {pl(a_n)} →</a>'
-        (site / "creatives.html").write_text(render(f'<header class="solo">{nav}</header>\n<h1 class="vh">Відібрані банери колекції SOLO</h1>', toc_html, body_html))
+        nav = ""    # the archive page is built, but not linked for now
+        (site / "creatives.html").write_text(render(f'<h1 class="vh">Відібрані банери колекції SOLO</h1>', toc_html, body_html))
         a_lede = (f'<p class="lede"><b>Архів.</b> {a_n} {pl(a_n)} поза відбором. Нічого не видалено: файли можна відкрити й завантажити. '
                   f'Позначте «Залишити», щоб повернути банер до відібраних, і надішліть оновлений список.</p>')
         (site / "creatives-archive.html").write_text(render(f'<header><a href="creatives">← До відібраних</a></header>\n<h1>Архів</h1>\n{a_lede}', a_toc, a_body).replace("<title>Креативи Obiimy</title>", "<title>Архів креативів Obiimy</title>"))

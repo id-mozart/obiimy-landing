@@ -174,17 +174,18 @@ full("c13-parts", "avantiura-88-2", "40% 0%", "Найбільша хустка."
      "ПриватБанк — 4 платежі, monobank — 3 платежі.", "6 600 грн", "«Авантюра» · хустка 88 × 88", "Купити частинами", note="Pay in parts", box=(0, 1920), shade_from=1000)
 
 # ---------------------------------------------------------------- IVORY (product)
-def ivory(id, eyebrow, h, em, visual, body, price_main, price_small, cta, bg="var(--ivory)", note="", hs=100):
+def ivory(id, eyebrow, h, em, visual, body, price_main, price_small, cta, bg="var(--ivory)", note="", hs=100, quote=""):
+    clean = bool(quote)     # image banner: no eyebrow, no price lines, one personal line above the button
     ad(id, "", f'''
   <div style="left:0;right:0;top:0;bottom:0;background:{bg}"></div>
   <img src="{LOGO_K}" alt="" style="left:70px;top:64px;height:54px;display:block">
   <p style="right:70px;top:80px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;font-size:24px;color:var(--ink-2)">Авторські шовкові вироби</p>
   <div style="left:70px;right:70px;top:80px;bottom:96px;display:flex;flex-direction:column;align-items:center;text-align:center">
-    {'<div style="height:60px"></div>' if YELLOW else f'<p class="eyebrow" style="position:static;margin-top:90px">{eyebrow}</p>'}
-    <h1 class="h" style="position:static;margin-top:16px;font-size:{hs}px">{h}<br><em>{em}</em></h1>
+    {'<div style="height:60px"></div>' if (YELLOW or clean) else f'<p class="eyebrow" style="position:static;margin-top:90px">{eyebrow}</p>'}
+    <h1 class="h" style="position:static;margin-top:{60 if clean else 16}px;font-size:{hs}px">{h}<br><em>{em}</em></h1>
     <div style="flex:1;min-height:0;align-self:stretch;margin-top:44px;position:relative">{visual}</div>
-    <p class="body" style="position:static;margin-top:40px;max-width:880px">{nb(body)}</p>
-    {yellow_plate(id) if YELLOW else f'<p class="price" style="position:static;margin-top:18px">{price_main}' + (f"<small>{price_small}</small>" if price_small else "") + '</p>'}
+    {f"""<p style="position:static;margin-top:44px;max-width:860px;font-family:Prata,serif;font-size:50px;line-height:1.2;color:var(--ink);text-wrap:balance">{nb(quote)}</p>""" if clean else f'<p class="body" style="position:static;margin-top:40px;max-width:880px">{nb(body)}</p>'}
+    {"" if clean else yellow_plate(id) if YELLOW else f'<p class="price" style="position:static;margin-top:18px">{price_main}' + (f"<small>{price_small}</small>" if price_small else "") + '</p>'}
     <div class="cta" style="position:static;transform:none;margin-top:26px">{cta}</div>
   </div>''', note)
 
@@ -233,7 +234,7 @@ ivory("c17-double", "Шовкова хустка · двосторонній д�
 look = f"""<div style="position:absolute;inset:0 20px;display:grid;grid-template-columns:1.2fr 1fr;gap:14px">
     <div class="photo"><img src="{S2('iskra-65-2')}" alt="" style="object-position:40% 35%"></div><div class="photo"><img src="{S2('iskra-tw-3')}" alt="" style="object-position:50% 60%"></div></div>"""
 ivory("c18-look", "Шовкова хустка + твіллі", "Хустка й твіллі", "одного принту.", look,
-      "Один принт — на плечах і на сумці.", "6 400 грн", "хустка + твіллі · доставка безкоштовна", "Зібрати образ", note="Complete look")
+      "Один принт — на плечах і на сумці.", "6 400 грн", "хустка + твіллі · доставка безкоштовна", "Зібрати образ", note="Complete look", quote="Ваш почерк — у кожній деталі.")
 cert = f"""<div style="position:absolute;inset:0 20px;background:url(src/{PP['zolote']['flat']}-hi.webp) center/170%"></div>
   <div style="position:absolute;left:150px;right:150px;top:110px;bottom:110px;background:#fff;box-shadow:0 30px 60px -24px rgba(0,0,0,.5);display:grid;place-items:center;text-align:center">
     <div><p style="font-size:26px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)">Номінали, грн</p>

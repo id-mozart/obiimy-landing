@@ -32,7 +32,7 @@ LOOKS = {
 }
 
 ads = []
-def one(id, look, cut, kicker, name, price, cta, colour="#2A2320", deep="#141110", rot=-5, note="", pic=None, bg_override=None, tail=" · колекція Соло", foot=""):
+def one(id, look, cut, kicker, name, price, cta, colour="#2A2320", deep="#141110", rot=-5, note="", pic=None, bg_override=None, tail=" · колекція Соло", foot="", label="Авторські шовкові вироби", drop=0):
     bg, fg, kc, logo, bbg, bfg, pstyle = LOOKS[look]
     bg = bg_override or bg.format(c=colour, deep=deep)
     pic = pic or f'<img src="{CUT(cut)}" alt="" style="transform:rotate({rot}deg)">'
@@ -41,8 +41,8 @@ def one(id, look, cut, kicker, name, price, cta, colour="#2A2320", deep="#141110
 <!-- {note} -->
 <section class="ad" id="{id}" style="background:{bg};color:{fg}">
   <div class="in">
-    <div class="top"><img src="{logo}" alt="Obiimy"><p class="lbl" style="color:{kc}">Авторські шовкові вироби</p></div>
-    <div class="stage">{pic}</div>
+    <div class="top"><img src="{logo}" alt="Obiimy"><p class="lbl" style="color:{kc}">{label}</p></div>
+    <div class="stage" style="margin-top:{40 + drop}px">{pic}</div>
     {"" if foot else f'<p class="kick" style="color:{kc}">{kicker}{tail}</p>'}
     <p class="name" style="font-size:{size}px">«{name}»</p>
     <p class="price" style="{pstyle}">{price}</p>
@@ -73,11 +73,11 @@ one("m22-scrunchie-flirt", "paper", "flirt-scr-1", "Шовкова резинк�
     pic='<img src="src/flirt-scr-1-2k.webp" alt="" style="left:-70px;top:-60px;width:1080px;height:1180px;max-width:none;object-fit:cover;object-position:50% 50%;filter:none;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 80%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 80%,transparent 100%)">')
 
 # 5 — the same scrunchie as a gift
-one("g07-scrunchie-gift", "paper", "flirt-scr-1", "Шовкова резинка", "Флірт", "700 грн", "Подарувати", note="Scrunchie as a gift", bg_override="#EDEDEB", foot="Авторські подарунки",
-    pic='<img src="src/flirt-scr-1-2k.webp" alt="" style="left:-70px;top:-60px;width:1080px;height:1180px;max-width:none;object-fit:cover;object-position:50% 50%;filter:none;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 80%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 80%,transparent 100%)">')
+one("g07-scrunchie-gift", "paper", "flirt-scr-1", "Шовкова резинка", "Флірт", "700 грн", "Подарувати", note="Scrunchie as a gift", bg_override="#EDEDEB", foot="Авторські подарунки", label="Шовкові вироби",
+    pic='<img src="src/flirt-scr-1-2k.webp" alt="" style="left:-70px;top:30px;width:1080px;height:1180px;max-width:none;object-fit:cover;object-position:50% 50%;filter:none;-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 80%,transparent 100%);mask-image:linear-gradient(180deg,transparent 0%,#000 14%,#000 80%,transparent 100%)">')
 
 # 6 — the same gift banner with the draped «Іскра» scarf
-one("g08-scarf-gift-iskra", "paper", "iskra-65-5", "Шовкова хустка", "Іскра", "4 800 грн", "Подарувати", rot=0, note="Scarf as a gift", bg_override="#EDEDEB", foot="Авторські подарунки")
+one("g08-scarf-gift-iskra", "paper", "iskra-65-5", "Шовкова хустка", "Іскра", "4 800 грн", "Подарувати", rot=0, note="Scarf as a gift", bg_override="#EDEDEB", foot="Авторські подарунки", label="Шовкові вироби", drop=70)
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO single product</title>

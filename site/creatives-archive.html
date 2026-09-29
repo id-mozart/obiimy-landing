@@ -68,6 +68,12 @@ header.solo { justify-content: flex-end; }
 .grp.flat .c:hover figcaption, .grp.flat .c:focus-within figcaption { opacity: 1; }
 @media (hover: none) { .grp.flat .c figcaption { display: none; } }     /* touch: «Залишити» and JPG live in the popup */
 @media (max-width: 700px) { .picks { position: static; gap: 6px; padding: 10px 16px; } .picks b { width: 100%; } .picks button { padding: 9px 13px; font-size: .82rem; } }
+body.shared .picks, body.shared .pick, body.shared .fid { display: none; }
+body.shared .c figcaption { justify-content: flex-end; }
+body.shared #lb .row { gap: 22px; }
+.all { display: none; margin: 40px 0 0; text-align: center; }
+body.shared .all { display: block; }
+.all a { color: var(--ink2); font-size: .9rem; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 12px 20px; display: inline-block; }
 .c .pick { opacity: 0; transition: opacity .15s; }
 .c figcaption a { white-space: nowrap; }
 @media (max-width: 560px) { .c .pick span { display: none; } .c figcaption { padding: 6px 10px; } }
@@ -475,6 +481,7 @@ footer { margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1p
         <figcaption><label class="pick"><input type="checkbox" data-id="final2/obiimy-17-korobka-1080x1920.jpg"><span>Залишити</span></label><span class="fid">obiimy</span><a href="creatives/final2/obiimy-17-korobka-1080x1920.jpg?v=b6e2a292" download="obiimy-17-korobka-1080x1920.jpg">JPG ↓</a></figcaption></figure><figure class="c st" data-f="st" data-id="final2/obiimy-18-rezynka-1080x1920.jpg"><a href="creatives/final2/obiimy-18-rezynka-1080x1920.jpg?v=c0ef0258" target="_blank" rel="noopener"><img src="creatives/final2/obiimy-18-rezynka-1080x1920-540.webp?v=c0ef0258" alt="Серія 2 · Париж і Рив’єра" loading="lazy" width="540" height="960"></a>
         <figcaption><label class="pick"><input type="checkbox" data-id="final2/obiimy-18-rezynka-1080x1920.jpg"><span>Залишити</span></label><span class="fid">obiimy</span><a href="creatives/final2/obiimy-18-rezynka-1080x1920.jpg?v=c0ef0258" download="obiimy-18-rezynka-1080x1920.jpg">JPG ↓</a></figcaption></figure><figure class="c st" data-f="st" data-id="final2/obiimy-19-rytual-1080x1920.jpg"><a href="creatives/final2/obiimy-19-rytual-1080x1920.jpg?v=3d9f0946" target="_blank" rel="noopener"><img src="creatives/final2/obiimy-19-rytual-1080x1920-540.webp?v=3d9f0946" alt="Серія 2 · Париж і Рив’єра" loading="lazy" width="540" height="960"></a>
         <figcaption><label class="pick"><input type="checkbox" data-id="final2/obiimy-19-rytual-1080x1920.jpg"><span>Залишити</span></label><span class="fid">obiimy</span><a href="creatives/final2/obiimy-19-rytual-1080x1920.jpg?v=3d9f0946" download="obiimy-19-rytual-1080x1920.jpg">JPG ↓</a></figcaption></figure></div></section>
+<p class="all"><a href="creatives">Показати всі банери</a></p>
 <footer>Фото й логотип — obiimy.world. Креативи зроблено за допомогою Claude Code.</footer>
 </div>
 <dialog id="lb" aria-label="Перегляд банера">
@@ -499,9 +506,15 @@ document.querySelectorAll('.bar button').forEach(function (b) {
   var KEY = 'obiimy-picks-3f260ef4', picks = new Set(), only = false;     // a new selection starts from the saved list
   var DEF = ["final2/obiimy-12-paris-chervonyi-shovk-1080x1920.jpg", "final2/obiimy-13-paris-shal-1080x1920.jpg", "final2/obiimy-20-solo-rivera-1080x1920.jpg", "solo-main/c02-iskra.jpg", "solo-main/c05-zolote.jpg", "solo-main/c06-avantiura.jpg", "solo-main/c10-grey.jpg", "solo-main/c18-look.jpg", "solo-main/c23-look-dark.jpg", "solo-main/p01-quiet-luxury.jpg", "solo-main/p05-character.jpg", "solo-main/p06-noticed.jpg", "solo-main/p07-whole-look.jpg", "solo-main/p11-italian-silk.jpg", "solo-main/p12-wearable-art.jpg", "solo-main/p15-iskra.jpg", "solo-main/u02-london.jpg", "solo-main/u03-made-in-ua.jpg", "solo-main/u05-luxury.jpg", "solo-one/g07-scrunchie-gift.jpg", "solo-one/g08-scarf-gift-iskra.jpg", "solo-orig/o12-contact-iskra.jpg", "solo-tri/t01-decades.jpg", "solo-tri/t05-avantiura-ways.jpg"], stored = null;
   try { stored = localStorage.getItem(KEY); } catch (e) {}
-  try { (stored ? JSON.parse(stored) : DEF).forEach(function (x) { picks.add(x); }); } catch (e) {}
-  var m = location.hash.match(/sel=([^&]+)/);
-  if (m) decodeURIComponent(m[1]).split(',').forEach(function (x) { if (x) picks.add(x); });
+  var m = location.hash.match(/sel=([^&]+)/), shared = !!m;
+  if (shared) {
+    // a link with a selection: show exactly these banners and nothing else; the saved working selection is not touched
+    decodeURIComponent(m[1]).split(',').forEach(function (x) { if (x) picks.add(x); });
+    only = true; document.body.classList.add('shared');
+  } else {
+    try { (stored ? JSON.parse(stored) : DEF).forEach(function (x) { picks.add(x); }); } catch (e) {}
+  }
+  window.addEventListener('hashchange', function () { location.reload(); });
   var boxes = [].slice.call(document.querySelectorAll('.c .pick input'));
   function list() {
     var seen = new Set(), out = [];
@@ -517,7 +530,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {
     });
     document.querySelectorAll('.grp').forEach(function (g) { g.classList.toggle('hide', !g.querySelector('.c:not(.hide)')); });
     document.getElementById('pn').textContent = 'Відмічено: ' + list().length;
-    try { localStorage.setItem(KEY, JSON.stringify(Array.from(picks))); } catch (e) {}
+    if (!shared) try { localStorage.setItem(KEY, JSON.stringify(Array.from(picks))); } catch (e) {}
   }
   boxes.forEach(function (b) { b.addEventListener('change', function () { if (b.checked) picks.add(b.dataset.id); else picks.delete(b.dataset.id); paint(); }); });
   function copy(text, btn) {
@@ -544,7 +557,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {
     im.src = a.href; im.alt = 'Банер ' + c.querySelector('.fid').textContent;
     lbd.href = a.href; lbd.setAttribute('download', c.dataset.id.split('/').pop());
     lbc.checked = picks.has(c.dataset.id);
-    lbn.textContent = c.querySelector('.fid').textContent + ' · ' + (cur + 1) + ' / ' + items.length;
+    lbn.textContent = (shared ? '' : c.querySelector('.fid').textContent + ' · ') + (cur + 1) + ' / ' + items.length;
     var nx = items[(cur + 1) % items.length].querySelector('a'); (new Image()).src = nx.href;
   }
   document.addEventListener('click', function (e) {

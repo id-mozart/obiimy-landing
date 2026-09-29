@@ -215,6 +215,12 @@ header.solo {{ justify-content: flex-end; }}
 .grp.flat .c:hover figcaption, .grp.flat .c:focus-within figcaption {{ opacity: 1; }}
 @media (hover: none) {{ .grp.flat .c figcaption {{ display: none; }} }}     /* touch: «Залишити» and JPG live in the popup */
 @media (max-width: 700px) {{ .picks {{ position: static; gap: 6px; padding: 10px 16px; }} .picks b {{ width: 100%; }} .picks button {{ padding: 9px 13px; font-size: .82rem; }} }}
+body.shared .picks, body.shared .pick, body.shared .fid {{ display: none; }}
+body.shared .c figcaption {{ justify-content: flex-end; }}
+body.shared #lb .row {{ gap: 22px; }}
+.all {{ display: none; margin: 40px 0 0; text-align: center; }}
+body.shared .all {{ display: block; }}
+.all a {{ color: var(--ink2); font-size: .9rem; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 12px 20px; display: inline-block; }}
 .c .pick {{ opacity: 0; transition: opacity .15s; }}
 .c figcaption a {{ white-space: nowrap; }}
 @media (max-width: 560px) {{ .c .pick span {{ display: none; }} .c figcaption {{ padding: 6px 10px; }} }}
@@ -238,6 +244,7 @@ footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1
 <textarea id="out" readonly aria-label="Список відмічених банерів"></textarea></div>
 {f'<nav class="toc">{toc_html}</nav>' if toc_html else ""}
 {body_html}
+<p class="all"><a href="creatives">Показати всі банери</a></p>
 <footer>Фото й логотип — obiimy.world. Креативи зроблено за допомогою Claude Code.</footer>
 </div>
 <dialog id="lb" aria-label="Перегляд банера">
@@ -262,9 +269,15 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
   var KEY = 'obiimy-picks-{keep_ver}', picks = new Set(), only = false;     // a new selection starts from the saved list
   var DEF = {defaults}, stored = null;
   try {{ stored = localStorage.getItem(KEY); }} catch (e) {{}}
-  try {{ (stored ? JSON.parse(stored) : DEF).forEach(function (x) {{ picks.add(x); }}); }} catch (e) {{}}
-  var m = location.hash.match(/sel=([^&]+)/);
-  if (m) decodeURIComponent(m[1]).split(',').forEach(function (x) {{ if (x) picks.add(x); }});
+  var m = location.hash.match(/sel=([^&]+)/), shared = !!m;
+  if (shared) {{
+    // a link with a selection: show exactly these banners and nothing else; the saved working selection is not touched
+    decodeURIComponent(m[1]).split(',').forEach(function (x) {{ if (x) picks.add(x); }});
+    only = true; document.body.classList.add('shared');
+  }} else {{
+    try {{ (stored ? JSON.parse(stored) : DEF).forEach(function (x) {{ picks.add(x); }}); }} catch (e) {{}}
+  }}
+  window.addEventListener('hashchange', function () {{ location.reload(); }});
   var boxes = [].slice.call(document.querySelectorAll('.c .pick input'));
   function list() {{
     var seen = new Set(), out = [];
@@ -280,7 +293,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
     }});
     document.querySelectorAll('.grp').forEach(function (g) {{ g.classList.toggle('hide', !g.querySelector('.c:not(.hide)')); }});
     document.getElementById('pn').textContent = 'Відмічено: ' + list().length;
-    try {{ localStorage.setItem(KEY, JSON.stringify(Array.from(picks))); }} catch (e) {{}}
+    if (!shared) try {{ localStorage.setItem(KEY, JSON.stringify(Array.from(picks))); }} catch (e) {{}}
   }}
   boxes.forEach(function (b) {{ b.addEventListener('change', function () {{ if (b.checked) picks.add(b.dataset.id); else picks.delete(b.dataset.id); paint(); }}); }});
   function copy(text, btn) {{
@@ -307,7 +320,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
     im.src = a.href; im.alt = 'Банер ' + c.querySelector('.fid').textContent;
     lbd.href = a.href; lbd.setAttribute('download', c.dataset.id.split('/').pop());
     lbc.checked = picks.has(c.dataset.id);
-    lbn.textContent = c.querySelector('.fid').textContent + ' · ' + (cur + 1) + ' / ' + items.length;
+    lbn.textContent = (shared ? '' : c.querySelector('.fid').textContent + ' · ') + (cur + 1) + ' / ' + items.length;
     var nx = items[(cur + 1) % items.length].querySelector('a'); (new Image()).src = nx.href;
   }}
   document.addEventListener('click', function (e) {{

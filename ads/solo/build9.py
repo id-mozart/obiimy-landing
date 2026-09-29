@@ -66,9 +66,9 @@ def stamp(pid, cw, ch, s=30, left=0, top=0, rot=0, kind="scarf", price=True):
     k = W / 270
     cut = p["flat"] if kind == "scarf" else p["tw"]
     denom = PRICE[pid] if kind == "scarf" else "1 600"
-    small = f'<p style="font-family:Montserrat,sans-serif;font-weight:500;font-size:{max(20, int(10 * k))}px;letter-spacing:.14em;text-transform:uppercase;color:#6B5F55;white-space:nowrap">Соло · 2026</p>' if (k > 1.6 or not price) else "<span></span>"
+    small = f'<p style="font-family:Montserrat,sans-serif;font-weight:500;font-size:{max(20, int(10 * k))}px;letter-spacing:.14em;text-transform:uppercase;color:#6B5F55;white-space:nowrap">Соло · 2026</p>' if k > 1.6 else "<span></span>"
     cost = (f'<p style="font-family:Playfair Display,serif;font-weight:700;font-size:{max(30, int(28 * k))}px;line-height:1;white-space:nowrap">{denom}'
-            f'<span style="font-family:Onest;font-weight:600;font-size:{max(20, int(11 * k))}px;letter-spacing:.04em;margin-left:{int(4 * k)}px">грн</span></p>') if price else ""
+            + (f'<span style="font-family:Onest;font-weight:600;font-size:{max(26, int(11 * k))}px;letter-spacing:.04em;margin-left:{int(4 * k)}px">грн</span>' if k > 1.6 else "") + '</p>') if price else ""
     return f'''
   <div class="a" style="left:{left}px;top:{top}px;width:{W}px;height:{H}px;transform:rotate({rot}deg);filter:drop-shadow(0 {int(14 * k)}px {int(18 * k)}px rgba(0,0,0,.4))">
     <div style="position:absolute;inset:0;background:#FBF6EC;-webkit-mask:{mask};mask:{mask}">
@@ -102,20 +102,20 @@ for r, row in enumerate(rows):
     x0 = (1080 - (len(row) * W + (len(row) - 1) * gap)) // 2
     for c, pid in enumerate(row):
         body += stamp(pid, cw, ch, s_, x0 + c * (W + gap), 432 + r * (H + gap), rot=(-2, 1.5, -1, 2, -1.5, 1, -2)[(r * 3 + c) % 7])
-body += postmark(808, 372, 190, -12)
+body += postmark(716, 372, 190, -12)
 body += foot((["iskra-65-1", "avantiura-88-1", "krok-44-1"], "Шовкові хустки SOLO", "від 2 400 грн"), "Обрати принт", False, "Сім авторських принтів. Двосторонній друк.")
 ad("o01-stamps-sheet", PAPER, body, "Stamps: the sheet of seven")
 
 # 1b — one big stamp, the delivery fact
-body = head(True) + lockup(True, 160) + f'<h1 class="a h" style="left:64px;right:64px;top:212px;font-size:92px;color:{CREAM}">Замовте до 16:00 —<br><em style="color:#E9D7A6">відправимо сьогодні.</em></h1>'
+body = head(True) + lockup(True, 160) + f'<h1 class="a h" style="left:64px;right:64px;top:212px;font-size:100px;color:{CREAM}">Поштою —<br><em style="color:#E9D7A6">до себе.</em></h1>'
 body += stamp("avantiura", 20, 25, 36, 180, 500, rot=-3)
-body += f'''<svg class="a" viewBox="0 0 520 300" style="left:520px;top:430px;width:433px;height:250px;transform:rotate(-14deg)" fill="none" stroke="rgba(20,18,22,.78)">
+body += f'''<svg class="a" viewBox="0 0 520 300" style="left:790px;top:372px;width:433px;height:250px;transform:rotate(-14deg)" fill="none" stroke="rgba(20,18,22,.78)">
     <defs><path id="pm2" d="M150,150 m-108,0 a108,108 0 1,1 216,0 a108,108 0 1,1 -216,0"/></defs>
     <circle cx="150" cy="150" r="140" stroke-width="5"/><circle cx="150" cy="150" r="86" stroke-width="3"/>
     <text font-family="Montserrat" font-weight="500" font-size="24" letter-spacing="5" fill="rgba(20,18,22,.78)" stroke="none"><textPath href="#pm2">КОЛЕКЦІЯ СОЛО · ШЛЯХ ДО СЕБЕ ·</textPath></text>
     <text x="150" y="146" text-anchor="middle" font-family="Playfair Display" font-weight="700" font-size="46" fill="rgba(20,18,22,.78)" stroke="none">2026</text>
     <text x="150" y="182" text-anchor="middle" font-family="Montserrat" font-weight="500" font-size="19" letter-spacing="4" fill="rgba(20,18,22,.78)" stroke="none">OBIIMY</text></svg>'''
-body += foot((["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Обрати хустку", True, "Нова пошта. Від 5 000 грн доставка по Україні безкоштовна.")
+body += foot((["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Обрати хустку", True, "Замовлення до 16:00 відправимо Новою поштою того\u00a0ж\u00a0дня.")
 ad("o02-stamp-avantiura", "radial-gradient(90% 60% at 50% 45%,#5A1A1E,#2A0D10 80%)", body, "Stamps: one stamp and same-day dispatch")
 
 # 1c — a postcard with the giver's words
@@ -130,16 +130,16 @@ card = f'''
 body = head(True) + lockup(True, 160) + f'<h1 class="a h" style="left:64px;right:64px;top:212px;font-size:88px;color:{CREAM}">Підпишемо подарунок<br><em style="color:#E9D7A6">вашими словами.</em></h1>'
 body += f'<img class="a" src="{CUT("flirt-65-1")}" alt="" style="left:330px;top:1080px;width:460px;transform:rotate(7deg);filter:drop-shadow(0 40px 50px rgba(0,0,0,.5))">'
 body += card + stamp("flirt", 9, 11, 26, 730, 560, rot=2, price=False)
-body += foot((["flirt-65-1"], "Шовкова хустка «Флірт»", "4 800 грн"), "Обрати подарунок", True, "Індивідуальне пакування. Відправимо в день замовлення до 16:00.")
+body += foot((["flirt-65-1"], "Шовкова хустка «Флірт»", "4 800 грн"), "Обрати подарунок", True, "Індивідуальне пакування.<br>Замовлення до 16:00 відправимо того\u00a0ж\u00a0дня.")
 ad("o03-postcard-gift", "radial-gradient(90% 60% at 50% 45%,#5C6B45,#2A3320 80%)", body, "Stamps: postcard, gift note in your words")
 
 body = head(True) + lockup(True, 160) + f'<h1 class="a h" style="left:64px;right:64px;top:212px;font-size:100px;color:{CREAM}">Поштою —<br><em style="color:#E9D7A6">до неї.</em></h1>'
 body += stamp("zolote", 20, 25, 36, 180, 480, rot=-3, price=False)
-body += foot((["zolote-44-1"], "Шовкова хустка «Золоте світло»", "2 400 грн"), "Надіслати подарунок", True, "Замовлення до 16:00 відправимо того ж дня. Підпишемо вашими словами.")
+body += foot((["zolote-44-1"], "Шовкова хустка «Золоте світло»", "2 400 грн"), "Надіслати подарунок", True, "Замовлення до 16:00 відправимо того\u00a0ж\u00a0дня.<br>Подарунок підпишемо вашими словами.")
 ad("o21-stamp-gift", "radial-gradient(90% 60% at 50% 45%,#6B4414,#2C1B08 80%)", body, "Stamps: a gift by post")
 
-body = head(False) + lockup(False, 160) + f'<h1 class="a h" style="left:64px;right:64px;top:212px;font-size:100px;color:{INK}">6 600 грн.<br><em>Або частинами.</em></h1>'
-body += stamp("tysha", 20, 25, 36, 180, 500, rot=3) + postmark(610, 420, 240, -12)
+body = head(False) + lockup(False, 160) + f'<h1 class="a h" style="left:64px;right:64px;top:212px;font-size:86px;color:{INK};white-space:nowrap">Хустка — зараз.<br><em>Оплата — частинами.</em></h1>'
+body += stamp("tysha", 20, 25, 36, 180, 500, rot=3) + postmark(800, 380, 240, -12)
 body += foot((["tysha-88-1"], "Шовкова хустка «Тиша всередині»", "6 600 грн"), "Обрати хустку", False, "Оплата частинами: ПриватБанк — 4 платежі, monobank — 3.")
 ad("o20-stamp-tysha-parts", PAPER, body, "Stamps: payment in parts")
 
@@ -157,7 +157,7 @@ def entry(id, pid, word, gram, defs, see, letter, fs=170):
     <div style="font-family:'EB Garamond',serif;font-weight:500;font-size:46px;line-height:1.18;margin-top:30px">{items}</div>
     <p style="font-family:'EB Garamond',serif;font-style:italic;font-size:40px;color:#6B5F55;margin-top:34px">Пор.: {see}.</p>
   </div>
-  <img class="a" src="{CUT(p['flat'])}" alt="" style="left:330px;top:{1140 if "<br>" in word else 1060}px;width:{540 if "<br>" in word else 600}px;transform:rotate(6deg);filter:drop-shadow(0 30px 36px rgba(40,25,10,.4))">
+  <img class="a" src="{CUT(p['flat'])}" alt="" style="left:340px;top:{1120 if "<br>" in word else 1050}px;width:{510 if "<br>" in word else 590}px;transform:rotate(6deg);filter:drop-shadow(0 30px 36px rgba(40,25,10,.4))">
   <p class="a" style="left:64px;top:1420px;width:230px;font-family:'EB Garamond',serif;font-style:italic;font-size:36px;line-height:1.15;color:#6B5F55">мал. 1.<br>Хустка<br>«{p['name']}»</p>'''
     body += foot(([p["flat"]], f"Шовкова хустка «{p['name']}»", f"{PRICE[pid]} грн"), "Обрати хустку", False)
     ad(id, "linear-gradient(180deg,#F4EEE1,#ECE3D2)", body, f"Dictionary: {p['name']}")
@@ -188,7 +188,7 @@ body += foot((["iskra-65-1", "tysha-88-1", "krok-44-1"], "Шовкові хус�
 ad("o07-solo-programme", "radial-gradient(100% 60% at 50% 35%,#2B2140,#120E1C 80%)", body, "Concert programme: seven parts")
 
 # ═════════════════════════════════════════════ 4. MUSEUM WALL
-def museum(id, pid, h1, em, frame="#241C17", hs=96, extra="Край оброблено вручну.", tagline="", cta="Обрати хустку"):
+def museum(id, pid, h1, em, frame="#241C17", hs=96, extra="Край оброблено вручну.", tagline="", cta="Обрати хустку", tl_w=0):
     p = PP[pid]
     body = head(False) + lockup(False, 160) + f'<h1 class="a h" style="left:64px;right:64px;top:212px;font-size:{hs}px;color:{INK};white-space:nowrap">{h1}<br><em>{em}</em></h1>'
     body += f'''
@@ -198,16 +198,17 @@ def museum(id, pid, h1, em, frame="#241C17", hs=96, extra="Край обробл
       <div style="width:100%;height:100%;display:grid;place-items:center"><img src="{CUT(p['flat'])}" alt="" style="width:100%;height:100%;object-fit:contain;filter:drop-shadow(0 10px 14px rgba(40,30,20,.35))"></div></div></div>
   <div class="a" style="left:576px;top:1330px;width:440px;background:#FDFCF9;padding:28px 32px;box-shadow:0 10px 18px -8px rgba(40,30,20,.4);color:{INK}">
     <p style="font-family:Onest;font-weight:600;font-size:30px">Світлана Сніжко</p>
-    <p style="font-family:'EB Garamond',serif;font-style:italic;font-size:38px;line-height:1.15;margin-top:6px">«{p['name']}», 2026</p>
+    <p style="font-family:'EB Garamond',serif;font-style:italic;font-size:{38 if len(p['name']) < 12 else 32}px;line-height:1.15;margin-top:6px;white-space:nowrap">«{p['name']}», 2026</p>
     <p style="font-family:Onest;font-size:26px;line-height:1.35;color:#4A4750;margin-top:10px">Шовк, двосторонній друк.<br>{SIZE[pid]} см.<br>{extra}</p></div>'''
-    body += foot(([p["flat"]], f"Шовкова хустка «{p['name']}»", f"{PRICE[pid]} грн"), cta, False, tagline)
+    body += foot(([p["flat"]], f"Шовкова хустка «{p['name']}»", f"{PRICE[pid]} грн"), cta, False, "" if tl_w else tagline)
+    if tl_w: body += f'<p class="a tag" style="left:64px;top:1400px;width:{tl_w}px;color:{INK}">{tagline}</p>'
     ad(id, "linear-gradient(180deg,#DDD6CA 0%,#D3CBBD 72%,#BDB4A4 72.2%,#C9C0B1 100%)", body, f"Museum wall: {p['name']}")
 museum("o09-museum-avantiura", "avantiura", "Експонат,", "який можна носити.", hs=88)
 museum("o10-museum-zolote", "zolote", "Просимо", "торкатися.", "#8A6A2C")
 museum("o11-museum-iskra", "iskra", "Приміряти", "дозволено.", "#1E3556")
 museum("o17-museum-tysha", "tysha", "Просимо дотримуватися", "тиші всередині.", "#1B1815", hs=78)
-museum("o18-museum-krok", "krok", "За лінію заходити", "можна.", "#5E1B1E", hs=88)
-museum("o23-museum-gift", "flirt", "Експонат, який", "можна подарувати.", "#4F6238", hs=88, extra="Підпис до подарунка —<br>вашими словами.", cta="Подарувати")
+museum("o18-museum-krok", "krok", "Можна підійти", "ближче.", "#3B2A22")
+museum("o23-museum-gift", "avantiura", "Експонат, який", "можна подарувати.", "#3A1114", hs=88, extra="Підпис до подарунка —<br>вашими словами.", cta="Подарувати", tagline="Індивідуальне пакування.<br>Доставка безкоштовна.", tl_w=470)
 
 # ═════════════════════════════════════════════ 5. CONTACT SHEET
 FW, FH = 620, 420
@@ -219,12 +220,12 @@ def strip(top, frames, shift, first_no, pick=None):
     out += f'<div class="a" style="left:0;right:0;top:{top + FH + 58}px;height:13px;background:{holes};background-position:{shift}px 0"></div>'
     for i, (ph, pos) in enumerate(frames):
         x = shift + i * (FW + 22)
-        out += f'<img class="a" src="{S(ph)}" alt="" style="left:{x}px;top:{top + 42}px;width:{FW}px;height:{FH}px;object-fit:cover;object-position:{pos}">'
-        out += f'<p class="a" style="left:{x + 10}px;top:{top + 28}px;font-family:Montserrat;font-weight:500;font-size:13px;letter-spacing:.2em;color:#E0B040;line-height:1;white-space:nowrap">{first_no + i} &nbsp; OBIIMY SOLO &nbsp; {first_no + i}A</p>'
+        out += f'<div class="a" style="left:{x}px;top:{top + 42}px;width:{FW}px;height:{FH}px;background:url({S(ph)}) {pos} no-repeat"></div>'
+        if 0 <= x and x + 330 <= 1080: out += f'<p class="a" style="left:{x + 10}px;top:{top + 28}px;font-family:Montserrat;font-weight:500;font-size:13px;letter-spacing:.2em;color:#E0B040;line-height:1;white-space:nowrap">{first_no + i} &nbsp; OBIIMY SOLO &nbsp; {first_no + i}A</p>'
         if pick == i:
             out += f'''<svg class="a" viewBox="0 0 520 380" style="left:{x - 50}px;top:{top - 6}px;width:{FW + 100}px;height:{FH + 96}px;overflow:visible" fill="none" stroke="{YELLOW}" stroke-width="6" stroke-linecap="round">
       <path d="M262,22 C420,10 508,90 500,196 C492,306 380,366 250,360 C110,354 14,290 22,180 C30,76 130,28 290,30"/></svg>
-  <p class="a hand" style="left:{x + FW - 150}px;top:{top - 70}px;font-size:76px;color:{YELLOW};transform:rotate(-7deg);text-shadow:0 2px 10px rgba(0,0,0,.8)">оцей!</p>'''
+  <p class="a hand" style="left:{x + FW - 150}px;top:{top - 58}px;font-size:76px;color:{YELLOW};transform:rotate(-7deg);text-shadow:0 2px 10px rgba(0,0,0,.8)">оцей!</p>'''
     return out
 def contact(id, pid, rows, pick_row, pick, h1, em, tagline, product, cta, hs=100):
     p = PP[pid]
@@ -235,22 +236,25 @@ def contact(id, pid, rows, pick_row, pick, h1, em, tagline, product, cta, hs=100
     body += foot(product, cta, True, tagline)
     ad(id, "#161412", body, f"Contact sheet: {p['name']}")
 contact("o12-contact-iskra", "iskra",
-        [([("iskra-tw-3", "50% 62%"), ("iskra-65-3", "50% 45%"), ("iskra-tw-2", "50% 30%")], -340),
-         ([("iskra-65-3", "50% 10%"), ("iskra-65-2", "50% 24%"), ("iskra-tw-3", "50% 30%")], -420)],
+        [([("iskra-tw-3", "50% 66%/100%"), ("iskra-65-3", "50% 45%/100%")], -200),
+         ([("iskra-tw-2", "55% 34%/150%"), ("iskra-65-2", "50% 24%/100%")], -262)],
         1, 1, "Обираю", "цей кадр.", "Серед усіх кадрів — той, де вас помітно.",
         (["iskra-65-1", "iskra-tw-4"], "Хустка й твіллі «Іскра»", "від 1 600 грн"), "Обрати «Іскру»")
 contact("o13-contact-krok", "krok",
-        [([("krok-44-4", "50% 30%"), ("krok-44-3", "50% 32%"), ("krok-44-2", "50% 75%")], -340),
-         ([("krok-44-3", "50% 68%"), ("krok-44-2", "50% 36%"), ("krok-44-4", "50% 62%")], -420)],
+        [([("krok-44-3", "30% 86%/170%"), ("krok-44-3", "50% 32%/100%")], -200),
+         ([("krok-44-2", "52% 60%/190%"), ("krok-44-2", "50% 36%/100%")], -262)],
         1, 1, "Крок, після якого", "не озираються.", "Рішення рухатися вперед — з довірою до себе.",
         (["krok-44-1"], "Шовкова хустка «Сміливий крок»", "2 400 грн"), "Обрати хустку", hs=84)
 
 # ═════════════════════════════════════════════ 6. CARE LABEL
-def label(id, pid, lines, h1, em, care=True, cta="Обрати хустку", hs=96):
+def label(id, pid, lines, h1, em, care=True, cta="Обрати хустку", hs=96, bg=None):
     """A hang tag tied to the scarf: the scarf lies whole on the colour of its print, the tag is the copy."""
     p = PP[pid]
     def row(a, b):
         num = a.endswith("%")
+        if not num:
+            return (f'<div style="padding:16px 0;border-bottom:2px solid rgba(20,18,22,.16)"><p style="font-family:Montserrat;font-weight:500;font-size:20px;letter-spacing:.18em;text-transform:uppercase;color:#6B5F55">{a}</p>'
+                    f'<p style="font-family:Onest;font-weight:500;font-size:31px;line-height:1.2;margin-top:6px">{b}</p></div>')
         left = f"font-size:{70 if num else 38}px;" + ("" if num else "font-style:italic;")
         return (f'<div style="display:flex;justify-content:space-between;align-items:baseline;gap:18px;padding:18px 0;border-bottom:2px solid rgba(20,18,22,.16)">'
                 f'<span style="font-family:Playfair Display,serif;font-weight:700;{left}line-height:1;white-space:nowrap">{a}</span>'
@@ -258,25 +262,26 @@ def label(id, pid, lines, h1, em, care=True, cta="Обрати хустку", hs
     rows = "".join(row(a, b) for a, b in lines)
     caret = ('<p style="font-family:Montserrat;font-weight:500;font-size:22px;letter-spacing:.2em;text-transform:uppercase;color:#6B5F55;margin-top:34px">Догляд</p>'
              '<p style="font-family:Onest;font-weight:500;font-size:30px;line-height:1.3;margin-top:10px">Прасувати в режимі «шовк».</p>') if care else ""
-    body = f'<div class="a" style="inset:0;background:radial-gradient(80% 50% at 60% 62%,rgba(255,255,255,.2),rgba(255,255,255,0) 70%),linear-gradient(165deg,{p["c"]},{p["deep"]} 60%,color-mix(in srgb,{p["deep"]} 60%,#000))"></div>'
+    base = bg or f'linear-gradient(165deg,{p["c"]},{p["deep"]} 60%,color-mix(in srgb,{p["deep"]} 60%,#000))'
+    body = f'<div class="a" style="inset:0;background:radial-gradient(80% 50% at 62% 66%,rgba(255,255,255,.2),rgba(255,255,255,0) 70%),{base}"></div>'
     body += head(True) + lockup(True, 160) + f'<h1 class="a h" style="left:64px;right:64px;top:212px;font-size:{hs}px;color:{CREAM}">{h1}<br><em style="color:#E9D7A6">{em}</em></h1>'
     body += f'''
-  <img class="a" src="{CUT(p['flat'])}" alt="" style="left:320px;top:810px;width:640px;transform:rotate(-7deg);filter:drop-shadow(0 50px 60px rgba(0,0,0,.5))">
-  <svg class="a" viewBox="0 0 400 500" style="left:300px;top:380px;width:400px;height:500px;overflow:visible" fill="none" stroke="#E9E1D0" stroke-width="4" stroke-linecap="round"><path d="M38,196 C120,60 300,40 360,300 C372,360 360,420 330,470"/></svg>
-  <div class="a" style="left:80px;top:540px;width:540px;height:{860 if care else 900}px;background:linear-gradient(100deg,#FBF9F4,#F1EDE4 50%,#FBF9F4);border-radius:14px;transform:rotate(4deg);box-shadow:0 40px 60px -26px rgba(0,0,0,.65),0 4px 8px rgba(0,0,0,.3);color:{INK};padding:110px 48px 44px">
+  <img class="a" src="{CUT(p['flat'])}" alt="" style="left:400px;top:900px;width:620px;transform:rotate(-7deg);filter:drop-shadow(0 50px 60px rgba(0,0,0,.5))">
+  <svg class="a" viewBox="0 0 400 500" style="left:270px;top:400px;width:440px;height:600px;overflow:visible" fill="none" stroke="#E9E1D0" stroke-width="4" stroke-linecap="round"><path d="M38,196 C120,60 300,40 360,300 C372,360 360,420 330,470"/></svg>
+  <div class="a" style="left:64px;top:540px;width:500px;height:{720 if care else 810}px;background:linear-gradient(100deg,#FBF9F4,#F1EDE4 50%,#FBF9F4);border-radius:14px;transform:rotate(4deg);box-shadow:0 40px 60px -26px rgba(0,0,0,.65),0 4px 8px rgba(0,0,0,.3);color:{INK};padding:100px 42px 40px">
     <div style="position:absolute;left:50%;top:30px;width:34px;height:34px;margin-left:-17px;border-radius:50%;background:{p["deep"]};box-shadow:inset 0 3px 6px rgba(0,0,0,.5),0 0 0 5px #D9D2C2"></div>
     <img src="{LOGO_K}" alt="" style="height:36px;display:block">
     <p style="font-family:Montserrat;font-weight:500;font-size:22px;letter-spacing:.2em;text-transform:uppercase;color:#6B5F55;margin-top:34px">Склад</p>
     {rows}
     {caret}
-    <p style="position:absolute;left:48px;right:48px;bottom:40px;font-family:'EB Garamond',serif;font-style:italic;font-size:34px;line-height:1.15;color:#4A4750">Хустка «{p['name']}»<br>{SIZE[pid]} см · зроблено в Україні</p>
+    <p style="position:absolute;left:42px;right:42px;bottom:36px;font-family:'EB Garamond',serif;font-style:italic;font-size:32px;line-height:1.15;color:#4A4750">Хустка «{p['name']}»<br>{SIZE[pid]} см · зроблено в Україні</p>
   </div>'''
     body += foot(([p["flat"]], f"Шовкова хустка «{p['name']}»", f"{PRICE[pid]} грн"), cta, True)
     ad(id, "#141110", body, f"Hang tag: {p['name']}")
 label("o14-label-tysha", "tysha", [("100%", "італійський шовк"), ("0%", "чужих очікувань")], "Читайте", "склад.")
-label("o22-label-gift", "flirt", [("100%", "італійський шовк"), ("Підпис", "вашими словами"), ("Пакування", "індивідуальне"), ("Відправка", "у день замовлення<br>до 16:00")],
-      "Читайте склад", "подарунка.", care=False, cta="Обрати подарунок")
-label("o19-label-avantiura", "avantiura", [("100%", "італійський шовк"), ("0%", "звичного")], "Дрібний шрифт", "варто прочитати.")
+label("o22-label-gift", "flirt", [("100%", "італійський шовк"), ("Підпис", "вашими словами"), ("Пакування", "індивідуальне"), ("Відправка", "того ж дня, якщо замовити до 16:00")],
+      "Читайте склад", "подарунка.", care=False, cta="Обрати подарунок", bg="linear-gradient(165deg,#4C5A39,#2A3320 70%,#1A2013)")
+label("o19-label-avantiura", "avantiura", [("100%", "італійський шовк"), ("0%", "звичного")], "Склад:", "0% звичного.")
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO original concepts</title>

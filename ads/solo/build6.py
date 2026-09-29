@@ -105,7 +105,7 @@ def band(top, height, b, n=3):
   <div class="band" style="top:{top}px;height:{height}px">{pic}<div class="veil"{' style="background:' + extra["veil"] + '"' if extra.get("veil") else ""}></div>
     <div class="txt"><p class="big" style="font-size:{size}px">{big}</p>{f'<p class="small" style="font-size:{36 if n == 4 else 40}px;max-width:{extra.get("cw", 480)}px;margin-top:{extra.get("gap", 26)}px">{nb(small)}</p>' if small else ""}{tag}</div></div>'''
 
-def triptych(id, kicker, bands, tagline, product, cta, note="", plain=False):
+def triptych(id, kicker, bands, tagline, product, cta, note="", plain=False, bare=False):
     """bands: 3 × (photo, object-position, big label, small line, look[, {tag, size}]); product: (cutouts, title, price)."""
     n = len(bands); top, gap = (176 if plain else 280), 12
     if plain: tagline = ""
@@ -113,10 +113,12 @@ def triptych(id, kicker, bands, tagline, product, cta, note="", plain=False):
     body = "".join(band(top + k * (h + gap), h, b, n) for k, b in enumerate(bands))
     cuts, title, price = product
     if len(cuts) == 3 and len(cta) > 13: cuts = cuts[:2]
-    thumbs = "".join(f'<img src="{CUT(c)}" alt="" style="height:112px;width:auto;max-width:112px;object-fit:contain;margin-left:{0 if i == 0 else -52}px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.4));transform:rotate({(-6, 5, -3)[i]}deg)">' for i, c in enumerate(cuts))
+    th = 150 if bare else 112      # bare: no plate behind the product, larger scarves
+    thumbs = "".join(f'<img src="{CUT(c)}" alt="" style="height:{th}px;width:auto;max-width:{th}px;object-fit:contain;margin-left:{0 if i == 0 else -int(th * .46)}px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.4));transform:rotate({(-6, 5, -3)[i]}deg)">' for i, c in enumerate(cuts))
     plate_bg = "#F2B705" if YELLOW else "rgba(243,234,219,.1)"
     plate_fg = "#141216" if YELLOW else "#F3EADB"
     plate_bd = "none" if YELLOW else "1.5px solid rgba(243,234,219,.3)"
+    if bare and not YELLOW: plate_bg, plate_bd = "transparent", "none"
     y0 = top + n * h + (n - 1) * gap
     header = (f'''<img src="{LOGO_W}" alt="" style="left:64px;top:58px;height:58px">
   <p style="right:64px;top:76px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#F3EADB">Авторські шовкові вироби</p>''' if plain else f'''  <div style="left:64px;top:44px;font-family:Montserrat,sans-serif;text-transform:uppercase;color:#fff;line-height:1">
@@ -132,7 +134,7 @@ def triptych(id, kicker, bands, tagline, product, cta, note="", plain=False):
   {body}
   {f"""<p style="left:64px;right:64px;top:{y0 + 34}px;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:44px;line-height:1.15;text-wrap:balance">{nb(tagline)}</p>""" if tagline else ""}
   <div style="left:64px;right:64px;bottom:60px;display:flex;align-items:center;justify-content:space-between;gap:24px">
-    <div style="display:flex;align-items:center;gap:20px;padding:12px 28px 12px 14px;border-radius:{6 if YELLOW else 20}px;background:{plate_bg};border:{plate_bd};color:{plate_fg};flex:0 1 auto;min-width:0">
+    <div style="display:flex;align-items:center;gap:{26 if bare else 20}px;padding:{"0" if bare and not YELLOW else "12px 28px 12px 14px"};border-radius:{6 if YELLOW else 20}px;background:{plate_bg};border:{plate_bd};color:{plate_fg};flex:0 1 auto;min-width:0">
       <div style="display:flex;align-items:center;flex:none">{thumbs}</div>
       <div style="min-width:0"><p style="font-size:{29 if len(title) < 30 else 25}px;font-weight:600;line-height:1.18;text-wrap:balance">{nb(title)}</p>{f"""<p style="font-family:'Playfair Display',serif;font-size:46px;line-height:1.05;margin-top:4px;white-space:nowrap">{price}</p>""" if price else ""}</div>
     </div>
@@ -148,7 +150,7 @@ triptych("t01-decades", "Жіноча сила крізь десятиліття
     ("zolote-44-2", "50% 20%", "1940-ві", "Сила — у бездоганній елегантності.", "dim", {"fit": 68}),
     ("iskra-65-4", "50% 12%", "1950-ті", "Правила починають руйнуватися. Колір, форма, сміливість.", "sepia", {"fit": 68}),
     ("puls-44-4", "50% 3%", "2026", "Свобода — самій обирати, якою бути.", "raw", {"fit": 68}),
-], "", SCARVES, "Обрати хустку", "Decades", plain=True)
+], "", (SCARVES[0], "Шовкові аксесуари", SCARVES[2]), "Обрати", "Decades", plain=True, bare=True)
 
 triptych("t03-three-states", "Три стани", [
     ("tysha-88-3", "50% 45%", "Тиша", "Почути себе серед зовнішнього шуму.", "raw", {"size": 118}),

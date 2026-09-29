@@ -86,7 +86,8 @@ PROD = {
 
 MIN = {}   # id -> (cutouts, "Шовкова хустка «…»") for the minimal premium banners
 
-INLINE = {"p05-character"}     # no button: «Обрати →» to the right of the price
+LABEL = {"p12-wearable-art": "Шовкові вироби"}      # top-right label, where it differs from the default
+INLINE = {"p05-character", "p12-wearable-art"}     # no button: «Обрати →» to the right of the price
 
 def product_card(id, price_main, price_small):
     if id in MIN:
@@ -144,7 +145,7 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
   {ph}
   {shade}
   <img src="{LOGO_W}" alt="" style="left:70px;top:64px;height:54px;display:block">
-  <p style="right:70px;top:80px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.45)">Авторські шовкові вироби</p>
+  <p style="right:70px;top:80px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.45)">{LABEL.get(id, "Авторські шовкові вироби")}</p>
   <div style="left:70px;right:70px;{pos_block};display:flex;flex-direction:column;align-items:center;text-align:center">
     {block}
   </div>""", note)
@@ -318,13 +319,13 @@ QUIET = [
     ("p08-touch", "flirt-65-3", "38% 30%", False, "Шовк, до якого", "хочеться торкатися.", "«Флірт» — це насамперед стан.", ["flirt-65-1"], "Шовкова хустка «Флірт»", "4 800 грн", "Відкрити колекцію"),
     ("p09-for-her", "puls-44-4", "50% 20%", False, "Для неї.", "Або для себе.", "Індивідуальне пакування.<br>Підпишемо вашими словами.", ["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн", "Обрати подарунок"),
     ("p11-italian-silk", "avantiura-88-4", "38% 50%", False, "Італійський шовк.", "Український характер.", "", ["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн", "Детальніше"),
-    ("p12-wearable-art", "puls-44-2", "42% 40%", False, "Мистецтво,", "яке можна носити.", "Принти художниці Світлани Сніжко.", ["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн", "Переглянути SOLO"),
+    ("p12-wearable-art", "puls-44-2", "42% 40%", False, "Мистецтво,", "яке можна носити.", "Авторські принти українських художників.", ["puls-44-1"], "Шовкова хустка «Пульс»", "2 400 грн", "Переглянути SOLO"),
     ("p15-iskra", "iskra-65-2", "40% 0%", False, "Колір, який", "обирають сміливі.", "Принт «Іскра» — сміливість бути помітною.", ["iskra-65-1"], "Шовкова хустка «Іскра»", "4 800 грн", "Роздивитися «Іскру»"),
 ]
 for id, ph, pos, spot, h, em, body, cuts, title, price, cta in QUIET:
     MIN[id] = (cuts, title)
     full(id, ph, pos, h, em, body, price, "", cta, spot=spot, note=f"Quiet premium: {h} {em}", hs=86,
-         shade_from=1120 if id == "p06-noticed" else 980 if spot else 1040, **({"box": (110, 1320)} if id == "p06-noticed" else {"box": (190, 1730)} if id == "p09-for-her" else {}))
+         shade_from=1120 if id == "p06-noticed" else 980 if spot else 1040, **({"box": (110, 1320)} if id == "p06-noticed" else {"box": (90, 1920)} if id == "p12-wearable-art" else {"box": (190, 1730)} if id == "p09-for-her" else {}))
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO classic</title>

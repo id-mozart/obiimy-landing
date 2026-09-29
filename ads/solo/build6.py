@@ -138,7 +138,7 @@ def triptych(id, kicker, bands, tagline, product, cta, note="", plain=False, bar
   <div style="left:64px;right:64px;bottom:60px;display:flex;align-items:center;justify-content:space-between;gap:24px">
     <div style="display:flex;align-items:center;gap:{26 if bare else 20}px;padding:{"0" if bare and not YELLOW else "12px 28px 12px 14px"};border-radius:{6 if YELLOW else 20}px;background:{plate_bg};border:{plate_bd};color:{plate_fg};flex:0 1 auto;min-width:0">
       <div style="display:flex;align-items:center;flex:none">{thumbs}</div>
-      <div style="min-width:0"><p style="font-size:{29 if len(title) < 30 else 25}px;font-weight:600;line-height:1.18;text-wrap:balance">{nb(title)}</p>{f"""<p style="font-family:'Playfair Display',serif;font-size:46px;line-height:1.05;margin-top:4px;white-space:nowrap">{price}</p>""" if price else ""}</div>
+      <div style="min-width:0"><p style="font-size:{(54 if (bare and not price) else 29) if len(title) < 30 else 25}px;font-weight:600;line-height:1.1;text-wrap:balance">{title if "<br>" in title else nb(title)}</p>{f"""<p style="font-family:'Playfair Display',serif;font-size:46px;line-height:1.05;margin-top:4px;white-space:nowrap">{price}</p>""" if price else ""}</div>
     </div>
     <div class="cta" style="{"background:#F3EADB;color:#141216;" if YELLOW else ""}{"font-size:36px;padding:30px 56px" if plain else ""}">{cta}</div>
   </div>''', note)
@@ -152,7 +152,7 @@ triptych("t01-decades", "Жіноча сила крізь десятиліття
     ("zolote-44-2", "50% 20%", "1940-ві", "Сила — у\u00a0бездоганній<br>елегантності.", "dim", {"fit": 68, "cw": 520}),
     ("iskra-65-4", "50% 12%", "1950-ті", "Правила починають руйнуватися. Колір, форма, сміливість.", "sepia", {"fit": 68}),
     ("puls-44-4", "50% 3%", "2026", "Свобода — самій обирати, якою бути.", "raw", {"fit": 68}),
-], "", (SCARVES[0], "Нова колекція", SCARVES[2]), "Обрати", "Decades", plain=True, bare=True)
+], "", (SCARVES[0], "Нова<br>колекція", ""), "Обрати", "Decades", plain=True, bare=True)
 
 triptych("t03-three-states", "Три стани", [
     ("tysha-88-3", "50% 45%", "Тиша", "Почути себе серед зовнішнього шуму.", "raw", {"size": 118}),

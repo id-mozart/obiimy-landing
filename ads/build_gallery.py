@@ -52,8 +52,8 @@ def build(site: pathlib.Path):
             prev = d / (f.stem + "-540.webp")
             t = im.copy(); t.thumbnail((540, 960)); t.save(prev, quality=80)
             v = hashlib.md5(f.read_bytes()).hexdigest()[:8]
-            cards.append(f'''<figure class="c {cls}" data-f="{cls}"><a href="creatives/{series}/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/{series}/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="{t.width}" height="{t.height}"></a>
-        <figcaption><span>{label}</span><a href="creatives/{series}/{f.name}?v={v}" download="{f.name}">JPG ↓</a></figcaption></figure>''')
+            cards.append(f'''<figure class="c {cls}" data-f="{cls}" data-id="{series}/{f.name}"><a href="creatives/{series}/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/{series}/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="{t.width}" height="{t.height}"></a>
+        <figcaption><label class="pick"><input type="checkbox" data-id="{series}/{f.name}"><span>Залишити</span></label><span class="fid">{f.stem.split("-")[0]}</span><a href="creatives/{series}/{f.name}?v={v}" download="{f.name}">JPG ↓</a></figcaption></figure>''')
         anchor = f"s{len(toc) + 1}"; toc.append((anchor, title, len(cards)))
         sections.append(f'''<section class="grp" id="{anchor}"><div class="gh"><h3>{title} <span style="font-weight:400;color:var(--ink2)">· {len(cards)}</span></h3><p>{desc}</p></div><div class="grid">{"".join(cards)}</div></section>''')
     classic = sorted((ROOT / "ads/solo/out4").glob("*.jpg"))
@@ -132,6 +132,16 @@ h2 {{ font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2r
 .c figcaption {{ display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; font-size: .8rem; color: var(--ink2); }}
 .c figcaption a {{ color: var(--acc); font-weight: 600; text-decoration: none; padding: 6px 0; }}
 .hide {{ display: none; }}
+.picks {{ position: sticky; top: 0; z-index: 6; background: var(--bg); border-bottom: 1px solid var(--line); margin: 24px -24px 0; padding: 10px 24px; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }}
+.picks b {{ font-size: .95rem; margin-right: 8px; white-space: nowrap; }}
+.picks button {{ font: inherit; font-size: .88rem; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 10px 16px; cursor: pointer; }}
+.picks button[aria-pressed="true"], .picks button.ok {{ background: var(--ink); color: var(--bg); border-color: var(--ink); }}
+.pick {{ display: inline-flex; align-items: center; gap: 8px; cursor: pointer; color: var(--ink); font-weight: 500; padding: 6px 0; min-height: 32px; }}
+.pick input {{ width: 22px; height: 22px; accent-color: var(--acc); cursor: pointer; margin: 0; }}
+.fid {{ font-variant-numeric: tabular-nums; opacity: .7; }}
+.c.on {{ outline: 3px solid var(--acc); outline-offset: -1px; }}
+.grp, h2 {{ scroll-margin-top: 76px; }}
+#out {{ display: none; width: 100%; min-height: 120px; margin-top: 8px; font: .85rem/1.4 ui-monospace, Menlo, monospace; padding: 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--card); color: var(--ink); }}
 footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 20px; }}
 @media (max-width: 560px) {{ .grid {{ grid-template-columns: 1fr 1fr; gap: 10px; }} }}
 </style></head><body><div class="wrap">
@@ -139,6 +149,12 @@ footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1
 <h1>SOLO</h1>
 <p class="lede"><b>Шлях до себе.</b> Основна серія — {n_solo} банерів 1080 × 1920 для запуску нової колекції Obiimy у стилі попередніх кампаній бренду, у двох варіантах подачі товару: сім авторських принтів — сім станів на шляху жінки до себе. Тексти — за прес-релізом колекції, фото й ціни — з obiimy.world. Увесь текст стоїть у безпечній зоні сторіс. Натисніть на картинку, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>
 
+<div class="picks" role="region" aria-label="Відбір банерів"><b id="pn">Відмічено: 0</b>
+<button type="button" id="only" aria-pressed="false">Лише відмічені</button>
+<button type="button" id="copy">Скопіювати список</button>
+<button type="button" id="link">Скопіювати посилання з відбором</button>
+<button type="button" id="clear">Очистити</button>
+<textarea id="out" readonly aria-label="Список відмічених банерів"></textarea></div>
 <nav class="toc">{"".join(f'<a href="#{a}">{t} <span>{n}</span></a>' for a, t, n in toc if a in main_ids)}</nav>
 {main_html}
 <h2>Альтернативні напрями SOLO</h2>
@@ -158,6 +174,40 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
     document.querySelectorAll('.grp').forEach(function (g) {{ g.classList.toggle('hide', !g.querySelector('.c:not(.hide)')); }});
   }});
 }});
+(function () {{
+  var KEY = 'obiimy-picks-v1', picks = new Set(), only = false;
+  try {{ JSON.parse(localStorage.getItem(KEY) || '[]').forEach(function (x) {{ picks.add(x); }}); }} catch (e) {{}}
+  var m = location.hash.match(/sel=([^&]+)/);
+  if (m) decodeURIComponent(m[1]).split(',').forEach(function (x) {{ if (x) picks.add(x); }});
+  var boxes = [].slice.call(document.querySelectorAll('.pick input'));
+  function list() {{
+    var seen = new Set(), out = [];
+    boxes.forEach(function (b) {{ if (b.checked && !seen.has(b.dataset.id)) {{ seen.add(b.dataset.id); out.push(b.dataset.id); }} }});
+    return out;
+  }}
+  function paint() {{
+    boxes.forEach(function (b) {{
+      b.checked = picks.has(b.dataset.id);
+      var c = b.closest('.c'); c.classList.toggle('on', b.checked);
+      c.classList.toggle('hide', only && !b.checked);
+    }});
+    document.querySelectorAll('.grp').forEach(function (g) {{ g.classList.toggle('hide', !g.querySelector('.c:not(.hide)')); }});
+    document.getElementById('pn').textContent = 'Відмічено: ' + list().length;
+    try {{ localStorage.setItem(KEY, JSON.stringify(Array.from(picks))); }} catch (e) {{}}
+  }}
+  boxes.forEach(function (b) {{ b.addEventListener('change', function () {{ if (b.checked) picks.add(b.dataset.id); else picks.delete(b.dataset.id); paint(); }}); }});
+  function copy(text, btn) {{
+    var out = document.getElementById('out'); out.value = text; out.style.display = 'block';
+    function done() {{ var t = btn.textContent; btn.textContent = 'Скопійовано'; btn.classList.add('ok'); setTimeout(function () {{ btn.textContent = t; btn.classList.remove('ok'); out.style.display = 'none'; }}, 1600); }}
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () {{ out.focus(); out.select(); }});
+    else {{ out.focus(); out.select(); try {{ document.execCommand('copy'); done(); }} catch (e) {{}} }}
+  }}
+  document.getElementById('only').addEventListener('click', function () {{ only = !only; this.setAttribute('aria-pressed', only ? 'true' : 'false'); paint(); }});
+  document.getElementById('copy').addEventListener('click', function () {{ var l = list(); copy('Залишити для подальшої роботи (' + l.length + '):\\n' + l.join('\\n'), this); }});
+  document.getElementById('link').addEventListener('click', function () {{ copy(location.origin + location.pathname + '#sel=' + encodeURIComponent(list().join(',')), this); }});
+  document.getElementById('clear').addEventListener('click', function () {{ if (confirm('Зняти всі позначки?')) {{ picks.clear(); paint(); }} }});
+  paint();
+}})();
 </script>
 </body></html>
 '''

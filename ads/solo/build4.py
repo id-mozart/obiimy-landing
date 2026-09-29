@@ -247,7 +247,7 @@ look = f"""<div style="position:absolute;inset:0 20px;display:grid;grid-template
 ivory("c18-look", "Шовкова хустка + твіллі", "Хустка й твіллі", "одного принту.", look,
       "Один принт — на плечах і на сумці.", "6 400 грн", "хустка + твіллі · доставка безкоштовна", "Зібрати образ", note="Complete look", quote="Ваш почерк — у кожній деталі.", hs=72)
 look2 = f"""<div style="position:absolute;inset:0 20px;display:grid;grid-template-columns:1.2fr 1fr;gap:14px">
-    <div class="photo"><img src="{S2('flirt-65-3')}" alt="" style="object-position:36% 30%"></div><div class="photo"><img src="{S2('flirt-tw-1')}" alt="" style="object-position:50% 40%"></div></div>"""
+    <div class="photo"><img src="{S2('flirt-65-3')}" alt="" style="object-position:62% 30%"></div><div class="photo"><img src="{S2('flirt-tw-1')}" alt="" style="object-position:50% 40%"></div></div>"""
 ivory("c23-look-dark", "Шовкова хустка + твіллі", "Хустка й твіллі", "одного принту.", look2,
       "Один принт — на плечах і на сумці.", "6 400 грн", "хустка + твіллі · доставка безкоштовна", "Зібрати образ", note="Complete look, dark", quote="Ваш почерк — у кожній деталі.", hs=72, dark=True)
 cert = f"""<div style="position:absolute;inset:0 20px;background:url(src/{PP['zolote']['flat']}-hi.webp) center/170%"></div>

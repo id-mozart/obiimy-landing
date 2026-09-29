@@ -66,7 +66,8 @@ header.solo { justify-content: flex-end; }
 .grp.flat .c figcaption a { color: #E3A15A; }
 .grp.flat .c .pick { color: #F3EADB; }
 .grp.flat .c:hover figcaption, .grp.flat .c:focus-within figcaption { opacity: 1; }
-@media (hover: none) { .grp.flat .c figcaption { opacity: 1; } }
+@media (hover: none) { .grp.flat .c figcaption { display: none; } }     /* touch: «Залишити» and JPG live in the popup */
+@media (max-width: 700px) { .picks { position: static; gap: 6px; padding: 10px 16px; } .picks b { width: 100%; } .picks button { padding: 9px 13px; font-size: .82rem; } }
 .c .pick { opacity: 0; transition: opacity .15s; }
 .c figcaption a { white-space: nowrap; }
 @media (max-width: 560px) { .c .pick span { display: none; } .c figcaption { padding: 6px 10px; } }
@@ -135,7 +136,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {
   });
 });
 (function () {
-  var KEY = 'obiimy-picks-v1', picks = new Set(), only = false;
+  var KEY = 'obiimy-picks-3f260ef4', picks = new Set(), only = false;     // a new selection starts from the saved list
   var DEF = ["final2/obiimy-12-paris-chervonyi-shovk-1080x1920.jpg", "final2/obiimy-13-paris-shal-1080x1920.jpg", "final2/obiimy-20-solo-rivera-1080x1920.jpg", "solo-main/c02-iskra.jpg", "solo-main/c05-zolote.jpg", "solo-main/c06-avantiura.jpg", "solo-main/c10-grey.jpg", "solo-main/c18-look.jpg", "solo-main/c23-look-dark.jpg", "solo-main/p01-quiet-luxury.jpg", "solo-main/p05-character.jpg", "solo-main/p06-noticed.jpg", "solo-main/p07-whole-look.jpg", "solo-main/p11-italian-silk.jpg", "solo-main/p12-wearable-art.jpg", "solo-main/p15-iskra.jpg", "solo-main/u02-london.jpg", "solo-main/u03-made-in-ua.jpg", "solo-main/u05-luxury.jpg", "solo-one/g07-scrunchie-gift.jpg", "solo-one/g08-scarf-gift-iskra.jpg", "solo-orig/o12-contact-iskra.jpg", "solo-tri/t01-decades.jpg", "solo-tri/t05-avantiura-ways.jpg"], stored = null;
   try { stored = localStorage.getItem(KEY); } catch (e) {}
   try { (stored ? JSON.parse(stored) : DEF).forEach(function (x) { picks.add(x); }); } catch (e) {}
@@ -198,6 +199,13 @@ document.querySelectorAll('.bar button').forEach(function (b) {
   lb.querySelector('.pv').addEventListener('click', function () { show(cur - 1); });
   lb.querySelector('.nx').addEventListener('click', function () { show(cur + 1); });
   lb.addEventListener('click', function (e) { if (e.target === lb || e.target.classList.contains('stage')) lb.close(); });
+  var tx = null, ty = 0;
+  lb.addEventListener('touchstart', function (e) { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+  lb.addEventListener('touchend', function (e) {
+    if (tx === null) return;
+    var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty; tx = null;
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) show(cur + (dx < 0 ? 1 : -1));
+  });
   lb.addEventListener('keydown', function (e) { if (e.key === 'ArrowLeft') show(cur - 1); else if (e.key === 'ArrowRight') show(cur + 1); });
   lbc.addEventListener('change', function () { var id = items[cur].dataset.id; if (lbc.checked) picks.add(id); else picks.delete(id); paint(); });
 })();

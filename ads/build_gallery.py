@@ -142,6 +142,7 @@ def build(site: pathlib.Path):
     n_keep = len(keep_set & all_ids)
     import json
     defaults = json.dumps(sorted(keep_set & all_ids), ensure_ascii=False)
+    keep_ver = hashlib.md5("\n".join(sorted(keep_set)).encode()).hexdigest()[:8]
 
     def render(top, toc_html, body_html):
         return f'''<!DOCTYPE html>
@@ -212,7 +213,8 @@ header.solo {{ justify-content: flex-end; }}
 .grp.flat .c figcaption a {{ color: #E3A15A; }}
 .grp.flat .c .pick {{ color: #F3EADB; }}
 .grp.flat .c:hover figcaption, .grp.flat .c:focus-within figcaption {{ opacity: 1; }}
-@media (hover: none) {{ .grp.flat .c figcaption {{ opacity: 1; }} }}
+@media (hover: none) {{ .grp.flat .c figcaption {{ display: none; }} }}     /* touch: «Залишити» and JPG live in the popup */
+@media (max-width: 700px) {{ .picks {{ position: static; gap: 6px; padding: 10px 16px; }} .picks b {{ width: 100%; }} .picks button {{ padding: 9px 13px; font-size: .82rem; }} }}
 .c .pick {{ opacity: 0; transition: opacity .15s; }}
 .c figcaption a {{ white-space: nowrap; }}
 @media (max-width: 560px) {{ .c .pick span {{ display: none; }} .c figcaption {{ padding: 6px 10px; }} }}
@@ -257,7 +259,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
   }});
 }});
 (function () {{
-  var KEY = 'obiimy-picks-v1', picks = new Set(), only = false;
+  var KEY = 'obiimy-picks-{keep_ver}', picks = new Set(), only = false;     // a new selection starts from the saved list
   var DEF = {defaults}, stored = null;
   try {{ stored = localStorage.getItem(KEY); }} catch (e) {{}}
   try {{ (stored ? JSON.parse(stored) : DEF).forEach(function (x) {{ picks.add(x); }}); }} catch (e) {{}}
@@ -320,6 +322,13 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
   lb.querySelector('.pv').addEventListener('click', function () {{ show(cur - 1); }});
   lb.querySelector('.nx').addEventListener('click', function () {{ show(cur + 1); }});
   lb.addEventListener('click', function (e) {{ if (e.target === lb || e.target.classList.contains('stage')) lb.close(); }});
+  var tx = null, ty = 0;
+  lb.addEventListener('touchstart', function (e) {{ tx = e.touches[0].clientX; ty = e.touches[0].clientY; }}, {{ passive: true }});
+  lb.addEventListener('touchend', function (e) {{
+    if (tx === null) return;
+    var dx = e.changedTouches[0].clientX - tx, dy = e.changedTouches[0].clientY - ty; tx = null;
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.5) show(cur + (dx < 0 ? 1 : -1));
+  }});
   lb.addEventListener('keydown', function (e) {{ if (e.key === 'ArrowLeft') show(cur - 1); else if (e.key === 'ArrowRight') show(cur + 1); }});
   lbc.addEventListener('change', function () {{ var id = items[cur].dataset.id; if (lbc.checked) picks.add(id); else picks.delete(id); paint(); }});
 }})();

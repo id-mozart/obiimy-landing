@@ -198,6 +198,8 @@ header.solo {{ justify-content: flex-end; }}
 .fid {{ font-variant-numeric: tabular-nums; opacity: .7; }}
 .c.on {{ outline: 3px solid var(--acc); outline-offset: -1px; }}
 .c .pick {{ opacity: 0; transition: opacity .15s; }}
+.c figcaption a {{ white-space: nowrap; }}
+@media (max-width: 560px) {{ .c .pick span {{ display: none; }} .c figcaption {{ padding: 6px 10px; }} }}
 .c:hover .pick, .c:focus-within .pick {{ opacity: 1; }}
 @media (hover: none) {{ .c .pick {{ opacity: 1; }} }}
 .grp.flat .c.on {{ outline: none; }}

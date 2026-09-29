@@ -38,8 +38,11 @@ def fmt(im):
 
 def build(site: pathlib.Path):
     out = site / "creatives"; out.mkdir(exist_ok=True)
-    sections = []
-    toc = []
+    groups = []      # {part, title, desc, cards: [(id, html)]}
+    part = ["main"]
+    keep_file = ROOT / "ads" / "keep.txt"
+    keep = [l.strip() for l in keep_file.read_text().splitlines() if l.strip() and not l.startswith("#")] if keep_file.exists() else []
+    keep_set = set(keep)
     HOME = {"out4": "solo-main", "out5": "solo-yellow", "out6": "solo-tri", "out7": "solo-tri-y", "out8": "solo-one", "out9": "solo-orig"}
     def add(title, desc, files, series):
         cards = []
@@ -52,10 +55,9 @@ def build(site: pathlib.Path):
             prev = d / (f.stem + "-540.webp")
             t = im.copy(); t.thumbnail((540, 960)); t.save(prev, quality=80)
             v = hashlib.md5(f.read_bytes()).hexdigest()[:8]
-            cards.append(f'''<figure class="c {cls}" data-f="{cls}" data-id="{series}/{f.name}"><a href="creatives/{series}/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/{series}/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="{t.width}" height="{t.height}"></a>
-        <figcaption><label class="pick"><input type="checkbox" data-id="{series}/{f.name}"><span>Залишити</span></label><span class="fid">{f.stem.split("-")[0]}</span><a href="creatives/{series}/{f.name}?v={v}" download="{f.name}">JPG ↓</a></figcaption></figure>''')
-        anchor = f"s{len(toc) + 1}"; toc.append((anchor, title, len(cards)))
-        sections.append(f'''<section class="grp" id="{anchor}"><div class="gh"><h3>{title} <span style="font-weight:400;color:var(--ink2)">· {len(cards)}</span></h3><p>{desc}</p></div><div class="grid">{"".join(cards)}</div></section>''')
+            cards.append((f"{series}/{f.name}", f'''<figure class="c {cls}" data-f="{cls}" data-id="{series}/{f.name}"><a href="creatives/{series}/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/{series}/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="{t.width}" height="{t.height}"></a>
+        <figcaption><label class="pick"><input type="checkbox" data-id="{series}/{f.name}"><span>Залишити</span></label><span class="fid">{f.stem.split("-")[0]}</span><a href="creatives/{series}/{f.name}?v={v}" download="{f.name}">JPG ↓</a></figcaption></figure>'''))
+        groups.append(dict(part=part[0], title=title, desc=desc, cards=cards))
     classic = sorted((ROOT / "ads/solo/out4").glob("*.jpg"))
     yellow = sorted((ROOT / "ads/solo/out5").glob("*.jpg"))
     isc = lambda f, lo, hi: f.name[0] == "c" and lo <= f.name[:3] <= hi
@@ -87,20 +89,46 @@ def build(site: pathlib.Path):
     add("Варіант B · повноекранні", "Те саме, але товар названо на жовтій фірмовій плашці.", [f for f in yellow if isc(f, "c01", "c13")], "solo-yellow")
     add("Варіант A · товарні", "Хустка, твіллі, подарунок, доставка, шоурум — світлий кадр і ціна.", [f for f in classic if isc(f, "c14", "c99")], "solo-main")
     add("Варіант B · товарні", "Світлі кадри з жовтою плашкою: що продаємо, деталі й ціна.", [f for f in yellow if isc(f, "c14", "c99")], "solo-yellow")
-    main_html = "".join(sections); sections.clear()
-    main_ids = {a for a, _, _ in toc}
+    part[0] = "solo"
     solo = sorted((ROOT / "ads/solo/out").glob("*.jpg"))
     n_solo = len(classic)
     for prefix, title, desc in SOLO_GROUPS:
         fs = [f for f in solo if f.name.startswith(prefix)]
         if fs: add(title, desc, fs, "solo")
-    solo_html = "".join(sections); sections.clear()
+    part[0] = "old"
     n_old = 0
     for folder, title, desc in OLD:
         fs = sorted(f for f in (ROOT / "ads" / folder).glob("obiimy-*.jpg"))
         add(title, desc, fs, folder); n_old += len(fs)
-    old_html = "".join(sections)
-    page = f'''<!DOCTYPE html>
+    H2 = {"solo": ("Альтернативні напрями SOLO", "Інші підходи до тієї ж колекції: обкладинки журналу, сім станів, кіно, продажні сторіс."),
+          "old": ("Попередні серії", "Сторіс для бренду Obiimy загалом.")}
+    def pl(n):
+        """Ukrainian plural of «банер»."""
+        return "банер" if n % 10 == 1 and n % 100 != 11 else ("банери" if 2 <= n % 10 <= 4 and not 12 <= n % 100 <= 14 else "банерів")
+    def body(select):
+        """Sections of the page for the cards that pass `select(id)`; returns (toc_html, body_html, number of cards)."""
+        toc, html_, n, seen = [], [], 0, set()
+        for pt in ("main", "solo", "old"):
+            secs = []
+            for g in groups:
+                if g["part"] != pt: continue
+                cards = [c for i, c in g["cards"] if select(i)]
+                if not cards: continue
+                seen.update(i for i, _ in g["cards"] if select(i))
+                anchor = f"s{len(toc) + 1}"; toc.append((anchor, g["title"], len(cards), pt))
+                secs.append(f'''<section class="grp" id="{anchor}"><div class="gh"><h3>{g["title"]} <span style="font-weight:400;color:var(--ink2)">· {len(cards)}</span></h3><p>{g["desc"]}</p></div><div class="grid">{"".join(cards)}</div></section>''')
+            if secs:
+                if pt in H2: html_.append(f'<h2>{H2[pt][0]}</h2>\n<p class="lede">{H2[pt][1]}</p>')
+                html_ += secs
+        toc_html = "".join(f'<a href="#{a}">{t} <span>{k}</span></a>' for a, t, k, pt in toc)
+        return toc_html, "\n".join(html_), len(seen)
+    all_ids = {i for g in groups for i, _ in g["cards"]}
+    n_keep = len(keep_set & all_ids)
+    import json
+    defaults = json.dumps(sorted(keep_set & all_ids), ensure_ascii=False)
+
+    def render(lede, nav, toc_html, body_html):
+        return f'''<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Креативи Obiimy</title>
 <meta name="description" content="Рекламні креативи Obiimy: колекція SOLO. Шлях до себе та попередні серії сторіс.">
@@ -145,9 +173,9 @@ h2 {{ font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2r
 footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 20px; }}
 @media (max-width: 560px) {{ .grid {{ grid-template-columns: 1fr 1fr; gap: 10px; }} }}
 </style></head><body><div class="wrap">
-<header><a href="./">← Усі лендинги Obiimy</a><a href="https://obiimy.world/solo-shliakh-do-sebe/" target="_blank" rel="noopener">Колекція на obiimy.world ↗</a></header>
+<header><a href="./">← Усі лендинги Obiimy</a>{nav}</header>
 <h1>SOLO</h1>
-<p class="lede"><b>Шлях до себе.</b> Основна серія — {n_solo} банерів 1080 × 1920 для запуску нової колекції Obiimy у стилі попередніх кампаній бренду, у двох варіантах подачі товару: сім авторських принтів — сім станів на шляху жінки до себе. Тексти — за прес-релізом колекції, фото й ціни — з obiimy.world. Увесь текст стоїть у безпечній зоні сторіс. Натисніть на картинку, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>
+{lede}
 
 <div class="picks" role="region" aria-label="Відбір банерів"><b id="pn">Відмічено: 0</b>
 <button type="button" id="only" aria-pressed="false">Лише відмічені</button>
@@ -155,14 +183,8 @@ footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1
 <button type="button" id="link">Скопіювати посилання з відбором</button>
 <button type="button" id="clear">Очистити</button>
 <textarea id="out" readonly aria-label="Список відмічених банерів"></textarea></div>
-<nav class="toc">{"".join(f'<a href="#{a}">{t} <span>{n}</span></a>' for a, t, n in toc if a in main_ids)}</nav>
-{main_html}
-<h2>Альтернативні напрями SOLO</h2>
-<p class="lede">Інші підходи до тієї ж колекції: обкладинки журналу, сім станів, кіно, продажні сторіс.</p>
-{solo_html}
-<h2>Попередні серії</h2>
-<p class="lede">{n_old} сторіс для бренду Obiimy загалом.</p>
-{old_html}
+<nav class="toc">{toc_html}</nav>
+{body_html}
 <footer>Фото й логотип — obiimy.world. Креативи зроблено за допомогою Claude Code.</footer>
 </div>
 <script>
@@ -176,13 +198,16 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
 }});
 (function () {{
   var KEY = 'obiimy-picks-v1', picks = new Set(), only = false;
-  try {{ JSON.parse(localStorage.getItem(KEY) || '[]').forEach(function (x) {{ picks.add(x); }}); }} catch (e) {{}}
+  var DEF = {defaults}, stored = null;
+  try {{ stored = localStorage.getItem(KEY); }} catch (e) {{}}
+  try {{ (stored ? JSON.parse(stored) : DEF).forEach(function (x) {{ picks.add(x); }}); }} catch (e) {{}}
   var m = location.hash.match(/sel=([^&]+)/);
   if (m) decodeURIComponent(m[1]).split(',').forEach(function (x) {{ if (x) picks.add(x); }});
   var boxes = [].slice.call(document.querySelectorAll('.pick input'));
   function list() {{
     var seen = new Set(), out = [];
     boxes.forEach(function (b) {{ if (b.checked && !seen.has(b.dataset.id)) {{ seen.add(b.dataset.id); out.push(b.dataset.id); }} }});
+    picks.forEach(function (x) {{ if (!seen.has(x)) {{ seen.add(x); out.push(x); }} }});   // picked on the other page
     return out;
   }}
   function paint() {{
@@ -211,7 +236,22 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
 </script>
 </body></html>
 '''
-    (site / "creatives.html").write_text(page)
+    lede_main = '''<p class="lede"><b>Шлях до себе.</b> Основна серія — {n_solo} банерів 1080 × 1920 для запуску нової колекції Obiimy у стилі попередніх кампаній бренду, у двох варіантах подачі товару: сім авторських принтів — сім станів на шляху жінки до себе. Тексти — за прес-релізом колекції, фото й ціни — з obiimy.world. Увесь текст стоїть у безпечній зоні сторіс. Натисніть на картинку, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>'''.replace("{n_solo}", str(n_solo))
+    arch_nav = '<a href="https://obiimy.world/solo-shliakh-do-sebe/" target="_blank" rel="noopener">Колекція на obiimy.world ↗</a>'
+    if n_keep:
+        toc_html, body_html, n = body(lambda i: i in keep_set)
+        lede = (f'<p class="lede"><b>Шлях до себе.</b> Відібрано для подальшої роботи — {n} {pl(n)} 1080 × 1920. Решта не видалена: вона лежить в архіві. '
+                f'Натисніть на картинку, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>')
+        a_toc, a_body, a_n = body(lambda i: i not in keep_set)
+        nav = f'<a href="creatives-archive">Архів · {a_n} {pl(a_n)} →</a>'
+        (site / "creatives.html").write_text(render(lede, nav, toc_html, body_html))
+        a_lede = (f'<p class="lede"><b>Архів.</b> {a_n} {pl(a_n)} поза відбором. Нічого не видалено: файли можна відкрити й завантажити. '
+                  f'Позначте «Залишити», щоб повернути банер до відібраних, і надішліть оновлений список.</p>')
+        (site / "creatives-archive.html").write_text(render(a_lede, '<a href="creatives">← До відібраних</a>', a_toc, a_body).replace("<h1>SOLO</h1>", "<h1>Архів</h1>").replace("<title>Креативи Obiimy</title>", "<title>Архів креативів Obiimy</title>"))
+    else:
+        toc_html, body_html, n = body(lambda i: True)
+        (site / "creatives.html").write_text(render(lede_main, arch_nav, toc_html, body_html))
+        (site / "creatives-archive.html").unlink(missing_ok=True)
     return n_solo + n_old
 
 if __name__ == "__main__":

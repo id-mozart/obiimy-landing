@@ -1,5 +1,6 @@
 # Банери, відібрані для подальшої роботи (29.09.2026, другий відбір — 28). Решта — в архіві (site/creatives-archive.html).
 solo-one/g07-scrunchie-gift.jpg
+solo-one/g08-scarf-gift-iskra.jpg
 solo-orig/o12-contact-iskra.jpg
 solo-tri/t01-decades.jpg
 solo-tri/t05-avantiura-ways.jpg
@@ -13,9 +14,6 @@ solo-main/p15-iskra.jpg
 solo-main/u02-london.jpg
 solo-main/u03-made-in-ua.jpg
 solo-main/u05-luxury.jpg
-solo-main/u07-hand-edge.jpg
-solo-main/u09-from-painting.jpg
-solo-main/u11-slow.jpg
 solo-main/c02-iskra.jpg
 solo-main/c05-zolote.jpg
 solo-main/c06-avantiura.jpg

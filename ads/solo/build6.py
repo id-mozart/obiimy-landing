@@ -103,10 +103,11 @@ def band(top, height, b, n=3):
   <div class="band" style="top:{top}px;height:{height}px">{pic}<div class="veil"{' style="background:' + extra["veil"] + '"' if extra.get("veil") else ""}></div>
     <div class="txt"><p class="big" style="font-size:{size}px">{big}</p>{f'<p class="small" style="font-size:{36 if n == 4 else 40}px;max-width:{extra.get("cw", 480)}px;margin-top:{extra.get("gap", 26)}px">{nb(small)}</p>' if small else ""}{tag}</div></div>'''
 
-def triptych(id, kicker, bands, tagline, product, cta, note=""):
+def triptych(id, kicker, bands, tagline, product, cta, note="", plain=False):
     """bands: 3 × (photo, object-position, big label, small line, look[, {tag, size}]); product: (cutouts, title, price)."""
-    n = len(bands); top, gap = 280, 12
-    h = (1242 - (n - 1) * gap) // n
+    n = len(bands); top, gap = (176 if plain else 280), 12
+    if plain: tagline = ""
+    h = ((1676 if plain else 1522) - top - (n - 1) * gap) // n
     body = "".join(band(top + k * (h + gap), h, b, n) for k, b in enumerate(bands))
     cuts, title, price = product
     if len(cuts) == 3 and len(cta) > 13: cuts = cuts[:2]
@@ -115,17 +116,19 @@ def triptych(id, kicker, bands, tagline, product, cta, note=""):
     plate_fg = "#141216" if YELLOW else "#F3EADB"
     plate_bd = "none" if YELLOW else "1.5px solid rgba(243,234,219,.3)"
     y0 = top + n * h + (n - 1) * gap
-    ad(id, f'''
-  <div style="left:0;right:0;top:0;height:{top}px;background:#141110"></div>
-  <div style="left:64px;top:44px;font-family:Montserrat,sans-serif;text-transform:uppercase;color:#fff;line-height:1">
+    header = (f'''<img src="{LOGO_W}" alt="" style="left:64px;top:58px;height:58px">
+  <p style="right:64px;top:76px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#F3EADB">Авторські шовкові вироби</p>''' if plain else f'''  <div style="left:64px;top:44px;font-family:Montserrat,sans-serif;text-transform:uppercase;color:#fff;line-height:1">
     <p style="font-size:34px;font-weight:400;letter-spacing:.02em">Колекція</p>
     <p style="font-size:132px;font-weight:300;letter-spacing:-.01em;margin-top:6px">Соло</p>
     <p style="font-size:34px;font-weight:400;letter-spacing:.02em;margin-top:8px">Шлях до себе</p></div>
-  <img src="{LOGO_W}" alt="" style="right:64px;top:50px;height:40px">
-  <p style="right:64px;top:106px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;color:#F3EADB">Шовкові вироби</p>
-  <p style="right:64px;top:176px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;padding:16px 28px;border-radius:999px;background:#F2B705;color:#141216;white-space:nowrap">{kicker}</p>
+  <img src="{LOGO_W}" alt="" style="right:64px;top:46px;height:50px">
+  <p style="right:64px;top:110px;font-family:Montserrat,sans-serif;font-size:21px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;color:#F3EADB">Авторські шовкові вироби</p>
+  <p style="right:64px;top:176px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;padding:16px 28px;border-radius:999px;background:#F2B705;color:#141216;white-space:nowrap">{kicker}</p>''')
+    ad(id, f'''
+  <div style="left:0;right:0;top:0;height:{top}px;background:#141110"></div>
+  {header}
   {body}
-  <p style="left:64px;right:64px;top:{y0 + 34}px;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:44px;line-height:1.15;text-wrap:balance">{nb(tagline)}</p>
+  {f"""<p style="left:64px;right:64px;top:{y0 + 34}px;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:44px;line-height:1.15;text-wrap:balance">{nb(tagline)}</p>""" if tagline else ""}
   <div style="left:64px;right:64px;bottom:60px;display:flex;align-items:center;justify-content:space-between;gap:24px">
     <div style="display:flex;align-items:center;gap:20px;padding:12px 28px 12px 14px;border-radius:{6 if YELLOW else 20}px;background:{plate_bg};border:{plate_bd};color:{plate_fg};flex:0 1 auto;min-width:0">
       <div style="display:flex;align-items:center;flex:none">{thumbs}</div>
@@ -140,10 +143,10 @@ SCARVES = (["zolote-44-1", "iskra-65-1", "puls-44-1"], "Шовкові хуст�
 
 # ================================================================= STORIES in bands
 triptych("t01-decades", "Жіноча сила крізь десятиліття", [
-    ("zolote-44-3", "50% 22%", "1940-ві", "Сила — у бездоганній елегантності.", "bw"),
-    ("iskra-65-4", "55% 28%", "1950-ті", "Правила починають руйнуватися. Колір, форма, сміливість.", "sepia"),
-    ("puls-44-4", "50% 12%", "2026", "Свобода — самій обирати, якою бути.", "raw"),
-], "Змінювалися епохи й силуети. Хустка залишалася поруч.", SCARVES, "Обрати хустку", "Decades")
+    ("zolote-44-3", "50% 6%", "1940-ві", "Сила — у бездоганній елегантності.", "bw", {"wide": 116}),
+    ("iskra-65-4", "50% 8%", "1950-ті", "Правила починають руйнуватися. Колір, форма, сміливість.", "sepia", {"wide": 116}),
+    ("puls-44-4", "50% 4%", "2026", "Свобода — самій обирати, якою бути.", "raw", {"wide": 116}),
+], "", SCARVES, "Обрати хустку", "Decades", plain=True)
 
 triptych("t03-three-states", "Три стани", [
     ("tysha-88-3", "50% 45%", "Тиша", "Почути себе серед зовнішнього шуму.", "raw", {"size": 118}),
@@ -158,10 +161,10 @@ triptych("t04-flirt-three-ways", "Один принт — три образи", 
 ], "«Флірт»: хустка й твіллі одного принту.", (["flirt-65-1", "flirt-tw-5"], "Хустка й твіллі «Флірт»", "від 1 600 грн"), "Обрати «Флірт»", "Flirt three ways")
 
 triptych("t05-avantiura-ways", "Одна хустка — три способи", [
-    ("avantiura-88-5", "62% 35%", "У волоссі", "Бант, який помічають.", "raw", {"size": 96}),
-    ("avantiura-88-4", "50% 13%", "На шиї", "Класика, що не виходить<br>з моди.", "raw", {"size": 96, "wide": 125}),
-    ("avantiura-88-2", "45% 55%", "Поясом", "Акцент на талії.", "raw", {"size": 96}),
-], "Велика хустка — стільки образів, скільки захочете.", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Обрати хустку", "Avantiura three ways")
+    ("avantiura-88-5", "62% 12%", "У волоссі", "Бант, який помічають.", "raw", {"size": 96, "wide": 112}),
+    ("avantiura-88-4", "50% 6%", "На шиї", "Класика, що не виходить<br>з моди.", "raw", {"size": 96, "wide": 125}),
+    ("avantiura-88-2", "45% 76%", "Поясом", "Акцент на талії.", "raw", {"size": 96, "wide": 112}),
+], "", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Обрати хустку", "Avantiura three ways", plain=True)
 
 triptych("t06-formats", "Оберіть свій формат", [
     ("krok-tw-2", "50% 45%", "Твіллі", "Стрічка у волосся, на сумку чи зап’ястя.", "raw", {"tag": "1 600 грн", "size": 110}),

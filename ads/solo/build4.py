@@ -19,8 +19,8 @@ body { margin: 0; background: #666; font-family: 'Onest', 'Helvetica Neue', Aria
 .ad p, .ad h1 { margin: 0; }
 .ad::after { content: ""; position: absolute; inset: 0; z-index: 90; pointer-events: none; opacity: .12; mix-blend-mode: multiply; background-image: GRAIN; }
 .dark::after { mix-blend-mode: soft-light; opacity: .35; }
-.logo { left: 50%; transform: translateX(-50%); height: 44px; }
-.logo img { display: block; height: 44px; width: auto; }
+.logo { left: 50%; transform: translateX(-50%); height: 54px; }
+.logo img { display: block; height: 54px; width: auto; }
 .eyebrow { font-size: 30px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--ink-2); left: 80px; right: 80px; text-align: center; }
 .h { font-family: 'Prata', serif; font-size: 100px; line-height: 1.04; text-align: center; left: 70px; right: 70px; letter-spacing: -0.01em; text-wrap: balance; }
 .h em { font-style: normal; color: var(--ink-3); }
@@ -86,6 +86,8 @@ PROD = {
 
 MIN = {}   # id -> (cutouts, "Шовкова хустка «…»") for the minimal premium banners
 
+INLINE = {"p05-character"}     # no button: «Обрати →» to the right of the price
+
 def product_card(id, price_main, price_small):
     if id in MIN:
         cuts, title = MIN[id]
@@ -94,7 +96,7 @@ def product_card(id, price_main, price_small):
         bd = "none" if YELLOW else "1.5px solid rgba(244,242,237,.3)"
         return f"""<div style="display:flex;align-items:center;gap:28px;margin-top:30px;padding:14px 38px 14px 16px;border-radius:{6 if YELLOW else 22}px;background:{bg};border:{bd};text-align:left">
       {img}<div><p style="font-size:36px;line-height:1.2;font-weight:600;color:{c1}">{title}</p>
-      <p style="font-family:Prata,serif;font-size:50px;line-height:1;color:{c1};margin-top:10px">{price_main}</p></div></div>"""
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:40px;margin-top:10px"><p style="font-family:Prata,serif;font-size:50px;line-height:1;color:{c1}">{price_main}</p>{f'<p style="font-size:36px;font-weight:600;color:{"#141216" if YELLOW else "#F2B705"};white-space:nowrap">Обрати&nbsp;→</p>' if id in INLINE else ""}</div></div></div>"""
     cuts, kind, name = PROD[id]
     imgs = "".join(f'<img src="{CUT(c)}" alt="" style="height:200px;width:auto;max-width:{220 if len(cuts) == 1 else 140}px;object-fit:contain;margin-left:{0 if k == 0 else -40}px;filter:drop-shadow(0 12px 14px rgba(0,0,0,.4));transform:rotate({(-6, 5, -3)[k]}deg)">' for k, c in enumerate(cuts))
     if YELLOW:
@@ -126,7 +128,7 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
     block = f"""<h1 class="h" style="position:static;color:#fff;font-size:{hs}px">{h}{f'<br><em style="color:#E9D7A6">{em}</em>' if em else ''}</h1>
     {f'<p class="body" style="position:static;margin-top:18px;max-width:900px">{nb(body)}</p>' if body else ""}
     {pr}
-    <div class="cta" style="position:static;transform:none;margin-top:26px">{cta}</div>"""
+    {"" if id in INLINE else f'<div class="cta" style="position:static;transform:none;margin-top:26px">{cta}</div>'}"""
     if top_text:
         shade = '<div style="left:0;right:0;top:0;height:900px;background:linear-gradient(180deg,#141216 0%,rgba(20,18,22,.88) 42%,rgba(20,18,22,.5) 72%,rgba(20,18,22,0) 100%)"></div>'
         pos_block = "top:200px"
@@ -139,8 +141,8 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
   {fill}
   {ph}
   {shade}
-  <img src="{LOGO_W}" alt="" style="left:70px;top:70px;height:44px;display:block">
-  <p style="right:70px;top:80px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.45)">Шовкові вироби</p>
+  <img src="{LOGO_W}" alt="" style="left:70px;top:64px;height:54px;display:block">
+  <p style="right:70px;top:80px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.45)">Авторські шовкові вироби</p>
   <div style="left:70px;right:70px;{pos_block};display:flex;flex-direction:column;align-items:center;text-align:center">
     {block}
   </div>""", note)
@@ -175,8 +177,8 @@ full("c13-parts", "avantiura-88-2", "40% 0%", "Найбільша хустка."
 def ivory(id, eyebrow, h, em, visual, body, price_main, price_small, cta, bg="var(--ivory)", note="", hs=100):
     ad(id, "", f'''
   <div style="left:0;right:0;top:0;bottom:0;background:{bg}"></div>
-  <img src="{LOGO_K}" alt="" style="left:70px;top:70px;height:44px;display:block">
-  <p style="right:70px;top:80px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;font-size:24px;color:var(--ink-2)">Шовкові вироби</p>
+  <img src="{LOGO_K}" alt="" style="left:70px;top:64px;height:54px;display:block">
+  <p style="right:70px;top:80px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;font-size:24px;color:var(--ink-2)">Авторські шовкові вироби</p>
   <div style="left:70px;right:70px;top:80px;bottom:96px;display:flex;flex-direction:column;align-items:center;text-align:center">
     {'<div style="height:60px"></div>' if YELLOW else f'<p class="eyebrow" style="position:static;margin-top:90px">{eyebrow}</p>'}
     <h1 class="h" style="position:static;margin-top:16px;font-size:{hs}px">{h}<br><em>{em}</em></h1>
@@ -303,7 +305,7 @@ ivory("u11-slow", "Шовкова хустка «Золоте світло»", "
 QUIET = [
     ("p01-quiet-luxury", "zolote-44-3", "50% 25%", False, "Бездоганна елегантність.", "Український бренд.", "Авторські принти на натуральному шовку.", ["zolote-44-1"], "Шовкова хустка «Золоте світло»", "2 400 грн", "Подивитися ближче"),
     ("p02-speaks", "avantiura-88-5", "62% 30%", False, "Шовк, який", "говорить за вас.", "", ["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн", "Знайти свій принт"),
-    ("p05-character", "krok-44-2", "50% 30%", True, "Українська хустка", "з характером.", "Принт «Сміливий крок» — довіра до себе.", ["krok-44-1"], "Шовкова хустка «Сміливий крок»", "2 400 грн", "Знайти свою"),
+    ("p05-character", "krok-44-2", "74% 30%", True, "Український шовк", "з характером.", "Принт «Сміливий крок» — довіра до себе.", ["krok-44-1"], "Шовкова хустка «Сміливий крок»", "2 400 грн", "Знайти свою"),
     ("p06-noticed", "avantiura-tw-3", "50% 40%", False, "Деталь,", "яку помічають.", "", ["avantiura-tw-5"], "Шовкова твіллі «Авантюра»", "1 600 грн", "Подарувати собі"),
     ("p07-whole-look", "iskra-tw-2", "50% 25%", False, "Один аксесуар —", "весь образ.", "", ["iskra-tw-4"], "Шовкова твіллі «Іскра»", "1 600 грн", "Подивитися образ"),
     ("p08-touch", "flirt-65-3", "38% 30%", False, "Шовк, до якого", "хочеться торкатися.", "«Флірт» — це насамперед стан.", ["flirt-65-1"], "Шовкова хустка «Флірт»", "4 800 грн", "Відкрити колекцію"),

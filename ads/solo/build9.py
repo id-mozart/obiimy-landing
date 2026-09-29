@@ -33,8 +33,8 @@ def ad(id, bg, body, note=""):
 
 def head(dark=True):
     col = CREAM if dark else "#4A4750"
-    return (f'<img class="a" src="{LOGO_W if dark else LOGO_K}" alt="Obiimy" style="left:64px;top:56px;height:44px">'
-            f'<p class="a lbl" style="right:64px;top:66px;color:{col}">Шовкові вироби</p>')
+    return (f'<img class="a" src="{LOGO_W if dark else LOGO_K}" alt="Obiimy" style="left:64px;top:52px;height:54px">'
+            f'<p class="a lbl" style="right:64px;top:66px;color:{col}">Авторські шовкові вироби</p>')
 
 def foot(product, cta, dark=True, tagline=""):
     cuts, title, price = product

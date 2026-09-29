@@ -99,7 +99,7 @@ def band(top, height, b, n=3):
     elif photo.startswith("url("):
         pic = f'<div style="position:absolute;inset:0;background:{photo} {pos}"></div>'
     else:
-        more = (";transform:scaleX(-1)" if extra.get("flip") else "") + (";width:%d%%" % extra["wide"] if extra.get("wide") else "") + (f";width:{fit}%;margin-left:auto;{fade}" if fit else "")
+        more = (";transform:scaleX(-1)" if extra.get("flip") else "") + (";width:%d%%" % extra["wide"] if extra.get("wide") else "") + (f";width:{fit}%;margin-left:auto;{fade}" if fit else "") + (f";margin-left:{extra['dx']}px;{fade}" if extra.get("dx") else "")
         pic = f'<img src="{S(photo)}" alt="" style="object-position:{pos};{FILTERS[look]}{more}">'
     return f'''
   <div class="band" style="top:{top}px;height:{height}px">{pic}<div class="veil"{' style="background:' + extra["veil"] + '"' if extra.get("veil") else ""}></div>
@@ -165,10 +165,10 @@ triptych("t04-flirt-three-ways", "Один принт — три образи", 
 ], "«Флірт»: хустка й твіллі одного принту.", (["flirt-65-1", "flirt-tw-5"], "Хустка й твіллі «Флірт»", "від 1 600 грн"), "Обрати «Флірт»", "Flirt three ways")
 
 triptych("t05-avantiura-ways", "Одна хустка — три способи", [
-    ("avantiura-88-5", "62% 12%", "У волоссі", "Бант, який помічають.", "raw", {"size": 96, "wide": 112}),
-    ("avantiura-88-4", "50% 6%", "На шиї", "Класика, що не виходить<br>з моди.", "raw", {"size": 96, "wide": 125}),
+    ("avantiura-88-5", "50% 0%", "У волоссі", "Бант, який помічають.", "raw", {"size": 96, "fit": 86}),
+    ("avantiura-88-4", "50% 6%", "На шиї", "Класика, що не виходить<br>з моди.", "raw", {"size": 96, "wide": 125, "dx": 120}),
     ("avantiura-88-2", "45% 76%", "Поясом", "Акцент на талії.", "raw", {"size": 96, "wide": 112}),
-], "", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Обрати хустку", "Avantiura three ways", plain=True)
+], "", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Купити", "Avantiura three ways", plain=True)
 
 triptych("t06-formats", "Оберіть свій формат", [
     ("krok-tw-2", "50% 45%", "Твіллі", "Стрічка у волосся, на сумку чи зап’ястя.", "raw", {"tag": "1 600 грн", "size": 110}),

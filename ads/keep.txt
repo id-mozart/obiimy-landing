@@ -19,9 +19,7 @@ solo-main/c05-zolote.jpg
 solo-main/c06-avantiura.jpg
 solo-main/c09-ya-ie.jpg
 solo-main/c10-grey.jpg
-solo-main/c17-double.jpg
 solo-main/c18-look.jpg
-final2/obiimy-11-paris-poias-1080x1920.jpg
 final2/obiimy-12-paris-chervonyi-shovk-1080x1920.jpg
 final2/obiimy-13-paris-shal-1080x1920.jpg
 final2/obiimy-20-solo-rivera-1080x1920.jpg

@@ -80,7 +80,7 @@ PROD = {
     "u02-london": (["zolote-44-1"], "", "«Золоте світло»"),
     "u03-made-in-ua": (["krok-44-1"], "Шовкова хустка", "«Сміливий крок» · 44 × 44 см"),
     "u04-not-mass": (["puls-tw-4"], "Шовкова твіллі", "«Пульс»"),
-    "u05-luxury": (["tysha-88-1"], "Шовкова хустка", "«Тиша всередині» · 88 × 88 см"),
+    "u05-luxury": (["tysha-88-1"], "Шовкова хустка", "«Тиша всередині»"),
     "u06-abroad": (["iskra-tw-4"], "Шовкова твіллі", "«Іскра»"),
 }
 
@@ -246,7 +246,9 @@ look = f"""<div style="position:absolute;inset:0 20px;display:grid;grid-template
     <div class="photo"><img src="{S2('iskra-65-2')}" alt="" style="object-position:40% 35%"></div><div class="photo"><img src="{S2('iskra-tw-3')}" alt="" style="object-position:50% 60%"></div></div>"""
 ivory("c18-look", "Шовкова хустка + твіллі", "Хустка й твіллі", "одного принту.", look,
       "Один принт — на плечах і на сумці.", "6 400 грн", "хустка + твіллі · доставка безкоштовна", "Зібрати образ", note="Complete look", quote="Ваш почерк — у кожній деталі.", hs=72)
-ivory("c23-look-dark", "Шовкова хустка + твіллі", "Хустка й твіллі", "одного принту.", look,
+look2 = f"""<div style="position:absolute;inset:0 20px;display:grid;grid-template-columns:1.2fr 1fr;gap:14px">
+    <div class="photo"><img src="{S2('flirt-65-3')}" alt="" style="object-position:36% 30%"></div><div class="photo"><img src="{S2('flirt-tw-1')}" alt="" style="object-position:50% 40%"></div></div>"""
+ivory("c23-look-dark", "Шовкова хустка + твіллі", "Хустка й твіллі", "одного принту.", look2,
       "Один принт — на плечах і на сумці.", "6 400 грн", "хустка + твіллі · доставка безкоштовна", "Зібрати образ", note="Complete look, dark", quote="Ваш почерк — у кожній деталі.", hs=72, dark=True)
 cert = f"""<div style="position:absolute;inset:0 20px;background:url(src/{PP['zolote']['flat']}-hi.webp) center/170%"></div>
   <div style="position:absolute;left:150px;right:150px;top:110px;bottom:110px;background:#fff;box-shadow:0 30px 60px -24px rgba(0,0,0,.5);display:grid;place-items:center;text-align:center">
@@ -279,7 +281,7 @@ full("u03-made-in-ua", "krok-44-4", "45% 20%", "Зроблено в Україн
 full("u04-not-mass", "puls-tw-3", "50% 20%", "Авторський принт.", "Український бренд.",
      "Принти художниці й засновниці бренду Світлани Сніжко — на натуральному шовку.", "1 600 грн", "", "Обрати «Пульс»", note="Not mass market", hs=76)
 full("u05-luxury", "tysha-88-2", "50% 50%", "Розкіш", "бути собою.",
-     "Натуральний шовк, ручна обробка краю, двосторонній друк.", "6 600 грн", "", "Обрати «Тишу всередині»", note="Luxury of being yourself", box=(-110, 1920))
+     "Натуральний шовк преміальної якості.", "6 600 грн", "", "Обрати «Тишу всередині»", note="Luxury of being yourself", box=(-110, 1920))
 full("u06-abroad", "iskra-tw-2", "50% 25%", "Подарунок з України,", "яким пишаються.",
      "Для рідних за кордоном. Міжнародна доставка — за тарифами перевізника.", "1 600 грн", "", "Надіслати подарунок", note="Gift abroad", hs=78)
 

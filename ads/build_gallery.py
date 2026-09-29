@@ -245,7 +245,6 @@ footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1
 {f'<nav class="toc">{toc_html}</nav>' if toc_html else ""}
 {body_html}
 <p class="all"><a href="creatives">Показати всі банери</a></p>
-<footer>Фото й логотип — obiimy.world. Креативи зроблено за допомогою Claude Code.</footer>
 </div>
 <dialog id="lb" aria-label="Перегляд банера">
   <div class="stage">

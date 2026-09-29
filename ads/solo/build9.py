@@ -81,7 +81,7 @@ def stamp(pid, cw, ch, s=30, left=0, top=0, rot=0, kind="scarf", price=True):
     </div>
   </div>'''
 
-def postmark(left, top, size=300, rot=-14, col="rgba(20,18,22,.72)"):
+def postmark(left, top, size=300, rot=-14, col="rgba(20,18,22,.72)", waves=True):
     return f'''
   <svg class="a" viewBox="0 0 520 300" style="left:{left}px;top:{top}px;width:{int(size * 520 / 300)}px;height:{size}px;transform:rotate({rot}deg);mix-blend-mode:multiply" fill="none" stroke="{col}">
     <defs><path id="pm" d="M150,150 m-108,0 a108,108 0 1,1 216,0 a108,108 0 1,1 -216,0"/></defs>
@@ -89,7 +89,7 @@ def postmark(left, top, size=300, rot=-14, col="rgba(20,18,22,.72)"):
     <text font-family="Montserrat" font-weight="500" font-size="24" letter-spacing="5" fill="{col}" stroke="none"><textPath href="#pm">КОЛЕКЦІЯ СОЛО · ШЛЯХ ДО СЕБЕ ·</textPath></text>
     <text x="150" y="146" text-anchor="middle" font-family="Playfair Display" font-weight="700" font-size="46" fill="{col}" stroke="none">2026</text>
     <text x="150" y="182" text-anchor="middle" font-family="Montserrat" font-weight="500" font-size="19" letter-spacing="4" fill="{col}" stroke="none">OBIIMY</text>
-    {"".join(f'<path d="M300,{96 + i * 36} q27,-18 54,0 t54,0 t54,0 t54,0" stroke-width="5"/>' for i in range(4))}
+    {"".join(f'<path d="M300,{96 + i * 36} q27,-18 54,0 t54,0 t54,0 t54,0" stroke-width="5"/>' for i in range(4)) if waves else ""}
   </svg>'''
 
 PAPER = "radial-gradient(120% 80% at 50% 30%,#EFE6D4,#DDD0B8)"
@@ -102,19 +102,13 @@ for r, row in enumerate(rows):
     x0 = (1080 - (len(row) * W + (len(row) - 1) * gap)) // 2
     for c, pid in enumerate(row):
         body += stamp(pid, cw, ch, s_, x0 + c * (W + gap), 432 + r * (H + gap), rot=(-2, 1.5, -1, 2, -1.5, 1, -2)[(r * 3 + c) % 7])
-body += postmark(716, 372, 190, -12)
+body += postmark(778, 344, 190, -12, waves=False)
 body += foot((["iskra-65-1", "avantiura-88-1", "krok-44-1"], "Шовкові хустки SOLO", "від 2 400 грн"), "Обрати принт", False, "Сім авторських принтів. Двосторонній друк.")
 ad("o01-stamps-sheet", PAPER, body, "Stamps: the sheet of seven")
 
 # 1b — one big stamp, the delivery fact
 body = head(True) + lockup(True, 160) + f'<h1 class="a h" style="left:64px;right:64px;top:212px;font-size:100px;color:{CREAM}">Поштою —<br><em style="color:#E9D7A6">до себе.</em></h1>'
 body += stamp("avantiura", 20, 25, 36, 180, 500, rot=-3)
-body += f'''<svg class="a" viewBox="0 0 520 300" style="left:790px;top:372px;width:433px;height:250px;transform:rotate(-14deg)" fill="none" stroke="rgba(20,18,22,.78)">
-    <defs><path id="pm2" d="M150,150 m-108,0 a108,108 0 1,1 216,0 a108,108 0 1,1 -216,0"/></defs>
-    <circle cx="150" cy="150" r="140" stroke-width="5"/><circle cx="150" cy="150" r="86" stroke-width="3"/>
-    <text font-family="Montserrat" font-weight="500" font-size="24" letter-spacing="5" fill="rgba(20,18,22,.78)" stroke="none"><textPath href="#pm2">КОЛЕКЦІЯ СОЛО · ШЛЯХ ДО СЕБЕ ·</textPath></text>
-    <text x="150" y="146" text-anchor="middle" font-family="Playfair Display" font-weight="700" font-size="46" fill="rgba(20,18,22,.78)" stroke="none">2026</text>
-    <text x="150" y="182" text-anchor="middle" font-family="Montserrat" font-weight="500" font-size="19" letter-spacing="4" fill="rgba(20,18,22,.78)" stroke="none">OBIIMY</text></svg>'''
 body += foot((["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Обрати хустку", True, "Замовлення до 16:00 відправимо Новою поштою того\u00a0ж\u00a0дня.")
 ad("o02-stamp-avantiura", "radial-gradient(90% 60% at 50% 45%,#5A1A1E,#2A0D10 80%)", body, "Stamps: one stamp and same-day dispatch")
 
@@ -138,8 +132,8 @@ body += stamp("zolote", 20, 25, 36, 180, 480, rot=-3, price=False)
 body += foot((["zolote-44-1"], "Шовкова хустка «Золоте світло»", "2 400 грн"), "Надіслати подарунок", True, "Замовлення до 16:00 відправимо того\u00a0ж\u00a0дня.<br>Подарунок підпишемо вашими словами.")
 ad("o21-stamp-gift", "radial-gradient(90% 60% at 50% 45%,#6B4414,#2C1B08 80%)", body, "Stamps: a gift by post")
 
-body = head(False) + lockup(False, 160) + f'<h1 class="a h" style="left:64px;right:64px;top:212px;font-size:86px;color:{INK};white-space:nowrap">Хустка — зараз.<br><em>Оплата — частинами.</em></h1>'
-body += stamp("tysha", 20, 25, 36, 180, 500, rot=3) + postmark(800, 380, 240, -12)
+body = head(False) + lockup(False, 160) + f'<h1 class="a h" style="left:64px;right:64px;top:212px;font-size:82px;color:{INK};white-space:nowrap">Хустка — одразу.<br><em>Оплата — частинами.</em></h1>'
+body += stamp("tysha", 20, 25, 36, 180, 500, rot=3) + postmark(784, 384, 240, -12, waves=False)
 body += foot((["tysha-88-1"], "Шовкова хустка «Тиша всередині»", "6 600 грн"), "Обрати хустку", False, "Оплата частинами: ПриватБанк — 4 платежі, monobank — 3.")
 ad("o20-stamp-tysha-parts", PAPER, body, "Stamps: payment in parts")
 
@@ -208,7 +202,7 @@ museum("o10-museum-zolote", "zolote", "Просимо", "торкатися.", "
 museum("o11-museum-iskra", "iskra", "Приміряти", "дозволено.", "#1E3556")
 museum("o17-museum-tysha", "tysha", "Просимо дотримуватися", "тиші всередині.", "#1B1815", hs=78)
 museum("o18-museum-krok", "krok", "Можна підійти", "ближче.", "#3B2A22")
-museum("o23-museum-gift", "avantiura", "Експонат, який", "можна подарувати.", "#3A1114", hs=88, extra="Підпис до подарунка —<br>вашими словами.", cta="Подарувати", tagline="Індивідуальне пакування.<br>Доставка безкоштовна.", tl_w=470)
+museum("o23-museum-gift", "avantiura", "Експонат, який", "можна подарувати.", "#3A1114", hs=88, extra="Підпис до подарунка —<br>вашими словами.", cta="Подарувати", tagline="Індивідуальне пакування.<br>Доставка по Україні безкоштовна.", tl_w=470)
 
 # ═════════════════════════════════════════════ 5. CONTACT SHEET
 FW, FH = 620, 420
@@ -244,7 +238,7 @@ contact("o13-contact-krok", "krok",
         [([("krok-44-3", "30% 86%/170%"), ("krok-44-3", "50% 32%/100%")], -200),
          ([("krok-44-2", "52% 60%/190%"), ("krok-44-2", "50% 36%/100%")], -262)],
         1, 1, "Крок, після якого", "не озираються.", "Рішення рухатися вперед — з довірою до себе.",
-        (["krok-44-1"], "Шовкова хустка «Сміливий крок»", "2 400 грн"), "Обрати хустку", hs=84)
+        (["krok-44-1"], "Хустка «Сміливий крок» 44 × 44 см", "2 400 грн"), "Обрати хустку", hs=84)
 
 # ═════════════════════════════════════════════ 6. CARE LABEL
 def label(id, pid, lines, h1, em, care=True, cta="Обрати хустку", hs=96, bg=None):
@@ -279,7 +273,7 @@ def label(id, pid, lines, h1, em, care=True, cta="Обрати хустку", hs
     body += foot(([p["flat"]], f"Шовкова хустка «{p['name']}»", f"{PRICE[pid]} грн"), cta, True)
     ad(id, "#141110", body, f"Hang tag: {p['name']}")
 label("o14-label-tysha", "tysha", [("100%", "італійський шовк"), ("0%", "чужих очікувань")], "Читайте", "склад.")
-label("o22-label-gift", "flirt", [("100%", "італійський шовк"), ("Підпис", "вашими словами"), ("Пакування", "індивідуальне"), ("Відправка", "того ж дня, якщо замовити до 16:00")],
+label("o22-label-gift", "flirt", [("100%", "італійський шовк"), ("Підпис", "вашими словами"), ("Пакування", "індивідуальне"), ("Відправка", "того ж дня<br>при замовленні до 16:00")],
       "Читайте склад", "подарунка.", care=False, cta="Обрати подарунок", bg="linear-gradient(165deg,#4C5A39,#2A3320 70%,#1A2013)")
 label("o19-label-avantiura", "avantiura", [("100%", "італійський шовк"), ("0%", "звичного")], "Склад:", "0% звичного.")
 

@@ -77,7 +77,7 @@ PROD = {
     "c12-hair": (["avantiura-tw-5"], "Шовкова твіллі", "«Авантюра»"),
     "c13-parts": (["avantiura-88-1"], "Шовкова хустка", "«Авантюра» · 88 × 88 см"),
     "u01-buy-ukrainian": (["flirt-tw-5"], "Шовкова твіллі", "«Флірт»"),
-    "u02-london": (["zolote-44-1"], "Шовкова хустка", "«Золоте світло» · 44 × 44 см"),
+    "u02-london": (["zolote-44-1"], "", "«Золоте світло»"),
     "u03-made-in-ua": (["krok-44-1"], "Шовкова хустка", "«Сміливий крок» · 44 × 44 см"),
     "u04-not-mass": (["puls-tw-4"], "Шовкова твіллі", "«Пульс»"),
     "u05-luxury": (["tysha-88-1"], "Шовкова хустка", "«Тиша всередині» · 88 × 88 см"),
@@ -104,11 +104,12 @@ def product_card(id, price_main, price_small):
         bg, bd, c1, c2, c3 = "#F2B705", "none", "#141216", "#141216", "#141216"
     else:
         bg, bd, c1, c2, c3 = "rgba(244,242,237,.1)", "1.5px solid rgba(244,242,237,.3)", "#E9D7A6", "#fff", "#fff"
-    price = f'<p style="font-family:Prata,serif;font-size:58px;line-height:1;color:{c3};margin-top:10px">{price_main}</p>' if price_main else ""
+    big = not kind      # only the name and the price: both a step larger
+    price = f'<p style="font-family:Prata,serif;font-size:{70 if big else 58}px;line-height:1;color:{c3};margin-top:{14 if big else 10}px">{price_main}</p>' if price_main else ""
     return f"""<div style="display:flex;align-items:center;gap:32px;margin-top:28px;padding:18px 40px 18px 20px;border-radius:{6 if YELLOW else 22}px;background:{bg};border:{bd};text-align:left;box-shadow:{"0 20px 40px -20px rgba(0,0,0,.6)" if YELLOW else "none"}">
       <div style="display:flex;align-items:center;flex:none">{imgs}</div>
-      <div><p style="font-size:30px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:{c1}">{kind}</p>
-        <p style="font-size:38px;line-height:1.2;color:{c2};margin-top:6px;font-weight:{500 if YELLOW else 400}">{name}</p>{price}</div></div>"""
+      <div>{f'<p style="font-size:30px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:{c1}">{kind}</p>' if kind else ""}
+        <p style="font-size:{46 if big else 38}px;line-height:1.2;color:{c2};margin-top:{0 if big else 6}px;font-weight:{500 if (YELLOW or big) else 400}">{name}</p>{price}</div></div>"""
 
 LOCKUP = ('<span style="display:block;font-family:Montserrat,sans-serif;text-transform:uppercase;line-height:1;color:#fff">'
           '<span style="display:block;font-size:40px;font-weight:400">Колекція</span>'

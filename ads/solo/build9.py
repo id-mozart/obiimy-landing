@@ -221,10 +221,10 @@ def strip(top, frames, shift, first_no, pick=None):
       <path d="M262,22 C420,10 508,90 500,196 C492,306 380,366 250,360 C110,354 14,290 22,180 C30,76 130,28 290,30"/></svg>
   <p class="a hand" style="left:{x + FW - 150}px;top:{top - 58}px;font-size:76px;color:{YELLOW};transform:rotate(-7deg);text-shadow:0 2px 10px rgba(0,0,0,.8)">оцей!</p>'''
     return out
-def contact(id, pid, rows, pick_row, pick, h1, em, tagline, product, cta, hs=100):
+def contact(id, pid, rows, pick_row, pick, h1, em, tagline, product, cta, hs=100, centre=False):
     p = PP[pid]
-    body = head(True) + f'<p class="a kick" style="left:64px;top:160px;color:rgba(243,234,219,.78)">Контактний аркуш · «{p["name"]}»</p>'
-    body += f'<h1 class="a h" style="left:64px;right:64px;top:212px;font-size:{hs}px;color:{CREAM}">{h1} <em style="color:#E9D7A6">{em}</em></h1>'
+    body = head(True) + ("" if centre else f'<p class="a kick" style="left:64px;top:160px;color:rgba(243,234,219,.78)">Контактний аркуш · «{p["name"]}»</p>')
+    body += f'<h1 class="a h" style="left:64px;right:64px;top:{236 if centre else 212}px;font-size:{hs}px;color:{CREAM};{"text-align:center" if centre else ""}">{h1} <em style="color:#E9D7A6">{em}</em></h1>'
     for r, (frames, shift) in enumerate(rows):
         body += strip(470 + r * 540, frames, shift, 11 + r * 3, pick if r == pick_row else None)
     body += foot(product, cta, True, tagline)
@@ -232,8 +232,8 @@ def contact(id, pid, rows, pick_row, pick, h1, em, tagline, product, cta, hs=100
 contact("o12-contact-iskra", "iskra",
         [([("iskra-tw-3", "50% 66%/100%"), ("iskra-65-3", "50% 45%/100%")], -200),
          ([("iskra-tw-2", "55% 34%/150%"), ("iskra-65-2", "50% 24%/100%")], -262)],
-        1, 1, "Обираю", "цей кадр.", "Серед усіх кадрів — той, де вас помітно.",
-        (["iskra-65-1", "iskra-tw-4"], "Хустка й твіллі «Іскра»", "від 1 600 грн"), "Обрати «Іскру»")
+        1, 1, "Обери", "свій кадр.", "Серед усіх кадрів — той, де вас помітно.",
+        (["iskra-65-1", "iskra-tw-4"], "Хустка й твіллі «Іскра»", "від 1 600 грн"), "Обрати «Іскру»", centre=True)
 contact("o13-contact-krok", "krok",
         [([("krok-44-3", "30% 86%/170%"), ("krok-44-3", "50% 32%/100%")], -200),
          ([("krok-44-2", "52% 60%/190%"), ("krok-44-2", "50% 36%/100%")], -262)],

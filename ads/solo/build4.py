@@ -68,7 +68,7 @@ PROD = {
     "c02-iskra": (["iskra-65-1"], "Шовкова хустка", "«Іскра» · 65 × 65 см"),
     "c03-flirt": (["flirt-65-1"], "Шовкова хустка", "«Флірт» · 65 × 65 см"),
     "c05-zolote": (["zolote-44-1"], "Шовкова хустка", "«Золоте світло» · 44 × 44 см"),
-    "c06-avantiura": (["avantiura-88-1"], "Шовкова хустка", "«Авантюра» · 88 × 88 см"),
+    "c06-avantiura": (["avantiura-88-1"], "Шовкова хустка", "«Авантюра»"),
     "c07-tysha": (["tysha-88-1"], "Шовкова хустка", "«Тиша всередині» · 88 × 88 см"),
     "c08-krok": (["krok-44-1"], "Шовкова хустка", "«Сміливий крок» · 44 × 44 см"),
     "c09-ya-ie": (["zolote-44-1"], "Шовкова хустка", "«Золоте світло» · 44 × 44 см"),
@@ -86,8 +86,8 @@ PROD = {
 
 MIN = {}   # id -> (cutouts, "Шовкова хустка «…»") for the minimal premium banners
 
-LABEL = {"p12-wearable-art": "Шовкові вироби"}      # top-right label, where it differs from the default
-INLINE = {"p05-character", "p12-wearable-art"}
+LABEL = {"p12-wearable-art": "Шовкові вироби", "p01-quiet-luxury": "Шовкові вироби"}      # top-right label, where it differs from the default
+INLINE = {"p05-character", "p12-wearable-art", "p01-quiet-luxury", "c06-avantiura"}
 MIRROR_TOP = {"p12-wearable-art"}   # the source frame has no background above the head     # no button: «Обрати →» to the right of the price
 
 def product_card(id, price_main, price_small):
@@ -110,7 +110,8 @@ def product_card(id, price_main, price_small):
     return f"""<div style="display:flex;align-items:center;gap:32px;margin-top:28px;padding:18px 40px 18px 20px;border-radius:{6 if YELLOW else 22}px;background:{bg};border:{bd};text-align:left;box-shadow:{"0 20px 40px -20px rgba(0,0,0,.6)" if YELLOW else "none"}">
       <div style="display:flex;align-items:center;flex:none">{imgs}</div>
       <div>{f'<p style="font-size:30px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:{c1}">{kind}</p>' if kind else ""}
-        <p style="font-size:{46 if big else 38}px;line-height:1.2;color:{c2};margin-top:{0 if big else 6}px;font-weight:{500 if (YELLOW or big) else 400}">{name}</p>{price}</div></div>"""
+        <p style="font-size:{46 if big else 38}px;line-height:1.2;color:{c2};margin-top:{0 if big else 6}px;font-weight:{500 if (YELLOW or big) else 400}">{name}</p>
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:48px">{price}{f'<p style="font-size:38px;font-weight:600;color:{"#141216" if YELLOW else "#F2B705"};white-space:nowrap">Обрати&nbsp;→</p>' if id in INLINE else ""}</div></div></div>"""
 
 LOCKUP = ('<span style="display:block;font-family:Montserrat,sans-serif;text-transform:uppercase;line-height:1;color:#fff">'
           '<span style="display:block;font-size:40px;font-weight:400">Колекція</span>'
@@ -330,7 +331,7 @@ QUIET = [
 for id, ph, pos, spot, h, em, body, cuts, title, price, cta in QUIET:
     MIN[id] = (cuts, title)
     full(id, ph, pos, h, em, body, price, "", cta, spot=spot, note=f"Quiet premium: {h} {em}", hs=86,
-         shade_from=1120 if id == "p06-noticed" else 980 if spot else 1040, **({"box": (110, 1320)} if id == "p06-noticed" else {"box": (210, 1920)} if id == "p12-wearable-art" else {"box": (190, 1730)} if id == "p09-for-her" else {}))
+         shade_from=1120 if id == "p06-noticed" else 980 if spot else 1040, **({"box": (110, 1320)} if id == "p06-noticed" else {"box": (210, 1920)} if id == "p12-wearable-art" else {"box": (50, 1920)} if id == "p01-quiet-luxury" else {"box": (190, 1730)} if id == "p09-for-her" else {}))
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO classic</title>

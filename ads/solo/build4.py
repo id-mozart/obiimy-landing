@@ -87,7 +87,8 @@ PROD = {
 MIN = {}   # id -> (cutouts, "Шовкова хустка «…»") for the minimal premium banners
 
 LABEL = {"p12-wearable-art": "Шовкові вироби"}      # top-right label, where it differs from the default
-INLINE = {"p05-character", "p12-wearable-art"}     # no button: «Обрати →» to the right of the price
+INLINE = {"p05-character", "p12-wearable-art"}
+MIRROR_TOP = {"p12-wearable-art"}   # the source frame has no background above the head     # no button: «Обрати →» to the right of the price
 
 def product_card(id, price_main, price_small):
     if id in MIN:
@@ -128,6 +129,9 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
     ph = (spot_photo(photo, pos, style=st) if spot
           else f'<div class="photo" style="{st}"><img src="{S2(photo)}" alt="" style="object-position:{pos}"></div>')
     fill = f'<div style="left:0;right:0;top:0;height:{t + 160}px;background:{top_rgb}"></div>' if t > 0 else ""
+    if id in MIRROR_TOP and t > 0:
+        fill += (f'<div style="left:0;right:0;top:0;height:{t + 150}px;background:url(src/{photo}-top.webp) {pos.split()[0]} 0/1920px 100% no-repeat"></div>'
+                 + f'<div style="left:0;right:0;top:0;height:{t + 150}px;background:linear-gradient(180deg,rgba(20,18,22,.86) 0%,rgba(20,18,22,.6) 45%,rgba(20,18,22,0) 100%)"></div>')
     pr = product_card(id, price_main, price_small)
     block = f"""<h1 class="h" style="position:static;color:#fff;font-size:{hs}px">{h}{f'<br><em style="color:#E9D7A6">{em}</em>' if em else ''}</h1>
     {f'<p class="body" style="position:static;margin-top:18px;max-width:900px">{nb(body)}</p>' if body else ""}
@@ -326,7 +330,7 @@ QUIET = [
 for id, ph, pos, spot, h, em, body, cuts, title, price, cta in QUIET:
     MIN[id] = (cuts, title)
     full(id, ph, pos, h, em, body, price, "", cta, spot=spot, note=f"Quiet premium: {h} {em}", hs=86,
-         shade_from=1120 if id == "p06-noticed" else 980 if spot else 1040, **({"box": (110, 1320)} if id == "p06-noticed" else {"box": (90, 1920)} if id == "p12-wearable-art" else {"box": (190, 1730)} if id == "p09-for-her" else {}))
+         shade_from=1120 if id == "p06-noticed" else 980 if spot else 1040, **({"box": (110, 1320)} if id == "p06-noticed" else {"box": (210, 1920)} if id == "p12-wearable-art" else {"box": (190, 1730)} if id == "p09-for-her" else {}))
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO classic</title>

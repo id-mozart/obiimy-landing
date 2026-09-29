@@ -133,6 +133,10 @@ def build(site: pathlib.Path):
         for g in groups:
             for i, c in g["cards"]:
                 if select(i) and i not in seen: seen.add(i); cards.append(c)
+        order = {k: n for n, k in enumerate(keep)}
+        ids = [i for g in groups for i, _ in g["cards"] if select(i)]
+        ids = list(dict.fromkeys(ids)); by = dict(zip(ids, cards))
+        cards = [by[i] for i in sorted(ids, key=lambda i: order.get(i, 10 ** 6))]
         return f'<section class="grp flat"><div class="grid">{"".join(cards)}</div></section>', len(cards)
     all_ids = {i for g in groups for i, _ in g["cards"]}
     n_keep = len(keep_set & all_ids)

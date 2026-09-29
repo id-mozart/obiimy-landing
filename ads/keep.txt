@@ -1,7 +1,4 @@
 # Банери, відібрані для подальшої роботи (29.09.2026, другий відбір — 28). Решта — в архіві (site/creatives-archive.html).
-solo-one/g07-scrunchie-gift.jpg
-solo-one/g08-scarf-gift-iskra.jpg
-solo-orig/o12-contact-iskra.jpg
 solo-tri/t01-decades.jpg
 solo-tri/t05-avantiura-ways.jpg
 solo-main/p01-quiet-luxury.jpg
@@ -12,6 +9,7 @@ solo-main/p11-italian-silk.jpg
 solo-main/p12-wearable-art.jpg
 solo-main/p15-iskra.jpg
 solo-main/u02-london.jpg
+solo-orig/o12-contact-iskra.jpg
 solo-main/u03-made-in-ua.jpg
 solo-main/u05-luxury.jpg
 solo-main/c02-iskra.jpg
@@ -23,3 +21,5 @@ solo-main/c23-look-dark.jpg
 final2/obiimy-12-paris-chervonyi-shovk-1080x1920.jpg
 final2/obiimy-13-paris-shal-1080x1920.jpg
 final2/obiimy-20-solo-rivera-1080x1920.jpg
+solo-one/g07-scrunchie-gift.jpg
+solo-one/g08-scarf-gift-iskra.jpg

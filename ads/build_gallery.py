@@ -50,10 +50,15 @@ def build(site: pathlib.Path):
             # a banner shown in two groups is stored once, in the folder of its own series
             series = HOME.get(f.parent.name, series)
             d = out / series; d.mkdir(exist_ok=True)
-            shutil.copy(f, d / f.name)
-            im = Image.open(f).convert("RGB"); label, cls = fmt(im)
-            prev = d / (f.stem + "-540.webp")
-            t = im.copy(); t.thumbnail((540, 960)); t.save(prev, quality=80)
+            prev = d / (f.stem + "-540.webp"); dst = d / f.name
+            fresh = dst.exists() and prev.exists() and dst.stat().st_mtime >= f.stat().st_mtime and prev.stat().st_mtime >= f.stat().st_mtime
+            if fresh:       # unchanged since the last build: keep the copy and the preview
+                with Image.open(prev) as t: t.load()
+                with Image.open(f) as im0: label, cls = fmt(im0)
+            else:
+                shutil.copy(f, dst)
+                im = Image.open(f).convert("RGB"); label, cls = fmt(im)
+                t = im.copy(); t.thumbnail((540, 960)); t.save(prev, quality=80)
             v = hashlib.md5(f.read_bytes()).hexdigest()[:8]
             cards.append((f"{series}/{f.name}", f'''<figure class="c {cls}" data-f="{cls}" data-id="{series}/{f.name}"><a href="creatives/{series}/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/{series}/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="{t.width}" height="{t.height}"></a>
         <figcaption><label class="pick"><input type="checkbox" data-id="{series}/{f.name}"><span>Залишити</span></label><span class="fid">{f.stem.split("-")[0]}</span><a href="creatives/{series}/{f.name}?v={v}" download="{f.name}">JPG ↓</a></figcaption></figure>'''))

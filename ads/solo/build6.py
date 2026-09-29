@@ -31,7 +31,7 @@ ads = []
 def ad(id, body, note=""):
     ads.append(f'\n<!-- {note} -->\n<section class="ad" id="{id}">{body}\n</section>')
 
-FILTERS = {"bw": "filter:grayscale(1) contrast(1.12)", "sepia": "filter:sepia(.4) saturate(1.1) contrast(1.05)", "raw": "", "": ""}
+FILTERS = {"dim": "filter:grayscale(.62) contrast(1.1) brightness(1.04)", "bw": "filter:grayscale(1) contrast(1.12)", "sepia": "filter:sepia(.4) saturate(1.1) contrast(1.05)", "raw": "", "": ""}
 
 def band(top, height, b, n=3):
     photo, pos, big, small, look = b[:5]
@@ -92,12 +92,14 @@ def band(top, height, b, n=3):
   <div class="band" style="top:{top}px;height:{height}px;background:{pos}">
     <div style="position:absolute;left:64px;top:44px"><p class="big" style="font-size:{size}px;line-height:1.05">{big}</p>{f'<p class="small" style="margin-top:30px">{nb(small)}</p>' if small else ""}</div>
     <div style="position:absolute;left:40px;right:40px;top:{extra.get("gtop", 250)}px;bottom:40px;display:grid;grid-template-columns:repeat({cols},1fr);align-content:center;gap:40px 10px">{cells}</div></div>'''
+    fit = extra.get("fit")      # the photo takes only the right part of the band: more of the figure and the scarf fits in
+    fade = "-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%)"
     if look == "spot":
-        pic = spot_photo(photo, pos, style="position:absolute;inset:0")
+        pic = spot_photo(photo, pos, style=f"position:absolute;top:0;bottom:0;right:0;width:{fit}%;{fade}" if fit else "position:absolute;inset:0")
     elif photo.startswith("url("):
         pic = f'<div style="position:absolute;inset:0;background:{photo} {pos}"></div>'
     else:
-        more = (";transform:scaleX(-1)" if extra.get("flip") else "") + (";width:%d%%" % extra["wide"] if extra.get("wide") else "")
+        more = (";transform:scaleX(-1)" if extra.get("flip") else "") + (";width:%d%%" % extra["wide"] if extra.get("wide") else "") + (f";width:{fit}%;margin-left:auto;{fade}" if fit else "")
         pic = f'<img src="{S(photo)}" alt="" style="object-position:{pos};{FILTERS[look]}{more}">'
     return f'''
   <div class="band" style="top:{top}px;height:{height}px">{pic}<div class="veil"{' style="background:' + extra["veil"] + '"' if extra.get("veil") else ""}></div>
@@ -143,9 +145,9 @@ SCARVES = (["zolote-44-1", "iskra-65-1", "puls-44-1"], "Шовкові хуст�
 
 # ================================================================= STORIES in bands
 triptych("t01-decades", "Жіноча сила крізь десятиліття", [
-    ("zolote-44-3", "50% 6%", "1940-ві", "Сила — у бездоганній елегантності.", "bw", {"wide": 116}),
-    ("iskra-65-4", "50% 8%", "1950-ті", "Правила починають руйнуватися. Колір, форма, сміливість.", "sepia", {"wide": 116}),
-    ("puls-44-4", "50% 4%", "2026", "Свобода — самій обирати, якою бути.", "raw", {"wide": 116}),
+    ("zolote-44-2", "50% 20%", "1940-ві", "Сила — у бездоганній елегантності.", "dim", {"fit": 68}),
+    ("iskra-65-4", "50% 12%", "1950-ті", "Правила починають руйнуватися. Колір, форма, сміливість.", "sepia", {"fit": 68}),
+    ("puls-44-4", "50% 3%", "2026", "Свобода — самій обирати, якою бути.", "raw", {"fit": 68}),
 ], "", SCARVES, "Обрати хустку", "Decades", plain=True)
 
 triptych("t03-three-states", "Три стани", [

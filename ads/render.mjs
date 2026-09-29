@@ -8,7 +8,8 @@ await page.setViewport({ width: 1200, height: 2000, deviceScaleFactor: 1 });
 await page.goto('file://' + path.join(here, process.env.ADS || 'ads.html'), { waitUntil: 'networkidle0', timeout: 60000 });
 await page.evaluate(() => document.fonts.ready);
 await new Promise(r => setTimeout(r, 1200));
-const ids = await page.$$eval('.ad', els => els.map(e => e.id));
+const only = (process.env.ONLY || '').split(',').filter(Boolean);
+const ids = (await page.$$eval('.ad', els => els.map(e => e.id))).filter(id => !only.length || only.some(o => id.startsWith(o)));
 for (const id of ids) {
   const el = await page.$('#' + id);
   await el.screenshot({ path: path.join(here, process.env.OUT || 'out', `${id}.jpg`), type: 'jpeg', quality: 92 });

@@ -1,0 +1,87 @@
+<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — подарунки для команди 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Tenor+Sans&display=swap" rel="stylesheet">
+<style>
+  @page { size: A4 landscape; margin: 0; }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: #FAFAF8; color: #111; font-family: 'Tenor Sans', sans-serif; font-size: 10.5pt; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .pg { width: 297mm; height: 210mm; padding: 16mm 18mm; page-break-after: always; break-after: page; overflow: hidden; position: relative; display: flex; flex-direction: column; }
+  .pg.nopad { padding: 0; }
+  h1, h2, h3 { font-family: 'Cormorant Garamond', serif; font-weight: 300; margin: 0; line-height: 1.05; }
+  h1 { font-size: 44pt; } h2 { font-size: 26pt; margin-bottom: 6mm; } h3 { font-size: 14pt; margin-top: 2mm; }
+  p { margin: 0 0 3mm; }
+  .eb { font-size: 7.5pt; letter-spacing: .22em; text-transform: uppercase; color: #6B6772; margin-bottom: 2mm; }
+  .sub { color: #4A4A47; margin-top: -3mm; margin-bottom: 5mm; }
+  img { display: block; object-fit: cover; }
+  .cover { position: relative; width: 100%; height: 100%; }
+  .cover .full { width: 100%; height: 100%; }
+  .cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(0,0,0,.62) 100%); }
+  .cover-t { z-index: 1; position: absolute; left: 18mm; bottom: 14mm; max-width: 52%; color: #fff; text-shadow: 0 2px 30px rgba(0,0,0,.4); }
+  .cover-t .logo { height: 12mm; width: auto; margin-bottom: 8mm; object-fit: contain; }
+  .cover-t p { font-size: 12pt; margin-top: 4mm; }
+  .two { display: grid; grid-template-columns: 1fr 1.1fr; gap: 14mm; height: 100%; }
+  .tall { width: 100%; height: 178mm; }
+  .txt { align-self: center; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10mm; margin-bottom: 8mm; }
+  .cols3 p { color: #4A4A47; font-size: 10pt; }
+  .strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4mm; flex: 1; min-height: 0; }
+  .strip img { width: 100%; height: 100%; background: #fff; }
+  .grid4t { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm 8mm; }
+  .occ { border-top: 1px solid #111; padding-top: 3mm; }
+  .occ b { font-family: 'Cormorant Garamond', serif; font-size: 18pt; font-weight: 300; }
+  .occ h3 { font-size: 13pt; margin: 1mm 0 2mm; }
+  .occ p { font-size: 9.5pt; margin: 0 0 1mm; }
+  .grid4t + .strip { min-height: 0; }
+  .occ .alt { color: #4A4A47; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm 8mm; }
+  .cat img { width: 100%; aspect-ratio: 16/8; object-fit: cover; background: #fff; border: 1px solid #E5E3DD; }
+  .cat h3 { font-size: 12.5pt; }
+  .cat p { font-size: 9pt; color: #4A4A47; margin: 1mm 0; }
+  .cat .rrp { font-family: 'Cormorant Garamond', serif; font-size: 12pt; color: #111; }
+  .two-rows { display: grid; grid-template-rows: 1fr 1fr; gap: 6mm; height: 100%; }
+  .grid4s { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6mm; }
+  .grid4s figure { margin: 0; display: grid; grid-template-columns: 34mm 1fr; gap: 4mm; align-items: center; }
+  .grid4s img { width: 34mm; height: 34mm; background: #fff; border: 1px solid #E5E3DD; }
+  .grid4s figcaption b { display: block; font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 12pt; line-height: 1.15; }
+  .grid4s figcaption span { font-size: 9.5pt; color: #4A4A47; }
+  .tiers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8mm; }
+  .tiers { flex: 1; align-content: start; }
+  .tier { border: 1px solid #DDD9D1; padding: 8mm; background: #fff; }
+  .tier .pp { font-family: 'Cormorant Garamond', serif; font-size: 26pt; line-height: 1; margin: 2mm 0 3mm; }
+  .tier .pp small { display: block; font-family: 'Tenor Sans', sans-serif; font-size: 8pt; color: #6B6772; margin-top: 1mm; }
+  .tier p { font-size: 10pt; color: #4A4A47; }
+  .tier ul { list-style: none; margin: 0; padding: 0; }
+  .tier li { border-top: 1px solid #E5E3DD; padding: 3.5mm 0; font-size: 10pt; }
+  .tier li b { display: block; color: #111; } .tier li span { display: block; color: #4A4A47; }
+  .steps { margin: 0; padding-left: 5mm; } .steps li { margin-bottom: 3mm; color: #4A4A47; } .steps b { color: #111; }
+  .foot { font-size: 8.5pt; color: #6B6772; margin-top: auto; }
+  .contact { margin-top: 6mm; font-size: 12pt; line-height: 1.6; }
+</style></head><body><section class="pg nopad"><div class="cover"><img src="review/lb/hratsiia-2.jpg" class="full" alt="" style="object-position:50% 30%"><div class="cover-t"><img src="brand/logo-white.png" class="logo" alt="Obiimy">
+  <h1>Подарунки<br>для команди</h1><p>Шовкові речі від українського бренду — до першого дня, дня народження, річниці в компанії. Пропозиція для HR і офіс-менеджерів · 2026</p></div></div></section><section class="pg "><div class="two"><div><img src="review/lb/life2.jpg" class="tall" alt=""></div><div class="txt">
+  <p class="eb">Про бренд</p><h2>Obiimy — обійми з шовку</h2>
+  <p>Український бренд шовкових аксесуарів. Засновниця й художниця — Світлана Сніжко: кожен принт авторський. 100% італійський шовк, виготовлено в Україні, край хустки обробляють вручну.</p>
+  <p>Бренд заснований під час війни й бере участь у благодійних ініціативах. Колекція «Співоча душа» присвячена рідкісним птахам: частина коштів іде на гнізда для сиворакші з Червоної книги України.</p>
+  <p>Роздрібні партнери: INTERTOP і Hram в Україні, Be Brave у Канаді, UFD London. Про бренд писали LIGA.net та INSIDER UA.</p>
+  <p class="foot">Шоурум: Київ, вул. Петра Сагайдачного, 12 — шовк можна побачити й відчути на дотик.</p>
+</div></div></section><section class="pg "><p class="eb">Навіщо</p><h2>Подарунок від компанії, який пам’ятають</h2>
+<div class="cols3">
+  <div><h3>Річ, а не сувенір</h3><p>Шовкову річ носять: на шию, у волосся, на сумку. Маска для сну чи наволочка — щодня вдома. Це не блокнот із логотипом, який лишається в шухляді.</p></div>
+  <div><h3>Слова від компанії</h3><p>До кожного подарунка — привітання вашими словами: до дня народження, річниці, закритого проєкту. Текст пишете ви, оформлення узгоджуємо в розрахунку.</p></div>
+  <div><h3>Для всієї команди</h3><p>У каталозі є речі, що підходять усім: закладка для книги, маска для сну, однотонна наволочка, сертифікат, який людина обирає сама.</p></div>
+</div>
+<div class="strip"><img src="review/lb/bag-1.jpg" class="" alt=""><img src="review/lb/scr3.jpg" class="" alt=""><img src="review/lb/mask-svoboda.jpg" class="" alt=""><img src="review/lb/pillow-tuman.jpg" class="" alt=""></div></section><section class="pg "><p class="eb">Нагоди</p><h2>Шлях людини в компанії — вісім нагод</h2><p class="sub">Що радимо подарувати на кожну. Ціни роздрібні, obiimy.world.</p>
+<div class="grid4t"><div class="occ"><b>1</b><h3>Перший день у компанії</h3><p>Твіллі 84 × 5 — 1 600 грн</p><p class="alt">Для всіх: Закладка для книги — 800 грн</p></div><div class="occ"><b>2</b><h3>Випробувальний позаду</h3><p>Шовкова резинка — 700 грн</p><p class="alt">Для всіх: Закладка для книги — 800 грн</p></div><div class="occ"><b>3</b><h3>День народження</h3><p>Твіллі 84 × 5 — 1 600 грн</p><p class="alt">Для всіх: Сертифікат на 1 000 грн</p></div><div class="occ"><b>4</b><h3>Рік, три, п’ять</h3><p>Хустка 65 × 65 — 3 200 грн</p><p class="alt">Для всіх: Маска для сну — 2 700 грн</p></div><div class="occ"><b>5</b><h3>Нова роль</h3><p>Хустка 44 × 44, двосторонній друк — 2 400 грн</p><p class="alt">Для всіх: Маска для сну — 2 700 грн</p></div><div class="occ"><b>6</b><h3>Закритий проєкт</h3><p>Твіллі 84 × 5 — 1 600 грн</p><p class="alt">Для всіх: Закладка для книги — 800 грн</p></div><div class="occ"><b>7</b><h3>Коли людині потрібна підтримка</h3><p>Набір: маска для сну та резинка — 3 100 грн</p><p class="alt">Для всіх: Маска для сну — 2 700 грн</p></div><div class="occ"><b>8</b><h3>Останній робочий день</h3><p>Хустка 88 × 88 — 4 400 грн</p><p class="alt">Для всіх: Сертифікат на 4 000 грн</p></div></div>
+<div class="strip" style="margin-top:8mm"><img src="review/lb/twilly-zolote.jpg" class="" alt=""><img src="review/lb/scrunchie-pole.jpg" class="" alt=""><img src="review/lb/kolo-3.jpg" class="" alt="" style="object-position:50% 20%"><img src="review/lb/mizh-1.jpg" class="" alt="" style="object-position:50% 10%"></div></section><section class="pg "><p class="eb">Готові набори</p><h2>Шість готових наборів із каталогу</h2><div class="grid3"><div class="cat"><img src="review/lb/twscr-makiv.jpg" class="" alt=""><p class="eb">Хто носить аксесуари</p><h3>Твіллі та резинка</h3><p>Твіллі й резинка в одному принті у святковій коробці.</p><p class="rrp">2 200 грн · довга твіллі 140 × 5 — 2 700 грн</p></div><div class="cat"><img src="review/lb/maskscr-litnie-pole.jpg" class="" alt=""><p class="eb">Про відпочинок</p><h3>Маска для сну та резинка</h3><p>Подарунок про відпочинок, а не про роботу: шовкова маска й резинка.</p><p class="rrp">3 100 грн</p></div><div class="cat"><img src="review/lb/tw44-vpevnenist.jpg" class="" alt=""><p class="eb">Ключовим людям</p><h3>Твіллі та хустка 44 × 44</h3><p>Стрічка й хустка в одному принті. До річниці в компанії чи підвищення.</p><p class="rrp">3 200 грн · двосторонній друк — 3 600 грн</p></div><div class="cat"><img src="review/lb/sleep-pidnesennia.jpg" class="" alt=""><p class="eb">Подарунок із сенсом</p><h3>Маска, закладка й резинка</h3><p>Набір із колекції «Співоча душа»: частина коштів від колекції йде на гнізда для сиворакші — птаха з Червоної книги України.</p><p class="rrp">3 600 грн</p></div><div class="cat"><img src="review/lb/three-twilly.jpg" class="" alt=""><p class="eb">До вагомої нагоди</p><h3>Три твіллі на вибір</h3><p>Три стрічки 84 × 5 у святковому пакуванні — принти можна обрати різні.</p><p class="rrp">4 800 грн</p></div><div class="cat"><img src="review/lb/scr3.jpg" class="" alt=""><p class="eb">Невеликий знак уваги</p><h3>Набір шовкових резинок</h3><p>Три шовкові резинки у коробці.</p><p class="rrp">1 800 грн · zero waste — від 1 250 грн</p></div></div>
+<p class="foot">Набори Obiimy у фірмовому пакуванні. Ціни роздрібні; підписи над назвами — наші поради.</p></section><section class="pg "><div class="two-rows"><div><p class="eb">Для всієї команди</p><h2>Речі, що підходять усім</h2><div class="grid4s"><figure><img src="review/lb/mask-svoboda.jpg" class="" alt=""><figcaption><b>Маска для сну</b><span>2 700 грн</span></figcaption></figure><figure><img src="review/lb/bookmark-melodiia.jpg" class="" alt=""><figcaption><b>Закладка для книги</b><span>800 грн</span></figcaption></figure><figure><img src="review/lb/pillow-tuman.jpg" class="" alt=""><figcaption><b>Наволочка 50 × 70, однотонна</b><span>4 200 грн</span></figcaption></figure><figure><img src="review/lb/cert-2000.jpg" class="" alt=""><figcaption><b>Сертифікат</b><span>1 000–4 000 грн</span></figcaption></figure></div></div>
+<div><p class="eb">Ключовим людям</p><h2>Окремий подарунок понад програму</h2><div class="grid4s"><figure><img src="review/lb/mask-svoboda.jpg" class="" alt=""><figcaption><b>Маска для сну</b><span>2 700 грн</span></figcaption></figure><figure><img src="review/lb/tw44-vpevnenist.jpg" class="" alt=""><figcaption><b>Твіллі та хустка 44 × 44</b><span>3 200 грн</span></figcaption></figure><figure><img src="review/lb/sleep-pidnesennia.jpg" class="" alt=""><figcaption><b>Маска, закладка й резинка</b><span>3 600 грн</span></figcaption></figure><figure><img src="review/lb/three-twilly.jpg" class="" alt=""><figcaption><b>Три твіллі на вибір</b><span>4 800 грн</span></figcaption></figure></div></div></div></section><section class="pg "><p class="eb">Програма на рік</p><h2>Три приклади — від 700 грн на людину на рік</h2><p class="sub">Для кожної нагоди — шовкова річ і річ, що підходить усім. Склад можна змінити: перерахуємо суму.</p>
+<div class="tiers"><div class="tier"><h3>«Знак уваги»</h3><p class="pp">700–800 грн<small>на людину на рік</small></p><p>Один подарунок на рік кожному.</p><ul><li><b>День народження</b><span>шовкова резинка — 700 грн</span><span>для всіх: закладка для книги — 800 грн</span></li></ul></div><div class="tier"><h3>«Команда»</h3><p class="pp">2 300 грн<small>на людину на рік</small></p><p>Два подарунки на рік кожному.</p><ul><li><b>День народження</b><span>твіллі — 1 600 грн</span><span>для всіх: сертифікат на 1 500 грн</span></li><li><b>Свято компанії</b><span>шовкова резинка — 700 грн</span><span>для всіх: закладка для книги — 800 грн</span></li></ul></div><div class="tier"><h3>«Визнання»</h3><p class="pp">4 700–5 400 грн<small>на людину на рік</small></p><p>Два подарунки на рік: до дня народження й до річниці в компанії.</p><ul><li><b>День народження</b><span>набір «твіллі та резинка» — 2 200 грн</span><span>для всіх: сертифікат на 2 000 грн</span></li><li><b>Річниця в компанії</b><span>хустка 65 × 65 — 3 200 грн</span><span>для всіх: маска для сну — 2 700 грн</span></li></ul></div></div>
+<p class="foot" style="font-size:10pt;color:#4A4A47">Приклад: команда з 40 людей, програма «Команда», 16 отримують речі «для всіх», 5 ключовим людям — набір «твіллі та хустка» = 108 000 грн на рік за роздрібними цінами, без доставки.</p></section><section class="pg "><div class="two"><div class="txt"><p class="eb">Що буде після запиту</p><h2>Від запиту до відправки</h2>
+  <ol class="steps"><li><b>Запит.</b> Нагоди, кількість і дата, до якої потрібні подарунки.</li>
+  <li><b>Добірка й розрахунок.</b> Речі та принти, розрахунок окремими рядками: речі, оформлення привітання, доставка. Чи встигаємо до вашої дати — пишемо одразу.</li>
+  <li><b>Список і привітання.</b> Ви надсилаєте список отримувачів і текст привітання.</li>
+  <li><b>Відправка.</b> Новою поштою — кожному окремо чи в офіс, як домовимось. Для колег за кордоном — спосіб і вартість назвемо в розрахунку; найпростіше для них — електронний сертифікат.</li></ol>
+  <p class="foot">Не впевнені — почніть із малого: подарунки на дні народження одного місяця. Побачите речі, пакування й привітання, перш ніж планувати рік.</p>
+</div><div><img src="review/lb/kolo-3.jpg" class="tall" alt="" style="object-position:50% 20%"></div></div></section><section class="pg "><div class="two"><div class="txt"><p class="eb">Запит</p><h2>Отримати добірку й розрахунок</h2>
+  <p>Напишіть, скільки подарунків потрібно, на які нагоди й до якої дати, — у відповідь надішлемо добірку та розрахунок. На сторінці для команд є калькулятор плану на рік і форма запиту.</p>
+  <p class="contact"><b>Співпраця</b><br>+38 073 925 99 49 · Telegram @OBIIMY_sales<br>sale@obiimy.world · obiimy.world<br>Шоурум: Київ, вул. Петра Сагайдачного, 12</p>
+  <p class="foot">Сторінка для команд: https://obiimy-landing-production.up.railway.app/b2b-team</p>
+</div><div><img src="review/lb/set-zolote.jpg" class="tall" alt=""></div></div></section></body></html>

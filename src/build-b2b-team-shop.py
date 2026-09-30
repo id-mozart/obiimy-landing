@@ -16,10 +16,10 @@ PHONE, PHONE_HREF, MAIL, SAMPLE, BAR = team.PHONE, team.PHONE_HREF, team.MAIL, t
 
 # «for whom» in one or two words — our recommendation, shown on the cards
 FOR = {"scr": "Знак уваги", "book": "Усім · знак уваги", "cert1": "Усім · на вибір", "cert15": "Усім · на вибір", "tw": "Універсальний подарунок", "scrset": "Набір у коробці",
-       "cert2": "Усім · на вибір", "twscr": "Набір у коробці", "h44": "Ключовим людям", "mask": "Усім · відпочинок", "maskscr": "Набір у коробці", "tw44": "Ключовим людям",
+       "cert2": "Усім · на вибір", "cert25": "Усім · на вибір", "twscr": "Набір у коробці", "h44": "Ключовим людям", "mask": "Усім · відпочинок", "maskscr": "Набір у коробці", "tw44": "Ключовим людям",
        "h65": "Ключовим людям", "song": "Набір із сенсом", "cert4": "Усім · на вибір", "pil": "Усім · для дому", "h88": "Керівникам", "three": "Керівникам"}
 SHORT = {"scr": "Шовкова резинка", "book": "Закладка для книги", "cert1": "Сертифікат 1 000 грн", "cert15": "Сертифікат 1 500 грн", "tw": "Твіллі 84 × 5",
-         "scrset": "Три резинки", "cert2": "Сертифікат 2 000 грн", "twscr": "Твіллі та резинка", "h44": "Хустка 44 × 44", "mask": "Маска для сну",
+         "scrset": "Три резинки", "cert2": "Сертифікат 2 000 грн", "cert25": "Сертифікат 2 500 грн", "twscr": "Твіллі та резинка", "h44": "Хустка 44 × 44 двостороння", "mask": "Маска для сну",
          "maskscr": "Маска та резинка", "tw44": "Твіллі та хустка 44 × 44", "h65": "Хустка 65 × 65", "song": "Маска, закладка й резинка", "cert4": "Сертифікат 4 000 грн",
          "pil": "Наволочка 50 × 70", "h88": "Хустка 88 × 88", "three": "Три твіллі"}
 WHY = [  # the reasons, only facts from SITE-FACTS
@@ -32,7 +32,7 @@ WHY = [  # the reasons, only facts from SITE-FACTS
 ]
 SHELVES = [
     ("1000", "До 1 000 грн", "Знак уваги кожному", ["scr", "book", "cert1"]),
-    ("2500", "До 2 500 грн", "Подарунок, який носять", ["tw", "twscr", "h44", "scrset", "cert15", "cert2"]),
+    ("2500", "До 2 500 грн", "Подарунок, який носять", ["tw", "twscr", "h44", "scrset", "cert15", "cert2", "cert25"]),
     ("5000", "До 5 000 грн", "Керівникам — і речі для всіх", ["h65", "tw44", "song", "three", "h88", "maskscr", "mask", "pil", "cert4"]),
 ]
 OFFER = ["tw", "twscr", "mask", "h44", "scr", "book", "cert2", "h65"]
@@ -144,7 +144,7 @@ def lc(t): return t if t.startswith("Новою") else t[0].lower() + t[1:]
 def why_html(cls="", items=None):
     return f'<div class="why {cls}">' + "".join(f"<div><b>{b}</b><span>{s}</span></div>" for b, s in (items or WHY)) + "</div>"
 
-CERTS = ["cert1", "cert15", "cert2", "cert4"]
+CERTS = ["cert1", "cert15", "cert2", "cert25", "cert4"]
 def add_btn(k):
     return f'<button type="button" class="add" data-add="{k}" aria-label="До списку: {CAT[k]["n"]}">+ До списку</button>'
 

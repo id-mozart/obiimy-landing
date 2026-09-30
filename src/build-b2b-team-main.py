@@ -167,7 +167,7 @@ def whyhow():
         <div><h3>Добірка й розрахунок</h3><p>У відповідь — принти на вибір і розрахунок окремими рядками: речі, привітання, доставка. Чи встигаємо до дати — пишемо одразу.</p></div>
         <div><h3>Відправка</h3><p>Ви надсилаєте список отримувачів і текст привітання. Відправляємо Новою поштою — кожному окремо чи в офіс, по Україні; за кордон — як домовимось.</p></div>
       </div>
-      <p class="note" style="margin-top:18px"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для HR (PDF, 1,8 МБ) ↓</a></p>
+      <p class="note" style="margin-top:18px"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для HR (PDF, 1,8 МБ) ↓</a> · <a href="b2b-team-details">Усе про шовк, пакування й доставку →</a></p>
     </div>
   </div></section>
   <section class="block alt" style="padding-top:0" aria-hidden="true"><div class="wrap"><figure class="wide">{img("photo/kolo-3.webp", "Шовкова хустка на плечах поверх бежевого пальта", sizes="100vw")}</figure></div></section>'''
@@ -205,7 +205,7 @@ def main():
     </div></div>
     <div class="items collapsed" id="items">{items}</div>
     <p class="m-only" style="margin-top:12px"><button type="button" class="btn btn-line btn-sm" id="more" style="width:100%" aria-expanded="false" aria-controls="items">Показати всі 15 позицій</button></p>
-    <p class="note" style="margin-top:14px">Роздрібні ціни obiimy.world. Підписи «кому» — наші поради. Фото — приклад принта; наявність у потрібному форматі підтвердимо в розрахунку. Усі набори, зокрема зібрані під запит, — у <a href="b2b-sets">каталозі корпоративних наборів</a>.</p>
+    <p class="note" style="margin-top:14px">Роздрібні ціни obiimy.world. Підписи «кому» — наші поради. Фото — приклад принта; наявність у потрібному форматі підтвердимо в розрахунку. Набори з принтами на вибір — у <a href="b2b-sets-gallery">вітрині наборів</a>.</p>
     <div style="margin-top:34px">{shop.listbox("f-main").replace('value="20"', 'value="40"').replace('id="neu" type="number" min="0" inputmode="numeric" value="0"', 'id="neu" type="number" min="0" inputmode="numeric" value="16"').replace('Плануєте подарунки на рік по нагодах? <a href="b2b-team#plan">Порахуйте на сторінці для команди →</a>', 'Плануєте на рік? <a href="#plan">План по нагодах — нижче ↓</a>')}</div>
   </div></section>
   {team.facts([("700–4 800 грн", "Роздрібні ціни речей і наборів"), ("15 позицій", "Аксесуари, набори, речі для дому, сертифікат на 1 000–4 000 грн"), ("Є речі для всіх", "Маска, закладка, наволочка, сертифікат"), ("Привітання", "Вашими словами — разом із подарунком")])}

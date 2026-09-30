@@ -367,7 +367,7 @@
   .calcwrap { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); align-items: start; }
   .cph { margin: 0; position: sticky; top: 92px; } .cph img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 20%; border-radius: var(--radius); }
   .cph figcaption { color: var(--ink2); font-size: .82rem; margin-top: 8px; }
-  @media (max-width: 960px) { .calcwrap { grid-template-columns: 1fr; } .calcwrap .cph { position: static; order: -1; } .cph img { aspect-ratio: 3 / 2; } }
+  @media (max-width: 960px) { .calcwrap { grid-template-columns: 1fr; } .calcwrap > .cph:first-child { position: static; order: -1; } .cph img { aspect-ratio: 3 / 2; } }
   .calc3 label { display: grid; gap: 6px; font-weight: 600; font-size: .92rem; }
   .calc3 small { font-weight: 400; color: var(--ink2); font-size: .8rem; }
   .warn { color: #8A4B00; font-size: .88rem; margin-top: 10px; min-height: 1.3em; }

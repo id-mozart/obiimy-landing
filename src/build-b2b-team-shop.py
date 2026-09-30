@@ -208,7 +208,7 @@ LIST_JS = """
         var r = document.createElement('div'); r.className = 'row';
         var nm = document.createElement('span'); nm.textContent = C[k].n;
         var s = document.createElement('span'); s.className = 's num'; s.textContent = fmt(n(k) * C[k].p);
-        var x = document.createElement('button'); x.type = 'button'; x.className = 'x'; x.textContent = '✕'; x.setAttribute('aria-label', 'Прибрати: ' + C[k].n); x.addEventListener('click', function () { set(k, 0); if (!order.length) people.focus({ preventScroll: true }); });
+        var x = document.createElement('button'); x.type = 'button'; x.className = 'x'; x.textContent = '✕'; x.setAttribute('aria-label', 'Прибрати: ' + C[k].n); x.addEventListener('click', function () { set(k, 0); var nx = rowsBox.querySelector('.x'); (nx || people).focus({ preventScroll: true }); });
         r.appendChild(nm); r.appendChild(qtyc(k)); r.appendChild(s); r.appendChild(x); rowsBox.appendChild(r);
       });
       if (focusKey) { var fe = rowsBox.querySelector('[data-q="' + focusKey + '"]'); if (fe) fe.focus({ preventScroll: true }); focusKey = ''; }
@@ -232,13 +232,13 @@ LIST_JS = """
       return ['Список для розрахунку · людей у команді: ' + int(people, 1) + (m ? ', із них не носять аксесуари: ' + m : '') + ' (роздрібні ціни obiimy.world, без доставки):']
         .concat(order.map(function (k) { return '— ' + C[k].n + ': ' + n(k) + ' × ' + plain(fmt(C[k].p)) + ' = ' + plain(fmt(n(k) * C[k].p)); }), ['Разом: ' + plain(fmt(total())) + ' · ' + gifts(count())]);
     }
-    document.getElementById('l-send').addEventListener('click', function (e) { if (!order.length) { e.preventDefault(); return; } put(text(), count(), fmt(total()) + ' · ' + gifts(count())); });
+    document.getElementById('l-send').addEventListener('click', function (e) { if (!order.length) { e.preventDefault(); return; } put(text(), count(), fmt(total()) + ' · ' + gifts(count()), __TAG__); });
     document.getElementById('l-copy').addEventListener('click', function () { if (order.length) copyText(text().join('\\n'), this); });
     render();
 """
 
-def list_js(sticky_text):
-    return LIST_JS.replace("__C__", J({c["k"]: dict(n=c["n"], p=c["p"], all=c["neutral"]) for c in CATALOG})).replace("__STICKY__", sticky_text)
+def list_js(sticky_text, tag=None):
+    return LIST_JS.replace("__C__", J({c["k"]: dict(n=c["n"], p=c["p"], all=c["neutral"]) for c in CATALOG})).replace("__STICKY__", sticky_text).replace("__TAG__", J(tag) if tag else "undefined")
 
 def how_short(alt=False):
     return f"""

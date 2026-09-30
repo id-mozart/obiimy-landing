@@ -295,7 +295,7 @@ def faq_section(extra="", alt=True):
     <div class="faq">
       <details><summary>Які строки?</summary><p>Залежать від кількості та наявності принтів. Вкажіть у запиті дату, до якої потрібні подарунки, — у відповіді напишемо, чи встигаємо, і запропонуємо варіанти з наявності.</p></details>
       <details><summary>Що входить у суму на сторінці?</summary><p>Роздрібні ціни речей на obiimy.world. Оформлення привітання й доставку покажемо в розрахунку окремими рядками.</p></details>
-      <details><summary>У чому приїдуть подарунки?</summary><p>Набори — у фірмовому пакуванні Obiimy. Пакування окремих речей покажемо на фото в добірці разом із розрахунком.</p></details>
+      <details><summary>У чому приїдуть подарунки?</summary><p>Набори — у святковій коробці Obiimy. Пакування окремих речей покажемо на фото в добірці разом із розрахунком.</p></details>
       <details><summary>Що подарувати чоловікам?</summary><p>Маску для сну, закладку для книги, однотонну шовкову наволочку або сертифікат. Якщо потрібен один подарунок для всіх — сертифікат найпростіший.</p></details>
       {extra}
       <details><summary>Чи є мінімальне замовлення?</summary><p>Напишіть, скільки подарунків потрібно, — навіть якщо це один подарунок до річниці. Умови для вашої кількості надішлемо разом із розрахунком.</p></details>
@@ -336,7 +336,7 @@ def request_section(pid, subject, title, lead, back, alt=True):
     ], "Відповідаємо з добіркою та розрахунком.")
     return f"""
   <section class="form-block{" alt" if alt else ""}" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Запит</p><h2>{title}</h2><p>{lead}</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p><a class="btn btn-line" href="{TG}">Написати в Telegram</a><p class="pdf"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для HR (PDF, 1,5 МБ) ↓</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна побачити й відчути на дотик.</p></div>
+    <div class="contact"><p class="eyebrow">Запит</p><h2>{title}</h2><p>{lead}</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p><a class="btn btn-line" href="{TG}">Написати в Telegram</a><p class="pdf"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для HR (PDF, 1,8 МБ) ↓</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна побачити й відчути на дотик.</p></div>
     <div><p class="added" id="added" hidden><b>Додано до запиту:</b> <span id="added-t"></span> · <a href="#{back}">змінити</a></p>{form}</div>
   </div></section>"""
 
@@ -352,9 +352,10 @@ COMMON_JS = """
       var a = document.getElementById('added'); a.hidden = false; document.getElementById('added-t').textContent = text.replace(/(\\d) (?=\\d|грн)/g, '$1\\u00a0');
       setTimeout(function () { a.scrollIntoView({ block: 'start', behavior: 'smooth' }); var f = FORM.querySelector('input'); if (f) f.focus({ preventScroll: true }); }, 60);
     }
-    function put(lines, people, summary) {
-      var block = M1 + '\\n' + lines.join('\\n') + '\\n' + M2, v = NOTE.value, i = v.indexOf(M1), j = v.indexOf(M2);
-      if (i >= 0 && j > i) v = v.slice(0, i) + block + v.slice(j + M2.length);
+    function put(lines, people, summary, tag) {
+      var m1 = tag ? '=== ' + tag + ' ===' : M1, m2 = tag ? '=== Кінець: ' + tag + ' ===' : M2;
+      var block = m1 + '\\n' + lines.join('\\n') + '\\n' + m2, v = NOTE.value, i = v.indexOf(m1), j = v.indexOf(m2);
+      if (i >= 0 && j > i) v = v.slice(0, i) + block + v.slice(j + m2.length);
       else v = (v.trim() ? v.replace(/\\s+$/, '') + '\\n\\n' : '') + block;
       NOTE.value = v; grow();
       if (people) FORM.querySelector('[name=people]').value = people;
@@ -773,7 +774,7 @@ def card():
 # ─────────────────────────────────────────────────────────────── 4. three example programmes for a year (Maison)
 PLANS = [  # id, name, who, [(occasion, silk item, item that suits everyone)]
     ("base", "«Знак уваги»", "Один подарунок на рік кожному.", [("День народження", "scr", "book")]),
-    ("team", "«Команда»", "Два подарунки на рік кожному.", [("День народження", "tw", "cert15"), ("Свято компанії", "scr", "book")]),
+    ("team", "«Команда»", "Два подарунки на рік кожному.", [("День народження", "tw", "cert15"), ("Перемога команди", "scr", "book")]),
     ("plus", "«Визнання»", "Два подарунки на рік: до дня народження й до річниці в компанії.", [("День народження", "twscr", "cert2"), ("Річниця в компанії", "h65", "mask")]),
 ]
 KEY_GIFTS = ["tw44", "mask", "song", "cert4", "pil", "h88", "three"]

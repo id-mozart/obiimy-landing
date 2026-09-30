@@ -11,7 +11,10 @@ team = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(team)
 CAT, FEATURED, STAGES, PLANS, SHORT, price, sp = team.CAT, team.FEATURED, team.STAGES, team.PLANS, team.SHORT, team.price, team.sp
 def full(k): return CAT[k]["n"] if k.startswith("cert") else f'{CAT[k]["n"]} — {price(CAT[k]["p"])}'
 PHONE, MAIL, SHOWROOM = team.PHONE, team.MAIL, team.SHOWROOM
-LANDING = "https://obiimy-landing-production.up.railway.app/b2b-team"
+LANDING = "https://obiimy-landing-production.up.railway.app/b2b-team-main"
+_sh = importlib.util.spec_from_file_location("shop", ROOT / "build-b2b-team-shop.py")
+shop = importlib.util.module_from_spec(_sh); _sh.loader.exec_module(shop)
+FOR, SHORTN, CERTS = shop.FOR, shop.SHORT, shop.CERTS
 
 def pic(src, cls="", pos=""):
     from PIL import Image
@@ -47,6 +50,22 @@ page(f'''<p class="eb">Навіщо</p><h2>Подарунок від компа�
 </div>
 <div class="strip">{pic("photo/bag-1.webp")}{pic("img/sets/scr3.webp")}{pic("img/mask-svoboda.webp")}{pic("img/sets/pillow-tuman.webp")}</div>''')
 
+# 3b catalogue with prices
+ORDER = ["tw", "twscr", "mask", "h44", "scr", "book", "cert1", "scrset", "maskscr", "tw44", "h65", "song", "pil", "h88", "three"]
+cells = "".join((f'<figure>{pic(CAT[k]["ph"])}<figcaption><b>Сертифікат</b><span>Усім · на вибір</span><em>1 000–4 000 грн</em></figcaption></figure>' if k == "cert1"
+                 else f'<figure>{pic(CAT[k]["ph"])}<figcaption><b>{SHORTN[k]}</b><span>{FOR[k].replace("Універсальний подарунок", "Універсальний")}</span><em>{price(CAT[k]["p"])}</em></figcaption></figure>') for k in ORDER)
+page(f'''<p class="eb">Каталог</p><h2>Речі, набори й ціни — 15 позицій</h2><p class="sub">Роздрібні ціни obiimy.world. Підписи «кому» — наші поради; фото — приклад принта, наявність у потрібному форматі підтвердимо в розрахунку.</p>
+<div class="grid5">{cells}</div>''')
+
+# 3c three budgets
+shelves = ""
+for v, t, sub, ks in shop.SHELVES:
+    lis = "".join(f'<li><span>{"Сертифікат" if k.startswith("cert") else SHORTN[k]}</span><b>{price(CAT[k]["p"])}</b></li>' for k in ks)
+    shelves += f'<div class="shelf"><h3>{t}</h3><p class="alt">{sub}</p><ul>{lis}</ul><p class="ex">20 людям — до {price(20 * int(v))}</p></div>'
+page(f'''<p class="eb">За бюджетом</p><h2>Що подарувати на 1 000, 2 500 і 5 000 грн на людину</h2><p class="sub">Три полиці — усе, що є в бюджеті. Речі «усім» підходять і тим, хто аксесуари не носить.</p>
+<div class="shelves">{shelves}</div>
+<div class="strip">{pic("img/twilly-zolote.webp")}{pic("img/sets/twscr-makiv.webp")}{pic("img/sets/tw44-vpevnenist.webp")}{pic("img/sets/three-twilly.webp")}</div>''')
+
 # 4 occasions
 occ = "".join(f'<div class="occ"><b>{i + 1}</b><h3>{t}</h3><p>{full(s)}</p><p class="alt">{"Підходить усім" if s == n else "Для всіх: " + full(n)}</p></div>'
               for i, (sid, short, t, d, p, a, s, n, sh) in enumerate(STAGES))
@@ -75,7 +94,7 @@ for pid, name, who, rows in PLANS:
     tiers += f'<div class="tier"><h3>{name}</h3><p class="pp">{rng}<small>на людину на рік</small></p><p>{who}</p><ul>{lis}</ul></div>'
 page(f'''<p class="eb">Програма на рік</p><h2>Три приклади — від 700 грн на людину на рік</h2><p class="sub">Для кожної нагоди — шовкова річ і річ, що підходить усім. Склад можна змінити: перерахуємо суму.</p>
 <div class="tiers">{tiers}</div>
-<p class="foot" style="font-size:10pt;color:#4A4A47">Приклад: команда з 40 людей, програма «Команда», 16 отримують речі «для всіх», 5 ключовим людям — набір «твіллі та хустка» = 108 000 грн на рік за роздрібними цінами, без доставки.</p>''')
+<p class="foot" style="font-size:10pt;color:#4A4A47">Приклад: команда з 40 людей, програма «Команда», 16 отримують речі «для всіх» — 40 × 2 300 = 92 000 грн на рік (шовкова річ і річ «для всіх» у цій програмі коштують однаково) за роздрібними цінами, без доставки.</p>''')
 
 # 8 how it works
 page(f'''<div class="two"><div class="txt"><p class="eb">Що буде після запиту</p><h2>Від запиту до відправки</h2>
@@ -90,14 +109,14 @@ page(f'''<div class="two"><div class="txt"><p class="eb">Що буде післ�
 page(f'''<div class="two"><div class="txt"><p class="eb">Запит</p><h2>Отримати добірку й розрахунок</h2>
   <p>Напишіть, скільки подарунків потрібно, на які нагоди й до якої дати, — у відповідь надішлемо добірку та розрахунок. На сторінці для команд є калькулятор плану на рік і форма запиту.</p>
   <p class="contact"><b>Співпраця</b><br>{PHONE} · Telegram @OBIIMY_sales<br>{MAIL} · obiimy.world<br>Шоурум: {SHOWROOM}</p>
-  <p class="foot">Сторінка для команд: {LANDING}</p>
+  <p class="foot">Ціни на сторінках — роздрібні, obiimy.world. Розрахунок для компанії — у відповідь на запит.</p>
 </div><div>{pic("img/set-zolote.webp", "tall")}</div></div>''')
 
 html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — подарунки для команди 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Tenor+Sans&display=swap" rel="stylesheet">
 <style>
   @page {{ size: A4 landscape; margin: 0; }}
-  * {{ box-sizing: border-box; }}
+  * {{ box-sizing: border-box; font-variant-numeric: lining-nums; }}
   html, body {{ margin: 0; background: #FAFAF8; color: #111; font-family: 'Tenor Sans', sans-serif; font-size: 10.5pt; line-height: 1.5; -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
   .pg {{ width: 297mm; height: 210mm; padding: 16mm 18mm; page-break-after: always; break-after: page; overflow: hidden; position: relative; display: flex; flex-direction: column; }}
   .pg.nopad {{ padding: 0; }}
@@ -127,6 +146,19 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .occ p {{ font-size: 9.5pt; margin: 0 0 1mm; }}
   .grid4t + .strip {{ min-height: 0; }}
   .occ .alt {{ color: #4A4A47; }}
+  .grid5 {{ display: grid; grid-template-columns: repeat(5, 1fr); gap: 3mm 6mm; flex: 1; min-height: 0; align-content: start; }}
+  .grid5 figure {{ margin: 0; }}
+  .grid5 img {{ width: 100%; aspect-ratio: 16/10; object-fit: cover; background: #fff; border: 1px solid #E5E3DD; }}
+  .grid5 figcaption b {{ display: block; font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 11pt; line-height: 1.05; margin-top: 1.5mm; }}
+  .grid5 figcaption span {{ display: block; font-size: 6.5pt; letter-spacing: .1em; text-transform: uppercase; color: #6B6772; margin: .5mm 0; }}
+  .grid5 figcaption em {{ display: block; font-style: normal; font-family: 'Cormorant Garamond', serif; font-size: 11.5pt; font-variant-numeric: lining-nums; }}
+  .shelves {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 8mm; flex: 1; }}
+  .shelf {{ border-top: 1px solid #111; padding-top: 4mm; }}
+  .shelf h3 {{ font-size: 18pt; margin: 0; }} .shelf .alt {{ color: #4A4A47; font-size: 9.5pt; margin: 1mm 0 3mm; }}
+  .shelf ul {{ list-style: none; margin: 0; padding: 0; }} .shelf li {{ display: flex; justify-content: space-between; gap: 4mm; font-size: 10pt; padding: 1.6mm 0; border-bottom: 1px solid #E5E3DD; }}
+  .shelf li b {{ font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 12pt; white-space: nowrap; font-variant-numeric: lining-nums; }}
+  .shelves + .strip {{ margin-top: 6mm; max-height: 42mm; }}
+  .shelf .ex {{ margin-top: 3mm; font-size: 9.5pt; color: #4A4A47; }}
   .grid3 {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm 8mm; }}
   .cat img {{ width: 100%; aspect-ratio: 16/8; object-fit: cover; background: #fff; border: 1px solid #E5E3DD; }}
   .cat h3 {{ font-size: 12.5pt; }}

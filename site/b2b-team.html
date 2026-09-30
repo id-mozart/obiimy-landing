@@ -233,6 +233,17 @@
     .proof div { grid-template-columns: 1fr; gap: 4px; }
   }
 
+  .sets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .sets .card.photo img { aspect-ratio: 4 / 3.2; }
+  .sets .in { gap: 10px; }
+  .sets .in h3 { font-size: 1.35rem; }
+  .sets .act { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 6px; }
+  .sets .act a.more { font-size: .88rem; font-weight: 600; padding: 12px 0; }
+  .sets .pr { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+  .sets .pr b { font-family: var(--display); font-weight: 400; font-size: 1.5rem; white-space: nowrap; }
+  .sets .pr span { color: var(--ink2); font-size: .82rem; text-align: right; }
+  @media (max-width: 960px) { .sets { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .sets { grid-template-columns: 1fr; } }
   .path { display: grid; grid-template-columns: repeat(8, 1fr); gap: 0; margin-bottom: 28px; position: relative; }
   .path::before { content: ""; position: absolute; left: 6%; right: 6%; top: 17px; height: 1px; background: var(--ink); opacity: .35; }
   .path button { font: inherit; color: var(--ink2); background: none; border: 0; padding: 0 4px 12px; cursor: pointer; display: grid; justify-items: center; gap: 10px; text-align: center; font-size: .82rem; line-height: 1.25; min-height: 84px; position: relative; }
@@ -279,7 +290,7 @@
 <div class="bar">Для бізнесу<span class="m-hide"> · відправка Новою поштою по Україні та за кордон</span> · безготівковий розрахунок для компаній</div>
 <header class="nav"><div class="wrap">
   <a class="logo" href="https://obiimy.world/" aria-label="Obiimy — на сайт бренду"><img src="brand/logo-ink-480.webp" alt="Obiimy" width="113" height="24"></a>
-  <nav class="nav-links" aria-label="Розділи сторінки"><a href="#path">Нагоди</a><a href="#plan">План на рік</a><a href="#all">Для всіх</a><a href="#how">Як це працює</a><a href="#faq">Питання</a><a href="#request">Контакт</a></nav>
+  <nav class="nav-links" aria-label="Розділи сторінки"><a href="#path">Нагоди</a><a href="#sets">Набори</a><a href="#plan">План на рік</a><a href="#all">Для всіх</a><a href="#how">Як це працює</a><a href="#faq">Питання</a><a href="#request">Контакт</a></nav>
   <a class="btn btn-gold btn-sm" href="#request">Запит</a>
 </div></header>
 <main>
@@ -293,7 +304,7 @@
       <p class="fine">Зразок — від 1 600 грн у роздріб: <a href="product-form">замовити твіллі →</a> Або одразу: <a href="tel:+380739259949">+38 073 925 99 49</a></p>
     </div>
     <figure><img src="photo/hratsiia-2-800.webp" srcset="photo/hratsiia-2-480.webp 480w, photo/hratsiia-2-800.webp 800w, photo/hratsiia-2.webp 1000w" sizes="(max-width: 960px) 100vw, 50vw" width="1000" height="1500" alt="Шовкова хустка поясом на синьому жакеті" fetchpriority="high"><div class="tag">Від першого дня до п’яти років у компанії</div></figure>
-  </div></section><section class="wrap" aria-label="Коротко про бренд"><div class="facts"><div><b class="num">8 нагод</b><span>Від першого дня до останнього — увесь шлях людини в компанії</span></div><div><b class="num">700 – 4 400 грн</b><span>Роздрібні ціни каталогу: річ під будь-який бюджет на людину</span></div><div><b class="num">Не лише хустки</b><span>Маски для сну, закладки, наволочки, футболки, сертифікати</span></div><div><b class="num">Листівка</b><span>Привітання вашими словами — у кожному подарунку</span></div></div></section>
+  </div></section><section class="wrap" aria-label="Коротко про бренд"><div class="facts"><div><b class="num">8 нагод</b><span>Від першого дня до останнього — увесь шлях людини в компанії</span></div><div><b class="num">700 – 4 400 грн</b><span>Роздрібні ціни каталогу: річ під будь-який бюджет на людину</span></div><div><b class="num">6 готових наборів</b><span>Із каталогу Obiimy: від 1 800 до 4 800 грн у роздріб</span></div><div><b class="num">Листівка</b><span>Привітання вашими словами — у кожному подарунку</span></div></div></section>
 
   <section class="block" id="path"><div class="wrap">
     <div class="head"><p class="eyebrow">Нагоди</p><h2>Шлях людини в компанії</h2><p class="sub">Вісім моментів, коли подарунок від роботодавця запам’ятовується. Оберіть нагоду — покажемо, що зазвичай дарують і скільки це коштує в роздріб.</p></div>
@@ -306,7 +317,25 @@
     </div>
   </div></section>
 
-  <section class="block alt" id="plan"><div class="wrap">
+  <section class="block alt" id="sets"><div class="wrap">
+    <div class="head"><p class="eyebrow">Готові набори</p><h2>Шість готових наборів із каталогу</h2><p class="sub">Набори з каталогу Obiimy — уже зібрані й упаковані. Ціни роздрібні; для команди порахуємо у відповідь на запит.</p></div>
+    <div class="sets"><div class="card photo"><img src="img/sets/twscr-makiv.webp" srcset="img/sets/twscr-makiv-480.webp 480w, img/sets/twscr-makiv.webp 800w" sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw" width="800" height="800" alt="Твіллі й резинка у святковій коробці" loading="lazy" decoding="async"><div class="in"><p class="eyebrow">Усій команді</p><h3>Твіллі та резинка</h3><p>Твіллі й резинка в одному принті у святковій коробці.</p>
+        <div class="pr"><b class="num">2 200 грн</b><span>довга твіллі 140 × 5 — 2 700 грн</span></div>
+        <div class="act"><a class="btn btn-line btn-sm" href="#request" data-set="Твіллі та резинка — 2 200 грн">Запросити для команди</a><a class="more" href="b2b-sets#set-twscr">Докладніше про набір →</a></div></div></div><div class="card photo"><img src="img/sets/maskscr-litnie-pole.webp" srcset="img/sets/maskscr-litnie-pole-480.webp 480w, img/sets/maskscr-litnie-pole.webp 800w" sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw" width="800" height="800" alt="Маска для сну й резинка у коробці" loading="lazy" decoding="async"><div class="in"><p class="eyebrow">Турбота про команду</p><h3>Маска для сну та резинка</h3><p>Подарунок про відпочинок, а не про роботу: шовкова маска й резинка.</p>
+        <div class="pr"><b class="num">3 100 грн</b><span>роздрібна ціна</span></div>
+        <div class="act"><a class="btn btn-line btn-sm" href="#request" data-set="Маска для сну та резинка — 3 100 грн">Запросити для команди</a><a class="more" href="b2b-sets#set-maskscr">Докладніше про набір →</a></div></div></div><div class="card photo"><img src="img/sets/tw44-vpevnenist.webp" srcset="img/sets/tw44-vpevnenist-480.webp 480w, img/sets/tw44-vpevnenist.webp 800w" sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw" width="800" height="800" alt="Твіллі й хустка в одному принті у довгій коробці" loading="lazy" decoding="async"><div class="in"><p class="eyebrow">Ключовим людям</p><h3>Твіллі та хустка 44 × 44</h3><p>Стрічка й хустка в одному принті. До річниці в компанії чи підвищення.</p>
+        <div class="pr"><b class="num">3 200 грн</b><span>двосторонній друк — 3 600 грн</span></div>
+        <div class="act"><a class="btn btn-line btn-sm" href="#request" data-set="Твіллі та хустка 44 × 44 — 3 200 грн">Запросити для команди</a><a class="more" href="b2b-sets#set-tw44">Докладніше про набір →</a></div></div></div><div class="card photo"><img src="img/sets/sleep-pidnesennia.webp" srcset="img/sets/sleep-pidnesennia-480.webp 480w, img/sets/sleep-pidnesennia.webp 800w" sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw" width="800" height="800" alt="Маска для сну, закладка й резинка" loading="lazy" decoding="async"><div class="in"><p class="eyebrow">Подарунок із сенсом</p><h3>Маска, закладка й резинка</h3><p>Набір із колекції «Співоча душа»: частина коштів від колекції йде на гнізда для сиворакші — птаха з Червоної книги України.</p>
+        <div class="pr"><b class="num">3 600 грн</b><span>роздрібна ціна</span></div>
+        <div class="act"><a class="btn btn-line btn-sm" href="#request" data-set="Маска, закладка й резинка — 3 600 грн">Запросити для команди</a><a class="more" href="b2b-sets#set-song">Докладніше про набір →</a></div></div></div><div class="card photo"><img src="img/sets/three-twilly.webp" srcset="img/sets/three-twilly-480.webp 480w, img/sets/three-twilly.webp 800w" sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw" width="800" height="800" alt="Три твіллі в одній коробці" loading="lazy" decoding="async"><div class="in"><p class="eyebrow">Керівникам і наставникам</p><h3>Три твіллі на вибір</h3><p>Три стрічки 84 × 5 у святковому пакуванні — принти можна обрати різні.</p>
+        <div class="pr"><b class="num">4 800 грн</b><span>роздрібна ціна</span></div>
+        <div class="act"><a class="btn btn-line btn-sm" href="#request" data-set="Три твіллі на вибір — 4 800 грн">Запросити для команди</a><a class="more" href="b2b-sets#set-three">Докладніше про набір →</a></div></div></div><div class="card photo"><img src="img/sets/scr3.webp" srcset="img/sets/scr3-480.webp 480w, img/sets/scr3.webp 569w" sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw" width="569" height="800" alt="Три шовкові резинки у коробці" loading="lazy" decoding="async"><div class="in"><p class="eyebrow">Welcome-box і великі команди</p><h3>Набір шовкових резинок</h3><p>Три шовкові резинки: подарунок, який не залежить від розміру.</p>
+        <div class="pr"><b class="num">1 800 грн</b><span>Zero waste: 3 шт. — 1 250 грн, 5 шт. — 2 000 грн</span></div>
+        <div class="act"><a class="btn btn-line btn-sm" href="#request" data-set="Набір шовкових резинок — 1 800 грн">Запросити для команди</a><a class="more" href="b2b-sets#set-scrset">Докладніше про набір →</a></div></div></div></div>
+    <p class="note">Усі набори, зокрема зібрані під запит, — у <a href="b2b-sets">каталозі корпоративних наборів</a>. Хочете зібрати свій — <a href="b2b-atelier">3D-конструктор подарунка</a>.</p>
+  </div></section>
+
+  <section class="block" id="plan"><div class="wrap">
     <div class="head"><p class="eyebrow">План на рік</p><h2>Скільки це коштує для вашої команди</h2><p class="sub">Вкажіть розмір команди, позначте нагоди й оберіть річ для кожної. Кількість подарунків ми підставили для прикладу — змініть під себе.</p></div>
     <div class="team"><label for="people">Людей у команді<input id="people" type="number" min="1" inputmode="numeric" value="40"></label><p>Суми — за роздрібними цінами obiimy.world. Умови для компанії залежать від кількості подарунків на рік: порахуємо у відповідь на запит.</p></div>
     <div class="plan" id="rows">
@@ -357,7 +386,7 @@
       <a class="btn btn-gold" href="#request" id="send">Надіслати цей план на розрахунок</a></div>
   </div></section>
 
-  <section class="block" id="all"><div class="wrap">
+  <section class="block alt" id="all"><div class="wrap">
     <div class="head"><p class="eyebrow">Для всієї команди</p><h2>Не лише шовкові хустки</h2><p class="sub">У команді різні люди. У каталозі Obiimy є речі, які доречно подарувати кожному — і тим, хто хустку не носить.</p></div>
     <div class="grid4">
       <div class="card photo"><img src="img/mask-vpevnenist.webp" srcset="img/mask-vpevnenist-480.webp 480w, img/mask-vpevnenist.webp 800w" sizes="(max-width: 640px) 50vw, 25vw" width="800" height="800" alt="Шовкова маска для сну" loading="lazy" decoding="async"><div class="in"><p class="eyebrow">Відпочинок</p><h3>Маска для сну</h3><p>Після відрядження, перед відпусткою, на підтримку.</p><div class="price-row"><span>Роздріб</span><span class="num">2 700 грн</span></div></div></div>
@@ -368,7 +397,7 @@
     <p class="note">Потрібна одна річ на всю компанію? Подивіться <a href="b2b-monoprint">«Один принт — уся компанія»</a>. Готові набори — у <a href="b2b-sets">каталозі наборів</a>.</p>
   </div></section>
 
-  <section class="block alt" id="how"><div class="wrap grid2">
+  <section class="block" id="how"><div class="wrap grid2">
     <div><p class="eyebrow">Як це влаштовано</p><h2 style="margin-top:10px">Від вас — список. Решту робимо ми</h2>
       <div class="steps" style="grid-template-columns:1fr;gap:18px;margin-top:22px">
         <div><h3>Нагоди й бюджет</h3><p>Ви обираєте нагоди та суму на один подарунок. Можна почати з однієї — наприклад, із днів народження.</p></div>
@@ -380,7 +409,7 @@
     <figure><img src="photo/bag-1-800.webp" srcset="photo/bag-1-480.webp 480w, photo/bag-1-800.webp 800w, photo/bag-1.webp 1000w" sizes="(max-width: 960px) 100vw, 50vw" width="1000" height="1500" alt="Шовкова твіллі на ручці білої сумки" loading="lazy" decoding="async"></figure>
   </div></section>
 
-  <section class="block" id="faq"><div class="wrap">
+  <section class="block alt" id="faq"><div class="wrap">
     <div class="head"><p class="eyebrow">Питання</p><h2>Що питають HR і офіс-менеджери</h2></div>
     <div class="faq">
       <details><summary>Є мінімальна кількість?</summary><p>Фіксованого мінімуму немає. Можна замовити подарунок одній людині — наприклад, до річниці в компанії.</p></details>
@@ -393,7 +422,7 @@
     </div>
   </div></section>
   
-  <section class="block alt" id="proof"><div class="wrap grid2" style="align-items:start">
+  <section class="block" id="proof"><div class="wrap grid2" style="align-items:start">
     <div><p class="eyebrow">Довіра</p><h2 style="margin-top:10px">Де вже є Obiimy</h2><p style="margin-top:14px;color:var(--ink2);max-width:36em">Obiimy продається у роздрібних партнерів в Україні та за кордоном, а історію бренду розповідали LIGA.net та INSIDER UA.</p></div>
     <div>
       <div class="proof">
@@ -407,7 +436,7 @@
     </div>
   </div></section>
 
-  <section class="form-block" id="request"><div class="wrap">
+  <section class="form-block alt" id="request"><div class="wrap">
     <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Порахувати подарунки для команди</h2><p>Кілька фактів про компанію — і ми надішлемо добірку та розрахунок. План із калькулятора підставиться в коментар.</p><p class="big"><a href="tel:+380739259949">+38 073 925 99 49</a></p><p><a href="mailto:sale@obiimy.world">sale@obiimy.world</a> · <a href="https://t.me/OBIIMY_sales">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: Київ, вул. Петра Сагайдачного, 12 — шовк можна подивитися й торкнутися наживо.</p></div>
     <div>
       <form id="f-team" novalidate>
@@ -493,6 +522,12 @@
     });
     people.addEventListener('input', function () { defaults(); calc(); });
     defaults(); calc();
+    [].forEach.call(document.querySelectorAll('[data-set]'), function (a) {
+      a.addEventListener('click', function () {
+        var n = document.querySelector('#f-team [name=note]'), line = 'Набір: ' + a.dataset.set;
+        if (n.value.indexOf(line) < 0) n.value = (n.value ? n.value + '\n' : '') + line;
+      });
+    });
     document.getElementById('st-add').addEventListener('click', function () {
       var r = rows[cur]; r.querySelector('input[type=checkbox]').checked = true; calc();
     });
@@ -504,7 +539,7 @@
         lines.push('— ' + r.querySelector('label.n').textContent + ': ' + q + ' × ' + N[k] + ' = ' + fmt(q * P[k]).replace(/\u00a0/g, ' '));
       });
       lines.push('Разом: ' + document.getElementById('tot').textContent.replace(/\u00a0/g, ' '));
-      var f = document.getElementById('f-team'); f.querySelector('[name=note]').value = lines.join('\n'); f.querySelector('[name=people]').value = people.value;
+      var f = document.getElementById('f-team'); var nt = f.querySelector('[name=note]'), keep = nt.value.split('\n').filter(function (l) { return l.indexOf('Набір: ') === 0; }); nt.value = keep.concat(lines).join('\n'); f.querySelector('[name=people]').value = people.value;
     });
   })();
   </script>

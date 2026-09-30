@@ -32,7 +32,34 @@ STAGES = [
     ("bye", "Прощання", "Останній день", "Людина йде далі — і забирає з собою добру пам’ять про компанію. Велика хустка або сертифікат, щоб обрала сама.", "photo/mizh-1.webp", "Велика шовкова хустка на голові", "h88", .05),
 ]
 
+SITE = "https://obiimy.world"
+FEATURED = [   # id, name, for whom in the company, photo, alt, price, price note, what is inside, link
+    ("twscr", "Твіллі та резинка", "Усій команді", "img/sets/twscr-makiv.webp", "Твіллі й резинка у святковій коробці", 2200, "довга твіллі 140 × 5 — 2 700 грн",
+     "Твіллі й резинка в одному принті у святковій коробці.", SITE + "/tvilli-ta-rezynka-prystrast/"),
+    ("maskscr", "Маска для сну та резинка", "Турбота про команду", "img/sets/maskscr-litnie-pole.webp", "Маска для сну й резинка у коробці", 3100, "",
+     "Подарунок про відпочинок, а не про роботу: шовкова маска й резинка.", SITE + "/maska-dlia-snu-ta-rezynka-litnie-pole/"),
+    ("tw44", "Твіллі та хустка 44 × 44", "Ключовим людям", "img/sets/tw44-vpevnenist.webp", "Твіллі й хустка в одному принті у довгій коробці", 3200, "двосторонній друк — 3 600 грн",
+     "Стрічка й хустка в одному принті. До річниці в компанії чи підвищення.", SITE + "/nabir-tvilli-845-ta-khustky-4444-vpevnenist/"),
+    ("song", "Маска, закладка й резинка", "Подарунок із сенсом", "img/sets/sleep-pidnesennia.webp", "Маска для сну, закладка й резинка", 3600, "",
+     "Набір із колекції «Співоча душа»: частина коштів від колекції йде на гнізда для сиворакші — птаха з Червоної книги України.", SITE + "/maska-dlia-snu-zakladka-dlia-knyhy-ta-shovkova-rezynka-dlia-volossia-pidnesennia/"),
+    ("three", "Три твіллі на вибір", "Керівникам і наставникам", "img/sets/three-twilly.webp", "Три твіллі в одній коробці", 4800, "",
+     "Три стрічки 84 × 5 у святковому пакуванні — принти можна обрати різні.", SITE + "/nabir-3-shovkovykh-tvilli/"),
+    ("scrset", "Набір шовкових резинок", "Welcome-box і великі команди", "img/sets/scr3.webp", "Три шовкові резинки у коробці", 1800, "Zero waste: 3 шт. — 1 250 грн, 5 шт. — 2 000 грн",
+     "Три шовкові резинки: подарунок, який не залежить від розміру.", SITE + "/nabir-3-shovkovykh-rezynky/"),
+]
+
 CSS = """
+  .sets { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .sets .card.photo img { aspect-ratio: 4 / 3.2; }
+  .sets .in { gap: 10px; }
+  .sets .in h3 { font-size: 1.35rem; }
+  .sets .act { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; margin-top: 6px; }
+  .sets .act a.more { font-size: .88rem; font-weight: 600; padding: 12px 0; }
+  .sets .pr { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; padding-top: 10px; border-top: 1px solid var(--line); }
+  .sets .pr b { font-family: var(--display); font-weight: 400; font-size: 1.5rem; white-space: nowrap; }
+  .sets .pr span { color: var(--ink2); font-size: .82rem; text-align: right; }
+  @media (max-width: 960px) { .sets { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 600px) { .sets { grid-template-columns: 1fr; } }
   .path { display: grid; grid-template-columns: repeat(8, 1fr); gap: 0; margin-bottom: 28px; position: relative; }
   .path::before { content: ""; position: absolute; left: 6%; right: 6%; top: 17px; height: 1px; background: var(--ink); opacity: .35; }
   .path button { font: inherit; color: var(--ink2); background: none; border: 0; padding: 0 4px 12px; cursor: pointer; display: grid; justify-items: center; gap: 10px; text-align: center; font-size: .82rem; line-height: 1.25; min-height: 84px; position: relative; }
@@ -80,6 +107,10 @@ def page():
         <input type="number" min="0" inputmode="numeric" aria-label="{short}: скільки подарунків на рік" data-k="n">
         <select aria-label="{short}: що даруємо" data-k="item" data-def="{item}">{opts}</select>
         <span class="sum num" data-k="sum"></span></div>''' for sid, short, _t, _d, _p, _a, item, share in STAGES)
+    sets_html = "".join(f'''<div class="card photo">{img(ph, alt, sizes="(max-width: 600px) 100vw, (max-width: 960px) 50vw, 33vw")}<div class="in"><p class="eyebrow">{who}</p><h3>{name}</h3><p>{text}</p>
+        <div class="pr"><b class="num">{b2b.price(pr)}</b><span>{note or "роздрібна ціна"}</span></div>
+        <div class="act"><a class="btn btn-line btn-sm" href="#request" data-set="{name} — {b2b.price(pr)}">Запросити для команди</a><a class="more" href="b2b-sets#set-{sid}">Докладніше про набір →</a></div></div></div>'''
+        for sid, name, who, ph, alt, pr, note, text, link in FEATURED)
     data = json.dumps([dict(id=s, title=t, text=d, photo=p, alt=a, item=NAME[i], price=PRICE[i]) for s, _sh, t, d, p, a, i, _x in STAGES], ensure_ascii=False)
     first = STAGES[0]
     body = hero("Для HR і офіс-менеджерів · подарунки всередині компанії", "Подарунки для своїх",
@@ -89,7 +120,7 @@ def page():
         "photo/hratsiia-2.webp", "Шовкова хустка поясом на синьому жакеті", "Від першого дня до п’яти років у компанії", pos="50% 10%", cta1_href="#plan") + facts_html([
         ("8 нагод", "Від першого дня до останнього — увесь шлях людини в компанії"),
         ("700 – 4 400 грн", "Роздрібні ціни каталогу: річ під будь-який бюджет на людину"),
-        ("Не лише хустки", "Маски для сну, закладки, наволочки, футболки, сертифікати"),
+        ("6 готових наборів", "Із каталогу Obiimy: від 1 800 до 4 800 грн у роздріб"),
         ("Листівка", "Привітання вашими словами — у кожному подарунку"),
     ]) + f'''
 
@@ -104,7 +135,13 @@ def page():
     </div>
   </div></section>
 
-  <section class="block alt" id="plan"><div class="wrap">
+  <section class="block alt" id="sets"><div class="wrap">
+    <div class="head"><p class="eyebrow">Готові набори</p><h2>Шість готових наборів із каталогу</h2><p class="sub">Набори з каталогу Obiimy — уже зібрані й упаковані. Ціни роздрібні; для команди порахуємо у відповідь на запит.</p></div>
+    <div class="sets">{sets_html}</div>
+    <p class="note">Усі набори, зокрема зібрані під запит, — у <a href="b2b-sets">каталозі корпоративних наборів</a>. Хочете зібрати свій — <a href="b2b-atelier">3D-конструктор подарунка</a>.</p>
+  </div></section>
+
+  <section class="block" id="plan"><div class="wrap">
     <div class="head"><p class="eyebrow">План на рік</p><h2>Скільки це коштує для вашої команди</h2><p class="sub">Вкажіть розмір команди, позначте нагоди й оберіть річ для кожної. Кількість подарунків ми підставили для прикладу — змініть під себе.</p></div>
     <div class="team"><label for="people">Людей у команді<input id="people" type="number" min="1" inputmode="numeric" value="40"></label><p>Суми — за роздрібними цінами obiimy.world. Умови для компанії залежать від кількості подарунків на рік: порахуємо у відповідь на запит.</p></div>
     <div class="plan" id="rows">
@@ -115,7 +152,7 @@ def page():
       <a class="btn btn-gold" href="#request" id="send">Надіслати цей план на розрахунок</a></div>
   </div></section>
 
-  <section class="block" id="all"><div class="wrap">
+  <section class="block alt" id="all"><div class="wrap">
     <div class="head"><p class="eyebrow">Для всієї команди</p><h2>Не лише шовкові хустки</h2><p class="sub">У команді різні люди. У каталозі Obiimy є речі, які доречно подарувати кожному — і тим, хто хустку не носить.</p></div>
     <div class="grid4">
       <div class="card photo">{img("img/mask-vpevnenist.webp", "Шовкова маска для сну", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">Відпочинок</p><h3>Маска для сну</h3><p>Після відрядження, перед відпусткою, на підтримку.</p><div class="price-row"><span>Роздріб</span><span class="num">2 700 грн</span></div></div></div>
@@ -126,7 +163,7 @@ def page():
     <p class="note">Потрібна одна річ на всю компанію? Подивіться <a href="b2b-monoprint">«Один принт — уся компанія»</a>. Готові набори — у <a href="b2b-sets">каталозі наборів</a>.</p>
   </div></section>
 
-  <section class="block alt" id="how"><div class="wrap grid2">
+  <section class="block" id="how"><div class="wrap grid2">
     <div><p class="eyebrow">Як це влаштовано</p><h2 style="margin-top:10px">Від вас — список. Решту робимо ми</h2>
       <div class="steps" style="grid-template-columns:1fr;gap:18px;margin-top:22px">
         <div><h3>Нагоди й бюджет</h3><p>Ви обираєте нагоди та суму на один подарунок. Можна почати з однієї — наприклад, із днів народження.</p></div>
@@ -138,7 +175,7 @@ def page():
     <figure>{img("photo/bag-1.webp", "Шовкова твіллі на ручці білої сумки", sizes="(max-width: 960px) 100vw, 50vw")}</figure>
   </div></section>
 
-  <section class="block" id="faq"><div class="wrap">
+  <section class="block alt" id="faq"><div class="wrap">
     <div class="head"><p class="eyebrow">Питання</p><h2>Що питають HR і офіс-менеджери</h2></div>
     <div class="faq">
       <details><summary>Є мінімальна кількість?</summary><p>Фіксованого мінімуму немає. Можна замовити подарунок одній людині — наприклад, до річниці в компанії.</p></details>
@@ -150,9 +187,9 @@ def page():
       <details><summary>Що, якщо людина звільнилась або список змінився?</summary><p>Надішліть оновлений список до наступної відправки — відправимо за актуальним.</p></details>
     </div>
   </div></section>
-  {proof_html("Де вже є Obiimy", "Obiimy продається у роздрібних партнерів в Україні та за кордоном, а історію бренду розповідали LIGA.net та INSIDER UA.")}
+  {proof_html("Де вже є Obiimy", "Obiimy продається у роздрібних партнерів в Україні та за кордоном, а історію бренду розповідали LIGA.net та INSIDER UA.", first=True)}
 
-  <section class="form-block" id="request"><div class="wrap">
+  <section class="form-block alt" id="request"><div class="wrap">
     <div class="contact"><p class="eyebrow">Напишіть нам</p><h2>Порахувати подарунки для команди</h2><p>Кілька фактів про компанію — і ми надішлемо добірку та розрахунок. План із калькулятора підставиться в коментар.</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна подивитися й торкнутися наживо.</p></div>
     <div>{form_html("f-team", "Подарунки для команди", [
         ("company", "Компанія", "input", True, {"ph": "Назва компанії", "ac": "organization"}),
@@ -210,6 +247,12 @@ def page():
     }});
     people.addEventListener('input', function () {{ defaults(); calc(); }});
     defaults(); calc();
+    [].forEach.call(document.querySelectorAll('[data-set]'), function (a) {{
+      a.addEventListener('click', function () {{
+        var n = document.querySelector('#f-team [name=note]'), line = 'Набір: ' + a.dataset.set;
+        if (n.value.indexOf(line) < 0) n.value = (n.value ? n.value + '\\n' : '') + line;
+      }});
+    }});
     document.getElementById('st-add').addEventListener('click', function () {{
       var r = rows[cur]; r.querySelector('input[type=checkbox]').checked = true; calc();
     }});
@@ -221,13 +264,13 @@ def page():
         lines.push('— ' + r.querySelector('label.n').textContent + ': ' + q + ' × ' + N[k] + ' = ' + fmt(q * P[k]).replace(/\\u00a0/g, ' '));
       }});
       lines.push('Разом: ' + document.getElementById('tot').textContent.replace(/\\u00a0/g, ' '));
-      var f = document.getElementById('f-team'); f.querySelector('[name=note]').value = lines.join('\\n'); f.querySelector('[name=people]').value = people.value;
+      var f = document.getElementById('f-team'); var nt = f.querySelector('[name=note]'), keep = nt.value.split('\\n').filter(function (l) {{ return l.indexOf('Набір: ') === 0; }}); nt.value = keep.concat(lines).join('\\n'); f.querySelector('[name=people]').value = people.value;
     }});
   }})();
   </script>'''
     return dict(slug="b2b-team", skin="form", title="Подарунки для команди — Obiimy для HR і офіс-менеджерів",
                 desc="Подарунки співробітникам від компанії: перший день, день народження, річниця в компанії, закритий проєкт. Шовк, маски для сну, сертифікати від 700 грн; відправка кожному або в офіс.",
-                og="photo/hratsiia-2.webp", nav=[("Нагоди", "path"), ("План на рік", "plan"), ("Для всіх", "all"), ("Як це працює", "how"), ("Питання", "faq"), ("Контакт", "request")],
+                og="photo/hratsiia-2.webp", nav=[("Нагоди", "path"), ("Набори", "sets"), ("План на рік", "plan"), ("Для всіх", "all"), ("Як це працює", "how"), ("Питання", "faq"), ("Контакт", "request")],
                 cta="Запит", sticky="Подарунки для команди · від 700 грн", body=body)
 
 if __name__ == "__main__":

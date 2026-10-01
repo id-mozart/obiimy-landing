@@ -14,7 +14,7 @@ CSS = """
   .hero.set { padding-block: clamp(20px, 4vw, 52px) clamp(20px, 4vw, 44px); }
   .hero.set h1 { font-size: clamp(2rem, 3.6vw, 3.2rem); }
   .hero.set .price { font-family: var(--display); font-size: clamp(1.6rem, 2.6vw, 2.2rem); margin-top: 18px; line-height: 1.1; }
-  .hero.set .price small { display: block; font-family: var(--body); font-size: .82rem; color: var(--ink3); margin-top: 6px; }
+  .hero.set .price small { display: block; font-family: var(--body); font-size: .82rem; color: var(--ink3); margin-top: 6px; white-space: normal; max-width: 34em; }
   .hero.set figure img { aspect-ratio: 4 / 5; }
   .gal { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
   .gal figure { margin: 0; } .gal img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); background: #fff; }
@@ -43,14 +43,15 @@ def page(i, S):
     kv = "".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in S["inside"])
     ways = "".join(f'<div class="way"><h3>{h}</h3><p>{t}</p></div>' for h, t in S["ways"])
     pers = "".join(f'<div class="per4{" free" if j == 0 else ""}"><b class="n">0{j + 1}</b><h3>{n}</h3><p>{t}</p><p class="tm">{tm}</p></div>' for j, (n, t, tm, ph) in enumerate(PERS))
-    others = "".join(f'<a class="o4" href="{o["slug"]}">{img(o["gal"][0][0], o["short"], sizes="72px")}<div><b>{o["short"]}</b><span>{o["pr"]}</span></div></a>' for o in SETS4 if o is not S)
+    others = "".join(f'<a class="o4" href="{o["slug"]}">{img(o["gal"][0][0], o["short"], sizes="72px")}<div><b>{o["short"]}</b><span>{o["pr"]} · детальніше →</span></div></a>' for o in SETS4 if o is not S)
     body = f'''
   <section class="hero set ph-first"><div class="wrap">
     <div>
-      <p class="eyebrow">{S["lb"]} · <a href="b2b-team-main#tiers">усі чотири рівні</a></p>
+      <p class="eyebrow"><a href="b2b-team-main#tiers">← Усі чотири рівні</a> · {S["lb"]}</p>
       <h1>{S["name"]}</h1>
       <p class="lead">{S["lead"]}</p>
       <p class="price num">{S["pr"]}<small>{S["prnote"]}</small></p>
+      <p class="note">Команді з 50 людей — {S["b50"]} за роздрібними цінами; доставку й персоналізацію рахуємо окремо.</p>
       <div class="cta"><a class="btn btn-gold" href="#request">Отримати розрахунок</a><a class="btn btn-line" href="#details">Що всередині</a></div>
     </div>
     {fig}
@@ -64,7 +65,7 @@ def page(i, S):
     <div class="head"><p class="eyebrow">Персоналізація</p><h2>З вашим логотипом</h2><p class="sub">Перший рівень — безкоштовно в кожному корпоративному замовленні. Решта — залежно від строків, у розрахунку.</p></div>
     <div class="pers4">{pers}</div>
   </div></section>
-  <section class="block alt"><div class="wrap"><div class="head"><p class="eyebrow">Інші рівні</p><h2>Ще три подарунки</h2></div><div class="others4">{others}</div></div></section>
+  <section class="block alt"><div class="wrap"><div class="head"><p class="eyebrow">Інші рівні</p><h2>Ще три подарунки</h2></div><div class="others4">{others}</div><p style="margin-top:18px"><a href="b2b-team-main#tiers">← Порівняти всі чотири рівні</a></p></div></section>
   {team.request_section("f-set", f"Подарунки для команди · {S['short']}", "Отримати добірку й розрахунок", "Напишіть кількість і дату — у відповідь надішлемо принти на вибір і розрахунок окремими рядками: речі, персоналізація, доставка.", "details", alt=False)}
   ''' + team.script("f-set", "")
     return dict(slug=S["slug"], skin="form", bar=team.BAR, title=f"{S['short']} — подарунок для команди від Obiimy", desc=S["lead"][:150], og=hp,

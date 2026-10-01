@@ -28,7 +28,7 @@ def foot(): return f'<p class="pf"><span>Obiimy · подарунки для к�
 
 # 1 cover
 page(f'''<div class="cover">{pic("photo/solo/zolote-44-5.webp", "full", "50% 30%")}<div class="cover-t"><img src="brand/logo-white.png" class="logo" alt="Obiimy">
-  <p class="eb">Для HR і офіс-менеджерів · 2026</p><h1>Подарунки<br>для команди</h1><p>Авторські принти на натуральному італійському шовку. Чотири рівні подарунка від 1 600 грн, пакування з вашим логотипом — безкоштовно.</p></div></div>''', "nopad")
+  <p class="eb">Для HR і офіс-менеджерів · 2026</p><h1>Подарунки<br>для команди</h1><p>Чотири рівні подарунка від 1 600 грн. Пакування й наліпка з вашим логотипом — безкоштовно.</p></div></div>''', "nopad")
 
 # 2 brand
 page(f'''<div class="two"><div>{pic("photo/solo/krok-tw-3.webp", "tall", "50% 30%")}</div><div class="txt">
@@ -41,28 +41,25 @@ page(f'''<div class="two"><div>{pic("photo/solo/krok-tw-3.webp", "tall", "50% 30
 
 # 3 three reasons
 adv = "".join(f'<div class="adv-i"><b>0{i + 1}</b><div><h3>{b}</h3><p>{t}</p></div></div>' for i, (b, t) in enumerate(PERKS[:3]))
-page(f'''<div class="two adv"><div>{pic("photo/solo/avantiura-tw-1.webp", "tall", "50% 15%")}</div><div class="txt adv-t">
+page(f'''<div class="two adv"><div class="txt adv-t">
   <p class="eb">Чому ми</p><h2>Три причини обрати шовк Obiimy</h2>{adv}
-</div></div>''')
+</div><div>{pic("photo/solo/avantiura-tw-1.webp", "tall", "50% 15%")}</div></div>''')
 
 # 4 SOLO collection — black presentational page: manifesto (press release), cinematic shot, seven prints
 prints = "".join(f'<div class="sd-p">{pic(fl)}<b>{n}</b><span>{st}</span></div>' for n, st, fm, pr, ph, fl in SOLO)
 page(f'''<div class="sd-top"><div class="sd-t"><p class="eb">Нова колекція · 2026</p><h2>SOLO.<br>Шлях до себе</h2><p class="sd-slogan">Шовкова свобода: жіноча сила крізь десятиліття</p>
+<p class="sd-note" style="margin-top:0;border:0;padding:0">Для команди: кожному — свій принт, під стан, який хочете побажати, або один на всіх. Твіллі — 1 600 грн; хустки 44 × 44 з двостороннім друком — від 2 400 грн.</p>
 <p>У 40-х жінка підкреслювала силу бездоганною елегантністю — за м’якістю шовку ховався характер. У 50-х правила почали руйнуватися: колір, форма, власна ідентичність. Змінювалися епохи й силуети, а хустка залишалася поруч — як символ жіночності, що не суперечить силі.</p>
 <p>SOLO — історія про шлях жінки до себе: моменти, коли ми шукаємо відповіді, відкриваємо власну силу й робимо сміливі кроки вперед. Сім авторських принтів — сім етапів цієї подорожі. Натуральний шовк, двосторонній друк.</p>
-<p class="sd-note">Для команди: принт під характер людини — або один на всіх. Твіллі — 1 600 грн; хустки з двостороннім друком — від 2 400 грн.</p></div>
+</div>
 <div class="sd-ph">{pic("photo/solo/tysha-88-2.webp")}{pic("photo/solo/zolote-44-5.webp", "", "50% 25%")}{pic("photo/solo/avantiura-tw-1.webp", "", "50% 15%")}</div></div>
 <div class="sd-prints">{prints}</div>''', "dark")
 
-# 5 four tiers — three layout variants (A editorial, B photos, C two by two); one stays after the client picks
-H5 = '<p class="eb">Ціновий діапазон</p><h2>Чотири рівні подарунка — від 1 600 до 3 200 грн на людину</h2>'
-F5 = '<p class="foot">Команді з 50 людей — від 80 000 до 160 000 грн за речі за роздрібними цінами; доставку й майстер-клас рахуємо окремо. Кожен рівень — на окремій сторінці далі.</p>'
-rows = "".join(f'<div class="tr">{pic(ph)}<div><p class="eb">{lb}</p><b>{n}</b><span>{t}</span></div><em>{pr}</em></div>' for (lb, n, t, pr, note, ph), S in zip(TIERS, SETS4))
-page(f'''<div class="ta"><div>{pic("photo/solo/zolote-44-3.webp", "tall", "50% 20%")}</div><div class="txt">{H5}<p class="sub">Варіант A. Від однієї стрічки до набору з хусткою, твіллі й майстер-класом. Ціни роздрібні, obiimy.world.</p><div class="ta-l">{rows}</div>{F5}</div></div>''')
-cards = "".join(f'<div class="tb">{pic(S["hero"][0], "", S["hero"][2])}{pic(ph, "tb-p")}<div class="tb-t"><p class="eb">0{i + 1} · {lb}</p><b>{n}</b><em>{pr}</em></div></div>' for i, ((lb, n, t, pr, note, ph), S) in enumerate(zip(TIERS, SETS4)))
-page(f'''{H5}<p class="sub">Варіант B. Від однієї стрічки до набору з хусткою, твіллі й майстер-класом. Ціни роздрібні, obiimy.world.</p><div class="tbs">{cards}</div>{F5}''')
-cards = "".join(f'<div class="tc"><div class="tc-ph">{pic(S["gal"][0][0], "", S["gal"][0][2])}{pic(ph, "tc-p")}</div><div class="tc-t"><p class="eb">0{i + 1} · {lb}</p><h3>{n}</h3><p>{t}</p><em>{pr}</em><small>{note}</small></div></div>' for i, ((lb, n, t, pr, note, ph), S) in enumerate(zip(TIERS, SETS4)))
-page(f'''{H5}<p class="sub">Варіант C. Від однієї стрічки до набору з хусткою, твіллі й майстер-класом. Ціни роздрібні, obiimy.world.</p><div class="tcs">{cards}</div>{F5}''')
+# 5 four tiers — variant A (editorial) chosen after the audit: one model shot, four rows with product thumbs, price breakdown
+H5 = '<p class="eb">Ціновий діапазон</p><h2>Чотири рівні подарунка — від 1 600 до 3 200 грн за речі</h2>'
+F5 = '<p class="foot">Команді з 50 людей — 80 000–160 000 грн за речі, зі 100 — 160 000–320 000 грн за роздрібними цінами; доставку й майстер-клас рахуємо окремо. Кожен рівень — на окремій сторінці далі (стор. 6–9).</p>'
+rows = "".join(f'<div class="tr">{pic(ph)}<div><p class="eb">{lb}</p><b>{n}</b><span>{t}</span><small>{note}</small></div><em>{pr}</em></div>' for (lb, n, t, pr, note, ph), S in zip(TIERS, SETS4))
+page(f'''<div class="ta"><div>{pic("photo/solo/zolote-44-3.webp", "tall", "50% 20%")}</div><div class="txt">{H5}<p class="sub">Від однієї стрічки до набору з хусткою, твіллі й майстер-класом. Ціни роздрібні, obiimy.world; кожному — свій принт із добірки.</p><div class="ta-l">{rows}</div>{F5}</div></div>''')
 
 # 5b one page per set: model photos + product, details, ways to wear
 for i, S in enumerate(SETS4):
@@ -70,7 +67,7 @@ for i, S in enumerate(SETS4):
     gal = "".join(pic(p_, "", pos) for p_, a_, pos in S["gal"][:3])
     kv = "".join(f'<div><span>{k}</span><span>{v}</span></div>' for k, v in S["inside"])
     ways = "".join(f'<div><b>{h}</b>{t}</div>' for h, t in S["ways"])
-    page(f'''<div class="set"><div class="set-ph">{pic(hp, "big", hpos)}<div class="set-g">{gal}</div></div>
+    page(f'''<div class="set{" rev" if i % 2 else ""}"><div class="set-ph">{pic(hp, "big", hpos)}<div class="set-g">{gal}</div></div>
 <div class="set-t"><p class="eb">{S["lb"]}</p><h2>{S["name"]}</h2><p class="sub">{S["lead"]}</p>
 <p class="rrp">{S["pr"]}<small>{S["prnote"]}</small></p>
 <div class="kv">{kv}</div>
@@ -79,8 +76,8 @@ for i, S in enumerate(SETS4):
 
 # 6 the whole range
 tiles = "".join(f'<figure>{pic(ph)}<figcaption><b>{n}</b><span>від {price(pr)}</span></figcaption></figure>' for n, pr, ph in ASSORT)
-page(f'''<p class="eb">Асортимент</p><h2>Усе, з чого можна зібрати подарунок</h2><p class="sub">Роздрібні ціни obiimy.world. Принт і формат — у добірці.</p>
-<div class="grid6">{tiles}</div>{foot()}''')
+page(f'''<p class="eb">Асортимент</p><h2>Усе, з чого можна зібрати подарунок</h2><p class="sub">Роздрібні ціни obiimy.world, «від» — найдешевший формат чи принт. Принт і формат — у добірці.</p>
+<div class="grid6">{tiles}</div><p class="foot" style="margin-top:4mm"><b>Чоловікам у команді</b> — сертифікат Obiimy на 1 000–4 000 грн (електронний або фізичний, на будь-який товар), маска для сну, наволочка або закладка — зберемо в один розрахунок. Будь-яку річ можна зробити рівнем подарунка або додати в коробку.</p>{foot()}''')
 
 # 7 personalisation
 def terms(i, tm): return '<p class="free">Безкоштовно</p><p class="nt">у кожному корпоративному замовленні</p>' if i == 0 else f'<p class="nt">{tm}</p>'
@@ -91,7 +88,8 @@ page(f'''<p class="eb">Персоналізація</p><h2>Подарунок і
 
 # 8 contacts
 page(f'''<div class="two"><div class="txt"><p class="eb">Запит</p><h2>Напишіть — надішлемо добірку й розрахунок</h2>
-  <ol class="steps"><li><b>Нагода, кількість, дата.</b> Цього досить для першого листа.</li><li><b>Добірка й розрахунок</b> окремими рядками: речі, персоналізація, доставка. Чи встигаємо до вашої дати — пишемо одразу.</li><li><b>Відправка</b> Новою поштою — кожному окремо чи в офіс.</li></ol>
+  <ol class="steps"><li><b>Нагода, кількість, дата.</b> Цього досить для першого листа.</li><li><b>Добірка й розрахунок</b> окремими рядками: речі, персоналізація, доставка. Чи встигаємо до вашої дати — пишемо одразу.</li><li><b>Відправка</b> Новою поштою в день замовлення до 16:00 — кожному окремо чи в офіс; безкоштовно від 5 000 грн.</li></ol>
+  <p class="cond">Оплата й документи для юридичної особи, мінімальна кількість — уточнимо в розрахунку. Сторінка для команд: obiimy-landing-production.up.railway.app/b2b-team-main</p>
   <p class="contact"><b>{PHONE}</b><br>Telegram @OBIIMY_sales<br>{MAIL}<br>obiimy.world</p>
   <p class="foot">Шоурум: {SHOWROOM}<br>пн–пт 10:00–18:00, сб 11:00–18:00</p>
 </div><div>{pic("photo/solo/zolote-tw-2.webp", "tall", "50% 40%")}</div></div>''')
@@ -112,7 +110,7 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   img {{ display: block; object-fit: cover; }}
   .cover {{ position: relative; width: 100%; height: 100%; }}
   .cover .full {{ width: 100%; height: 100%; }}
-  .cover::after {{ content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.25) 45%, rgba(0,0,0,0) 70%); }}
+  .cover::after {{ content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,.3) 45%, rgba(0,0,0,0) 70%), linear-gradient(0deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 45%); }}
   .cover-t {{ z-index: 1; position: absolute; left: 18mm; bottom: 18mm; max-width: 46%; color: #fff; }}
   .cover-t .eb {{ color: rgba(255,255,255,.8); }}
   .cover-t .logo {{ height: 11mm; width: auto; margin-bottom: 10mm; object-fit: contain; }}
@@ -162,7 +160,7 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .tr:last-child {{ border-bottom: 1px solid #C9C6C0; }}
   .tr img {{ width: 20mm; height: 20mm; background: #fff; border: 1px solid #E5E3DD; }}
   .tr .eb {{ margin-bottom: .5mm; }} .tr b {{ font-family: 'Playfair Display', serif; font-weight: 400; font-size: 14pt; display: block; line-height: 1.1; }}
-  .tr span {{ display: block; font-size: 9pt; color: #4A4A47; }} .tr em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 16pt; white-space: nowrap; }}
+  .tr span {{ display: block; font-size: 9pt; color: #4A4A47; }} .tr small {{ display: block; font-size: 7.5pt; color: #6B6772; margin-top: .5mm; }} .tr em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 16pt; white-space: nowrap; }}
   .tbs {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; flex: 1; min-height: 0; }}
   .tb {{ position: relative; overflow: hidden; color: #fff; }} .tb > img:first-child {{ width: 100%; height: 100%; }}
   .tb::after {{ content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.72) 100%); }}
@@ -175,7 +173,7 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .tc-p {{ position: absolute; left: 3mm; bottom: 3mm; width: 18mm; height: 18mm; border: 2px solid #fff; background: #fff; }}
   .tc-t {{ padding: 5mm 6mm; display: flex; flex-direction: column; }} .tc-t h3 {{ font-size: 14pt; margin: 1mm 0 2mm; }} .tc-t p {{ font-size: 9pt; color: #4A4A47; margin: 0; }}
   .tc-t em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 16pt; margin-top: auto; padding-top: 3mm; }} .tc-t small {{ font-size: 7.5pt; color: #6B6772; }}
-  .set {{ display: grid; grid-template-columns: 1.1fr 1fr; gap: 10mm; height: 100%; }}
+  .set {{ display: grid; grid-template-columns: 1.1fr 1fr; gap: 10mm; height: 100%; }} .set.rev {{ grid-template-columns: 1fr 1.1fr; }} .set.rev .set-ph {{ order: 2; }}
   .set-ph {{ display: grid; grid-template-rows: 1fr auto; gap: 4mm; height: 180mm; min-height: 0; }}
   .set-ph .big {{ width: 100%; height: 100%; min-height: 0; }}
   .set-g {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }} .set-g img {{ width: 100%; aspect-ratio: 1 / 1; background: #fff; }}
@@ -196,7 +194,8 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .per .nt {{ font-size: 8.5pt; color: #6B6772; margin: 1mm 0 5mm; }}
   .per .free {{ font-family: 'Playfair Display', serif; font-size: 15pt; line-height: 1; margin: 2mm 0 0; color: #141414; }} .per .free + .nt {{ margin-top: 1mm; }}
   .per img {{ width: 100%; height: 64mm; margin-top: auto; background: #fff; border: 1px solid #E5E3DD; }}
-  .steps {{ margin: 0 0 4mm; padding-left: 5mm; }} .steps li {{ margin-bottom: 2.5mm; color: #4A4A47; }} .steps b {{ color: #141414; }}
+  .steps {{ margin: 0 0 4mm; padding-left: 5mm; }} .steps li {{ margin-bottom: 2.5mm; color: #4A4A47; }} .steps b {{ color: #141414; font-weight: 400; font-family: 'Playfair Display', serif; font-size: 11.5pt; }}
+  .cond {{ font-size: 8.5pt; color: #6B6772; border-top: 1px solid #DAD7D0; padding-top: 3mm; }}
   .contact {{ margin-top: 4mm; font-size: 13pt; line-height: 1.6; }} .contact b {{ font-family: 'Playfair Display', serif; font-weight: 400; font-size: 20pt; }}
   .foot {{ font-size: 8.5pt; color: #6B6772; margin-top: auto; }}
   .pf {{ margin-top: auto; padding-top: 3mm; border-top: 1px solid #DAD7D0; font-size: 8pt; color: #6B6772; display: flex; justify-content: space-between; }}

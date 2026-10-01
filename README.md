@@ -60,7 +60,9 @@ Maison (головна), Garden (3D-арт), Journal, Campaign, Lookbook, Studio
 - **Каталог і нагоди** — `CATALOG` (19 позицій, `neutral` = «підходить усім»), `STAGES` (8 нагод), `PLANS`, `CARDS` у `src/build-b2b-team.py`.
 - **Спільна логіка списку** — `LIST_JS` у `src/build-b2b-team-shop.py`. Блоки у форму пишуться між маркерами `=== … ===`, поле «Із них не носять аксесуари» ділить: шовк — одним, речі «усім» — іншим.
 
-**PDF для HR:** `obiimy-podarunky-dlia-komandy.pdf`, 11 сторінок. Генерується так: `python3 src/build-team-pdf.py` → `team-deck.html` → PDF через headless Chrome. На сторінках є посилання на нього.
+**PDF для HR:** `obiimy-podarunky-dlia-komandy.pdf`, 14 сторінок (01.10 додано: «Три причини» p03, «Чотири рівні подарунка» p08, «Персоналізація» p12; ті самі секції є на `b2b-team-main` — дані `TIERS`, `PERS`, `PERKS` у `src/build-b2b-team-main.py`). Генерується так: `python3 src/build-team-pdf.py` → `team-deck.html` → PDF через headless Chrome. На сторінках є посилання на нього.
+
+**Службова сторінка для менеджерів:** `/kp` (`src/build-kp.py` → `kp.html`; у `build-site.py` список `HIDDEN` — не в хабі, не в меню й футері). Конструктор комерційної пропозиції за зразком КП клієнта: обкладинка → фото → таблиця зі знижкою → пакування й персоналізація → контакти. Ціни з каталогу (роздрібні), знижка, строки, доставка — вписує менеджер; стан у хеші адреси (кнопка «Посилання»), друк → A4 PDF.
 
 **Інші B2B:**
 - `src/build-b2b.py`: newyear, horeca, wholesale, calendar, certificates, agencies, speakers, en.

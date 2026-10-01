@@ -42,6 +42,7 @@ B2B = [
     ("b2b-speakers",  "classic",  "Спікерам і гостям подій",            "Подарунки для конференцій: твіллі спікерам, резинки гостям, набори партнерам; один принт події, графік за три тижні."),
     ("b2b-en",        "campaign", "English · corporate gifts",          "Англомовна B2B-сторінка для команд і партнерів за кордоном: бюджети в гривнях, листівка у коробці, доставка по світу за тарифами перевізника."),
 ]
+HIDDEN = ["kp"]   # service pages: wrapped and deployed, but not in the hub, footer or menus
 EXTRA_PRODUCTS = {"maison": [("twilly", "твіллі"), ("set", "набір")], "journal": [("twilly", "твіллі")], "campaign": [("mask", "маска для сну")], "lookbook": [("set", "набір")], "studio": [("mask", "маска для сну")], "noir": [("scrunchie", "резинка")], "form": [("set", "набір")], "art": [("twilly", "твіллі")], "garden": [("mask", "маска для сну")], "classic": [("scrunchie", "резинка")]}
 ASSET_DIRS = ["img", "photo", "tex", "brand"]
 
@@ -75,6 +76,8 @@ def main():
             (SITE / f"product-{slug}-{suffix}.html").write_text(wrap((ROOT / f"p-{slug}-{suffix}.html").read_text()))
     for slug, skin, title, desc in B2B:
         (SITE / f"{slug}.html").write_text(wrap(relink((ROOT / f"{slug}.html").read_text(), skin), "en" if slug.endswith("-en") else "uk"))
+    for slug in HIDDEN:
+        (SITE / f"{slug}.html").write_text(wrap((ROOT / f"{slug}.html").read_text()))
     # hub page
     cards = "\n".join(
         f'''      <div class="card">

@@ -35,10 +35,17 @@ page(f'''<div class="cover">{pic("photo/hratsiia-2.webp", "full", "50% 30%")}<di
 # 2 about
 page(f'''<div class="two"><div>{pic("img/life2.webp", "tall")}</div><div class="txt">
   <p class="eb">Про бренд</p><h2>Obiimy — обійми з шовку</h2>
-  <p>Український бренд шовкових аксесуарів. Засновниця й художниця — Світлана Сніжко: кожен принт авторський. 100% італійський шовк, виготовлено в Україні, край хустки обробляють вручну.</p>
+  <p>Український бренд шовкових аксесуарів із Києва. Засновниця й художниця — Світлана Сніжко. Хустки, твіллі, резинки, маски для сну, аксесуари для дому.</p>
   <p>Бренд заснований під час війни й бере участь у благодійних ініціативах. Колекція «Співоча душа» присвячена рідкісним птахам: частина коштів іде на гнізда для сиворакші з Червоної книги України.</p>
-  <p>Роздрібні партнери: INTERTOP і Hram в Україні, Be Brave у Канаді, UFD London. Про бренд писали LIGA.net та INSIDER UA.</p>
   <p class="foot">Шоурум: {SHOWROOM} — шовк можна побачити й відчути на дотик.</p>
+</div></div>''')
+
+# 2b advantages: prints, quality, brand — facts from review/SITE-FACTS.md (incl. the client's letter of 01.10)
+page(f'''<div class="two adv"><div>{pic("photo/dotyk-1.webp", "tall", "50% 25%")}</div><div class="txt adv-t">
+  <p class="eb">Чому ми</p><h2>Три причини обрати шовк Obiimy</h2>
+  <div class="adv-i"><b>01</b><div><h3>Унікальні принти</h3><p>Авторські малюнки, а не стокові принти: роботи засновниці Світлани Сніжко та сучасних українських художниць. Принти для команди обираєте з добірки — не однакові для всіх.</p></div></div>
+  <div class="adv-i"><b>02</b><div><h3>Якість, яку відчувають</h3><p>Лише 100% натуральний італійський шовк. Кутики кожної хустки кравчині обробляють вручну, щоб край був однаково щільним. Повністю українське виробництво. Річ, яку носитимуть, а не покладуть у шухляду.</p></div></div>
+  <div class="adv-i"><b>03</b><div><h3>Український бренд, який упізнають</h3><p>Шовк Obiimy продають INTERTOP і Hram в Україні, Be Brave у Канаді, UFD London. Про бренд писали LIGA.net та INSIDER UA.</p></div></div>
 </div></div>''')
 
 # 3 why gifts inside the company
@@ -73,6 +80,18 @@ page(f'''<p class="eb">Нагоди</p><h2>Шлях людини в компан
 <div class="grid4t">{occ}</div>
 <div class="strip" style="margin-top:8mm">{pic("img/twilly-zolote.webp")}{pic("img/scrunchie-pole.webp")}{pic("photo/kolo-3.webp", "", "50% 20%")}{pic("photo/mizh-1.webp", "", "50% 10%")}</div>''')
 
+# 4b four tiers with prices — the price range at a glance; «від» only where a dearer variant exists
+FOUR = [  # label, name, what is inside, price text, note, photo, img class
+    ("Знак уваги", "Твіллі", "Шовкова стрічка 84 × 5 — на шию, у волосся, на сумку. 38 принтів на вибір.", "1 600 грн", "довга 140 × 5 «Літній віночок» — 1 850 грн", "img/twilly-zolote.webp", ""),
+    ("Хто носить аксесуари", "Хустка та кільце", "Хустка 44 × 44 і кільце Gold до неї — на шию, на сумку чи поясом. Збираємо під замовлення.", "від 2 050 грн", "хустка 1 600 + кільце 450; двостороння хустка — 2 400 + 450", "photo/hratsiia-flat.webp", "ct"),
+    ("Для відпочинку", "Маска для сну та резинка", "Шовкова маска й резинка в одному принті, у фірмовому пакуванні Obiimy.", "3 100 грн", "", "img/sets/maskscr-litnie-pole.webp", ""),
+    ("Ключовим людям", "Хустка, твіллі й майстер-клас", "Хустка 44 × 44 і твіллі в одному принті — та запрошення на авторський майстер-клас від Світлани Сніжко.", "3 200 грн", "+ майстер-клас — формат і вартість у розрахунку; двосторонній друк — 3 600", "img/sets/tw44-natkhnennia.webp", ""),
+]
+four = "".join(f'<div class="four"><b class="n">0{i + 1}</b>{pic(ph, ic)}<p class="eb">{lb}</p><h3>{n}</h3><p>{t}</p><div class="pz"><p class="rrp">{pr}</p><p class="nt">{note}</p></div></div>' for i, (lb, n, t, pr, note, ph, ic) in enumerate(FOUR))
+page(f'''<p class="eb">Ціновий діапазон</p><h2>Чотири рівні подарунка — від 1 600 до 3 200 грн на людину</h2><p class="sub">Якщо для бюджету потрібна одна цифра — ось чотири точки: від однієї стрічки до набору з хусткою й твіллі. Ціни роздрібні, obiimy.world; каталог — с. 5, за бюджетом — с. 6.</p>
+<div class="grid4f">{four}</div>
+<p class="foot">Команді з 50 людей — від 80 000 до 160 000 грн за речі за роздрібними цінами; доставку й майстер-клас рахуємо окремо. Склад можна змінити — перерахуємо. Напишіть нагоди й кількість — контакти на с. 14.</p>''')
+
 # 5 sets
 sets = "".join(f'<div class="cat">{pic(ph)}<p class="eb">{who}</p><h3>{name}</h3><p>{text}</p><p class="rrp">{price(pr)}{" · " + note if note else ""}</p></div>' for sid, name, who, ph, a, pr, note, text in FEATURED)
 page(f'''<p class="eb">Готові набори</p><h2>Шість готових наборів із каталогу</h2><div class="grid3">{sets}</div>
@@ -95,6 +114,20 @@ for pid, name, who, rows in PLANS:
 page(f'''<p class="eb">Програма на рік</p><h2>Три приклади — від 700 грн на людину на рік</h2><p class="sub">Для кожної нагоди — шовкова річ і річ, що підходить усім. Склад можна змінити: перерахуємо суму.</p>
 <div class="tiers">{tiers}</div>
 <p class="foot" style="font-size:10pt;color:#4A4A47">Приклад: команда з 40 людей, програма «Команда», 16 отримують речі «для всіх» — 40 × 2 300 = 92 000 грн на рік (шовкова річ і річ «для всіх» у цій програмі коштують однаково) за роздрібними цінами, без доставки.</p>''')
+
+# 7b personalisation: level 1 is free (client's letter, 01.10); the rest — «у розрахунку»
+PERS = [  # name, text, terms line, photo, position
+    ("Пакування й наліпка", "Подарункове пакування для кожної речі та наліпка з логотипом вашої компанії всередині коробки.", "", "photo/box-gold.jpg", ""),
+    ("Бирка з логотипом", "Нашивна бирка з логотипом компанії на самій хустці чи твіллі.", "Строки й вартість — у розрахунку", "photo/dotyk-3.webp", ""),
+    ("Друковані матеріали", "Листівка з привітанням — з вашим логотипом і вашим текстом; інші друковані матеріали — обговоримо.", "Формат і вартість — у розрахунку", "img/sets/cert-2000.webp", ""),
+    ("Індивідуальний принт", "Принт, створений для вашої компанії: кольори бренду, символи, історія.", "Тираж, строки й вартість — у розрахунку", "photo/vyr-flat.webp", ""),
+]
+def _per_terms(i, tm):
+    return '<p class="free">Безкоштовно</p><p class="nt">у кожному корпоративному замовленні</p>' if i == 0 else f'<p class="nt">{tm}</p>'
+pers = "".join(f'<div class="per"><b>0{i + 1}</b><h3>{n}</h3><p>{t}</p>{_per_terms(i, tm)}{pic(ph, "", pos)}</div>' for i, (n, t, tm, ph, pos) in enumerate(PERS))
+page(f'''<p class="eb">Персоналізація</p><h2>Подарунок із вашим логотипом — чотири рівні</h2><p class="sub">Перший рівень — безкоштовно в кожному корпоративному замовленні. Решта — залежно від строків: що встигаємо до вашої дати й скільки це коштує, пишемо в розрахунку.</p>
+<div class="grid4p">{pers}</div>
+<p class="foot">Фото — приклади пакування, речей і сертифіката Obiimy; як виглядатиме наліпка чи бирка з вашим логотипом, покажемо в добірці. Напишіть дату — скажемо, які рівні встигаємо; контакти на с. 14.</p>''')
 
 # 8 how it works
 page(f'''<div class="two"><div class="txt"><p class="eb">Що буде після запиту</p><h2>Від запиту до відправки</h2>
@@ -180,6 +213,29 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .tier li {{ border-top: 1px solid #E5E3DD; padding: 3.5mm 0; font-size: 10pt; }}
   .tier li b {{ display: block; color: #111; }} .tier li span {{ display: block; color: #4A4A47; }}
   .steps {{ margin: 0; padding-left: 5mm; }} .steps li {{ margin-bottom: 3mm; color: #4A4A47; }} .steps b {{ color: #111; }}
+  .adv-t {{ align-self: stretch; display: flex; flex-direction: column; justify-content: center; }}
+  .adv-i {{ display: grid; grid-template-columns: 14mm 1fr; gap: 3mm; border-top: 1px solid #C9C6C0; padding: 5mm 0 4mm; }}
+  .adv-i b {{ font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 20pt; line-height: 1; }}
+  .adv-i h3 {{ font-size: 15pt; margin: 0 0 1.5mm; }} .adv-i p {{ font-size: 10pt; color: #4A4A47; margin: 0; }}
+  .grid4f {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 8mm; flex: 1; align-content: start; }}
+  .four {{ display: flex; flex-direction: column; border-top: 1px solid #C9C6C0; padding-top: 3mm; }}
+  .four .eb {{ margin: 3mm 0 0; min-height: 8mm; }}
+  .four img.ct {{ object-fit: contain; padding: 3mm; }}
+  .four .n {{ display: block; font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 16pt; line-height: 1; margin-bottom: 2mm; }}
+  .four img {{ width: 100%; aspect-ratio: 1/1; object-fit: cover; background: #fff; border: 1px solid #E5E3DD; }}
+  .four h3 {{ font-size: 16pt; margin: 1mm 0 2mm; min-height: 13mm; }}
+  .four p {{ font-size: 10.5pt; color: #4A4A47; margin: 0 0 1.5mm; }}
+  .four .pz {{ margin-top: auto; padding-top: 3mm; }}
+  .four .rrp {{ font-family: 'Cormorant Garamond', serif; font-size: 20pt; color: #111; line-height: 1.1; white-space: nowrap; }}
+  .four .nt {{ font-size: 8pt; min-height: 10mm; margin: 1mm 0 0; color: #6B6772; }}
+  .grid4p {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 8mm; flex: 1; min-height: 0; margin-bottom: 4mm; }}
+  .per {{ border-top: 1px solid #C9C6C0; padding-top: 3mm; display: flex; flex-direction: column; }}
+  .per .nt {{ font-size: 8.5pt; color: #6B6772; margin: 1mm 0 5mm; }} .per .nt.free {{ color: #111; }}
+  .per .free {{ font-family: 'Cormorant Garamond', serif; font-size: 16pt; line-height: 1; margin: 2mm 0 0; }}
+  .per .free + .nt {{ margin-top: 1mm; }}
+  .per img {{ width: 100%; height: 64mm; flex: none; margin-top: auto; padding-top: 0; background: #fff; border: 1px solid #E5E3DD; }}
+  .per b {{ font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 20pt; line-height: 1; }}
+  .per h3 {{ font-size: 14pt; margin: 1.5mm 0 2mm; }} .per p {{ font-size: 9.5pt; color: #4A4A47; margin: 0; }}
   .foot {{ font-size: 8.5pt; color: #6B6772; margin-top: auto; }}
   .contact {{ margin-top: 6mm; font-size: 12pt; line-height: 1.6; }}
 </style></head><body>{"".join(PAGES)}</body></html>'''

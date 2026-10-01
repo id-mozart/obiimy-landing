@@ -17,11 +17,12 @@ KEEP = ("Що всередині", "Шовк", "Шовк і друк", "Майс
 CSS = """
   .hero.set { padding: 0 0 clamp(28px, 4vw, 48px); }
   .mos { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1.35fr) minmax(0, 1fr); gap: 6px; height: clamp(520px, 84vh, 880px); overflow: hidden; }
-  .mos img { width: 100%; height: 100%; max-height: 100%; min-height: 0; object-fit: cover; display: block; } .mos .m1 { grid-row: span 2; }
+  .mos img { width: 100%; height: 100%; max-height: 100%; min-height: 0; object-fit: cover; display: block; } .mos .m3 { object-fit: contain; background: #fff; padding: 4%; } .mos .m1 { grid-row: span 2; }
   .set-h { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: clamp(24px, 4vw, 64px); align-items: end; margin-top: clamp(28px, 4vw, 48px); }
   .hero.set h1 { font-size: clamp(2.2rem, 4vw, 3.6rem); line-height: 1; margin-top: 12px; }
   .hero.set .lead { margin-top: 0; }
   .hero.set .cta { margin-top: 20px; }
+  @media (max-width: 640px) { .qrbox { display: none; } .others4 { gap: 12px; } .o4 { display: grid; grid-template-columns: 96px 1fr; gap: 12px; align-items: center; } .o4 img { aspect-ratio: 1 / 1; } .o4 b { margin-top: 0; font-size: 1.1rem; } }
   .qrbox { margin: 8px 0 0; display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center; max-width: 320px; } .qrbox svg { width: 96px; height: 96px; } .qrbox figcaption { font-size: .85rem; color: var(--ink2); }
   @media (max-width: 960px) { .mos { height: auto; grid-template-rows: auto auto; overflow: visible; } .mos img { max-height: none; } .mos .m1 { grid-column: span 2; grid-row: auto; aspect-ratio: 4 / 5; } .mos .m2, .mos .m3 { aspect-ratio: 1 / 1; } .set-h { grid-template-columns: 1fr; } }
   .o4 { display: block; text-decoration: none; color: inherit; } .o4 img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); } .o4 b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.25rem; margin-top: 12px; } .o4 span { color: var(--ink2); font-size: .9rem; }
@@ -62,19 +63,19 @@ def page(i, S):
       <div><p class="eyebrow"><a href="b2b-team-main#tiers">← Усі чотири рівні</a> · <span style="white-space:nowrap">{S["lb"]}</span></p>
       <h1>{S["name"]}</h1></div>
       <div><p class="lead">{S["lead"]}</p>
-      <p class="price num">{S["pr"]}<small>{S["prnote"]}</small></p>
+      <p class="price num">{S["pr"]}<small>{S["prnote"]}<br>Команді з 50 людей — {S["b50"]} за роздрібними цінами; доставку й персоналізацію рахуємо окремо.</small></p>
       <div class="cta"><a class="btn btn-gold" href="#request">Отримати розрахунок</a><a class="btn btn-line" href="#details">Що всередині</a></div></div>
     </div>
   </section>
   <section class="block alt" id="details"><div class="wrap det">
-    <div><div class="head"><p class="eyebrow">Деталі</p><h2>Що всередині</h2></div><table class="kv">{kv}</table><p class="note" style="margin-top:14px">Команді з 50 людей — {S["b50"]} за роздрібними цінами; доставку й персоналізацію рахуємо окремо. Пакування й наліпка з вашим логотипом — безкоштовно; бирка, листівка, власний принт — <a href="b2b-team-main#logo">у розрахунку</a>.</p></div>
-    <div><div class="head"><p class="eyebrow">Як носити</p><h2>Чотири способи</h2></div><div class="ways">{ways}</div><p class="who" style="margin-top:28px">{S["who"]}</p></div>
+    <div><div class="head"><p class="eyebrow">Деталі</p><h2>Що всередині</h2></div><table class="kv">{kv}</table><p class="note" style="margin-top:14px">Пакування й наліпка з вашим логотипом — безкоштовно; бирка, листівка, власний принт — <a href="b2b-team-main#logo">у розрахунку</a>. Чоловікам у команді — сертифікат 1 000–4 000 грн, маска для сну, наволочка або закладка: змішану команду рахуємо в одному розрахунку.</p></div>
+    <div><div class="head"><p class="eyebrow">{"Як носити" if i < 2 else "Що в наборі"}</p><h2>{"Чотири способи" if i < 2 else "Чотири деталі"}</h2></div><div class="ways">{ways}</div><p class="who" style="margin-top:28px">{S["who"]}</p></div>
   </div></section>
-  <section class="block"><div class="wrap"><div class="head"><p class="eyebrow">Інші рівні</p><h2>Ще три подарунки</h2></div><div class="others4">{others}</div><p style="margin-top:18px"><a href="b2b-team-main#tiers">← Порівняти всі чотири рівні</a></p></div></section>
+  <section class="block" id="others"><div class="wrap"><div class="head"><p class="eyebrow">Інші рівні</p><h2>Ще три подарунки</h2></div><div class="others4">{others}</div><p style="margin-top:18px"><a href="b2b-team-main#tiers">← Порівняти всі чотири рівні</a></p></div></section>
   {with_qr(team.request_section("f-set", "Подарунки для команди · " + S["short"], "Отримати добірку й розрахунок", "Кількість і дата — у відповідь принти на вибір і розрахунок.", "details", alt=True))}
   ''' + team.script("f-set", "")
     return dict(slug=S["slug"], skin="form", bar=team.BAR, title=f"{S['short']} — подарунок для команди від Obiimy", desc=S["lead"][:150], og=hp,
-                nav=[("Деталі", "details"), ("Логотип", "logo"), ("Запит", "request")], cta="Запит", sticky=f"{S['short']} · {S['pr']}", body=body)
+                nav=[("Деталі", "details"), ("Інші рівні", "others")], cta="Запит", sticky=f"{S['short']} · {S['pr']}", body=body)
 
 def build():
     b2b.CSS += team.CSS + CSS

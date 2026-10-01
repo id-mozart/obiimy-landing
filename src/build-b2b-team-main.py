@@ -40,6 +40,21 @@ CSS = """
   .sp img { width: 64px; height: 64px; object-fit: cover; border-radius: var(--radius); background: #fff; }
   .sp b { font-family: var(--display); font-weight: 400; font-size: 1.15rem; display: block; line-height: 1.15; }
   .sp span { display: block; color: var(--ink2); font-size: .9rem; } .sp small { color: var(--ink3); font-size: .8rem; }
+  .solo-dark { background: #0E0E0E; color: #F3F1EC; --ink: #F3F1EC; --ink2: #C9C5BE; --ink3: #8E8A84; --line: rgba(255,255,255,.16); --card: #171717; }
+  .solo-dark .eyebrow { color: #B8B3AA; }
+  .sd-top { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 72px); align-items: center; }
+  .sd-t h2 { font-size: clamp(2.6rem, 5vw, 4.4rem); line-height: .98; margin: 10px 0 18px; }
+  .sd-slogan { font-family: var(--display); font-style: italic; font-size: clamp(1.2rem, 1.8vw, 1.45rem); color: #E7D9A6; margin-bottom: 18px; }
+  .sd-t p { color: #C9C5BE; } .sd-note { color: #F3F1EC; border-top: 1px solid rgba(255,255,255,.2); padding-top: 14px; margin-top: 18px; font-size: .95rem; }
+  .sd-ph { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sd-ph img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--radius); }
+  .sd-ph img:first-child { grid-column: span 2; aspect-ratio: 16 / 10; }
+  .sd-prints { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; margin-top: clamp(32px, 4vw, 56px); padding-top: 24px; border-top: 1px solid rgba(255,255,255,.16); }
+  .sd-p img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--radius); background: #fff; }
+  .sd-p b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.1rem; margin-top: 10px; line-height: 1.1; }
+  .sd-p span { display: block; color: #8E8A84; font-size: .78rem; margin-top: 3px; }
+  @media (max-width: 960px) { .sd-top { grid-template-columns: 1fr; } .sd-prints { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (max-width: 640px) { .sd-prints { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sd-ph img:first-child { aspect-ratio: 4 / 3; } }
   .assort { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px 14px; }
   .as img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); }
   .as b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.05rem; line-height: 1.15; margin-top: 10px; }
@@ -292,15 +307,18 @@ def perks_section():
   </div></section>'''
 
 def solo_section():
-    rows = "".join(f'<div class="sp">{img(fl, f"Принт «{n}»", sizes="96px")}<div><b>{n}</b><span>{st}</span><small>{fm} · від {price(pr)}</small></div></div>' for n, st, fm, pr, ph, fl in SOLO)
+    """Black presentational block: manifesto of the collection (press release), a cinematic shot, the seven prints."""
+    prints = "".join(f'<div class="sd-p">{img(fl, f"Принт «{n}»", sizes="(max-width: 640px) 33vw, 12vw")}<b>{n}</b><span>{st}</span></div>' for n, st, fm, pr, ph, fl in SOLO)
     return f'''
-  <section class="block alt" id="solo"><div class="wrap">
-    <div class="head"><p class="eyebrow">Нова колекція</p><h2>SOLO. Шлях до себе</h2><p class="sub">Шовкова свобода: жіноча сила крізь десятиліття. Колекція, натхненна обкладинками модних журналів 40–50-х: сім авторських принтів про шлях жінки до себе, натуральний шовк, двосторонній друк. Для команди — принт під характер людини або один принт на всіх.</p></div>
-    <div class="solo">
-      <div class="solo-ph">{img("photo/solo/zolote-44-5.webp", "Хустка «Золоте світло» на пальті", sizes="(max-width: 960px) 100vw, 40vw")}{img("photo/solo/flirt-tw-4.webp", "Твіллі «Флірт» поясом на тренчі", sizes="(max-width: 960px) 50vw, 20vw")}{img("photo/solo/tysha-88-2.webp", "Хустка «Тиша всередині» в авто", sizes="(max-width: 960px) 50vw, 20vw")}</div>
-      <div class="solo-l">{rows}</div>
+  <section class="block solo-dark" id="solo"><div class="wrap">
+    <div class="sd-top">
+      <div class="sd-t"><p class="eyebrow">Нова колекція · 2026</p><h2>SOLO.<br>Шлях до себе</h2><p class="sd-slogan">Шовкова свобода: жіноча сила крізь десятиліття</p>
+        <p>У 40-х жінка підкреслювала силу бездоганною елегантністю — за м’якістю шовку ховався характер. У 50-х правила почали руйнуватися: колір, форма, власна ідентичність. Змінювалися епохи й силуети, а хустка залишалася поруч — як символ жіночності, що не суперечить силі.</p>
+        <p>SOLO — історія про шлях жінки до себе: моменти, коли ми шукаємо відповіді, відкриваємо власну силу й робимо сміливі кроки вперед. Сім авторських принтів — сім етапів цієї подорожі. Натуральний шовк, двосторонній друк, натхнення — обкладинки модних журналів 40–50-х.</p>
+        <p class="sd-note">Для команди: принт під характер людини — або один принт на всіх. Твіллі — 1 600 грн; хустки з двостороннім друком — від 2 400 грн.</p></div>
+      <figure class="sd-ph">{img("photo/solo/tysha-88-2.webp", "Хустка «Тиша всередині» на водійці кабріолета", sizes="(max-width: 960px) 100vw, 50vw")}{img("photo/solo/zolote-44-5.webp", "«Золоте світло» на пальті в арці", sizes="(max-width: 960px) 50vw, 25vw", style="object-position:50% 25%")}{img("photo/solo/avantiura-tw-1.webp", "Твіллі «Авантюра» на чорному жакеті", sizes="(max-width: 960px) 50vw, 25vw", style="object-position:50% 15%")}</figure>
     </div>
-    <p class="note" style="margin-top:16px">Ціни роздрібні, obiimy.world: твіллі — 1 600 грн, хустки з двостороннім друком — 44 × 44 від 2 400, 65 × 65 від 4 800, 88 × 88 від 6 600 грн, резинка — 700 грн.</p>
+    <div class="sd-prints">{prints}</div>
   </div></section>'''
 
 def assort_section():

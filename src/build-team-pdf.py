@@ -45,13 +45,14 @@ page(f'''<div class="two adv"><div>{pic("photo/solo/avantiura-tw-1.webp", "tall"
   <p class="eb">Чому ми</p><h2>Три причини обрати шовк Obiimy</h2>{adv}
 </div></div>''')
 
-# 4 SOLO collection
-rows = "".join(f'<div class="sp">{pic(fl)}<div><b>{n}</b><span>{st}</span><small>{fm} · від {price(pr)}</small></div></div>' for n, st, fm, pr, ph, fl in SOLO)
-page(f'''<div class="solo"><div class="solo-ph">{pic("photo/solo/iskra-65-2.webp", "", "50% 20%")}{pic("photo/solo/flirt-tw-4.webp")}{pic("photo/solo/tysha-88-2.webp")}</div>
-<div class="txt"><p class="eb">Нова колекція</p><h2>SOLO. Шлях до себе</h2>
-<p class="sub">Шовкова свобода: жіноча сила крізь десятиліття. Натхнення — обкладинки модних журналів 40–50-х. Сім авторських принтів, натуральний шовк, двосторонній друк. Для команди — принт під характер людини або один на всіх.</p>
-<div class="solo-l">{rows}</div>
-<p class="foot">Роздрібні ціни: твіллі 1 600 грн; хустки з двостороннім друком — 44 × 44 від 2 400, 65 × 65 від 4 800, 88 × 88 від 6 600 грн; резинка 700 грн.</p></div></div>''')
+# 4 SOLO collection — black presentational page: manifesto (press release), cinematic shot, seven prints
+prints = "".join(f'<div class="sd-p">{pic(fl)}<b>{n}</b><span>{st}</span></div>' for n, st, fm, pr, ph, fl in SOLO)
+page(f'''<div class="sd-top"><div class="sd-t"><p class="eb">Нова колекція · 2026</p><h2>SOLO.<br>Шлях до себе</h2><p class="sd-slogan">Шовкова свобода: жіноча сила крізь десятиліття</p>
+<p>У 40-х жінка підкреслювала силу бездоганною елегантністю — за м’якістю шовку ховався характер. У 50-х правила почали руйнуватися: колір, форма, власна ідентичність. Змінювалися епохи й силуети, а хустка залишалася поруч — як символ жіночності, що не суперечить силі.</p>
+<p>SOLO — історія про шлях жінки до себе: моменти, коли ми шукаємо відповіді, відкриваємо власну силу й робимо сміливі кроки вперед. Сім авторських принтів — сім етапів цієї подорожі. Натуральний шовк, двосторонній друк.</p>
+<p class="sd-note">Для команди: принт під характер людини — або один на всіх. Твіллі — 1 600 грн; хустки з двостороннім друком — від 2 400 грн.</p></div>
+<div class="sd-ph">{pic("photo/solo/tysha-88-2.webp")}{pic("photo/solo/zolote-44-5.webp", "", "50% 25%")}{pic("photo/solo/avantiura-tw-1.webp", "", "50% 15%")}</div></div>
+<div class="sd-prints">{prints}</div>''', "dark")
 
 # 5 four tiers — three layout variants (A editorial, B photos, C two by two); one stays after the client picks
 H5 = '<p class="eb">Ціновий діапазон</p><h2>Чотири рівні подарунка — від 1 600 до 3 200 грн на людину</h2>'
@@ -143,6 +144,17 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .four .pz {{ margin-top: auto; padding-top: 3mm; }}
   .four .rrp {{ font-family: 'Playfair Display', serif; font-size: 19pt; color: #141414; line-height: 1.1; white-space: nowrap; }}
   .four .nt {{ font-size: 8pt; min-height: 10mm; margin: 1mm 0 0; color: #6B6772; }}
+  .pg.dark {{ background: #0E0E0E; color: #F3F1EC; }} .pg.dark .eb {{ color: #B8B3AA; }}
+  .sd-top {{ display: grid; grid-template-columns: 1fr 1.25fr; gap: 12mm; flex: none; height: 118mm; align-items: center; }}
+  .sd-t h2 {{ font-size: 36pt; line-height: .98; margin: 1mm 0 4mm; }}
+  .sd-slogan {{ font-family: 'Playfair Display', serif; font-style: italic; font-size: 13pt; color: #E7D9A6; margin-bottom: 4mm; }}
+  .sd-t p {{ font-size: 9.5pt; color: #C9C5BE; }} .sd-note {{ color: #F3F1EC; border-top: 1px solid rgba(255,255,255,.2); padding-top: 3mm; margin-top: 4mm; }}
+  .sd-ph {{ display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: minmax(0, 1.4fr) minmax(0, 1fr); gap: 3mm; height: 118mm; min-height: 0; }}
+  .sd-ph img {{ width: 100%; height: 100%; min-height: 0; }} .sd-ph img:first-child {{ grid-column: span 2; }}
+  .sd-prints {{ display: grid; grid-template-columns: repeat(7, 1fr); gap: 4mm; margin-top: 5mm; padding-top: 4mm; border-top: 1px solid rgba(255,255,255,.16); }}
+  .sd-p img {{ width: 100%; height: 28mm; background: #fff; }}
+  .sd-p b {{ display: block; font-family: 'Playfair Display', serif; font-weight: 400; font-size: 10.5pt; margin-top: 2mm; line-height: 1.1; }}
+  .sd-p span {{ display: block; color: #8E8A84; font-size: 7pt; margin-top: .5mm; line-height: 1.3; }}
   .ta {{ display: grid; grid-template-columns: 1fr 1.15fr; gap: 12mm; height: 100%; }}
   .ta .txt {{ align-self: stretch; display: flex; flex-direction: column; justify-content: center; }}
   .ta-l {{ display: grid; }}

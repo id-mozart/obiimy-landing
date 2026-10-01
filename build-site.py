@@ -42,7 +42,7 @@ B2B = [
     ("b2b-speakers",  "classic",  "Спікерам і гостям подій",            "Подарунки для конференцій: твіллі спікерам, резинки гостям, набори партнерам; один принт події, графік за три тижні."),
     ("b2b-en",        "campaign", "English · corporate gifts",          "Англомовна B2B-сторінка для команд і партнерів за кордоном: бюджети в гривнях, листівка у коробці, доставка по світу за тарифами перевізника."),
 ]
-HIDDEN = ["kp"]   # service pages: wrapped and deployed, but not in the hub, footer or menus
+HIDDEN = ["kp", "b2b-set-twilly", "b2b-set-scarf-ring", "b2b-set-mask", "b2b-set-scarf-twilly"]   # service pages: wrapped and deployed, but not in the hub, footer or menus
 EXTRA_PRODUCTS = {"maison": [("twilly", "твіллі"), ("set", "набір")], "journal": [("twilly", "твіллі")], "campaign": [("mask", "маска для сну")], "lookbook": [("set", "набір")], "studio": [("mask", "маска для сну")], "noir": [("scrunchie", "резинка")], "form": [("set", "набір")], "art": [("twilly", "твіллі")], "garden": [("mask", "маска для сну")], "classic": [("scrunchie", "резинка")]}
 ASSET_DIRS = ["img", "photo", "tex", "brand"]
 

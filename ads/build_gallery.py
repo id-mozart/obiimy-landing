@@ -56,8 +56,8 @@ def build(site: pathlib.Path):
                 with Image.open(prev) as t: t.load()
                 with Image.open(f) as im0: label, cls = fmt(im0)
             else:
-                shutil.copy(f, dst)
                 im = Image.open(f).convert("RGB"); label, cls = fmt(im)
+                im.save(dst, "JPEG", quality=85, optimize=True, progressive=True)   # the deploy upload must stay well under 200 MB
                 t = im.copy(); t.thumbnail((540, 960)); t.save(prev, quality=80)
             v = hashlib.md5(f.read_bytes()).hexdigest()[:8]
             cards.append((f"{series}/{f.name}", f'''<figure class="c {cls}" data-f="{cls}" data-id="{series}/{f.name}"><a href="creatives/{series}/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/{series}/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="{t.width}" height="{t.height}"></a>

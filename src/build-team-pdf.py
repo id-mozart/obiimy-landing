@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT))
 from imgs import typo
 _spec = importlib.util.spec_from_file_location("main", ROOT / "build-b2b-team-main.py")
 main = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(main)
-PERKS, SOLO, TIERS, ASSORT, PERS, price = main.PERKS, main.SOLO, main.TIERS, main.ASSORT, main.PERS, main.price
+PERKS, SOLO, TIERS, ASSORT, PERS, SETS4, price = main.PERKS, main.SOLO, main.TIERS, main.ASSORT, main.PERS, main.SETS4, main.price
 team = main.team
 PHONE, MAIL, SHOWROOM = team.PHONE, team.MAIL, team.SHOWROOM
 
@@ -53,11 +53,28 @@ page(f'''<div class="solo"><div class="solo-ph">{pic("photo/solo/iskra-65-2.webp
 <div class="solo-l">{rows}</div>
 <p class="foot">Роздрібні ціни: твіллі 1 600 грн; хустки з двостороннім друком — 44 × 44 від 2 400, 65 × 65 від 4 800, 88 × 88 від 6 600 грн; резинка 700 грн.</p></div></div>''')
 
-# 5 four tiers
-four = "".join(f'<div class="four"><b class="n">0{i + 1}</b>{pic(ph, "ct" if i == 1 else "")}<p class="eb">{lb}</p><h3>{n}</h3><p>{t}</p><div class="pz"><p class="rrp">{pr}</p><p class="nt">{note}</p></div></div>' for i, (lb, n, t, pr, note, ph) in enumerate(TIERS))
-page(f'''<p class="eb">Ціновий діапазон</p><h2>Чотири рівні подарунка — від 1 600 до 3 200 грн на людину</h2><p class="sub">Від однієї стрічки до набору з хусткою й твіллі. Ціни роздрібні, obiimy.world; принт і формат обираєте в добірці.</p>
-<div class="grid4f">{four}</div>
-<p class="foot">Команді з 50 людей — від 80 000 до 160 000 грн за речі за роздрібними цінами; доставку й майстер-клас рахуємо окремо. Склад можна змінити — перерахуємо.</p>''')
+# 5 four tiers — three layout variants (A editorial, B photos, C two by two); one stays after the client picks
+H5 = '<p class="eb">Ціновий діапазон</p><h2>Чотири рівні подарунка — від 1 600 до 3 200 грн на людину</h2>'
+F5 = '<p class="foot">Команді з 50 людей — від 80 000 до 160 000 грн за речі за роздрібними цінами; доставку й майстер-клас рахуємо окремо. Кожен рівень — на окремій сторінці далі.</p>'
+rows = "".join(f'<div class="tr">{pic(ph)}<div><p class="eb">{lb}</p><b>{n}</b><span>{t}</span></div><em>{pr}</em></div>' for (lb, n, t, pr, note, ph), S in zip(TIERS, SETS4))
+page(f'''<div class="ta"><div>{pic("photo/solo/zolote-44-3.webp", "tall", "50% 20%")}</div><div class="txt">{H5}<p class="sub">Варіант A. Від однієї стрічки до набору з хусткою, твіллі й майстер-класом. Ціни роздрібні, obiimy.world.</p><div class="ta-l">{rows}</div>{F5}</div></div>''')
+cards = "".join(f'<div class="tb">{pic(S["hero"][0], "", S["hero"][2])}{pic(ph, "tb-p")}<div class="tb-t"><p class="eb">0{i + 1} · {lb}</p><b>{n}</b><em>{pr}</em></div></div>' for i, ((lb, n, t, pr, note, ph), S) in enumerate(zip(TIERS, SETS4)))
+page(f'''{H5}<p class="sub">Варіант B. Від однієї стрічки до набору з хусткою, твіллі й майстер-класом. Ціни роздрібні, obiimy.world.</p><div class="tbs">{cards}</div>{F5}''')
+cards = "".join(f'<div class="tc"><div class="tc-ph">{pic(S["gal"][0][0], "", S["gal"][0][2])}{pic(ph, "tc-p")}</div><div class="tc-t"><p class="eb">0{i + 1} · {lb}</p><h3>{n}</h3><p>{t}</p><em>{pr}</em><small>{note}</small></div></div>' for i, ((lb, n, t, pr, note, ph), S) in enumerate(zip(TIERS, SETS4)))
+page(f'''{H5}<p class="sub">Варіант C. Від однієї стрічки до набору з хусткою, твіллі й майстер-класом. Ціни роздрібні, obiimy.world.</p><div class="tcs">{cards}</div>{F5}''')
+
+# 5b one page per set: model photos + product, details, ways to wear
+for i, S in enumerate(SETS4):
+    hp, ha, hpos = S["hero"]
+    gal = "".join(pic(p_, "", pos) for p_, a_, pos in S["gal"][:3])
+    kv = "".join(f'<div><span>{k}</span><span>{v}</span></div>' for k, v in S["inside"])
+    ways = "".join(f'<div><b>{h}</b>{t}</div>' for h, t in S["ways"])
+    page(f'''<div class="set"><div class="set-ph">{pic(hp, "big", hpos)}<div class="set-g">{gal}</div></div>
+<div class="set-t"><p class="eb">{S["lb"]}</p><h2>{S["name"]}</h2><p class="sub">{S["lead"]}</p>
+<p class="rrp">{S["pr"]}<small>{S["prnote"]}</small></p>
+<div class="kv">{kv}</div>
+<div class="ways">{ways}</div>
+<p class="who">{S["who"]}</p></div></div>''')
 
 # 6 the whole range
 tiles = "".join(f'<figure>{pic(ph)}<figcaption><b>{n}</b><span>від {price(pr)}</span></figcaption></figure>' for n, pr, ph in ASSORT)
@@ -126,6 +143,35 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .four .pz {{ margin-top: auto; padding-top: 3mm; }}
   .four .rrp {{ font-family: 'Playfair Display', serif; font-size: 19pt; color: #141414; line-height: 1.1; white-space: nowrap; }}
   .four .nt {{ font-size: 8pt; min-height: 10mm; margin: 1mm 0 0; color: #6B6772; }}
+  .ta {{ display: grid; grid-template-columns: 1fr 1.15fr; gap: 12mm; height: 100%; }}
+  .ta .txt {{ align-self: stretch; display: flex; flex-direction: column; justify-content: center; }}
+  .ta-l {{ display: grid; }}
+  .tr {{ display: grid; grid-template-columns: 20mm 1fr auto; gap: 5mm; align-items: center; padding: 3mm 0; border-top: 1px solid #C9C6C0; }}
+  .tr:last-child {{ border-bottom: 1px solid #C9C6C0; }}
+  .tr img {{ width: 20mm; height: 20mm; background: #fff; border: 1px solid #E5E3DD; }}
+  .tr .eb {{ margin-bottom: .5mm; }} .tr b {{ font-family: 'Playfair Display', serif; font-weight: 400; font-size: 14pt; display: block; line-height: 1.1; }}
+  .tr span {{ display: block; font-size: 9pt; color: #4A4A47; }} .tr em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 16pt; white-space: nowrap; }}
+  .tbs {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; flex: 1; min-height: 0; }}
+  .tb {{ position: relative; overflow: hidden; color: #fff; }} .tb > img:first-child {{ width: 100%; height: 100%; }}
+  .tb::after {{ content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 45%, rgba(0,0,0,.72) 100%); }}
+  .tb-t {{ position: absolute; left: 5mm; right: 5mm; bottom: 5mm; z-index: 1; }} .tb-t .eb {{ color: rgba(255,255,255,.75); margin-bottom: 1mm; }}
+  .tb-t b {{ font-family: 'Playfair Display', serif; font-weight: 400; font-size: 14pt; display: block; line-height: 1.1; }} .tb-t em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 13pt; display: block; margin-top: 1.5mm; }}
+  .tb-p {{ position: absolute; top: 4mm; right: 4mm; width: 18mm; height: 18mm; border: 2px solid #fff; z-index: 1; }}
+  .tcs {{ display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; flex: 1; min-height: 0; }}
+  .tc {{ display: grid; grid-template-columns: 1fr 1.2fr; background: #fff; border: 1px solid #E5E3DD; overflow: hidden; }}
+  .tc-ph {{ position: relative; }} .tc-ph > img:first-child {{ width: 100%; height: 100%; }}
+  .tc-p {{ position: absolute; left: 3mm; bottom: 3mm; width: 18mm; height: 18mm; border: 2px solid #fff; background: #fff; }}
+  .tc-t {{ padding: 5mm 6mm; display: flex; flex-direction: column; }} .tc-t h3 {{ font-size: 14pt; margin: 1mm 0 2mm; }} .tc-t p {{ font-size: 9pt; color: #4A4A47; margin: 0; }}
+  .tc-t em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 16pt; margin-top: auto; padding-top: 3mm; }} .tc-t small {{ font-size: 7.5pt; color: #6B6772; }}
+  .set {{ display: grid; grid-template-columns: 1.1fr 1fr; gap: 10mm; height: 100%; }}
+  .set-ph {{ display: grid; grid-template-rows: 1fr auto; gap: 4mm; height: 180mm; min-height: 0; }}
+  .set-ph .big {{ width: 100%; height: 100%; min-height: 0; }}
+  .set-g {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }} .set-g img {{ width: 100%; aspect-ratio: 1 / 1; background: #fff; }}
+  .set-t {{ display: flex; flex-direction: column; }} .set-t h2 {{ font-size: 21pt; margin-bottom: 3mm; }} .set-t .sub {{ font-size: 9.5pt; margin-bottom: 3mm; }}
+  .set-t .rrp {{ font-family: 'Playfair Display', serif; font-size: 20pt; line-height: 1.1; margin-bottom: 3mm; }} .set-t .rrp small {{ display: block; font-family: 'Tenor Sans', sans-serif; font-size: 7.5pt; color: #6B6772; margin-top: 1mm; }}
+  .set-t .kv div {{ display: grid; grid-template-columns: 30mm 1fr; gap: 4mm; font-size: 8.5pt; padding: 1.6mm 0; border-top: 1px solid #DAD7D0; }} .set-t .kv span:first-child {{ color: #6B6772; }}
+  .set-t .ways {{ display: grid; grid-template-columns: 1fr 1fr; gap: 2mm 6mm; margin-top: 4mm; font-size: 8.5pt; color: #4A4A47; }} .set-t .ways b {{ display: block; font-family: 'Playfair Display', serif; font-weight: 400; font-size: 11pt; color: #141414; }}
+  .set-t .who {{ margin-top: auto; font-family: 'Playfair Display', serif; font-size: 13pt; line-height: 1.25; padding-top: 4mm; }}
   .grid6 {{ display: grid; grid-template-columns: repeat(6, 1fr); gap: 5mm 5mm; flex: 1; align-content: start; }}
   .grid6 figure {{ margin: 0; }}
   .grid6 img {{ width: 100%; aspect-ratio: 1 / 1; background: #fff; border: 1px solid #E5E3DD; }}

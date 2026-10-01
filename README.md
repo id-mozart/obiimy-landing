@@ -62,6 +62,8 @@ Maison (головна), Garden (3D-арт), Journal, Campaign, Lookbook, Studio
 
 **PDF для HR:** `obiimy-podarunky-dlia-komandy.pdf`, 8 сторінок (01.10, редизайн під SOLO-креативи, шрифт Playfair Display): обкладинка, бренд, три причини, колекція SOLO, чотири рівні, увесь асортимент, персоналізація, контакти. Дані спільні з `b2b-team-main`: `PERKS`, `SOLO`, `TIERS`, `ASSORT`, `PERS` у `src/build-b2b-team-main.py`; фото SOLO — `photo/solo/` (копії з `ads/solo/src`). Генерується так: `python3 src/build-team-pdf.py` → `team-deck.html` → PDF через headless Chrome. На сторінках є посилання на нього.
 
+**Сторінки чотирьох рівнів (01.10):** `b2b-set-twilly`, `b2b-set-scarf-ring`, `b2b-set-mask`, `b2b-set-scarf-twilly` — `src/build-b2b-sets4.py`, дані `SETS4` у `src/build-b2b-team-main.py` (фото на моделі з SOLO-зйомки + товар, деталі, чотири способи носити). У хабі їх немає (`HIDDEN` у `build-site.py`), посилання — з секції рівнів на `b2b-team-main`. У деці — по сторінці на кожен рівень. Секція рівнів на лендингу і сторінка в деці зараз у трьох варіантах (A — редакційний, B — чотири фото на моделі, C — два на два); після вибору клієнта зайві прибрати (`tiers_a/b/c` у генераторі лендингу, блок «# 5 four tiers» у `src/build-team-pdf.py`).
+
 **Службова сторінка для менеджерів:** `/kp` (`src/build-kp.py` → `kp.html`; у `build-site.py` список `HIDDEN` — не в хабі, не в меню й футері). Конструктор комерційної пропозиції за зразком КП клієнта: обкладинка → фото → таблиця зі знижкою → пакування й персоналізація → контакти. Ціни з каталогу (роздрібні), знижка, строки, доставка — вписує менеджер; стан у хеші адреси (кнопка «Посилання»), друк → A4 PDF.
 
 **Інші B2B:**
@@ -95,7 +97,7 @@ git push -q origin main && railway up -y -c --service obiimy-landing
 
 - Повне збирання (`build-site.py`) триває кілька хвилин через мініатюри. Для швидкої перевірки однієї сторінки досить обгорнути її функціями `wrap` і `relink` з `build-site.py`.
 - Перевірити деплой: `railway deployment list --service obiimy-landing`.
-- `.railwayignore` виключає `photo/ img/ tex/ brand/ src/ shopify/ *.pdf` у корені: усе потрібне вже скопійоване в `site/`. Завантаження має лишатися меншим за ~200 МБ; зараз `site/` важить ~190 МБ.
+- `.railwayignore` виключає `photo/ img/ tex/ brand/ src/ shopify/ *.pdf` у корені та **оригінали JPG креативів `site/creatives/*/*.jpg`** (01.10: завантаження 170–200 МБ обривалося по таймауту; на проді галерея показує лише WebP-прев’ю, посилання «JPG ↓» на проді не працюють — оригінали лишаються в репозиторії). Архів тепер ~45 МБ.
 - Локальна перевірка: `python3 -m http.server 8765` з кореня → `http://localhost:8765/site/<slug>.html`. Puppeteer-core лежить у `review/pp/node_modules`, Chrome — у `/Applications`.
 
 ## Аудит

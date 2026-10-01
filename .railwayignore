@@ -11,3 +11,4 @@ tmp-*.html
 /src/
 /shopify/
 /*.pdf
+/site/creatives/*/*.jpg

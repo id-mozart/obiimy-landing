@@ -41,6 +41,14 @@ CSS = """
   @media (max-width: 640px) { .hero.cover .cover-img { height: 92vh; object-position: 50% 12%; } .hero.cover .lead { font-size: .95rem; } }
   .qrbox { margin: 8px 0 0; display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center; max-width: 320px; }
   .qrbox svg { width: 96px; height: 96px; } .qrbox figcaption { font-size: .85rem; color: var(--ink2); }
+  .nums { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; border-top: 1px solid var(--ink); padding-top: 16px; margin-top: 22px; }
+  .nums b { display: block; font-family: var(--display); font-weight: 400; font-size: clamp(1.8rem, 3vw, 2.6rem); line-height: 1; } .nums span { font-size: .82rem; color: var(--ink3); }
+  .quote-band { position: relative; background: #0E0E0E; } .quote-band img { width: 100%; height: clamp(520px, 80vh, 820px); object-fit: cover; display: block; }
+  .quote-band::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,.75) 0%, rgba(0,0,0,.2) 55%, rgba(0,0,0,0) 100%); pointer-events: none; }
+  .qb-t { position: absolute; left: 16px; right: 16px; bottom: clamp(36px, 6vw, 72px); z-index: 1; text-align: center; color: #fff; }
+  .bigq { font-family: var(--display); font-style: italic; font-size: clamp(1.9rem, 4.4vw, 3.8rem); line-height: 1.08; color: #F3EBD0; margin: 0 0 14px; }
+  .qb-t p { color: rgba(255,255,255,.9); max-width: 36em; margin: 0 auto 10px; } .qb-t .eyebrow { color: rgba(255,255,255,.7); }
+  @media (max-width: 640px) { .nums { grid-template-columns: 1fr 1fr; } .quote-band img { height: 90vh; } }
   .perks { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 72px); align-items: center; }
   .perks-ph { margin: 0; } .perks-ph img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 20%; border-radius: var(--radius); }
   .perk { display: grid; grid-template-columns: 44px 1fr; gap: 0 14px; border-top: 1px solid var(--ink); padding: 18px 0 16px; }
@@ -64,6 +72,26 @@ CSS = """
   .sd-ph { margin: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
   .sd-ph img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--radius); }
   .sd-ph img:first-child { grid-column: span 2; aspect-ratio: 16 / 10; }
+  .sd-hd { display: grid; grid-template-columns: 1fr minmax(0, 420px); gap: 24px; align-items: end; margin-top: clamp(32px, 4vw, 56px); padding-top: 24px; border-top: 1px solid rgba(255,255,255,.16); margin-bottom: 22px; }
+  .sd-hd.top { margin-top: 0; padding-top: 0; border-top: 0; margin-bottom: clamp(20px, 3vw, 32px); }
+  .sd-hd h3 { font-size: clamp(1.5rem, 2.4vw, 2rem); margin: 0; } .sd-hd p { color: #B8B3AA; font-size: .88rem; margin: 0; }
+  .pcs { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 10px; }
+  .pc { position: relative; } .pc .m { width: 100%; aspect-ratio: 3 / 4.6; object-fit: cover; border-radius: var(--radius); display: block; }
+  .pc::after { content: ""; position: absolute; left: 0; right: 0; top: 45%; height: calc(55% - 2.2em); background: linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.8)); border-radius: 0 0 var(--radius) var(--radius); pointer-events: none; }
+  .pc .fl { position: absolute; top: 10px; right: 10px; width: 46px; height: 46px; object-fit: cover; border: 1px solid rgba(255,255,255,.85); border-radius: 4px; z-index: 2; }
+  .pc-t { position: absolute; left: 12px; right: 10px; bottom: calc(2.2em + 14px); z-index: 2; color: #fff; }
+  .pc-t b { display: block; font-family: var(--display); font-style: italic; font-weight: 400; font-size: 1.35rem; line-height: 1.05; color: #F3EBD0; }
+  .pc-t span { display: block; font-size: .74rem; line-height: 1.35; margin-top: 4px; color: rgba(255,255,255,.88); }
+  .pc small { display: block; font-size: .74rem; color: #8E8A84; margin-top: 8px; line-height: 1.35; }
+  .ways { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .way { position: relative; margin: 0; overflow: hidden; border-radius: var(--radius); } .way img { width: 100%; aspect-ratio: 3 / 4; object-fit: cover; display: block; }
+  .way::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 50%, rgba(0,0,0,.8) 100%); pointer-events: none; }
+  .way figcaption { position: absolute; left: 22px; right: 18px; bottom: 22px; z-index: 2; color: #fff; }
+  .way b { display: block; font-family: var(--display); font-style: italic; font-weight: 400; font-size: clamp(1.6rem, 2.4vw, 2.2rem); line-height: 1; color: #F3EBD0; }
+  .way span { display: block; font-family: var(--display); font-size: 1rem; margin-top: 8px; color: rgba(255,255,255,.9); }
+  .ways-dark { padding-top: 0; }
+  @media (max-width: 960px) { .pcs { grid-template-columns: repeat(4, minmax(0, 1fr)); } .ways { grid-template-columns: 1fr 1fr; } .sd-hd { grid-template-columns: 1fr; } }
+  @media (max-width: 640px) { .pcs { grid-template-columns: 1fr 1fr; } .ways { grid-template-columns: 1fr; } .way img { aspect-ratio: 4 / 5; } }
   .sd-prints { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 14px; margin-top: clamp(32px, 4vw, 56px); padding-top: 24px; border-top: 1px solid rgba(255,255,255,.16); }
   .sd-p img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--radius); background: #fff; }
   .sd-p b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.1rem; margin-top: 10px; line-height: 1.1; }
@@ -71,7 +99,7 @@ CSS = """
   @media (max-width: 960px) { .sd-top { grid-template-columns: 1fr; } .sd-prints { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
   @media (max-width: 640px) { .sd-prints { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sd-ph img:first-child { aspect-ratio: 4 / 3; } }
   .assort { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px 14px; }
-  .as img { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-radius: var(--radius); background: #fff; border: 1px solid var(--line); }
+  .as img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; border-radius: var(--radius); background: #fff; }
   .as b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.05rem; line-height: 1.15; margin-top: 10px; }
   .as span { color: var(--ink2); font-size: .9rem; }
   @media (max-width: 960px) { .perks, .solo { grid-template-columns: 1fr; } .assort { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -317,6 +345,12 @@ SETS4 = [  # one page each, in the deck and on the site. Facts: SITE-FACTS (size
          ways=[("Пара", "Хустка на шиї, твіллі на сумці — один принт у двох деталях."), ("Окремо", "Два подарунки з однієї коробки — на будні й на вихід."), ("Майстер-клас", "Формат, зміст, дату й вартість узгодимо в розрахунку."), ("Коробка", "Святкова коробка Obiimy.")],
          who="Коли подарунок має сказати більше, ніж річ."),
 ]
+WAYS = [  # «Як носити» — one print across all shots, like the brand banner (t05-avantiura-ways): hustka «Авантюра» 88 × 88 and twilly
+    ("У волоссі", "Бант, який помічають.", "photo/solo/avantiura-tw-3.webp", "60% 20%"),
+    ("На шиї", "Класика, що не виходить з моди.", "photo/solo/avantiura-88-4.webp", "50% 15%"),
+    ("Поясом", "Акцент на талії.", "photo/solo/avantiura-88-2.webp", "50% 40%"),
+    ("На плечах", "Замість жакета — теплого вечора.", "photo/solo/avantiura-88-3.webp", "50% 20%"),
+]
 SZ = "(max-width: 640px) 100vw, (max-width: 960px) 50vw, 25vw"
 SZ6 = "(max-width: 640px) 50vw, (max-width: 960px) 33vw, 16vw"
 
@@ -325,23 +359,42 @@ def perks_section():
     return f'''
   <section class="block" id="why"><div class="wrap perks">
     <figure class="perks-ph">{img("photo/solo/avantiura-tw-1.webp", "Чорний жакет і червона шовкова твіллі «Авантюра»", sizes="(max-width: 960px) 100vw, 45vw")}</figure>
-    <div><div class="head"><p class="eyebrow">Чому Obiimy</p><h2>Три причини обрати шовк Obiimy</h2></div><div class="perks-l">{cards}</div></div>
+    <div><div class="head"><p class="eyebrow">Чому Obiimy</p><h2>Три причини обрати шовк Obiimy</h2></div><div class="perks-l">{cards}</div>
+      <div class="nums"><div><b>100%</b><span>натуральний італійський шовк</span></div><div><b>5</b><span>авторських колекцій</span></div><div><b>38</b><span>принтів твіллі</span></div><div><b>3</b><span>країни продажу</span></div></div></div>
   </div></section>'''
 
+CARD_PH = ["photo/solo/iskra-65-2.webp", "photo/solo/flirt-tw-4.webp", "photo/solo/puls-44-2.webp", "photo/solo/zolote-44-2.webp", "photo/solo/avantiura-88-5.webp", "photo/solo/tysha-88-3.webp", "photo/solo/krok-44-2.webp"]
+CARD_POS = ["50% 20%", "50% 35%", "50% 15%", "50% 20%", "50% 15%", "50% 20%", "50% 20%"]
+
 def solo_section():
-    """Black presentational block: manifesto of the collection (press release), a cinematic shot, the seven prints."""
-    prints = "".join(f'<div class="sd-p">{img(fl, f"Принт «{n}»", sizes="(max-width: 640px) 33vw, 12vw")}<b>{n}</b><span>{st}</span></div>' for n, st, fm, pr, ph, fl in SOLO)
+    """Black presentational block: manifesto of the collection (press release), cinematic shots, the seven prints as tall cards."""
+    cards = "".join(f'<div class="pc">{img(CARD_PH[i], f"Принт «{n}» на моделі", sizes="(max-width: 640px) 50vw, (max-width: 960px) 25vw, 14vw", style=pos(CARD_POS[i]), cls="m")}{img(fl, "", sizes="64px", cls="fl")}<div class="pc-t"><b>{n}</b><span>{st}</span></div><small>{fm} · від {price(pr)}</small></div>' for i, (n, st, fm, pr, ph, fl) in enumerate(SOLO))
     return f'''
   <section class="block solo-dark" id="solo"><div class="wrap">
     <div class="sd-top">
       <div class="sd-t"><p class="eyebrow">Нова колекція · 2026</p><h2>SOLO.<br>Шлях до себе</h2><p class="sd-slogan">Шовкова свобода: жіноча сила крізь десятиліття</p>
-        <p class="sd-note">Для команди: кожному — свій принт, під стан, який хочете побажати, або один принт на всіх. Твіллі — 1 600 грн; хустки 44 × 44 з двостороннім друком — від 2 400 грн.</p>
-        <p><a class="btn btn-line sd-cta" href="#request">Добірка SOLO для команди →</a></p>
         <p>Натхнення — обкладинки модних журналів 40–50-х: змінювалися епохи й силуети, а хустка залишалася поруч. Сім авторських принтів — сім етапів шляху жінки до себе. Натуральний шовк, двосторонній друк.</p>
-        </div>
-      <figure class="sd-ph">{img("photo/solo/tysha-88-2.webp", "Хустка «Тиша всередині» на водійці кабріолета", sizes="(max-width: 960px) 100vw, 50vw")}{img("photo/solo/zolote-44-5.webp", "«Золоте світло» на пальті в арці", sizes="(max-width: 960px) 50vw, 25vw", style="object-position:50% 25%")}{img("photo/solo/avantiura-tw-1.webp", "Твіллі «Авантюра» на чорному жакеті", sizes="(max-width: 960px) 50vw, 25vw", style="object-position:50% 15%")}</figure>
+        <p class="sd-note">Для команди: кожному — свій принт, під стан, який хочете побажати, або один принт на всіх.</p>
+        <p><a class="btn btn-line sd-cta" href="#request">Добірка SOLO для команди →</a></p></div>
+      <figure class="sd-ph">{img("photo/solo/tysha-88-2.webp", "Хустка «Тиша всередині» на водійці кабріолета", sizes="(max-width: 960px) 100vw, 50vw")}{img("photo/solo/puls-44-4.webp", "«Пульс» на шиї поверх світлого жакета", sizes="(max-width: 960px) 50vw, 25vw", style="object-position:50% 20%")}{img("photo/solo/iskra-65-3.webp", "«Іскра» на сумці в кафе", sizes="(max-width: 960px) 50vw, 25vw")}</figure>
     </div>
-    <div class="sd-prints">{prints}</div>
+    <div class="sd-hd"><h3>Сім принтів — сім станів</h3><p>Твіллі — 1 600 грн · хустки з двостороннім друком: 44 × 44 від 2 400, 65 × 65 від 4 800, 88 × 88 від 6 600 грн</p></div>
+    <div class="pcs">{cards}</div>
+  </div></section>'''
+
+def quote_section():
+    return f'''
+  <section class="quote-band" aria-label="SOLO">{img("photo/solo/zolote-44-4.webp", "Хустка «Золоте світло» поясом на чорному", sizes="100vw", style="object-position:50% 35%")}
+    <div class="qb-t"><p class="bigq">«Я є. Я продовжую жити.<br>Я обираю себе»</p><p>Для жінки краса — це спосіб зберегти себе. Улюблена сукня, шовкова хустка, червона помада — маленькі акти свободи.</p><p class="eyebrow">SOLO. Шлях до себе</p></div>
+  </section>'''
+
+def ways_section():
+    """«Як носити» — like the brand banner: one print, four ways, italic labels on the photo."""
+    ways = "".join(f'<figure class="way">{img(ph, f"{n} — хустка «Авантюра»", sizes="(max-width: 640px) 100vw, 25vw", style=pos(ps))}<figcaption><b>{n}</b><span>{t}</span></figcaption></figure>' for n, t, ph, ps in WAYS)
+    return f'''
+  <section class="block solo-dark ways-dark" id="ways"><div class="wrap">
+    <div class="sd-hd top"><div><p class="eyebrow">Як носити</p><h2>Одна хустка — чотири образи</h2></div><p>Хустка «Авантюра» 88 × 88, двосторонній друк — 6 600 грн; твіллі — 1 600 грн. Так само носять будь-який принт із каталогу.</p></div>
+    <div class="ways">{ways}</div>
   </div></section>'''
 
 def assort_section():
@@ -421,7 +474,7 @@ def whyhow():
         <div><h3>Добірка й розрахунок</h3><p>У відповідь — принти на вибір і розрахунок окремими рядками: речі, привітання, доставка. Чи встигаємо до дати — пишемо одразу.</p></div>
         <div><h3>Відправка</h3><p>Ви надсилаєте список отримувачів і текст привітання. Відправляємо Новою поштою — кожному окремо чи в офіс, по Україні; за кордон — як домовимось.</p></div>
       </div>
-      <p class="note" style="margin-top:18px"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для HR (PDF, 4,1 МБ) ↓</a> · <a href="b2b-team-details">Усе про шовк, пакування й доставку →</a></p>
+      <p class="note" style="margin-top:18px"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для HR (PDF, 5,7 МБ) ↓</a> · <a href="b2b-team-details">Усе про шовк, пакування й доставку →</a></p>
     </div>
   </div></section>
   <section class="block alt" style="padding-top:0" aria-hidden="true"><div class="wrap"><figure class="wide">{img("photo/kolo-3.webp", "Шовкова хустка на плечах поверх бежевого пальта", sizes="100vw")}</figure></div></section>'''
@@ -439,6 +492,8 @@ def main():
   </section>
   {perks_section()}
   {solo_section()}
+  {quote_section()}
+  {ways_section()}
   {tiers_c()}
   {assort_section()}
   {personal_section()}
@@ -447,7 +502,7 @@ def main():
   ''' + team.script("f-main", js)
     return dict(slug="b2b-team-main", skin="form", bar=BAR, title="Шовкові подарунки для команди — чотири рівні від 1 600 грн — Obiimy",
                 desc="Подарунки співробітникам від Obiimy: авторські принти, натуральний італійський шовк, чотири рівні подарунка від 1 600 грн, нова колекція SOLO, пакування з логотипом компанії безкоштовно.",
-                og="photo/solo/zolote-44-5.webp", nav=[("Чому ми", "why"), ("SOLO", "solo"), ("Рівні", "tiers"), ("Асортимент", "range"), ("Логотип", "logo")],
+                og="photo/solo/zolote-44-5.webp", nav=[("SOLO", "solo"), ("Як носити", "ways"), ("Рівні", "tiers"), ("Асортимент", "range"), ("Логотип", "logo")],
                 cta="Запит", sticky="Подарунки для команди · від 1 600 грн", body=body)
 
 def build():

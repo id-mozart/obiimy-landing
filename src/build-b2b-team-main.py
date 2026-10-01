@@ -10,6 +10,9 @@ def load(name):
     spec = importlib.util.spec_from_file_location(name, ROOT / f"{name}.py")
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
 shop = load("build-b2b-team-shop")
+qr_svg = load("qr").qr_svg
+QR_TG = '<figure class="qrbox">' + qr_svg("https://t.me/OBIIMY_sales", 96) + '<figcaption>Скануйте — чат із менеджером у Telegram</figcaption></figure>'
+def with_qr(html): return html.replace("Написати в Telegram</a>", "Написати в Telegram</a>" + QR_TG)
 team = shop.team
 b2b, img, price, typo, J, hero = team.b2b, team.img, team.price, team.typo, team.J, team.hero
 CATALOG, CAT, STAGES, PLANS, CARDS = team.CATALOG, team.CAT, team.STAGES, team.PLANS, team.CARDS
@@ -26,6 +29,18 @@ def preset_range(rows):
     return price(s) if s == u else f"{min(s, u):,}".replace(",", " ") + "–" + price(max(s, u))
 
 CSS = """
+  .hero.cover { padding: 0; position: relative; }
+  .hero.cover .cover-img { width: 100%; height: clamp(540px, 82vh, 860px); object-fit: cover; object-position: 50% 28%; display: block; }
+  .hero.cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,.2) 50%, rgba(0,0,0,0) 75%), linear-gradient(0deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 45%); pointer-events: none; }
+  .hero.cover .wrap { display: block; }
+  .hero.cover .cover-t { position: absolute; left: 0; right: 0; bottom: clamp(32px, 6vw, 72px); z-index: 1; color: #fff; }
+  .hero.cover .eyebrow { color: rgba(255,255,255,.78); }
+  .hero.cover h1 { font-size: clamp(2.4rem, 5.2vw, 4.6rem); line-height: .98; margin-top: 14px; max-width: 12em; }
+  .hero.cover .lead { color: rgba(255,255,255,.9); max-width: 30em; margin-top: 16px; }
+  .hero.cover .cta { margin-top: 24px; } .hero.cover .btn-line { border-color: rgba(255,255,255,.6); color: #fff; }
+  @media (max-width: 640px) { .hero.cover .cover-img { height: 92vh; object-position: 50% 12%; } .hero.cover .lead { font-size: .95rem; } }
+  .qrbox { margin: 8px 0 0; display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center; max-width: 320px; }
+  .qrbox svg { width: 96px; height: 96px; } .qrbox figcaption { font-size: .85rem; color: var(--ink2); }
   .perks { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(24px, 5vw, 72px); align-items: center; }
   .perks-ph { margin: 0; } .perks-ph img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 20%; border-radius: var(--radius); }
   .perk { display: grid; grid-template-columns: 44px 1fr; gap: 0 14px; border-top: 1px solid var(--ink); padding: 18px 0 16px; }
@@ -238,15 +253,15 @@ TIERS = [  # label, name, what is inside, price text, note, photo
     ("Ключовим людям", "Хустка, твіллі й майстер-клас", "Хустка 44 × 44 і твіллі в одному принті — та запрошення на авторський майстер-клас від Світлани Сніжко.", "3 200 грн + МК", "майстер-клас (МК) — формат, дата й вартість у розрахунку; двосторонній друк — 3 600", "img/sets/tw44-natkhnennia.webp"),
 ]
 PERS = [  # name, text, terms, photo
-    ("Пакування й наліпка", "Подарункове пакування для кожної речі та наліпка з логотипом вашої компанії всередині коробки.", "Безкоштовно · у кожному корпоративному замовленні", "photo/box-gold.jpg"),
+    ("Пакування й наліпка", "Подарункове пакування кожної речі та наліпка з вашим логотипом усередині коробки.", "Безкоштовно · у кожному корпоративному замовленні", "photo/box-gold.jpg"),
     ("Бирка з логотипом", "Нашивна бирка з логотипом компанії на самій хустці чи твіллі.", "Строки й вартість — у розрахунку", "photo/dotyk-3.webp"),
-    ("Друковані матеріали", "Листівка з привітанням — з вашим логотипом і вашим текстом; інші друковані матеріали — обговоримо.", "Формат і вартість — у розрахунку", "img/sets/cert-2000.webp"),
+    ("Друковані матеріали", "Листівка з привітанням — з вашим логотипом і текстом.", "Формат і вартість — у розрахунку", "img/sets/cert-2000.webp"),
     ("Індивідуальний принт", "Принт, створений для вашої компанії: кольори бренду, символи, історія.", "Тираж, строки й вартість — у розрахунку", "photo/vyr-flat.webp"),
 ]
 PERKS = [
-    ("Унікальні принти", "Авторські малюнки, а не стокові принти: роботи засновниці Світлани Сніжко та сучасних українських художниць. Принти для команди обираєте з добірки — не однакові для всіх."),
-    ("Якість, яку відчувають", "Лише 100% натуральний італійський шовк. Кутики кожної хустки кравчині обробляють вручну, щоб край був однаково щільним. Повністю українське виробництво."),
-    ("Український бренд, який упізнають", "Шовк Obiimy продають INTERTOP і Hram в Україні, Be Brave у Канаді, UFD London. Про бренд писали LIGA.net та INSIDER UA."),
+    ("Унікальні принти", "Авторські малюнки засновниці Світлани Сніжко та українських художниць. Кожному в команді — свій принт із добірки."),
+    ("Якість, яку відчувають", "100% натуральний італійський шовк, кутики кожної хустки — вручну. Повністю українське виробництво."),
+    ("Бренд, який упізнають", "INTERTOP і Hram в Україні, Be Brave у Канаді, UFD London. Писали LIGA.net та INSIDER UA."),
     ("Є речі для всіх", "Маска для сну, закладка, наволочка, сертифікат — і тим, хто аксесуари не носить."),
 ]
 SOLO = [  # print, state (press release), formats seen on the shoot, price from (SITE-FACTS: 2D 44 — 2 400, 65 — 4 800, 88 — 6 600; twilly 1 600), lifestyle photo, flat photo
@@ -322,8 +337,7 @@ def solo_section():
       <div class="sd-t"><p class="eyebrow">Нова колекція · 2026</p><h2>SOLO.<br>Шлях до себе</h2><p class="sd-slogan">Шовкова свобода: жіноча сила крізь десятиліття</p>
         <p class="sd-note">Для команди: кожному — свій принт, під стан, який хочете побажати, або один принт на всіх. Твіллі — 1 600 грн; хустки 44 × 44 з двостороннім друком — від 2 400 грн.</p>
         <p><a class="btn btn-line sd-cta" href="#request">Добірка SOLO для команди →</a></p>
-        <p>У 40-х жінка підкреслювала силу бездоганною елегантністю — за м’якістю шовку ховався характер. У 50-х правила почали руйнуватися: колір, форма, власна ідентичність. Змінювалися епохи й силуети, а хустка залишалася поруч — як символ жіночності, що не суперечить силі.</p>
-        <p>SOLO — історія про шлях жінки до себе: моменти, коли ми шукаємо відповіді, відкриваємо власну силу й робимо сміливі кроки вперед. Сім авторських принтів — сім етапів цієї подорожі. Натуральний шовк, двосторонній друк, натхнення — обкладинки модних журналів 40–50-х.</p>
+        <p>Натхнення — обкладинки модних журналів 40–50-х: змінювалися епохи й силуети, а хустка залишалася поруч. Сім авторських принтів — сім етапів шляху жінки до себе. Натуральний шовк, двосторонній друк.</p>
         </div>
       <figure class="sd-ph">{img("photo/solo/tysha-88-2.webp", "Хустка «Тиша всередині» на водійці кабріолета", sizes="(max-width: 960px) 100vw, 50vw")}{img("photo/solo/zolote-44-5.webp", "«Золоте світло» на пальті в арці", sizes="(max-width: 960px) 50vw, 25vw", style="object-position:50% 25%")}{img("photo/solo/avantiura-tw-1.webp", "Твіллі «Авантюра» на чорному жакеті", sizes="(max-width: 960px) 50vw, 25vw", style="object-position:50% 15%")}</figure>
     </div>
@@ -334,7 +348,7 @@ def assort_section():
     tiles = "".join(f'<div class="as">{img(ph, n, sizes=SZ6)}<b>{n}</b><span class="num">від {price(pr)}</span></div>' for n, pr, ph in ASSORT)
     return f'''
   <section class="block" id="range"><div class="wrap">
-    <div class="head"><p class="eyebrow">Асортимент</p><h2>Усе, з чого можна зібрати подарунок</h2><p class="sub">Роздрібні ціни obiimy.world. Будь-яку річ можна зробити рівнем подарунка або додати в коробку — формуємо в добірці.</p></div>
+    <div class="head"><p class="eyebrow">Асортимент</p><h2>Усе, з чого можна зібрати подарунок</h2><p class="sub">Роздрібні ціни obiimy.world. Будь-яку річ можна зробити подарунком або додати в коробку.</p></div>
     <div class="assort">{tiles}</div>
     <p class="note" style="margin-top:18px"><b>Чоловікам у команді</b> — сертифікат Obiimy на 1 000–4 000 грн (електронний або фізичний, на будь-який товар), маска для сну, наволочка або закладка — зберемо в один розрахунок.</p>
   </div></section>'''
@@ -374,7 +388,7 @@ def tiers_c():
     cards = "".join(f'<a class="tc" href="{S["slug"]}"><div class="tc-ph">{img(S["gal"][0][0], n, sizes="(max-width: 640px) 100vw, 25vw", style=pos(S["gal"][0][2]))}{img(ph, "", sizes="90px", cls="tc-p")}</div><div class="tc-t"><p class="eyebrow">0{i + 1} · {lb}</p><h3>{n}</h3><p>{t}</p><em class="num">{pr}</em><small>{note}</small><span class="more">Що всередині й як носити →</span></div></a>' for i, ((lb, n, t, pr, note, ph), S) in enumerate(zip(TIERS, SETS4)))
     return f'''
   <section class="block alt" id="tiers"><div class="wrap">
-    <div class="head"><p class="eyebrow">Ціновий діапазон</p><h2>Чотири рівні подарунка — від 1 600 до 3 200 грн за речі</h2><p class="sub">Від однієї стрічки до набору з хусткою, твіллі й майстер-класом. Ціни роздрібні, obiimy.world; майстер-клас і доставку рахуємо окремо.</p></div>
+    <div class="head"><p class="eyebrow">Ціновий діапазон</p><h2>Чотири рівні подарунка — від 1 600 до 3 200 грн за речі</h2><p class="sub">Ціни роздрібні, obiimy.world; майстер-клас і доставку рахуємо окремо.</p></div>
     <div class="tcs">{cards}</div>
     <p class="note" style="margin-top:18px">Команді з 50 людей — 80 000–160 000 грн за речі, зі 100 — 160 000–320 000 грн за роздрібними цінами. Напишіть дату — скажемо, що встигаємо.</p>
     <p style="margin-top:22px"><a class="btn btn-gold" href="#request">Отримати розрахунок за рівнями</a></p>
@@ -384,9 +398,9 @@ def personal_section():
     cards = "".join(f'<div class="per4{" free" if i == 0 else ""}"><b class="n">0{i + 1}</b><h3>{n}</h3><p>{t}</p><p class="tm">{tm}</p>{img(ph, n, sizes=SZ)}</div>' for i, (n, t, tm, ph) in enumerate(PERS))
     return f'''
   <section class="block" id="logo"><div class="wrap">
-    <div class="head"><p class="eyebrow">Персоналізація</p><h2>Подарунок із вашим логотипом — чотири рівні</h2><p class="sub">Перший рівень — безкоштовно в кожному корпоративному замовленні. Решта — залежно від строків: що встигаємо до вашої дати й скільки це коштує, пишемо в розрахунку.</p></div>
+    <div class="head"><p class="eyebrow">Персоналізація</p><h2>Подарунок із вашим логотипом — чотири рівні</h2><p class="sub">Перший рівень — безкоштовно. Решта — залежно від строків, у розрахунку.</p></div>
     <div class="pers4">{cards}</div>
-    <p class="note" style="margin-top:16px">Фото — приклади пакування, речей і сертифіката Obiimy; як виглядатиме наліпка чи бирка з вашим логотипом, покажемо в добірці. Напишіть дату — скажемо, які рівні встигаємо.</p>
+    <p class="note" style="margin-top:16px">Фото — приклади; як виглядатиме наліпка чи бирка з вашим логотипом, покажемо в добірці.</p>
   </div></section>'''
 
 def greetings():
@@ -414,17 +428,22 @@ def whyhow():
 
 def main():
     js = ""
-    body = hero("Для HR і офіс-менеджерів<span class=\"m-hide\"> · подарунки співробітникам</span>", "Шовкові подарунки для команди",
-        "Авторські принти, натуральний італійський шовк, виготовлено в Україні. Чотири рівні подарунка від 1 600 грн, пакування й наліпка з вашим логотипом — безкоштовно. Напишіть нагоду, кількість і дату — надішлемо добірку й розрахунок.",
-        "Отримати розрахунок", "Чотири рівні", "#tiers", SAMPLE,
-        "photo/solo/zolote-44-5.webp", "Хустка «Золоте світло» на пальті, колекція SOLO", "Нова колекція SOLO — хустка «Золоте світло»", cls=" h1-sm ph-first main", pos="50% 22%").replace('</h1>', '</h1><p class="lead-m">Італійський шовк, чотири рівні від 1 600 грн, пакування з логотипом — безкоштовно.</p>', 1) + f'''
+    body = f'''
+  <section class="hero cover" id="top">{img("photo/solo/zolote-44-5.webp", "Хустка «Золоте світло» на пальті, колекція SOLO", sizes="100vw", lazy=False, eager_priority=True, cls="cover-img")}
+    <div class="cover-t"><div class="wrap">
+      <p class="eyebrow">Для HR і офіс-менеджерів · подарунки співробітникам</p>
+      <h1>Шовкові подарунки<br>для команди</h1>
+      <p class="lead">Авторські принти на італійському шовку. Чотири рівні від 1 600 грн, пакування з вашим логотипом — безкоштовно.</p>
+      <div class="cta"><a class="btn btn-gold" href="#request">Отримати розрахунок</a><a class="btn btn-line" href="#tiers">Чотири рівні</a></div>
+    </div></div>
+  </section>
   {perks_section()}
   {solo_section()}
   {tiers_c()}
   {assort_section()}
   {personal_section()}
   <section class="block alt" style="padding-top:0"><div class="wrap"><div class="cond"><div><b>Відправка</b><span>Новою поштою в день замовлення до 16:00 — кожному окремо або в офіс однією посилкою; безкоштовно від 5 000 грн</span></div><div><b>Строки</b><span>Напишіть дату — скажемо, що встигаємо до неї, і пишемо це в розрахунку одразу</span></div><div><b>Документи</b><span>Оплата й документи для юридичної особи, мінімальна кількість — уточнимо в розрахунку</span></div></div></div></section>
-  {team.request_section("f-main", "Подарунки для команди", "Отримати добірку й розрахунок", "Напишіть нагоду, кількість і дату, до якої потрібні подарунки. У відповідь — добірка принтів і розрахунок окремими рядками: речі, персоналізація, доставка.", "tiers")}
+  {with_qr(team.request_section("f-main", "Подарунки для команди", "Отримати добірку й розрахунок", "Нагода, кількість і дата — у відповідь добірка принтів і розрахунок.", "tiers"))}
   ''' + team.script("f-main", js)
     return dict(slug="b2b-team-main", skin="form", bar=BAR, title="Шовкові подарунки для команди — чотири рівні від 1 600 грн — Obiimy",
                 desc="Подарунки співробітникам від Obiimy: авторські принти, натуральний італійський шовк, чотири рівні подарунка від 1 600 грн, нова колекція SOLO, пакування з логотипом компанії безкоштовно.",

@@ -8,10 +8,23 @@ sys.path.insert(0, str(ROOT))
 from imgs import img, typo
 _spec = importlib.util.spec_from_file_location("main", ROOT / "build-b2b-team-main.py")
 main = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(main)
-b2b, team, SETS4, PERS = main.b2b, main.team, main.SETS4, main.PERS
+b2b, team, SETS4, PERS, with_qr = main.b2b, main.team, main.SETS4, main.PERS, main.with_qr
+def opos(o): return f"object-position:{o['hero'][2]}" if o["hero"][2] else ""
+PROD = [3, 2, 1, 2]
+M1POS = ["50% 12%", "50% 8%", "50% 30%", "50% 18%"]
+KEEP = ("Що всередині", "Шовк", "Шовк і друк", "Майстер-клас", "Пакування", "Кому")
 
 CSS = """
-  .hero.set { padding-block: clamp(20px, 4vw, 52px) clamp(20px, 4vw, 44px); }
+  .hero.set { padding: 0 0 clamp(28px, 4vw, 48px); }
+  .mos { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); grid-template-rows: minmax(0, 1.35fr) minmax(0, 1fr); gap: 6px; height: clamp(520px, 84vh, 880px); overflow: hidden; }
+  .mos img { width: 100%; height: 100%; max-height: 100%; min-height: 0; object-fit: cover; display: block; } .mos .m1 { grid-row: span 2; }
+  .set-h { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); gap: clamp(24px, 4vw, 64px); align-items: end; margin-top: clamp(28px, 4vw, 48px); }
+  .hero.set h1 { font-size: clamp(2.2rem, 4vw, 3.6rem); line-height: 1; margin-top: 12px; }
+  .hero.set .lead { margin-top: 0; }
+  .hero.set .cta { margin-top: 20px; }
+  .qrbox { margin: 8px 0 0; display: grid; grid-template-columns: 96px 1fr; gap: 14px; align-items: center; max-width: 320px; } .qrbox svg { width: 96px; height: 96px; } .qrbox figcaption { font-size: .85rem; color: var(--ink2); }
+  @media (max-width: 960px) { .mos { height: auto; grid-template-rows: auto auto; overflow: visible; } .mos img { max-height: none; } .mos .m1 { grid-column: span 2; grid-row: auto; aspect-ratio: 4 / 5; } .mos .m2, .mos .m3 { aspect-ratio: 1 / 1; } .set-h { grid-template-columns: 1fr; } }
+  .o4 { display: block; text-decoration: none; color: inherit; } .o4 img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); } .o4 b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.25rem; margin-top: 12px; } .o4 span { color: var(--ink2); font-size: .9rem; }
   .hero.set h1 { font-size: clamp(2rem, 3.6vw, 3.2rem); }
   .hero.set .price { font-family: var(--display); font-size: clamp(1.6rem, 2.6vw, 2.2rem); margin-top: 18px; line-height: 1.1; }
   .hero.set .price small { display: block; font-family: var(--body); font-size: .82rem; color: var(--ink3); margin-top: 6px; white-space: normal; max-width: 34em; }
@@ -29,44 +42,36 @@ CSS = """
   .pers4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
   .per4 { border-top: 1px solid var(--ink); padding-top: 12px; } .per4 .n { font-family: var(--display); font-size: 1.3rem; display: block; margin-bottom: 8px; }
   .per4 h3 { font-size: 1.15rem; margin: 0 0 6px; } .per4 p { color: var(--ink2); font-size: .9rem; margin: 0; } .per4 .tm { color: var(--ink3); font-size: .8rem; margin-top: 6px; } .per4.free .tm { color: var(--ink); font-weight: 600; }
-  .others4 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
-  .o4 { display: grid; grid-template-columns: 72px 1fr; gap: 12px; align-items: center; text-decoration: none; color: inherit; background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 10px 12px; }
-  .o4 img { width: 72px; height: 72px; object-fit: cover; border-radius: var(--radius); } .o4 b { font-family: var(--display); font-weight: 400; font-size: 1.05rem; display: block; line-height: 1.15; } .o4 span { color: var(--ink2); font-size: .85rem; }
+  .others4 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
   @media (max-width: 960px) { .gal, .pers4 { grid-template-columns: 1fr 1fr; } .det { grid-template-columns: 1fr; } .others4 { grid-template-columns: 1fr; } }
   @media (max-width: 640px) { .ways { grid-template-columns: 1fr; } .pers4 { grid-template-columns: 1fr; } .gal { gap: 10px; } }
 """
 
 def page(i, S):
     hp, ha, hpos = S["hero"]
-    fig = '<figure>' + img(hp, ha, sizes="(max-width: 960px) 100vw, 50vw", lazy=False, eager_priority=True, style=f"object-position:{hpos}" if hpos else "") + f'<div class="tag">{ha}</div></figure>'
-    gal = "".join(f'<figure>{img(p, a, sizes="(max-width: 640px) 50vw, 25vw", style=f"object-position:{pos}" if pos else "")}<figcaption>{a}</figcaption></figure>' for p, a, pos in S["gal"])
-    kv = "".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in S["inside"])
+    g2 = S["gal"][0]; g3 = S["gal"][PROD[i]]
+    def ph(src, alt, pos, cls, sizes):
+        return img(src, alt, sizes=sizes, lazy=False, cls=cls, style=f"object-position:{pos}" if pos else "")
+    mos = ph(hp, ha, M1POS[i], "m1", "(max-width: 960px) 100vw, 55vw") + ph(g2[0], g2[1], g2[2], "m2", "(max-width: 960px) 50vw, 25vw") + ph(g3[0], g3[1], g3[2], "m3", "(max-width: 960px) 50vw, 25vw")
+    kv = "".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in S["inside"] if k in KEEP)
     ways = "".join(f'<div class="way"><h3>{h}</h3><p>{t}</p></div>' for h, t in S["ways"])
-    pers = "".join(f'<div class="per4{" free" if j == 0 else ""}"><b class="n">0{j + 1}</b><h3>{n}</h3><p>{t}</p><p class="tm">{tm}</p></div>' for j, (n, t, tm, ph) in enumerate(PERS))
-    others = "".join(f'<a class="o4" href="{o["slug"]}">{img(o["gal"][0][0], o["short"], sizes="72px")}<div><b>{o["short"]}</b><span>{o["pr"]} · детальніше →</span></div></a>' for o in SETS4 if o is not S)
+    others = "".join(f'<a class="o4" href="{o["slug"]}">{img(o["hero"][0], o["short"], sizes="(max-width: 960px) 100vw, 33vw", style=opos(o))}<div><b>{o["short"]}</b><span>{o["pr"]} · детальніше →</span></div></a>' for o in SETS4 if o is not S)
     body = f'''
-  <section class="hero set ph-first"><div class="wrap">
-    <div>
-      <p class="eyebrow"><a href="b2b-team-main#tiers">← Усі чотири рівні</a> · <span style="white-space:nowrap">{S["lb"]}</span></p>
-      <h1>{S["name"]}</h1>
-      <p class="lead">{S["lead"]}</p>
+  <section class="hero set"><div class="mos">{mos}</div>
+    <div class="wrap set-h">
+      <div><p class="eyebrow"><a href="b2b-team-main#tiers">← Усі чотири рівні</a> · <span style="white-space:nowrap">{S["lb"]}</span></p>
+      <h1>{S["name"]}</h1></div>
+      <div><p class="lead">{S["lead"]}</p>
       <p class="price num">{S["pr"]}<small>{S["prnote"]}</small></p>
-      <p class="note">Команді з 50 людей — {S["b50"]} за роздрібними цінами; доставку й персоналізацію рахуємо окремо.</p>
-      <div class="cta"><a class="btn btn-gold" href="#request">Отримати розрахунок</a><a class="btn btn-line" href="#details">Що всередині</a></div>
+      <div class="cta"><a class="btn btn-gold" href="#request">Отримати розрахунок</a><a class="btn btn-line" href="#details">Що всередині</a></div></div>
     </div>
-    {fig}
-  </div></section>
-  <section class="block" style="padding-top:0"><div class="wrap"><div class="gal">{gal}</div></div></section>
+  </section>
   <section class="block alt" id="details"><div class="wrap det">
-    <div><div class="head"><p class="eyebrow">Деталі</p><h2>Що всередині</h2></div><table class="kv">{kv}</table></div>
+    <div><div class="head"><p class="eyebrow">Деталі</p><h2>Що всередині</h2></div><table class="kv">{kv}</table><p class="note" style="margin-top:14px">Команді з 50 людей — {S["b50"]} за роздрібними цінами; доставку й персоналізацію рахуємо окремо. Пакування й наліпка з вашим логотипом — безкоштовно; бирка, листівка, власний принт — <a href="b2b-team-main#logo">у розрахунку</a>.</p></div>
     <div><div class="head"><p class="eyebrow">Як носити</p><h2>Чотири способи</h2></div><div class="ways">{ways}</div><p class="who" style="margin-top:28px">{S["who"]}</p></div>
   </div></section>
-  <section class="block" id="logo"><div class="wrap">
-    <div class="head"><p class="eyebrow">Персоналізація</p><h2>З вашим логотипом</h2><p class="sub">Перший рівень — безкоштовно в кожному корпоративному замовленні. Решта — залежно від строків, у розрахунку.</p></div>
-    <div class="pers4">{pers}</div>
-  </div></section>
-  <section class="block alt"><div class="wrap"><div class="head"><p class="eyebrow">Інші рівні</p><h2>Ще три подарунки</h2></div><div class="others4">{others}</div><p style="margin-top:18px"><a href="b2b-team-main#tiers">← Порівняти всі чотири рівні</a></p></div></section>
-  {team.request_section("f-set", f"Подарунки для команди · {S['short']}", "Отримати добірку й розрахунок", "Напишіть кількість і дату — у відповідь надішлемо принти на вибір і розрахунок окремими рядками: речі, персоналізація, доставка.", "details", alt=False)}
+  <section class="block"><div class="wrap"><div class="head"><p class="eyebrow">Інші рівні</p><h2>Ще три подарунки</h2></div><div class="others4">{others}</div><p style="margin-top:18px"><a href="b2b-team-main#tiers">← Порівняти всі чотири рівні</a></p></div></section>
+  {with_qr(team.request_section("f-set", "Подарунки для команди · " + S["short"], "Отримати добірку й розрахунок", "Кількість і дата — у відповідь принти на вибір і розрахунок.", "details", alt=True))}
   ''' + team.script("f-set", "")
     return dict(slug=S["slug"], skin="form", bar=team.BAR, title=f"{S['short']} — подарунок для команди від Obiimy", desc=S["lead"][:150], og=hp,
                 nav=[("Деталі", "details"), ("Логотип", "logo"), ("Запит", "request")], cta="Запит", sticky=f"{S['short']} · {S['pr']}", body=body)

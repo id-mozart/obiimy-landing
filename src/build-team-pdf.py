@@ -9,7 +9,7 @@ sys.path.insert(0, str(ROOT))
 from imgs import typo
 _spec = importlib.util.spec_from_file_location("main", ROOT / "build-b2b-team-main.py")
 main = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(main)
-PERKS, SOLO, TIERS, ASSORT, PERS, SETS4, price = main.PERKS, main.SOLO, main.TIERS, main.ASSORT, main.PERS, main.SETS4, main.price
+PERKS, SOLO, TIERS, ASSORT, PERS, SETS4, price, qr_svg = main.PERKS, main.SOLO, main.TIERS, main.ASSORT, main.PERS, main.SETS4, main.price, main.qr_svg
 team = main.team
 PHONE, MAIL, SHOWROOM = team.PHONE, team.MAIL, team.SHOWROOM
 
@@ -61,18 +61,20 @@ F5 = '<p class="foot">Команді з 50 людей — 80 000–160 000 гр�
 rows = "".join(f'<div class="tr">{pic(ph)}<div><p class="eb">{lb}</p><b>{n}</b><span>{t}</span><small>{note}</small></div><em>{pr}</em></div>' for (lb, n, t, pr, note, ph), S in zip(TIERS, SETS4))
 page(f'''<div class="ta"><div>{pic("photo/solo/zolote-44-3.webp", "tall", "50% 20%")}</div><div class="txt">{H5}<p class="sub">Від однієї стрічки до набору з майстер-класом. Ціни роздрібні, obiimy.world; кожному — свій принт із добірки.</p><div class="ta-l">{rows}</div>{F5}</div></div>''', "tiers")
 
-# 5b one page per set: model photos + product, details, ways to wear
+# 5b one page per set: editorial mosaic bleeding to the page edge (tall model shot, second model shot, product), text column
+PROD = [3, 2, 1, 2]   # which gallery item is the product shot per set
+M1POS = ["50% 12%", "50% 8%", "50% 30%", "50% 18%"]   # the tall tile crops higher than the web hero
 for i, S in enumerate(SETS4):
     hp, ha, hpos = S["hero"]
-    gal = "".join(pic(p_, "", pos) for p_, a_, pos in S["gal"][:3])
+    g2 = S["gal"][0]; g3 = S["gal"][PROD[i]]
     kv = "".join(f'<div><span>{k}</span><span>{v}</span></div>' for k, v in S["inside"])
     ways = "".join(f'<div><b>{h}</b>{t}</div>' for h, t in S["ways"])
-    page(f'''<div class="set{" rev" if i % 2 else ""}"><div class="set-ph">{pic(hp, "big", hpos)}<div class="set-g">{gal}</div></div>
+    page(f'''<div class="set{" rev" if i % 2 else ""}"><div class="mos">{pic(hp, "m1", M1POS[i])}{pic(g2[0], "m2", g2[2])}{pic(g3[0], "m3", g3[2])}</div>
 <div class="set-t"><p class="eb">{S["lb"]}</p><h2>{S["name"]}</h2><p class="sub">{S["lead"]}</p>
 <p class="rrp">{S["pr"]}<small>{S["prnote"]}</small></p>
 <div class="kv">{kv}</div>
 <div class="ways">{ways}</div>
-<p class="who">{S["who"]}</p></div></div>''')
+<p class="who">{S["who"]}</p></div></div>''', "setp")
 
 # 6 the whole range
 tiles = "".join(f'<figure>{pic(ph)}<figcaption><b>{n}</b><span>від {price(pr)}</span></figcaption></figure>' for n, pr, ph in ASSORT)
@@ -90,7 +92,7 @@ page(f'''<p class="eb">Персоналізація</p><h2>Подарунок і
 page(f'''<div class="two"><div class="txt"><p class="eb">Запит</p><h2>Напишіть — надішлемо добірку й розрахунок</h2>
   <ol class="steps"><li><b>Нагода, кількість, дата.</b> Цього досить для першого листа.</li><li><b>Добірка й розрахунок</b> окремими рядками: речі, персоналізація, доставка. Чи встигаємо до вашої дати — пишемо одразу.</li><li><b>Відправка</b> Новою поштою в день замовлення до 16:00 — кожному окремо чи в офіс; безкоштовно від 5 000 грн.</li></ol>
   <p class="cond">Оплата й документи для юридичної особи, мінімальна кількість — уточнимо в розрахунку. Сторінка для команд: <a href="https://obiimy-landing-production.up.railway.app/b2b-team-main" style="color:inherit">obiimy-landing-production.up.railway.app/b2b-team-main</a></p>
-  <p class="contact"><b>{PHONE}</b><br>Telegram @OBIIMY_sales<br>{MAIL}<br>obiimy.world</p>
+  <div class="qrrow">{qr_svg("https://obiimy-landing-production.up.railway.app/b2b-team-main", 110)}<p class="contact"><b>{PHONE}</b><br>Telegram @OBIIMY_sales<br>{MAIL}<br>obiimy.world<br><small>Скануйте — сторінка для команд із формою запиту</small></p></div>
   <p class="foot">Шоурум: {SHOWROOM}<br>пн–пт 10:00–18:00, сб 11:00–18:00</p>
 </div><div>{pic("photo/solo/zolote-tw-2.webp", "tall", "50% 40%")}</div></div>''')
 
@@ -174,15 +176,18 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .tc-p {{ position: absolute; left: 3mm; bottom: 3mm; width: 18mm; height: 18mm; border: 2px solid #fff; background: #fff; }}
   .tc-t {{ padding: 5mm 6mm; display: flex; flex-direction: column; }} .tc-t h3 {{ font-size: 14pt; margin: 1mm 0 2mm; }} .tc-t p {{ font-size: 9pt; color: #4A4A47; margin: 0; }}
   .tc-t em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 16pt; margin-top: auto; padding-top: 3mm; }} .tc-t small {{ font-size: 7.5pt; color: #6B6772; }}
-  .set {{ display: grid; grid-template-columns: 1.1fr 1fr; gap: 10mm; height: 100%; }} .set.rev {{ grid-template-columns: 1fr 1.1fr; }} .set.rev .set-ph {{ order: 2; }}
-  .set-ph {{ display: grid; grid-template-rows: 1fr auto; gap: 4mm; height: 180mm; min-height: 0; }}
-  .set-ph .big {{ width: 100%; height: 100%; min-height: 0; }}
-  .set-g {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 4mm; }} .set-g img {{ width: 100%; aspect-ratio: 1 / 1; background: #fff; }}
-  .set-t {{ display: flex; flex-direction: column; }} .set-t h2 {{ font-size: 21pt; margin-bottom: 3mm; }} .set-t .sub {{ font-size: 9.5pt; margin-bottom: 3mm; }}
-  .set-t .rrp {{ font-family: 'Playfair Display', serif; font-size: 20pt; line-height: 1.1; margin-bottom: 3mm; }} .set-t .rrp small {{ display: block; font-family: 'Tenor Sans', sans-serif; font-size: 7.5pt; color: #6B6772; margin-top: 1mm; }}
-  .set-t .kv div {{ display: grid; grid-template-columns: 30mm 1fr; gap: 4mm; font-size: 8.5pt; padding: 1.6mm 0; border-top: 1px solid #DAD7D0; }} .set-t .kv span:first-child {{ color: #6B6772; }}
-  .set-t .ways {{ display: grid; grid-template-columns: 1fr 1fr; gap: 2mm 6mm; margin-top: 4mm; font-size: 8.5pt; color: #4A4A47; }} .set-t .ways b {{ display: block; font-family: 'Playfair Display', serif; font-weight: 400; font-size: 11pt; color: #141414; }}
-  .set-t .who {{ margin-top: auto; font-family: 'Playfair Display', serif; font-size: 13pt; line-height: 1.25; padding-top: 4mm; }}
+  .pg.setp {{ padding: 0; }}
+  .set {{ display: grid; grid-template-columns: 168mm 1fr; height: 210mm; }}
+  .set.rev {{ grid-template-columns: 1fr 168mm; }} .set.rev .mos {{ order: 2; }}
+  .mos {{ display: grid; grid-template-columns: 1.1fr 1fr; grid-template-rows: 1.35fr 1fr; gap: 3mm; height: 210mm; min-height: 0; }}
+  .mos img {{ width: 100%; height: 100%; min-height: 0; }} .mos .m1 {{ grid-row: span 2; }}
+  .set-t {{ display: flex; flex-direction: column; padding: 14mm 16mm 12mm 14mm; min-width: 0; }}
+  .set.rev .set-t {{ padding: 14mm 14mm 12mm 18mm; }}
+  .set-t h2 {{ font-size: 19pt; margin-bottom: 2.5mm; }} .set-t .sub {{ font-size: 8.8pt; margin-bottom: 2.5mm; line-height: 1.45; }}
+  .set-t .rrp {{ font-family: 'Playfair Display', serif; font-size: 19pt; line-height: 1.1; margin-bottom: 2.5mm; }} .set-t .rrp small {{ display: block; font-family: 'Tenor Sans', sans-serif; font-size: 7pt; color: #6B6772; margin-top: 1mm; line-height: 1.35; }}
+  .set-t .kv div {{ display: grid; grid-template-columns: 24mm 1fr; gap: 3mm; font-size: 7.8pt; padding: 1.4mm 0; border-top: 1px solid #DAD7D0; line-height: 1.4; }} .set-t .kv span:first-child {{ color: #6B6772; }}
+  .set-t .ways {{ display: grid; grid-template-columns: 1fr 1fr; gap: 1.5mm 4mm; margin-top: 3mm; font-size: 7.8pt; color: #4A4A47; line-height: 1.4; }} .set-t .ways b {{ display: block; font-family: 'Playfair Display', serif; font-weight: 400; font-size: 10pt; color: #141414; }}
+  .set-t .who {{ margin-top: auto; font-family: 'Playfair Display', serif; font-size: 12pt; line-height: 1.25; padding-top: 3mm; }}
   .grid6 {{ display: grid; grid-template-columns: repeat(6, 1fr); gap: 5mm 5mm; flex: 1; align-content: start; }}
   .grid6 figure {{ margin: 0; }}
   .grid6 img {{ width: 100%; aspect-ratio: 1 / 1; background: #fff; border: 1px solid #E5E3DD; }}
@@ -197,6 +202,7 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .per img {{ width: 100%; height: 64mm; margin-top: auto; background: #fff; border: 1px solid #E5E3DD; }}
   .steps {{ margin: 0 0 4mm; padding-left: 5mm; }} .steps li {{ margin-bottom: 2.5mm; color: #4A4A47; }} .steps b {{ color: #141414; font-weight: 400; font-family: 'Playfair Display', serif; font-size: 11.5pt; }}
   .cond {{ font-size: 8.5pt; color: #6B6772; border-top: 1px solid #DAD7D0; padding-top: 3mm; }}
+  .qrrow {{ display: grid; grid-template-columns: 30mm 1fr; gap: 6mm; align-items: center; margin-top: 4mm; }} .qrrow svg {{ width: 30mm; height: 30mm; }} .qrrow .contact {{ margin-top: 0; }} .qrrow small {{ font-size: 8pt; color: #6B6772; }}
   .contact {{ margin-top: 4mm; font-size: 13pt; line-height: 1.6; }} .contact b {{ font-family: 'Playfair Display', serif; font-weight: 400; font-size: 20pt; }}
   .foot {{ font-size: 8.5pt; color: #6B6772; margin-top: auto; }}
   .pf {{ margin-top: auto; padding-top: 3mm; border-top: 1px solid #DAD7D0; font-size: 8pt; color: #6B6772; display: flex; justify-content: space-between; }}

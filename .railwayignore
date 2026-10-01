@@ -12,3 +12,5 @@ tmp-*.html
 /shopify/
 /*.pdf
 /site/creatives/*/*.jpg
+/site/photo/paris-*
+/site/photo/riviera-*

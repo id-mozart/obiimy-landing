@@ -59,6 +59,19 @@ def wrap(src: str, lang: str = "uk") -> str:
     head = re.sub(r'<meta charset="utf-8">\s*', "", head, count=1)
     return f'<!DOCTYPE html>\n<html lang="{lang}">\n<head>\n<meta charset="utf-8">\n{head}\n</head>\n<body>\n{body}\n</body>\n</html>\n'
 
+def prune_unused():
+    """photo/solo, photo/site, photo/lookbook are casting pools (hundreds of frames): keep in site/ only what a page references."""
+    html = "".join(p.read_text() for p in SITE.glob("*.html"))
+    kept = removed = 0
+    for sub in ("photo/solo", "photo/site", "photo/lookbook"):
+        for f in (SITE / sub).glob("*"):
+            base = re.sub(r"-(480|800|1200)(?=\.(webp|jpg)$)", "", f.name)
+            if f"{sub}/{base}" in html or f"{sub}/{f.name}" in html:
+                kept += 1
+            else:
+                f.unlink(); removed += 1
+    print(f"casting pools: kept {kept}, pruned {removed}")
+
 def main():
     if SITE.exists():
         shutil.rmtree(SITE)
@@ -78,6 +91,7 @@ def main():
         (SITE / f"{slug}.html").write_text(wrap(relink((ROOT / f"{slug}.html").read_text(), skin), "en" if slug.endswith("-en") else "uk"))
     for slug in HIDDEN:
         (SITE / f"{slug}.html").write_text(wrap((ROOT / f"{slug}.html").read_text()))
+    prune_unused()
     # hub page
     cards = "\n".join(
         f'''      <div class="card">

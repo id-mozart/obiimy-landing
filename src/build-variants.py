@@ -135,7 +135,7 @@ css = deck_css + '''
   .cC { display: grid; grid-template-columns: 1fr 118mm; height: 210mm; } .cC .ph { width: 100%; height: 100%; } .cC-t { padding: 16mm 12mm 16mm 18mm; display: flex; flex-direction: column; justify-content: center; }
   .tel { font-family: 'Playfair Display', serif; font-size: 36pt; color: #E7D9A6; margin: 0 0 3mm; line-height: 1; } .cC-l { font-size: 10pt; color: #C9C5BE; line-height: 1.7; } .qrrow.w { margin-top: 8mm; } .contact.w { color: #F3F1EC; font-size: 12pt; } .contact.w small { color: #8E8A84; }
   .pg.dark .set-t h2, .pg.dark .hd h2 { color: #F7F5F0; }
-  .cov .cov-m h1 { font-size: 40pt; } .cov .cov-f { gap: 2mm; } .cov .cov-f div { padding-top: 1.5mm; font-size: 8pt; } .cov .cov-f b { font-size: 10.5pt; }
+  .cov .cov-p { height: 210mm; overflow: hidden; justify-content: space-between; } .cov .cov-m { margin: 0; } .cov .cov-m h1 { font-size: 40pt; } .cov .cov-f { gap: 2mm; } .cov .cov-f div { padding-top: 1.5mm; font-size: 8pt; } .cov .cov-f b { font-size: 10.5pt; }
   .abC-t p { font-size: 9.2pt; margin-bottom: 2.5mm; } .abC-t .nums.two b { font-size: 22pt; } .abC-t .nums.two { gap: 3mm 6mm; padding-top: 3mm; } .abC-t h2 { font-size: 22pt; margin-bottom: 3mm; }
 '''
 html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — варіанти сторінок</title>

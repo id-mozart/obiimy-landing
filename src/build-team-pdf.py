@@ -39,7 +39,7 @@ def page(html, cls=""):
 page(f'''<div class="fullp cv">{cp("D01", "photo/solo/zolote-44-5.webp", "50% 22%", "full")}<div class="fullp-t cov-t"><img src="brand/logo-white.png" class="logo" alt="Obiimy">
   <p class="eb">Для HR і офіс-менеджерів · 2026</p><h1>Подарунки<br>для команди</h1><p class="it">Авторські принти на натуральному італійському шовку</p>
   <p class="cov-line">Чотири рівні від 1 600 грн на людину · пакування й наліпка з вашим логотипом — безкоштовно · нова колекція SOLO</p>
-  <p class="toc">Рівні й ціни — 10 · Набори — 11–14 · Асортимент — 15 · Персоналізація — 16 · Запит — 17</p></div></div>''', "cover nopad")
+  <p class="toc">Рівні й ціни — 7 · Набори — 8–12 · Асортимент — 13 · Персоналізація — 14 · Запит — 15</p></div></div>''', "cover nopad")
 
 # 2 about I — full-page photo with the brand manifesto
 page(f'''<div class="fullp">{cp("D02", "photo/solo/puls-44-5.webp", "50% 30%", "full")}<div class="fullp-t">
@@ -60,10 +60,6 @@ page(f'''<div class="hd"><div><p class="eb">Бренд у фактах</p><h2>Щ
 <div class="facts">{facts}</div>
 <div class="nums"><div><b>100%</b><span>натуральний італійський шовк</span></div><div><b>5</b><span>авторських колекцій</span></div><div><b>38</b><span>принтів твіллі на вибір</span></div><div><b>45</b><span>готових подарункових наборів на obiimy.world</span></div></div>''')
 
-# 3 three reasons
-adv = "".join(f'<div class="adv-i"><b>0{i + 1}</b><div><h3>{b}</h3><p>{t}</p></div></div>' for i, (b, t) in enumerate(PERKS[:3]))
-page(f'''<div class="split r"><div class="txt adv-t"><p class="eb">Чому ми</p><h2>Три причини обрати шовк Obiimy</h2>{adv}</div>{cp("D04", "photo/solo/avantiura-tw-1.webp", "50% 15%", "ph")}</div>''', "nopad fr")
-
 # 4 SOLO I — manifesto on black
 page(f'''<div class="solo1"><div class="txt"><p class="eb">Нова колекція · 2026</p><h1>SOLO.<br>Шлях до себе</h1><p class="it gold">Шовкова свобода: жіноча сила крізь десятиліття</p>
   <p>У 40-х жінка підкреслювала силу бездоганною елегантністю — за м’якістю шовку ховався характер. У 50-х правила почали руйнуватися: колір, форма, власна ідентичність. Змінювалися епохи й силуети, а хустка залишалася поруч — як символ жіночності, що не суперечить силі.</p>
@@ -76,23 +72,10 @@ cards = "".join(f'<div class="pc">{pic(CARD_PH[i], "m", CARD_POS[i])}<div class=
 page(f'''<div class="hd"><div><p class="eb">Колекція SOLO</p><h2>Сім принтів — сім станів</h2></div><p class="hd-r">Для HR стан принта — готовий текст привітання: «Сміливий крок» — на підвищення, «Тиша всередині» — після складного кварталу. Ціни роздрібні, двосторонній друк.</p></div>
 <div class="pcs">{cards}</div>''', "dark")
 
-# SOLO — full-page quote spread from the press release
-page(f'''<div class="fullp q">{cp("D07", "photo/solo/zolote-44-4.webp", "50% 35%", "full")}<div class="fullp-q">
-  <p class="bigq">«Я є. Я продовжую жити.<br>Я обираю себе»</p>
-  <p>Для жінки краса — це спосіб зберегти себе. Улюблена сукня, шовкова хустка, червона помада — маленькі акти свободи.</p>
-  <p class="eb">SOLO. Шлях до себе · хустка «Золоте світло» 44 × 44</p>
-</div></div>''', "cover nopad")
-
 # 6 how to wear — like the brand banner: one print, four ways, italic labels on the photo
 ways = "".join(f'<figure class="way">{pic(ph, "", pos)}<figcaption><b>{n}</b><span>{t}</span></figcaption></figure>' for n, t, ph, pos in WAYS)
 page(f'''<div class="hd"><div><p class="eb">Як носити</p><h2>Один принт — чотири образи</h2></div><p class="hd-r">Хустка «Авантюра» 88 × 88 з двостороннім друком — 6 600 грн. Так само носять будь-яку хустку чи твіллі з каталогу. Для команди: один принт на всіх — і жодних однакових образів.</p></div>
 <div class="ways">{ways}</div>''', "dark wayspg")
-
-# chapter opener — gifts
-page(f'''<div class="fullp op">{cp("D09", "photo/solo/puls-44-3.webp", "50% 30%", "full")}<div class="fullp-t">
-  <p class="eb">Подарунки для команди</p><h1>Від стрічки<br>до майстер-класу</h1>
-  <p>Чотири рівні подарунка за роздрібними цінами obiimy.world. Пакування й наліпка з вашим логотипом — безкоштовно. Кожному в команді — свій принт.</p>
-</div></div>''', "cover nopad")
 
 # 7 four tiers — editorial: photo bleeding left, four rows with product thumbs and price breakdown
 rows = "".join(f'<div class="tr">{pic(ph)}<div><p class="eb">{lb}</p><b>{n}</b><span>{t}</span><small>{note}</small></div><em>{pr}</em></div>' for (lb, n, t, pr, note, ph), S in zip(TIERS, SETS4))

@@ -90,6 +90,45 @@ page("B · Персоналізація — фото навиліт, чотир�
 page("B · Контакти — фото навиліт, картка з QR", f'<div class="fullp">{cp("D17", "photo/solo/zolote-tw-2.webp", "40% 40%", "full")}<div class="cB"><p class="eb">Запит</p><h2>Напишіть — надішлемо добірку й розрахунок</h2><p>Нагода, кількість і дата — цього досить для першого листа. У відповідь: принти на вибір і розрахунок окремими рядками.</p><div class="qrrow">{qr_svg(LANDING, 110)}<p class="contact"><b>{PHONE}</b><br>Telegram @OBIIMY_sales<br>{MAIL}<br>obiimy.world</p></div><p class="foot">Шоурум: {SHOWROOM}</p></div></div>', "cover nopad")
 page("C · Контакти — чорна сторінка, великий телефон", f'<div class="cC"><div class="cC-t"><p class="eb">Запит</p><p class="bigq l">Напишіть —<br>надішлемо добірку<br>й розрахунок</p><p class="tel">{PHONE}</p><p class="cC-l">Telegram @OBIIMY_sales · {MAIL} · obiimy.world<br>Шоурум: {SHOWROOM}</p><div class="qrrow w">{qr_svg(LANDING, 100, ink="#F3F1EC")}<p class="contact w">Сторінка для команд<br><small>із формою запиту</small></p></div></div>{pic("photo/solo/krok-tw-3.webp", "ph", "50% 30%")}</div>', "dark nopad")
 
+
+# ═════════════ РАДИКАЛЬНО НОВІ НАПРЯМИ ═════════════
+def cut(src, cls=""):
+    """RGBA cut-outs (img/cut) — copied as PNG so the transparency survives."""
+    p = pathlib.Path(src); lb = OUT / "review" / "lb"; lb.mkdir(parents=True, exist_ok=True)
+    j = lb / (p.stem + "-cut.png")
+    if not j.exists():
+        im = Image.open(OUT / src); im.thumbnail((1100, 1100)); im.save(j)
+    return f'<img src="review/lb/{j.name}" class="{cls}" alt="">'
+def mg_rows():
+    return "".join('<div class="mg-tr"><span class="n">0%d</span>%s<div><b>%s</b><span>%s</span></div><em>%s</em></div>' % (i + 1, pic(S["gal"][PROD[i]][0], "th"), n, t, pr) for i, ((lb, n, t, pr, note, ph), S) in enumerate(zip(TIERS, SETS4)))
+def yl_cards():
+    cuts = ["img/cut/zolote-tw-1.webp", "img/cut/iskra-65-1.webp", "img/cut/flirt-scr-1.webp", "img/cut/zolote-44-1.webp"]
+    return "".join('<div class="yl-c">%s<p class="eb">0%d · %s</p><b>%s</b><em>%s</em></div>' % (cut(c, "yl-ci"), i + 1, lb, n, pr) for i, ((lb, n, t, pr, note, ph), c) in enumerate(zip(TIERS, cuts)))
+def nr4_cards():
+    lines = ["Знак уваги.", "Спосіб носити.", "Про відпочинок.", "Більше, ніж річ."]
+    return "".join('<div class="nr4-c">%s<div class="nr4-t"><p class="eb">0%d</p><b>%s</b><div class="chip">%s<div><span>%s</span><em>%s</em></div></div></div></div>' % (pic(S["tier"][0], "", S["tier"][1]), i + 1, lines[i], pic(S["gal"][PROD[i]][0], "chip-ph"), NAMES4[i], pr) for i, ((lb, n, t, pr, note, ph), S) in enumerate(zip(TIERS, SETS4)))
+def solo_list():
+    return "".join("<div><b>%s</b><span>%s</span></div>" % (n, st) for n, st, fm, pr, ph, fl in SOLO)
+
+# R1 · Magazine — white paper, huge serif, wide margins, thin rules
+page("R1 · Magazine — обкладинка: білий папір, великий сериф", f'<div class="mg cov"><div class="mg-top"><img src="brand/logo-ink.png" class="logo"><span>№ 01 · Подарунки для команди · 2026</span></div><h1 class="mg-h">Подарунки,<br>які <i>носять</i></h1><div class="mg-row">{pic("photo/lookbook/lb07-08-L.webp", "mg-ph", "50% 20%")}<div class="mg-side"><p class="eb">Для HR і офіс-менеджерів</p><p>Авторські принти на натуральному італійському шовку. Чотири рівні подарунка від 1 600 грн на людину. Пакування й наліпка з вашим логотипом — безкоштовно.</p><p class="mg-idx">Бренд — 2 · SOLO — 4 · Рівні й ціни — 7 · Набори — 8 · Запит — 15</p></div></div></div>', "white")
+page("R1 · Magazine — SOLO: розворот із колонкою", f'<div class="mg"><div class="mg-top"><span>Колекція</span><span>SOLO · Шлях до себе</span></div><div class="mg-two">{pic("photo/solo/zolote-44-3.webp", "mg-big", "50% 18%")}<div class="mg-col"><h2 class="mg-h2">Шовкова свобода: <i>жіноча сила крізь десятиліття</i></h2><p>Натхнення — обкладинки модних журналів 40–50-х: змінювалися епохи й силуети, а хустка залишалася поруч. Сім авторських принтів — сім етапів шляху жінки до себе.</p><div class="mg-list">{solo_list()}</div><p class="mg-note">Твіллі — 1 600 грн · хустки з двостороннім друком від 2 400 грн · для команди: кожному свій принт або один на всіх</p></div></div></div>', "white")
+page("R1 · Magazine — рівні як прайс-таблиця з великими цифрами", f'<div class="mg"><div class="mg-top"><span>Ціни</span><span>Чотири рівні подарунка</span></div><h2 class="mg-h2 big">Від 1 600 до 3 200 грн <i>на людину</i></h2><div class="mg-tbl">{mg_rows()}</div><p class="mg-note">Роздрібні ціни obiimy.world · команді з 50 людей — 80 000–160 000 грн за речі · майстер-клас і доставка — у розрахунку · чоловікам — сертифікат, маска, наволочка, закладка</p></div>', "white")
+
+# R2 · Yellow box — the brand's packaging colour as the page
+page("R2 · Yellow — обкладинка кольору коробки Obiimy", f'<div class="yl cov"><img src="brand/logo-ink.png" class="logo"><div class="yl-mid"><h1 class="yl-h">Подарунки<br>для команди</h1><p class="yl-sub">Шовк Obiimy · авторські принти · чотири рівні від 1 600 грн</p></div>{cut("img/cut/zolote-44-1.webp", "yl-cut")}<p class="yl-foot">Для HR і офіс-менеджерів · 2026 · пакування й наліпка з вашим логотипом — безкоштовно</p></div>', "yellow nopad")
+page("R2 · Yellow — чотири подарунки вирізками на жовтому", f'<div class="yl"><div class="yl-hd"><p class="eb">Чотири рівні</p><h2 class="yl-h2">Що в коробці — і скільки це коштує</h2></div><div class="yl-grid">{yl_cards()}</div><p class="yl-foot">Роздрібні ціни obiimy.world · на фото — приклади принтів · команді з 50 людей — 80 000–160 000 грн за речі</p></div>', "yellow nopad")
+page("R2 · Yellow — контакти: чорний на жовтому", f'<div class="yl cont"><div><p class="eb">Запит</p><h1 class="yl-h">Напишіть —<br>надішлемо добірку<br>й розрахунок</h1><p class="yl-tel">{PHONE}</p><p class="yl-sub">Telegram @OBIIMY_sales · {MAIL} · obiimy.world<br>Шоурум: {SHOWROOM}</p></div><div class="yl-qr">{qr_svg(LANDING, 120)}<span>сторінка для команд<br>із формою запиту</span></div></div>', "yellow nopad")
+
+# R3 · Noir — every page is one ad creative
+page("R3 · Noir — обкладинка як креатив", f'<div class="nr">{pic("photo/solo/zolote-44-2.webp", "full", "50% 20%")}<div class="nr-t"><img src="brand/logo-white.png" class="logo"><p class="eb">Подарунки для команди · 2026</p><h1 class="gi x">Мистецтво,<br>яке можна носити.</h1><p class="sub-w">Авторські принти на шовку — чотири рівні подарунка від 1 600 грн.</p><div class="chip inl">{pic("img/sets/tw44-zolote.webp", "chip-ph")}<div><span>Набір хустка + твіллі «Золоте світло»</span><em>3 600 грн</em></div></div></div></div>', "dark nopad")
+page("R3 · Noir — SOLO як креатив", f'<div class="nr">{pic("photo/solo/tysha-88-2.webp", "full", "50% 20%")}<div class="nr-t"><p class="eb">Нова колекція SOLO</p><h1 class="gi x">Змінювалися епохи.<br>Хустка залишалася поруч.</h1><p class="sub-w">Сім авторських принтів — сім станів. Для команди: кожному свій або один на всіх.</p><div class="chip inl">{pic("photo/site/solo-tysha-88kh88-01.jpg", "chip-ph")}<div><span>Хустка «Тиша» 88 × 88, двосторонній друк</span><em>6 600 грн</em></div></div></div></div>', "dark nopad")
+page("R3 · Noir — чотири рівні як чотири креативи", f'<div class="nr4">{nr4_cards()}</div>', "dark nopad")
+
+# R4 · Tear sheets — cream board, overlapping photo cards, italic captions
+page("R4 · Tear sheets — обкладинка-колаж", f'<div class="ts"><img src="brand/logo-ink.png" class="logo"><div class="ts-board">{pic("photo/solo/krok-44-2.webp", "ts-c c1")}{pic("photo/lookbook/lb41-43-L.webp", "ts-c c2", "50% 20%")}{pic("photo/site/set-tvilli-845-ta-khustky-4444-natkhne-01.jpg", "ts-c c3")}{pic("photo/solo/flirt-tw-4.webp", "ts-c c4", "50% 35%")}<div class="ts-note n1"><i>твіллі у волоссі —</i><br>1 600 грн</div><div class="ts-note n2"><i>набір у коробці</i><br>3 200 грн</div></div><div class="ts-t"><h1>Подарунки<br>для команди</h1><p class="it">Шовк Obiimy · авторські принти · чотири рівні від 1 600 грн</p></div></div>', "nopad")
+page("R4 · Tear sheets — набір як дошка натхнення", f'<div class="ts"><div class="ts-board wide">{pic(S1["hero"][0], "ts-c d1", S1["hero"][2])}{pic(S1["gal"][0][0], "ts-c d2", S1["gal"][0][2])}{pic(S1["gal"][PROD[1]][0], "ts-c d3")}{pic("photo/box-gold.jpg", "ts-c d4", "50% 45%")}<div class="ts-note m1"><i>хустка 44 × 44 —</i><br>на шиї, на сумці, поясом</div><div class="ts-note m2"><i>+ кільце Gold</i><br>450 грн</div></div><div class="ts-t r"><p class="eb">{S1["lb"]}</p><h2>{S1["name"]}</h2><p class="rrp">{S1["pr"]}<small>{S1["prnote"]}</small></p><div class="kv">{kv(S1["inside"][:4])}</div><p class="who">{S1["who"]}</p></div></div>', "nopad")
+
 css = deck_css + '''
   .vlab { position: absolute; top: 4mm; right: 5mm; z-index: 9; background: #fff; color: #111; font-size: 7.5pt; padding: 1.4mm 3mm; border-radius: 2mm; font-family: 'Tenor Sans', sans-serif; box-shadow: 0 1px 4px rgba(0,0,0,.25); }
   .gi { font-style: italic; color: #F3EBD0; } .gi.m { font-size: 30pt; }
@@ -135,6 +174,48 @@ css = deck_css + '''
   .cC { display: grid; grid-template-columns: 1fr 118mm; height: 210mm; } .cC .ph { width: 100%; height: 100%; } .cC-t { padding: 16mm 12mm 16mm 18mm; display: flex; flex-direction: column; justify-content: center; }
   .tel { font-family: 'Playfair Display', serif; font-size: 36pt; color: #E7D9A6; margin: 0 0 3mm; line-height: 1; } .cC-l { font-size: 10pt; color: #C9C5BE; line-height: 1.7; } .qrrow.w { margin-top: 8mm; } .contact.w { color: #F3F1EC; font-size: 12pt; } .contact.w small { color: #8E8A84; }
   .pg.dark .set-t h2, .pg.dark .hd h2 { color: #F7F5F0; }
+  /* R1 magazine */
+  .pg.white .mg { padding: 0; height: 100%; display: flex; flex-direction: column; }
+  .mg-top { display: flex; justify-content: space-between; align-items: center; font-size: 7.5pt; letter-spacing: .2em; text-transform: uppercase; color: #6B6772; border-bottom: 1px solid #141414; padding-bottom: 3mm; margin-bottom: 8mm; } .mg-top .logo { height: 8mm; width: auto; }
+  .mg-h { font-size: 64pt; line-height: .95; margin: 0 0 8mm; letter-spacing: -.02em; } .mg-h i, .mg-h2 i { font-style: italic; font-weight: 400; color: #8E8A84; }
+  .mg-row { display: grid; grid-template-columns: 118mm 1fr; gap: 12mm; flex: 1; min-height: 0; align-items: end; } .mg-ph { width: 100%; height: 100%; min-height: 0; object-fit: cover; }
+  .mg-side p { font-size: 10pt; color: #4A4A47; max-width: 92mm; } .mg-idx { font-size: 7.5pt; letter-spacing: .12em; text-transform: uppercase; color: #8E8A84; border-top: 1px solid #DAD7D0; padding-top: 3mm; margin-top: 6mm; }
+  .mg-two { display: grid; grid-template-columns: 150mm 1fr; gap: 12mm; flex: 1; min-height: 0; } .mg-big { width: 100%; height: 100%; min-height: 0; object-fit: cover; }
+  .mg-h2 { font-size: 28pt; line-height: 1.05; margin: 0 0 5mm; } .mg-h2.big { font-size: 40pt; margin-bottom: 8mm; } .mg-col p { font-size: 9.6pt; color: #4A4A47; }
+  .mg-list { display: grid; grid-template-columns: 1fr 1fr; gap: 1mm 6mm; margin: 4mm 0; } .mg-list div { border-top: 1px solid #DAD7D0; padding: 1.8mm 0; } .mg-list b { display: block; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; font-size: 11.5pt; } .mg-list span { font-size: 7.5pt; color: #6B6772; }
+  .mg-note { font-size: 8pt; color: #6B6772; border-top: 1px solid #141414; padding-top: 3mm; margin-top: auto; }
+  .mg-tbl { display: grid; flex: 1; align-content: start; } .mg-tr { display: grid; grid-template-columns: 16mm 22mm 1fr auto; gap: 6mm; align-items: center; padding: 5mm 0; border-top: 1px solid #141414; }
+  .mg-tr .n { font-family: 'Playfair Display', serif; font-size: 22pt; color: #8E8A84; } .mg-tr .th { width: 22mm; height: 22mm; object-fit: cover; } .mg-tr b { display: block; font-family: 'Playfair Display', serif; font-weight: 400; font-size: 18pt; line-height: 1.05; } .mg-tr span { font-size: 9pt; color: #4A4A47; } .mg-tr em { font-style: normal; font-family: 'Playfair Display', serif; font-size: 26pt; white-space: nowrap; }
+  /* R2 yellow */
+  .pg.yellow { background: #F7C600; color: #141414; } .yl { padding: 16mm 18mm 14mm; height: 210mm; display: flex; flex-direction: column; position: relative; } .yl .logo { height: 11mm; width: auto; align-self: flex-start; }
+  .yl-mid { margin: auto 0; max-width: 150mm; } .yl-h { font-size: 56pt; line-height: .96; margin: 0 0 5mm; } .yl-sub { font-size: 12pt; margin: 0; }
+  .yl-cut { position: absolute; right: 10mm; top: 24mm; width: 128mm; height: auto; transform: rotate(8deg); filter: drop-shadow(0 12mm 10mm rgba(0,0,0,.18)); }
+  .yl-foot { font-size: 8pt; letter-spacing: .1em; text-transform: uppercase; margin: 0; border-top: 1px solid rgba(0,0,0,.35); padding-top: 3mm; }
+  .yl-hd .eb { color: rgba(0,0,0,.6); } .yl-h2 { font-size: 30pt; margin: 0 0 6mm; }
+  .yl-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6mm; flex: 1; min-height: 0; margin-bottom: 6mm; } .yl-c { background: #fff; padding: 6mm; display: flex; flex-direction: column; min-height: 0; }
+  .yl-ci { width: 100%; flex: 1; min-height: 0; object-fit: contain; margin-bottom: 4mm; } .yl-c .eb { color: #8E8A84; margin-bottom: 1mm; } .yl-c b { font-family: 'Playfair Display', serif; font-weight: 400; font-size: 14pt; line-height: 1.05; } .yl-c em { font-style: normal; font-family: 'Playfair Display', serif; font-size: 17pt; margin-top: 1.5mm; }
+  .yl.cont { justify-content: center; } .yl-tel { font-family: 'Playfair Display', serif; font-size: 40pt; margin: 6mm 0 3mm; line-height: 1; } .yl.cont .yl-h { font-size: 40pt; }
+  .yl-qr { position: absolute; right: 18mm; bottom: 16mm; display: grid; grid-template-columns: auto 1fr; gap: 5mm; align-items: center; font-size: 8.5pt; }
+  /* R3 noir */
+  .nr { position: relative; width: 297mm; height: 210mm; } .nr .full { width: 100%; height: 100%; filter: saturate(.9); }
+  .nr::after { content: ""; position: absolute; inset: 0; background: radial-gradient(120% 90% at 70% 40%, rgba(0,0,0,0) 30%, rgba(0,0,0,.75) 100%), linear-gradient(0deg, rgba(0,0,0,.7) 0%, rgba(0,0,0,0) 50%); }
+  .nr-t { position: absolute; left: 18mm; bottom: 16mm; max-width: 160mm; z-index: 1; color: #fff; } .nr-t .logo { height: 9mm; width: auto; margin-bottom: 8mm; } .nr-t .eb { color: rgba(255,255,255,.7); }
+  .gi.x { font-size: 40pt; line-height: 1.02; margin: 1mm 0 4mm; }
+  .nr4 { display: grid; grid-template-columns: repeat(4, 1fr); height: 210mm; } .nr4-c { position: relative; overflow: hidden; } .nr4-c img:first-child { width: 100%; height: 100%; }
+  .nr4-c::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,.85) 0%, rgba(0,0,0,.2) 55%, rgba(0,0,0,0) 100%); }
+  .nr4-t { position: absolute; left: 5mm; right: 5mm; bottom: 6mm; z-index: 2; color: #fff; } .nr4-t .eb { color: rgba(255,255,255,.7); } .nr4-t b { display: block; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; font-size: 19pt; line-height: 1.05; color: #F3EBD0; margin-bottom: 4mm; }
+  .nr4-t .chip { position: static; display: grid; }
+  /* R4 tear sheets */
+  .ts { position: relative; width: 297mm; height: 210mm; background: #EDE8DF; overflow: hidden; } .ts .logo { position: absolute; top: 14mm; left: 18mm; height: 9mm; width: auto; z-index: 3; }
+  .ts-board { position: absolute; inset: 0; } .ts-c { position: absolute; object-fit: cover; box-shadow: 0 10mm 14mm rgba(0,0,0,.22); background: #fff; }
+  .c1 { left: 118mm; top: 18mm; width: 86mm; height: 112mm; transform: rotate(-4deg); } .c2 { left: 190mm; top: 44mm; width: 84mm; height: 110mm; transform: rotate(3deg); } .c3 { left: 150mm; top: 118mm; width: 72mm; height: 72mm; transform: rotate(-2deg); } .c4 { left: 232mm; top: 10mm; width: 50mm; height: 66mm; transform: rotate(6deg); }
+  .ts-note { position: absolute; font-family: 'Playfair Display', serif; font-size: 11pt; line-height: 1.2; background: #fff; padding: 3mm 4mm; box-shadow: 0 4mm 8mm rgba(0,0,0,.15); } .n1 { left: 104mm; top: 128mm; transform: rotate(-6deg); } .n2 { left: 236mm; top: 160mm; transform: rotate(4deg); }
+  .ts-t { position: absolute; left: 18mm; bottom: 18mm; max-width: 90mm; z-index: 3; } .ts-t h1 { font-size: 44pt; line-height: .98; margin: 0 0 4mm; } .ts-t .it { color: #4A4A47; font-size: 11pt; }
+  .ts-board.wide .d1 { left: 14mm; top: 14mm; width: 96mm; height: 128mm; transform: rotate(-3deg); } .d2 { left: 96mm; top: 24mm; width: 70mm; height: 70mm; transform: rotate(4deg); } .d3 { left: 60mm; top: 118mm; width: 64mm; height: 64mm; transform: rotate(-5deg); } .d4 { left: 124mm; top: 102mm; width: 54mm; height: 72mm; transform: rotate(5deg); }
+  .m1 { left: 20mm; top: 152mm; transform: rotate(-3deg); } .m2 { left: 132mm; top: 40mm; transform: rotate(6deg); }
+  .ts-t.r { left: auto; right: 18mm; top: 16mm; bottom: auto; max-width: 96mm; } .ts-t.r h2 { font-size: 22pt; margin: 1mm 0 3mm; } .ts-t.r .rrp { font-family: 'Playfair Display', serif; font-size: 19pt; margin: 0 0 3mm; } .ts-t.r .rrp small { display: block; font-family: 'Tenor Sans', sans-serif; font-size: 7pt; color: #6B6772; margin-top: 1mm; }
+  .ts-t.r .kv div { display: grid; grid-template-columns: 24mm 1fr; gap: 3mm; font-size: 7.8pt; padding: 1.4mm 0; border-top: 1px solid #C9C6C0; } .ts-t.r .kv span:first-child { color: #6B6772; } .ts-t.r .who { font-family: 'Playfair Display', serif; font-style: italic; font-size: 12pt; margin-top: 4mm; }
+
   .cov .cov-p { height: 210mm; overflow: hidden; justify-content: space-between; } .cov .cov-m { margin: 0; } .cov .cov-m h1 { font-size: 40pt; } .cov .cov-f { gap: 2mm; } .cov .cov-f div { padding-top: 1.5mm; font-size: 8pt; } .cov .cov-f b { font-size: 10.5pt; }
   .abC-t p { font-size: 9.2pt; margin-bottom: 2.5mm; } .abC-t .nums.two b { font-size: 22pt; } .abC-t .nums.two { gap: 3mm 6mm; padding-top: 3mm; } .abC-t h2 { font-size: 22pt; margin-bottom: 3mm; }
 '''

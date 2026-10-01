@@ -1,9 +1,9 @@
-"""Image casting for the team deck and landing: review/cast.json maps slot ids (D01, S1…, H1…) to {file, pos}.
+"""Image casting for the team deck and landing: src/cast.json maps slot ids (D01, S1…, H1…) to {file, pos}.
 Produced by the image-casting workflow (catalogue → three casts → judge → per-slot verify); the generators fall back
 to their built-in defaults for any slot that is missing."""
 import json, pathlib
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-_P = ROOT / "review" / "cast.json"
+_P = ROOT / "src" / "cast.json"
 CAST = json.loads(_P.read_text()) if _P.exists() else {}
 
 def cast(slot, default_file, default_pos=""):

@@ -106,8 +106,8 @@ PROD = main.PROD
 # four sets on one page — four columns bleeding to the edges, italic name on the photo, product chip with the price (as in the SOLO creatives)
 CHIP_PH = [cast(f"P{i + 1}", S["gal"][PROD[i]][0])[0] for i, S in enumerate(SETS4)]
 cols = "".join(f'''<div class="fs">{pic(S["tier"][0], "", S["tier"][1])}<div class="fs-t"><p class="eb">0{i + 1} · {lb}</p><b>{n}</b></div>
-<div class="chip">{pic(CHIP_PH[i], "chip-ph")}<div><span>{S["short"]}</span><em>{pr}</em></div></div></div>''' for i, ((lb, n, t, pr, note, ph), S) in enumerate(zip(TIERS, SETS4)))
-page(f'''<div class="fs-hd"><p class="eb">Чотири подарунки</p><h2>Від стрічки до набору з майстер-класом</h2></div><div class="fss">{cols}</div>''', "dark fourpg nopad")
+<div class="chip">{pic(CHIP_PH[i], "chip-ph")}<div><span>{["Твіллі", "Хустка 44 × 44 і кільце", "Маска й резинка", "Хустка, твіллі, МК"][i]}</span><em>{pr.replace("+ МК", "+ МК")}</em></div></div></div>''' for i, ((lb, n, t, pr, note, ph), S) in enumerate(zip(TIERS, SETS4)))
+page(f'''<div class="fs-hd"><div><p class="eb">Чотири подарунки</p><h2>Від стрічки до набору з майстер-класом</h2></div><p class="hd-r">Роздрібні ціни obiimy.world; майстер-клас і доставку рахуємо окремо. Кожен подарунок — на окремій сторінці далі.</p></div><div class="fss">{cols}</div>''', "dark fourpg nopad")
 
 # 8–11 one page per set: editorial mosaic bleeding to the page edge
 KEEP = ("Що всередині", "Шовк", "Шовк і друк", "Майстер-клас", "Пакування", "Кому")
@@ -236,18 +236,18 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .tr .eb {{ margin-bottom: .5mm; }} .tr b {{ font-family: 'Playfair Display', serif; font-weight: 400; font-size: 13pt; display: block; line-height: 1.1; }}
   .tr span {{ display: block; font-size: 8.6pt; color: #4A4A47; }} .tr small {{ display: block; font-size: 7.3pt; color: #6B6772; margin-top: .5mm; }}
   .tr em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 15pt; white-space: nowrap; }}
-  .tiers .foot {{ margin-top: 5mm; }}
+  .tiers .foot {{ margin-top: 5mm; margin-bottom: 6mm; }}
   /* four sets page */
   .fourpg {{ padding: 14mm 0 0; }}
-  .fs-hd {{ display: flex; align-items: baseline; gap: 8mm; margin: 0 18mm 6mm; }} .fs-hd h2 {{ margin: 0; font-size: 22pt; }}
+  .fs-hd {{ display: grid; grid-template-columns: 1fr 96mm; gap: 12mm; align-items: end; margin: 0 18mm 6mm; }} .fs-hd h2 {{ margin: 0; font-size: 22pt; }} .fs-hd .hd-r {{ font-size: 8.8pt; color: #B8B3AA; margin: 0 0 1mm; }}
   .fss {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; flex: 1; min-height: 0; }}
   .fs {{ position: relative; overflow: hidden; }} .fs > img:first-child {{ width: 100%; height: 100%; }}
   .fs::after {{ content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 42%, rgba(0,0,0,.82) 100%); }}
-  .fs-t {{ position: absolute; left: 6mm; right: 6mm; bottom: 26mm; z-index: 2; color: #fff; }} .fs-t .eb {{ color: rgba(255,255,255,.75); margin-bottom: 1.5mm; }}
-  .fs-t b {{ display: block; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; font-size: 17pt; line-height: 1.05; color: #F3EBD0; }}
+  .fs-t {{ position: absolute; left: 6mm; right: 6mm; bottom: 28mm; z-index: 2; color: #fff; }} .fs-t .eb {{ color: rgba(255,255,255,.75); margin-bottom: 1.5mm; }}
+  .fs-t b {{ display: block; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; font-size: 16pt; line-height: 1.05; color: #F3EBD0; }}
   .chip {{ position: absolute; left: 6mm; right: 6mm; bottom: 7mm; z-index: 2; display: grid; grid-template-columns: 13mm 1fr; gap: 3mm; align-items: center; background: rgba(20,20,20,.72); border: 1px solid rgba(255,255,255,.18); border-radius: 3mm; padding: 2mm 3mm 2mm 2mm; backdrop-filter: blur(6px); color: #fff; }}
   .chip .chip-ph {{ width: 13mm; height: 13mm; border-radius: 2mm; background: #fff; object-fit: cover; }}
-  .chip span {{ display: block; font-size: 7pt; color: rgba(255,255,255,.8); line-height: 1.2; }} .chip em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 13pt; color: #E7D9A6; line-height: 1.1; }}
+  .chip span {{ display: block; font-size: 6.6pt; color: rgba(255,255,255,.8); line-height: 1.2; }} .chip em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 11.5pt; color: #E7D9A6; line-height: 1.1; white-space: nowrap; }}
   .fourpg .folio {{ display: none; }}
   /* set pages */
   .set {{ display: grid; grid-template-columns: 168mm 1fr; height: 210mm; }}

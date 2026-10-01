@@ -337,7 +337,7 @@ def request_section(pid, subject, title, lead, back, alt=True):
     ], "Відповідаємо з добіркою та розрахунком.")
     return f"""
   <section class="form-block{" alt" if alt else ""}" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Запит</p><h2>{title}</h2><p>{lead}</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p><a class="btn btn-line" href="{TG}">Написати в Telegram</a><p class="pdf"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для HR (PDF, 6,5 МБ) ↓</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна побачити й відчути на дотик.</p></div>
+    <div class="contact"><p class="eyebrow">Запит</p><h2>{title}</h2><p>{lead}</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p><a class="btn btn-line" href="{TG}">Написати в Telegram</a><p class="pdf"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для HR (PDF, 6,9 МБ) ↓</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна побачити й відчути на дотик.</p></div>
     <div><p class="added" id="added" hidden><b>Додано до запиту:</b> <span id="added-t"></span> · <a href="#{back}">змінити</a></p>{form}</div>
   </div></section>"""
 

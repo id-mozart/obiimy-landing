@@ -34,10 +34,10 @@
   /* document */
   .doc { padding: 28px; display: grid; gap: 22px; justify-items: center; }
   .pg { width: 210mm; min-height: 297mm; background: var(--paper); box-shadow: 0 4px 30px rgba(0,0,0,.08); padding: 18mm 18mm 16mm; position: relative; display: flex; flex-direction: column; break-after: page; page-break-after: always; }
-  .pg .logo { height: 9mm; width: auto; align-self: flex-start; }
+  .pg .logo { width: 42mm; height: 9mm; flex: none; align-self: flex-start; object-fit: contain; object-position: left center; }
   .pg .foot { margin-top: auto; color: var(--ink3); font-size: 9.5pt; display: flex; justify-content: space-between; gap: 10mm; border-top: 1px solid var(--line); padding-top: 4mm; }
   .cover { background: var(--gold); color: var(--ink); justify-content: center; align-items: center; text-align: center; }
-  .cover .logo { position: absolute; top: 18mm; left: 18mm; height: 10mm; }
+  .cover .logo { position: absolute; top: 18mm; left: 18mm; width: 47mm; height: 10mm; }
   .cover .for { font-size: 11pt; letter-spacing: .25em; text-transform: uppercase; margin: 10mm 0 6mm; }
   .cover h1 { font-size: 34pt; max-width: 150mm; }
   .cover h2 { font-size: 20pt; margin-top: 6mm; max-width: 150mm; }

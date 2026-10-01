@@ -47,7 +47,7 @@ def page(i, S):
     body = f'''
   <section class="hero set ph-first"><div class="wrap">
     <div>
-      <p class="eyebrow"><a href="b2b-team-main#tiers">← Усі чотири рівні</a> · {S["lb"]}</p>
+      <p class="eyebrow"><a href="b2b-team-main#tiers">← Усі чотири рівні</a> · <span style="white-space:nowrap">{S["lb"]}</span></p>
       <h1>{S["name"]}</h1>
       <p class="lead">{S["lead"]}</p>
       <p class="price num">{S["pr"]}<small>{S["prnote"]}</small></p>

@@ -57,9 +57,9 @@ page(f'''<div class="sd-top"><div class="sd-t"><p class="eb">Нова колек
 
 # 5 four tiers — variant A (editorial) chosen after the audit: one model shot, four rows with product thumbs, price breakdown
 H5 = '<p class="eb">Ціновий діапазон</p><h2>Чотири рівні подарунка — від 1 600 до 3 200 грн за речі</h2>'
-F5 = '<p class="foot">Команді з 50 людей — 80 000–160 000 грн за речі, зі 100 — 160 000–320 000 грн за роздрібними цінами; доставку й майстер-клас рахуємо окремо. Кожен рівень — на окремій сторінці далі (стор. 6–9).</p>'
+F5 = '<p class="foot">Команді з 50 людей — 80 000–160 000 грн за речі, зі 100 — 160 000–320 000 (роздрібні ціни; доставка й майстер-клас — окремо). Кожен рівень — на стор. 6–9.</p>'
 rows = "".join(f'<div class="tr">{pic(ph)}<div><p class="eb">{lb}</p><b>{n}</b><span>{t}</span><small>{note}</small></div><em>{pr}</em></div>' for (lb, n, t, pr, note, ph), S in zip(TIERS, SETS4))
-page(f'''<div class="ta"><div>{pic("photo/solo/zolote-44-3.webp", "tall", "50% 20%")}</div><div class="txt">{H5}<p class="sub">Від однієї стрічки до набору з хусткою, твіллі й майстер-класом. Ціни роздрібні, obiimy.world; кожному — свій принт із добірки.</p><div class="ta-l">{rows}</div>{F5}</div></div>''')
+page(f'''<div class="ta"><div>{pic("photo/solo/zolote-44-3.webp", "tall", "50% 20%")}</div><div class="txt">{H5}<p class="sub">Від однієї стрічки до набору з майстер-класом. Ціни роздрібні, obiimy.world; кожному — свій принт із добірки.</p><div class="ta-l">{rows}</div>{F5}</div></div>''', "tiers")
 
 # 5b one page per set: model photos + product, details, ways to wear
 for i, S in enumerate(SETS4):
@@ -89,7 +89,7 @@ page(f'''<p class="eb">Персоналізація</p><h2>Подарунок і
 # 8 contacts
 page(f'''<div class="two"><div class="txt"><p class="eb">Запит</p><h2>Напишіть — надішлемо добірку й розрахунок</h2>
   <ol class="steps"><li><b>Нагода, кількість, дата.</b> Цього досить для першого листа.</li><li><b>Добірка й розрахунок</b> окремими рядками: речі, персоналізація, доставка. Чи встигаємо до вашої дати — пишемо одразу.</li><li><b>Відправка</b> Новою поштою в день замовлення до 16:00 — кожному окремо чи в офіс; безкоштовно від 5 000 грн.</li></ol>
-  <p class="cond">Оплата й документи для юридичної особи, мінімальна кількість — уточнимо в розрахунку. Сторінка для команд: obiimy-landing-production.up.railway.app/b2b-team-main</p>
+  <p class="cond">Оплата й документи для юридичної особи, мінімальна кількість — уточнимо в розрахунку. Сторінка для команд: <a href="https://obiimy-landing-production.up.railway.app/b2b-team-main" style="color:inherit">obiimy-landing-production.up.railway.app/b2b-team-main</a></p>
   <p class="contact"><b>{PHONE}</b><br>Telegram @OBIIMY_sales<br>{MAIL}<br>obiimy.world</p>
   <p class="foot">Шоурум: {SHOWROOM}<br>пн–пт 10:00–18:00, сб 11:00–18:00</p>
 </div><div>{pic("photo/solo/zolote-tw-2.webp", "tall", "50% 40%")}</div></div>''')
@@ -156,9 +156,10 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .ta {{ display: grid; grid-template-columns: 1fr 1.15fr; gap: 12mm; height: 100%; }}
   .ta .txt {{ align-self: stretch; display: flex; flex-direction: column; justify-content: center; }}
   .ta-l {{ display: grid; }}
-  .tr {{ display: grid; grid-template-columns: 20mm 1fr auto; gap: 5mm; align-items: center; padding: 3mm 0; border-top: 1px solid #C9C6C0; }}
+  .tr {{ display: grid; grid-template-columns: 18mm 1fr auto; gap: 4mm; align-items: center; padding: 2.2mm 0; border-top: 1px solid #C9C6C0; }}
   .tr:last-child {{ border-bottom: 1px solid #C9C6C0; }}
-  .tr img {{ width: 20mm; height: 20mm; background: #fff; border: 1px solid #E5E3DD; }}
+  .pg.tiers .tr {{ padding: 2mm 0; }} .pg.tiers .tr b {{ font-size: 13pt; }} .pg.tiers .foot {{ margin-top: 3mm; }}
+  .tr img {{ width: 18mm; height: 18mm; background: #fff; border: 1px solid #E5E3DD; }}
   .tr .eb {{ margin-bottom: .5mm; }} .tr b {{ font-family: 'Playfair Display', serif; font-weight: 400; font-size: 14pt; display: block; line-height: 1.1; }}
   .tr span {{ display: block; font-size: 9pt; color: #4A4A47; }} .tr small {{ display: block; font-size: 7.5pt; color: #6B6772; margin-top: .5mm; }} .tr em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 16pt; white-space: nowrap; }}
   .tbs {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; flex: 1; min-height: 0; }}

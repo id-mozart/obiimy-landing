@@ -12,7 +12,10 @@ sys.path.insert(0, str(ROOT))
 from imgs import typo
 _spec = importlib.util.spec_from_file_location("main", ROOT / "build-b2b-team-main.py")
 main = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(main)
-PERKS, SOLO, TIERS, ASSORT, PERS, SETS4, WAYS, price, qr_svg = main.PERKS, main.SOLO, main.TIERS, main.ASSORT, main.PERS, main.SETS4, main.WAYS, main.price, main.qr_svg
+PERKS, SOLO, TIERS, ASSORT, PERS, SETS4, WAYS, price, qr_svg, cast = main.PERKS, main.SOLO, main.TIERS, main.ASSORT, main.PERS, main.SETS4, main.WAYS, main.price, main.qr_svg, main.cast
+CARD_PH, CARD_POS = main.CARD_PH, main.CARD_POS
+def cp(slot, f, pos="", cls=""):
+    ff, pp = cast(slot, f, pos); return pic(ff, cls, pp)
 team = main.team
 PHONE, MAIL, SHOWROOM = team.PHONE, team.MAIL, team.SHOWROOM
 LANDING = "https://obiimy-landing-production.up.railway.app/b2b-team-main"
@@ -33,13 +36,13 @@ def page(html, cls=""):
     PAGES.append(f'<section class="pg {cls}">{html}{folio}</section>')
 
 # 1 cover: full-page photo, logo and title bottom-left, three facts in one line
-page(f'''<div class="fullp cv">{pic("photo/solo/zolote-44-5.webp", "full", "50% 22%")}<div class="fullp-t cov-t"><img src="brand/logo-white.png" class="logo" alt="Obiimy">
+page(f'''<div class="fullp cv">{cp("D01", "photo/solo/zolote-44-5.webp", "50% 22%", "full")}<div class="fullp-t cov-t"><img src="brand/logo-white.png" class="logo" alt="Obiimy">
   <p class="eb">Для HR і офіс-менеджерів · 2026</p><h1>Подарунки<br>для команди</h1><p class="it">Авторські принти на натуральному італійському шовку</p>
   <p class="cov-line">Чотири рівні від 1 600 грн на людину · пакування й наліпка з вашим логотипом — безкоштовно · нова колекція SOLO</p>
   <p class="toc">Рівні й ціни — 10 · Набори — 11–14 · Асортимент — 15 · Персоналізація — 16 · Запит — 17</p></div></div>''', "cover nopad")
 
 # 2 about I — full-page photo with the brand manifesto
-page(f'''<div class="fullp">{pic("photo/solo/puls-44-5.webp", "full", "50% 30%")}<div class="fullp-t">
+page(f'''<div class="fullp">{cp("D02", "photo/solo/puls-44-5.webp", "50% 30%", "full")}<div class="fullp-t">
   <p class="eb">Про бренд</p><h1>Обійми з шовку</h1>
   <p>Український бренд шовкових аксесуарів із Києва. Засновниця й художниця — Світлана Сніжко: кожен принт — авторський. Хустки, твіллі, резинки, маски для сну, аксесуари для дому.</p>
   <p class="quote-l">«Кожна коробочка — це обійми, що нагадують: ти варта краси»</p>
@@ -52,31 +55,29 @@ FACTS = [
     ("Зроблено в Україні", "Бренд заснований під час війни; повністю українське виробництво, благодійні ініціативи.", "photo/box-gold.jpg", "50% 50%"),
     ("«Співоча душа»", "Колекція присвячена рідкісним птахам: частина коштів іде на гнізда для сиворакші з Червоної книги.", "img/melodiia.webp", "50% 30%"),
 ]
-facts = "".join(f'<figure class="fact">{pic(ph, "", pos)}<figcaption><b>{t}</b><span>{d}</span></figcaption></figure>' for t, d, ph, pos in FACTS)
+facts = "".join(f'<figure class="fact">{cp("D03" + "abcd"[i], ph, pos)}<figcaption><b>{t}</b><span>{d}</span></figcaption></figure>' for i, (t, d, ph, pos) in enumerate(FACTS))
 page(f'''<div class="hd"><div><p class="eb">Бренд у фактах</p><h2>Що стоїть за кожною коробкою Obiimy</h2></div><p class="hd-r">Шовк Obiimy продають INTERTOP і Hram в Україні, Be Brave у Канаді, UFD London. Про бренд писали LIGA.net та INSIDER UA. Шоурум — Київ, Сагайдачного, 12.</p></div>
 <div class="facts">{facts}</div>
 <div class="nums"><div><b>100%</b><span>натуральний італійський шовк</span></div><div><b>5</b><span>авторських колекцій</span></div><div><b>38</b><span>принтів твіллі на вибір</span></div><div><b>45</b><span>готових подарункових наборів на obiimy.world</span></div></div>''')
 
 # 3 three reasons
 adv = "".join(f'<div class="adv-i"><b>0{i + 1}</b><div><h3>{b}</h3><p>{t}</p></div></div>' for i, (b, t) in enumerate(PERKS[:3]))
-page(f'''<div class="split r"><div class="txt adv-t"><p class="eb">Чому ми</p><h2>Три причини обрати шовк Obiimy</h2>{adv}</div>{pic("photo/solo/avantiura-tw-1.webp", "ph", "50% 15%")}</div>''', "nopad fr")
+page(f'''<div class="split r"><div class="txt adv-t"><p class="eb">Чому ми</p><h2>Три причини обрати шовк Obiimy</h2>{adv}</div>{cp("D04", "photo/solo/avantiura-tw-1.webp", "50% 15%", "ph")}</div>''', "nopad fr")
 
 # 4 SOLO I — manifesto on black
 page(f'''<div class="solo1"><div class="txt"><p class="eb">Нова колекція · 2026</p><h1>SOLO.<br>Шлях до себе</h1><p class="it gold">Шовкова свобода: жіноча сила крізь десятиліття</p>
   <p>У 40-х жінка підкреслювала силу бездоганною елегантністю — за м’якістю шовку ховався характер. У 50-х правила почали руйнуватися: колір, форма, власна ідентичність. Змінювалися епохи й силуети, а хустка залишалася поруч — як символ жіночності, що не суперечить силі.</p>
   <p>SOLO — історія про шлях жінки до себе. Сім авторських принтів — сім етапів цієї подорожі. Натуральний шовк, двосторонній друк, натхнення — обкладинки модних журналів 40–50-х.</p>
   <p class="team">Для команди: кожному — свій принт, під стан, який хочете побажати, або один на всіх. Сім принтів — на наступній сторінці.</p></div>
-<div class="solo1-ph">{pic("photo/solo/tysha-88-2.webp", "big")}{pic("photo/solo/puls-44-4.webp", "", "50% 20%")}{pic("photo/solo/iskra-65-3.webp", "", "50% 50%")}</div></div>''', "dark nopad fr2")
+<div class="solo1-ph">{cp("D05a", "photo/solo/tysha-88-2.webp", "", "big")}{cp("D05b", "photo/solo/puls-44-4.webp", "50% 20%")}{cp("D05c", "photo/solo/iskra-65-3.webp", "50% 50%")}</div></div>''', "dark nopad fr2")
 
 # 5 SOLO II — the seven prints as tall cards (model shot, flat-lay inset, name, state, format · price)
-CARD_PH = ["photo/solo/iskra-65-2.webp", "photo/solo/flirt-tw-4.webp", "photo/solo/puls-44-2.webp", "photo/solo/zolote-44-2.webp", "photo/solo/avantiura-88-5.webp", "photo/solo/tysha-88-3.webp", "photo/solo/krok-44-2.webp"]
-CARD_POS = ["50% 20%", "50% 35%", "50% 15%", "50% 20%", "50% 15%", "50% 20%", "50% 20%"]
 cards = "".join(f'<div class="pc">{pic(CARD_PH[i], "m", CARD_POS[i])}<div class="pc-t">{pic(fl, "fl")}<b>{n}</b><span>{st}</span><small>{fm}</small></div></div>' for i, (n, st, fm, pr, ph, fl) in enumerate(SOLO))
 page(f'''<div class="hd"><div><p class="eb">Колекція SOLO</p><h2>Сім принтів — сім станів</h2></div><p class="hd-r">Для HR стан принта — готовий текст привітання: «Сміливий крок» — на підвищення, «Тиша всередині» — після складного кварталу. Ціни роздрібні, двосторонній друк.</p></div>
 <div class="pcs">{cards}</div>''', "dark")
 
 # SOLO — full-page quote spread from the press release
-page(f'''<div class="fullp q">{pic("photo/solo/zolote-44-4.webp", "full", "50% 35%")}<div class="fullp-q">
+page(f'''<div class="fullp q">{cp("D07", "photo/solo/zolote-44-4.webp", "50% 35%", "full")}<div class="fullp-q">
   <p class="bigq">«Я є. Я продовжую жити.<br>Я обираю себе»</p>
   <p>Для жінки краса — це спосіб зберегти себе. Улюблена сукня, шовкова хустка, червона помада — маленькі акти свободи.</p>
   <p class="eb">SOLO. Шлях до себе · хустка «Золоте світло» 44 × 44</p>
@@ -88,28 +89,34 @@ page(f'''<div class="hd"><div><p class="eb">Як носити</p><h2>Один п
 <div class="ways">{ways}</div>''', "dark wayspg")
 
 # chapter opener — gifts
-page(f'''<div class="fullp op">{pic("photo/solo/puls-44-3.webp", "full", "50% 30%")}<div class="fullp-t">
+page(f'''<div class="fullp op">{cp("D09", "photo/solo/puls-44-3.webp", "50% 30%", "full")}<div class="fullp-t">
   <p class="eb">Подарунки для команди</p><h1>Від стрічки<br>до майстер-класу</h1>
   <p>Чотири рівні подарунка за роздрібними цінами obiimy.world. Пакування й наліпка з вашим логотипом — безкоштовно. Кожному в команді — свій принт.</p>
 </div></div>''', "cover nopad")
 
 # 7 four tiers — editorial: photo bleeding left, four rows with product thumbs and price breakdown
 rows = "".join(f'<div class="tr">{pic(ph)}<div><p class="eb">{lb}</p><b>{n}</b><span>{t}</span><small>{note}</small></div><em>{pr}</em></div>' for (lb, n, t, pr, note, ph), S in zip(TIERS, SETS4))
-page(f'''<div class="split l">{pic("photo/solo/krok-tw-2.webp", "ph", "50% 20%")}<div class="txt tiers">
+page(f'''<div class="split l">{cp("D10", "photo/solo/krok-tw-2.webp", "50% 20%", "ph")}<div class="txt tiers">
   <p class="eb">Ціновий діапазон</p><h2>Чотири рівні подарунка — від 1 600 до 3 200 грн за речі</h2>
   <div class="ta-l">{rows}</div>
   <p class="foot">Команді з 50 людей — 80 000–160 000 грн, зі 100 — 160 000–320 000 грн за речі за роздрібними цінами; доставку й майстер-клас рахуємо окремо. <b>Чоловікам у команді</b> — сертифікат 1 000–4 000 грн, маска для сну, наволочка або закладка: змішану команду рахуємо в одному розрахунку.</p>
 </div></div>''', "nopad fl")
 
+PROD = main.PROD
+# four sets on one page — four columns bleeding to the edges, italic name on the photo, product chip with the price (as in the SOLO creatives)
+CHIP_PH = [cast(f"P{i + 1}", S["gal"][PROD[i]][0])[0] for i, S in enumerate(SETS4)]
+cols = "".join(f'''<div class="fs">{pic(S["tier"][0], "", S["tier"][1])}<div class="fs-t"><p class="eb">0{i + 1} · {lb}</p><b>{n}</b></div>
+<div class="chip">{pic(CHIP_PH[i], "chip-ph")}<div><span>{S["short"]}</span><em>{pr}</em></div></div></div>''' for i, ((lb, n, t, pr, note, ph), S) in enumerate(zip(TIERS, SETS4)))
+page(f'''<div class="fs-hd"><p class="eb">Чотири подарунки</p><h2>Від стрічки до набору з майстер-класом</h2></div><div class="fss">{cols}</div>''', "dark fourpg nopad")
+
 # 8–11 one page per set: editorial mosaic bleeding to the page edge
 KEEP = ("Що всередині", "Шовк", "Шовк і друк", "Майстер-клас", "Пакування", "Кому")
-PROD = [3, 2, 1, 2]
 M1POS = ["50% 12%", "50% 8%", "50% 30%", "50% 18%"]
 for i, S in enumerate(SETS4):
     hp, ha, hpos = S["hero"]; g2 = S["gal"][0]; g3 = S["gal"][PROD[i]]
     kv = "".join(f'<div><span>{k}</span><span>{v}</span></div>' for k, v in S["inside"] if k in KEEP)
     ways = "".join(f'<div><b>{h}</b>{t}</div>' for h, t in S["ways"])
-    page(f'''<div class="set{" rev" if i % 2 else ""}"><div class="mos">{pic(hp, "m1", M1POS[i])}{pic(g2[0], "m2", g2[2])}{pic(g3[0], "m3", g3[2])}</div>
+    page(f'''<div class="set{" rev" if i % 2 else ""}"><div class="mos">{pic(hp, "m1", hpos if f"H{i + 1}" in main.load("cast").CAST else M1POS[i])}{pic(g2[0], "m2", g2[2])}{pic(g3[0], "m3", g3[2])}</div>
 <div class="set-t"><p class="eb">{S["lb"]}</p><h2>{S["name"]}</h2><p class="sub">{S["lead"]}</p>
 <p class="rrp">{S["pr"]}<small>{S["prnote"]}</small></p>
 <div class="kv">{kv}</div>
@@ -127,7 +134,7 @@ def terms(i, tm): return '<p class="free">Безкоштовно</p><p class="nt
 pers = "".join(f'<div class="per"><b>0{i + 1}</b><h3>{n}</h3><p>{t}</p>{terms(i, tm)}</div>' for i, (n, t, tm, ph) in enumerate(PERS))
 page(f'''<div class="hd"><div><p class="eb">Персоналізація</p><h2>Подарунок із вашим логотипом — чотири рівні</h2></div><p class="hd-r">Перший рівень — безкоштовно в кожному корпоративному замовленні. Решта — залежно від строків: що встигаємо до вашої дати й скільки це коштує, пишемо в розрахунку.</p></div>
 <div class="grid4p">{pers}</div>
-<div class="per-ph">{pic("photo/box-gold.jpg", "", "50% 45%")}</div>
+<div class="per-ph">{cp("D16", "photo/box-gold.jpg", "50% 45%")}</div>
 <p class="foot">Подарункове пакування Obiimy; наліпка з вашим логотипом — усередині коробки. Як виглядатиме наліпка чи бирка — покажемо в добірці.</p>''')
 
 # 14 contacts
@@ -136,7 +143,7 @@ page(f'''<div class="split r"><div class="txt"><p class="eb">Запит</p><h2>�
   <p class="cond">Оплата й документи для юридичної особи, мінімальна кількість — уточнимо в розрахунку.</p>
   <div class="qrrow">{qr_svg(LANDING, 110)}<p class="contact"><b>{PHONE}</b><br>Telegram @OBIIMY_sales<br>{MAIL}<br>obiimy.world<br><small>Скануйте — <a href="{LANDING}">сторінка для команд</a> із формою запиту</small></p></div>
   <p class="foot">Шоурум: {SHOWROOM} · пн–пт 10:00–18:00, сб 11:00–18:00</p>
-</div>{pic("photo/solo/krok-tw-3.webp", "ph", "50% 30%")}</div>''', "nopad fr")
+</div>{cp("D17", "photo/solo/krok-tw-3.webp", "50% 30%", "ph")}</div>''', "nopad fr")
 
 html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — подарунки для команди 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=Tenor+Sans&display=swap" rel="stylesheet">
@@ -230,6 +237,18 @@ html = f'''<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obi
   .tr span {{ display: block; font-size: 8.6pt; color: #4A4A47; }} .tr small {{ display: block; font-size: 7.3pt; color: #6B6772; margin-top: .5mm; }}
   .tr em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 15pt; white-space: nowrap; }}
   .tiers .foot {{ margin-top: 5mm; }}
+  /* four sets page */
+  .fourpg {{ padding: 14mm 0 0; }}
+  .fs-hd {{ display: flex; align-items: baseline; gap: 8mm; margin: 0 18mm 6mm; }} .fs-hd h2 {{ margin: 0; font-size: 22pt; }}
+  .fss {{ display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; flex: 1; min-height: 0; }}
+  .fs {{ position: relative; overflow: hidden; }} .fs > img:first-child {{ width: 100%; height: 100%; }}
+  .fs::after {{ content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0,0,0,0) 42%, rgba(0,0,0,.82) 100%); }}
+  .fs-t {{ position: absolute; left: 6mm; right: 6mm; bottom: 26mm; z-index: 2; color: #fff; }} .fs-t .eb {{ color: rgba(255,255,255,.75); margin-bottom: 1.5mm; }}
+  .fs-t b {{ display: block; font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400; font-size: 17pt; line-height: 1.05; color: #F3EBD0; }}
+  .chip {{ position: absolute; left: 6mm; right: 6mm; bottom: 7mm; z-index: 2; display: grid; grid-template-columns: 13mm 1fr; gap: 3mm; align-items: center; background: rgba(20,20,20,.72); border: 1px solid rgba(255,255,255,.18); border-radius: 3mm; padding: 2mm 3mm 2mm 2mm; backdrop-filter: blur(6px); color: #fff; }}
+  .chip .chip-ph {{ width: 13mm; height: 13mm; border-radius: 2mm; background: #fff; object-fit: cover; }}
+  .chip span {{ display: block; font-size: 7pt; color: rgba(255,255,255,.8); line-height: 1.2; }} .chip em {{ font-style: normal; font-family: 'Playfair Display', serif; font-size: 13pt; color: #E7D9A6; line-height: 1.1; }}
+  .fourpg .folio {{ display: none; }}
   /* set pages */
   .set {{ display: grid; grid-template-columns: 168mm 1fr; height: 210mm; }}
   .set.rev {{ grid-template-columns: 1fr 168mm; }} .set.rev .mos {{ order: 2; }}

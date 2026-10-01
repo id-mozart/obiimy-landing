@@ -11,6 +11,7 @@ def load(name):
     m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m); return m
 shop = load("build-b2b-team-shop")
 qr_svg = load("qr").qr_svg
+cast = load("cast").cast
 QR_TG = '<figure class="qrbox">' + qr_svg("https://t.me/OBIIMY_sales", 96) + '<figcaption>Скануйте — чат із менеджером у Telegram</figcaption></figure>'
 def with_qr(html): return html.replace("Написати в Telegram</a>", "Написати в Telegram</a>" + QR_TG)
 team = shop.team
@@ -351,6 +352,13 @@ SETS4 = [  # one page each, in the deck and on the site. Facts: SITE-FACTS (size
          ways=[("Пара", "Хустка на шиї, твіллі на сумці — один принт у двох деталях."), ("Окремо", "Два подарунки з однієї коробки — на будні й на вихід."), ("Майстер-клас", "Формат, зміст, дату й вартість узгодимо в розрахунку."), ("Коробка", "Святкова коробка Obiimy.")],
          who="Коли подарунок має сказати більше, ніж річ."),
 ]
+PROD = [3, 2, 1, 2]
+for _i, _S in enumerate(SETS4):
+    _f, _p = cast(f"H{_i + 1}", _S["hero"][0], _S["hero"][2]); _S["hero"] = (_f, _S["hero"][1], _p)
+    _f, _p = cast(f"M{_i + 1}", _S["gal"][0][0], _S["gal"][0][2]); _S["gal"][0] = (_f, _S["gal"][0][1], _p)
+    _f, _p = cast(f"P{_i + 1}", _S["gal"][PROD[_i]][0], _S["gal"][PROD[_i]][2]); _S["gal"][PROD[_i]] = (_f, _S["gal"][PROD[_i]][1], _p)
+    _S["tier"] = cast(f"T{_i + 1}", _S["gal"][0][0], _S["gal"][0][2])
+
 WAYS = [  # «Як носити» — one print across all shots, like the brand banner (t05-avantiura-ways): hustka «Авантюра» 88 × 88 and twilly
     ("У волоссі", "Бант, який помічають.", "photo/solo/avantiura-88-5.webp", "50% 0%"),
     ("На шиї", "Класика, що не виходить з моди.", "photo/solo/avantiura-88-4.webp", "50% 15%"),
@@ -364,13 +372,16 @@ def perks_section():
     cards = "".join(f'<div class="perk"><b class="n">0{i + 1}</b><h3>{b}</h3><p>{t}</p></div>' for i, (b, t) in enumerate(PERKS[:3]))
     return f'''
   <section class="block" id="why"><div class="wrap perks">
-    <figure class="perks-ph">{img("photo/solo/avantiura-tw-1.webp", "Чорний жакет і червона шовкова твіллі «Авантюра»", sizes="(max-width: 960px) 100vw, 45vw")}</figure>
+    <figure class="perks-ph">{img(PERKS_PH[0], "Модель у шовковій хустці Obiimy", sizes="(max-width: 960px) 100vw, 45vw", style=pos(PERKS_PH[1]))}</figure>
     <div><div class="head"><p class="eyebrow">Чому Obiimy</p><h2>Три причини обрати шовк Obiimy</h2></div><div class="perks-l">{cards}</div>
       <div class="nums"><div><b>100%</b><span>натуральний італійський шовк</span></div><div><b>5</b><span>авторських колекцій</span></div><div><b>38</b><span>принтів твіллі</span></div><div><b>45</b><span>готових подарункових наборів</span></div></div></div>
   </div></section>'''
 
-CARD_PH = ["photo/solo/iskra-65-2.webp", "photo/solo/flirt-tw-4.webp", "photo/solo/puls-44-2.webp", "photo/solo/zolote-44-5.webp", "photo/solo/avantiura-tw-4.webp", "photo/solo/tysha-88-3.webp", "photo/solo/krok-44-2.webp"]
-CARD_POS = ["50% 20%", "50% 35%", "50% 15%", "50% 12%", "50% 15%", "50% 20%", "50% 20%"]
+_CARDS = [cast(f"S{i + 1}", f, p) for i, (f, p) in enumerate(zip(["photo/solo/iskra-65-2.webp", "photo/solo/flirt-tw-4.webp", "photo/solo/puls-44-2.webp", "photo/solo/zolote-44-5.webp", "photo/solo/avantiura-tw-4.webp", "photo/solo/tysha-88-3.webp", "photo/solo/krok-44-2.webp"], ["50% 20%", "50% 35%", "50% 15%", "50% 12%", "50% 15%", "50% 20%", "50% 20%"]))]
+CARD_PH = [f for f, p in _CARDS]; CARD_POS = [p for f, p in _CARDS]
+HERO = cast("D01", "photo/solo/zolote-44-5.webp", "50% 28%"); PERKS_PH = cast("D04", "photo/solo/avantiura-tw-1.webp", "50% 20%")
+SOLO_BIG = cast("D05a", "photo/solo/tysha-88-2.webp", "50% 30%"); SOLO_S1 = cast("D05b", "photo/solo/puls-44-4.webp", "50% 20%"); SOLO_S2 = cast("D05c", "photo/solo/iskra-65-3.webp", "50% 50%")
+QUOTE_PH = cast("D07", "photo/solo/zolote-44-4.webp", "50% 35%"); PERS_PH = cast("D16", "photo/box-gold.jpg", "50% 45%"); BAND_PH = cast("L-band", "photo/solo/krok-tw-3.webp", "50% 30%")
 
 def solo_section():
     """Black presentational block: manifesto of the collection (press release), cinematic shots, the seven prints as tall cards."""
@@ -382,7 +393,7 @@ def solo_section():
         <p>Натхнення — обкладинки модних журналів 40–50-х: змінювалися епохи й силуети, а хустка залишалася поруч. Сім авторських принтів — сім етапів шляху жінки до себе. Натуральний шовк, двосторонній друк.</p>
         <p class="sd-note">Для команди: кожному — свій принт, під стан, який хочете побажати, або один принт на всіх.</p>
         <p><a class="btn btn-line sd-cta" href="#request">Добірка SOLO для команди →</a></p></div>
-      <figure class="sd-ph">{img("photo/solo/tysha-88-2.webp", "Хустка «Тиша всередині» на водійці кабріолета", sizes="(max-width: 960px) 100vw, 50vw")}{img("photo/solo/puls-44-4.webp", "«Пульс» на шиї поверх світлого жакета", sizes="(max-width: 960px) 50vw, 25vw", style="object-position:50% 20%")}{img("photo/solo/iskra-65-3.webp", "«Іскра» на сумці в кафе", sizes="(max-width: 960px) 50vw, 25vw")}</figure>
+      <figure class="sd-ph">{img(SOLO_BIG[0], "Колекція SOLO на моделі", sizes="(max-width: 960px) 100vw, 50vw", style=pos(SOLO_BIG[1]))}{img(SOLO_S1[0], "Колекція SOLO", sizes="(max-width: 960px) 50vw, 25vw", style=pos(SOLO_S1[1]))}{img(SOLO_S2[0], "Колекція SOLO", sizes="(max-width: 960px) 50vw, 25vw", style=pos(SOLO_S2[1]))}</figure>
     </div>
     <div class="sd-hd"><h3>Сім принтів — сім станів</h3><p>Для HR стан принта — готовий текст привітання: «Сміливий крок» — на підвищення, «Тиша всередині» — після складного кварталу. Ціни роздрібні, двосторонній друк.</p></div>
     <div class="pcs">{cards}</div>
@@ -390,7 +401,7 @@ def solo_section():
 
 def quote_section():
     return f'''
-  <section class="quote-band" aria-label="SOLO">{img("photo/solo/zolote-44-4.webp", "Хустка «Золоте світло» поясом на чорному", sizes="100vw", style="object-position:50% 35%")}
+  <section class="quote-band" aria-label="SOLO">{img(QUOTE_PH[0], "Колекція SOLO", sizes="100vw", style=pos(QUOTE_PH[1]))}
     <div class="qb-t"><p class="bigq">«Я є. Я продовжую жити.<br>Я обираю себе»</p><p>Для жінки краса — це спосіб зберегти себе. Улюблена сукня, шовкова хустка, червона помада — маленькі акти свободи.</p><p class="eyebrow">SOLO. Шлях до себе</p></div>
   </section>'''
 
@@ -444,7 +455,7 @@ def tiers_b():
 
 def tiers_c():
     """C — two by two: horizontal cards, model photo + product inset + description."""
-    cards = "".join(f'<a class="tc" href="{S["slug"]}"><div class="tc-ph">{img(S["gal"][0][0], n, sizes="(max-width: 640px) 100vw, 25vw", style=pos(S["gal"][0][2]))}{img(ph, "", sizes="90px", cls="tc-p")}</div><div class="tc-t"><p class="eyebrow">0{i + 1} · {lb}</p><h3>{n}</h3><p>{t}</p><em class="num">{pr}</em><small>{note}</small><span class="more">Що всередині й як носити →</span></div></a>' for i, ((lb, n, t, pr, note, ph), S) in enumerate(zip(TIERS, SETS4)))
+    cards = "".join(f'<a class="tc" href="{S["slug"]}"><div class="tc-ph">{img(S["tier"][0], n, sizes="(max-width: 640px) 100vw, 25vw", style=pos(S["tier"][1]))}{img(S["gal"][PROD[i]][0], "", sizes="90px", cls="tc-p")}</div><div class="tc-t"><p class="eyebrow">0{i + 1} · {lb}</p><h3>{n}</h3><p>{t}</p><em class="num">{pr}</em><small>{note}</small><span class="more">Що всередині й як носити →</span></div></a>' for i, ((lb, n, t, pr, note, ph), S) in enumerate(zip(TIERS, SETS4)))
     return f'''
   <section class="block alt" id="tiers"><div class="wrap">
     <div class="head"><p class="eyebrow">Ціновий діапазон</p><h2>Чотири рівні подарунка — від 1 600 до 3 200 грн за речі</h2><p class="sub">Ціни роздрібні, obiimy.world; майстер-клас і доставку рахуємо окремо.</p></div>
@@ -459,12 +470,12 @@ def personal_section():
   <section class="block" id="logo"><div class="wrap">
     <div class="head"><p class="eyebrow">Персоналізація</p><h2>Подарунок із вашим логотипом — чотири рівні</h2><p class="sub">Перший рівень — безкоштовно. Решта — залежно від строків, у розрахунку.</p></div>
     <div class="pers4">{cards}</div>
-    <figure class="per-ph">{img("photo/box-gold.jpg", "Подарункове пакування Obiimy — коробка з хусткою", sizes="100vw", style="object-position:50% 45%")}<figcaption>Подарункове пакування Obiimy; наліпка з вашим логотипом — усередині коробки. Як виглядатиме наліпка чи бирка — покажемо в добірці.</figcaption></figure>
+    <figure class="per-ph">{img(PERS_PH[0], "Подарункове пакування Obiimy", sizes="100vw", style=pos(PERS_PH[1]))}<figcaption>Подарункове пакування Obiimy; наліпка з вашим логотипом — усередині коробки. Як виглядатиме наліпка чи бирка — покажемо в добірці.</figcaption></figure>
   </div></section>'''
 
 def photo_band():
     return f'''
-  <section class="photo-band" aria-hidden="true">{img("photo/solo/krok-tw-3.webp", "", sizes="100vw", style="object-position:50% 30%")}<div class="pb-t"><p class="eyebrow">Запит</p><h2>Напишіть — надішлемо добірку й розрахунок</h2></div></section>'''
+  <section class="photo-band" aria-hidden="true">{img(BAND_PH[0], "", sizes="100vw", style=pos(BAND_PH[1]))}<div class="pb-t"><p class="eyebrow">Запит</p><h2>Напишіть — надішлемо добірку й розрахунок</h2></div></section>'''
 
 def greetings():
     cards = "".join(f'<div class="paper"><small>{lab}</small><p class="t">{t.replace(chr(10), "<br>")}</p><p class="s">— ваша команда</p></div>' for k, lab, t in CARDS if k in ("first", "bday", "years", "team"))
@@ -484,7 +495,7 @@ def whyhow():
         <div><h3>Добірка й розрахунок</h3><p>У відповідь — принти на вибір і розрахунок окремими рядками: речі, привітання, доставка. Чи встигаємо до дати — пишемо одразу.</p></div>
         <div><h3>Відправка</h3><p>Ви надсилаєте список отримувачів і текст привітання. Відправляємо Новою поштою — кожному окремо чи в офіс, по Україні; за кордон — як домовимось.</p></div>
       </div>
-      <p class="note" style="margin-top:18px"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для HR (PDF, 6,0 МБ) ↓</a> · <a href="b2b-team-details">Усе про шовк, пакування й доставку →</a></p>
+      <p class="note" style="margin-top:18px"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для HR (PDF, 6,5 МБ) ↓</a> · <a href="b2b-team-details">Усе про шовк, пакування й доставку →</a></p>
     </div>
   </div></section>
   <section class="block alt" style="padding-top:0" aria-hidden="true"><div class="wrap"><figure class="wide">{img("photo/kolo-3.webp", "Шовкова хустка на плечах поверх бежевого пальта", sizes="100vw")}</figure></div></section>'''
@@ -492,7 +503,7 @@ def whyhow():
 def main():
     js = ""
     body = f'''
-  <section class="hero cover" id="top">{img("photo/solo/zolote-44-5.webp", "Хустка «Золоте світло» на пальті, колекція SOLO", sizes="100vw", lazy=False, eager_priority=True, cls="cover-img")}
+  <section class="hero cover" id="top">{img(HERO[0], "Шовкова хустка на моделі — колекція SOLO", sizes="100vw", lazy=False, eager_priority=True, cls="cover-img", style=pos(HERO[1]))}
     <div class="cover-t"><div class="wrap">
       <p class="eyebrow">Для HR і офіс-менеджерів · подарунки співробітникам</p>
       <h1>Шовкові подарунки<br>для команди</h1>

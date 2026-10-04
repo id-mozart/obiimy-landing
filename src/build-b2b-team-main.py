@@ -214,6 +214,8 @@ CSS = DECK_SKIN + """
   .w6g { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; } .w6 { position: relative; margin: 0; overflow: hidden; } .w6 img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; }
   .w6::after { content: ""; position: absolute; inset: 55% 0 0; background: linear-gradient(0deg, rgba(0,0,0,.62), rgba(0,0,0,0)); pointer-events: none; }
   .w6 figcaption { position: absolute; left: 22px; bottom: 18px; z-index: 1; color: #E7D9A6; font-family: var(--display); font-style: italic; font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1; }
+  .w6g.w4g { grid-template-columns: repeat(4, minmax(0, 1fr)); } .w4g .w6 img { aspect-ratio: 3 / 4; }
+  @media (max-width: 960px) { .w6g.w4g { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 640px) { .w6g { grid-template-columns: 1fr 1fr; gap: 8px; } .w6 figcaption { left: 12px; bottom: 12px; font-size: 1.2rem; } }
   @media (max-width: 640px) {
     .quote-band { display: none; }
@@ -464,10 +466,10 @@ for _i, _S in enumerate(SETS4):
     _S["tier"] = cast(f"T{_i + 1}", _S["gal"][0][0], _S["gal"][0][2])
 
 WAYS = [  # «Як носити» — one print across all shots, like the brand banner (t05-avantiura-ways): hustka «Авантюра» 88 × 88 and twilly
-    ("У волоссі", "Стрічка на хвості · «Авантюра»", "photo/solo/avantiura-tw-3.webp", "50% 50%"),
-    ("На шиї", "Вузол під комір · «Флірт»", "photo/solo/flirt-tw-3.webp", "50% 50%"),
-    ("На сумці", "На ручці · «Золоте світло»", "photo/solo/zolote-tw-2.webp", "40% 50%"),
-    ("Поясом", "На талії · «Сміливий крок»", "photo/solo/krok-tw-4.webp", "45% 50%"),
+    ("У волоссі", "«Авантюра»", "photo/solo/avantiura-tw-3.webp", "50% 50%"),
+    ("На шиї", "«Флірт»", "photo/solo/flirt-tw-3.webp", "50% 50%"),
+    ("На сумці", "«Золоте світло»", "photo/solo/zolote-tw-2.webp", "40% 50%"),
+    ("Поясом", "«Сміливий крок»", "photo/solo/krok-tw-4.webp", "45% 50%"),
 ]
 SZ = "(max-width: 640px) 100vw, (max-width: 960px) 50vw, 25vw"
 SZ6 = "(max-width: 640px) 50vw, (max-width: 960px) 33vw, 16vw"
@@ -510,12 +512,12 @@ def quote_section():
   </section>'''
 
 def ways_section():
-    """«Як носити» — like the brand banner: one print, four ways, italic labels on the photo."""
-    ways = "".join(f'<figure class="way">{img(ph, f"{n} — шовкова твіллі Obiimy", sizes="(max-width: 640px) 100vw, 25vw", style=pos(ps))}<figcaption><b>{n}</b><span>{t.replace(" · ", "<br>")}</span></figcaption></figure>' for n, t, ph, ps in WAYS)
+    """«Одна твіллі — чотири образи» — right after the packaging, on paper, next to the six looks of a scarf (deck p. 9–10)."""
+    ways = "".join(f'<figure class="w6">{img(ph, f"{n} — шовкова твіллі Obiimy, принт {t}", sizes="(max-width: 640px) 50vw, 25vw", style=pos(ps))}<figcaption>{n}</figcaption></figure>' for n, t, ph, ps in WAYS)
     return f'''
-  <section class="block solo-dark ways-dark" id="ways"><div class="wrap">
-    <div class="sd-hd top"><div><p class="eyebrow">Як носити</p><h2>Одна твіллі — <i>чотири образи</i></h2></div><p>Твіллі 84 × 5 — 1 600 грн, найдоступніший із чотирьох подарунків. Хустку 44 × 44 носять так само: на шиї, на зап’ясті, на сумці. Один принт на всіх — і жодних однакових образів.</p></div>
-    <div class="ways">{ways}</div>
+  <section class="block alt" id="ways"><div class="wrap">
+    <div class="head"><p class="eyebrow">Як носити</p><h2>Одна твіллі — <i>чотири образи</i></h2><p class="sub">Твіллі — шовкова стрічка 84 × 5 см, найдоступніший із чотирьох подарунків: 1 600 грн. Її носять у волоссі, на шиї, на сумці й поясом. На фото — принти SOLO: «Авантюра», «Флірт», «Золоте світло», «Сміливий крок».</p></div>
+    <div class="w6g w4g">{ways}</div>
   </div></section>'''
 
 W6 = [("На сумці", "62% 50%"), ("На голові", "66% 50%"), ("На шиї", "56% 50%"), ("Поясом", "50% 50%"), ("Банданою", "50% 50%"), ("Топом", "56% 50%")]   # the client's collage, photo/ways
@@ -655,18 +657,18 @@ def main():
   {tiers_c()}
   {perks_section()}
   {personal_section()}
-  {assort_section()}
+  {ways_section()}
   {scarf_ways_section()}
+  {assort_section()}
   {solo_section()}
   {quote_section()}
-  {ways_section()}
   {terms_section()}
   {photo_band()}
   {with_qr(team.request_section("f-main", "Подарунки для команди", "Напишіть — <i>надішлемо добірку й розрахунок</i>", "Нагода, кількість і дата — цього досить для першого листа.", "tiers", corp=True))}
   ''' + team.script("f-main", js)
     return dict(slug="b2b-team-main", skin="deck", bar=BAR, title="Подарунки для команди, які носять — від 1 600 грн на людину — Obiimy",
                 desc="Корпоративні подарунки Obiimy: чотири подарунки від 1 600 до 3 600 грн на людину, авторські принти на натуральному шовку, колекція SOLO, пакування й наліпка з логотипом компанії — безкоштовно.",
-                og="photo/solo/zolote-44-5.webp", nav=[("Подарунки", "tiers"), ("Ваш логотип", "logo"), ("Асортимент", "range"), ("SOLO", "solo"), ("Умови", "terms")],
+                og="photo/solo/zolote-44-5.webp", nav=[("Подарунки", "tiers"), ("Ваш логотип", "logo"), ("Як носити", "ways"), ("Асортимент", "range"), ("SOLO", "solo"), ("Умови", "terms")],
                 cta="Запит", sticky="Подарунки для команди · від 1 600 грн", others=False, body=body)
 
 def build():

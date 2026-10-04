@@ -170,18 +170,17 @@ page(f"""{rh("Персоналізація")}<figure class="boxcut">{cut("box-go
 <p class="cap req">За запитом</p><div class="args">{ask}</div>
 <p class="t8 end">Що встигаємо до вашої дати й скільки це коштує — пишемо в розрахунку. На фото — подарункове пакування Obiimy: коробка, папір тішью, хустка й твіллі в одному принті.</p></div>""", "paper")
 
-# ── 9 · the range (sheet): 6 × 2 cut-outs on a shelf line, sizes in three steps ─────────────────────
-SIZE = main.SIZE   # mm on the long side
-SHORT = {"Закладка для книги": ("Закладка", "для книги · "), "Обруч для вмивання": ("Обруч", "для вмивання · ")}   # the name fits a 39 mm cell
-def range_cell(n, p, c, a):
-    n, pre = SHORT.get(n, (n, "")); p = pre + p
-    tag = '<em class="cap">усім</em>' if a else ""
-    return f'<figure class="rc"><div>{cut(c, SIZE[c], fix=True)}</div><figcaption><b class="h13">{n}</b><span>{p}{tag}</span></figcaption></figure>'
-cells = "".join(range_cell(*r) for r in RANGE + RANGE_MORE)
-page(f"""{rh("Асортимент")}<div class="sheet">
-<div class="hd"><h2 class="h28">Усе, з чого можна <i>зібрати подарунок</i></h2><p>Роздрібні ціни obiimy.world. Будь-яку річ можна додати в коробку або зробити окремим подарунком. «Усім» — речі для тих, хто не носить аксесуари.</p></div>
-<div class="range">{cells}</div>
-<p class="end">Також: сертифікат Obiimy на 1 000–4 000 грн — електронний або фізичний, на будь-який товар, діє 3 місяці · набори резинок — від 1 250 грн.</p></div>""", "paper")
+# ── 9 · one twilly, four looks: a paper panel and four photographs to the edge ─────────────────────────
+WAYS = [("У волоссі", "photo/solo/avantiura-tw-3.webp", "50% 45%", 1.0), ("На шиї", "photo/solo/flirt-tw-3.webp", "50% 35%", 1.0),
+        ("На сумці", "photo/solo/zolote-tw-2.webp", "50% 70%", 1.0), ("Поясом", "photo/solo/krok-tw-4.webp", "42% 62%", 1.45)]
+tiles4 = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps, hi=True, zoom=z)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps, z in WAYS)
+TW4 = [("avantiura-tw-2", "«Авантюра»"), ("flirt-tw-2", "«Флірт»"), ("zolote-tw-1", "«Золоте світло»"), ("krok-tw-1", "«Сміливий крок»")]
+prints4 = "".join(f'<figure>{cut(c, 27, fix=True)}</figure>' for c, n in TW4)
+page(f"""<div class="panel"><p class="cap">Як носити</p><h2 class="h28">Одна твіллі —<br><i>чотири образи</i></h2>
+<p class="lead">Твіллі — шовкова стрічка 84 × 5 см, найдоступніший із чотирьох подарунків: 1 600 грн. Її носять у волоссі, на шиї, на сумці й поясом.</p>
+<div class="sz3 tw4">{prints4}</div>
+<p class="t8 end">Принти SOLO, зліва направо: {", ".join(n for c, n in TW4)} — ті самі, що на фото. Один принт на всіх — і жодних однакових образів.</p></div>
+<div class="w6g w4g">{tiles4}</div>""", "ways6", short=True)
 
 # ── 10 · one scarf, six looks: a paper panel and six photographs to the edge (the client's collage, photo/ways) ──────
 W6 = [("На сумці", "62% 50%"), ("На голові", "66% 50%"), ("На шиї", "56% 50%"), ("Поясом", "50% 50%"), ("Банданою", "50% 50%"), ("Топом", "56% 50%")]
@@ -194,14 +193,27 @@ page(f"""<div class="panel"><p class="cap">Як носити</p><h2 class="h28">
 <p class="t8 end">Три формати хусток; ціни — роздрібні, obiimy.world. Який формат під який спосіб — підкажемо в добірці.</p></div>
 <div class="w6g">{tiles6}</div>""", "ways6", short=True)
 
-# ── 11 · SOLO (dark frame) ───────────────────────────────────────────────────────────────────────────
+# ── 11 · the range (sheet): 6 × 2 cut-outs on a shelf line, sizes in three steps ─────────────────────
+SIZE = main.SIZE   # mm on the long side
+SHORT = {"Закладка для книги": ("Закладка", "для книги · "), "Обруч для вмивання": ("Обруч", "для вмивання · ")}   # the name fits a 39 mm cell
+def range_cell(n, p, c, a):
+    n, pre = SHORT.get(n, (n, "")); p = pre + p
+    tag = '<em class="cap">усім</em>' if a else ""
+    return f'<figure class="rc"><div>{cut(c, SIZE[c], fix=True)}</div><figcaption><b class="h13">{n}</b><span>{p}{tag}</span></figcaption></figure>'
+cells = "".join(range_cell(*r) for r in RANGE + RANGE_MORE)
+page(f"""{rh("Асортимент")}<div class="sheet">
+<div class="hd"><h2 class="h28">Усе, з чого можна <i>зібрати подарунок</i></h2><p>Роздрібні ціни obiimy.world. Будь-яку річ можна додати в коробку або зробити окремим подарунком. «Усім» — речі для тих, хто не носить аксесуари.</p></div>
+<div class="range">{cells}</div>
+<p class="end">Також: сертифікат Obiimy на 1 000–4 000 грн — електронний або фізичний, на будь-який товар, діє 3 місяці · набори резинок — від 1 250 грн.</p></div>""", "paper")
+
+# ── 12 · SOLO (dark frame) ───────────────────────────────────────────────────────────────────────────
 page(f"""{pic("photo/solo/tysha-88-2.webp", 297, 210, "0% 30%", "bg", hi=True, zoom=1.05)}
 <div class="fr-t"><p class="cap">Нова колекція SOLO · Шлях до себе · 2026</p>
 <h1 class="h40">Змінювалися<br>епохи. <i>Хустка</i><br><i>залишалася</i><br><i>поруч.</i></h1>
 <p class="fr-p">Натхнення — обкладинки модних журналів 40–50-х. Сім авторських принтів — сім етапів шляху жінки до себе. Натуральний шовк, двосторонній друк. Для команди: кожному — свій принт під стан, який хочете побажати, або один на всіх.</p>
 <div class="chip">{cut("tysha-88-1", 13)}<div><span>Принт «Тиша всередині» · твіллі й хустки</span><em>від 1 600 грн</em></div></div></div>""", "frame dark")
 
-# ── 12 · seven prints (dark strip): eye lines on one height (zoom and crop per frame) ───────────────
+# ── 13 · seven prints (dark strip): eye lines on one height (zoom and crop per frame) ───────────────
 STRIP = [("photo/solo/iskra-65-2.webp", "40% 0%", 1.23), ("photo/solo/flirt-65-3.webp", "61% 50%", 1.0), ("photo/solo/puls-tw-3.webp", "49% 50%", 1.0), ("photo/solo/zolote-44-3.webp", "53% 60%", 1.1),
          ("photo/solo/avantiura-tw-1.webp", "50% 0%", 1.07), ("photo/solo/tysha-88-4.webp", "50% 0%", 1.07), ("photo/solo/krok-44-4.webp", "56% 60%", 1.1)]
 import re as _re
@@ -213,14 +225,6 @@ tiles = "".join(tile7(F, P) for F, P in zip(STRIP, SOLO))
 page(f"""<div class="sh"><div><p class="cap">Колекція SOLO</p><h2 class="h28">Сім принтів — <i>сім станів</i></h2></div>
 <p>Назва принта — готовий текст листівки: «Сміливий крок» — на підвищення, «Тиша всередині» — після складного кварталу. Твіллі в усіх принтах — 1 600 грн; хустки з двостороннім друком — 2 400–6 600 грн, формат — під фото.</p></div>
 <div class="tiles t7">{tiles}</div>""", "strip dark")
-
-# ── 13 · one twilly, four looks (dark strip, the same template: tiles in the margins, captions below) ─
-WAYS = [("У волоссі", "Стрічка на хвості · «Авантюра»", "photo/solo/avantiura-tw-3.webp", "50% 50%", 1.0), ("На шиї", "Вузол під комір · «Флірт»", "photo/solo/flirt-tw-3.webp", "50% 50%", 1.0),
-        ("На сумці", "На ручці · «Золоте світло»", "photo/solo/zolote-tw-2.webp", "35% 50%", 1.0), ("Поясом", "На талії · «Сміливий крок»", "photo/solo/krok-tw-4.webp", "42% 62%", 1.45)]
-tiles = "".join(f'<figure class="tile">{pic(f, 63.75, 117, ps, zoom=z)}<figcaption><b class="h28"><i>{n}</i></b><span>{t}</span></figcaption></figure>' for n, t, f, ps, z in WAYS)
-page(f"""<div class="sh"><div><p class="cap">Як носити</p><h2 class="h28">Одна твіллі — <i>чотири образи</i></h2></div>
-<p>Твіллі 84 × 5 — 1 600 грн, найдоступніший із чотирьох подарунків. Хустку 44 × 44 носять так само: на шиї, на зап’ясті, на сумці. Один принт на всіх — і жодних однакових образів.</p></div>
-<div class="tiles t4">{tiles}</div>""", "strip dark")
 
 # ── 14 · terms and how to order (sheet) ─────────────────────────────────────────────────────────────
 steps = "".join(f'<div class="arg"><b class="num">0{i + 1}</b><div><h3 class="h13">{t}</h3><p>{d}</p></div></div>' for i, (t, d) in enumerate(STEPS))
@@ -348,6 +352,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .w6::after { content: ""; position: absolute; inset: 55% 0 0; background: linear-gradient(0deg, rgba(0,0,0,.62), rgba(0,0,0,0)); }
 .w6 figcaption { position: absolute; left: 6mm; bottom: 5.25mm; z-index: 2; color: #E7D9A6; }
 .sz3 { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; } .sz3 figure { display: flex; flex-direction: column; align-items: flex-start; } .sz3 img { filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.14)); }
+.w4g { grid-template-columns: repeat(2, 1fr); } .tw4 { border-bottom: .35pt solid #C9C6C0; padding-bottom: 2.25mm; } .tw4 img { filter: drop-shadow(0 1mm 1.5mm rgba(0,0,0,.14)); }
 .sz3 figcaption { margin-top: 3mm; border-top: .35pt solid #C9C6C0; padding-top: 1.5mm; min-width: 24mm; } .sz3 b { display: block; } .ways6 .end { margin-top: 6mm; }
 /* last page */
 .last h2 { margin-bottom: 9mm; } .tel { color: #E7D9A6; margin-bottom: 4.5mm; white-space: nowrap; letter-spacing: -.035em; word-spacing: -.06em; } .lines { color: #F1EFEA; }

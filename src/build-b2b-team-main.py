@@ -131,7 +131,7 @@ CSS = DECK_SKIN + """
   @media (max-width: 960px) { .sd-top { grid-template-columns: 1fr; } .sd-prints { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
   @media (max-width: 640px) { .sd-prints { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sd-ph img:first-child { aspect-ratio: 4 / 3; } }
   .assort { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px 14px; }
-  .as { text-align: left; } .as img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; padding: 8%; filter: drop-shadow(0 10px 14px rgba(0,0,0,.16)); }
+  .as { text-align: left; } .as-im { aspect-ratio: 1 / 1; display: flex; align-items: flex-end; justify-content: center; padding: 6% 6% 8%; border-bottom: 1px solid var(--line); } .as img { max-height: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 10px 14px rgba(0,0,0,.16)); }
   .as span.num { display: block; } .as em { display: inline-block; font-style: normal; font-size: .64rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--ink); border-radius: 99px; padding: 1px 7px 0 9px; margin-left: 8px; vertical-align: 1px; }
   .as b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.05rem; line-height: 1.15; margin-top: 10px; }
   .as span { color: var(--ink2); font-size: .9rem; }
@@ -176,7 +176,7 @@ CSS = DECK_SKIN + """
   .photo-band { position: relative; } .photo-band img { width: 100%; height: clamp(420px, 72vh, 720px); object-fit: cover; display: block; }
   .photo-band::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 55%); pointer-events: none; }
   .pb-t { position: absolute; left: 0; right: 0; bottom: clamp(28px, 5vw, 56px); z-index: 1; color: #fff; }
-  .pb-t .eyebrow { color: rgba(255,255,255,.75); } .pb-t h2 { font-size: clamp(1.8rem, 3.6vw, 3rem); max-width: 16em; margin-top: 8px; }
+  .pb-t .eyebrow { color: rgba(255,255,255,.75); } .pb-t h2 { font-size: clamp(1.8rem, 3.6vw, 3rem); max-width: 11em; margin-top: 8px; }
   .tiers4, .pers4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
   .tier4, .per4 { display: flex; flex-direction: column; border-top: 1px solid var(--ink); padding-top: 12px; }
   .tier4 .n, .per4 .n { font-family: var(--display); font-weight: 400; font-size: 1.4rem; line-height: 1; margin-bottom: 10px; }
@@ -361,6 +361,7 @@ RANGE = [  # name, retail price, cut-out, «for everyone»
     ("Хустка 88 × 88", "від 4 400 грн", "prob88", 0), ("Кільце для хустки", "450 грн", "ring-n", 0), ("Шовкова резинка", "700 грн", "scrunchie-pole", 0),
     ("Маска для сну", "2 700 грн", "mask-synii", 1), ("Закладка для книги", "800 грн", "bookmark-melodiia", 1), ("Наволочка 50 × 70", "від 4 200 грн", "pillow-tuman", 1),
     ("Твіллі й резинка", "набір — 2 200 грн", "twscr-makiv", 0)]
+SIZE = {"zolote-tw-1": 34, "krok-44-1": 27, "kolo-sontsia": 32, "prob88": 37.5, "ring-n": 15, "scrunchie-pole": 29, "mask-synii": 34, "bookmark-melodiia": 33, "pillow-tuman": 37, "twscr-makiv": 34, "turban-bilyi": 31, "obruch": 27}   # mm on the long side in the deck; the landing keeps the proportions
 RANGE_MORE = [("Тюрбан", "3 500 грн", "turban-bilyi", 0), ("Обруч для вмивання", "700 грн", "obruch", 0)]
 ASK = [("Нашивна бирка", "Із логотипом компанії — на самій хустці чи твіллі."),
        ("Листівка й друковані матеріали", "Привітання вашими словами, з вашим логотипом."),
@@ -429,7 +430,7 @@ SETS4 = [  # one page each, in the deck and on the site. Facts: SITE-FACTS (size
          ways=[("На шиї", "Трикутником або скрученою стрічкою — кінці протягнуті в кільце замість вузла."), ("На сумці", "Складена в стрічку — на ручці."), ("На зап’ясті", "Як браслет — для теплого сезону."), ("У волоссі", "Пов’язка чи стрічка на хвості.")],
          who="Кільце підказує, як носити."),
     dict(slug="b2b-set-mask", b50="155 000 грн", name="Маска й резинка — набір про відпочинок", short="Маска для сну й резинка", lb="Для відпочинку · 03", pr="3 100 грн", prnote="роздрібна ціна набору — на 300 грн менше, ніж окремо (маска 2 700 + резинка 700)",
-         lead="Набір про відпочинок, а не про роботу: шовкова маска для сну й резинка в одному принті, у фірмовому пакуванні Obiimy. Для дому, не для офісу — маску носять щоночі, резинку щодня. Підходить і тим, хто не носить аксесуари.",
+         lead="Шовкова маска для сну й резинка в одному принті, у фірмовому пакуванні Obiimy. Маску носять щоночі, резинку — щодня. Підходить і тим, хто не носить хустки.",
          hero=("photo/solo/flirt-scr-3.webp", "Шовкова резинка — приклад; принти набору нижче", "50% 20%"),
          gal=[("img/mask-svoboda.webp", "Маска для сну «Свобода»", ""), ("img/sets/maskscr-litnie-pole.webp", "Набір «Літнє поле»: маска й резинка в коробці", ""), ("img/mask-vpevnenist.webp", "Маска для сну «Впевненість»", ""), ("img/sets/maskscr-enerhiia.webp", "Набір «Енергія»: маска й резинка", "")],
          inside=[("Що всередині", "Маска для сну та шовкова резинка в одному принті"), ("Шовк", "100% натуральний італійський шовк"), ("Принти", "Літнє поле, Енергія, Свобода, Впевненість, Піднесення, Мелодія двох, Сміливість, Серцебиття"), ("Пакування", "Фірмове пакування Obiimy — безкоштовно; наліпка з логотипом усередині"), ("Підходить", "І тим, хто не носить аксесуари: маска — для дому"), ("Кому", "Колегам, які не носять хустки; віддаленим командам; до подяки за проєкт. Чоловікам — маска окремо")],
@@ -469,8 +470,8 @@ def perks_section():
     return f'''
   <section class="block" id="why"><div class="wrap perks">
     <figure class="perks-ph">{img(PERKS_PH[0], "Модель у шовковій хустці Obiimy", sizes="(max-width: 960px) 100vw, 45vw", style=pos(PERKS_PH[1]))}<figcaption>«Кожна коробочка — це обійми, що нагадують: ти варта краси»</figcaption></figure>
-    <div><div class="head"><p class="eyebrow">Чому Obiimy</p><h2>Подарунок, що носять, <i>а не кладуть у шухляду</i></h2></div><div class="perks-l">{cards}</div>
-      <p class="note">Продають: INTERTOP · Hram · Be Brave (Канада) · UFD London. Пишуть: LIGA.net · INSIDER UA. Зразки — у шоурумі: {team.SHOWROOM}.</p></div>
+    <div><div class="head"><p class="eyebrow">Чому Obiimy</p><h2>Подарунок, що носять, <i>а не кладуть у шухляду</i></h2><p class="sub">Нас продають INTERTOP, Hram, Be Brave (Канада), UFD London · про нас пишуть LIGA.net та INSIDER UA</p></div><div class="perks-l">{cards}</div>
+      <p class="note">Зразки можна побачити й потримати в шоурумі: {team.SHOWROOM}.</p></div>
   </div></section>'''
 
 _CARDS = [cast(f"S{i + 1}", f, p) for i, (f, p) in enumerate(zip(["photo/solo/iskra-65-2.webp", "photo/solo/flirt-tw-4.webp", "photo/solo/puls-44-2.webp", "photo/solo/zolote-44-5.webp", "photo/solo/avantiura-tw-4.webp", "photo/solo/tysha-88-3.webp", "photo/solo/krok-44-2.webp"], ["50% 20%", "50% 35%", "50% 15%", "50% 12%", "50% 15%", "50% 20%", "50% 20%"]))]
@@ -511,7 +512,7 @@ def ways_section():
   </div></section>'''
 
 def assort_section():
-    tiles = "".join(f'<div class="as">{img(f"img/cut/{c}.webp", n, sizes=SZ6)}<b>{n}</b><span class="num">{pr}{" <em>усім</em>" if a else ""}</span></div>' for n, pr, c, a in RANGE + RANGE_MORE)
+    tiles = "".join(f'<div class="as"><div class="as-im">{img(f"img/cut/{c}.webp", n, sizes=SZ6, style=f"width:{round(SIZE[c] / 37.5 * 100)}%")}</div><b>{n}</b><span class="num">{pr}{" <em>усім</em>" if a else ""}</span></div>' for n, pr, c, a in RANGE + RANGE_MORE)
     return f'''
   <section class="block" id="range"><div class="wrap">
     <div class="head"><p class="eyebrow">Асортимент</p><h2>Усе, з чого можна <i>зібрати подарунок</i></h2><p class="sub">Роздрібні ціни obiimy.world. Будь-яку річ можна додати в коробку або зробити окремим подарунком. «Усім» — речі для тих, хто не носить аксесуари.</p></div>
@@ -588,8 +589,8 @@ def terms_section():
     return f'''
   <section class="block alt" id="terms"><div class="wrap terms2">
     <div><div class="head"><p class="eyebrow">Умови й замовлення</p><h2>Як замовити — <i>і що в розрахунку</i></h2></div><div class="perks-l">{steps}</div>
-      <div class="got"><p class="eyebrow">Приклад розрахунку · 50 людей · роздрібні ціни</p>
-        <table class="qt"><thead><tr><th>Виріб</th><th>Шт.</th><th>Ціна</th><th>Сума, грн</th></tr></thead><tbody>{calc}</tbody>
+      <div class="got"><p class="eyebrow">Приклад розрахунку · 50 людей · роздрібні ціни, грн</p>
+        <table class="qt"><thead><tr><th>Виріб</th><th>Шт.</th><th>Ціна</th><th>Сума</th></tr></thead><tbody>{calc}</tbody>
         <tfoot><tr><th>Разом</th><td></td><td></td><td class="num">{money(sum(q * pz for _n, q, pz in EXAMPLE))}</td></tr></tfoot></table>
         <p>Строк у робочих днях — окремим рядком.</p></div>
       <p class="note"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для погодження (PDF, {team.PDF_MB} МБ) ↓</a></p></div>
@@ -643,7 +644,7 @@ def main():
   {ways_section()}
   {terms_section()}
   {photo_band()}
-  {with_qr(team.request_section("f-main", "Подарунки для команди", "Напишіть — <i>надішлемо добірку й розрахунок</i>", "Нагода, кількість і дата — цього досить для першого листа.", "tiers"))}
+  {with_qr(team.request_section("f-main", "Подарунки для команди", "Напишіть — <i>надішлемо добірку й розрахунок</i>", "Нагода, кількість і дата — цього досить для першого листа.", "tiers", corp=True))}
   ''' + team.script("f-main", js)
     return dict(slug="b2b-team-main", skin="deck", bar=BAR, title="Подарунки для команди, які носять — від 1 600 грн на людину — Obiimy",
                 desc="Корпоративні подарунки Obiimy: чотири подарунки від 1 600 до 3 600 грн на людину, авторські принти на натуральному шовку, колекція SOLO, пакування й наліпка з логотипом компанії — безкоштовно.",

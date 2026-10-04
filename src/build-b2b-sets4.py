@@ -97,7 +97,7 @@ def page(i, S):
     <div><div class="head"><p class="eyebrow">{"Як носити" if i < 2 else "Що в наборі"}</p><h2>{"Чотири способи" if i < 2 else "Дві речі — один принт"}</h2></div><div class="ways">{ways}</div><p class="who" style="margin-top:28px">{S["who"]}</p>{men}{boxfig}</div>
   </div></section>
   <section class="block" id="others"><div class="wrap"><div class="head"><p class="eyebrow">Інші подарунки</p><h2>Ще три подарунки</h2></div><div class="others4">{others}</div><p style="margin-top:18px"><a href="b2b-team-main#tiers">← Порівняти всі чотири подарунки</a></p></div></section>
-  {with_qr(team.request_section("f-set", "Подарунки для команди · " + S["short"], "Напишіть — <i>надішлемо добірку й розрахунок</i>", "Нагода, кількість і дата — цього досить для першого листа.", "details", alt=True))}
+  {with_qr(team.request_section("f-set", "Подарунки для команди · " + S["short"], "Напишіть — <i>надішлемо добірку й розрахунок</i>", "Нагода, кількість і дата — цього досить для першого листа.", "details", alt=True, corp=True))}
   ''' + team.script("f-set", "")
     return dict(slug=S["slug"], skin="deck", bar=team.BAR, title=f"{S['short']} — подарунок для команди від Obiimy", desc=f"{S['short']} — подарунок для команди від Obiimy, {S['pr']} на людину. Пакування й наліпка з логотипом компанії — безкоштовно.", og=hp,
                 nav=[("Деталі", "details"), ("Інші подарунки", "others")], cta="Запит", sticky=f"{S['short']} · {S['pr']}", others=False, body=body)

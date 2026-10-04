@@ -136,6 +136,15 @@ def detail(src, name, cx, cy, r):
     out.putalpha(Image.fromarray(al))
     out.save(OUT / f"{name}.webp", "WEBP", quality=92, method=6)
 
+def pair(scarf, twilly, name, k=0.66):
+    """Scarf with the twilly of the same print laid over its corner — «Хустка й твіллі» without the box (every box photo has its lid cut by the frame)."""
+    a = Image.open(OUT / f"{scarf}.webp").convert("RGBA"); a.thumbnail((1000, 1000), Image.LANCZOS)
+    t = Image.open(OUT / f"{twilly}.webp").convert("RGBA"); w = int(a.width * k); t = t.resize((w, int(t.height * w / t.width)), Image.LANCZOS)
+    out = Image.new("RGBA", (a.width + int(w * .42), a.height + int(t.height * .30)), (0, 0, 0, 0)); out.alpha_composite(a, (0, 0))
+    pos = (out.width - w, out.height - t.height)
+    sh = Image.new("RGBA", out.size, (0, 0, 0, 0)); sh.paste((0, 0, 0, 80), (pos[0] + 8, pos[1] + 18), t.split()[-1]); out = Image.alpha_composite(out, sh.filter(ImageFilter.GaussianBlur(16)))
+    out.alpha_composite(t, pos); out.save(OUT / f"{name}.webp", "WEBP", quality=90, method=6)
+
 def duo(scarf, ring, name, k=0.4):
     """Scarf with the ring on its corner — one image for «Хустка й кільце» thumbs."""
     a = Image.open(OUT / f"{scarf}.webp").convert("RGBA"); r = Image.open(OUT / f"{ring}.webp").convert("RGBA")
@@ -180,5 +189,6 @@ if __name__ == "__main__":
         al = np.asarray(im.split()[-1]); print(f"{name:24} {im.size} opaque {round((al > 128).mean() * 100)}% (grabcut)")
     wipe_warm("box-gold", (560, 250, 800, 430))
     duo("hratsiia-flat", "ring-n", "duo-hratsiia-ring")
+    pair("zolote-44-1", "zolote-tw-3", "pair-zolote")
     detail("photo/site/ring-n-styl-02.jpg", "ring-in-use", 0.53, 0.49, 0.25)
     detail("photo/site/mask-synii-02.jpg", "men-mask", 0.50, 0.40, 0.42)

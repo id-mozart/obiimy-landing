@@ -169,7 +169,7 @@ page(f"""{rh("Персоналізація")}<figure class="boxcut">{cut("box-go
 <p class="t8 end">Що встигаємо до вашої дати й скільки це коштує — пишемо в розрахунку. На фото — подарункове пакування Obiimy: коробка, папір тішью, хустка й твіллі в одному принті.</p></div>""", "paper")
 
 # ── 9 · the range (sheet): 6 × 2 cut-outs on a shelf line, sizes in three steps ─────────────────────
-SIZE = {"zolote-tw-1": 34, "krok-44-1": 27, "kolo-sontsia": 32, "prob88": 37.5, "ring-n": 15, "scrunchie-pole": 29, "mask-synii": 34, "bookmark-melodiia": 33, "pillow-tuman": 37, "twscr-makiv": 34, "turban-bilyi": 31, "obruch": 27}   # mm on the long side
+SIZE = main.SIZE   # mm on the long side
 SHORT = {"Закладка для книги": ("Закладка", "для книги · "), "Обруч для вмивання": ("Обруч", "для вмивання · ")}   # the name fits a 39 mm cell
 def range_cell(n, p, c, a):
     n, pre = SHORT.get(n, (n, "")); p = pre + p
@@ -214,8 +214,8 @@ steps = "".join(f'<div class="arg"><b class="num">0{i + 1}</b><div><h3 class="h1
 calc = "".join(f'<div class="cr"><span>{n}</span><span>{q}</span><span>{money(pz)}</span><span>{money(q * pz)}</span></div>' for n, q, pz in EXAMPLE)
 page(f"""{rh("Умови й замовлення")}<div class="sheet terms">
 <div><h2 class="h28">Як замовити —<br><i>і що в розрахунку</i></h2><div class="args">{steps}</div>
-<div class="got"><p class="cap">Приклад розрахунку · 50 людей · роздрібні ціни</p>
-<div class="cr th"><span>Виріб</span><span>Шт.</span><span>Ціна</span><span>Сума, грн</span></div>{calc}
+<div class="got"><p class="cap">Приклад розрахунку · 50 людей · роздрібні ціни, грн</p>
+<div class="cr th"><span>Виріб</span><span>Шт.</span><span>Ціна</span><span>Сума</span></div>{calc}
 <div class="cr sum"><span>Разом</span><span></span><span></span><span>{money(sum(q * pz for _n, q, pz in EXAMPLE))}</span></div>
 <p class="t8">Строк у робочих днях — окремим рядком.</p></div></div>
 <div><div class="kv wide">{kv(TERMS)}</div>
@@ -330,58 +330,62 @@ small { font-size: 13pt; letter-spacing: 0; }
 .tpl { margin-top: 9mm; border-top: .35pt solid rgba(255,255,255,.3); border-bottom: .35pt solid rgba(255,255,255,.3); padding: 3.75mm 0; } .tpl .cap { margin-bottom: 1.5mm; } .tpl p:last-child { color: #F1EFEA; }
 .qr { margin-top: auto; display: grid; grid-template-columns: 33mm 1fr; gap: 6mm; align-items: center; } .qr svg { width: 33mm; height: 33mm; } .qr a { border-bottom: .35pt solid rgba(255,255,255,.4); }
 """
-html = f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — подарунки для команди 2026</title><style>{CSS}</style></head><body>{"".join(PAGES)}</body></html>'
-(OUT / "team-deck.html").write_text(typo(html))
+def render():
+    html = f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — подарунки для команди 2026</title><style>{CSS}</style></head><body>{"".join(PAGES)}</body></html>'
+    (OUT / "team-deck.html").write_text(typo(html))
 
-dups = sorted({f for f in USED if USED.count(f) > 1})
-print("pages:", len(PAGES), "· model shots:", len(USED), "· repeated:", dups or "none")
+    dups = sorted({f for f in USED if USED.count(f) > 1})
+    print("pages:", len(PAGES), "· model shots:", len(USED), "· repeated:", dups or "none")
 
-script = OUT / "review" / "pp" / "pdf-team.mjs"
-script.write_text('''import puppeteer from 'puppeteer-core';
-import fs from 'fs';
-const b = await puppeteer.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: 'new', args: ['--no-sandbox', '--allow-file-access-from-files'] });
-const p = await b.newPage(); await p.setViewport({ width: 1123, height: 794, deviceScaleFactor: 1.5 });
-await p.goto('file:///Users/ivan/obiimy/team-deck.html', { waitUntil: 'networkidle0', timeout: 120000 });
-await p.evaluate(() => document.fonts.ready);
-// layout checks: text outside its page, text over the folio, clipped text
-const issues = await p.evaluate(() => {
-  const out = [], mm = 1123 / 297;
-  document.querySelectorAll('.pg').forEach((pg, i) => {
-    const R = pg.getBoundingClientRect(), fo = pg.querySelector('.folio'), F = fo && fo.getBoundingClientRect();
-    pg.querySelectorAll('h1,h2,h3,p,span,b,em,figcaption,small').forEach(el => {
-      if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return;
-      const r = el.getBoundingClientRect(); if (!r.width) return;
-      const t = el.textContent.trim().slice(0, 34), inFolio = fo && fo.contains(el);
-      if (r.right > R.right - 6 * mm + 1 && !inFolio && !el.closest('.tile') || r.left < R.left - 1 || r.bottom > R.bottom + 1 || r.top < R.top - 1) out.push(`p${i + 1} outside page/margin: «${t}»`);
-      if (F && !inFolio && r.bottom > F.top - 1 && r.top < F.bottom && r.right > F.left && r.left < F.right && !el.closest('.tile,.ph,.fr-t')) out.push(`p${i + 1} over folio: «${t}»`);
-      if (el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).whiteSpace === 'nowrap') out.push(`p${i + 1} too wide: «${t}»`);
+    script = OUT / "review" / "pp" / "pdf-team.mjs"
+    script.write_text('''import puppeteer from 'puppeteer-core';
+    import fs from 'fs';
+    const b = await puppeteer.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: 'new', args: ['--no-sandbox', '--allow-file-access-from-files'] });
+    const p = await b.newPage(); await p.setViewport({ width: 1123, height: 794, deviceScaleFactor: 1.5 });
+    await p.goto('file:///Users/ivan/obiimy/team-deck.html', { waitUntil: 'networkidle0', timeout: 120000 });
+    await p.evaluate(() => document.fonts.ready);
+    // layout checks: text outside its page, text over the folio, clipped text
+    const issues = await p.evaluate(() => {
+      const out = [], mm = 1123 / 297;
+      document.querySelectorAll('.pg').forEach((pg, i) => {
+        const R = pg.getBoundingClientRect(), fo = pg.querySelector('.folio'), F = fo && fo.getBoundingClientRect();
+        pg.querySelectorAll('h1,h2,h3,p,span,b,em,figcaption,small').forEach(el => {
+          if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return;
+          const r = el.getBoundingClientRect(); if (!r.width) return;
+          const t = el.textContent.trim().slice(0, 34), inFolio = fo && fo.contains(el);
+          if (r.right > R.right - 6 * mm + 1 && !inFolio && !el.closest('.tile') || r.left < R.left - 1 || r.bottom > R.bottom + 1 || r.top < R.top - 1) out.push(`p${i + 1} outside page/margin: «${t}»`);
+          if (F && !inFolio && r.bottom > F.top - 1 && r.top < F.bottom && r.right > F.left && r.left < F.right && !el.closest('.tile,.ph,.fr-t')) out.push(`p${i + 1} over folio: «${t}»`);
+          if (el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).whiteSpace === 'nowrap') out.push(`p${i + 1} too wide: «${t}»`);
+        });
+        pg.querySelectorAll('.panel a, .panel span, .panel p, .panel h2, .panel h3').forEach(el => { const P = el.closest('.panel').getBoundingClientRect(), r = el.getBoundingClientRect(); if (r.width && r.right > P.right + 1) out.push(`p${i + 1} wider than the panel by ${((r.right - P.right) / mm).toFixed(1)} mm: «${el.textContent.trim().slice(0, 30)}»`); });
+        pg.querySelectorAll('.panel,.sheet').forEach(c => { if (c.scrollHeight > c.clientHeight + 2) out.push(`p${i + 1} container overflow by ${Math.round((c.scrollHeight - c.clientHeight) / mm)} mm`); });
+        pg.querySelectorAll('h2').forEach(h => { const pr = h.parentElement.getBoundingClientRect(), r = h.getBoundingClientRect(); [...h.childNodes].forEach(n => { const rg = document.createRange(); rg.selectNodeContents(n); const w = rg.getBoundingClientRect(); if (w.right > pr.right + 1) out.push(`p${i + 1} heading wider than its column: «${h.textContent.trim().slice(0, 30)}»`); }); });
+      });
+      return [...new Set(out)];
     });
-    pg.querySelectorAll('.panel a, .panel span, .panel p, .panel h2, .panel h3').forEach(el => { const P = el.closest('.panel').getBoundingClientRect(), r = el.getBoundingClientRect(); if (r.width && r.right > P.right + 1) out.push(`p${i + 1} wider than the panel by ${((r.right - P.right) / mm).toFixed(1)} mm: «${el.textContent.trim().slice(0, 30)}»`); });
-    pg.querySelectorAll('.panel,.sheet').forEach(c => { if (c.scrollHeight > c.clientHeight + 2) out.push(`p${i + 1} container overflow by ${Math.round((c.scrollHeight - c.clientHeight) / mm)} mm`); });
-    pg.querySelectorAll('h2').forEach(h => { const pr = h.parentElement.getBoundingClientRect(), r = h.getBoundingClientRect(); [...h.childNodes].forEach(n => { const rg = document.createRange(); rg.selectNodeContents(n); const w = rg.getBoundingClientRect(); if (w.right > pr.right + 1) out.push(`p${i + 1} heading wider than its column: «${h.textContent.trim().slice(0, 30)}»`); }); });
-  });
-  return [...new Set(out)];
-});
-console.log(issues.length ? 'LAYOUT ISSUES:\\n' + issues.join('\\n') : 'layout: clean');
-await p.pdf({ path: '/Users/ivan/obiimy/obiimy-podarunky-dlia-komandy.pdf', printBackground: true, preferCSSPageSize: true });
-const dir = process.env.DECK_SHOTS || '/Users/ivan/obiimy/review/pp/team/deck'; fs.mkdirSync(dir, { recursive: true });
-for (const f of fs.readdirSync(dir)) if (/^p\\d+\\.png$/.test(f)) fs.unlinkSync(dir + '/' + f);
-const els = await p.$$('.pg'); for (let i = 0; i < els.length; i++) await els[i].screenshot({ path: `${dir}/p${String(i + 1).padStart(2, '0')}.png` });
-await b.close();
-''')
-subprocess.run(["node", str(script)], cwd=OUT / "review" / "pp", check=True)
-print("size:", round((OUT / "obiimy-podarunky-dlia-komandy.pdf").stat().st_size / 1048576, 1), "MB")
+    console.log(issues.length ? 'LAYOUT ISSUES:\\n' + issues.join('\\n') : 'layout: clean');
+    await p.pdf({ path: '/Users/ivan/obiimy/obiimy-podarunky-dlia-komandy.pdf', printBackground: true, preferCSSPageSize: true });
+    const dir = process.env.DECK_SHOTS || '/Users/ivan/obiimy/review/pp/team/deck'; fs.mkdirSync(dir, { recursive: true });
+    for (const f of fs.readdirSync(dir)) if (/^p\\d+\\.png$/.test(f)) fs.unlinkSync(dir + '/' + f);
+    const els = await p.$$('.pg'); for (let i = 0; i < els.length; i++) await els[i].screenshot({ path: `${dir}/p${String(i + 1).padStart(2, '0')}.png` });
+    await b.close();
+    ''')
+    subprocess.run(["node", str(script)], cwd=OUT / "review" / "pp", check=True)
+    print("size:", round((OUT / "obiimy-podarunky-dlia-komandy.pdf").stat().st_size / 1048576, 1), "MB")
 
-def qr_ok(png):
-    """The QR on the last page must decode (a slight blur stands in for a phone camera) — a styled code is easy to break."""
-    try: import cv2
-    except ImportError: return "not checked (no OpenCV)"
-    im = cv2.imread(str(png)); h, w = im.shape[:2]; d = cv2.QRCodeDetector()
-    crop = cv2.cvtColor(im[h // 2:, : w // 2], cv2.COLOR_BGR2GRAY)
-    hits = []
-    for sc in (0.75, 1, 1.5, 2):
-        v = d.detectAndDecode(cv2.resize(crop, None, fx=sc, fy=sc, interpolation=cv2.INTER_AREA if sc < 1 else cv2.INTER_CUBIC))[0]
-        if v: hits.append(v)
-    return f"ok at {len(hits)}/4 scales without blur → {hits[0]}" if len(hits) >= 2 else f"WEAK: decodes at {len(hits)}/4 scales"
-import os
-print("QR:", qr_ok(pathlib.Path(os.environ.get("DECK_SHOTS", OUT / "review" / "pp" / "team" / "deck")) / f"p{len(PAGES):02d}.png"))
+    def qr_ok(png):
+        """The QR on the last page must decode (a slight blur stands in for a phone camera) — a styled code is easy to break."""
+        try: import cv2
+        except ImportError: return "not checked (no OpenCV)"
+        im = cv2.imread(str(png)); h, w = im.shape[:2]; d = cv2.QRCodeDetector()
+        crop = cv2.cvtColor(im[h // 2:, : w // 2], cv2.COLOR_BGR2GRAY)
+        hits = []
+        for sc in (0.75, 1, 1.5, 2):
+            v = d.detectAndDecode(cv2.resize(crop, None, fx=sc, fy=sc, interpolation=cv2.INTER_AREA if sc < 1 else cv2.INTER_CUBIC))[0]
+            if v: hits.append(v)
+        return f"ok at {len(hits)}/4 scales without blur → {hits[0]}" if len(hits) >= 2 else f"WEAK: decodes at {len(hits)}/4 scales"
+    import os
+    print("QR:", qr_ok(pathlib.Path(os.environ.get("DECK_SHOTS", OUT / "review" / "pp" / "team" / "deck")) / f"p{len(PAGES):02d}.png"))
+
+if __name__ == "__main__":
+    render()

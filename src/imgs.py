@@ -47,12 +47,14 @@ def _typo_text(html):
     html = re.sub(r'(\d) (грн|см|шт\.|°C)', lambda m: m.group(1) + NBSP + m.group(2), html)
     html = re.sub(r'(до|від|з) (\d)', lambda m: m.group(1) + NBSP + m.group(2), html)
     # short words stay with the next one, a dash stays with the previous one: no hanging prepositions, no line starting with «—»
-    html = re.sub(r"(?<![\w’'-])([ВвУуІіЙйЗзАаОо]|[Нн]а|[Дд]о|[Зз]а|[Нн]е|[Щщ]о|[Чч]и|[Тт]а|[Пп]о|[Іі]з|[Зз]і|[Яя]к|[Вв]ід|[Дд]ля) (?=[^\s<])", lambda m: m.group(1) + NBSP, html)
+    html = re.sub(r"(?<![\w’'-])([ВвУуІіЙйЗзАаОо]|[Нн]а|[Дд]о|[Зз]а|[Нн]е|[Щщ]о|[Чч]и|[Тт]а|[Пп]о|[Іі]з|[Зз]і|[Яя]к|[Вв]ід|[Дд]ля|[Бб]ез|[Пп]ід|[Пп]ро|[Пп]ри) (?=[^\s<])", lambda m: m.group(1) + NBSP, html)
     html = re.sub(r'(?<=[^\s>]) — ', NBSP + '— ', html)
     # names do not break: «Літній віночок», UFD London, вул. Петра Сагайдачного, 12; opening hours stay with their days
     html = re.sub(r'«([^»<>]{3,26})»', lambda m: '«' + m.group(1).replace(' ', NBSP) + '»', html)
     for name in ("UFD London", "Be Brave", "INSIDER UA", "вул. Петра Сагайдачного, 12", "Світлани Сніжко", "Нова пошта", "Новою поштою", "Нового року", "святого Миколая"):
         html = html.replace(name, name.replace(' ', NBSP))
     html = re.sub(r'(пн–пт|сб|нд) (\d)', lambda m: m.group(1) + NBSP + m.group(2), html)
+    html = re.sub(r'(?<=\d) ([+=]) (?=\d)', lambda m: NBSP + m.group(1) + NBSP, html)      # 2 400 + 450 = 2 850
+    html = html.replace("айстер-клас", "айстер-\u2060клас")                                # no break after the hyphen
     html = re.sub(r'(?<=[\dа-яіїє])–(?=[\dа-яіїє])', '–\u2060', html)          # 1 000–4 000, пн–пт, 10:00–18:00 stay on one line
     return html

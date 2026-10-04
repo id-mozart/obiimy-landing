@@ -325,19 +325,22 @@ def proof_section(alt=False):
   </div></section>"""
 
 PDF_MB = round((pathlib.Path(__file__).resolve().parent.parent / "obiimy-podarunky-dlia-komandy.pdf").stat().st_size / 1048576)
-def request_section(pid, subject, title, lead, back, alt=True):
-    form = form_html(pid, subject, [
+def request_section(pid, subject, title, lead, back, alt=True, corp=False):
+    """corp=True — the corporate funnel (b2b-team-main and gift pages): budget and documents fields, the request goes via Telegram or e-mail."""
+    fields = [
         ("company", "Компанія", "input", True, {"ph": "Назва компанії", "ac": "organization"}),
         ("name", "Ваше ім’я", "input", True, {"ph": "Як до вас звертатись", "ac": "name"}),
         ("email", "Email", "email", True, {"ph": "сюди надішлемо розрахунок", "ac": "email", "err": "Вкажіть коректний email"}),
-        ("phone", "Телефон — якщо зручніше дзвінком", "tel", False, {"ph": "+380", "ac": "tel"}),
+        ("phone", "Телефон — якщо зручніше дзвінком", "tel", False, {"ph": "+380", "ac": "tel"}) if corp else ("phone", "Телефон", "tel", False, {"ph": "+380 — якщо зручніше телефоном", "ac": "tel"}),
         ("people", "Скільки подарунків", "number", False, {"ph": "наприклад, 40"}),
         ("date", "Дата, до якої потрібно", "date", False, {}),
         ("delivery", "Доставка", "select:Кожному на відділення Нової пошти|В офіс однією посилкою|Комбіновано|Частина — за кордон", False, {"full": True}),
         ("budget", "Бюджет на людину, грн", "number", False, {"ph": "наприклад, 2 000"}),
-        ("docs", "ЄДРПОУ й документи", "input", False, {"ph": "ЄДРПОУ; чи потрібен рахунок із ПДВ"}),
-        ("note", "Нагода й побажання", "textarea", False, {"ph": "Нагода, побажання до принтів, склад команди…"}),
-    ], "Відповідаємо з добіркою та розрахунком.", tg=TG)
+        ("docs", "ЄДРПОУ й документи", "input", False, {"ph": "ЄДРПОУ, рахунок із ПДВ?"}),
+        ("note", "Нагода й побажання" if corp else "Розрахунок і коментар", "textarea", False, {"ph": "Нагода, побажання до принтів, склад команди…"}),
+    ]
+    if not corp: fields = [f for f in fields if f[0] not in ("budget", "docs")]
+    form = form_html(pid, subject, fields, "Відповідаємо з добіркою та розрахунком.", tg=TG if corp else None)
     return f"""
   <section class="form-block{" alt" if alt else ""}" id="request"><div class="wrap">
     <div class="contact"><p class="eyebrow">Запит</p><h2>{title}</h2><p>{lead}</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p><a class="btn btn-line" href="{TG}">Написати в Telegram</a><p class="pdf"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для погодження (PDF, {PDF_MB} МБ) ↓</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна побачити й відчути на дотик.</p></div>

@@ -44,19 +44,53 @@ PAGES.append(f'''<section class="pg paper v3a">{rh("варіант A — чот�
 <div class="g4">{"".join(col_a(i, G) for i, G in enumerate(GIFTS))}</div>
 <p class="t8 end">{photo_note()} {MIX}</p></div>{FOLIO}</section>''')
 
-# B · four posters to the edge: the photograph is the page, the offer sits on it
-POSTER = [("photo/solo/krok-tw-3.webp", "47% 50%", 1.0), ("photo/solo/puls-44-5.webp", "32% 100%", 1.55), ("photo/site/mask-nizhnist-03.jpg", "50% 50%", 1.0), ("photo/site/set-tvilli-845-ta-khustky-4444-vpevnen-02.jpg", "50% 20%", 1.0)]   # file, crop, zoom: the thing itself stays in the clear middle of the poster
-PCAP = ["твіллі «Сміливий крок»", "хустка «Пульс» 44 × 44", "маска для сну «Ніжність»", "набір «Впевненість»"]
+# B · four posters to the edge: every frame shows the whole gift and stays clear — the name and the price stand under it, on the dark base.
+# One grid for the four: the photographs end on one horizon (88 mm), the labels, names and prices share their lines.
+POSTER = [  # file, window in the source (x0, y0, x1, y1 as fractions; beyond 0…1 the plain ground is continued: downwards under the fade, sideways for a studio backdrop),
+            # where the fade into the base starts (mm from the top), extra layer over the photograph, name in two lines, what the gift is, what is in the frame
+    ("photo/solo/krok-tw-3.webp", (0.236, 0.053, 0.884, 0.845), 75, "linear-gradient(270deg,rgba(20,17,14,.34),rgba(20,17,14,0) 13mm)",     # the blown-out sky at the gutter is burnt in: the edge of the poster holds
+     "Шовкова<br>твіллі", "Стрічка 84 × 5 — на шию, волосся, сумку", "твіллі «Сміливий крок»"),
+    ("photo/solo/puls-44-4.webp", (0.165, 0.155, 0.86, 1.0), 77, "",
+     "Хустка<br>й кільце", "Хустка 44 × 44 і кільце для хустки", "«Пульс», варіант за 2 850 грн"),
+    ("photo/site/set-ta-rezynka-litnie-pole-04.jpg", (0.11, 0.153, 0.885, 1.10), 64, "",
+     "Маска<br>й резинка", "Маска для сну й резинка, один принт", "набір «Літнє поле»"),
+    ("photo/site/set-tvilli-845-ta-khustky-4444-natkhne-02.jpg", (-0.026, 0.08, 1.026, 0.938), 73.5, "linear-gradient(rgba(255,226,190,.09),rgba(255,226,190,.09))",   # the cool studio grey is warmed towards the other three frames
+     "Хустка<br>й твіллі", "Хустка 44 × 44 і твіллі в коробці", "набір «Натхнення»"),
+]
+NOTE_B = "Базові роздрібні ціни obiimy.world на людину, без акцій сайту, жовтень 2026. Верхня ціна — двосторонній друк. Пакування й наліпка з вашим логотипом — безкоштовно."
+ADD = {1: ("ring-in-use", 19.5, "rnd"), 3: ("set-natkhnennia-box", 19.5, "bx")}   # what the photograph lacks: the ring in use, the box of the set
+def frame_b(f, win):
+    """The photograph cut to its window; the height of the picture in the poster follows from the window (the width is the poster's 72 mm)."""
+    q = pathlib.Path(f); k2 = OUT / "ads" / "solo" / "src" / (q.stem + "-2k.webp"); srcp = k2 if k2.exists() else OUT / f
+    W, H = Image.open(srcp).size
+    L, R, B = [round(max(0, v) * n) + (2 if v > 0 else 0) for v, n in ((-win[0], W), (win[2] - 1, W), (win[3] - 1, H))]
+    if L or R or B:   # continue the plain ground: the edge columns stretched sideways, the lower strip mirrored and blurred downwards
+        from PIL import ImageFilter, ImageOps
+        ext = deck.LB / f"{q.stem}-ext{L}-{R}-{B}.jpg"
+        if not ext.exists() or ext.stat().st_mtime < srcp.stat().st_mtime:
+            im = Image.open(srcp).convert("RGB"); out = Image.new("RGB", (W + L + R, H + B)); out.paste(im, (L, 0))
+            if L: out.paste(im.crop((0, 0, 6, H)).resize((1, H), Image.BOX).resize((L, H)).filter(ImageFilter.GaussianBlur(4)), (0, 0))
+            if R: out.paste(im.crop((W - 6, 0, W, H)).resize((1, H), Image.BOX).resize((R, H)).filter(ImageFilter.GaussianBlur(4)), (L + W, 0))
+            if B: out.paste(ImageOps.flip(out.crop((0, H - B, W + L + R, H))).filter(ImageFilter.GaussianBlur(W / 150)), (0, H))
+            out.save(ext, quality=92)
+        f = str(ext.relative_to(OUT))
+    box = (round(win[0] * W) + L, round(win[1] * H), round(win[2] * W) + L, round(win[3] * H)); hb = round(72 * (box[3] - box[1]) / (box[2] - box[0]), 1)
+    return pic(f, 72, hb, once=False, hi=True, box=box), hb
 def col_b(i, G):
-    lb, n, d, p, hi, c = G; f, ps, z = POSTER[i]
-    rng = f"{money(p)}–{money(hi)} грн" if hi else f"{money(p)} грн"
+    lb, n, d, p, hi, c = G; f, win, fa, extra, name, what, capt = POSTER[i]
+    img, hb = frame_b(f, win); fc = hb - .5
+    fade = "linear-gradient(180deg," + ",".join(f"rgba(20,17,14,{al}) {fa + (fc - fa) * t:.1f}mm" for t, al in ((0, 0), (.15, .06), (.35, .3), (.55, .62), (.75, .86), (.9, .96), (1, 1))) + ")"   # eased at both ends: no band on a light ground
     team = f"{money(p * 50)}–{money(hi * 50)}" if hi else money(p * 50)
-    short = n.replace(" в коробці", "").replace("Маска для сну й резинка", "Маска й резинка")
-    return (f'<figure class="po">{pic(f, 72, 160.5, ps, once=False, hi=True, zoom=z)}<div class="po-top"><p class="cap">0{i + 1} · {lb}</p><b class="h28"><i>{short}</i></b></div>'
-            f'<figcaption><div class="chip">{cut(c, 13)}<div><span>На людину</span><em>{rng}</em></div></div><span class="t8">50 людей — {team} грн</span><span class="t8 ph">На фото — {PCAP[i]}</span></figcaption></figure>')
+    rng = f"{money(p)}–{money(hi)}" if hi else money(p)
+    add = ""
+    if i in ADD: nm, mm, cl = ADD[i]; add = cut(nm, mm, cls=("add " + cl).strip(), fix=True)
+    return (f'<figure class="po"><div class="ph" style="height:{hb}mm">{img}<i class="fd" style="background:{fade}{"," + extra if extra else ""}"></i></div>'
+            f'<figcaption><p class="cap">0{i + 1} · {lb}</p><div class="po-t"><b class="h28"><i>{name}</i></b>{add}</div><span class="t8 wh">{what}</span>'
+            f'<p class="pp h28">{rng} <small>грн</small></p>'
+            f'<span class="t8">50 людей — {team} грн</span><span class="t8 pf">На фото — {capt}</span></figcaption></figure>')
 PAGES.append(f'''<section class="pg v3b"><div class="sh"><div><p class="cap">Чотири подарунки · сторінка 3 · варіант B — чотири постери</p><h2 class="h28">{H2}</h2></div>
-<p>{NOTE}</p></div>
-<div class="posters">{"".join(col_b(i, G) for i, G in enumerate(GIFTS))}</div>{FOLIO}</section>''')
+<p>{NOTE_B}</p></div>
+<div class="posters">{"".join(col_b(i, G) for i, G in enumerate(GIFTS))}</div><div class="plinth"></div>{FOLIO}</section>''')
 
 # C · the shelf: large cut-outs of the things themselves, the price as the second hero
 SHELF = [("krok-tw-1", 60), ("duo-hratsiia-ring", 54), ("maskscr-litnie-pole", 54), ("pair-zolote", 58)]
@@ -315,12 +349,17 @@ CSS = deck.CSS + """
 .g4 { display: grid; grid-template-columns: repeat(4, 61.5mm); column-gap: 6mm; } .g4 .cap { margin: 3mm 0 .75mm; letter-spacing: .13em; white-space: nowrap; } .g4 h3 { margin-bottom: .75mm; white-space: nowrap; }
 .v3a .g img { width: 61.5mm; height: 84mm; object-fit: cover; }
 .v3b { background: #F1EFEA; } .v3b .sh { grid-template-columns: 1fr 96mm; } .v3b .sh > p { color: #4A4A47; } .v3b .sh .cap { color: #6E6A63; } .v3b .sh h2 { white-space: nowrap; }
-.posters { position: absolute; left: 0; right: 0; top: 49.5mm; bottom: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; }
-.po { position: relative; overflow: hidden; } .po > img { width: 100%; height: 100%; object-fit: cover; }
-.po::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,.88) 0%, rgba(0,0,0,.6) 22%, rgba(0,0,0,0) 40%), linear-gradient(180deg, rgba(0,0,0,.66) 0%, rgba(0,0,0,.4) 18%, rgba(0,0,0,0) 34%); }
-.po-top { position: absolute; left: 6mm; right: 4.5mm; top: 6mm; z-index: 2; color: #fff; }
-.po figcaption { position: absolute; left: 6mm; right: 4.5mm; bottom: 18mm; z-index: 2; color: #fff; } .po .cap { color: rgba(255,255,255,.82); margin-bottom: 1.5mm; letter-spacing: .13em; } .po b { display: block; color: #E7D9A6; margin-bottom: 3.75mm; }
-.po .chip { margin-bottom: 2.25mm; padding-right: 3.5mm; } .po .t8 { display: block; color: rgba(255,255,255,.88); } .po .t8.ph { color: rgba(255,255,255,.66); } .po b { margin-bottom: 0; }
+.posters { position: absolute; left: 0; right: 0; top: 49.5mm; bottom: 17.5mm; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; }
+.plinth { position: absolute; left: 0; right: 0; bottom: 0; height: 17.6mm; background: #14110E; }
+.po { position: relative; overflow: hidden; background: #14110E; }
+.po .ph { position: absolute; left: 0; right: 0; top: 0; } .po .ph img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.po .fd { position: absolute; left: 0; right: 0; top: 0; bottom: -.5mm; }
+.po figcaption { position: absolute; left: 6mm; right: 4.5mm; bottom: 3.5mm; z-index: 2; color: #fff; }
+.po .cap { color: rgba(255,255,255,.82); letter-spacing: .13em; white-space: nowrap; margin-bottom: 1.5mm; }
+.po-t { position: relative; margin-bottom: 1.5mm; } .po-t b { display: block; color: #fff; }
+.po-t .add { position: absolute; right: 1.7mm; top: 50%; transform: translateY(-50%); } .po-t .add.bx { right: .8mm; } .po-t .add.rnd { border-radius: 50%; box-shadow: 0 0 0 .5pt rgba(231,217,166,.5); }
+.po .pp { color: #E7D9A6; white-space: nowrap; margin-bottom: 1.5mm; } .po .pp small { font: 400 9.5pt/30pt Tenor, sans-serif; letter-spacing: 0; color: rgba(231,217,166,.9); }
+.po .t8 { display: block; color: rgba(255,255,255,.88); white-space: nowrap; } .po .t8.wh { margin-bottom: 2.5mm; } .po .t8.pf { color: rgba(255,255,255,.62); }
 .v3b .folio { color: rgba(255,255,255,.7); z-index: 3; }
 .v3c .obj { height: 63mm; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2.25mm; border-bottom: .5pt solid #141414; } .v3c .obj img { filter: drop-shadow(0 2mm 2.5mm rgba(0,0,0,.16)); }
 .v3c .pr { margin: 1.5mm 0 0; }

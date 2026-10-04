@@ -19,7 +19,8 @@ from PIL import Image
 _spec = importlib.util.spec_from_file_location("main", ROOT / "build-b2b-team-main.py")
 main = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(main)
 SOLO, qr_svg, team = main.SOLO, main.qr_svg, main.team
-ARGS, RANGE, RANGE_MORE, ASK, STEPS, TERMS, EXAMPLE = main.ARGS, main.RANGE, main.RANGE_MORE, main.ASK, main.STEPS, main.TERMS, main.EXAMPLE   # shared with the landing
+ARGS, RANGE, RANGE_MORE, ASK, STEPS, TERMS, EXAMPLE, INTRO = main.ARGS, main.RANGE, main.RANGE_MORE, main.ASK, main.STEPS, main.TERMS, main.EXAMPLE, main.INTRO
+COVER_CAP = "Український бренд шовкових хусток і аксесуарів · 2026"   # shared with the landing
 PHONE, PHONE_HREF, MAIL, SHOWROOM = team.PHONE, team.PHONE_HREF, team.MAIL, team.SHOWROOM
 TG = "https://t.me/OBIIMY_sales"
 LANDING = "https://obiimy-landing-production.up.railway.app/b2b-team-main"
@@ -60,15 +61,17 @@ def cut(name, mm=46, cls="", fix=False):
 
 def money(n): return f"{n:,}".replace(",", " ")
 PAGES = []
-def page(html, cls, folio=True):
+TERMS_P = 14   # the page with terms and the sample quote — page 3 refers to it; checked after the pages are built
+def page(html, cls, folio=True, short=False):
     n = len(PAGES) + 1
-    f = (f'<p class="folio"><span><i class="fq">Запит: </i><a href="{PHONE_HREF}">{PHONE}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></span><span>{n:02d}</span></p>' if folio else "")
+    tg = "@OBIIMY_sales" if short else "Telegram @OBIIMY_sales"      # short=True — a folio that fits a narrow panel
+    f = (f'<p class="folio"><span><i class="fq">Запит: </i><a href="{PHONE_HREF}">{PHONE}</a> · <a href="{TG}">{tg}</a></span><span>{n:02d}</span></p>' if folio else "")
     PAGES.append(f'<section class="pg {cls}">{html}{f}</section>')
 def rh(section): return f'<p class="rh"><span>{section}</span><span>Obiimy · Подарунки для команди · 2026</span></p>'
 
 # ── 1 · cover (frame) ───────────────────────────────────────────────────────────────────────────────
 page(f"""{pic("photo/solo/zolote-44-2.webp", 297, 210, "50% 24%", "bg", hi=True)}<img src="brand/logo-white.png" class="logo" alt="Obiimy">
-<div class="fr-t"><p class="cap">Корпоративні подарунки · український бренд · 2026</p>
+<div class="fr-t"><p class="cap">{COVER_CAP}</p>
 <h1 class="h54">Подарунки<br>для команди,<br><i>які носять</i></h1>
 <div class="chip">{cut("zolote-44-1", 13)}<div><span>Чотири подарунки · на людину</span><em>від 1 600 до 3 600 грн</em></div></div></div>
 <p class="folio"><span>Пакування й наліпка з вашим логотипом — безкоштовно</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></span></p>""", "frame", folio=False)
@@ -76,10 +79,9 @@ page(f"""{pic("photo/solo/zolote-44-2.webp", 297, 210, "50% 24%", "bg", hi=True)
 # ── 2 · why Obiimy (split, photo left) ──────────────────────────────────────────────────────────────
 args = "".join(f'<div class="arg"><b class="num">0{i + 1}</b><div><h3 class="h13">{t}</h3><p>{d}</p></div></div>' for i, (t, d) in enumerate(ARGS))
 page(f"""<figure class="ph">{pic("photo/kolo-1.webp", 148.5, 210, "50% 22%")}<figcaption class="h13">«Кожна коробочка — це обійми, що нагадують: ти варта краси»</figcaption></figure>
-<div class="panel"><p class="cap">Чому Obiimy</p><h2 class="h28">Подарунок, що носять,<br><i>а не кладуть у шухляду</i></h2>
-<p class="proof">Нас продають INTERTOP, Hram, Be Brave (Канада), UFD London · про нас пишуть LIGA.net та INSIDER UA</p>
-<div class="args">{args}</div>
-<p class="t8 end">Зразки можна побачити й потримати в шоурумі: {SHOWROOM}.</p></div>""", "split l shade")
+<div class="panel"><p class="cap">Хто ми — і чому Obiimy</p><h2 class="h28">Подарунок, що носять,<br><i>а не кладуть у шухляду</i></h2>
+<p class="proof">{INTRO}</p>
+<div class="args">{args}</div></div>""", "split l shade")
 
 # ── 3 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────
 GIFTS = [  # label, name, description, price, ceiling (double-sided print) or None, cut-out
@@ -103,7 +105,7 @@ page(f"""{rh("Чотири подарунки")}<div class="sheet">
 <div class="gt"><div class="gr head"><span></span><span></span><span class="cap">Подарунок</span><span class="cap">На людину</span><span class="cap bd">20 людей</span><span class="cap bd">50 людей</span><span class="cap bd">100 людей</span></div>{rows}</div>
 <div class="three"><div><p class="cap">Змішана команда</p><p>Тим, хто не носить аксесуари, — маска для сну (2 700 грн), закладка для книги (800 грн), наволочка (від 4 200 грн) або сертифікат на 1 000–4 000 грн. Усе — в одному розрахунку.</p></div>
 <div><p class="cap">До 1 000 грн на людину</p><p>Шовкова резинка — 700 грн, закладка для книги — 800 грн, сертифікат Obiimy — 1 000 грн.</p></div>
-<div><p class="cap">Приклад: 50 людей</p><p>30 твіллі (48 000 грн) + 20 сертифікатів по 1 500 грн (30 000 грн) = 78 000 грн. Ціну для вашої кількості підтвердимо в розрахунку — приклад на стор. 13.</p></div></div></div>""", "paper")
+<div><p class="cap">Приклад: 50 людей</p><p>30 твіллі (48 000 грн) + 20 сертифікатів по 1 500 грн (30 000 грн) = 78 000 грн. Ціну для вашої кількості підтвердимо в розрахунку — приклад на стор. {TERMS_P}.</p></div></div></div>""", "paper")
 
 # ── 4–7 · one page per gift (split, alternating) ────────────────────────────────────────────────────
 def kv(items): return "".join(f'<div><span class="t8">{k}</span><span>{v}</span></div>' for k, v in items)
@@ -181,14 +183,25 @@ page(f"""{rh("Асортимент")}<div class="sheet">
 <div class="range">{cells}</div>
 <p class="end">Також: сертифікат Obiimy на 1 000–4 000 грн — електронний або фізичний, на будь-який товар, діє 3 місяці · набори резинок — від 1 250 грн.</p></div>""", "paper")
 
-# ── 10 · SOLO (dark frame) ───────────────────────────────────────────────────────────────────────────
+# ── 10 · one scarf, six looks: a paper panel and six photographs to the edge (the client's collage, photo/ways) ──────
+W6 = [("На сумці", "62% 50%"), ("На голові", "66% 50%"), ("На шиї", "56% 50%"), ("Поясом", "50% 50%"), ("Банданою", "50% 50%"), ("Топом", "56% 50%")]
+tiles6 = "".join(f'<figure class="w6">{pic(f"photo/ways/ways-{i + 1}.jpg", 61.5, 103.5, ps)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for i, (n, ps) in enumerate(W6))
+SZ3 = [("krok-44-1", 17, "44 × 44", "від 1 600 грн"), ("kolo-sontsia", 25, "65 × 65", "від 3 200 грн"), ("prob88", 34, "88 × 88", "від 4 400 грн")]
+sizes3 = "".join(f'<figure>{cut(c, mm, fix=True)}<figcaption><b class="h13">{n}</b><span class="t8">{pz}</span></figcaption></figure>' for c, mm, n, pz in SZ3)
+page(f"""<div class="panel"><p class="cap">Як носити</p><h2 class="h28">Одна хустка —<br><i>шість образів</i></h2>
+<p class="lead">Шовкову хустку носять на сумці, на голові й на шиї, поясом, банданою чи топом. Один подарунок — і щодня інший образ.</p>
+<div class="sz3">{sizes3}</div>
+<p class="t8 end">Три формати хусток; ціни — роздрібні, obiimy.world. Який формат під який спосіб — підкажемо в добірці.</p></div>
+<div class="w6g">{tiles6}</div>""", "ways6", short=True)
+
+# ── 11 · SOLO (dark frame) ───────────────────────────────────────────────────────────────────────────
 page(f"""{pic("photo/solo/tysha-88-2.webp", 297, 210, "0% 30%", "bg", hi=True, zoom=1.05)}
 <div class="fr-t"><p class="cap">Нова колекція SOLO · Шлях до себе · 2026</p>
 <h1 class="h40">Змінювалися<br>епохи. <i>Хустка</i><br><i>залишалася</i><br><i>поруч.</i></h1>
 <p class="fr-p">Натхнення — обкладинки модних журналів 40–50-х. Сім авторських принтів — сім етапів шляху жінки до себе. Натуральний шовк, двосторонній друк. Для команди: кожному — свій принт під стан, який хочете побажати, або один на всіх.</p>
 <div class="chip">{cut("tysha-88-1", 13)}<div><span>Принт «Тиша всередині» · твіллі й хустки</span><em>від 1 600 грн</em></div></div></div>""", "frame dark")
 
-# ── 11 · seven prints (dark strip): eye lines on one height (zoom and crop per frame) ───────────────
+# ── 12 · seven prints (dark strip): eye lines on one height (zoom and crop per frame) ───────────────
 STRIP = [("photo/solo/iskra-65-2.webp", "40% 0%", 1.23), ("photo/solo/flirt-65-3.webp", "61% 50%", 1.0), ("photo/solo/puls-tw-3.webp", "49% 50%", 1.0), ("photo/solo/zolote-44-3.webp", "53% 60%", 1.1),
          ("photo/solo/avantiura-tw-1.webp", "50% 0%", 1.07), ("photo/solo/tysha-88-4.webp", "50% 0%", 1.07), ("photo/solo/krok-44-4.webp", "56% 60%", 1.1)]
 import re as _re
@@ -201,7 +214,7 @@ page(f"""<div class="sh"><div><p class="cap">Колекція SOLO</p><h2 class=
 <p>Назва принта — готовий текст листівки: «Сміливий крок» — на підвищення, «Тиша всередині» — після складного кварталу. Твіллі в усіх принтах — 1 600 грн; хустки з двостороннім друком — 2 400–6 600 грн, формат — під фото.</p></div>
 <div class="tiles t7">{tiles}</div>""", "strip dark")
 
-# ── 12 · one twilly, four looks (dark strip, the same template: tiles in the margins, captions below) ─
+# ── 13 · one twilly, four looks (dark strip, the same template: tiles in the margins, captions below) ─
 WAYS = [("У волоссі", "Стрічка на хвості · «Авантюра»", "photo/solo/avantiura-tw-3.webp", "50% 50%", 1.0), ("На шиї", "Вузол під комір · «Флірт»", "photo/solo/flirt-tw-3.webp", "50% 50%", 1.0),
         ("На сумці", "На ручці · «Золоте світло»", "photo/solo/zolote-tw-2.webp", "35% 50%", 1.0), ("Поясом", "На талії · «Сміливий крок»", "photo/solo/krok-tw-4.webp", "42% 62%", 1.45)]
 tiles = "".join(f'<figure class="tile">{pic(f, 63.75, 117, ps, zoom=z)}<figcaption><b class="h28"><i>{n}</i></b><span>{t}</span></figcaption></figure>' for n, t, f, ps, z in WAYS)
@@ -209,25 +222,27 @@ page(f"""<div class="sh"><div><p class="cap">Як носити</p><h2 class="h28
 <p>Твіллі 84 × 5 — 1 600 грн, найдоступніший із чотирьох подарунків. Хустку 44 × 44 носять так само: на шиї, на зап’ясті, на сумці. Один принт на всіх — і жодних однакових образів.</p></div>
 <div class="tiles t4">{tiles}</div>""", "strip dark")
 
-# ── 13 · terms and how to order (sheet) ─────────────────────────────────────────────────────────────
+# ── 14 · terms and how to order (sheet) ─────────────────────────────────────────────────────────────
 steps = "".join(f'<div class="arg"><b class="num">0{i + 1}</b><div><h3 class="h13">{t}</h3><p>{d}</p></div></div>' for i, (t, d) in enumerate(STEPS))
 calc = "".join(f'<div class="cr"><span>{n}</span><span>{q}</span><span>{money(pz)}</span><span>{money(q * pz)}</span></div>' for n, q, pz in EXAMPLE)
 page(f"""{rh("Умови й замовлення")}<div class="sheet terms">
 <div><h2 class="h28">Як замовити —<br><i>і що в розрахунку</i></h2><div class="args">{steps}</div>
-<div class="got"><p class="cap">Приклад розрахунку · 50 людей · роздрібні ціни, грн</p>
+<div class="got"><p class="cap">Приклад розрахунку · 50 людей · ціни в грн</p>
 <div class="cr th"><span>Виріб</span><span>Шт.</span><span>Ціна</span><span>Сума</span></div>{calc}
 <div class="cr sum"><span>Разом</span><span></span><span></span><span>{money(sum(q * pz for _n, q, pz in EXAMPLE))}</span></div>
 <p class="t8">Строк у робочих днях — окремим рядком.</p></div></div>
 <div><div class="kv wide">{kv(TERMS)}</div>
 <p class="h28 season">До Дня святого Миколая чи Нового року? <i>Напишіть дату зараз.</i></p></div></div>""", "paper")
 
-# ── 14 · contacts (dark split, photo right) ─────────────────────────────────────────────────────────
+# ── 15 · contacts (dark split, photo right) ─────────────────────────────────────────────────────────
 page(f"""<figure class="ph">{pic("photo/solo/iskra-tw-2.webp", 148.5, 210, "50% 0%", hi=True, zoom=1.18)}</figure>
 <div class="panel"><p class="cap">Запит</p><h2 class="h28">Напишіть —<br><i>надішлемо добірку</i><br><i>й розрахунок</i></h2>
 <p class="tel h40"><a href="{PHONE_HREF}">{PHONE}</a></p>
 <p class="h13 lines"><a href="{TG}">Telegram @OBIIMY_sales</a><br><a href="mailto:{MAIL}">{MAIL}</a><br><a href="https://obiimy.world/">obiimy.world</a></p>
 <div class="tpl"><p class="cap">Шаблон запиту — скопіюйте й допишіть</p><p>Нагода — … · людей — … · дата вручення — … · бюджет на людину — … · доставка: в офіс / кожному · рахунок на юрособу: так / ні</p></div>
 <div class="qr">{qr_svg(TG, 132, ink="#141414", plate="#F1EFEA")}<p class="t8">Скануйте — чат із менеджером у Telegram.<br><a href="{LANDING}">Сторінка для команд із формою запиту</a><br>Шоурум: {SHOWROOM}</p></div></div>""", "split r dark last", folio=False)
+
+assert "Умови й замовлення" in PAGES[TERMS_P - 1], "TERMS_P does not point at the terms page"
 
 CSS = """
 @font-face { font-family: Playfair; font-style: normal; font-weight: 400; src: url(brand/fonts/playfair-cyrillic-400-normal.woff2) format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
@@ -274,6 +289,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .split .ph { position: absolute; top: 0; width: 148.5mm; height: 210mm; } .split.l .ph { left: 0; } .split.r .ph { right: 0; }
 .split .ph > img { width: 100%; height: 100%; object-fit: cover; }
 .split .ph figcaption { position: absolute; left: 16.5mm; right: 16.5mm; bottom: 10.05mm; z-index: 2; color: #fff; text-wrap: balance; }
+.shade .arg { padding: 2.25mm 0; } .shade .panel h2 { margin-bottom: 4.5mm; }
 .split.shade .ph::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 75mm; background: linear-gradient(0deg, rgba(0,0,0,.74), rgba(0,0,0,.4) 45%, rgba(0,0,0,0)); }
 .panel { position: absolute; top: 16.5mm; bottom: 19.5mm; width: 106.5mm; display: flex; flex-direction: column; } .split.l .panel { left: 174mm; } .split.r .panel { left: 16.5mm; }
 .panel .cap { margin-bottom: 3.75mm; } .panel h2 { margin-bottom: 6mm; white-space: nowrap; }
@@ -325,17 +341,27 @@ small { font-size: 13pt; letter-spacing: 0; }
 .tile img { width: 100%; object-fit: cover; } .t7 .tile img { height: 108mm; } .t4 .tile img { height: 117mm; }
 .tile figcaption { padding-top: 3.75mm; color: #fff; } .tile b { display: block; color: #E7D9A6; white-space: nowrap; margin-bottom: 1.5mm; }
 .t7 .t8 { color: #C9C6C0; display: block; min-height: 11.25mm; } .t7 .fm { color: #8E8A84; margin-top: 1.5mm; min-height: 0; } .t4 span { color: #C9C6C0; } .t4 figcaption { padding-top: 3mm; } .t4 b { margin-bottom: .75mm; }
+/* one scarf, six looks */
+.ways6 .panel { left: 16.5mm; width: 84mm; } .ways6 .lead { color: #4A4A47; } .ways6 .folio { right: 196.5mm; } .ways6 .fq { display: none; }
+.w6g { position: absolute; left: 106.5mm; right: 0; top: 0; bottom: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 3mm; }
+.w6 { position: relative; overflow: hidden; } .w6 img { width: 100%; height: 100%; object-fit: cover; }
+.w6::after { content: ""; position: absolute; inset: 55% 0 0; background: linear-gradient(0deg, rgba(0,0,0,.62), rgba(0,0,0,0)); }
+.w6 figcaption { position: absolute; left: 6mm; bottom: 5.25mm; z-index: 2; color: #E7D9A6; }
+.sz3 { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; } .sz3 figure { display: flex; flex-direction: column; align-items: flex-start; } .sz3 img { filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.14)); }
+.sz3 figcaption { margin-top: 3mm; border-top: .35pt solid #C9C6C0; padding-top: 1.5mm; min-width: 24mm; } .sz3 b { display: block; } .ways6 .end { margin-top: 6mm; }
 /* last page */
 .last h2 { margin-bottom: 9mm; } .tel { color: #E7D9A6; margin-bottom: 4.5mm; white-space: nowrap; letter-spacing: -.035em; word-spacing: -.06em; } .lines { color: #F1EFEA; }
 .tpl { margin-top: 9mm; border-top: .35pt solid rgba(255,255,255,.3); border-bottom: .35pt solid rgba(255,255,255,.3); padding: 3.75mm 0; } .tpl .cap { margin-bottom: 1.5mm; } .tpl p:last-child { color: #F1EFEA; }
 .qr { margin-top: auto; display: grid; grid-template-columns: 33mm 1fr; gap: 6mm; align-items: center; } .qr svg { width: 33mm; height: 33mm; } .qr a { border-bottom: .35pt solid rgba(255,255,255,.4); }
 """
-def render():
-    html = f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — подарунки для команди 2026</title><style>{CSS}</style></head><body>{"".join(PAGES)}</body></html>'
+def render(pages=None, css=None):
+    """Writes team-deck.html, the PDF and page screenshots. build-deck-variants.py passes the deck with variant pages inserted."""
+    pages = pages or PAGES; css = css or CSS
+    html = f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — подарунки для команди 2026</title><style>{css}</style></head><body>{"".join(pages)}</body></html>'
     (OUT / "team-deck.html").write_text(typo(html))
 
     dups = sorted({f for f in USED if USED.count(f) > 1})
-    print("pages:", len(PAGES), "· model shots:", len(USED), "· repeated:", dups or "none")
+    print("pages:", len(pages), "· model shots:", len(USED), "· repeated:", dups or "none")
 
     script = OUT / "review" / "pp" / "pdf-team.mjs"
     script.write_text('''import puppeteer from 'puppeteer-core';
@@ -353,7 +379,7 @@ def render():
           if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return;
           const r = el.getBoundingClientRect(); if (!r.width) return;
           const t = el.textContent.trim().slice(0, 34), inFolio = fo && fo.contains(el);
-          if (r.right > R.right - 6 * mm + 1 && !inFolio && !el.closest('.tile') || r.left < R.left - 1 || r.bottom > R.bottom + 1 || r.top < R.top - 1) out.push(`p${i + 1} outside page/margin: «${t}»`);
+          if (r.right > R.right - 6 * mm + 1 && !inFolio && !el.closest('.tile,.po,.chip,.w6,.cv') || r.left < R.left - 1 || r.bottom > R.bottom + 1 || r.top < R.top - 1) out.push(`p${i + 1} outside page/margin: «${t}»`);
           if (F && !inFolio && r.bottom > F.top - 1 && r.top < F.bottom && r.right > F.left && r.left < F.right && !el.closest('.tile,.ph,.fr-t')) out.push(`p${i + 1} over folio: «${t}»`);
           if (el.scrollWidth > el.clientWidth + 1 && getComputedStyle(el).whiteSpace === 'nowrap') out.push(`p${i + 1} too wide: «${t}»`);
         });
@@ -385,7 +411,7 @@ def render():
             if v: hits.append(v)
         return f"ok at {len(hits)}/4 scales without blur → {hits[0]}" if len(hits) >= 2 else f"WEAK: decodes at {len(hits)}/4 scales"
     import os
-    print("QR:", qr_ok(pathlib.Path(os.environ.get("DECK_SHOTS", OUT / "review" / "pp" / "team" / "deck")) / f"p{len(PAGES):02d}.png"))
+    print("QR:", qr_ok(pathlib.Path(os.environ.get("DECK_SHOTS", OUT / "review" / "pp" / "team" / "deck")) / f"p{len(pages):02d}.png"))
 
 if __name__ == "__main__":
     render()

@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-"""Variants of page 3 of the HR deck («Що в коробці — і скільки це коштує») with the accent on the visual, for the client to choose.
-Reuses the deck's helpers, data and CSS (src/build-team-pdf.py renders only when run as a script).
-Output: p3-variants.html → obiimy-p3-variants.pdf and review/pp/team/p3/v0…vD.png. The chosen layout is then moved into build-team-pdf.py."""
+"""The HR deck with variant pages inside it, for the client to choose (04.10: «все добавляй в пдф, потом уберём лишнее»):
+cover variants right after the cover and variants of page 3 («Що в коробці — і скільки це коштує») right after page 3.
+Reuses the deck's helpers, data and CSS (src/build-team-pdf.py renders only when run as a script) and renders the public PDF itself.
+When the choice is made: move the chosen layouts into build-team-pdf.py and build the deck with it again."""
 import importlib.util, pathlib, subprocess, sys
 ROOT = pathlib.Path(__file__).resolve().parent; OUT = ROOT.parent
 sys.path.insert(0, str(ROOT))
@@ -15,7 +16,7 @@ PHOTO = [  # one model or lifestyle shot per gift (none of them is used elsewher
     ("photo/site/set-tvilli-845-ta-khustky-4444-vpevnen-02.jpg", "50% 30%", "набір «Впевненість»"),
 ]
 NOTE = "Базові роздрібні ціни obiimy.world на людину, без акцій сайту, жовтень 2026. Пакування й наліпка з вашим логотипом — безкоштовно. Бюджети команди — у гривнях."
-MIX = "Тим, хто не носить аксесуари, — маска для сну (2 700 грн), закладка (800 грн) чи сертифікат на 1 000–4 000 грн · до 1 000 грн на людину — резинка, закладка, сертифікат · приклад розрахунку — на стор. 13."
+MIX = "Тим, хто не носить аксесуари, — маска для сну (2 700 грн), закладка (800 грн) чи сертифікат на 1 000–4 000 грн · до 1 000 грн на людину — резинка, закладка, сертифікат · приклад розрахунку — на стор. " + str(deck.TERMS_P) + "."
 H2 = 'Що в коробці — <i>і скільки це коштує</i>'
 FOLIO = f'<p class="folio"><span><i class="fq">Запит: </i><a href="{deck.PHONE_HREF}">{deck.PHONE}</a> · <a href="{deck.TG}">Telegram @OBIIMY_sales</a></span><span>03</span></p>'
 def rh(tag): return f'<p class="rh"><span>Чотири подарунки</span><span>Сторінка 3 · {tag}</span></p>'
@@ -28,7 +29,7 @@ def b3(p, hi, one=False):
         return f"<span>{money(p * n)}–{money(hi * n)}</span>" if one else f"<span>від {money(p * n)}</span><span>до {money(hi * n)}</span>"
     return '<div class="b3">' + "".join(f'<div><span class="t8">{n} людей</span>{val(n)}</div>' for n in (20, 50, 100)) + '</div>'
 def photo_note(): return "На фото: " + "; ".join(f"{i + 1} — {c}" for i, (_f, _p, c) in enumerate(PHOTO)) + "."
-PAGES = []
+PAGES = []; NAMES = ['v0-now', 'vA', 'vB', 'vC', 'vD', 'vE']
 
 # 0 · the page as it is now (table) — for comparison
 PAGES.append(deck.PAGES[2].replace("Obiimy · Подарунки для команди · 2026", "Сторінка 3 · зараз — таблиця"))
@@ -86,8 +87,40 @@ def chip_e(i, G):
 PAGES.append(f'''<section class="pg frame v3e">{pic("photo/solo/krok-tw-3.webp", 297, 210, "50% 35%", "bg", hi=True, once=False)}
 <p class="vtag cap">Чотири подарунки · сторінка 3 · варіант E — кадр і чипи</p>
 <div class="fr-t"><h1 class="h40">Що в коробці —<br><i>і скільки це коштує</i></h1>
-<p class="fr-p">Ціна на людину — базова роздрібна, obiimy.world, жовтень 2026. Пакування й наліпка з вашим логотипом — безкоштовно. Бюджети на 20 і 100 людей, змішана команда й приклад розрахунку — на стор. 13.</p>
+<p class="fr-p">Ціна на людину — базова роздрібна, obiimy.world, жовтень 2026. Пакування й наліпка з вашим логотипом — безкоштовно. Бюджети на 20 і 100 людей, змішана команда й приклад розрахунку — на стор. {deck.TERMS_P}.</p>
 <div class="chips4">{"".join(chip_e(i, G) for i, G in enumerate(GIFTS))}</div></div>{FOLIO}</section>''')
+
+# ── cover variants ──────────────────────────────────────────────────────────────────────────────────
+LINE = f'<p class="folio"><span>Пакування й наліпка з вашим логотипом — безкоштовно</span><span><a href="{deck.PHONE_HREF}">{deck.PHONE}</a> · <a href="{deck.TG}">Telegram @OBIIMY_sales</a></span></p>'
+CAP = deck.COVER_CAP
+H1 = "Подарунки<br>для команди,<br><i>які носять</i>"
+def vtag(t): return f'<p class="vtag r cap">Обкладинка · {t}</p>'
+COVERS = []
+# B · another frame of the same shoot: a portrait with the scarf on the wrist
+COVERS.append(f'''<section class="pg frame cv cvb">{pic("photo/solo/krok-44-3.webp", 297, 210, "50% 58%", "bg", hi=True, once=False)}<img src="brand/logo-white.png" class="logo" alt="Obiimy">{vtag("варіант B — портрет")}
+<div class="fr-t"><p class="cap">{CAP}</p><h1 class="h54">{H1}</h1>
+<div class="chip">{cut("krok-44-1", 13)}<div><span>Чотири подарунки · на людину</span><em>від 1 600 до 3 600 грн</em></div></div></div>{LINE}</section>''')
+# C · paper and a photograph: the title on paper, the portrait takes the right half
+COVERS.append(f'''<section class="pg cv cvc"><figure class="cph">{pic("photo/solo/puls-44-4.webp", 148.5, 210, "52% 50%", hi=True, once=False)}</figure>{vtag("варіант C — папір і портрет")}
+<img src="brand/logo-ink.png" class="logo" alt="Obiimy">
+<div class="cvt"><p class="cap">{CAP}</p><h1 class="h54">{H1}</h1>
+<p class="h13">Чотири подарунки — від 1 600 до 3 600 грн на людину</p></div>{LINE}</section>''')
+# D · three portraits — a team — and the title on a paper band
+TRI = [("photo/solo/avantiura-88-5.webp", "62% 50%"), ("photo/solo/puls-44-4.webp", "50% 50%"), ("photo/solo/krok-44-3.webp", "50% 50%")]
+COVERS.append(f'''<section class="pg cv cvd"><div class="tri">{"".join(pic(f, 97, 129, ps, hi=True, once=False) for f, ps in TRI)}</div>{vtag("варіант D — три портрети")}
+<img src="brand/logo-ink.png" class="logo" alt="Obiimy">
+<div class="cvt"><p class="cap">{CAP}</p><h1 class="h54">Подарунки для команди,<br><i>які носять</i></h1></div>
+<p class="h13 cvp">Чотири подарунки<br>від 1 600 до 3 600 грн на людину</p>{LINE}</section>''')
+# E · the things themselves on paper, as in a gift guide
+OBJ = [("krok-tw-1", 74, 163.5, 22.5, 0), ("duo-hratsiia-ring", 60, 219, 33, 0), ("maskscr-litnie-pole", 60, 157.5, 115.5, 0), ("pair-zolote", 64, 216, 112.5, 0)]   # cut-out, size mm, x, y, rotation
+COVERS.append(f'''<section class="pg cv cve">{"".join(f'<div class="ob" style="left:{x}mm;top:{y}mm;transform:rotate({r}deg)">{cut(c, mm, fix=True)}</div>' for c, mm, x, y, r in OBJ)}{vtag("варіант E — речі на папері")}
+<img src="brand/logo-ink.png" class="logo" alt="Obiimy">
+<div class="cvt"><p class="cap">{CAP}</p><h1 class="h54">{H1}</h1>
+<p class="h13">Чотири подарунки — від 1 600 до 3 600 грн на людину</p></div>{LINE}</section>''')
+# F · a wide scene by the sea, the scarf worn as a belt
+COVERS.append(f'''<section class="pg frame cv cvf">{pic("photo/solo/avantiura-88-2.webp", 297, 210, "50% 30%", "bg", hi=True, once=False)}<img src="brand/logo-white.png" class="logo" alt="Obiimy">{vtag("варіант F — сцена")}
+<div class="fr-t"><p class="cap">{CAP}</p><h1 class="h54">{H1}</h1>
+<div class="chip">{cut("avantiura-88-1", 13)}<div><span>Чотири подарунки · на людину</span><em>від 1 600 до 3 600 грн</em></div></div></div>{LINE}</section>''')
 
 CSS = deck.CSS + """
 /* page 3 variants */
@@ -109,28 +142,25 @@ CSS = deck.CSS + """
 .rw .th { grid-row: 1 / 4; align-self: center; width: 21mm; height: 21mm; object-fit: contain; filter: drop-shadow(0 1mm 1.5mm rgba(0,0,0,.14)); } .rw .cap { grid-column: 2 / 4; letter-spacing: .13em; }
 .rw .b3 { grid-column: 2 / 4; margin-top: 0; padding-top: .75mm; } .rw .pr { line-height: 26pt; } .v3d .panel h2 { margin-bottom: 4.5mm; }
 .v3d .phc { margin-top: auto; }
-.vtag { position: absolute; left: 16.5mm; top: 16.5mm; z-index: 2; } .v3e .fr-t { width: 264mm; } .v3e .fr-p { max-width: 118mm; }
+.vtag { position: absolute; left: 16.5mm; top: 16.5mm; z-index: 2; } .vtag.r { left: auto; right: 16.5mm; top: 19.5mm; z-index: 3; }
+/* cover variants */
+.cv .logo { position: absolute; left: 16.5mm; top: 16.5mm; height: 9mm; width: 42.4mm; z-index: 2; } .cv .folio { z-index: 2; }
+.cvc .cph, .cph { position: absolute; right: 0; top: 0; width: 148.5mm; height: 210mm; } .cph img { width: 100%; height: 100%; object-fit: cover; }
+.cvt { position: absolute; left: 16.5mm; bottom: 22.5mm; width: 126mm; z-index: 2; } .cvt .cap { margin-bottom: 3mm; } .cvt h1 { margin-bottom: 6mm; }
+.cvc .vtag, .cve .vtag { color: #6E6A63; } .cvc .vtag { color: rgba(255,255,255,.8); }
+.cvc .folio span:last-child { color: rgba(255,255,255,.8); }
+.tri { position: absolute; left: 0; right: 0; top: 0; height: 129mm; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; } .tri img { width: 100%; height: 129mm; object-fit: cover; }
+.cvd .cvt { width: 264mm; bottom: 21mm; } .cvd .cvt h1 { margin-bottom: 0; } .cvd .cvp { position: absolute; right: 16.5mm; bottom: 24mm; text-align: right; color: #4A4A47; }
+.cvd .logo { left: auto; right: 16.5mm; top: 141mm; } .cvd .vtag { color: rgba(255,255,255,.85); }
+.cvb .fr-t { left: auto; right: 16.5mm; width: 130mm; text-align: right; } .cvb .chip { text-align: left; }
+.cvb::after { background: linear-gradient(270deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,.3) 36%, rgba(0,0,0,0) 60%), linear-gradient(0deg, rgba(0,0,0,.7) 0%, rgba(0,0,0,0) 46%), linear-gradient(180deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,0) 24%); }
+.cvb .vtag { top: 28.5mm; }
+.cve .ob { position: absolute; } .cve .ob img { filter: drop-shadow(0 3mm 4mm rgba(0,0,0,.18)); }
+.cvf::after { background: linear-gradient(90deg, rgba(0,0,0,.66) 0%, rgba(0,0,0,.36) 34%, rgba(0,0,0,0) 56%), linear-gradient(0deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,0) 40%), linear-gradient(180deg, rgba(0,0,0,.4) 0%, rgba(0,0,0,0) 24%); } .v3e .fr-t { width: 264mm; } .v3e .fr-p { max-width: 118mm; }
 .chips4 { display: grid; grid-template-columns: repeat(4, 61.5mm); column-gap: 6mm; } .chips4 .chip { display: grid; grid-template-columns: 16mm 1fr; height: 22.5mm; padding: 2mm 3mm 2mm 2.5mm; } .chips4 .chip img { width: 16mm; height: 16mm; } .chips4 .chip span { white-space: nowrap; }
 """
-html = f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — сторінка 3, варіанти</title><style>{CSS}</style></head><body>{"".join(PAGES)}</body></html>'
-(OUT / "p3-variants.html").write_text(typo(html))
-script = OUT / "review" / "pp" / "pdf-p3.mjs"
-script.write_text('''import puppeteer from 'puppeteer-core';
-import fs from 'fs';
-const b = await puppeteer.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: 'new', args: ['--no-sandbox', '--allow-file-access-from-files'] });
-const p = await b.newPage(); await p.setViewport({ width: 1123, height: 794, deviceScaleFactor: 1.5 });
-await p.goto('file:///Users/ivan/obiimy/p3-variants.html', { waitUntil: 'networkidle0', timeout: 120000 });
-await p.evaluate(() => document.fonts.ready);
-const issues = await p.evaluate(() => { const out = [], mm = 1123 / 297; document.querySelectorAll('.pg').forEach((pg, i) => {
-  pg.querySelectorAll('.panel,.sheet').forEach(c => { if (c.scrollHeight > c.clientHeight + 2) out.push(`v${i} container overflow by ${Math.round((c.scrollHeight - c.clientHeight) / mm)} mm`); });
-  pg.querySelectorAll('.g, .rw, .po figcaption').forEach(c => { c.querySelectorAll('h3, p, span, b, em').forEach(el => { if (el.scrollWidth > el.clientWidth + 1 || el.getBoundingClientRect().right > c.getBoundingClientRect().right + 1) out.push(`v${i} too wide: «${el.textContent.trim().slice(0, 28)}»`); }); });
-}); return [...new Set(out)]; });
-console.log(issues.length ? 'LAYOUT ISSUES:\\n' + issues.join('\\n') : 'layout: clean');
-await p.pdf({ path: '/Users/ivan/obiimy/obiimy-p3-variants.pdf', printBackground: true, preferCSSPageSize: true });
-const dir = '/Users/ivan/obiimy/review/pp/team/p3'; fs.mkdirSync(dir, { recursive: true });
-const names = ['v0-now', 'vA', 'vB', 'vC', 'vD', 'vE'];
-const els = await p.$$('.pg'); for (let i = 0; i < els.length; i++) await els[i].screenshot({ path: `${dir}/${names[i] || 'v' + i}.png` });
-await b.close();
-''')
-subprocess.run(["node", str(script)], cwd=OUT / "review" / "pp", check=True)
-print("variants:", len(PAGES) - 1, "· size:", round((OUT / "obiimy-p3-variants.pdf").stat().st_size / 1048576, 1), "MB")
+def doc(pages, title): return typo(f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>{title}</title><style>{CSS}</style></head><body>{"".join(pages)}</body></html>')
+(OUT / "p3-variants.html").write_text(doc(PAGES, "Obiimy — сторінка 3, варіанти"))     # page 3 alone: a base for mock-ups
+FULL = deck.PAGES[:1] + COVERS + deck.PAGES[1:2] + PAGES + deck.PAGES[3:]
+print("cover variants:", len(COVERS), "· page 3 variants:", len(PAGES) - 1)
+deck.render(FULL, CSS)

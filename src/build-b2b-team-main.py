@@ -211,6 +211,10 @@ CSS = DECK_SKIN + """
   @media (max-width: 960px) { .logo2, .terms2 { grid-template-columns: 1fr; } .boxcut { max-width: 520px; } .logo-t { padding-top: 0; } }
   @media (max-width: 640px) { .ask { grid-template-columns: 1fr; } .tkv > div { grid-template-columns: 1fr; gap: 4px; } }
   .photo-band h2 i { font-style: italic; color: #E7D9A6; }
+  .w6g { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; } .w6 { position: relative; margin: 0; overflow: hidden; } .w6 img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; }
+  .w6::after { content: ""; position: absolute; inset: 55% 0 0; background: linear-gradient(0deg, rgba(0,0,0,.62), rgba(0,0,0,0)); pointer-events: none; }
+  .w6 figcaption { position: absolute; left: 22px; bottom: 18px; z-index: 1; color: #E7D9A6; font-family: var(--display); font-style: italic; font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1; }
+  @media (max-width: 640px) { .w6g { grid-template-columns: 1fr 1fr; gap: 8px; } .w6 figcaption { left: 12px; bottom: 12px; font-size: 1.2rem; } }
   @media (max-width: 640px) {
     .quote-band { display: none; }
     .as em { display: table; margin: 4px 0 0; }
@@ -350,7 +354,9 @@ TIERS = [  # label, name, what is inside, price text, note, cut-out (same four g
     ("Ключовим людям", "Хустка й твіллі в коробці", "Один принт, святкова коробка. Майстер-клас від засновниці — за бажанням, узгоджуємо окремо.", "від 3 200 грн", "односторонній друк — 3 200, двосторонній — 3 600 грн", "img/cut/set-natkhnennia-box.webp"),
 ]
 TPRICE = [(1600, None), (2050, 2850), (3100, None), (3200, 3600)]   # per person: price, ceiling (double-sided print) or None
-ARGS = [  # why Obiimy — four buyer arguments (deck p. 2, landing)
+INTRO = "Obiimy — «обійми»: український бренд шовкових хусток, твіллі й аксесуарів для сну. Засновниця й художниця — Світлана Сніжко. Нас продають INTERTOP, Hram, Be Brave (Канада) та UFD London; про нас пишуть LIGA.net та INSIDER UA."   # for a buyer who has never heard of the brand
+ARGS = [  # why Obiimy — buyer arguments (deck p. 2, landing)
+    ("Без розмірів і примірок", "Хустка, твіллі чи маска для сну підходять кожному — не треба збирати розміри, як для одягу."),
     ("Кожному — свій принт", "38 принтів твіллі, п’ять авторських колекцій. Один подарунок на всю команду — і кожному свій."),
     ("Шовк, який відчувають", "100% натуральний італійський шовк. Кутики кожної хустки кравчині обробляють вручну."),
     ("Український бренд з історією", "Заснований під час війни, виробництво повністю українське. Частина коштів від колекції «Співоча душа» — на гнізда для сиворакші з Червоної книги."),
@@ -373,6 +379,7 @@ TERMS = [("Строки", "Назвіть дату вручення — у ві�
          ("Доставка", "Новою поштою: в офіс однією посилкою або кожному окремо. Безкоштовно від 5 000 грн; як це діє для адресної розсилки кожному — напишемо в розрахунку. За кордон — за тарифами перевізника."),
          ("Оплата й документи", "Вкажіть у запиті юридичну особу та ЄДРПОУ, чи потрібен рахунок із ПДВ і які документи — форму оплати й документи підтвердимо в розрахунку."),
          ("Кількість", "Мінімальну кількість і наявність потрібного принта підтвердимо в розрахунку — напишіть, скільки людей у команді."),
+         ("Вибір принтів", "Ви обираєте з добірки з фото: один принт на всіх або кожному свій. Від вас знадобиться логотип для наліпки."),
          ("Зразки", "Подивитися й потримати речі до замовлення — у шоурумі: {SHOWROOM}; пн–пт 10:00–18:00, сб 11:00–18:00.")]
 TERMS = [(k, v.replace("{SHOWROOM}", team.SHOWROOM)) for k, v in TERMS]
 EXAMPLE = [("Твіллі 84 × 5", 30, 1600), ("Сертифікат Obiimy", 20, 1500), ("Пакування й наліпка з логотипом", 30, 0), ("Доставка в офіс", 1, 0)]   # sample quote: mixed team of 50, retail prices
@@ -470,7 +477,7 @@ def perks_section():
     return f'''
   <section class="block" id="why"><div class="wrap perks">
     <figure class="perks-ph">{img(PERKS_PH[0], "Модель у шовковій хустці Obiimy", sizes="(max-width: 960px) 100vw, 45vw", style=pos(PERKS_PH[1]))}<figcaption>«Кожна коробочка — це обійми, що нагадують: ти варта краси»</figcaption></figure>
-    <div><div class="head"><p class="eyebrow">Чому Obiimy</p><h2>Подарунок, що носять, <i>а не кладуть у шухляду</i></h2><p class="sub">Нас продають INTERTOP, Hram, Be Brave (Канада), UFD London · про нас пишуть LIGA.net та INSIDER UA</p></div><div class="perks-l">{cards}</div>
+    <div><div class="head"><p class="eyebrow">Чому Obiimy</p><h2>Подарунок, що носять, <i>а не кладуть у шухляду</i></h2><p class="sub">{INTRO}</p></div><div class="perks-l">{cards}</div>
       <p class="note">Зразки можна побачити й потримати в шоурумі: {team.SHOWROOM}.</p></div>
   </div></section>'''
 
@@ -509,6 +516,16 @@ def ways_section():
   <section class="block solo-dark ways-dark" id="ways"><div class="wrap">
     <div class="sd-hd top"><div><p class="eyebrow">Як носити</p><h2>Одна твіллі — <i>чотири образи</i></h2></div><p>Твіллі 84 × 5 — 1 600 грн, найдоступніший із чотирьох подарунків. Хустку 44 × 44 носять так само: на шиї, на зап’ясті, на сумці. Один принт на всіх — і жодних однакових образів.</p></div>
     <div class="ways">{ways}</div>
+  </div></section>'''
+
+W6 = [("На сумці", "62% 50%"), ("На голові", "66% 50%"), ("На шиї", "56% 50%"), ("Поясом", "50% 50%"), ("Банданою", "50% 50%"), ("Топом", "56% 50%")]   # the client's collage, photo/ways
+def scarf_ways_section():
+    """«Одна хустка — шість образів» — the same six frames as on page 10 of the deck."""
+    tiles = "".join(f'<figure class="w6">{img(f"photo/ways/ways-{i + 1}.jpg", f"{n} — шовкова хустка Obiimy", sizes="(max-width: 640px) 50vw, 33vw", style=pos(ps))}<figcaption>{n}</figcaption></figure>' for i, (n, ps) in enumerate(W6))
+    return f'''
+  <section class="block" id="scarf-ways"><div class="wrap">
+    <div class="head"><p class="eyebrow">Як носити</p><h2>Одна хустка — <i>шість образів</i></h2><p class="sub">Шовкову хустку носять на сумці, на голові й на шиї, поясом, банданою чи топом. Хустки 44 × 44 — від 1 600 грн, 65 × 65 — від 3 200 грн, 88 × 88 — від 4 400 грн; який формат під який спосіб — підкажемо в добірці.</p></div>
+    <div class="w6g">{tiles}</div>
   </div></section>'''
 
 def assort_section():
@@ -589,7 +606,7 @@ def terms_section():
     return f'''
   <section class="block alt" id="terms"><div class="wrap terms2">
     <div><div class="head"><p class="eyebrow">Умови й замовлення</p><h2>Як замовити — <i>і що в розрахунку</i></h2></div><div class="perks-l">{steps}</div>
-      <div class="got"><p class="eyebrow">Приклад розрахунку · 50 людей · роздрібні ціни, грн</p>
+      <div class="got"><p class="eyebrow">Приклад розрахунку · 50 людей · ціни в грн</p>
         <table class="qt"><thead><tr><th>Виріб</th><th>Шт.</th><th>Ціна</th><th>Сума</th></tr></thead><tbody>{calc}</tbody>
         <tfoot><tr><th>Разом</th><td></td><td></td><td class="num">{money(sum(q * pz for _n, q, pz in EXAMPLE))}</td></tr></tfoot></table>
         <p>Строк у робочих днях — окремим рядком.</p></div>
@@ -629,7 +646,7 @@ def main():
     body = f'''
   <section class="hero cover" id="top">{img(HERO[0], "Шовкова хустка на моделі — колекція SOLO", sizes="100vw", lazy=False, eager_priority=True, cls="cover-img", style=pos(HERO[1]))}
     <div class="cover-t"><div class="wrap">
-      <p class="eyebrow">Корпоративні подарунки · 2026</p>
+      <p class="eyebrow">Obiimy · український бренд шовкових хусток і аксесуарів</p>
       <h1>Подарунки<br>для команди,<br><i>які носять</i></h1>
       <p class="lead">Чотири подарунки — від 1 600 до 3 600 грн на людину. Пакування й наліпка з вашим логотипом — безкоштовно. Український бренд, виробництво в Україні.</p>
       <div class="cta"><a class="btn btn-gold" href="#request">Отримати розрахунок</a><a class="btn btn-line" href="#tiers">Чотири подарунки й ціни</a></div>
@@ -639,6 +656,7 @@ def main():
   {perks_section()}
   {personal_section()}
   {assort_section()}
+  {scarf_ways_section()}
   {solo_section()}
   {quote_section()}
   {ways_section()}

@@ -334,7 +334,8 @@ def request_section(pid, subject, title, lead, back, alt=True):
         ("people", "Скільки подарунків", "number", False, {"ph": "наприклад, 40"}),
         ("date", "Дата, до якої потрібно", "date", False, {}),
         ("delivery", "Доставка", "select:Кожному на відділення Нової пошти|В офіс однією посилкою|Комбіновано|Частина — за кордон", False, {"full": True}),
-        ("note", "Розрахунок і коментар", "textarea", False, {"ph": "Нагода, побажання до принтів, склад команди…"}),
+        ("budget", "Бюджет на людину, грн", "number", False, {"ph": "наприклад, 2 000"}),
+        ("note", "Нагода й побажання", "textarea", False, {"ph": "Нагода, побажання до принтів, склад команди…"}),
     ], "Відповідаємо з добіркою та розрахунком.", tg=TG)
     return f"""
   <section class="form-block{" alt" if alt else ""}" id="request"><div class="wrap">

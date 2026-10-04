@@ -258,6 +258,8 @@ def proof_html(title, lead, first=False):
     </div>
   </div></section>'''
 
+TG_HINT = "Сформуємо текст запиту — надішлете його в Telegram або листом на {mail}. Нічого не надсилається без вашого підтвердження. Або телефонуйте: <a href=\"{tel}\">{phone}</a>."
+TG_DONE = "Текст запиту — нижче. Надішліть його менеджеру в Telegram або листом на <a href=\"mailto:{mail}\">{mail}</a>; можна скопіювати чи подзвонити: <a href=\"{tel}\">{phone}</a>."
 def form_html(pid, subject, fields, note, L=None, tg=None):
     L = L or UK
     """fields: list of (name, label, kind, required, extra) where kind in input/tel/email/number/select:opts/textarea."""
@@ -282,13 +284,13 @@ def form_html(pid, subject, fields, note, L=None, tg=None):
     return f'''
       <form id="{pid}" novalidate>
         {"".join(out)}
-        <div class="actions"><button class="btn btn-gold" type="submit">{L["submit"]}</button><span class="hint">{L["hint"].format(mail=MAIL, tel=PHONE_HREF, phone=PHONE)}</span></div>
+        <div class="actions"><button class="btn btn-gold" type="submit">{L["submit"]}</button><span class="hint">{(TG_HINT if tg else L["hint"]).format(mail=MAIL, tel=PHONE_HREF, phone=PHONE)}</span></div>
       </form>
       <div class="done" id="{pid}-done" hidden aria-live="polite">
-        <h3 tabindex="-1">{L["done_h"]}</h3>
-        <p>{L["done_p"].format(mail=MAIL, tel=PHONE_HREF, phone=PHONE)}</p>
+        <h3 tabindex="-1">{"Запит готовий — надішліть його зручним способом" if tg else L["done_h"]}</h3>
+        <p>{(TG_DONE if tg else L["done_p"]).format(mail=MAIL, tel=PHONE_HREF, phone=PHONE)}</p>
         <textarea id="{pid}-txt" readonly rows="8" aria-label="{L["txt_aria"]}"></textarea>
-        <div class="row">{f'<a class="btn btn-gold btn-sm" id="{pid}-tg" href="{tg}" target="_blank" rel="noopener">Надіслати в Telegram</a>' if tg else ""}<button class="btn btn-line btn-sm" type="button" id="{pid}-copy">{L["copy"]}</button><a class="btn btn-line btn-sm" href="{PHONE_HREF}">{L["call"]}</a><button class="btn btn-line btn-sm" type="button" id="{pid}-back">{L["back"]}</button></div>
+        <div class="row">{f'<a class="btn btn-gold btn-sm" id="{pid}-tg" href="{tg}" target="_blank" rel="noopener">Надіслати в Telegram</a><a class="btn btn-line btn-sm" id="{pid}-mail" href="mailto:{MAIL}">Надіслати листом</a>' if tg else ""}<button class="btn btn-line btn-sm" type="button" id="{pid}-copy">{L["copy"]}</button><a class="btn btn-line btn-sm" href="{PHONE_HREF}">{L["call"]}</a><button class="btn btn-line btn-sm" type="button" id="{pid}-back">{L["back"]}</button></div>
       </div>
       <script>
       (function () {{
@@ -312,7 +314,8 @@ def form_html(pid, subject, fields, note, L=None, tg=None):
           var tgb = document.getElementById('{pid}-tg'); if (tgb) tgb.href = tgb.href.split('?')[0] + '?text=' + encodeURIComponent(body);
           var company = f.querySelector('[name="company"]').value.trim();
           f.hidden = true; done.hidden = false; done.scrollIntoView({{ block: 'start', behavior: 'smooth' }}); done.querySelector('h3').focus({{ preventScroll: true }});
-          window.location.href = 'mailto:{MAIL}?subject=' + encodeURIComponent('{subject} — ' + company) + '&body=' + encodeURIComponent(body);
+          var mailto = 'mailto:{MAIL}?subject=' + encodeURIComponent('{subject} — ' + company) + '&body=' + encodeURIComponent(body);
+          var mb = document.getElementById('{pid}-mail'); if (mb) mb.href = mailto; else window.location.href = mailto;
         }});
         document.getElementById('{pid}-copy').addEventListener('click', function () {{ var b = this; txt.select(); (navigator.clipboard ? navigator.clipboard.writeText(txt.value) : Promise.reject()).then(function () {{ b.textContent = '{L["copied"]}'; setTimeout(function () {{ b.textContent = '{L["copy"]}'; }}, 2000); }}, function () {{ document.execCommand('copy'); }}); }});
         document.getElementById('{pid}-back').addEventListener('click', function () {{ done.hidden = true; f.hidden = false; f.scrollIntoView({{ block: 'start', behavior: 'smooth' }}); }});

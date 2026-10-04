@@ -44,7 +44,7 @@ def cut(src, name=None, light=228, sat=16, erode=1, feather=0.8, crop=True, pad=
     out.save(dst, "WEBP", quality=88, method=6)
     return dst
 
-def cut_grab(src, name, strong=26, weak=9, dark=70, fill=True, drop_neutral=0, scale=900, pad=0.03):
+def cut_grab(src, name, strong=26, weak=9, dark=70, fill=True, drop_neutral=0, edge_neutral=False, scale=900, pad=0.03):
     """For products on a neutral backdrop with a soft, tinted shadow (boxes, rings): the lightness test keeps the shadow as ragged
     patches. Seeds come from chroma (strongly coloured or dark = product, neutral area touching the frame = backdrop), GrabCut settles
     the rest. fill=True returns enclosed neutral parts (white stripes of a scarf inside the box); drop_neutral > 0 removes enclosed
@@ -70,6 +70,9 @@ def cut_grab(src, name, strong=26, weak=9, dark=70, fill=True, drop_neutral=0, s
             sizes = ndimage.sum(soft, lab, range(1, n + 1)); fg &= ~np.isin(lab, [i + 1 for i, z in enumerate(sizes) if z > fg.size * drop_neutral])
         fg = ndimage.binary_opening(fg, iterations=1)
     elif fill: fg = ndimage.binary_fill_holes(fg)
+    if edge_neutral:                                              # grey wedges of shadow that hang on the outline (between a lid and the tissue)
+        soft = (ch <= 9) & (a.min(2) > 120) & fg; lab, n = ndimage.label(soft); outside = ndimage.binary_dilation(~fg, iterations=2)
+        touch = np.unique(lab[outside & soft]); fg &= ~np.isin(lab, touch[touch != 0]); fg = ndimage.binary_opening(fg, iterations=2)
     lab, n = ndimage.label(fg)
     if n > 1:
         sizes = ndimage.sum(fg, lab, range(1, n + 1)); fg = np.isin(lab, [i + 1 for i, z in enumerate(sizes) if z > sizes.max() * 0.02])
@@ -84,9 +87,9 @@ def cut_grab(src, name, strong=26, weak=9, dark=70, fill=True, drop_neutral=0, s
     return dst
 
 GRAB = [  # src, name, params — everything shot on a white backdrop with a shadow: boxes, rings, small things
-    ("photo/box-gold.jpg", "box-gold", {}),
-    ("photo/site/set-tvilli-845-ta-khustky-4444-natkhne-01.jpg", "set-natkhnennia-box", {}),
-    ("photo/site/set-tvilli-845-ta-khustky-4444-vpevnen-01.jpg", "set-vpevnenist-box", {}),
+    ("photo/box-gold.jpg", "box-gold", dict(edge_neutral=True)),
+    ("photo/site/set-tvilli-845-ta-khustky-4444-natkhne-01.jpg", "set-natkhnennia-box", dict(edge_neutral=True)),
+    ("photo/site/set-tvilli-845-ta-khustky-4444-vpevnen-01.jpg", "set-vpevnenist-box", dict(edge_neutral=True)),
     ("photo/site/ring-n-styl-01.jpg", "ring-n", dict(drop_neutral=0.002, fill=False)),
     ("img/scrunchie-pole.webp", "scrunchie-pole", dict(drop_neutral=0.003, fill=False)),
     ("img/sets/twscr-makiv.webp", "twscr-makiv", {}),
@@ -97,6 +100,28 @@ GRAB = [  # src, name, params — everything shot on a white backdrop with a sha
     ("img/sets/maskscr-litnie-pole.webp", "maskscr-litnie-pole", dict(drop_neutral=0.004, fill=False)),
     ("photo/hratsiia-flat.webp", "hratsiia-flat", {}),
 ]
+
+def detail(src, name, cx, cy, r):
+    """A round close-up from a product photo (centre and radius as shares of the frame): the backdrop is cut away, so the
+    circle shows the thing on the page, not in a white tile — «the ring holds the scarf»."""
+    from PIL import ImageDraw
+    full = Image.open(ROOT / src).convert("RGB"); W, H = full.size
+    a = np.asarray(full).astype(np.int16); rg, gb = a[..., 0] - a[..., 1], a[..., 1] - a[..., 2]
+    light = a[a.min(2) > 235]                                     # the white backdrop
+    ch = np.maximum(np.abs(rg - np.median(light[:, 0] - light[:, 1])), np.abs(gb - np.median(light[:, 1] - light[:, 2])))
+    fg = ndimage.binary_closing(ndimage.binary_opening((ch > 9) | (a.max(2) < 90), iterations=2), iterations=3)
+    holes = ndimage.binary_fill_holes(fg) & ~fg; lab, n = ndimage.label(~fg)
+    sizes = ndimage.sum(~fg, lab, range(1, n + 1)); fg |= np.isin(lab, [i + 1 for i, z in enumerate(sizes) if z < fg.size * 0.004])   # white lines of the print stay
+    lab, n = ndimage.label(fg); sizes = ndimage.sum(fg, lab, range(1, n + 1)); fg = np.isin(lab, [i + 1 for i, z in enumerate(sizes) if z > sizes.max() * 0.03])   # no specks of shadow
+    alpha = Image.fromarray((fg * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.4)).point(lambda v: 0 if v < 110 else (255 if v > 170 else int((v - 110) * 255 / 60)))
+    rgba = full.convert("RGBA"); rgba.putalpha(alpha)
+    q = r * min(W, H); out = rgba.crop((int(cx * W - q), int(cy * H - q), int(cx * W + q), int(cy * H + q)))
+    m = Image.new("L", (out.width * 2, out.height * 2), 0); ImageDraw.Draw(m).ellipse((0, 0, m.width - 1, m.height - 1), fill=255); m = m.resize(out.size, Image.LANCZOS)
+    al = np.asarray(Image.composite(out.split()[-1], Image.new("L", out.size, 0), m)).copy()
+    lab, n = ndimage.label(al > 40); sizes = ndimage.sum(al > 40, lab, range(1, n + 1))
+    al[~np.isin(lab, [i + 1 for i, z in enumerate(sizes) if z > sizes.max() * 0.05])] = 0          # specks left inside the circle
+    out.putalpha(Image.fromarray(al))
+    out.save(OUT / f"{name}.webp", "WEBP", quality=92, method=6)
 
 def duo(scarf, ring, name, k=0.4):
     """Scarf with the ring on its corner — one image for «Хустка й кільце» thumbs."""
@@ -141,3 +166,5 @@ if __name__ == "__main__":
         d = cut_grab(src, name, **kw); im = Image.open(d)
         al = np.asarray(im.split()[-1]); print(f"{name:24} {im.size} opaque {round((al > 128).mean() * 100)}% (grabcut)")
     duo("hratsiia-flat", "ring-n", "duo-hratsiia-ring")
+    detail("photo/site/ring-n-styl-02.jpg", "ring-in-use", 0.53, 0.49, 0.25)
+    detail("photo/site/mask-synii-02.jpg", "men-mask", 0.50, 0.40, 0.42)

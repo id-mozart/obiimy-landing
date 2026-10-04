@@ -18,8 +18,11 @@ CSS = main.DECK_SKIN + """
   .hero.set { padding: 0 0 clamp(28px, 4vw, 48px); }
   .set-split { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-height: min(calc(100vh - 104px), 860px); }
   .set-ph { position: relative; overflow: hidden; } .set-ph img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
-  .set-cap { position: absolute; left: 18px; right: 18px; bottom: 14px; color: rgba(255,255,255,.92); font-size: .8rem; text-shadow: 0 1px 8px rgba(0,0,0,.6); }
-  .set-t { padding: clamp(28px, 4vw, 64px) clamp(20px, 5vw, 80px); display: flex; flex-direction: column; justify-content: center; max-width: 720px; }
+  .hero.set .set-cap { margin-top: 12px; font-size: .78rem; color: var(--ink3); }
+  .hero.set .set-more .cutimg { object-fit: contain; border-radius: 0; filter: drop-shadow(0 14px 18px rgba(0,0,0,.18)); }
+  .set-t { padding: clamp(28px, 4vw, 64px) max(clamp(16px, 4vw, 48px), calc((100vw - 1280px) / 2 + clamp(16px, 4vw, 48px))) clamp(28px, 4vw, 64px) clamp(16px, 5vw, 80px); display: flex; flex-direction: column; justify-content: center; }
+  .crumb a::after { content: " · "; } .crumb span { white-space: nowrap; } .o4 span { display: block; } .o4-m { margin-top: 2px; }
+  @media (max-width: 640px) { .crumb a { display: block; margin-bottom: 4px; } .crumb a::after { content: ""; } }
   .set-more { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; margin-top: clamp(20px, 3vw, 36px); } .set-more figure { margin: 0; } .set-more figcaption { font-size: .78rem; color: var(--ink3); margin-top: 8px; line-height: 1.35; }
   .hero.set .set-more img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); display: block; }
   .hero.set .set-more .m3 { object-fit: contain; border-radius: 0; filter: drop-shadow(0 14px 18px rgba(0,0,0,.18)); }
@@ -27,13 +30,13 @@ CSS = main.DECK_SKIN + """
   .hero.set h1 { font-size: clamp(2.2rem, 4vw, 3.6rem); line-height: 1; margin-top: 12px; }
   .hero.set .lead { margin-top: 16px; }
   .hero.set .cta { margin-top: 20px; }
-  @media (max-width: 640px) { .qrbox { display: none; } .others4 { gap: 10px; } .o4 img { aspect-ratio: 3 / 4; } .o4 b { font-size: 1rem; line-height: 1.15; margin-top: 8px; } .o4 span { font-size: .78rem; } }
-  .qrbox { margin: 8px 0 0; display: grid; grid-template-columns: 112px 1fr; gap: 14px; align-items: center; max-width: 340px; } .qrbox svg { width: 112px; height: 112px; } .qrbox figcaption { font-size: .85rem; color: var(--ink2); }
+  @media (max-width: 640px) { .others4 { gap: 10px; } .o4 img { aspect-ratio: 3 / 4; } .o4 b { font-size: 1rem; line-height: 1.15; margin-top: 8px; } .o4 span { font-size: .78rem; } }
+  .qrbox { margin: 8px 0 0; display: grid; grid-template-columns: 112px 1fr; gap: 14px; align-items: center; max-width: 340px; } .qrbox svg { width: 112px; height: 112px; } @media (max-width: 640px) { .qrbox { display: none; } } .qrbox figcaption { font-size: .85rem; color: var(--ink2); }
   @media (max-width: 960px) {  }
   .o4 { display: block; text-decoration: none; color: inherit; } .o4 img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); } .o4 b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.25rem; margin-top: 12px; } .o4 span { color: var(--ink2); font-size: .9rem; }
   .hero.set h1 { font-size: clamp(2rem, 3.6vw, 3.2rem); }
   .hero.set .price { font-family: var(--display); font-size: clamp(1.6rem, 2.6vw, 2.2rem); margin-top: 18px; line-height: 1.1; }
-  .hero.set .price small { display: block; font-family: var(--body); font-size: .82rem; color: var(--ink3); margin-top: 6px; white-space: normal; max-width: 34em; }
+  .hero.set .price small { display: block; font-family: var(--body); font-size: .82rem; line-height: 1.5; color: var(--ink3); margin-top: 6px; white-space: normal; max-width: 34em; }
   .hero.set figure img { aspect-ratio: 4 / 5; }
   .hero.set h1 i { font-style: italic; color: #8E8A84; }
   .b3 { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 8px 28px; margin: 16px 0 0; padding: 12px 0; border-block: 1px solid var(--line); } .b3 div { display: grid; } .b3 dt { font-size: .74rem; color: var(--ink3); } .b3 dd { margin: 0; white-space: nowrap; }
@@ -62,27 +65,28 @@ def page(i, S):
     def ph(src, alt, pos, cls, sizes):
         return img(src, alt, sizes=sizes, lazy=False, cls=cls, style=f"object-position:{pos}" if pos else "")
     m1 = ph(hp, ha, M1POS[i], "m1", "(max-width: 960px) 100vw, 50vw")
-    more = (f'<figure>{img(g2[0], g2[1], sizes="(max-width: 960px) 45vw, 22vw", cls="m2", style=f"object-position:{g2[2]}" if g2[2] else "")}<figcaption>{g2[1]}</figcaption></figure>'
+    more = (f'<figure>{img(g2[0], g2[1], sizes="(max-width: 960px) 45vw, 22vw", cls="m2 cutimg" if g2[0].startswith("img/cut/") else "m2", style=f"object-position:{g2[2]}" if g2[2] else "")}<figcaption>{g2[1]}</figcaption></figure>'
             f'<figure>{img(g3[0], g3[1], sizes="(max-width: 960px) 45vw, 22vw", cls="m3")}<figcaption>{g3[1]}</figcaption></figure>')
     b3 = "".join(f'<div><dt>{k} людей</dt><dd class="num">{main.bud(i, k)}</dd></div>' for k in (20, 50, 100))
     a, _dash, b = S["name"].partition(" — "); h1 = f"{a} — <i>{b}</i>" if b else a
-    men = f'<figure class="men">{img("photo/site/mask-synii-02.jpg", "Чоловік у шовковій масці для сну «Синій»", sizes="160px", style="object-position:50% 20%")}<figcaption><b>Чоловікам — маска окремо</b>2 700 грн; у наборі з резинкою — 3 100 грн.</figcaption></figure>' if i == 2 else ""
+    men = "" if True else f'<figure class="men">{img("photo/site/mask-synii-02.jpg", "Чоловік у шовковій масці для сну «Синій»", sizes="160px", style="object-position:50% 20%")}<figcaption><b>Чоловікам — маска окремо</b>2 700 грн; у наборі з резинкою — 3 100 грн.</figcaption></figure>' if i == 2 else ""
     mixed = ("Чоловікам у команді — маска окремо (2 700 грн), закладка для книги, наволочка або сертифікат на 1 000–4 000 грн" if i == 2 else "Тим, хто не носить аксесуари, — маска для сну, закладка для книги, наволочка або сертифікат на 1 000–4 000 грн") + ": змішану команду рахуємо в одному розрахунку."
     two = i >= 2
     kv = "".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in S["inside"] if k in KEEP)
     ways = "".join(f'<div class="way"><h3>{h}</h3><p>{t}</p></div>' for h, t in (S["ways"][:2] if i >= 2 else S["ways"]))
-    others = "".join(f'<a class="o4" href="{o["slug"]}">{img(o["hero"][0], o["short"], sizes="(max-width: 960px) 100vw, 33vw", style=opos(o))}<div><b>{o["short"]}</b><span>{o["pr"]} · детальніше →</span></div></a>' for o in SETS4 if o is not S)
+    others = "".join(f'<a class="o4" href="{o["slug"]}">{img(o["hero"][0], o["short"], sizes="(max-width: 960px) 100vw, 33vw", style=opos(o))}<div><b>{o["short"]}</b><span>{o["pr"]}</span><span class="o4-m">детальніше →</span></div></a>' for o in SETS4 if o is not S)
     body = f'''
   <section class="hero set"><div class="set-split">
-    <div class="set-ph">{m1}<span class="set-cap">{ha}</span></div>
+    <div class="set-ph">{m1}</div>
     <div class="set-t">
-      <p class="eyebrow"><a href="b2b-team-main#tiers">← Усі чотири подарунки</a> · <span style="white-space:nowrap">{S["lb"]}</span></p>
+      <p class="eyebrow crumb"><a href="b2b-team-main#tiers">← Усі чотири подарунки</a><span>{S["lb"]}</span></p>
       <h1>{h1}</h1>
       <p class="lead">{S["lead"]}</p>
       <p class="price num">{S["pr"]}<small>{S["prnote"]}</small></p>
-      <dl class="b3" aria-label="Бюджет команди, грн">{b3}</dl><p class="note" style="margin-top:8px">Бюджет — за роздрібними цінами, грн; пакування й наліпка з вашим логотипом — безкоштовно; доставку рахуємо окремо.</p>
+      <dl class="b3" aria-label="Бюджет команди, грн">{b3}</dl><p class="note" style="margin-top:8px">Бюджет — за роздрібними цінами, грн; пакування й наліпка з вашим логотипом — безкоштовно; доставку рахуємо окремо. <a href="b2b-team-main#terms">Строки, доставка, оплата — умови →</a></p>
       <div class="cta"><a class="btn btn-gold" href="#request">Отримати розрахунок</a><a class="btn btn-line" href="#details">Що всередині</a></div>
       <div class="set-more">{more}</div>
+      <p class="note set-cap">{ha}.</p>
     </div>
   </div></section>
   <section class="block alt" id="details"><div class="wrap det">
@@ -90,16 +94,16 @@ def page(i, S):
     <div><div class="head"><p class="eyebrow">{"Як носити" if i < 2 else "Що в наборі"}</p><h2>{"Чотири способи" if i < 2 else "Дві речі — один принт"}</h2></div><div class="ways">{ways}</div><p class="who" style="margin-top:28px">{S["who"]}</p>{men}</div>
   </div></section>
   <section class="block" id="others"><div class="wrap"><div class="head"><p class="eyebrow">Інші подарунки</p><h2>Ще три подарунки</h2></div><div class="others4">{others}</div><p style="margin-top:18px"><a href="b2b-team-main#tiers">← Порівняти всі чотири подарунки</a></p></div></section>
-  {with_qr(team.request_section("f-set", "Подарунки для команди · " + S["short"], "Напишіть — надішлемо добірку й розрахунок", "Нагода, кількість і дата — цього досить для першого листа.", "details", alt=True))}
+  {with_qr(team.request_section("f-set", "Подарунки для команди · " + S["short"], "Напишіть — <i>надішлемо добірку й розрахунок</i>", "Нагода, кількість і дата — цього досить для першого листа.", "details", alt=True))}
   ''' + team.script("f-set", "")
-    return dict(slug=S["slug"], skin="deck", bar=team.BAR, title=f"{S['short']} — подарунок для команди від Obiimy", desc=S["lead"][:150], og=hp,
+    return dict(slug=S["slug"], skin="deck", bar=team.BAR, title=f"{S['short']} — подарунок для команди від Obiimy", desc=f"{S['short']} — подарунок для команди від Obiimy, {S['pr']} на людину. Пакування й наліпка з логотипом компанії — безкоштовно.", og=hp,
                 nav=[("Деталі", "details"), ("Інші подарунки", "others")], cta="Запит", sticky=f"{S['short']} · {S['pr']}", others=False, body=body)
 
 def build():
     b2b.CSS += team.CSS + CSS
     for i, S in enumerate(SETS4):
         p = page(i, S)
-        html = typo(team.bind(b2b.shell(p, p["body"])))
+        html = main.snap_type(typo(team.bind(b2b.shell(p, p["body"]))))
         (b2b.OUT / f"{p['slug']}.html").write_text(html)
         print(p["slug"], len(html) // 1024, "KB")
 

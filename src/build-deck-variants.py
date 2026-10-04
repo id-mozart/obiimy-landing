@@ -4,6 +4,7 @@ cover variants right after the cover and variants of page 3 («Що в коро�
 Reuses the deck's helpers, data and CSS (src/build-team-pdf.py renders only when run as a script) and renders the public PDF itself.
 When the choice is made: move the chosen layouts into build-team-pdf.py and build the deck with it again."""
 import importlib.util, pathlib, subprocess, sys
+from PIL import Image
 ROOT = pathlib.Path(__file__).resolve().parent; OUT = ROOT.parent
 sys.path.insert(0, str(ROOT))
 _spec = importlib.util.spec_from_file_location("deck", ROOT / "build-team-pdf.py"); deck = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(deck)
@@ -90,6 +91,83 @@ PAGES.append(f'''<section class="pg frame v3e">{pic("photo/solo/krok-tw-3.webp",
 <p class="fr-p">Ціна на людину — базова роздрібна, obiimy.world, жовтень 2026. Пакування й наліпка з вашим логотипом — безкоштовно. Бюджети на 20 і 100 людей, змішана команда й приклад розрахунку — на стор. {deck.TERMS_P}.</p>
 <div class="chips4">{"".join(chip_e(i, G) for i, G in enumerate(GIFTS))}</div></div>{FOLIO}</section>''')
 
+# F, G, H · concepts of the editorial art director (04.10), ported from working mock-ups ─────────────────
+def ob(name, x, y, w, r, z, warm=False):
+    """A cut-out placed by its top-left corner (mm), w mm wide, turned by r degrees; the shadow is baked into the picture."""
+    f, pad, h = deck.cutsh(name, w, layers=((0.6, 0.5, 0.28), (3.6, 4.5, 0.26)), tint=(70, 45, 0)) if warm else deck.cutsh(name, w)
+    return f'<div class="ob" style="left:{x - pad:.2f}mm;top:{y - pad:.2f}mm;width:{w + 2 * pad:.2f}mm;z-index:{z}"><img src="review/lb/{f}" alt="" style="transform:rotate({r}deg)"></div>'
+def bt(p, hi): return '<dl class="bt">' + "".join(f"<div><dt>{n} людей</dt><dd>{money(p * n)}{'–' + money(hi * n) if hi else ''}</dd></div>" for n in (20, 50, 100)) + "</dl>"
+def legend(i, G, style=""):
+    lb, n, d, p, hi, c = G
+    top = f"до {money(hi)} грн — двосторонній друк" if hi else "&nbsp;"
+    return (f'<div class="lc"{style}><p class="cap">0{i + 1} · {lb}</p><h3 class="h13">{n}</h3><p class="pr h28">{"<small>від</small> " if hi else ""}{money(p)} <small>грн</small>'
+            f'<span class="t8 hi">{top}</span></p>{bt(p, hi)}</div>')
+NOTE2 = "Базові роздрібні ціни obiimy.world на людину, без акцій сайту, жовтень 2026. Пакування й наліпка з вашим логотипом — безкоштовно."
+# F · still life: all four gifts as one composition on paper, the open box leaves through the top right corner
+F_OBJ = [("set-natkhnennia-box-cw", 183, -6, 126, 0, 1), ("krok-tw-1", 18, 38, 63, -8, 3), ("duo-hratsiia-ring", 70, 43, 82, 4, 2), ("scrunchie-pole", 160, 50, 37, 10, 4), ("mask-litnie-pole", 138, 96, 92, -17, 5)]
+PAGES.append(f"""<section class="pg paper k1"><p class="cap k1-cap">Чотири подарунки · сторінка 3 · варіант F — натюрморт</p>
+<h2 class="h28 k1-h">{H2}</h2>{"".join(ob(*o) for o in F_OBJ)}
+<div class="lg">{"".join(legend(i, G) for i, G in enumerate(GIFTS))}</div>
+<p class="t8 foot">{NOTE2} На вирізках: твіллі «Сміливий крок»; хустка «Грація» 44 × 44 і кільце «Н стиль»; маска й резинка «Літнє поле»; хустка й твіллі «Натхнення» в коробці.</p>{FOLIO}</section>""")
+# G · the yellow box: the page is the bottom of the brand's box, the gifts lie in it, prices as a menu
+G_OBJ = [("tysha-tw-1", 4, -14, 74, -6, 2), ("duo-hratsiia-ring", 62, 13, 82, 5, 3), ("maskscr-litnie-pole", 152, 84, 83, -6, 4), ("pair-zolote", 196, 95, 97, 4, 3)]
+G_TAG = [("01", 50, 89), ("02", 136, 89), ("03", 152, 152), ("04", 267, 81)]
+def row_g(i, G):
+    lb, n, d, p, hi, c = G
+    bud = "".join(f"<span>{k} людей — {money(p * k)}{'–' + money(hi * k) if hi else ''}</span>" for k in (20, 50, 100))
+    return f'<div class="mr"><p class="cap">0{i + 1} · {lb}</p><h3 class="h13">{n}</h3><p class="pr h28">{money(p)}{"–" + money(hi) if hi else ""} <small>грн</small></p><p class="t8 bud">{bud}</p></div>'
+PAGES.append(f"""<section class="pg k2">{"".join(ob(*o, warm=True) for o in G_OBJ)}{"".join(f'<b class="tag" style="left:{x}mm;top:{y}mm">{t}</b>' for t, x, y in G_TAG)}
+<div class="tt"><p class="cap">Чотири подарунки · сторінка 3 · варіант G — жовта коробка</p><h2 class="h40">Що в коробці —<br><i>і скільки це коштує</i></h2>
+<p class="t8">{NOTE2} Ціна «від — до»: вища — з двостороннім друком; бюджети команди — у гривнях. На вирізках: твіллі «Тиша всередині»; хустка «Грація» й кільце «Н стиль»; набір «Літнє поле»; хустка й твіллі «Золоте світло» (двосторонній друк, 3 600 грн).</p></div>
+<div class="menu">{"".join(row_g(i, G) for i, G in enumerate(GIFTS))}</div>{FOLIO}</section>""")
+# H · steps: four studio frames stand on one line and rise with the price
+H_X = [16.5, 84, 151.5, 219]; H_H = [67, 87, 107, 127]; H_B = 187
+H_PH = [("photo/site/set-makovyi-tsvit-02.jpg", (0, 95, 1125, 1321), "На фото — твіллі з набору «Маків цвіт»"), ("photo/site/ring-n-styl-02.jpg", (500, 275, 1150, 1195), "На фото — кільце «Н стиль» на хустці"),
+        ("photo/site/mask-nizhnist-03.jpg", (285, 0, 1147, 1500), "На фото — маска для сну «Ніжність»"), ("photo/site/set-tvilli-845-ta-khustky-4444-natkhne-02.jpg", (143, 0, 869, 1500), "На фото — набір «Натхнення»")]
+def step(x, h, f, bx, c):
+    im = pic(f, 61.5, h, once=False, box=bx).replace("<img ", "<img style='height:%smm' " % h)
+    return f'<figure class="st" style="left:{x}mm;top:{H_B - h}mm">{im}<figcaption class="t8">{c}</figcaption></figure>'
+steps = "".join(step(x, h, *ph) for x, h, ph in zip(H_X, H_H, H_PH))
+legs = "".join(legend(i, G, f' style="left:{x}mm;bottom:{210 - (H_B - h) + 3}mm"') for i, (G, x, h) in enumerate(zip(GIFTS, H_X, H_H)))
+PAGES.append(f"""<section class="pg paper k3"><p class="cap k3-cap">Чотири подарунки · сторінка 3 · варіант H — сходинки</p><h2 class="h28 k3-h">Що в коробці —<br><i>і скільки це коштує</i></h2>
+<p class="t8 k3-n">{NOTE2}</p>{steps}{legs}{FOLIO}</section>""")
+NAMES += ["vF", "vG", "vH"]
+
+# I, J, K · concepts of the luxury-catalogue art director (04.10): plates assembled from real photos and cut-outs (img/p3, scripts in src/ad-p3)
+def folio_tag(t): return FOLIO.replace("<span>03</span>", f'<span class="vt">Сторінка 3 · {t}</span><span>03</span>')
+def budgets(p, hi): return [money(p * k) + (f"–{money(hi * k)}" if hi else "") for k in (20, 50, 100)]
+def row_i(i, G):
+    lb, n, d, p, hi, c = G
+    note = (f"до {money(hi)} грн —<br>" + ("з двостороннім друком" if i == 1 else "двосторонній друк")) if hi else ""
+    return (f'<div class="xlg"><b class="num">0{i + 1}</b><div><p class="cap">{lb}</p><h3 class="h13">{n}</h3></div>'
+            f'<span class="pp h28"><small>{"від" if hi else ""}</small><span>{money(p)}</span><small>грн</small></span><span class="t8 nt">{note}</span>'
+            + "".join(f'<span class="bd">{b}</span>' for b in budgets(p, hi)) + '</div>')
+def cell_x(i, G, big):
+    lb, n, d, p, hi, c = G
+    note = (f"до {money(hi)} грн — " + ("з двостороннім друком" if i == 1 else "двосторонній друк")) if hi else "&nbsp;"
+    bl = "".join(f"<div><dt>{k} людей</dt><dd>{b}</dd></div>" for k, b in zip((20, 50, 100), budgets(p, hi)))
+    return (f'<article class="c c{i + 1}"><p class="cap">0{i + 1} · {lb}</p><h3 class="h13">{n}</h3><p class="pr {big}">{"<small>від</small> " if hi else ""}{money(p)} <small>грн</small></p>'
+            f'<p class="t8 nt">{note}</p><dl class="bl">{bl}</dl></article>')
+FINE = "Базові роздрібні ціни obiimy.world на людину, без акцій сайту, жовтень 2026. Пакування й наліпка з вашим логотипом — безкоштовно. Бюджети команди — у гривнях."
+# I · a table seen from above: two real boxes come in from the top corners, the title between them, a fine ledger below
+PAGES.append(f"""<section class="pg paper x1"><img class="bg" src="img/p3/lux-k1.jpg" alt="">
+<div class="ttl"><h2 class="h28">Що в коробці —<br><i>і скільки це коштує</i></h2></div>
+<p class="lab" style="left:16.5mm;top:105mm"><b>04</b><span>набір «Сміливий дотик»</span></p><p class="lab" style="left:106mm;top:105mm"><b>01</b><span>твіллі «Тиша»</span></p>
+<p class="lab" style="left:139mm;top:105mm"><b>02</b><span>хустка «Грація», кільце «Н стиль»</span></p><p class="lab r" style="right:16.5mm;top:105mm"><b>03</b><span>набір «Літнє поле»</span></p>
+<div class="x1b"><div class="xlg head"><span></span><span class="cap">Подарунок</span><span class="cap" style="padding-left:8.5mm">На людину</span><span></span><span class="cap bd">20 людей</span><span class="cap bd">50 людей</span><span class="cap bd">100 людей</span></div>
+{"".join(row_i(i, G) for i, G in enumerate(GIFTS))}<p class="t8 fine">{FINE}</p></div>{folio_tag("варіант I — стіл і дві коробки")}</section>""")
+# J · the page is the box: brand yellow to the edge, four compartments
+PAGES.append(f"""<section class="pg x2"><img class="bg" src="img/p3/lux-k2.jpg" alt=""><p class="rh"><span>Чотири подарунки</span><span>Сторінка 3 · варіант J — чотири відділення</span></p>
+<h2 class="h40 x2t">Що в коробці — <i>і скільки це коштує</i></h2><div class="tray"></div>
+{"".join(cell_x(i, G, "h40") for i, G in enumerate(GIFTS))}
+<p class="t8 fine">На вирізках: твіллі «Флірт»; хустка «Пульс» 44 × 44 і кільце «Н стиль» — з двостороннім друком, 2 850 грн; набір «Літнє поле»; хустка й твіллі «Золоте світло» — 3 600 грн.<br>{FINE}</p>{FOLIO}</section>""")
+# K · a yellow podium of four steps: the gifts stand on the steps, the real box on the top one
+PAGES.append(f"""<section class="pg paper x3"><img class="bg" src="img/p3/lux-k3.jpg" alt="">
+<div class="ttl"><p class="cap">Чотири подарунки · сторінка 3 · варіант K — подіум</p><h2 class="h40">Що в коробці —<br><i>і скільки це коштує</i></h2></div>
+{"".join(cell_x(i, G, "h28") for i, G in enumerate(GIFTS))}
+<p class="t8 fine">На вирізках: твіллі «Авантюра»; хустка «Грація» 44 × 44 і кільце «Н стиль»; набір «Літнє поле»; на фото — набір «Впевненість».<br>{FINE}</p>{FOLIO}</section>""")
+NAMES += ["vI", "vJ", "vK"]
+
 # ── cover variants ──────────────────────────────────────────────────────────────────────────────────
 LINE = f'<p class="folio"><span>Пакування й наліпка з вашим логотипом — безкоштовно</span><span><a href="{deck.PHONE_HREF}">{deck.PHONE}</a> · <a href="{deck.TG}">Telegram @OBIIMY_sales</a></span></p>'
 CAP = deck.COVER_CAP
@@ -111,9 +189,13 @@ COVERS.append(f'''<section class="pg cv cvd"><div class="tri">{"".join(pic(f, 97
 <img src="brand/logo-ink.png" class="logo" alt="Obiimy">
 <div class="cvt"><p class="cap">{CAP}</p><h1 class="h54">Подарунки для команди,<br><i>які носять</i></h1></div>
 <p class="h13 cvp">Чотири подарунки<br>від 1 600 до 3 600 грн на людину</p>{LINE}</section>''')
+def cve_ob(c, mm, x, y, r):
+    iw, ih = Image.open(OUT / "img" / "cut" / f"{c}.webp").size; w = mm * min(1, iw / ih)          # mm is the long side
+    f, pad, h = deck.cutsh(c, w, layers=((3.0, 4.0, 0.18),), tint=(0, 0, 0))
+    return f'<div class="ob" style="left:{x - pad:.2f}mm;top:{y - pad:.2f}mm;width:{w + 2 * pad:.2f}mm"><img src="review/lb/{f}" alt="" style="width:100%;height:auto"></div>'
 # E · the things themselves on paper, as in a gift guide
 OBJ = [("krok-tw-1", 74, 163.5, 22.5, 0), ("duo-hratsiia-ring", 60, 219, 33, 0), ("maskscr-litnie-pole", 60, 157.5, 115.5, 0), ("pair-zolote", 64, 216, 112.5, 0)]   # cut-out, size mm, x, y, rotation
-COVERS.append(f'''<section class="pg cv cve">{"".join(f'<div class="ob" style="left:{x}mm;top:{y}mm;transform:rotate({r}deg)">{cut(c, mm, fix=True)}</div>' for c, mm, x, y, r in OBJ)}{vtag("варіант E — речі на папері")}
+COVERS.append(f'''<section class="pg cv cve">{"".join(cve_ob(*o) for o in OBJ)}{vtag("варіант E — речі на папері")}
 <img src="brand/logo-ink.png" class="logo" alt="Obiimy">
 <div class="cvt"><p class="cap">{CAP}</p><h1 class="h54">{H1}</h1>
 <p class="h13">Чотири подарунки — від 1 600 до 3 600 грн на людину</p></div>{LINE}</section>''')
@@ -142,6 +224,50 @@ CSS = deck.CSS + """
 .rw .th { grid-row: 1 / 4; align-self: center; width: 21mm; height: 21mm; object-fit: contain; filter: drop-shadow(0 1mm 1.5mm rgba(0,0,0,.14)); } .rw .cap { grid-column: 2 / 4; letter-spacing: .13em; }
 .rw .b3 { grid-column: 2 / 4; margin-top: 0; padding-top: .75mm; } .rw .pr { line-height: 26pt; } .v3d .panel h2 { margin-bottom: 4.5mm; }
 .v3d .phc { margin-top: auto; }
+/* I, J, K — the luxury-catalogue art director's concepts */
+.x1 .bg, .x2 .bg, .x3 .bg { position: absolute; left: 0; top: 0; width: 297mm; height: 210mm; } .vt { color: inherit; }
+.x1 .lab { position: absolute; display: flex; align-items: baseline; gap: 2.25mm; white-space: nowrap; z-index: 2; } .x1 .lab b { font: italic 400 13pt/16.5pt Playfair, serif; color: #141414; }
+.x1 .lab span { font-size: 8pt; line-height: 3.75mm; color: #6E6A63; } .x1 .lab.r { flex-direction: row-reverse; }
+.x1 .ttl { position: absolute; left: 98.5mm; width: 100mm; top: 13.5mm; text-align: center; z-index: 2; }
+.x1b { position: absolute; left: 16.5mm; right: 16.5mm; top: 116mm; z-index: 2; } .x1b .fine { margin-top: 3mm; }
+.xlg { display: grid; grid-template-columns: 10.5mm 1fr 46.5mm 33mm 24mm 30.5mm 30.5mm; column-gap: 4.5mm; align-items: center; height: 14.25mm; border-top: .35pt solid #C9C6C0; } .xlg:last-of-type { border-bottom: .35pt solid #C9C6C0; }
+.xlg.head { height: auto; border-top: .5pt solid #141414; padding: 1.9mm 0 1.6mm; } .xlg h3 { margin-top: .4mm; white-space: nowrap; } .xlg .cap { white-space: nowrap; letter-spacing: .2em; }
+.xlg .pp { white-space: nowrap; line-height: 26pt; display: grid; grid-template-columns: 8.5mm auto 1fr; align-items: baseline; } .xlg .pp small { color: #8E8A84; font-style: italic; } .xlg .pp small:last-child { padding-left: 2mm; }
+.xlg .nt { color: #6E6A63; white-space: nowrap; } .xlg .bd { text-align: right; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+.pg.x2 { background: #FDD31A; color: #141414; } .x2 .rh { color: rgba(20,20,20,.66); border-bottom-color: #141414; z-index: 2; } .x2 .folio, .x3 .folio { color: rgba(20,20,20,.62); z-index: 2; }
+.x2 .x2t { position: absolute; left: 16.5mm; top: 24mm; white-space: nowrap; z-index: 2; } .x2 .x2t i { color: rgba(20,20,20,.5); }
+.x2 .tray { position: absolute; left: 16.5mm; right: 16.5mm; top: 47mm; height: 131mm; border-top: .5pt solid #141414; border-bottom: .5pt solid #141414; z-index: 1; }
+.x2 .tray::before { content: ""; position: absolute; left: 132mm; top: 0; bottom: 0; border-left: .5pt solid #141414; } .x2 .tray::after { content: ""; position: absolute; left: 0; right: 0; top: 65.5mm; border-top: .5pt solid #141414; }
+.x2 .c { position: absolute; width: 58.5mm; height: 65.5mm; display: flex; flex-direction: column; justify-content: center; z-index: 2; }
+.x2 .c1, .x2 .c3 { left: 84mm; } .x2 .c2, .x2 .c4 { left: 222mm; } .x2 .c1, .x2 .c2 { top: 47mm; } .x2 .c3, .x2 .c4 { top: 112.5mm; }
+.x2 .c .cap, .x3 .c .cap { color: rgba(20,20,20,.66); letter-spacing: .13em; white-space: nowrap; margin-bottom: 1.5mm; } .x2 .c h3, .x3 .c h3 { white-space: nowrap; }
+.x2 .c .pr { margin-top: .75mm; white-space: nowrap; } .x2 .c .pr small, .x3 .c .pr small { color: rgba(20,20,20,.55); font-style: italic; }
+.x2 .c .nt { color: rgba(20,20,20,.66); white-space: nowrap; min-height: 3.75mm; margin: .5mm 0 2.25mm; }
+.bl > div { display: flex; justify-content: space-between; align-items: baseline; padding: .65mm 0; border-top: .35pt solid rgba(20,20,20,.3); font-variant-numeric: lining-nums tabular-nums; } .bl > div:last-child { border-bottom: .35pt solid rgba(20,20,20,.3); }
+.bl dt { font-size: 8pt; line-height: 3.75mm; color: rgba(20,20,20,.66); } .bl dd { white-space: nowrap; }
+.x2 .fine { position: absolute; left: 16.5mm; right: 16.5mm; top: 181.25mm; color: rgba(20,20,20,.7); z-index: 2; }
+.x3 .ttl { position: absolute; left: 16.5mm; top: 16.5mm; z-index: 2; } .x3 .ttl .cap { margin-bottom: 3.75mm; }
+.x3 .c { position: absolute; top: 133mm; width: 58.5mm; z-index: 2; } .x3 .c1 { left: 16.5mm; } .x3 .c2 { left: 84mm; } .x3 .c3 { left: 151.5mm; } .x3 .c4 { left: 219mm; width: 61.5mm; }
+.x3 .c .cap { margin-bottom: .75mm; } .x3 .c .pr { white-space: nowrap; } .x3 .c .nt { color: rgba(20,20,20,.66); white-space: nowrap; min-height: 3.75mm; margin: 0 0 1.5mm; } .x3 .bl > div { padding: .4mm 0; }
+.x3 .fine { position: absolute; left: 16.5mm; right: 16.5mm; top: 182.25mm; color: rgba(20,20,20,.7); z-index: 2; }
+/* F, G, H — the editorial art director's concepts */
+.k1 .k1-cap, .k3 .k3-cap { position: absolute; left: 16.5mm; top: 16.5mm; } .k1 .k1-h, .k3 .k3-h { position: absolute; left: 16.5mm; top: 22.5mm; white-space: nowrap; }
+.k1 .ob { position: absolute; } .k1 .ob img, .k2 .ob img { width: 100%; height: auto; }
+.k1 .lg { position: absolute; left: 16.5mm; top: 139.5mm; display: grid; grid-template-columns: repeat(4, 61.5mm); column-gap: 6mm; }
+.k1 .lc { border-top: .5pt solid #141414; padding-top: 2.25mm; } .lc .cap { letter-spacing: .13em; white-space: nowrap; margin-bottom: .5mm; } .lc h3 { white-space: nowrap; } .lc .pr { margin-top: 0; }
+.bt { margin-top: 1.1mm; border-top: .35pt solid #C9C6C0; padding-top: 1.1mm; font-size: 8pt; line-height: 3.75mm; font-variant-numeric: lining-nums tabular-nums; } .bt div { display: flex; justify-content: space-between; white-space: nowrap; } .bt dt { color: #6E6A63; }
+.k1 .foot { position: absolute; left: 16.5mm; right: 16.5mm; top: 185mm; }
+.pg.k2 { background: #FCD21C; color: #141414; } .k2 .cap, .k2 .t8 { color: rgba(20,20,20,.74); } .k2 h2 i { color: rgba(20,20,20,.5); } .k2 .folio { color: rgba(20,20,20,.66); }
+.k2 .ob { position: absolute; }
+.k2 .tag { position: absolute; font: italic 400 28pt/30pt Playfair, serif; color: #141414; z-index: 9; }
+.k2 .tt { position: absolute; left: 151.5mm; top: 16.5mm; width: 129mm; } .k2 .tt .cap { margin-bottom: 3.75mm; } .k2 .tt h2 { white-space: nowrap; margin-bottom: 4.5mm; } .k2 .tt .t8 { width: 112mm; }
+.k2 .menu { position: absolute; left: 16.5mm; top: 109.5mm; width: 129mm; }
+.k2 .mr { display: grid; grid-template-columns: 1fr auto; align-items: end; border-top: .5pt solid #141414; padding: 1.2mm 0 1.6mm; } .k2 .mr:last-child { border-bottom: .5pt solid #141414; }
+.k2 .mr .pr { line-height: 24pt; } .k2 .mr .pr small { line-height: 1; color: rgba(20,20,20,.6); } .k2 .mr h3 { line-height: 16.5pt; position: relative; top: 1.7pt; } .k2 .mr .cap { grid-column: 1 / 3; letter-spacing: .13em; }
+.k2 .mr .bud { grid-column: 1 / 3; margin-top: 1mm; display: grid; grid-template-columns: repeat(3, 1fr); font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; color: #141414; } .k2 .mr .bud span:nth-child(2) { text-align: center; } .k2 .mr .bud span:nth-child(3) { text-align: right; }
+.k3 .k3-n { position: absolute; left: 16.5mm; top: 48.75mm; width: 61.5mm; color: #6E6A63; }
+.k3 .st { position: absolute; width: 61.5mm; } .k3 .st img { width: 61.5mm; object-fit: cover; } .k3 .st figcaption { position: absolute; left: 0; top: calc(100% + 1.5mm); color: #8E8A84; white-space: nowrap; }
+.k3 .lc { position: absolute; width: 61.5mm; }
 .vtag { position: absolute; left: 16.5mm; top: 16.5mm; z-index: 2; } .vtag.r { left: auto; right: 16.5mm; top: 19.5mm; z-index: 3; }
 /* cover variants */
 .cv .logo { position: absolute; left: 16.5mm; top: 16.5mm; height: 9mm; width: 42.4mm; z-index: 2; } .cv .folio { z-index: 2; }
@@ -155,7 +281,7 @@ CSS = deck.CSS + """
 .cvb .fr-t { left: auto; right: 16.5mm; width: 130mm; text-align: right; } .cvb .chip { text-align: left; }
 .cvb::after { background: linear-gradient(270deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,.3) 36%, rgba(0,0,0,0) 60%), linear-gradient(0deg, rgba(0,0,0,.7) 0%, rgba(0,0,0,0) 46%), linear-gradient(180deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,0) 24%); }
 .cvb .vtag { top: 28.5mm; }
-.cve .ob { position: absolute; } .cve .ob img { filter: drop-shadow(0 3mm 4mm rgba(0,0,0,.18)); }
+.cve .ob { position: absolute; }
 .cvf::after { background: linear-gradient(90deg, rgba(0,0,0,.66) 0%, rgba(0,0,0,.36) 34%, rgba(0,0,0,0) 56%), linear-gradient(0deg, rgba(0,0,0,.5) 0%, rgba(0,0,0,0) 40%), linear-gradient(180deg, rgba(0,0,0,.4) 0%, rgba(0,0,0,0) 24%); } .v3e .fr-t { width: 264mm; } .v3e .fr-p { max-width: 118mm; }
 .chips4 { display: grid; grid-template-columns: repeat(4, 61.5mm); column-gap: 6mm; } .chips4 .chip { display: grid; grid-template-columns: 16mm 1fr; height: 22.5mm; padding: 2mm 3mm 2mm 2.5mm; } .chips4 .chip img { width: 16mm; height: 16mm; } .chips4 .chip span { white-space: nowrap; }
 """

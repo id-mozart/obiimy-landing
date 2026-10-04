@@ -27,7 +27,7 @@ LANDING = "https://obiimy-landing-production.up.railway.app/b2b-team-main"
 LB = OUT / "review" / "lb"; LB.mkdir(parents=True, exist_ok=True)
 USED = []   # model shots, to prove no frame repeats
 
-def pic(src, w, h, pos="50% 50%", cls="", hi=False, once=True, zoom=1.0):
+def pic(src, w, h, pos="50% 50%", cls="", hi=False, once=True, zoom=1.0, box=None):
     """Photo cropped to its slot (w × h mm, object-position pos, optional zoom) and exported at 200 ppi — exact framing, small file.
     hi=True takes the 2400 px master of a SOLO frame for full-bleed pages."""
     p = pathlib.Path(src); srcp = OUT / src
@@ -35,12 +35,14 @@ def pic(src, w, h, pos="50% 50%", cls="", hi=False, once=True, zoom=1.0):
     if hi and k2.exists(): srcp = k2
     px, py = [float(v.strip("%")) / 100 for v in pos.split()]
     j = LB / f"{p.stem}-{int(w * 10)}x{int(h * 10)}-{int(px * 100)}-{int(py * 100)}-z{int(zoom * 100)}{'-2k' if srcp == k2 else ''}.jpg"
+    if box: j = LB / f"{p.stem}-{int(w * 10)}x{int(h * 10)}-box{'-'.join(map(str, box))}.jpg"        # box=(x0, y0, x1, y1) in source pixels
     if not j.exists() or j.stat().st_mtime < srcp.stat().st_mtime:
         im = Image.open(srcp).convert("RGB"); W, H = im.size
         cw, ch = (W, W * h / w) if W * h / w <= H else (H * w / h, H)          # object-fit: cover
         cw, ch = cw / zoom, ch / zoom
         x0, y0 = (W - cw) * px, (H - ch) * py
-        im = im.crop((round(x0), round(y0), round(x0 + cw), round(y0 + ch)))
+        im = im.crop(box if box else (round(x0), round(y0), round(x0 + cw), round(y0 + ch)))
+        if box: cw, ch = im.size
         tw = round(w / 25.4 * 200)
         if im.width > tw: im = im.resize((tw, round(tw * ch / cw)), Image.LANCZOS)
         im.save(j, quality=84, optimize=True, progressive=True)
@@ -50,7 +52,7 @@ def pic(src, w, h, pos="50% 50%", cls="", hi=False, once=True, zoom=1.0):
 def cut(name, mm=46, cls="", fix=False):
     """Transparent cut-out → PNG with alpha, sized for its slot (mm on the long side, 220 ppi); refreshed when the cut-out changes.
     fix=True writes the size in mm into the tag: without it the picture takes whatever the CSS of its slot allows."""
-    px = round(mm / 25.4 * 220); srcp = OUT / "img" / "cut" / f"{name}.webp"
+    px = round(mm / 25.4 * (220 if mm <= 60 else 170)); srcp = OUT / "img" / "cut" / f"{name}.webp"      # large cut-outs at 170 ppi: PNG with alpha is heavy in a PDF
     j = LB / f"cut-{name}-{px}.png"
     if not j.exists() or j.stat().st_mtime < srcp.stat().st_mtime:
         im = Image.open(srcp).convert("RGBA"); im.thumbnail((px, px), Image.LANCZOS); im.save(j, optimize=True)
@@ -58,6 +60,24 @@ def cut(name, mm=46, cls="", fix=False):
     if fix:
         w, h = Image.open(j).size; k = mm / max(w, h); st = f' style="width:{w * k:.1f}mm;height:{h * k:.1f}mm"'
     return f'<img src="review/lb/{j.name}" class="{cls}" alt=""{st}>'
+
+def cutsh(name, w_mm, layers=((0.6, 0.5, 0.20), (3.2, 4.0, 0.16)), tint=(30, 22, 8), ppi=170):
+    """A large cut-out with its shadow baked into the PNG: (file, pad_mm, height_mm). A CSS drop-shadow makes Chrome rasterise
+    the whole element at ~300 dpi into the PDF (4–5 MB per page with big objects); a baked shadow keeps our resolution.
+    layers: (offset down mm, blur mm, opacity); the picture is padded on all sides by pad_mm so that it can be turned around its centre."""
+    from PIL import ImageFilter
+    srcp = OUT / "img" / "cut" / f"{name}.webp"; k = ppi / 25.4
+    pad_mm = max(dy + 2.5 * bl for dy, bl, _a in layers); pad = round(pad_mm * k)
+    j = LB / f"cutsh-{name}-{round(w_mm * 10)}-{ppi}-{abs(hash(layers + tint)) % 9973}.png"
+    im = Image.open(srcp).convert("RGBA"); w = round(w_mm * k)
+    if im.width > w: im = im.resize((w, round(im.height * w / im.width)), Image.LANCZOS)
+    if not j.exists() or j.stat().st_mtime < srcp.stat().st_mtime:
+        out = Image.new("RGBA", (im.width + 2 * pad, im.height + 2 * pad), (0, 0, 0, 0))
+        for dy, bl, al in layers:
+            sh = Image.new("L", out.size, 0); sh.paste(im.getchannel("A").point(lambda v: int(v * al)), (pad + round(dy * k / 2), pad + round(dy * k)))
+            lay = Image.new("RGBA", out.size, tint + (0,)); lay.putalpha(sh.filter(ImageFilter.GaussianBlur(bl * k / 2))); out = Image.alpha_composite(out, lay)
+        out.alpha_composite(im, (pad, pad)); out.save(j, optimize=True)
+    return j.name, pad / k, im.height / k
 
 def money(n): return f"{n:,}".replace(",", " ")
 PAGES = []
@@ -164,7 +184,8 @@ for i, S in enumerate(SETS):
 
 # ── 8 · your logo (sheet): the box bleeds off the left edge, its cut top sits on the rule ───────────
 ask = "".join(f'<div class="arg"><b class="num">0{i + 1}</b><div><h3 class="h13">{t}</h3><p>{d}</p></div></div>' for i, (t, d) in enumerate(ASK))
-page(f"""{rh("Персоналізація")}<figure class="boxcut">{cut("box-gold", 176)}</figure>
+_f, _pad, _h = cutsh("box-gold", 145.5, layers=((3.0, 4.0, 0.18),), tint=(0, 0, 0))
+page(f"""{rh("Персоналізація")}<figure class="boxcut" style="left:{-_pad:.1f}mm;top:{16.5 - _pad:.1f}mm;width:{145.5 + 2 * _pad:.1f}mm"><img src="review/lb/{_f}" alt=""></figure>
 <div class="sheet logo2"><h2 class="h28">Ваш логотип —<br><i>від наліпки</i><br><i>до власного принта</i></h2>
 <div class="free"><p class="cap">У кожному корпоративному замовленні</p><p class="h28">Безкоштовно</p><p>Подарункове пакування кожної речі й наліпка з логотипом вашої компанії всередині коробки. Від вас — логотип; як виглядатиме наліпка, покажемо на фото в добірці.</p></div>
 <p class="cap req">За запитом</p><div class="args">{ask}</div>
@@ -328,7 +349,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .rc img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.14)); }
 .rc { position: relative; } .rc figcaption { margin-top: 2.25mm; } .rc b { display: block; white-space: nowrap; } .rc span { color: #4A4A47; white-space: nowrap; } .rc em { display: block; width: fit-content; margin-top: 1.5mm; font-style: normal; color: #141414; border: .35pt solid #141414; border-radius: 2mm; padding: .2mm 1.6mm .1mm 2mm; letter-spacing: .18em; }
 .sheet > .end { color: #4A4A47; }
-.boxcut { position: absolute; left: 0; top: 16.5mm; width: 145.5mm; } .boxcut img { width: 100%; height: auto; filter: drop-shadow(0 3mm 4mm rgba(0,0,0,.18)); }
+.boxcut { position: absolute; } .boxcut img { width: 100%; height: auto; }
 .logo2 { left: 174mm; } .logo2 h2 { margin-bottom: 6mm; white-space: nowrap; }
 .free { border-top: .5pt solid #141414; border-bottom: .5pt solid #141414; padding: 3.75mm 0; margin-bottom: 4.5mm; } .free .h28 { margin: .75mm 0 1.5mm; } .free p:last-child { color: #4A4A47; }
 .req { margin-bottom: 1.5mm; } .logo2 .arg { padding: 3mm 0; }

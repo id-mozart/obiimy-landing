@@ -114,6 +114,33 @@ def wipe_warm(name, box):
     alpha.paste(soft.crop(box).point(lambda v: 0 if v < 110 else (255 if v > 170 else int((v - 110) * 255 / 60))), box[:2])
     im.putalpha(alpha); im.save(f, "WEBP", quality=90, method=6)
 
+def dehalo(name, pale_min=205, chroma_max=30, erode=0):
+    """Pale, low-chroma pixels that touch the transparent outside are a baked white shadow: invisible on white,
+    a white rim on paper and on yellow (found by the art director, 04.10). They become transparent."""
+    f = OUT / f"{name}.webp"; im = Image.open(f).convert("RGBA"); a = np.asarray(im).copy()
+    al = a[..., 3].astype(int); rgb = a[..., :3].astype(int); mx, mn = rgb.max(2), rgb.min(2)
+    cand = (al > 0) & (((mn > pale_min) & (mx - mn < chroma_max)) | (al < 200))
+    seeds = ndimage.binary_dilation(np.pad(al == 0, 1, constant_values=True))[1:-1, 1:-1] & cand
+    halo = ndimage.binary_propagation(seeds, mask=cand)
+    a[..., 3][halo] = 0; out = Image.fromarray(a)
+    if erode: out.putalpha(out.getchannel("A").filter(ImageFilter.MinFilter(3)).filter(ImageFilter.GaussianBlur(0.6)))
+    out.save(f, "WEBP", quality=90, method=6); return int(halo.sum())
+
+def hole(name, white=228, chroma=14, share=0.004):
+    """An enclosed patch of white backdrop (the inside of a scrunchie) becomes transparent: near-white, colourless, larger than `share` of the picture."""
+    f = OUT / f"{name}.webp"; im = Image.open(f).convert("RGBA"); a = np.asarray(im).copy()
+    rgb = a[..., :3].astype(int); w = (rgb.min(2) > white) & (rgb.max(2) - rgb.min(2) < chroma) & (a[..., 3] > 0)
+    lab, n = ndimage.label(ndimage.binary_opening(w, iterations=2))
+    if n:
+        sizes = ndimage.sum(w, lab, range(1, n + 1)); big = np.isin(lab, [i + 1 for i, z in enumerate(sizes) if z > w.size * share])
+        big = ndimage.binary_dilation(big, iterations=3) & (rgb.min(2) > white - 40) & (rgb.max(2) - rgb.min(2) < chroma + 14)
+        al = Image.fromarray(np.where(big, 0, a[..., 3]).astype(np.uint8)).filter(ImageFilter.GaussianBlur(0.7)); im.putalpha(al)
+        im.save(f, "WEBP", quality=90, method=6)
+
+def rotated(name):
+    """A box turned by 90° (lossless): its lid, cut by the photo's frame, can then leave the page through the top right corner."""
+    Image.open(OUT / f"{name}.webp").convert("RGBA").transpose(Image.ROTATE_270).save(OUT / f"{name}-cw.webp", "WEBP", quality=90, method=6)
+
 def detail(src, name, cx, cy, r):
     """A round close-up from a product photo (centre and radius as shares of the frame): the backdrop is cut away, so the
     circle shows the thing on the page, not in a white tile — «the ring holds the scarf»."""
@@ -188,6 +215,10 @@ if __name__ == "__main__":
         d = cut_grab(src, name, **kw); im = Image.open(d)
         al = np.asarray(im.split()[-1]); print(f"{name:24} {im.size} opaque {round((al > 128).mean() * 100)}% (grabcut)")
     wipe_warm("box-gold", (560, 250, 800, 430))
+    print("halo px removed:", {n: dehalo(n, **kw) for n, kw in (("mask-litnie-pole", dict(erode=1)), ("scrunchie-pole", {}))})
+    Image.open(ROOT / "src" / "ad-p3" / "ring-clean.png").convert("RGBA").save(OUT / "ring-n.webp", "WEBP", quality=92, method=6)   # the ring retouched by the art director (baked white shadow removed), source photo/site/ring-n-styl-01.jpg
+    hole("scrunchie-pole")
+    rotated("set-natkhnennia-box")
     duo("hratsiia-flat", "ring-n", "duo-hratsiia-ring")
     pair("zolote-44-1", "zolote-tw-3", "pair-zolote")
     detail("photo/site/ring-n-styl-02.jpg", "ring-in-use", 0.53, 0.49, 0.25)

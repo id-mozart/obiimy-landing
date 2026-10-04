@@ -21,16 +21,16 @@ CSS = main.DECK_SKIN + """
   .hero.set .set-cap { margin-top: 12px; font-size: .78rem; color: var(--ink3); }
   .hero.set .set-more .cutimg { object-fit: contain; border-radius: 0; filter: drop-shadow(0 14px 18px rgba(0,0,0,.18)); }
   .set-t { padding: clamp(28px, 4vw, 64px) max(clamp(16px, 4vw, 48px), calc((100vw - 1280px) / 2 + clamp(16px, 4vw, 48px))) clamp(28px, 4vw, 64px) clamp(16px, 5vw, 80px); display: flex; flex-direction: column; justify-content: center; }
-  .crumb a::after { content: " · "; } .crumb span { white-space: nowrap; } .o4 span { display: block; } .o4-m { margin-top: 2px; }
-  @media (max-width: 640px) { .crumb a { display: block; margin-bottom: 4px; } .crumb a::after { content: ""; } }
+  .crumb span::before { content: " · "; } .crumb span { white-space: nowrap; } .o4 span { display: block; } .o4-m { margin-top: 2px; }
+  @media (max-width: 640px) { .crumb a { display: block; margin-bottom: 4px; } .crumb span::before { content: ""; } }
   .set-more { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; align-items: start; margin-top: clamp(20px, 3vw, 36px); } .set-more figure { margin: 0; } .set-more figcaption { font-size: .78rem; color: var(--ink3); margin-top: 8px; line-height: 1.35; }
   .hero.set .set-more img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--radius); display: block; }
   .hero.set .set-more .m3 { object-fit: contain; border-radius: 0; filter: drop-shadow(0 14px 18px rgba(0,0,0,.18)); }
   @media (max-width: 960px) { .set-split { grid-template-columns: 1fr; min-height: 0; } .set-ph { aspect-ratio: 1 / 1; max-height: 62vh; width: 100%; } .set-t { max-width: none; } }
   .hero.set h1 { font-size: clamp(2.2rem, 4vw, 3.6rem); line-height: 1; margin-top: 12px; }
-  .hero.set .lead { margin-top: 16px; }
+  .hero.set .lead { margin-top: 16px; text-wrap: pretty; }
   .hero.set .cta { margin-top: 20px; }
-  @media (max-width: 640px) { .others4 { gap: 10px; } .o4 img { aspect-ratio: 3 / 4; } .o4 b { font-size: 1rem; line-height: 1.15; margin-top: 8px; } .o4 span { font-size: .78rem; } }
+  @media (max-width: 640px) { .others4 { gap: 10px; } .o4 img { aspect-ratio: 3 / 4; } .o4 b { font-size: 1rem; line-height: 1.15; margin-top: 8px; min-height: 2.3em; } .o4 span { font-size: .78rem; } }
   .qrbox { margin: 8px 0 0; display: grid; grid-template-columns: 112px 1fr; gap: 14px; align-items: center; max-width: 340px; } .qrbox svg { width: 112px; height: 112px; } @media (max-width: 640px) { .qrbox { display: none; } } .qrbox figcaption { font-size: .85rem; color: var(--ink2); }
   @media (max-width: 960px) {  }
   .o4 { display: block; text-decoration: none; color: inherit; } .o4 img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); } .o4 b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.25rem; margin-top: 12px; } .o4 span { color: var(--ink2); font-size: .9rem; }
@@ -39,7 +39,7 @@ CSS = main.DECK_SKIN + """
   .hero.set .price small { display: block; font-family: var(--body); font-size: .82rem; line-height: 1.5; color: var(--ink3); margin-top: 6px; white-space: normal; max-width: 34em; }
   .hero.set figure img { aspect-ratio: 4 / 5; }
   .hero.set h1 i { font-style: italic; color: #8E8A84; }
-  .b3 { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: 8px 28px; margin: 16px 0 0; padding: 12px 0; border-block: 1px solid var(--line); } .b3 div { display: grid; } .b3 dt { font-size: .74rem; color: var(--ink3); } .b3 dd { margin: 0; white-space: nowrap; }
+  .b3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); max-width: 420px; gap: 8px 20px; margin: 16px 0 0; padding: 12px 0; border-block: 1px solid var(--line); } .b3 div { display: grid; } .b3 dt { font-size: .74rem; color: var(--ink3); } .b3 dd { margin: 0; white-space: nowrap; } .b3 dd span { display: block; }
   .gal { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
   .gal figure { margin: 0; } .gal img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); }
   .gal figcaption { font-size: .82rem; color: var(--ink3); margin-top: 8px; }
@@ -50,6 +50,7 @@ CSS = main.DECK_SKIN + """
   .ways { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
   .way { border-top: 1px solid var(--ink); padding-top: 12px; } .way h3 { font-size: 1.2rem; margin: 0 0 4px; } .way p { color: var(--ink2); font-size: .92rem; margin: 0; }
   .men { margin: 26px 0 0; display: grid; grid-template-columns: 120px 1fr; gap: 16px; align-items: center; border-top: 1px solid var(--line); padding-top: 18px; } .men img { width: 120px; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--radius); } .men figcaption { color: var(--ink2); font-size: .92rem; } .men b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.2rem; color: var(--ink); margin-bottom: 4px; }
+  .det-cut { margin: 28px 0 0; max-width: 300px; } .det-cut img { width: 100%; height: auto; filter: drop-shadow(0 14px 18px rgba(0,0,0,.16)); } .det-cut figcaption { font-size: .78rem; color: var(--ink3); margin-top: 10px; }
   .who { font-family: var(--display); font-size: clamp(1.3rem, 2.2vw, 1.8rem); line-height: 1.25; max-width: 24em; }
   .pers4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
   .per4 { border-top: 1px solid var(--ink); padding-top: 12px; } .per4 .n { font-family: var(--display); font-size: 1.3rem; display: block; margin-bottom: 8px; }
@@ -72,6 +73,8 @@ def page(i, S):
     men = "" if True else f'<figure class="men">{img("photo/site/mask-synii-02.jpg", "Чоловік у шовковій масці для сну «Синій»", sizes="160px", style="object-position:50% 20%")}<figcaption><b>Чоловікам — маска окремо</b>2 700 грн; у наборі з резинкою — 3 100 грн.</figcaption></figure>' if i == 2 else ""
     mixed = ("Чоловікам у команді — маска окремо (2 700 грн), закладка для книги, наволочка або сертифікат на 1 000–4 000 грн" if i == 2 else "Тим, хто не носить аксесуари, — маска для сну, закладка для книги, наволочка або сертифікат на 1 000–4 000 грн") + ": змішану команду рахуємо в одному розрахунку."
     two = i >= 2
+    BOX2 = {0: ("img/cut/avantiura-tw-2.webp", "Твіллі «Авантюра», 84 × 5"), 1: ("img/cut/hratsiia-flat.webp", "Хустка «Грація» 44 × 44"), 2: ("img/cut/mask-vpevnenist.webp", "Маска для сну «Впевненість» — той самий принт, що на фото вгорі"), 3: ("img/cut/set-vpevnenist-box.webp", "Той самий набір у принті «Впевненість»")}
+    boxfig = f'<figure class="det-cut">{img(BOX2[i][0], BOX2[i][1], sizes="(max-width: 960px) 80vw, 360px")}<figcaption>{BOX2[i][1]}</figcaption></figure>' if i in BOX2 else ""
     kv = "".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in S["inside"] if k in KEEP)
     ways = "".join(f'<div class="way"><h3>{h}</h3><p>{t}</p></div>' for h, t in (S["ways"][:2] if i >= 2 else S["ways"]))
     others = "".join(f'<a class="o4" href="{o["slug"]}">{img(o["hero"][0], o["short"], sizes="(max-width: 960px) 100vw, 33vw", style=opos(o))}<div><b>{o["short"]}</b><span>{o["pr"]}</span><span class="o4-m">детальніше →</span></div></a>' for o in SETS4 if o is not S)
@@ -91,7 +94,7 @@ def page(i, S):
   </div></section>
   <section class="block alt" id="details"><div class="wrap det">
     <div><div class="head"><p class="eyebrow">Деталі</p><h2>Що всередині</h2></div><table class="kv">{kv}</table><p class="note" style="margin-top:14px">Пакування й наліпка з вашим логотипом — безкоштовно; бирка, листівка, власний принт — <a href="b2b-team-main#logo">у розрахунку</a>. {mixed}</p></div>
-    <div><div class="head"><p class="eyebrow">{"Як носити" if i < 2 else "Що в наборі"}</p><h2>{"Чотири способи" if i < 2 else "Дві речі — один принт"}</h2></div><div class="ways">{ways}</div><p class="who" style="margin-top:28px">{S["who"]}</p>{men}</div>
+    <div><div class="head"><p class="eyebrow">{"Як носити" if i < 2 else "Що в наборі"}</p><h2>{"Чотири способи" if i < 2 else "Дві речі — один принт"}</h2></div><div class="ways">{ways}</div><p class="who" style="margin-top:28px">{S["who"]}</p>{men}{boxfig}</div>
   </div></section>
   <section class="block" id="others"><div class="wrap"><div class="head"><p class="eyebrow">Інші подарунки</p><h2>Ще три подарунки</h2></div><div class="others4">{others}</div><p style="margin-top:18px"><a href="b2b-team-main#tiers">← Порівняти всі чотири подарунки</a></p></div></section>
   {with_qr(team.request_section("f-set", "Подарунки для команди · " + S["short"], "Напишіть — <i>надішлемо добірку й розрахунок</i>", "Нагода, кількість і дата — цього досить для першого листа.", "details", alt=True))}

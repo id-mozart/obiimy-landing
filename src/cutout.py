@@ -101,6 +101,19 @@ GRAB = [  # src, name, params — everything shot on a white backdrop with a sha
     ("photo/hratsiia-flat.webp", "hratsiia-flat", {}),
 ]
 
+def wipe_warm(name, box):
+    """Hand correction for one cut-out: inside box (x0, y0, x1, y1 of the saved file) the pale warm patch of shadow becomes transparent —
+    GrabCut keeps the wedge between the lid and the tissue because the shadow there is tinted by the yellow box."""
+    f = OUT / f"{name}.webp"; im = Image.open(f).convert("RGBA"); a = np.asarray(im).astype(np.int16).copy()
+    x0, y0, x1, y1 = box; reg = a[y0:y1, x0:x1]; mx, mn = reg[..., :3].max(2), reg[..., :3].min(2)
+    warm = (mx - mn < 75) & (reg[..., 2] == mn) & (reg[..., 0] > reg[..., 2] + 18) & (reg[..., 1] > reg[..., 2] + 8) & (mn > 110)   # beige: blue is the lowest channel (the lilac tissue has green lowest)
+    warm = ndimage.binary_dilation(ndimage.binary_opening(warm, iterations=1), iterations=2) & (mx - mn < 110) & (reg[..., 2] == mn)
+    al = a[..., 3].copy(); sub = al[y0:y1, x0:x1]; sub[warm] = 0; al[y0:y1, x0:x1] = sub
+    lab, n = ndimage.label(al > 60); sizes = ndimage.sum(al > 60, lab, range(1, n + 1)); al[~np.isin(lab, [i + 1 for i, z in enumerate(sizes) if z > sizes.max() * 0.01])] = 0   # crumbs left by the wipe
+    alpha = Image.fromarray(al.astype(np.uint8)); soft = alpha.filter(ImageFilter.GaussianBlur(1.2))
+    alpha.paste(soft.crop(box).point(lambda v: 0 if v < 110 else (255 if v > 170 else int((v - 110) * 255 / 60))), box[:2])
+    im.putalpha(alpha); im.save(f, "WEBP", quality=90, method=6)
+
 def detail(src, name, cx, cy, r):
     """A round close-up from a product photo (centre and radius as shares of the frame): the backdrop is cut away, so the
     circle shows the thing on the page, not in a white tile — «the ring holds the scarf»."""
@@ -109,11 +122,11 @@ def detail(src, name, cx, cy, r):
     a = np.asarray(full).astype(np.int16); rg, gb = a[..., 0] - a[..., 1], a[..., 1] - a[..., 2]
     light = a[a.min(2) > 235]                                     # the white backdrop
     ch = np.maximum(np.abs(rg - np.median(light[:, 0] - light[:, 1])), np.abs(gb - np.median(light[:, 1] - light[:, 2])))
-    fg = ndimage.binary_closing(ndimage.binary_opening((ch > 9) | (a.max(2) < 90), iterations=2), iterations=3)
+    fg = ndimage.binary_closing(ndimage.binary_opening((ch > 9) | (a.max(2) < 90), iterations=2), iterations=6)
     holes = ndimage.binary_fill_holes(fg) & ~fg; lab, n = ndimage.label(~fg)
     sizes = ndimage.sum(~fg, lab, range(1, n + 1)); fg |= np.isin(lab, [i + 1 for i, z in enumerate(sizes) if z < fg.size * 0.004])   # white lines of the print stay
     lab, n = ndimage.label(fg); sizes = ndimage.sum(fg, lab, range(1, n + 1)); fg = np.isin(lab, [i + 1 for i, z in enumerate(sizes) if z > sizes.max() * 0.03])   # no specks of shadow
-    alpha = Image.fromarray((fg * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.4)).point(lambda v: 0 if v < 110 else (255 if v > 170 else int((v - 110) * 255 / 60)))
+    alpha = Image.fromarray((fg * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(4)).point(lambda v: 0 if v < 118 else (255 if v > 150 else int((v - 118) * 255 / 32)))   # a calm outline, no notches
     rgba = full.convert("RGBA"); rgba.putalpha(alpha)
     q = r * min(W, H); out = rgba.crop((int(cx * W - q), int(cy * H - q), int(cx * W + q), int(cy * H + q)))
     m = Image.new("L", (out.width * 2, out.height * 2), 0); ImageDraw.Draw(m).ellipse((0, 0, m.width - 1, m.height - 1), fill=255); m = m.resize(out.size, Image.LANCZOS)
@@ -165,6 +178,7 @@ if __name__ == "__main__":
     for src, name, kw in GRAB:
         d = cut_grab(src, name, **kw); im = Image.open(d)
         al = np.asarray(im.split()[-1]); print(f"{name:24} {im.size} opaque {round((al > 128).mean() * 100)}% (grabcut)")
+    wipe_warm("box-gold", (560, 250, 800, 430))
     duo("hratsiia-flat", "ring-n", "duo-hratsiia-ring")
     detail("photo/site/ring-n-styl-02.jpg", "ring-in-use", 0.53, 0.49, 0.25)
     detail("photo/site/mask-synii-02.jpg", "men-mask", 0.50, 0.40, 0.42)

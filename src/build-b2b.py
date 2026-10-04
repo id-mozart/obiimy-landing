@@ -308,7 +308,7 @@ def form_html(pid, subject, fields, note, L=None, tg=None):
           f.querySelectorAll('[required]').forEach(function (i) {{ var ok = valid(i); i.setAttribute('aria-invalid', ok ? 'false' : 'true'); if (!ok && !first) first = i; }});
           if (first) {{ first.focus(); first.scrollIntoView({{ block: 'center', behavior: 'smooth' }}); return; }}
           var lines = [];
-          f.querySelectorAll('[name]').forEach(function (i) {{ if (i.value.trim()) lines.push(i.dataset.label + ': ' + i.value.trim()); }});
+          f.querySelectorAll('[name]').forEach(function (i) {{ var v = i.value.trim(); if (i.type === 'date') v = v.split('-').reverse().join('.'); if (v) lines.push(i.dataset.label + ': ' + v); }});
           var body = '{subject}\\n\\n' + lines.join('\\n') + '\\n\\n{L["sent"]}' + location.href;
           txt.value = body;
           var tgb = document.getElementById('{pid}-tg'); if (tgb) tgb.href = tgb.href.split('?')[0] + '?text=' + encodeURIComponent(body);
@@ -372,6 +372,7 @@ def shell(page, body):
 <meta name="twitter:card" content="summary_large_image">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family={skin["fonts"]}&display=swap" rel="stylesheet">
+<link rel="icon" href="brand/favicon.ico">
 <style>
   {skin["css"]}
   :root {{ --display: {skin["display"]}; --body: {skin["body"]}; --ink3: {"#A9A3B3" if dark else ("#57534E" if page["skin"] == "form" else "#66626D")}; }}

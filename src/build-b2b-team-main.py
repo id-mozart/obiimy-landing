@@ -48,6 +48,7 @@ def snap_type(html):
 DECK_SKIN = """
   :root { --fs-h1: clamp(2.6rem, 5.2vw, 4.6rem); --fs-h2: clamp(1.9rem, 3.2vw, 2.8rem); --fs-h3: clamp(1.5rem, 2.2vw, 2rem); }
   html { font-synthesis: none; }
+  form { align-items: start; } select:has(option[value=""]:checked) { color: var(--ink3); }
   .form-block h2 i { font-style: italic; color: #8E8A84; }
   @media (max-width: 640px) { body:has(.sticky.on) .nav .btn { visibility: hidden; } }
   .contact h2 { color: var(--ink); } footer a { white-space: nowrap; }
@@ -130,7 +131,7 @@ CSS = DECK_SKIN + """
   @media (max-width: 960px) { .sd-top { grid-template-columns: 1fr; } .sd-prints { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
   @media (max-width: 640px) { .sd-prints { grid-template-columns: repeat(2, minmax(0, 1fr)); } .sd-ph img:first-child { aspect-ratio: 4 / 3; } }
   .assort { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px 14px; }
-  .as { text-align: center; } .as img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; padding: 8%; filter: drop-shadow(0 10px 14px rgba(0,0,0,.16)); }
+  .as { text-align: left; } .as img { width: 100%; aspect-ratio: 1 / 1; object-fit: contain; padding: 8%; filter: drop-shadow(0 10px 14px rgba(0,0,0,.16)); }
   .as span.num { display: block; } .as em { display: inline-block; font-style: normal; font-size: .64rem; letter-spacing: .16em; text-transform: uppercase; color: var(--ink); border: 1px solid var(--ink); border-radius: 99px; padding: 1px 7px 0 9px; margin-left: 8px; vertical-align: 1px; }
   .as b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.05rem; line-height: 1.15; margin-top: 10px; }
   .as span { color: var(--ink2); font-size: .9rem; }
@@ -155,11 +156,11 @@ CSS = DECK_SKIN + """
   .tcs { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
   .tcs { gap: clamp(28px, 3.4vw, 44px) clamp(24px, 3.4vw, 48px); }
   .tc { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(16px, 2vw, 26px); border-top: 1px solid var(--ink); padding-top: 18px; text-decoration: none; color: inherit; }
-  .tc-ph { margin: 0; display: flex; flex-direction: column; } .tc-im { flex: 1; min-height: 320px; position: relative; overflow: hidden; } .tc-im img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s; } .tc:hover .tc-im img { transform: scale(1.03); }
+  .tc-ph { margin: 0; } .tc-im { aspect-ratio: 4 / 5; position: relative; overflow: hidden; } .tc-im img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .5s; } .tc:hover .tc-im img { transform: scale(1.03); }
   .tc-ph figcaption { font-size: .75rem; line-height: 1.4; color: var(--ink3); margin-top: 8px; min-height: 2.8em; }
-  .tc-h { display: grid; grid-template-columns: 1fr 96px; gap: 12px; align-items: center; min-height: 96px; margin: 2px 0 8px; } .tc-p { width: 96px; height: 96px; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0,0,0,.12)); } .tc-t small { display: block; min-height: 2.9em; } .tc-t .eyebrow { min-height: 2.9em; } .tc-capm { display: none; }
-  .tc-t { display: flex; flex-direction: column; } .tc-t h3 { font-size: 1.6rem; line-height: 1.12; margin: 0; } .tc-t p { color: var(--ink2); font-size: .92rem; margin: 0; }
-  .tc-b { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0 0; padding: 10px 0; border-block: 1px solid var(--line); } .tc-b div { display: grid; } .tc-b dt { font-size: .72rem; color: var(--ink3); } .tc-b dd { margin: 0; font-size: .92rem; }
+  .tc-h { display: grid; grid-template-columns: 1fr 96px; gap: 12px; align-items: center; min-height: 96px; margin: 2px 0 8px; } .tc-p { width: 96px; height: 96px; object-fit: contain; filter: drop-shadow(0 6px 10px rgba(0,0,0,.12)); } .tc-t small { display: block; min-height: 2.9em; } .tc-t .eyebrow { min-height: 2.9em; } .tc-t .tc-capm { display: none; }
+  .tc-t { display: flex; flex-direction: column; } .tc-t > p:not(.eyebrow) { min-height: 5.2em; } .tc-b dd { min-height: 2.9em; } .tc-t h3 { font-size: 1.6rem; line-height: 1.12; margin: 0; } .tc-t p { color: var(--ink2); font-size: .92rem; margin: 0; }
+  .tc-b { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 14px 0 0; padding: 10px 0; border-block: 1px solid var(--line); } .tc-b div { display: grid; } .tc-b dt { font-size: .72rem; color: var(--ink3); } .tc-b dd { margin: 0; font-size: .92rem; white-space: nowrap; } .tc-b dd span { display: block; }
   .tc-t .more { margin-top: 12px; font-weight: 600; font-size: .9rem; } .tc:hover .more { text-decoration: underline; }
   .sd-cta { border-color: rgba(255,255,255,.5); color: #F3F1EC; margin-top: 6px; }
   .hero.main .lead-m { display: none; }
@@ -172,7 +173,7 @@ CSS = DECK_SKIN + """
   @media (max-width: 640px) { .cond { grid-template-columns: 1fr; } }
   .per-ph { margin: clamp(24px, 3vw, 40px) 0 0; } .per-ph img { width: 100%; height: clamp(260px, 46vw, 520px); object-fit: cover; border-radius: var(--radius); }
   .per-ph figcaption { font-size: .85rem; color: var(--ink3); margin-top: 10px; }
-  .photo-band { position: relative; } .photo-band img { width: 100%; height: clamp(360px, 60vh, 640px); object-fit: cover; display: block; }
+  .photo-band { position: relative; } .photo-band img { width: 100%; height: clamp(420px, 72vh, 720px); object-fit: cover; display: block; }
   .photo-band::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 55%); pointer-events: none; }
   .pb-t { position: absolute; left: 0; right: 0; bottom: clamp(28px, 5vw, 56px); z-index: 1; color: #fff; }
   .pb-t .eyebrow { color: rgba(255,255,255,.75); } .pb-t h2 { font-size: clamp(1.8rem, 3.6vw, 3rem); max-width: 16em; margin-top: 8px; }
@@ -202,21 +203,21 @@ CSS = DECK_SKIN + """
   .terms2 { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(28px, 6vw, 96px); align-items: start; }
   .terms2 .perk h3 { font-size: 1.25rem; } .got { border-top: 1px solid var(--ink); padding-top: 14px; margin-top: 8px; } .got p:last-child { color: var(--ink3); font-size: .85rem; margin: 8px 0 0; }
   .qt { width: 100%; border-collapse: collapse; margin-top: 8px; font-size: .92rem; } .qt th { text-align: left; font-weight: 400; } .qt td { text-align: right; white-space: nowrap; padding-left: 14px; }
-  .qt th, .qt td { padding-block: 8px; border-bottom: 1px solid var(--line); } .qt thead th { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink3); } .qt thead th:not(:first-child) { text-align: right; padding-left: 14px; }
+  .qt th, .qt td { padding-block: 8px; border-bottom: 1px solid var(--line); } .qt thead th { white-space: nowrap; font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; color: var(--ink3); } .qt thead th:not(:first-child) { text-align: right; padding-left: 14px; }
   .qt tfoot th, .qt tfoot td { border-bottom: 1px solid var(--ink); font-family: var(--display); font-size: 1.25rem; }
   .tkv { margin: 0; } .tkv > div { display: grid; grid-template-columns: minmax(0, 150px) 1fr; gap: 18px; padding: 14px 0; border-top: 1px solid var(--line); } .tkv > div:last-child { border-bottom: 1px solid var(--line); }
   .tkv dt { font-family: var(--display); font-size: 1.2rem; line-height: 1.2; } .tkv dd { margin: 0; color: var(--ink2); font-size: .95rem; }
-  .season { font-family: var(--display); font-style: italic; font-size: 1.2rem; line-height: 1.35; margin-top: 22px; }
+  .season { font-family: var(--display); font-size: clamp(1.5rem, 2.2vw, 2rem); line-height: 1.2; margin-top: 32px; max-width: 16em; } .season i { font-style: italic; color: #8E8A84; }
   @media (max-width: 960px) { .logo2, .terms2 { grid-template-columns: 1fr; } .boxcut { max-width: 520px; } .logo-t { padding-top: 0; } }
   @media (max-width: 640px) { .ask { grid-template-columns: 1fr; } .tkv > div { grid-template-columns: 1fr; gap: 4px; } }
   .photo-band h2 i { font-style: italic; color: #E7D9A6; }
   @media (max-width: 640px) {
     .quote-band { display: none; }
-    .as em { display: table; margin: 4px auto 0; }
+    .as em { display: table; margin: 4px 0 0; }
     .tcs { gap: 0; } .tc { grid-template-columns: 104px 1fr; gap: 14px; padding: 16px 0; }
     .tc-ph { align-self: start; } .tc-im { min-height: 0; aspect-ratio: 4 / 5; } .tc-ph figcaption { display: none; }
     .tc-h { grid-template-columns: 1fr; min-height: 0; margin-bottom: 4px; } .tc-p { display: none; } .tc-t .eyebrow { font-size: .62rem; letter-spacing: .14em; white-space: normal; }
-    .tc-t h3 { font-size: 1.25rem; } .tc-t > p { font-size: .84rem; } .tc-t em { font-size: 1.35rem; padding-top: 8px; } .tc-t small { font-size: .74rem; min-height: 0; } .tc-t .tc-capm { display: block; margin-top: 2px; } .tc-t .eyebrow { min-height: 0; }
+    .tc-t h3 { font-size: 1.25rem; } .tc-t > p:not(.eyebrow) { font-size: .84rem; min-height: 0; } .tc-b dd { min-height: 0; } .tc-t em { font-size: 1.35rem; padding-top: 8px; } .tc-t small { font-size: .74rem; min-height: 0; } .tc-t .tc-capm { display: block; margin-top: 2px; } .tc-t .eyebrow { min-height: 0; }
     .tc-b { margin-top: 8px; padding: 8px 0; gap: 6px; } .tc-b dt { font-size: .66rem; } .tc-b dd { font-size: .82rem; } .tc-t .more { margin-top: 8px; font-size: .84rem; }
   }
   .presets { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 26px; }
@@ -344,9 +345,9 @@ def plan_section():
 
 TIERS = [  # label, name, what is inside, price text, note, cut-out (same four gifts as in the deck, p. 3)
     ("Знак уваги", "Твіллі", "Шовкова стрічка 84 × 5: на шию, у волосся, на сумку. 38 принтів.", "1 600 грн", "довга 140 × 5 «Літній віночок» — 1 850 грн", "img/cut/zolote-tw-1.webp"),
-    ("Тим, хто носить аксесуари", "Хустка й кільце", "Хустка 44 × 44 і кільце для хустки Gold — фіксує її на шиї чи сумці. Збираємо під замовлення.", "від 2 050 грн", "хустка 1 600 + кільце 450; з двостороннім друком — 2 400 + 450", "img/cut/zolote-44-1.webp"),
+    ("Тим, хто носить аксесуари", "Хустка й кільце", "Хустка 44 × 44 і кільце для хустки Gold — фіксує її на шиї чи сумці. Збираємо під замовлення.", "від 2 050 грн", "2 050 = хустка 1 600 + кільце 450; з двостороннім друком — 2 850 (2 400 + 450)", "img/cut/zolote-44-1.webp"),
     ("Для відпочинку", "Маска для сну й резинка", "Один принт, фірмове пакування Obiimy. Підходить і тим, хто не носить хустки.", "3 100 грн", "набором — на 300 грн менше, ніж окремо (2 700 + 700)", "img/cut/maskscr-litnie-pole.webp"),
-    ("Ключовим людям", "Хустка й твіллі в коробці", "Один принт, святкова коробка. За бажанням — майстер-клас від засновниці.", "від 3 200 грн", "односторонній друк — 3 200, двосторонній — 3 600", "img/cut/set-natkhnennia-box.webp"),
+    ("Ключовим людям", "Хустка й твіллі в коробці", "Один принт, святкова коробка. Майстер-клас від засновниці — за бажанням, узгоджуємо окремо.", "від 3 200 грн", "односторонній друк — 3 200, двосторонній — 3 600 грн", "img/cut/set-natkhnennia-box.webp"),
 ]
 TPRICE = [(1600, None), (2050, 2850), (3100, None), (3200, 3600)]   # per person: price, ceiling (double-sided print) or None
 ARGS = [  # why Obiimy — four buyer arguments (deck p. 2, landing)
@@ -367,16 +368,16 @@ ASK = [("Нашивна бирка", "Із логотипом компанії �
 STEPS = [("Нагода, кількість, дата", "Цього досить для першого листа. Якщо є — додайте бюджет на людину."),
          ("Добірка й розрахунок", "У відповідь — принти на вибір із фото й ціни окремими рядками."),
          ("Виготовлення й доставка", "Новою поштою — в офіс однією посилкою або кожному окремо.")]
-TERMS = [("Строки", "Назвіть дату вручення — у відповіді напишемо, що встигаємо до неї. Речі з наявності без персоналізації — відправка в день замовлення (до 16:00). Із наліпкою з вашим логотипом, наборами під замовлення й іншою персоналізацією — строк у робочих днях у розрахунку."),
+TERMS = [("Строки", "Назвіть дату вручення — у відповіді напишемо, що встигаємо до неї. Терміново? Речі з наявності без наліпки відправляємо в день замовлення (до 16:00). Із наліпкою, наборами під замовлення й іншою персоналізацією — строк у робочих днях пишемо в розрахунку."),
          ("Доставка", "Новою поштою: в офіс однією посилкою або кожному окремо. Безкоштовно від 5 000 грн; як це діє для адресної розсилки кожному — напишемо в розрахунку. За кордон — за тарифами перевізника."),
          ("Оплата й документи", "Вкажіть у запиті юридичну особу та ЄДРПОУ, чи потрібен рахунок із ПДВ і які документи — форму оплати й документи підтвердимо в розрахунку."),
          ("Кількість", "Мінімальну кількість і наявність потрібного принта підтвердимо в розрахунку — напишіть, скільки людей у команді."),
          ("Зразки", "Подивитися й потримати речі до замовлення — у шоурумі: {SHOWROOM}; пн–пт 10:00–18:00, сб 11:00–18:00.")]
 TERMS = [(k, v.replace("{SHOWROOM}", team.SHOWROOM)) for k, v in TERMS]
-EXAMPLE = [("Твіллі 84 × 5", 30, 1600), ("Сертифікат Obiimy", 20, 1500), ("Пакування й наліпка, вироби", 30, 0), ("Доставка в офіс", 1, 0)]   # sample quote: mixed team of 50, retail prices
+EXAMPLE = [("Твіллі 84 × 5", 30, 1600), ("Сертифікат Obiimy", 20, 1500), ("Пакування й наліпка з логотипом", 30, 0), ("Доставка в офіс", 1, 0)]   # sample quote: mixed team of 50, retail prices
 def money(n): return f"{n:,}".replace(",", " ")
-def bud(i, n, br="<wbr>"):
-    lo, hi = TPRICE[i]; return money(lo * n) + (f"–{br}{money(hi * n)}" if hi else "")   # the range has a ceiling: «від» alone is not a budget
+def bud(i, n):   # the range has a ceiling: «від» alone is not a budget
+    lo, hi = TPRICE[i]; return f"<span>від {money(lo * n)}</span><span>до {money(hi * n)}</span>" if hi else money(lo * n)
 PERS = [  # name, text, terms, photo
     ("Пакування й наліпка", "Подарункове пакування кожної речі та наліпка з вашим логотипом усередині коробки.", "Безкоштовно · у кожному корпоративному замовленні", "photo/box-gold.jpg"),
     ("Бирка з логотипом", "Нашивна бирка з логотипом компанії на самій хустці чи твіллі.", "Строки й вартість — у розрахунку", "photo/dotyk-3.webp"),
@@ -420,7 +421,7 @@ SETS4 = [  # one page each, in the deck and on the site. Facts: SITE-FACTS (size
          inside=[("Що всередині", "Шовкова твіллі 84 × 5 см, авторський принт"), ("Шовк", "100% натуральний італійський шовк"), ("Принти", "38 принтів, зокрема з нової колекції SOLO"), ("Пакування", "Подарункове пакування Obiimy — безкоштовно; наліпка з вашим логотипом усередині"), ("Привітання", "Листівка з вашим текстом і логотипом — формат у розрахунку"), ("Кому", "Усій команді, новим співробітникам, гостям події")],
          ways=[("На шиї", "Вузол або бант під комір — класичний спосіб."), ("У волоссі", "Вплітається в косу, зав’язується на хвості чи пучку."), ("На сумці", "Обмотується навколо ручки — помітна деталь образу."), ("Поясом", "На тренчі чи сукні — як на зйомці SOLO.")],
          who="Коли треба один подарунок для всіх — і щоб кожен отримав свій принт."),
-    dict(slug="b2b-set-scarf-ring", b50="від 102 500 грн", short="Хустка й кільце", name="Хустка й кільце — готовий образ", lb="Тим, хто носить аксесуари · 02", pr="від 2 050 грн", prnote="хустка 1 600 + кільце Gold 450; хустка з двостороннім друком — 2 400 + 450",
+    dict(slug="b2b-set-scarf-ring", b50="від 102 500 грн", short="Хустка й кільце", name="Хустка й кільце — готовий образ", lb="Тим, хто носить аксесуари · 02", pr="від 2 050 грн", prnote="2 050 = хустка 1 600 + кільце Gold 450; з двостороннім друком — 2 850 (2 400 + 450)",
          lead="Невелика шовкова хустка 44 × 44 і кільце для хустки Gold: воно фіксує хустку на шиї, сумці чи поясі. Збираємо під замовлення; строк — у розрахунку.",
          hero=("photo/solo/zolote-44-3.webp", "Хустка «Золоте світло» 44 × 44 на шиї, чорний жакет", "50% 20%"),
          gal=[("photo/solo/krok-44-4.webp", "«Сміливий крок» на шиї, із сумкою", "50% 20%"), ("photo/solo/krok-44-2.webp", "«Сміливий крок» на шиї", "50% 20%"), ("photo/solo/zolote-44-1.webp", "Хустка «Золоте світло» 44 × 44", ""), ("photo/hratsiia-flat.webp", "Хустка «Грація» 44 × 44", "")],
@@ -438,7 +439,7 @@ SETS4 = [  # one page each, in the deck and on the site. Facts: SITE-FACTS (size
          lead="Хустка 44 × 44 і твіллі в одному принті: носять разом або окремо. Для керівників, ключових людей, до річниці в компанії.",
          hero=("photo/solo/zolote-44-2.webp", "Набір «Впевненість»: твіллі у хвості та хустка 44 × 44", "50% 20%"),
          gal=[("photo/solo/zolote-44-4.webp", "Хустка «Золоте світло» поясом на чорному", "50% 40%"), ("photo/solo/zolote-tw-3.webp", "Твіллі «Золоте світло»", ""), ("img/sets/tw44-natkhnennia.webp", "Набір «Натхнення»: хустка й твіллі в коробці", ""), ("photo/solo/zolote-44-2.webp", "«Золоте світло» на шиї, чорний жакет", "50% 20%")],
-         inside=[("Що всередині", "Хустка 44 × 44 і твіллі 84 × 5 в одному принті"), ("Майстер-клас", "Від засновниці Світлани Сніжко — за бажанням; формат, дату й вартість узгодимо окремо"), ("Кому", "Керівникам, ключовим людям, до річниці в компанії"), ("Шовк і друк", "100% натуральний італійський шовк, кутики вручну; односторонній — 3 200 грн, двосторонній — 3 600 грн"), ("Принти", "18: 11 — по 3 200 грн, 7 з двостороннім друком — по 3 600 грн, зокрема «Золоте світло»"), ("Пакування", "Святкова коробка Obiimy; наліпка з логотипом усередині — безкоштовно")],
+         inside=[("Що всередині", "Хустка 44 × 44 і твіллі 84 × 5 в одному принті"), ("Майстер-клас", "Від засновниці Світлани Сніжко — за бажанням; формат, дату й вартість узгодимо окремо"), ("Кому", "Керівникам, ключовим людям, до річниці в компанії"), ("Шовк і друк", "100% натуральний італійський шовк, кутики вручну; односторонній — 3 200 грн, двосторонній — 3 600 грн"), ("Принти", "18 принтів: 11 — по 3 200 грн, 7 із двостороннім друком — по 3 600 грн, зокрема «Золоте світло»"), ("Пакування", "Святкова коробка Obiimy; наліпка з логотипом усередині — безкоштовно")],
          ways=[("Пара", "Хустка на шиї, твіллі на сумці — один принт у двох деталях."), ("Окремо", "Два подарунки з однієї коробки — на будні й на вихід."), ("Майстер-клас", "За бажанням — від засновниці; формат, дату й вартість узгодимо окремо."), ("Коробка", "Святкова коробка Obiimy.")],
          who="Коли подарунок має сказати більше, ніж річ."),
 ]
@@ -480,7 +481,7 @@ QUOTE_PH = cast("D07", "photo/solo/zolote-44-4.webp", "50% 35%"); PERS_PH = cast
 
 def solo_section():
     """Black presentational block: manifesto of the collection (press release), cinematic shots, the seven prints as tall cards."""
-    cards = "".join(f'<div class="pc"><div class="pc-ph">{img(CARD_PH[i], f"Принт «{n}» на моделі", sizes="(max-width: 640px) 50vw, (max-width: 960px) 25vw, 14vw", style=pos(CARD_POS[i]), cls="m")}<div class="pc-t"><b>{n}</b><span>{st}</span></div></div><div class="pc-b">{img(fl, "", sizes="64px", cls="fl")}<small>{fm}</small></div></div>' for i, (n, st, fm, pr, ph, fl) in enumerate(SOLO))
+    cards = "".join(f'<div class="pc"><div class="pc-ph">{img(CARD_PH[i], f"Принт «{n}» на моделі", sizes="(max-width: 640px) 62vw, (max-width: 960px) 50vw, 22vw", style=pos(CARD_POS[i]), cls="m")}<div class="pc-t"><b>{n}</b><span>{st}</span></div></div><div class="pc-b">{img(fl, "", sizes="64px", cls="fl")}<small>{fm}</small></div></div>' for i, (n, st, fm, pr, ph, fl) in enumerate(SOLO))
     return f'''
   <section class="block solo-dark" id="solo"><div class="wrap">
     <div class="sd-top">
@@ -502,7 +503,7 @@ def quote_section():
 
 def ways_section():
     """«Як носити» — like the brand banner: one print, four ways, italic labels on the photo."""
-    ways = "".join(f'<figure class="way">{img(ph, f"{n} — шовкова твіллі Obiimy", sizes="(max-width: 640px) 100vw, 25vw", style=pos(ps))}<figcaption><b>{n}</b><span>{t}</span></figcaption></figure>' for n, t, ph, ps in WAYS)
+    ways = "".join(f'<figure class="way">{img(ph, f"{n} — шовкова твіллі Obiimy", sizes="(max-width: 640px) 100vw, 25vw", style=pos(ps))}<figcaption><b>{n}</b><span>{t.replace(" · ", "<br>")}</span></figcaption></figure>' for n, t, ph, ps in WAYS)
     return f'''
   <section class="block solo-dark ways-dark" id="ways"><div class="wrap">
     <div class="sd-hd top"><div><p class="eyebrow">Як носити</p><h2>Одна твіллі — <i>чотири образи</i></h2></div><p>Твіллі 84 × 5 — 1 600 грн, найдоступніший із чотирьох подарунків. Хустку 44 × 44 носять так само: на шиї, на зап’ясті, на сумці. Один принт на всіх — і жодних однакових образів.</p></div>
@@ -561,7 +562,7 @@ def tiers_c():
     cards = "".join(offer_card(i, T, S) for i, (T, S) in enumerate(zip(TIERS, SETS4)))
     return f'''
   <section class="block alt" id="tiers"><div class="wrap">
-    <div class="head"><p class="eyebrow">Чотири подарунки</p><h2>Що в коробці — <i>і скільки це коштує</i></h2><p class="sub">Базові роздрібні ціни obiimy.world на людину, без акцій сайту (жовтень 2026); бюджет команди — у гривнях. У кожному подарунку — подарункове пакування й наліпка з вашим логотипом, безкоштовно.</p></div>
+    <div class="head"><p class="eyebrow">Чотири подарунки</p><h2>Що в коробці — <i>і скільки це коштує</i></h2><p class="sub">Базові роздрібні ціни obiimy.world на людину, без акцій сайту (жовтень 2026); бюджет команди — у гривнях, ціну для вашої кількості підтвердимо в розрахунку. У кожному подарунку — подарункове пакування й наліпка з вашим логотипом, безкоштовно.</p></div>
     <div class="tcs">{cards}</div>
     <div class="cond" style="margin-top:clamp(28px,4vw,44px)"><div><b>Змішана команда</b><span>Тим, хто не носить аксесуари, — маска для сну (2 700 грн), закладка для книги (800 грн), наволочка (від 4 200 грн) або сертифікат на 1 000–4 000 грн. Усе — в одному розрахунку.</span></div>
       <div><b>До 1 000 грн на людину</b><span>Шовкова резинка — 700 грн, закладка для книги — 800 грн, сертифікат Obiimy — 1 000 грн.</span></div>
@@ -588,11 +589,11 @@ def terms_section():
   <section class="block alt" id="terms"><div class="wrap terms2">
     <div><div class="head"><p class="eyebrow">Умови й замовлення</p><h2>Як замовити — <i>і що в розрахунку</i></h2></div><div class="perks-l">{steps}</div>
       <div class="got"><p class="eyebrow">Приклад розрахунку · 50 людей · роздрібні ціни</p>
-        <table class="qt"><thead><tr><th>Виріб</th><th>К-сть</th><th>Ціна</th><th>Сума, грн</th></tr></thead><tbody>{calc}</tbody>
+        <table class="qt"><thead><tr><th>Виріб</th><th>Шт.</th><th>Ціна</th><th>Сума, грн</th></tr></thead><tbody>{calc}</tbody>
         <tfoot><tr><th>Разом</th><td></td><td></td><td class="num">{money(sum(q * pz for _n, q, pz in EXAMPLE))}</td></tr></tfoot></table>
         <p>Строк у робочих днях — окремим рядком.</p></div>
       <p class="note"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для погодження (PDF, {team.PDF_MB} МБ) ↓</a></p></div>
-    <div><dl class="tkv">{rows}</dl></div>
+    <div><dl class="tkv">{rows}</dl><p class="season">Потрібно до конкретної дати? <i>Напишіть її — скажемо, що встигаємо.</i></p><p style="margin-top:18px"><a class="btn btn-gold" href="#request">Отримати розрахунок</a></p></div>
   </div></section>'''
 
 def photo_band():

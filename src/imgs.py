@@ -54,4 +54,5 @@ def _typo_text(html):
     for name in ("UFD London", "Be Brave", "INSIDER UA", "вул. Петра Сагайдачного, 12", "Світлани Сніжко", "Нова пошта", "Новою поштою", "Нового року", "святого Миколая"):
         html = html.replace(name, name.replace(' ', NBSP))
     html = re.sub(r'(пн–пт|сб|нд) (\d)', lambda m: m.group(1) + NBSP + m.group(2), html)
+    html = re.sub(r'(?<=[\dа-яіїє])–(?=[\dа-яіїє])', '–\u2060', html)          # 1 000–4 000, пн–пт, 10:00–18:00 stay on one line
     return html

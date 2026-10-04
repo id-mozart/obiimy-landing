@@ -84,9 +84,9 @@ page(f"""<figure class="ph">{pic("photo/kolo-1.webp", 148.5, 210, "50% 22%")}<fi
 # ── 3 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────
 GIFTS = [  # label, name, description, price, ceiling (double-sided print) or None, cut-out
     ("Знак уваги", "Твіллі", "Шовкова стрічка 84 × 5: на шию, у волосся, на сумку. 38 принтів.", 1600, None, "zolote-tw-1"),
-    ("Тим, хто носить аксесуари", "Хустка й кільце", "Хустка 44 × 44 і кільце для хустки Gold — фіксує її на шиї чи сумці. Збираємо під замовлення.", 2050, 2850, "duo-hratsiia-ring"),
+    ("Тим, хто носить аксесуари", "Хустка й кільце", "Хустка 44 × 44 і кільце для хустки Gold. Збираємо під замовлення.", 2050, 2850, "duo-hratsiia-ring"),
     ("Для відпочинку", "Маска для сну й резинка", "Один принт, фірмове пакування Obiimy. Підходить і тим, хто не носить хустки.", 3100, None, "maskscr-litnie-pole"),
-    ("Ключовим людям", "Хустка й твіллі в коробці", "Один принт, святкова коробка. За бажанням — майстер-клас від засновниці.", 3200, 3600, "set-natkhnennia-box"),
+    ("Ключовим людям", "Хустка й твіллі в коробці", "Один принт, святкова коробка. Майстер-клас від засновниці — окремо, за бажанням.", 3200, 3600, "set-natkhnennia-box"),
 ]
 def pr(p, frm, big="h28"): return f'<span class="pv {big}">{"<small>від</small> " if frm else ""}{money(p)} <small>грн</small></span>'
 def prt(p, hi):   # «від» in its own slot: the figures share one vertical; the ceiling under the figure
@@ -99,11 +99,11 @@ def gift_row(i, G):
             f'{prt(p, hi)}<span class="bd">{bud(p, hi, 20)}</span><span class="bd">{bud(p, hi, 50)}</span><span class="bd">{bud(p, hi, 100)}</span></div>')
 rows = "".join(gift_row(i, G) for i, G in enumerate(GIFTS))
 page(f"""{rh("Чотири подарунки")}<div class="sheet">
-<div class="hd"><h2 class="h28">Що в коробці — <i>і скільки це коштує</i></h2><p>Базові роздрібні ціни obiimy.world на людину, без акцій сайту, жовтень 2026; «від — до» — друк з одного чи з двох боків. Бюджети команди — у гривнях. Пакування й наліпка з вашим логотипом — безкоштовно.</p></div>
+<div class="hd"><h2 class="h28">Що в коробці — <i>і скільки це коштує</i></h2><p>Базові роздрібні ціни obiimy.world на людину, без акцій сайту, жовтень 2026; «від — до» — друк з одного чи з двох боків. Бюджети команди — у гривнях. Пакування й наліпка — безкоштовно.</p></div>
 <div class="gt"><div class="gr head"><span></span><span></span><span class="cap">Подарунок</span><span class="cap">На людину</span><span class="cap bd">20 людей</span><span class="cap bd">50 людей</span><span class="cap bd">100 людей</span></div>{rows}</div>
 <div class="three"><div><p class="cap">Змішана команда</p><p>Тим, хто не носить аксесуари, — маска для сну (2 700 грн), закладка для книги (800 грн), наволочка (від 4 200 грн) або сертифікат на 1 000–4 000 грн. Усе — в одному розрахунку.</p></div>
 <div><p class="cap">До 1 000 грн на людину</p><p>Шовкова резинка — 700 грн, закладка для книги — 800 грн, сертифікат Obiimy — 1 000 грн.</p></div>
-<div><p class="cap">Приклад: 50 людей</p><p>30 твіллі (48 000 грн) + 20 сертифікатів по 1 500 грн (30 000 грн) = 78 000 грн за роздрібними цінами. Як виглядає розрахунок — на стор. 13.</p></div></div></div>""", "paper")
+<div><p class="cap">Приклад: 50 людей</p><p>30 твіллі (48 000 грн) + 20 сертифікатів по 1 500 грн (30 000 грн) = 78 000 грн. Ціну для вашої кількості підтвердимо в розрахунку — приклад на стор. 13.</p></div></div></div>""", "paper")
 
 # ── 4–7 · one page per gift (split, alternating) ────────────────────────────────────────────────────
 def kv(items): return "".join(f'<div><span class="t8">{k}</span><span>{v}</span></div>' for k, v in items)
@@ -111,14 +111,14 @@ INCL = ("У ціні", "Пакування й наліпка з вашим ло�
 SETS = [
     dict(cap="01 · Знак уваги", h="Твіллі — подарунок", hi="на всю команду",
          lead="Шовкова стрічка 84 × 5 см: на шию, у волосся, на сумку, на зап’ястя. 38 авторських принтів — кожному в команді свій.",
-         p=1600, frm=False, note="роздрібна ціна; довга 140 × 5 «Літній віночок» — 1 850 грн",
-         photo=("photo/site/set-smilyvist-02.jpg", "55% 22%", 1.0), phcap="На фото — набір «Сміливість»: твіллі й резинка, 2 200 грн. Твіллі окремо — 1 600 грн.",
-         cuts=["zolote-tw-1", "flirt-tw-2", "avantiura-tw-2", "krok-tw-1"], cutcls="fan", ccap="Принти SOLO: «Золоте світло», «Флірт», «Авантюра», «Сміливий крок»",
+         p=1600, frm=False, note="На вирізці — твіллі SOLO «Золоте світло», «Флірт», «Сміливий крок». Довга 140 × 5 «Літній віночок» — 1 850 грн.",
+         photo=("photo/site/set-smilyvist-02.jpg", "55% 22%", 1.0), phcap="На фото — твіллі з резинкою в тон: набір «Сміливість», 2 200 грн. Твіллі окремо — 1 600 грн.",
+         cuts=["zolote-tw-1", "flirt-tw-2", "krok-tw-1"], cutcls="trio", ccap="",
          kv=[("Принти", "38, зокрема з нової колекції SOLO"), ("Кому", "Усій команді, новим співробітникам, гостям події")],
          tag="Одна річ — на шию, у волосся й на сумку."),
     dict(cap="02 · Тим, хто носить аксесуари", h="Хустка й кільце —", hi="готовий образ",
          lead="Невелика шовкова хустка 44 × 44 і кільце для хустки Gold: воно фіксує хустку на шиї, сумці чи поясі.",
-         p=2050, frm=True, note="2 050 грн — хустка (1 600) + кільце Gold (450); 2 850 грн — хустка з двостороннім друком (2 400) + кільце",
+         p=2050, frm=True, note="На вирізці — «Грація» 44 × 44 і кільце «Н стиль»: 1 600 + 450 = 2 050 грн; із двостороннім друком — 2 400 + 450 = 2 850 грн.",
          photo=("photo/solo/krok-44-2.webp", "55% 50%", 1.0), phcap="На фото — «Сміливий крок» 44 × 44, двосторонній друк, зав’язана вузлом; у подарунку з кільцем — 2 850 грн.",
          cuts=["duo-hratsiia-ring"], cutcls="one", ccap="Хустка «Грація» 44 × 44 і кільце «Н стиль» Gold",
          extra=("cut:ring-in-use", "", 1.0, "Кільце замість вузла", "Gold, 450 грн — п’ять моделей на вибір. На фото — «Н стиль»."),
@@ -126,7 +126,7 @@ SETS = [
          tag=""),
     dict(cap="03 · Для відпочинку", h="Маска й резинка —", hi="набір про відпочинок",
          lead="Шовкова маска для сну й резинка в одному принті, у фірмовому пакуванні Obiimy. Підходить і тим, хто не носить хустки.",
-         p=3100, frm=False, note="набором — на 300 грн менше, ніж окремо: маска — 2 700, резинка — 700 грн",
+         p=3100, frm=False, note="На вирізці — набір «Літнє поле» в коробці. Набором — на 300 грн менше, ніж окремо: маска — 2 700, резинка — 700 грн.",
          photo=("photo/site/mask-vpevnenist-04.jpg", "50% 30%", 1.0), phcap="На фото — маска для сну «Впевненість».",
          extra=("cut:men-mask", "", 1.0, "Чоловікам — маска окремо", "2 700 грн. На фото — маска «Синій»."),
          cuts=["maskscr-litnie-pole"], cutcls="one", ccap="Набір «Літнє поле»: маска й резинка в коробці",
@@ -134,7 +134,7 @@ SETS = [
          tag=""),
     dict(cap="04 · Ключовим людям", h="Хустка й твіллі —", hi="пара в одній коробці",
          lead="Хустка 44 × 44 і твіллі в одному принті: носять разом або окремо. Для керівників, ключових людей, до річниці в компанії.",
-         p=3200, frm=True, note="односторонній друк — 3 200 грн, двосторонній — 3 600 грн",
+         p=3200, frm=True, note="На вирізці — набір «Натхнення» у святковій коробці Obiimy. Односторонній друк — 3 200 грн, двосторонній — 3 600 грн.",
          photo=("photo/site/set-tvilli-845-ta-khustky-4444-natkhne-04.jpg", "50% 25%", 1.0), phcap="На фото — набір «Натхнення».",
          cuts=["set-natkhnennia-box"], cutcls="box", ccap="Набір «Натхнення» у святковій коробці Obiimy",
          kv=[("Принти", "11 — по 3 200 грн і 7 з двостороннім друком — по 3 600 грн"), ("Майстер-клас", "Від засновниці Світлани Сніжко — за бажанням; формат, дату й вартість узгодимо окремо")],
@@ -149,11 +149,11 @@ for i, S in enumerate(SETS):
     tag = f'<p class="h13 tag"><i>{S["tag"]}</i></p>' if S["tag"] else ""
     wide = S["cutcls"] == "fan"
     cuts = "".join(cut(c, 37 if wide else 48) for c in S["cuts"])
-    fig = f'<figure class="cuts {S["cutcls"]}"><div>{cuts}</div><figcaption class="t8">{S["ccap"]}</figcaption></figure>'
+    fig = f'<figure class="cuts {S["cutcls"]}"><div>{cuts}</div>' + (f'<figcaption class="t8">{S["ccap"]}</figcaption>' if wide else "") + '</figure>'
     price = pr(S["p"], S["frm"], "h40"); note = f'<p class="t8 pnote">{S["note"]}</p>'
     body = f'{fig}<div class="prow wide">{price}{note}</div>' if wide else f'<div class="prow"><div class="pcell">{price}</div>{fig}</div>{note}'
     if S["cutcls"] == "box":   # the lid is cut by the photo's frame at the left and the top: the box comes out of the page edge, under a rule
-        body = f'<div class="prow boxl"><figure class="cuts box">{cut(S["cuts"][0], 62)}</figure><div class="pcell">{price}<p class="t8 bc">{S["ccap"]}</p></div></div>{note}'
+        body = f'<div class="prow boxl"><figure class="cuts box">{cut(S["cuts"][0], 62)}</figure><div class="pcell">{price}</div></div>{note}'
     page(f"""<figure class="ph">{pic(S["photo"][0], 148.5, 210, S["photo"][1], zoom=S["photo"][2])}</figure>
 <div class="panel"><p class="cap">{S["cap"]}</p><h2 class="h28">{S["h"]}<br><i>{S["hi"]}</i></h2><p class="lead">{S["lead"]}</p>
 {body}
@@ -189,7 +189,7 @@ page(f"""{pic("photo/solo/tysha-88-2.webp", 297, 210, "0% 30%", "bg", hi=True, z
 <div class="chip">{cut("tysha-88-1", 13)}<div><span>Принт «Тиша всередині» · твіллі й хустки</span><em>від 1 600 грн</em></div></div></div>""", "frame dark")
 
 # ── 11 · seven prints (dark strip): eye lines on one height (zoom and crop per frame) ───────────────
-STRIP = [("photo/solo/iskra-65-2.webp", "40% 0%", 1.23), ("photo/solo/flirt-65-3.webp", "61% 50%", 1.0), ("photo/solo/puls-tw-3.webp", "44% 50%", 1.0), ("photo/solo/zolote-44-3.webp", "53% 60%", 1.1),
+STRIP = [("photo/solo/iskra-65-2.webp", "40% 0%", 1.23), ("photo/solo/flirt-65-3.webp", "61% 50%", 1.0), ("photo/solo/puls-tw-3.webp", "49% 50%", 1.0), ("photo/solo/zolote-44-3.webp", "53% 60%", 1.1),
          ("photo/solo/avantiura-tw-1.webp", "50% 0%", 1.07), ("photo/solo/tysha-88-4.webp", "50% 0%", 1.07), ("photo/solo/krok-44-4.webp", "56% 60%", 1.1)]
 import re as _re
 def fmt7(fm): return "Твіллі · хустка " + _re.search(r"хустка (\d+ × \d+)", fm).group(1)
@@ -198,13 +198,13 @@ def tile7(F, P):
     return f'<figure class="tile">{pic(f, 35.14, 108, ps, zoom=z)}<figcaption><b class="h13"><i>{n}</i></b><span class="t8">{st}</span><span class="t8 fm">{fmt7(fm)}</span></figcaption></figure>'
 tiles = "".join(tile7(F, P) for F, P in zip(STRIP, SOLO))
 page(f"""<div class="sh"><div><p class="cap">Колекція SOLO</p><h2 class="h28">Сім принтів — <i>сім станів</i></h2></div>
-<p>Назва принта — готовий текст листівки: «Сміливий крок» — на підвищення, «Тиша всередині» — після складного кварталу. Твіллі в усіх семи принтах — 1 600 грн. Хустки з двостороннім друком: 44 × 44 — 2 400, 65 × 65 — 4 800, 88 × 88 — 6 600 грн; формат кожного принта — під фото.</p></div>
+<p>Назва принта — готовий текст листівки: «Сміливий крок» — на підвищення, «Тиша всередині» — після складного кварталу. Твіллі в усіх принтах — 1 600 грн; хустки з двостороннім друком — 2 400–6 600 грн, формат — під фото.</p></div>
 <div class="tiles t7">{tiles}</div>""", "strip dark")
 
 # ── 12 · one twilly, four looks (dark strip, the same template: tiles in the margins, captions below) ─
-WAYS = [("У волоссі", "Стрічка на хвості · «Авантюра»", "photo/solo/avantiura-tw-3.webp", "50% 50%"), ("На шиї", "Вузол під комір · «Флірт»", "photo/solo/flirt-tw-3.webp", "50% 50%"),
-        ("На сумці", "На ручці · «Золоте світло»", "photo/solo/zolote-tw-2.webp", "35% 50%"), ("Поясом", "На талії · «Сміливий крок»", "photo/solo/krok-tw-4.webp", "45% 50%")]
-tiles = "".join(f'<figure class="tile">{pic(f, 63.75, 117, ps)}<figcaption><b class="h28"><i>{n}</i></b><span>{t}</span></figcaption></figure>' for n, t, f, ps in WAYS)
+WAYS = [("У волоссі", "Стрічка на хвості · «Авантюра»", "photo/solo/avantiura-tw-3.webp", "50% 50%", 1.0), ("На шиї", "Вузол під комір · «Флірт»", "photo/solo/flirt-tw-3.webp", "50% 50%", 1.0),
+        ("На сумці", "На ручці · «Золоте світло»", "photo/solo/zolote-tw-2.webp", "35% 50%", 1.0), ("Поясом", "На талії · «Сміливий крок»", "photo/solo/krok-tw-4.webp", "42% 62%", 1.45)]
+tiles = "".join(f'<figure class="tile">{pic(f, 63.75, 117, ps, zoom=z)}<figcaption><b class="h28"><i>{n}</i></b><span>{t}</span></figcaption></figure>' for n, t, f, ps, z in WAYS)
 page(f"""<div class="sh"><div><p class="cap">Як носити</p><h2 class="h28">Одна твіллі — <i>чотири образи</i></h2></div>
 <p>Твіллі 84 × 5 — 1 600 грн, найдоступніший із чотирьох подарунків. Хустку 44 × 44 носять так само: на шиї, на зап’ясті, на сумці. Один принт на всіх — і жодних однакових образів.</p></div>
 <div class="tiles t4">{tiles}</div>""", "strip dark")
@@ -215,7 +215,7 @@ calc = "".join(f'<div class="cr"><span>{n}</span><span>{q}</span><span>{money(pz
 page(f"""{rh("Умови й замовлення")}<div class="sheet terms">
 <div><h2 class="h28">Як замовити —<br><i>і що в розрахунку</i></h2><div class="args">{steps}</div>
 <div class="got"><p class="cap">Приклад розрахунку · 50 людей · роздрібні ціни</p>
-<div class="cr th"><span>Виріб</span><span>К-сть</span><span>Ціна</span><span>Сума, грн</span></div>{calc}
+<div class="cr th"><span>Виріб</span><span>Шт.</span><span>Ціна</span><span>Сума, грн</span></div>{calc}
 <div class="cr sum"><span>Разом</span><span></span><span></span><span>{money(sum(q * pz for _n, q, pz in EXAMPLE))}</span></div>
 <p class="t8">Строк у робочих днях — окремим рядком.</p></div></div>
 <div><div class="kv wide">{kv(TERMS)}</div>
@@ -226,7 +226,7 @@ page(f"""<figure class="ph">{pic("photo/solo/iskra-tw-2.webp", 148.5, 210, "50% 
 <div class="panel"><p class="cap">Запит</p><h2 class="h28">Напишіть —<br><i>надішлемо добірку</i><br><i>й розрахунок</i></h2>
 <p class="tel h40"><a href="{PHONE_HREF}">{PHONE}</a></p>
 <p class="h13 lines"><a href="{TG}">Telegram @OBIIMY_sales</a><br><a href="mailto:{MAIL}">{MAIL}</a><br><a href="https://obiimy.world/">obiimy.world</a></p>
-<div class="tpl"><p class="cap">Шаблон запиту — скопіюйте й допишіть</p><p>Нагода — … · людей — … · дата вручення — … · бюджет на людину — …</p></div>
+<div class="tpl"><p class="cap">Шаблон запиту — скопіюйте й допишіть</p><p>Нагода — … · людей — … · дата вручення — … · бюджет на людину — … · доставка: в офіс / кожному · рахунок на юрособу: так / ні</p></div>
 <div class="qr">{qr_svg(TG, 132, ink="#141414", plate="#F1EFEA")}<p class="t8">Скануйте — чат із менеджером у Telegram.<br><a href="{LANDING}">Сторінка для команд із формою запиту</a><br>Шоурум: {SHOWROOM}</p></div></div>""", "split r dark last", folio=False)
 
 CSS = """
@@ -273,7 +273,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 /* split */
 .split .ph { position: absolute; top: 0; width: 148.5mm; height: 210mm; } .split.l .ph { left: 0; } .split.r .ph { right: 0; }
 .split .ph > img { width: 100%; height: 100%; object-fit: cover; }
-.split .ph figcaption { position: absolute; left: 16.5mm; right: 16.5mm; bottom: 12.75mm; z-index: 2; color: #fff; text-wrap: balance; }
+.split .ph figcaption { position: absolute; left: 16.5mm; right: 16.5mm; bottom: 10.05mm; z-index: 2; color: #fff; text-wrap: balance; }
 .split.shade .ph::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 75mm; background: linear-gradient(0deg, rgba(0,0,0,.74), rgba(0,0,0,.4) 45%, rgba(0,0,0,0)); }
 .panel { position: absolute; top: 16.5mm; bottom: 19.5mm; width: 106.5mm; display: flex; flex-direction: column; } .split.l .panel { left: 174mm; } .split.r .panel { left: 16.5mm; }
 .panel .cap { margin-bottom: 3.75mm; } .panel h2 { margin-bottom: 6mm; white-space: nowrap; }
@@ -288,9 +288,10 @@ small { font-size: 13pt; letter-spacing: 0; }
 .pv { display: block; white-space: nowrap; } .pv small { color: #8E8A84; font-style: italic; }
 .cuts > div { height: 39mm; display: flex; align-items: center; justify-content: center; } .cuts img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 2mm 2.5mm rgba(0,0,0,.16)); }
 .cuts figcaption { margin-top: 2.25mm; }
-.cuts.fan { margin-bottom: 4.5mm; } .cuts.fan figcaption { text-align: center; } .cuts.fan > div { height: 36mm; align-items: flex-start; justify-content: space-between; padding: 0 9mm; border-top: .5pt solid #141414; } .cuts.fan img { height: 36mm; width: auto; filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.14)); }
+.cuts.trio > div { justify-content: flex-end; } .cuts.trio img { height: 39mm; width: auto; margin-left: -9mm; } .cuts.trio img:first-child { margin-left: 0; }
+.cuts.fan { margin-bottom: 4.5mm; } .cuts.fan > div { height: 36mm; align-items: flex-start; justify-content: space-between; padding: 0 9mm; border-top: .5pt solid #141414; } .cuts.fan img { height: 36mm; width: auto; filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.14)); }
 .prow.wide { grid-template-columns: auto 1fr; align-items: end; height: auto; } .prow.wide .pnote { margin: 0 0 2.25mm; min-height: 0; }
-.prow.boxl { grid-template-columns: 31.5mm 1fr; border-top: .5pt solid #141414; } .cuts.box { margin-left: -16.5mm; width: 48mm; } .cuts.box img { width: 48mm; height: auto; max-width: none; max-height: none; } .bc { margin-top: 2.25mm; }
+.prow.boxl { grid-template-columns: 31.5mm 1fr; position: relative; } .prow.boxl::before { content: ""; position: absolute; left: -16.5mm; right: 0; top: 0; border-top: .5pt solid #141414; } .cuts.box { margin-left: -16.5mm; width: 48mm; } .cuts.box img { width: 48mm; height: auto; max-width: none; max-height: none; } .bc { margin-top: 2.25mm; }
 .kv > div { display: grid; grid-template-columns: 24mm 1fr; gap: 3mm; padding: 2.25mm 0; border-top: .35pt solid #C9C6C0; } .kv span { text-wrap: pretty; } .kv > div:last-child { border-bottom: .35pt solid #C9C6C0; }
 .tag { margin-top: auto; } .phc { margin-top: 1.5mm; } .phc.solo { margin-top: auto; }
 .men { display: grid; grid-template-columns: 24mm 1fr; gap: 6mm; align-items: center; margin-top: 1.5mm; } .men img { width: 24mm; height: 24mm; object-fit: contain; } .men p { color: #4A4A47; margin-top: .75mm; }
@@ -298,11 +299,11 @@ small { font-size: 13pt; letter-spacing: 0; }
 .sheet { position: absolute; left: 16.5mm; right: 16.5mm; top: 24mm; bottom: 19.5mm; display: flex; flex-direction: column; }
 .hd { display: grid; grid-template-columns: 1fr 84mm; gap: 6mm; align-items: start; margin-bottom: 6mm; } .hd h2 { white-space: nowrap; } .hd p { color: #4A4A47; padding-top: 1.5mm; }
 .gt { display: grid; } .gr { display: grid; grid-template-columns: 10.5mm 22.5mm 1fr 45mm 25.5mm 28.5mm 28.5mm; column-gap: 4.5mm; align-items: center; padding: 2.25mm 0; border-top: .35pt solid #C9C6C0; }
-.gr.head { border-top: 0; padding: 0 0 2.25mm; } .gr:last-child { border-bottom: .35pt solid #C9C6C0; } .gr.head span:nth-child(4) { padding-left: 9mm; }
+.gr:not(.head) { height: 25.5mm; } .gr.head { border-top: 0; padding: 0 0 2.25mm; } .gr:last-child { border-bottom: .35pt solid #C9C6C0; } .gr.head span:nth-child(4) { padding-left: 9mm; }
 .gr .th { width: 22.5mm; height: 21mm; object-fit: contain; filter: drop-shadow(0 1mm 1.5mm rgba(0,0,0,.14)); } .gr h3 { margin: .5mm 0; } .gr p:not(.cap) { color: #4A4A47; }
 .pt { display: grid; grid-template-columns: 9mm auto 1fr; align-items: baseline; column-gap: 0; white-space: nowrap; } .pt small { color: #8E8A84; font-style: italic; } .pt > small:nth-of-type(2) { padding-left: 2mm; } .pt .t8 { grid-column: 2 / 4; font-family: Tenor, sans-serif; letter-spacing: 0; margin-top: .75mm; }
 .bd { text-align: right; font-variant-numeric: lining-nums tabular-nums; }
-.three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; margin-top: auto; } .three .cap { margin-bottom: 1.5mm; } .three p:not(.cap) { color: #4A4A47; }
+.three { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; margin-top: auto; padding-top: 4.5mm; } .three .cap { margin-bottom: 1.5mm; } .three p:not(.cap) { color: #4A4A47; }
 .range { display: grid; grid-template-columns: repeat(6, 39mm); column-gap: 6mm; row-gap: 7.5mm; } .rc > div { height: 43.5mm; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 1.5mm; border-bottom: .35pt solid #C9C6C0; }
 .rc img { max-width: 100%; max-height: 100%; object-fit: contain; filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.14)); }
 .rc { position: relative; } .rc figcaption { margin-top: 2.25mm; } .rc b { display: block; white-space: nowrap; } .rc span { color: #4A4A47; white-space: nowrap; } .rc em { display: block; width: fit-content; margin-top: 1.5mm; font-style: normal; color: #141414; border: .35pt solid #141414; border-radius: 2mm; padding: .2mm 1.6mm .1mm 2mm; letter-spacing: .18em; }
@@ -313,13 +314,13 @@ small { font-size: 13pt; letter-spacing: 0; }
 .req { margin-bottom: 1.5mm; } .logo2 .arg { padding: 3mm 0; }
 .terms { display: grid; grid-template-columns: 106.5mm 1fr; gap: 28.5mm; } .terms h2 { margin-bottom: 4.5mm; } .terms .arg { padding: 2.25mm 0; } .terms > div { display: flex; flex-direction: column; }
 .got { margin-top: auto; border-top: .5pt solid #141414; padding-top: 3.75mm; } .got .cap { margin-bottom: 2.25mm; } .got .t8 { margin-top: 2.25mm; }
-.cr { display: grid; grid-template-columns: 1fr 12mm 15mm 21mm; column-gap: 3mm; padding: 1.5mm 0; border-bottom: .35pt solid #C9C6C0; font-variant-numeric: lining-nums tabular-nums; } .cr span:not(:first-child) { text-align: right; }
+.cr { display: grid; grid-template-columns: 1fr 9mm 13.5mm 18mm; column-gap: 3mm; padding: 1.5mm 0; border-bottom: .35pt solid #C9C6C0; font-variant-numeric: lining-nums tabular-nums; } .cr span:not(:first-child) { text-align: right; }
 .cr.th { padding-top: 0; } .cr.th span { font-size: 7pt; line-height: 3.75mm; letter-spacing: .2em; text-transform: uppercase; color: #6E6A63; } .cr.sum { border-bottom: .5pt solid #141414; } .cr.sum span { font: 400 13pt/16.5pt Playfair, serif; }
 .kv.wide > div { grid-template-columns: 34.5mm 1fr; padding: 2.25mm 0; } .kv.wide > div span:last-child { color: #4A4A47; } .kv.wide .t8 { color: #141414; font: 400 13pt/16.5pt Playfair, serif; }
 .season { margin-top: auto; padding-bottom: 1.5mm; color: #141414; text-wrap: balance; }
 /* strip: header + tiles in the margins, captions under the photos */
 .sh { position: absolute; left: 16.5mm; right: 16.5mm; top: 16.5mm; height: 30mm; display: grid; grid-template-columns: 1fr 106.5mm; gap: 6mm; align-items: start; }
-.sh .cap { margin-bottom: 3.75mm; } .sh > p { color: #C9C6C0; padding-top: 6.75mm; }
+.sh .cap { margin-bottom: 3.75mm; } .sh > p { color: #C9C6C0; padding-top: 9mm; }
 .tiles { position: absolute; left: 16.5mm; right: 16.5mm; top: 49.5mm; bottom: 19.5mm; display: grid; gap: 3mm; } .t7 { grid-template-columns: repeat(7, 1fr); } .t4 { grid-template-columns: repeat(4, 1fr); }
 .tile img { width: 100%; object-fit: cover; } .t7 .tile img { height: 108mm; } .t4 .tile img { height: 117mm; }
 .tile figcaption { padding-top: 3.75mm; color: #fff; } .tile b { display: block; color: #E7D9A6; white-space: nowrap; margin-bottom: 1.5mm; }

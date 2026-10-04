@@ -251,7 +251,37 @@ COVERS.append(f"""<section class="pg ed ed3"><img class="plate" src="img/p3/cove
 <p class="ed-price">{PRICE}</p><p class="ed-pack">{PACK}</p></div>
 <p class="folio"><span>{CONTACTS}</span></p></section>""")
 
+# M, N, O · three more covers after a fresh look: the scarf itself, a fan of prints, a framed studio portrait with the brand idea
+CONT2 = f'<span><a href="https://obiimy.world/">obiimy.world</a></span><span><a href="{deck.PHONE_HREF}">{deck.PHONE}</a> · <a href="{deck.TG}">Telegram @OBIIMY_sales</a></span>'
+COVERS.append(f"""<section class="pg lx nv1"><img class="plate" src="img/p3/cover-7.jpg" alt=""><img src="brand/logo-ink.png" class="lxlogo" alt="Obiimy">
+<p class="cap who">Український бренд<br>шовкових хусток і аксесуарів</p>
+<div class="lxt"><p class="cap">Корпоративні подарунки · 2026 · варіант M</p>
+<h1 class="h40">Подарунки<br>для команди —<br><i>шовк,<br>який носять</i></h1>
+<p class="price">Чотири варіанти подарунка —<br>від 1 600 до 3 600 грн на людину</p><p class="pack">{PACK}</p>
+<p class="t8 cred">На обкладинці — хустка «Золоте світло» 44 × 44;<br>у подарунку з кільцем — 2 850 грн.</p></div>
+<p class="folio">{CONT2}</p></section>""")
+COVERS.append(f"""<section class="pg lx nv2"><img class="plate" src="img/p3/cover-8.jpg" alt=""><img src="brand/logo-ink.png" class="lxlogo" alt="Obiimy">
+<p class="cap who">{WHO} · корпоративні подарунки 2026 · варіант N</p>
+<div class="lxt"><h1 class="h54">Подарунки для команди —<br><i>шовк, який носять</i></h1>
+<div class="row"><div><p class="price">{PRICE}</p><p class="pack">{PACK}</p></div>
+<p class="t8 lxcr">На обкладинці — хустки 44 × 44: «Сміливий крок»,<br>«Грація», «Золоте світло», «Пульс». Кожному — свій принт.</p></div></div>
+<p class="folio"><span>Obiimy · obiimy.world</span><span><a href="{deck.PHONE_HREF}">{deck.PHONE}</a> · <a href="{deck.TG}">Telegram @OBIIMY_sales</a></span></p></section>""")
+COVERS.append(f"""<section class="pg lx nv3"><img class="plate" src="img/p3/cover-9.jpg" alt=""><img src="brand/logo-ink.png" class="lxlogo" alt="Obiimy">
+<p class="cap who">Український бренд<br>шовкових хусток і аксесуарів</p>
+<div class="lxt"><p class="cap">Корпоративні подарунки · 2026 · варіант O</p>
+<h1 class="h54">Обійми<br>для вашої<br>команди</h1><p class="sub">шовкові подарунки, які носять</p>
+<p class="price">Чотири варіанти подарунка —<br>від 1 600 до 3 600 грн на людину</p><p class="pack">{PACK}</p></div>
+<p class="credit">На фото — хустка «Мелодія двох» 44 × 44</p>
+<p class="folio">{CONT2}</p></section>""")
+
 CSS = deck.CSS + """
+/* M, N, O — covers after a fresh look (classes nv*, on top of .lx) */
+.nv1 .lxt { left: 16.5mm; width: 102mm; bottom: 33mm; } .nv1 h1 i, .nv2 h1 i { color: #6E6A63; } .nv1 .lxt h1 { margin-bottom: 6mm; } .nv1 .cred, .nv3 .credit { color: #6E6A63; } .nv1 .cred { margin-top: 3.75mm; }
+.nv1 .folio, .nv3 .folio { right: auto; display: block; top: 192.65mm; } .nv1 .folio span, .nv3 .folio span { display: block; }
+.lx.nv2 .lxlogo { top: 122.5mm; width: 46mm; height: 9.78mm; } .lx.nv2 .who { top: 126.7mm; left: 67.5mm; } .nv2 .lxt { left: 16.5mm; right: 16.5mm; top: 137mm; } .nv2 .lxt h1 { margin-bottom: 5.25mm; }
+.nv2 .row { display: flex; justify-content: space-between; align-items: flex-end; } .nv2 .row .pack { margin-top: .75mm; } .nv2 .lxcr { text-align: right; color: #6E6A63; }
+.nv3 .lxt { left: 16.5mm; width: 148mm; bottom: 31.5mm; } .nv3 .lxt h1 { margin-bottom: 3mm; } .nv3 .sub { font: italic 400 28pt/30pt Playfair, serif; color: #6E6A63; margin-bottom: 7.5mm; }
+.lx.nv3 .credit { left: 172.5mm; top: 196.4mm; white-space: nowrap; font-size: 7.5pt; }
 /* J, K, L — the editorial art director's covers (prefix ed) */
 .ed .plate { position: absolute; left: 0; top: 0; width: 297mm; height: 210mm; } .ed .cap { color: #6E6A63; } .ed1 h1 i, .ed3 h1 i { color: #6E6A63; }
 .ed-h50 { font: 400 50pt/52pt Playfair, serif; letter-spacing: -.012em; } .ed-price { font: 400 13pt/16.5pt Playfair, serif; font-variant-numeric: lining-nums; color: #141414; } .ed-pack { color: #4A4A47; margin-top: .75mm; }

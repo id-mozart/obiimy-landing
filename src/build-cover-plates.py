@@ -48,4 +48,30 @@ ph = load("photo/dotyk-1.webp").convert("RGB").crop((98, 0, 941, 1500)).resize((
 c.a[:, c.w - ph.width:] = np.asarray(ph).astype(np.float32) / 255
 print("L", c.multiply(norm_white(load("photo/site/set-tvilli-845-ta-khustky-4444-natkhne-01.jpg"), feather=90, keep_edges="lt"), -4, -6, 122.0))
 c.save("cover-6.jpg", q=90)
+
+# M, N, O · three more covers after a fresh look (04.10): the scarf itself as the hero, a fan of prints, a framed studio portrait
+SOFT = dict(sh=(0.6, 1.4, 2.2, .26), amb=(0.4, 1.6, 7.0, .14))
+def lay(c, name, cx, cy, w, rot, **kw):
+    """A cut-out by its centre (mm), w mm wide before rotation, turned by rot degrees, with a soft shadow."""
+    im = trim(load(f"img/cut/{name}.webp")); r = im.rotate(rot, resample=Image.BICUBIC, expand=True)
+    bw = w * r.width / im.width; bh = bw * r.height / r.width
+    c.cutout(im, cx - bw / 2, cy - bh / 2, bw, rot=rot, **(kw or SOFT))
+# M · carré: one 44 × 44 scarf, nearly life-size, slightly turned and leaving through the right edge
+c = Canvas(297, 210, ppi=200); lay(c, "zolote-44-1", 226, 106, 196, -7); c.save("cover-7.jpg", q=90)
+# N · a fan of four 44 × 44 scarves: a print for each one in the team
+c = Canvas(297, 210, ppi=200)
+for name, cx, cy, rot in (("krok-44-1", 62, 52, 15), ("hratsiia-flat", 122, 44, 5), ("zolote-44-1", 182, 44, -6), ("puls-44-1", 240, 54, -16)):
+    lay(c, name, cx, cy, 104, rot)
+c.save("cover-8.jpg", q=90)
+# O · a framed studio portrait (the brand's lookbook) and the four gifts as a small shelf under it
+c = Canvas(297, 210, ppi=200)
+ph = load("photo/lookbook/lb05-06-L.webp").convert("RGB"); pw = 108.0; phh = pw * ph.height / ph.width
+x0, y0 = round((297 - 16.5 - pw) * c.mm), round(16.5 * c.mm); ph = ph.resize((round(pw * c.mm), round(phh * c.mm)), Image.LANCZOS)
+c.a[y0:y0 + ph.height, x0:x0 + ph.width] = np.asarray(ph).astype(np.float32) / 255
+BASE = 190.0; x = 297 - 16.5 - pw
+for name, w in (("krok-tw-1", 15.5), ("duo-hratsiia-ring", 25), ("maskscr-litnie-pole", 25), ("pair-zolote", 27)):
+    im = trim(load(f"img/cut/{name}.webp")); h = w * im.height / im.width
+    c.cutout(im, x, BASE - h, w, sh=(0.3, 0.6, 0.9, .28), amb=(0.2, 0.7, 3.0, .10)); x += w + 3.6
+print("O portrait", round(phh, 1), "mm high, shelf ends at", round(x, 1))
+c.save("cover-9.jpg", q=90)
 print("plates:", sorted(p.name for p in (ROOT / "img" / "p3").glob("cover-*.jpg")))

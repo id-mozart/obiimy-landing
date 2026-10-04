@@ -175,7 +175,7 @@ def main():
     # thumbnails via headless chrome (first screen, 1440x900)
     chrome = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
     thumbs = SITE / "thumbs"; thumbs.mkdir()
-    if os.path.exists(chrome):
+    if os.path.exists(chrome) and not os.environ.get("SKIP_THUMBS"):      # SKIP_THUMBS=1: hub thumbnails are not re-shot (restore them with git checkout -- site/thumbs)
         from PIL import Image
         for slug, *_ in VERSIONS + B2B:
             png = thumbs / f"{slug}.png"

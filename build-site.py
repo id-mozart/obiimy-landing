@@ -179,9 +179,12 @@ def main():
         from PIL import Image
         for slug, *_ in VERSIONS + B2B:
             png = thumbs / f"{slug}.png"
-            subprocess.run([chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--force-device-scale-factor=1",
-                            "--window-size=1440,900", "--virtual-time-budget=9000", f"--screenshot={png}", f"file://{SITE / (slug + '.html')}"],
-                           capture_output=True)
+            try:      # a hung headless Chrome must not stall the whole build: the committed thumbnail is restored afterwards anyway
+                subprocess.run([chrome, "--headless=new", "--disable-gpu", "--hide-scrollbars", "--force-device-scale-factor=1",
+                                "--window-size=1440,900", "--virtual-time-budget=9000", f"--screenshot={png}", f"file://{SITE / (slug + '.html')}"],
+                               capture_output=True, timeout=90)
+            except subprocess.TimeoutExpired:
+                print("thumbnail timed out:", slug)
             if png.exists():
                 im = Image.open(png).convert("RGB"); im.thumbnail((960, 600)); im.save(thumbs / f"{slug}.jpg", quality=82); png.unlink()
     for t in (ROOT / "thumbs-src").glob("*.jpg"):

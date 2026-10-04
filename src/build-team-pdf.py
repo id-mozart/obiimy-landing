@@ -20,9 +20,13 @@ _spec = importlib.util.spec_from_file_location("main", ROOT / "build-b2b-team-ma
 main = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(main)
 SOLO, qr_svg, team = main.SOLO, main.qr_svg, main.team
 ARGS, RANGE, RANGE_MORE, ASK, STEPS, TERMS, EXAMPLE, INTRO = main.ARGS, main.RANGE, main.RANGE_MORE, main.ASK, main.STEPS, main.TERMS, main.EXAMPLE, main.INTRO
-COVER_CAP = "Український бренд шовкових хусток і аксесуарів · 2026"   # shared with the landing
+COVER_CAP = "Корпоративні подарунки 2026 · український бренд шовкових хусток і аксесуарів"
+COVER_H1 = "Подарунки<br>для команди —<br><i>шовк, який носять</i>"                      # the cold-buyer test: the headline must name the material
+COVER_PRICE = "Чотири варіанти подарунка — від 1 600 до 3 600 грн на людину"           # «чотири подарунки на людину» read as four gifts each
 PHONE, PHONE_HREF, MAIL, SHOWROOM = team.PHONE, team.PHONE_HREF, team.MAIL, team.SHOWROOM
 TG = "https://t.me/OBIIMY_sales"
+COVER_LINE = (f'<p class="folio"><span>Пакування й наліпка з вашим логотипом — у ціні</span>'
+              f'<span><a href="https://obiimy.world/">obiimy.world</a> · <a href="{PHONE_HREF}">{PHONE}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></span></p>')   # shared with the landing
 LANDING = "https://obiimy-landing-production.up.railway.app/b2b-team-main"
 LB = OUT / "review" / "lb"; LB.mkdir(parents=True, exist_ok=True)
 USED = []   # model shots, to prove no frame repeats
@@ -92,9 +96,9 @@ def rh(section): return f'<p class="rh"><span>{section}</span><span>Obiimy · П
 # ── 1 · cover (frame) ───────────────────────────────────────────────────────────────────────────────
 page(f"""{pic("photo/solo/zolote-44-2.webp", 297, 210, "50% 24%", "bg", hi=True)}<img src="brand/logo-white.png" class="logo" alt="Obiimy">
 <div class="fr-t"><p class="cap">{COVER_CAP}</p>
-<h1 class="h54">Подарунки<br>для команди,<br><i>які носять</i></h1>
-<div class="chip">{cut("zolote-44-1", 13)}<div><span>Чотири подарунки · на людину</span><em>від 1 600 до 3 600 грн</em></div></div></div>
-<p class="folio"><span>Пакування й наліпка з вашим логотипом — безкоштовно</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="{TG}">Telegram @OBIIMY_sales</a></span></p>""", "frame", folio=False)
+<h1 class="h54">{COVER_H1}</h1>
+<div class="chip">{cut("zolote-44-1", 13)}<div><span>Чотири варіанти подарунка · на людину</span><em>від 1 600 до 3 600 грн</em></div></div></div>
+{COVER_LINE}""", "frame", folio=False)
 
 # ── 2 · why Obiimy (split, photo left) ──────────────────────────────────────────────────────────────
 args = "".join(f'<div class="arg"><b class="num">0{i + 1}</b><div><h3 class="h13">{t}</h3><p>{d}</p></div></div>' for i, (t, d) in enumerate(ARGS))
@@ -304,7 +308,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .frame::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,.8) 0%, rgba(0,0,0,.42) 36%, rgba(0,0,0,0) 64%), linear-gradient(180deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,0) 24%); }
 .frame .logo { position: absolute; left: 16.5mm; top: 16.5mm; height: 9mm; width: 42.4mm; z-index: 2; }
 .fr-t { position: absolute; left: 16.5mm; bottom: 22.5mm; width: 190mm; z-index: 2; color: #fff; }
-.fr-t .cap { margin-bottom: 3mm; } .fr-t h1 { margin-bottom: 6mm; } .fr-p { max-width: 106.5mm; margin: -1.5mm 0 6mm; color: rgba(255,255,255,.92); }
+.fr-t .cap { margin-bottom: 3mm; max-width: 112mm; } .fr-t h1 { margin-bottom: 6mm; } .fr-p { max-width: 106.5mm; margin: -1.5mm 0 6mm; color: rgba(255,255,255,.92); }
 .frame .folio { z-index: 2; }
 .frame.dark::after { background: linear-gradient(90deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.5) 34%, rgba(0,0,0,0) 58%), linear-gradient(0deg, rgba(0,0,0,.84) 0%, rgba(0,0,0,.52) 14%, rgba(0,0,0,0) 52%); }
 .frame.dark .fr-t { width: 112mm; }

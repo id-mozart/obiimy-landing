@@ -10,6 +10,9 @@ _src = (ROOT / "build-products.py").read_text()
 _ns = {}
 exec(_src[_src.index("SKINS = {"):_src.index("BASE_CSS = ")], {}, _ns)
 SKINS = _ns["SKINS"]
+SKINS["deck"] = dict(title="Obiimy", landing="form.html", product="kolo", viewer="drape", dark=False,   # same type and paper as the HR deck
+    fonts="Playfair+Display:ital@0;1&family=Tenor+Sans", display="'Playfair Display', serif", body="'Tenor Sans', sans-serif",
+    css=":root{--bg:#F1EFEA;--bg2:#E7E4DD;--card:#F7F5F1;--ink:#141414;--ink2:#4A4A47;--ink3:#6B6772;--line:rgba(20,20,20,.16);--accent:#141414;--gold:#141414;--radius:0}")
 
 PHONE = "+38 073 925 99 49"          # «Співпраця» on obiimy.world/kontaktna-informatsiya
 PHONE_HREF = "tel:+380739259949"
@@ -255,7 +258,7 @@ def proof_html(title, lead, first=False):
     </div>
   </div></section>'''
 
-def form_html(pid, subject, fields, note, L=None):
+def form_html(pid, subject, fields, note, L=None, tg=None):
     L = L or UK
     """fields: list of (name, label, kind, required, extra) where kind in input/tel/email/number/select:opts/textarea."""
     out = []
@@ -285,7 +288,7 @@ def form_html(pid, subject, fields, note, L=None):
         <h3 tabindex="-1">{L["done_h"]}</h3>
         <p>{L["done_p"].format(mail=MAIL, tel=PHONE_HREF, phone=PHONE)}</p>
         <textarea id="{pid}-txt" readonly rows="8" aria-label="{L["txt_aria"]}"></textarea>
-        <div class="row"><button class="btn btn-line btn-sm" type="button" id="{pid}-copy">{L["copy"]}</button><a class="btn btn-line btn-sm" href="{PHONE_HREF}">{L["call"]}</a><button class="btn btn-line btn-sm" type="button" id="{pid}-back">{L["back"]}</button></div>
+        <div class="row">{f'<a class="btn btn-gold btn-sm" id="{pid}-tg" href="{tg}" target="_blank" rel="noopener">Надіслати в Telegram</a>' if tg else ""}<button class="btn btn-line btn-sm" type="button" id="{pid}-copy">{L["copy"]}</button><a class="btn btn-line btn-sm" href="{PHONE_HREF}">{L["call"]}</a><button class="btn btn-line btn-sm" type="button" id="{pid}-back">{L["back"]}</button></div>
       </div>
       <script>
       (function () {{
@@ -306,6 +309,7 @@ def form_html(pid, subject, fields, note, L=None):
           f.querySelectorAll('[name]').forEach(function (i) {{ if (i.value.trim()) lines.push(i.dataset.label + ': ' + i.value.trim()); }});
           var body = '{subject}\\n\\n' + lines.join('\\n') + '\\n\\n{L["sent"]}' + location.href;
           txt.value = body;
+          var tgb = document.getElementById('{pid}-tg'); if (tgb) tgb.href = tgb.href.split('?')[0] + '?text=' + encodeURIComponent(body);
           var company = f.querySelector('[name="company"]').value.trim();
           f.hidden = true; done.hidden = false; done.scrollIntoView({{ block: 'start', behavior: 'smooth' }}); done.querySelector('h3').focus({{ preventScroll: true }});
           window.location.href = 'mailto:{MAIL}?subject=' + encodeURIComponent('{subject} — ' + company) + '&body=' + encodeURIComponent(body);
@@ -381,7 +385,7 @@ def shell(page, body):
 <main>
 {body}
 </main>
-<section class="others" aria-label="{L["others_aria"]}"><div class="wrap">{"<span>" + L["others"] + "</span>" if L is EN else ""}{others}</div></section>
+{"" if page.get("others") is False else f'<section class="others" aria-label="{L["others_aria"]}"><div class="wrap">{"<span>" + L["others"] + "</span>" if L is EN else ""}{others}</div></section>'}
 <footer><div class="wrap"><span>{L["footer_l"]}{"" if L is EN else " · шоурум: " + SHOWROOM}</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a> · <a href="{L["about_url"]}">{L["about"]}</a> · <a href="{L["deliv_url"]}">{L["delivery"]}</a></span></div></footer>
 <div class="sticky" id="sticky"><span>{page["sticky"]}</span><a href="#request">{page["cta"]}</a></div>
 <script>

@@ -16,7 +16,7 @@ def variants(src):
         if tw >= w: continue
         vp = pathlib.Path(f"{stem}-{tw}.webp")
         if not vp.exists():
-            v = im.convert("RGB"); v.thumbnail((tw, tw * 4)); v.save(vp, "WEBP", quality=80, method=6)
+            v = im.convert("RGBA" if im.mode in ("RGBA", "LA", "P") else "RGB"); v.thumbnail((tw, tw * 4)); v.save(vp, "WEBP", quality=82, method=6)   # cut-outs keep their transparency
         out.append((str(vp.relative_to(ROOT)), tw))
     out.append((src, w))
     _cache[src] = (out, (w, h)); return _cache[src]
@@ -35,7 +35,7 @@ def img(src, alt, sizes="100vw", lazy=True, cls="", extra="", eager_priority=Fal
 
 NBSP, THIN = "\u00a0", "\u202f"
 def typo(html):
-    """Non-breaking spaces in prices, sizes, units and phone numbers — text only, never inside <style>/<script>."""
+    """Non-breaking spaces in prices, sizes, units, phone numbers, after short prepositions and before a dash — text only, never inside <style>/<script>."""
     parts = re.split(r'(<style[\s\S]*?</style>|<script[\s\S]*?</script>)', html)
     return "".join(p if p.startswith("<style") or p.startswith("<script") else _typo_text(p) for p in parts)
 
@@ -46,4 +46,7 @@ def _typo_text(html):
     html = re.sub(r'(\d) × (\d)', lambda m: m.group(1) + NBSP + "×" + NBSP + m.group(2), html)
     html = re.sub(r'(\d) (грн|см|шт\.|°C)', lambda m: m.group(1) + NBSP + m.group(2), html)
     html = re.sub(r'(до|від|з) (\d)', lambda m: m.group(1) + NBSP + m.group(2), html)
+    # short words stay with the next one, a dash stays with the previous one: no hanging prepositions, no line starting with «—»
+    html = re.sub(r"(?<![\w’'-])([ВвУуІіЙйЗзАаОо]|[Нн]а|[Дд]о|[Зз]а|[Нн]е|[Щщ]о|[Чч]и|[Тт]а|[Пп]о|[Іі]з|[Зз]і|[Яя]к|[Вв]ід|[Дд]ля) (?=[^\s<])", lambda m: m.group(1) + NBSP, html)
+    html = re.sub(r'(?<=[^\s>]) — ', NBSP + '— ', html)
     return html

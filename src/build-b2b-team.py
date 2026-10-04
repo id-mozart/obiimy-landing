@@ -324,6 +324,7 @@ def proof_section(alt=False):
     </div>
   </div></section>"""
 
+PDF_MB = round((pathlib.Path(__file__).resolve().parent.parent / "obiimy-podarunky-dlia-komandy.pdf").stat().st_size / 1048576)
 def request_section(pid, subject, title, lead, back, alt=True):
     form = form_html(pid, subject, [
         ("company", "Компанія", "input", True, {"ph": "Назва компанії", "ac": "organization"}),
@@ -334,10 +335,10 @@ def request_section(pid, subject, title, lead, back, alt=True):
         ("date", "Дата, до якої потрібно", "date", False, {}),
         ("delivery", "Доставка", "select:Кожному на відділення Нової пошти|В офіс однією посилкою|Комбіновано|Частина — за кордон", False, {"full": True}),
         ("note", "Розрахунок і коментар", "textarea", False, {"ph": "Нагода, побажання до принтів, склад команди…"}),
-    ], "Відповідаємо з добіркою та розрахунком.")
+    ], "Відповідаємо з добіркою та розрахунком.", tg=TG)
     return f"""
   <section class="form-block{" alt" if alt else ""}" id="request"><div class="wrap">
-    <div class="contact"><p class="eyebrow">Запит</p><h2>{title}</h2><p>{lead}</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p><a class="btn btn-line" href="{TG}">Написати в Telegram</a><p class="pdf"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для HR (PDF, 6,6 МБ) ↓</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна побачити й відчути на дотик.</p></div>
+    <div class="contact"><p class="eyebrow">Запит</p><h2>{title}</h2><p>{lead}</p><p class="big"><a href="{PHONE_HREF}">{PHONE}</a></p><p><a href="mailto:{MAIL}">{MAIL}</a></p><a class="btn btn-line" href="{TG}">Написати в Telegram</a><p class="pdf"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для погодження (PDF, {PDF_MB} МБ) ↓</a></p><p class="show">Шоурум: {SHOWROOM} — шовк можна побачити й відчути на дотик.</p></div>
     <div><p class="added" id="added" hidden><b>Додано до запиту:</b> <span id="added-t"></span> · <a href="#{back}">змінити</a></p>{form}</div>
   </div></section>"""
 

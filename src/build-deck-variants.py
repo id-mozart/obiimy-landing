@@ -48,10 +48,10 @@ PAGES.append(f'''<section class="pg paper v3a">{rh("варіант A — чот�
 # One grid for the four: the photographs end on one horizon (88 mm), the labels, names and prices share their lines.
 POSTER = [  # file, window in the source (x0, y0, x1, y1 as fractions; beyond 0…1 the plain ground is continued: downwards under the fade, sideways for a studio backdrop),
             # where the fade into the base starts (mm from the top), extra layer over the photograph, name in two lines, what the gift is, what is in the frame
-    ("photo/solo/krok-tw-3.webp", (0.236, 0.053, 0.884, 0.845), 75, "linear-gradient(270deg,rgba(20,17,14,.34),rgba(20,17,14,0) 13mm)",     # the blown-out sky at the gutter is burnt in: the edge of the poster holds
-     "Шовкова<br>твіллі", "Стрічка 84 × 5 — на шию, волосся, сумку", "твіллі «Сміливий крок»"),
-    ("photo/solo/puls-44-4.webp", (0.165, 0.155, 0.86, 1.0), 77, "",
-     "Хустка<br>й кільце", "Хустка 44 × 44 і кільце для хустки", "«Пульс», варіант за 2 850 грн"),
+    ("photo/site/tvilli-shovkovyi-probudzhennia-03.jpg", (0.07, 0.0, 0.93, 0.70), 74, "",
+     "Шовкова<br>твіллі", "Стрічка 84 × 5 — на шию, волосся, сумку", "твіллі «Пробудження»"),
+    ("photo/site/khustka-potsilunok-sontsia-44x44-03.jpg", (0.09, 0.0, 0.908, 1.0), 76, "",
+     "Хустка<br>й кільце", "Хустка 44 × 44 і кільце для хустки", "«Поцілунок сонця» 44 × 44"),
     ("photo/site/set-ta-rezynka-litnie-pole-04.jpg", (0.11, 0.153, 0.885, 1.10), 64, "",
      "Маска<br>й резинка", "Маска для сну й резинка, один принт", "набір «Літнє поле»"),
     ("photo/site/set-tvilli-845-ta-khustky-4444-natkhne-02.jpg", (-0.026, 0.08, 1.026, 0.938), 73.5, "linear-gradient(rgba(255,226,190,.09),rgba(255,226,190,.09))",   # the cool studio grey is warmed towards the other three frames
@@ -308,7 +308,30 @@ COVERS.append(f"""<section class="pg lx nv3"><img class="plate" src="img/p3/cove
 <p class="credit">На фото — хустка «Мелодія двох» 44 × 44</p>
 <p class="folio">{CONT2}</p></section>""")
 
+# P–U · covers on the brand's own editorial photographs from the product galleries of obiimy.world (05.10, plates: build-cover-plates.py)
+H4 = H1; PR2 = "Чотири варіанти подарунка —<br>від 1 600 до 3 600 грн на людину"
+def cover_n(k, n, letter, big, cred, extra=""):
+    return (f'''<section class="pg lx nw nw{k}"><img class="plate" src="img/p3/cover-{n}.jpg" alt=""><img src="brand/logo-ink.png" class="lxlogo" alt="Obiimy">
+<p class="cap who">Український бренд<br>шовкових хусток і аксесуарів</p>{extra}
+<div class="lxt"><p class="cap">Корпоративні подарунки · 2026 · варіант {letter}</p><h1 class="{big}">{H4}</h1>
+<p class="price">{PR2}</p><p class="pack">{PACK}</p><p class="t8 cred">{cred}</p></div>
+<p class="folio">{CONT2}</p></section>''')
+COVERS.append(cover_n(1, 10, "P", "h40", "На обкладинці — твіллі «Маків цвіт», 1 600 грн."))
+COVERS.append(cover_n(2, 11, "Q", "h40", "На обкладинці — хустка «Поцілунок сонця» 44 × 44,<br>1 600 грн; у подарунку з кільцем — 2 050 грн."))
+COVERS.append(cover_n(3, 12, "R", "h40", "На обкладинці — набір «Спокуса»: хустка 44 × 44 і твіллі, 3 200 грн."))
+COVERS.append(cover_n(4, 13, "S", "h40", "На обкладинці — твіллі «Мелодія двох», 1 600 грн."))
+COVERS.append(cover_n(5, 14, "T", "h40", "На обкладинці — твіллі «Соковиті спогади», 1 600 грн."))
+SHELF = "".join(f'<p class="lxs" style="left:{x}mm"><b>0{i + 1}</b>{t}</p>' for i, (x, t) in enumerate(((151, "Твіллі"), (175, "Хустка й кільце"), (211, "Маска й резинка"), (247, "Хустка й твіллі"))))
+COVERS.append(cover_n(6, 15, "U", "h40", "На фото — твіллі «Єднання», 1 600 грн.", SHELF))
+
 CSS = deck.CSS + """
+/* P–U — covers on the brand's editorial photographs (classes nw*, on top of .lx) */
+.nw h1 i { color: #6E6A63; } .nw .lxt h1 { margin-bottom: 6mm; } .nw .cred { color: #6E6A63; margin-top: 3.75mm; } .nw .lxt { left: 16.5mm; bottom: 33mm; }
+.nw .folio { right: auto; display: block; top: 192.65mm; } .nw .folio span { display: block; }
+.lx.nw1 .lxlogo, .lx.nw1 .who, .nw1 .lxt, .nw1 .folio { left: 157mm; } .nw1 .lxt { width: 123.5mm; }
+.nw2 .lxt { width: 120mm; bottom: auto; top: 52mm; } .nw3 .lxt, .nw4 .lxt, .nw5 .lxt { width: 132mm; }
+.lx.nw6 .lxlogo, .lx.nw6 .who, .nw6 .lxt, .nw6 .folio { left: 151mm; } .nw6 .lxt { width: 129.5mm; bottom: auto; top: 104mm; } .nw6 .lxt h1 { margin-bottom: 4.5mm; } .nw6 .lxt .cred { margin-top: 1.5mm; }
+.lxs { position: absolute; top: 95mm; font: 400 8pt/3.75mm Tenor, sans-serif; color: #141414; white-space: nowrap; z-index: 2; } .lxs b { font: italic 400 8pt/3.75mm Playfair, serif; color: #6E6A63; margin-right: 1.5mm; }
 /* M, N, O — covers after a fresh look (classes nv*, on top of .lx) */
 .nv1 .lxt { left: 16.5mm; width: 102mm; bottom: 33mm; } .nv1 h1 i, .nv2 h1 i { color: #6E6A63; } .nv1 .lxt h1 { margin-bottom: 6mm; } .nv1 .cred, .nv3 .credit { color: #6E6A63; } .nv1 .cred { margin-top: 3.75mm; }
 .nv1 .folio, .nv3 .folio { right: auto; display: block; top: 192.65mm; } .nv1 .folio span, .nv3 .folio span { display: block; }
@@ -432,4 +455,8 @@ def doc(pages, title): return typo(f'<!DOCTYPE html><html lang="uk"><head><meta 
 (OUT / "p3-variants.html").write_text(doc(PAGES, "Obiimy — сторінка 3, варіанти"))     # page 3 alone: a base for mock-ups
 FULL = deck.PAGES[:1] + COVERS + deck.PAGES[1:2] + PAGES + deck.PAGES[3:]
 print("cover variants:", len(COVERS), "· page 3 variants:", len(PAGES) - 1)
-deck.render(FULL, CSS)
+# stable ids for the editor (src/deck-editor.py): the pages of the deck keep their names, the variants get letters
+P = deck.PIDS; assert len(deck.PAGES) == len(P)
+PID = (["cover-A"] + ["cover-" + "BCDEFGHIJKLMNOPQRSTUVWXYZ"[i] for i in range(len(COVERS))] + [P[1], "p3-now"]
+       + ["p3-" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i] for i in range(len(PAGES) - 1)] + P[3:])
+deck.render(FULL, CSS, PID, builder="src/build-deck-variants.py")

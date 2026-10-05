@@ -172,13 +172,14 @@ def pair(scarf, twilly, name, k=0.66):
     sh = Image.new("RGBA", out.size, (0, 0, 0, 0)); sh.paste((0, 0, 0, 80), (pos[0] + 8, pos[1] + 18), t.split()[-1]); out = Image.alpha_composite(out, sh.filter(ImageFilter.GaussianBlur(16)))
     out.alpha_composite(t, pos); out.save(OUT / f"{name}.webp", "WEBP", quality=90, method=6)
 
-def duo(scarf, ring, name, k=0.4):
-    """Scarf with the ring on its corner — one image for «Хустка й кільце» thumbs."""
+def duo(scarf, ring, name, k=0.09):
+    """Scarf with the ring resting on its corner — one image for «Хустка й кільце» thumbs. The ring keeps its true scale:
+    about 4 cm against a 44 cm scarf (k = 0.09 of the scarf's width; at 0.4 it read as a giant holder)."""
     a = Image.open(OUT / f"{scarf}.webp").convert("RGBA"); r = Image.open(OUT / f"{ring}.webp").convert("RGBA")
     w = int(a.width * k); r = r.resize((w, int(r.height * w / r.width)), Image.LANCZOS)
-    out = Image.new("RGBA", (a.width + w // 3, a.height + r.height // 4), (0, 0, 0, 0)); out.alpha_composite(a, (0, 0))
+    out = Image.new("RGBA", (a.width + w // 2, a.height + r.height // 3), (0, 0, 0, 0)); out.alpha_composite(a, (0, 0))
     sh = Image.new("RGBA", out.size, (0, 0, 0, 0)); pos = (out.width - w, out.height - r.height)
-    sh.paste((0, 0, 0, 70), (pos[0] + 6, pos[1] + 14), r.split()[-1]); out = Image.alpha_composite(out, sh.filter(ImageFilter.GaussianBlur(14)))
+    sh.paste((0, 0, 0, 80), (pos[0] + 2, pos[1] + 5), r.split()[-1]); out = Image.alpha_composite(out, sh.filter(ImageFilter.GaussianBlur(5)))
     out.alpha_composite(r, pos); out.save(OUT / f"{name}.webp", "WEBP", quality=90, method=6)
 
 
@@ -221,5 +222,5 @@ if __name__ == "__main__":
     rotated("set-natkhnennia-box")
     duo("hratsiia-flat", "ring-n", "duo-hratsiia-ring")
     pair("zolote-44-1", "zolote-tw-3", "pair-zolote")
-    detail("photo/site/ring-n-styl-02.jpg", "ring-in-use", 0.53, 0.49, 0.25)
+    detail("photo/site/ring-n-styl-02.jpg", "ring-in-use", 0.50, 0.50, 0.44)       # a wide detail: the ring is small against the scarf it holds
     detail("photo/site/mask-synii-02.jpg", "men-mask", 0.50, 0.40, 0.42)

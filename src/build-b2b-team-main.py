@@ -369,7 +369,7 @@ RANGE = [  # name, retail price, cut-out, «for everyone»
     ("Хустка 88 × 88", "від 4 400 грн", "prob88", 0), ("Кільце для хустки", "450 грн", "ring-n", 0), ("Шовкова резинка", "700 грн", "scrunchie-pole", 0),
     ("Маска для сну", "2 700 грн", "mask-synii", 1), ("Закладка для книги", "800 грн", "bookmark-melodiia", 1), ("Наволочка 50 × 70", "від 4 200 грн", "pillow-tuman", 1),
     ("Твіллі й резинка", "набір — 2 200 грн", "twscr-makiv", 0)]
-SIZE = {"zolote-tw-1": 34, "krok-44-1": 27, "kolo-sontsia": 32, "prob88": 37.5, "ring-n": 15, "scrunchie-pole": 29, "mask-synii": 34, "bookmark-melodiia": 33, "pillow-tuman": 37, "twscr-makiv": 34, "turban-bilyi": 31, "obruch": 27}   # mm on the long side in the deck; the landing keeps the proportions
+SIZE = {"zolote-tw-1": 34, "krok-44-1": 27, "kolo-sontsia": 32, "prob88": 37.5, "ring-n": 9, "scrunchie-pole": 29, "mask-synii": 34, "bookmark-melodiia": 33, "pillow-tuman": 37, "twscr-makiv": 34, "turban-bilyi": 31, "obruch": 27}   # mm on the long side in the deck; the landing keeps the proportions
 RANGE_MORE = [("Тюрбан", "3 500 грн", "turban-bilyi", 0), ("Обруч для вмивання", "700 грн", "obruch", 0)]
 ASK = [("Нашивна бирка", "Із логотипом компанії — на самій хустці чи твіллі."),
        ("Листівка й друковані матеріали", "Привітання вашими словами, з вашим логотипом."),
@@ -466,10 +466,10 @@ for _i, _S in enumerate(SETS4):
     _S["tier"] = cast(f"T{_i + 1}", _S["gal"][0][0], _S["gal"][0][2])
 
 WAYS = [  # «Як носити» — one print across all shots, like the brand banner (t05-avantiura-ways): hustka «Авантюра» 88 × 88 and twilly
-    ("У волоссі", "«Авантюра»", "photo/solo/avantiura-tw-3.webp", "50% 50%"),
-    ("На шиї", "«Флірт»", "photo/solo/flirt-tw-3.webp", "50% 50%"),
-    ("На сумці", "«Золоте світло»", "photo/solo/zolote-tw-2.webp", "40% 50%"),
-    ("Поясом", "«Сміливий крок»", "photo/solo/krok-tw-4.webp", "45% 50%"),
+    ("У волоссі", "«Соковиті спогади»", "photo/site/tvilli-shovkovyi-sokovyti-spohady-06.jpg", "50% 6%"),
+    ("На шиї", "«Мелодія двох»", "photo/site/tvilli-shovkovyi-melodiia-dvokh-04.jpg", "50% 12%"),
+    ("На зап’ясті", "«Єднання»", "photo/site/tvilli-shovkovyi-yednannia-03.jpg", "50% 30%"),
+    ("Краваткою", "«Піднесення»", "photo/site/tvilli-shovkovyi-pidnesennia-02.jpg", "50% 28%"),
 ]
 SZ = "(max-width: 640px) 100vw, (max-width: 960px) 50vw, 25vw"
 SZ6 = "(max-width: 640px) 50vw, (max-width: 960px) 33vw, 16vw"
@@ -516,7 +516,7 @@ def ways_section():
     ways = "".join(f'<figure class="w6">{img(ph, f"{n} — шовкова твіллі Obiimy, принт {t}", sizes="(max-width: 640px) 50vw, 25vw", style=pos(ps))}<figcaption>{n}</figcaption></figure>' for n, t, ph, ps in WAYS)
     return f'''
   <section class="block alt" id="ways"><div class="wrap">
-    <div class="head"><p class="eyebrow">Як носити</p><h2>Одна твіллі — <i>чотири образи</i></h2><p class="sub">Твіллі — шовкова стрічка 84 × 5 см, найдоступніший із чотирьох подарунків: 1 600 грн. Її носять у волоссі, на шиї, на сумці й поясом. На фото — принти SOLO: «Авантюра», «Флірт», «Золоте світло», «Сміливий крок».</p></div>
+    <div class="head"><p class="eyebrow">Як носити</p><h2>Одна твіллі — <i>чотири образи</i></h2><p class="sub">Твіллі — шовкова стрічка 84 × 5 см, найдоступніший із чотирьох подарунків: 1 600 грн. Її носять у волоссі, на шиї, на зап’ясті й краваткою. На фото — принти «Соковиті спогади», «Мелодія двох», «Єднання», «Піднесення».</p></div>
     <div class="w6g w4g">{ways}</div>
   </div></section>'''
 

@@ -24,7 +24,7 @@ print("H box", c.multiply(norm_white(load("photo/site/set-tvilli-845-ta-khustky-
 def stand(im, x, w):
     h = w * im.height / im.width; c.cutout(im, x, BASE - h, w, **SH); return round(h, 1)
 print("twilly", stand(trim(load("img/cut/tysha-tw-1.webp")), 16.5, 39), "scarf", stand(trim(load("img/cut/zolote-44-1.webp")), 62.0, 53))
-ring = trim(Image.open(ROOT / "src" / "ad-p3" / "ring-clean.png")); stand(ring, 62.0 + 53 - 2.5, 12.5)      # the ring stands on the line at the scarf's corner, with the same shadow as the other things
+ring = trim(Image.open(ROOT / "src" / "ad-p3" / "ring-clean.png")); stand(ring, 62.0 + 53 + 0.8, 4.8)      # the ring stands on the line by the scarf's corner at its true scale: 9 % of the scarf's width
 print("mask set", stand(trim(load("img/cut/maskscr-litnie-pole.webp")), 121.0, 53))
 c.save("cover-2.jpg", q=90)
 
@@ -74,4 +74,44 @@ for name, w in (("krok-tw-1", 15.5), ("duo-hratsiia-ring", 25), ("maskscr-litnie
     c.cutout(im, x, BASE - h, w, sh=(0.3, 0.6, 0.9, .28), amb=(0.2, 0.7, 3.0, .10)); x += w + 3.6
 print("O portrait", round(phh, 1), "mm high, shelf ends at", round(x, 1))
 c.save("cover-9.jpg", q=90)
+print("plates:", sorted(p.name for p in (ROOT / "img" / "p3").glob("cover-*.jpg")))
+
+# P–U · covers on the brand's own editorial photographs (05.10: the assortment looked through — obiimy.world product galleries)
+import numpy as np
+PAPER_F = np.array(lib.PAPER, np.float32) / 255
+def photo(c, path, x, y, w, crop=None, match=None, fade_l=0):
+    """A photograph laid straight on the page (mm). crop — window in the source (fractions). match — a patch of its studio backdrop
+    (fractions): the picture is balanced so that the patch takes the paper's colour, whites stay white. fade_l (mm) — the inner
+    left edge dissolves into the paper, so a studio frame never stands as a light rectangle."""
+    im = load(path).convert("RGB"); W, H = im.size
+    if crop: im = im.crop((round(crop[0] * W), round(crop[1] * H), round(crop[2] * W), round(crop[3] * H))); W, H = im.size
+    a = np.asarray(im).astype(np.float32) / 255
+    if match: a = np.clip(a * (PAPER_F / np.median(a[round(match[1] * H):round(match[3] * H), round(match[0] * W):round(match[2] * W)].reshape(-1, 3), 0)), 0, 1)
+    pw = round(w * c.mm); ph = round(pw * H / W); a = np.asarray(lib.to_img(a).resize((pw, ph), Image.LANCZOS)).astype(np.float32) / 255
+    al = np.ones((ph, pw), np.float32)
+    if fade_l: n = round(fade_l * c.mm); t = np.linspace(0, 1, n); al[:, :n] *= (t * t * (3 - 2 * t))[None, :]
+    c._blend(a, al, round(x * c.mm), round(y * c.mm), mode="over"); return round(ph / c.mm, 1)
+
+# P · the tulip: a hand with a twilly on the wrist gives a flower — the gesture of a gift; the photograph lies on the paper
+c = Canvas(297, 210, ppi=200)
+print("P", c.multiply(norm_white(load("photo/site/tvilli-ta-rezynka-makovyi-tsvit-02.jpg"), feather=70, keep_edges="lb"), 0, 0, 157.5)); c.save("cover-10.jpg", q=90)
+# Q · the white T-shirt: a 44 × 44 scarf at the neck, the way it is worn every day
+c = Canvas(297, 210, ppi=200)
+print("Q", photo(c, "photo/site/khustka-potsilunok-sontsia-44x44-02.jpg", 108, 0, 210, match=(0.02, 0.25, 0.14, 0.45), fade_l=46)); c.save("cover-11.jpg", q=90)
+# R · the box whole in the frame: the «Спокуса» set, the lid beside it
+c = Canvas(297, 210, ppi=200)
+print("R", c.multiply(norm_white(load("photo/site/set-tvilli-845-ta-khustky-4444-spokusa-02.jpg"), feather=90, keep_edges="b"), 148, 6.2, 145)); c.save("cover-12.jpg", q=90)       # the lower edge is the page's: the ends of the twilly do not dissolve
+# S · the sofa: an editorial frame to the edge, the twilly at the neck
+c = Canvas(297, 210, ppi=200)
+print("S", photo(c, "photo/site/tvilli-shovkovyi-melodiia-dvokh-02.jpg", 157, 0, 140)); c.save("cover-13.jpg", q=90)
+# T · the suit: a twilly worn as a tie — the office look, a framed portrait
+c = Canvas(297, 210, ppi=200)
+print("T", photo(c, "photo/site/tvilli-shovkovyi-sokovyti-spohady-02.jpg", 297 - 16.5 - 112, 16.5, 112)); c.save("cover-14.jpg", q=90)
+# U · the smile and the four gifts as a shelf under the headline
+c = Canvas(297, 210, ppi=200)
+print("U", photo(c, "photo/site/tvilli-shovkovyi-yednannia-04.jpg", 0, 0, 134.4, crop=(0, 0, 0.96, 1))); x = 151.0       # the tip of the twilly is cut clearly, not left touching the edge
+for name, w in (("krok-tw-1", 19), ("duo-hratsiia-ring", 31), ("maskscr-litnie-pole", 31), ("pair-zolote", 33)):
+    im = trim(load(f"img/cut/{name}.webp")); h = w * im.height / im.width
+    c.cutout(im, x, 92.0 - h, w, sh=(0.3, 0.6, 0.9, .28), amb=(0.2, 0.7, 3.0, .10)); x += w + 5
+c.save("cover-15.jpg", q=90)
 print("plates:", sorted(p.name for p in (ROOT / "img" / "p3").glob("cover-*.jpg")))

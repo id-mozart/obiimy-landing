@@ -51,7 +51,7 @@ def pic(src, w, h, pos="50% 50%", cls="", hi=False, once=True, zoom=1.0, box=Non
         if im.width > tw: im = im.resize((tw, round(tw * ch / cw)), Image.LANCZOS)
         im.save(j, quality=84, optimize=True, progressive=True)
     if once: USED.append(src)
-    return f'<img src="review/lb/{j.name}" class="{cls}" alt="">'
+    return f'<img src="review/lb/{j.name}" class="{cls}" alt="" data-src="{src}">'
 
 def cut(name, mm=46, cls="", fix=False):
     """Transparent cut-out → PNG with alpha, sized for its slot (mm on the long side, 220 ppi); refreshed when the cut-out changes.
@@ -63,7 +63,7 @@ def cut(name, mm=46, cls="", fix=False):
     st = ""
     if fix:
         w, h = Image.open(j).size; k = mm / max(w, h); st = f' style="width:{w * k:.1f}mm;height:{h * k:.1f}mm"'
-    return f'<img src="review/lb/{j.name}" class="{cls}" alt=""{st}>'
+    return f'<img src="review/lb/{j.name}" class="{cls}" alt="" data-src="img/cut/{name}.webp"{st}>'
 
 def cutsh(name, w_mm, layers=((0.6, 0.5, 0.20), (3.2, 4.0, 0.16)), tint=(30, 22, 8), ppi=170):
     """A large cut-out with its shadow baked into the PNG: (file, pad_mm, height_mm). A CSS drop-shadow makes Chrome rasterise
@@ -145,7 +145,7 @@ SETS = [
     dict(cap="02 · Тим, хто носить аксесуари", h="Хустка й кільце —", hi="готовий образ",
          lead="Невелика шовкова хустка 44 × 44 і кільце для хустки Gold: воно фіксує хустку на шиї, сумці чи поясі.",
          p=2050, frm=True, note="На вирізці — «Грація» 44 × 44 і кільце «Н стиль»: 1 600 + 450 = 2 050 грн; із двостороннім друком — 2 400 + 450 = 2 850 грн.",
-         photo=("photo/solo/krok-44-2.webp", "55% 50%", 1.0), phcap="На фото — «Сміливий крок» 44 × 44, двосторонній друк, зав’язана вузлом; у подарунку з кільцем — 2 850 грн.",
+         photo=("photo/site/khustka-potsilunok-sontsia-44x44-02.jpg", "50% 50%", 1.0), phcap="На фото — хустка «Поцілунок сонця» 44 × 44, зав’язана вузлом; у подарунку з кільцем — 2 050 грн.",
          cuts=["duo-hratsiia-ring"], cutcls="one", ccap="Хустка «Грація» 44 × 44 і кільце «Н стиль» Gold",
          extra=("cut:ring-in-use", "", 1.0, "Кільце замість вузла", "Gold, 450 грн — п’ять моделей на вибір. На фото — «Н стиль»."),
          kv=[("Принти", "Із чотирьох колекцій і SOLO"), ("Строк", "Під замовлення; строк — у розрахунку")],
@@ -196,15 +196,15 @@ page(f"""{rh("Персоналізація")}<figure class="boxcut" style="left:
 <p class="t8 end">Що встигаємо до вашої дати й скільки це коштує — пишемо в розрахунку. На фото — подарункове пакування Obiimy: коробка, папір тішью, хустка й твіллі в одному принті.</p></div>""", "paper")
 
 # ── 9 · one twilly, four looks: a paper panel and four photographs to the edge ─────────────────────────
-WAYS = [("У волоссі", "photo/solo/avantiura-tw-3.webp", "50% 45%", 1.0), ("На шиї", "photo/solo/flirt-tw-3.webp", "50% 35%", 1.0),
-        ("На сумці", "photo/solo/zolote-tw-2.webp", "50% 70%", 1.0), ("Поясом", "photo/solo/krok-tw-4.webp", "42% 62%", 1.45)]
+WAYS = [("У волоссі", "photo/site/tvilli-shovkovyi-sokovyti-spohady-06.jpg", "50% 6%", 1.0), ("На шиї", "photo/site/tvilli-shovkovyi-melodiia-dvokh-04.jpg", "50% 12%", 1.0),   # the brand's own editorial frames (obiimy.world galleries)
+        ("На зап’ясті", "photo/site/tvilli-shovkovyi-yednannia-03.jpg", "50% 30%", 1.0), ("Краваткою", "photo/site/tvilli-shovkovyi-pidnesennia-02.jpg", "50% 28%", 1.0)]
 tiles4 = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps, hi=True, zoom=z)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps, z in WAYS)
 TW4 = [("avantiura-tw-2", "«Авантюра»"), ("flirt-tw-2", "«Флірт»"), ("zolote-tw-1", "«Золоте світло»"), ("krok-tw-1", "«Сміливий крок»")]
 prints4 = "".join(f'<figure>{cut(c, 27, fix=True)}</figure>' for c, n in TW4)
 page(f"""<div class="panel"><p class="cap">Як носити</p><h2 class="h28">Одна твіллі —<br><i>чотири образи</i></h2>
-<p class="lead">Твіллі — шовкова стрічка 84 × 5 см, найдоступніший із чотирьох подарунків: 1 600 грн. Її носять у волоссі, на шиї, на сумці й поясом.</p>
+<p class="lead">Твіллі — шовкова стрічка 84 × 5 см, найдоступніший із чотирьох подарунків: 1 600 грн. Її носять у волоссі, на шиї, на зап’ясті й краваткою.</p>
 <div class="sz3 tw4">{prints4}</div>
-<p class="t8 end">Принти SOLO, зліва направо: {", ".join(n for c, n in TW4)} — ті самі, що на фото. Один принт на всіх — і жодних однакових образів.</p></div>
+<p class="t8 end">Принти SOLO, зліва направо: {", ".join(n for c, n in TW4)}. На фото — «Соковиті спогади», «Мелодія двох», «Єднання», «Піднесення». Один принт на всіх — і жодних однакових образів.</p></div>
 <div class="w6g w4g">{tiles4}</div>""", "ways6", short=True)
 
 # ── 10 · one scarf, six looks: a paper panel and six photographs to the edge (the client's collage, photo/ways) ──────
@@ -384,11 +384,50 @@ small { font-size: 13pt; letter-spacing: 0; }
 .tpl { margin-top: 9mm; border-top: .35pt solid rgba(255,255,255,.3); border-bottom: .35pt solid rgba(255,255,255,.3); padding: 3.75mm 0; } .tpl .cap { margin-bottom: 1.5mm; } .tpl p:last-child { color: #F1EFEA; }
 .qr { margin-top: auto; display: grid; grid-template-columns: 33mm 1fr; gap: 6mm; align-items: center; } .qr svg { width: 33mm; height: 33mm; } .qr a { border-bottom: .35pt solid rgba(255,255,255,.4); }
 """
-def render(pages=None, css=None):
+PIDS = ["cover", "who", "offer", "gift-twilly", "gift-ring", "gift-mask", "gift-set", "logo", "ways-twilly", "ways-scarf", "range", "solo", "prints", "terms", "contacts"]
+EDITS = OUT / "src" / "deck-edits.json"          # written by the WYSIWYG editor (src/deck-editor.py), applied on every build
+EDITOR_PAGES = OUT / "review" / "deck-editor-pages.json"   # what the editor opens: every page (hidden ones too) as built
+
+def apply_edits(pages, pids, builder):
+    """Manual edits from the WYSIWYG editor. A page saved there replaces the generated one (its HTML is kept as is), hidden pages
+    are not printed, the order is the editor's; with pages hidden or moved the folios are renumbered. Returns the pages to print.
+    deck-edits.json: {"pages": {pid: {"html": …, "base": sha1 of the generated page it was made from}}, "hidden": [pid], "order": [pid]}."""
+    import hashlib, json, re
+    ed = json.loads(EDITS.read_text(encoding="utf-8")) if EDITS.exists() else {}
+    saved, hidden, order = ed.get("pages", {}), set(ed.get("hidden", [])), ed.get("order", [])
+    items = []
+    for html, pid in zip(pages, pids):
+        gen = typo(re.sub(r"<section\b", f'<section data-pid="{pid}"', html, count=1)); h = hashlib.sha1(gen.encode("utf-8")).hexdigest()
+        it = dict(pid=pid, generated=gen, base=h, html=gen, edited=False, stale=False, hidden=pid in hidden)
+        if pid in saved:
+            it.update(html=saved[pid]["html"], edited=True, stale=saved[pid].get("base") != h)
+            if it["stale"]: print(f"edits: «{pid}» — the generator changed after the manual edit; the manual version is kept (reset the page in the editor to take the new one)")
+        items.append(it)
+    if order:
+        pos = {pid: i for i, pid in enumerate(order)}; key = {}; last = -1
+        for it in items:                       # pages the editor has not seen stay after their generated neighbour
+            if it["pid"] in pos: last = pos[it["pid"]]; key[it["pid"]] = (last, 0)
+            else: key[it["pid"]] = (last, 1)
+        items.sort(key=lambda it: key[it["pid"]])
+    shown = [it for it in items if not it["hidden"]]
+    if hidden or order:
+        num = {it["pid"]: n + 1 for n, it in enumerate(shown)}
+        for it in shown:
+            it["html"] = re.sub(r'(<p class="folio">.*?<span>)(\d\d)(</span></p>)', lambda m: f'{m.group(1)}{num[it["pid"]]:02d}{m.group(3)}', it["html"], flags=re.S)
+            if "terms" in num: it["html"] = re.sub(r"(стор\.[\s\u00a0\u202f]*)(\d+)", lambda m: m.group(1) + str(num["terms"]), it["html"])
+    EDITOR_PAGES.write_text(json.dumps(dict(builder=builder, pages=items), ensure_ascii=False), encoding="utf-8")
+    if saved or hidden or order: print("edits:", len([i for i in items if i["edited"]]), "pages edited by hand ·", len(hidden & {i["pid"] for i in items}), "hidden ·", "order changed" if order else "order as built")
+    return [it["html"] for it in shown]
+
+def render(pages=None, css=None, pids=None, builder="src/build-team-pdf.py"):
     """Writes team-deck.html, the PDF and page screenshots. build-deck-variants.py passes the deck with variant pages inserted."""
     pages = pages or PAGES; css = css or CSS
-    html = f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — подарунки для команди 2026</title><style>{css}</style></head><body>{"".join(pages)}</body></html>'
-    (OUT / "team-deck.html").write_text(typo(html))
+    pids = pids or (PIDS if len(pages) == len(PIDS) else [f"p{i + 1:02d}" for i in range(len(pages))])
+    assert len(pids) == len(pages) == len(set(pids)), "every page needs its own id"
+    pages = apply_edits(pages, pids, builder)
+    head = typo(f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — подарунки для команди 2026</title><style>{css}</style></head><body>')
+    (OUT / "team-deck.html").write_text(head + "".join(pages) + "</body></html>")
+    (OUT / "review" / "deck-editor.css").write_text(typo(css))
 
     dups = sorted({f for f in USED if USED.count(f) > 1})
     print("pages:", len(pages), "· model shots:", len(USED), "· repeated:", dups or "none")

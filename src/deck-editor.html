@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Редактор PDF — Obiimy</title>
+<link rel="icon" href="data:,">
+<!-- The page of src/deck-editor.py. The deck's own CSS is loaded into the first <style> as is: the pages below are the very
+     HTML that Chrome prints, so what is seen here is what the PDF gets. Everything of the editor is prefixed ed- / data-ed-. -->
+<style id="ed-deck-css"></style>
+<style>
+html, body { height: 100%; overflow: hidden; }
+body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail work lib" minmax(0, 1fr) / 252px minmax(0, 1fr) auto; }
+[hidden] { display: none !important; }
+.ed-ui { font: 400 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; color: #22241f; letter-spacing: 0; text-transform: none; font-variant-numeric: normal; text-align: left; white-space: normal; }
+.ed-ui button, .ed-ui input { font: inherit; color: inherit; }
+.ed-ui button { height: 28px; padding: 0 10px; border: 1px solid #d3d3ce; border-radius: 6px; background: #fff; cursor: pointer; white-space: nowrap; }
+.ed-ui button:hover:not(:disabled) { background: #f1f1ee; }
+.ed-ui button:disabled { opacity: .4; cursor: default; }
+.ed-ui button.ed-primary { background: #22241f; border-color: #22241f; color: #fff; font-weight: 600; }
+.ed-ui button.ed-primary:hover:not(:disabled) { background: #3a3d36; }
+.ed-ui button.ed-quiet { border-color: transparent; background: transparent; }
+.ed-ui button.ed-quiet:hover:not(:disabled) { background: #e9e9e5; }
+.ed-ui a.ed-link { color: #2459c9; text-decoration: underline; cursor: pointer; }
+.ed-muted { color: #70726c; }
+
+#ed-top { grid-area: top; display: flex; align-items: center; gap: 8px; padding: 0 12px; background: #fbfbf9; border-bottom: 1px solid #dcdcd8; }
+#ed-top .ed-name { font-weight: 600; margin-right: 10px; white-space: nowrap; }
+#ed-top .ed-sep { width: 1px; height: 22px; background: #dcdcd8; margin: 0 4px; }
+#ed-top .ed-grow { flex: 1; }
+#ed-zoom { min-width: 44px; text-align: center; font-variant-numeric: tabular-nums; }
+#ed-state { white-space: nowrap; }
+#ed-state.ed-dirty { color: #8a5a00; }
+
+#ed-ctx { grid-area: ctx; display: flex; align-items: center; gap: 6px; padding: 0 12px; background: #f3f3f0; border-bottom: 1px solid #dcdcd8; overflow: hidden; white-space: nowrap; }
+#ed-ctx .ed-crumbs { display: flex; align-items: center; gap: 2px; min-width: 0; overflow: hidden; }
+#ed-ctx .ed-crumb { height: 24px; padding: 0 7px; border: 0; background: transparent; border-radius: 5px; }
+#ed-ctx .ed-crumb:last-child { background: #dfe8fb; color: #1d4bb0; font-weight: 600; }
+#ed-ctx .ed-crumb span { color: #8d8f89; font-weight: 400; margin-left: 4px; }
+#ed-ctx .ed-arrow { color: #a2a49e; }
+#ed-ctx .ed-read { margin-left: 8px; color: #55574f; font-variant-numeric: tabular-nums; }
+#ed-ctx .ed-grow { flex: 1; }
+#ed-ctx button { height: 26px; }
+
+#ed-rail { grid-area: rail; display: flex; flex-direction: column; min-height: 0; background: #fbfbf9; border-right: 1px solid #dcdcd8; }
+#ed-rail .ed-rail-head { padding: 10px 12px 8px; font-weight: 600; border-bottom: 1px solid #ecece8; }
+#ed-rail .ed-rail-head span { font-weight: 400; color: #70726c; }
+#ed-pages { flex: 1; overflow-y: auto; padding: 6px; }
+.ed-item { padding: 7px 8px 7px; border-radius: 7px; cursor: pointer; border: 1px solid transparent; }
+.ed-item:hover { background: #f1f1ee; }
+.ed-item.ed-on { background: #eef2fb; border-color: #c9d6f3; }
+.ed-item.ed-off .ed-item-title, .ed-item.ed-off .ed-pid, .ed-item.ed-off .ed-num { opacity: .5; }
+.ed-item-top { display: flex; align-items: baseline; gap: 7px; }
+.ed-num { font-variant-numeric: tabular-nums; color: #70726c; min-width: 17px; }
+.ed-pid { font-weight: 600; }
+.ed-dot { width: 7px; height: 7px; border-radius: 50%; background: #2f6feb; align-self: center; margin-left: auto; flex: none; }
+.ed-item-title { color: #55574f; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 1px 0 0 24px; }
+.ed-badges { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 0 24px; }
+.ed-badges:empty { display: none; }
+.ed-badge { font-size: 11px; line-height: 16px; padding: 0 6px; border-radius: 8px; background: #ecece8; color: #55574f; white-space: nowrap; }
+.ed-badge.ed-b-mod { background: #fbefd0; color: #7a5200; }
+.ed-badge.ed-b-stale { background: #fde6e2; color: #9a2b1c; }
+.ed-badge.ed-b-reset { background: #e3f1e4; color: #23602a; }
+.ed-acts { display: none; gap: 4px; margin: 6px 0 0 24px; flex-wrap: wrap; }
+.ed-item.ed-on .ed-acts, .ed-item:hover .ed-acts { display: flex; }
+.ed-ui .ed-acts button { height: 23px; padding: 0 7px; font-size: 12px; border-radius: 5px; }
+#ed-rail .ed-rail-foot { padding: 8px 12px; border-top: 1px solid #ecece8; font-size: 12px; color: #70726c; }
+
+#ed-work { grid-area: work; position: relative; overflow: auto; background: #d6d6d2; }
+#ed-flow { padding: 14px 28px 60px; min-width: min-content; }
+.ed-slot { margin: 0 auto 22px; }
+.ed-slot-head { display: flex; align-items: center; gap: 8px; height: 24px; font-size: 12px; color: #55574f; }
+.ed-slot-head b { font-weight: 600; color: #22241f; }
+.ed-paper { position: relative; box-shadow: 0 1px 5px rgba(0,0,0,.22); background: #fff; }
+.ed-scale { width: 297mm; height: 210mm; transform-origin: 0 0; }
+.ed-slot[data-ed-off] .ed-scale { opacity: .3; }
+.ed-slot[data-ed-off] .ed-paper { box-shadow: 0 0 0 1px rgba(0,0,0,.15); background: repeating-linear-gradient(135deg, #e4e4e0 0 10px, #dadad6 10px 20px); }
+#ed-flow .pg { user-select: none; -webkit-user-select: none; cursor: default; }
+#ed-flow .pg a { cursor: default; }
+#ed-flow .pg img { -webkit-user-drag: none; }
+#ed-flow .pg [data-ed-hidden] { display: none !important; }
+#ed-flow .pg [contenteditable], #ed-flow .pg [contenteditable] * { user-select: text; -webkit-user-select: text; cursor: text; }
+#ed-flow .pg [contenteditable] { outline: .45mm solid #2f6feb; outline-offset: .7mm; caret-color: #2f6feb; }
+
+#ed-over { position: absolute; left: 0; top: 0; width: 0; height: 0; z-index: 20; pointer-events: none; }
+.ed-box { position: absolute; box-sizing: border-box; border: 1.5px solid #2f6feb; pointer-events: none; }
+.ed-box.ed-hover { border: 1px dashed rgba(47,111,235,.75); }
+.ed-h { position: absolute; width: 11px; height: 11px; background: #fff; border: 1.5px solid #2f6feb; border-radius: 2px; pointer-events: auto; }
+.ed-h[data-c=nw] { left: -7px; top: -7px; cursor: nwse-resize; } .ed-h[data-c=se] { right: -7px; bottom: -7px; cursor: nwse-resize; }
+.ed-h[data-c=ne] { right: -7px; top: -7px; cursor: nesw-resize; } .ed-h[data-c=sw] { left: -7px; bottom: -7px; cursor: nesw-resize; }
+.ed-tag { position: absolute; left: -1.5px; top: 100%; margin-top: 5px; background: #2f6feb; color: #fff; font-size: 11px; line-height: 17px; padding: 0 6px; border-radius: 3px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+#ed-shield { position: absolute; left: 0; top: 0; pointer-events: auto; cursor: default; }
+#ed-ghost { position: absolute; opacity: .3; pointer-events: none; max-width: none; }
+#ed-cropframe { position: absolute; box-sizing: border-box; border: 1.5px solid #fff; box-shadow: 0 0 0 1.5px #2f6feb; pointer-events: auto; cursor: grab; }
+#ed-cropframe:active { cursor: grabbing; }
+#ed-cropbar { position: absolute; display: flex; align-items: center; gap: 8px; padding: 6px 8px; background: #fff; border: 1px solid #cfcfca; border-radius: 9px; box-shadow: 0 4px 16px rgba(0,0,0,.2); pointer-events: auto; white-space: nowrap; }
+#ed-cropbar input[type=range] { width: 130px; }
+#ed-cropbar .ed-warn { color: #9a2b1c; }
+
+#ed-lib { grid-area: lib; width: 336px; display: flex; flex-direction: column; min-height: 0; background: #fbfbf9; border-left: 1px solid #dcdcd8; }
+#ed-lib .ed-lib-head { display: flex; align-items: center; padding: 8px 8px 8px 12px; font-weight: 600; border-bottom: 1px solid #ecece8; }
+#ed-lib .ed-lib-head span { flex: 1; }
+#ed-lib .ed-lib-tools { padding: 10px 12px; display: grid; gap: 8px; border-bottom: 1px solid #ecece8; }
+#ed-lib input[type=search] { height: 30px; padding: 0 9px; border: 1px solid #d3d3ce; border-radius: 6px; background: #fff; width: 100%; }
+#ed-drop { border: 1.5px dashed #c3c3be; border-radius: 8px; padding: 9px 10px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: #55574f; }
+#ed-drop.ed-over-drop, #ed-lib.ed-over-drop #ed-drop { border-color: #2f6feb; background: #eef2fb; }
+#ed-groups { display: flex; flex-wrap: wrap; gap: 4px; }
+.ed-ui #ed-groups button { height: 24px; padding: 0 8px; font-size: 12px; border-radius: 12px; }
+.ed-ui #ed-groups button.ed-on { background: #22241f; border-color: #22241f; color: #fff; }
+#ed-grid { flex: 1; overflow-y: auto; padding: 10px 12px 20px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; align-content: start; }
+.ed-pic { cursor: pointer; min-width: 0; }
+.ed-pic div { aspect-ratio: 1; border-radius: 6px; overflow: hidden; background: #e6e6e2 repeating-conic-gradient(#dcdcd8 0 25%, #ecece8 0 50%) 0 0 / 14px 14px; border: 1px solid #dcdcd8; }
+.ed-pic img { width: 100%; height: 100%; object-fit: contain; display: block; }
+.ed-pic:hover div { border-color: #2f6feb; box-shadow: 0 0 0 1.5px #2f6feb; }
+.ed-pic span { display: block; font-size: 10.5px; line-height: 13px; color: #70726c; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#ed-grid .ed-note { grid-column: 1 / -1; font-size: 12px; color: #70726c; padding: 6px 0; }
+
+#ed-dlg { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: rgba(30,30,28,.38); }
+#ed-dlg .ed-card { width: min(560px, calc(100vw - 40px)); max-height: calc(100vh - 60px); overflow: auto; background: #fff; border-radius: 12px; padding: 22px 24px 18px; box-shadow: 0 12px 48px rgba(0,0,0,.3); }
+#ed-dlg h3 { font: 600 17px/1.3 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; margin-bottom: 8px; letter-spacing: 0; }
+#ed-dlg p { margin-bottom: 8px; }
+#ed-dlg ul { margin: 4px 0 10px 18px; }
+#ed-dlg li { margin-bottom: 4px; }
+#ed-dlg pre { font: 11px/1.45 ui-monospace, Menlo, monospace; background: #f3f3f0; border-radius: 6px; padding: 8px 10px; max-height: 200px; overflow: auto; white-space: pre-wrap; margin: 6px 0 10px; }
+#ed-dlg summary { cursor: pointer; color: #70726c; margin-bottom: 4px; }
+#ed-dlg .ed-row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+#ed-dlg .ed-good { color: #23602a; font-weight: 600; }
+#ed-dlg .ed-bad { color: #9a2b1c; font-weight: 600; }
+#ed-bar { height: 4px; border-radius: 2px; background: #ecece8; overflow: hidden; margin: 12px 0 8px; }
+#ed-bar i { display: block; height: 100%; width: 0; background: #2f6feb; transition: width 1s linear; }
+#ed-toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 120; background: #22241f; color: #fff; padding: 9px 14px; border-radius: 8px; box-shadow: 0 6px 24px rgba(0,0,0,.3); display: flex; gap: 12px; align-items: center; max-width: min(720px, calc(100vw - 40px)); }
+#ed-toast a { color: #b9cdfa; text-decoration: underline; cursor: pointer; white-space: nowrap; }
+</style>
+</head>
+<body>
+<header id="ed-top" class="ed-ui">
+  <span class="ed-name">Редактор PDF</span>
+  <button id="ed-zout" class="ed-quiet" title="Мельче">−</button><span id="ed-zoom">100 %</span><button id="ed-zin" class="ed-quiet" title="Крупнее">+</button>
+  <button id="ed-zfit" class="ed-quiet" title="Страница во всю ширину окна">По ширине</button>
+  <span class="ed-sep"></span>
+  <button id="ed-undo" class="ed-quiet" title="Отменить последнее действие (⌘Z)">↶ Отменить</button>
+  <button id="ed-redo" class="ed-quiet" title="Вернуть отменённое (⇧⌘Z)">↷ Вернуть</button>
+  <span class="ed-grow"></span>
+  <span id="ed-state" class="ed-muted"></span>
+  <a id="ed-pdf" class="ed-link" target="_blank" hidden>Открыть PDF</a>
+  <button id="ed-save" class="ed-primary" title="Записать правки и пересобрать PDF (⌘S)">Сохранить и собрать PDF</button>
+</header>
+<div id="ed-ctx" class="ed-ui"></div>
+<aside id="ed-rail" class="ed-ui">
+  <div class="ed-rail-head">Страницы <span id="ed-count"></span></div>
+  <div id="ed-pages"></div>
+  <div class="ed-rail-foot" id="ed-foot"></div>
+</aside>
+<main id="ed-work">
+  <div id="ed-flow"></div>
+  <div id="ed-over">
+    <div id="ed-hoverbox" class="ed-box ed-hover" hidden></div>
+    <div id="ed-selbox" class="ed-box" hidden><i class="ed-h" data-c="nw"></i><i class="ed-h" data-c="ne"></i><i class="ed-h" data-c="sw"></i><i class="ed-h" data-c="se"></i><span class="ed-tag ed-ui"></span></div>
+    <div id="ed-shield" hidden></div>
+    <img id="ed-ghost" alt="" hidden>
+    <div id="ed-cropframe" hidden></div>
+    <div id="ed-cropbar" class="ed-ui" hidden>
+      <span class="ed-muted">Кадр: тяните картинку</span>
+      <button id="ed-czout" class="ed-quiet" title="Отдалить">−</button><input id="ed-cz" type="range" min="0" max="1000" value="0" title="Приблизить или отдалить"><button id="ed-czin" class="ed-quiet" title="Приблизить">+</button>
+      <button id="ed-cfill" title="Картинка заполняет рамку целиком">Заполнить</button>
+      <button id="ed-cfit" title="Картинка видна целиком">Целиком</button>
+      <span id="ed-cppi" class="ed-muted"></span>
+      <button id="ed-ccancel">Отмена</button><button id="ed-cok" class="ed-primary">Готово</button>
+    </div>
+  </div>
+</main>
+<aside id="ed-lib" class="ed-ui" hidden>
+  <div class="ed-lib-head"><span>Заменить картинку</span><button id="ed-libx" class="ed-quiet" title="Закрыть">✕</button></div>
+  <div class="ed-lib-tools">
+    <div id="ed-drop"><button id="ed-upbtn">Загрузить свою…</button><span>или перетащите файл сюда</span><input id="ed-file" type="file" accept="image/*" multiple hidden></div>
+    <input id="ed-q" type="search" placeholder="Поиск по имени файла" autocomplete="off">
+    <div id="ed-groups"></div>
+  </div>
+  <div id="ed-grid"></div>
+</aside>
+<div id="ed-dlg" class="ed-ui" hidden><div class="ed-card"></div></div>
+<div id="ed-toast" class="ed-ui" hidden></div>
+
+<script>
+'use strict';
+(() => {
+const MM = 96 / 25.4, PW = 297, PH = 210;
+const BLANK = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+const DRAFT = 'deck-editor-draft-v1';
+const INERT = document.implementation.createHTMLDocument('');      // clones made here do not load their pictures
+const $ = s => document.querySelector(s);
+const work = $('#ed-work'), flow = $('#ed-flow'), selBox = $('#ed-selbox'), hoverBox = $('#ed-hoverbox');
+const S = { pages: [], info: {}, sec: {}, slot: {}, cur: {}, title: {}, loadedClean: {}, genClean: {}, order: [], hidden: new Set(), loadedOrder: [], loadedHidden: [],
+  dirty: new Set(), resetOrder: false, hasOrder: false, crops: {}, zoom: 1, fit: true, active: null, sel: null, hover: null, edit: null, crop: null, drag: null,
+  undo: [], redo: [], busy: false, pdf: null, lib: { open: false, files: null, groups: [], group: '', q: '', fresh: [] } };
+window.deckEditor = S;                                             // for a look from the console
+
+// ---------- small things ----------
+function h(tag, props, ...kids) {
+  const n = document.createElement(tag);
+  for (const k in props || {}) {
+    const v = props[k];
+    if (v == null || v === false) continue;
+    if (k === 'class') n.className = v; else if (k === 'text') n.textContent = v; else if (k.startsWith('on')) n.addEventListener(k.slice(2), v);
+    else if (k === 'dataset') Object.assign(n.dataset, v); else n.setAttribute(k, v === true ? '' : v);
+  }
+  for (const c of kids.flat()) if (c != null && c !== false) n.append(c);
+  return n;
+}
+const num = (v, d = 1) => v.toFixed(d).replace('.', ',').replace('-', '−');
+const plural = (n, a, b, c) => (n % 10 === 1 && n % 100 !== 11) ? a : (n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14)) ? b : c;
+function hash(s) { let a = 2166136261; for (let i = 0; i < s.length; i++) { a ^= s.charCodeAt(i); a = Math.imul(a, 16777619); } return (a >>> 0).toString(36) + '.' + s.length; }
+async function api(url, opt) {
+  let r, data = null;
+  try { r = await fetch(url, opt); } catch (e) { throw new Error('Редактор не отвечает. Проверьте, что он запущен: python3 src/deck-editor.py'); }
+  try { data = await r.json(); } catch (e) { /* not JSON */ }
+  if (!r.ok || !data || data.ok === false) { const err = new Error(data && data.error || 'Ошибка ' + r.status); err.data = data; throw err; }
+  return data;
+}
+const post = (url, body) => api(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+let toastTimer = 0;
+function toast(text, action, fn, ms) {
+  const t = $('#ed-toast'); t.textContent = ''; t.append(h('span', { text }));
+  if (action) t.append(h('a', { text: action, onclick: () => { t.hidden = true; fn(); } }));
+  t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, ms || (action ? 12000 : 4200));
+}
+
+// ---------- pages: parse, clean, compare ----------
+function parsePage(html) { const t = document.createElement('template'); t.innerHTML = html.trim(); return t.content.firstElementChild; }
+function clean(sec) {
+  // what goes into the edits file: the page without anything of the editor (data-pid, data-src and the mark of a hidden element stay)
+  const c = INERT.importNode(sec, true);
+  for (const n of [c, ...c.querySelectorAll('*')]) {
+    for (const a of [...n.attributes]) if (a.name === 'contenteditable' || a.name === 'spellcheck' || (a.name.startsWith('data-ed-') && a.name !== 'data-ed-hidden')) n.removeAttribute(a.name);
+    if (n.getAttribute('style') === '') n.removeAttribute('style');
+  }
+  return c.outerHTML.replace(/&nbsp;/g, ' ');             // the build looks for real no-break spaces when it renumbers pages
+}
+const pidOf = el => { const s = el && el.closest('section[data-pid]'); return s ? s.getAttribute('data-pid') : null; };
+const pageOf = el => { const pid = pidOf(el); return pid && S.sec[pid] && S.sec[pid].contains(el) ? S.sec[pid] : null; };
+function titleOf(sec) {
+  const t = sec.querySelector('h1, h2') || sec.querySelector('.cap, p'); if (!t) return '';
+  const c = INERT.importNode(t, true); for (const br of c.querySelectorAll('br')) br.replaceWith(' ');
+  return c.textContent.replace(/\s+/g, ' ').trim().slice(0, 60);
+}
+function pathOf(el) { const p = []; for (let n = el; n && !n.hasAttribute('data-pid'); n = n.parentElement) p.unshift([...n.parentElement.children].indexOf(n)); return p; }
+function resolve(pid, path) { let n = S.sec[pid]; for (const i of path || []) { n = n && n.children[i]; } return n || null; }
+function touch(pid) {
+  const sec = S.sec[pid]; S.cur[pid] = clean(sec); S.title[pid] = titleOf(sec);
+  S.cur[pid] !== S.loadedClean[pid] ? S.dirty.add(pid) : S.dirty.delete(pid);
+  drawPages(); drawState(); draftSoon();
+}
+function setPage(pid, html) {
+  const neu = parsePage(html); S.sec[pid].replaceWith(neu); S.sec[pid] = neu;
+  if (S.sel && !S.sel.isConnected) S.sel = null;
+  S.hover = null; touch(pid);
+}
+const resetPending = pid => S.info[pid].edited && S.cur[pid] === S.genClean[pid];
+const orderChanged = () => S.order.join('|') !== S.loadedOrder.join('|');
+const hiddenChanged = () => [...S.hidden].sort().join('|') !== S.loadedHidden.slice().sort().join('|');
+const isDirty = () => S.dirty.size > 0 || orderChanged() || hiddenChanged() || S.resetOrder;
+
+// ---------- history ----------
+function commit(pid, before, merge) {
+  touch(pid);
+  const after = S.cur[pid]; if (after === before) return false;
+  const path = S.sel && pidOf(S.sel) === pid ? pathOf(S.sel) : null, last = S.undo[S.undo.length - 1], now = Date.now();
+  if (merge && last && last.merge === merge && last.pid === pid && now - last.t < 1500 && String(last.path) === String(path)) { last.after = after; last.t = now; }
+  else { S.undo.push({ pid, before, after, path, merge, t: now }); if (S.undo.length > 400) S.undo.shift(); }
+  S.redo = []; drawState(); return true;
+}
+const deckState = () => ({ order: S.order.slice(), hidden: [...S.hidden], resetOrder: S.resetOrder });
+function applyDeck(st) { S.order = st.order.slice(); S.hidden = new Set(st.hidden); S.resetOrder = st.resetOrder; reflow(); drawState(); draftSoon(); }
+function commitDeck(before) {
+  const after = deckState(); if (JSON.stringify(after) === JSON.stringify(before)) return;
+  S.undo.push({ deck: true, before, after }); S.redo = []; reflow(); drawState(); draftSoon();
+}
+async function step(from, to, key) {
+  await leaveModes();
+  const it = from.pop(); if (!it) return;
+  to.push(it);
+  if (it.deck) applyDeck(it[key]);
+  else { setPage(it.pid, it[key]); select(it.path ? resolve(it.pid, it.path) : null); showPage(it.pid); }
+  drawState(); drawCtx();
+}
+const undo = () => step(S.undo, S.redo, 'before'), redo = () => step(S.redo, S.undo, 'after');
+async function leaveModes() { if (S.edit) endEdit(); if (S.crop) await cropEnd(true); }
+
+// ---------- loading ----------
+async function load() {
+  const keep = S.active, d = await api('/api/pages');
+  $('#ed-deck-css').textContent = d.css;
+  S.pages = d.pages; S.info = {}; S.sec = {}; S.slot = {}; S.cur = {}; S.title = {}; S.loadedClean = {}; S.genClean = {}; S.dirty = new Set();
+  S.order = d.pages.map(p => p.pid); S.hidden = new Set(d.pages.filter(p => p.hidden).map(p => p.pid));
+  S.loadedOrder = S.order.slice(); S.loadedHidden = [...S.hidden]; S.hasOrder = !!d.has_order; S.resetOrder = false; S.crops = d.crops || {};
+  S.undo = []; S.redo = []; S.sel = S.hover = S.edit = S.crop = S.drag = null; S.pdf = d.pdf ? { url: d.pdf, mb: d.pdf_mb, t: d.pdf_time } : null;
+  flow.textContent = '';
+  for (const p of d.pages) {
+    S.info[p.pid] = p;
+    const sec = parsePage(p.html), slot = h('div', { class: 'ed-slot', dataset: { edSlot: p.pid } }, h('div', { class: 'ed-slot-head ed-ui' }), h('div', { class: 'ed-paper' }, h('div', { class: 'ed-scale' }, sec)));
+    S.sec[p.pid] = sec; S.slot[p.pid] = slot; flow.append(slot);
+    S.loadedClean[p.pid] = S.cur[p.pid] = clean(sec); S.title[p.pid] = titleOf(sec);
+    if (p.edited) S.genClean[p.pid] = clean(parsePage(p.generated));
+  }
+  S.active = keep && S.sec[keep] ? keep : S.order[0];
+  const restored = draftApply();
+  reflow(); layout(); drawState(); drawCtx();
+  if (keep && S.sec[keep]) showPage(keep, true);
+  if (restored) toast('Восстановлены несохранённые правки (' + restored + ').', 'Отбросить их', () => { draftClear(); load(); });
+}
+function reflow() {
+  const shown = S.order.filter(p => !S.hidden.has(p));
+  flow.append(...S.order.map(pid => S.slot[pid]));
+  for (const pid of S.order) S.slot[pid].toggleAttribute('data-ed-off', S.hidden.has(pid));
+  $('#ed-count').textContent = '· в PDF ' + shown.length + ' из ' + S.order.length;
+  drawPages();
+}
+function layout() {
+  const top = S.active && S.slot[S.active] ? (work.scrollTop - S.slot[S.active].offsetTop) / S.zoom : null;
+  if (S.fit) S.zoom = Math.min(2.5, Math.max(.2, (work.clientWidth - 58) / (PW * MM)));
+  for (const pid of S.order) {
+    const s = S.slot[pid]; s.style.width = (PW * MM * S.zoom) + 'px';
+    s.children[1].style.height = (PH * MM * S.zoom) + 'px'; s.children[1].firstChild.style.transform = 'scale(' + S.zoom + ')';
+  }
+  $('#ed-zoom').textContent = Math.round(S.zoom * 100) + ' %';
+  if (top != null) work.scrollTop = S.slot[S.active].offsetTop + top * S.zoom;
+}
+function setZoom(z) { S.fit = false; S.zoom = Math.min(2.5, Math.max(.2, z)); layout(); }
+function showPage(pid, instant) {
+  const s = S.slot[pid]; if (!s) return;
+  const a = s.offsetTop, b = a + s.offsetHeight, t = work.scrollTop, v = work.clientHeight;
+  if (instant || a < t - 4 || b > t + v + 4) work.scrollTop = a - 8;
+  setActive(pid);
+}
+function setActive(pid) {
+  if (S.active === pid) return; S.active = pid;
+  for (const it of document.querySelectorAll('.ed-item')) it.classList.toggle('ed-on', it.dataset.pid === pid);
+  const on = document.querySelector('.ed-item.ed-on'); if (on) on.scrollIntoView({ block: 'nearest' });
+}
+
+// ---------- the rail ----------
+function badges(pid) {
+  const info = S.info[pid], out = [];
+  if (S.hidden.has(pid)) out.push(h('span', { class: 'ed-badge', text: 'скрыта', title: 'Страница не попадёт в PDF' }));
+  if (resetPending(pid)) out.push(h('span', { class: 'ed-badge ed-b-reset', text: 'будет сброшена', title: 'После сохранения страница снова будет браться из генератора' }));
+  else {
+    if (info.edited || S.dirty.has(pid)) out.push(h('span', { class: 'ed-badge ed-b-mod', text: 'изменена', title: 'Страница поправлена вручную — в PDF идёт ваша версия' }));
+    if (info.stale) out.push(h('span', { class: 'ed-badge ed-b-stale', text: 'генератор изменился', title: 'После вашей правки эта страница поменялась в генераторе. В PDF идёт ваша версия; «Сбросить» — взять новую из генератора.' }));
+  }
+  return out;
+}
+function drawPages() {
+  const list = $('#ed-pages'), keep = list.scrollTop, shown = S.order.filter(p => !S.hidden.has(p)); list.textContent = '';
+  S.order.forEach((pid, i) => {
+    const info = S.info[pid], off = S.hidden.has(pid), n = off ? '—' : String(shown.indexOf(pid) + 1).padStart(2, '0');
+    const gone = S.sec[pid].querySelectorAll('[data-ed-hidden]').length, canReset = (info.edited && !resetPending(pid)) || S.dirty.has(pid);
+    const act = (text, title, fn, dis) => h('button', { text, title, disabled: dis, onclick: e => { e.stopPropagation(); fn(); } });
+    list.append(h('div', { class: 'ed-item' + (pid === S.active ? ' ed-on' : '') + (off ? ' ed-off' : ''), dataset: { pid }, onclick: () => showPage(pid, true) },
+      h('div', { class: 'ed-item-top' }, h('span', { class: 'ed-num', text: n }), h('span', { class: 'ed-pid', text: pid }), S.dirty.has(pid) && h('span', { class: 'ed-dot', title: 'Есть несохранённые правки' })),
+      h('div', { class: 'ed-item-title', text: S.title[pid] }),
+      h('div', { class: 'ed-badges' }, badges(pid)),
+      h('div', { class: 'ed-acts' },
+        act('↑', 'Передвинуть выше', () => movePage(pid, -1), i === 0), act('↓', 'Передвинуть ниже', () => movePage(pid, 1), i === S.order.length - 1),
+        act(off ? 'Показать' : 'Скрыть', off ? 'Вернуть страницу в PDF' : 'Не печатать страницу в PDF', () => toggleHidden(pid)),
+        act('Сбросить', 'Вернуть страницу к виду из генератора', () => resetPage(pid), !canReset),
+        gone ? act('Вернуть элементы · ' + gone, 'Показать элементы, скрытые на этой странице клавишей Delete', () => unhideAll(pid)) : null)));
+    const head = S.slot[pid].firstChild; head.textContent = '';
+    head.append(h('b', { text: n === '—' ? pid : n + ' · ' + pid }), ...badges(pid), off ? h('span', { class: 'ed-muted', text: '— не печатается' }) : '');
+  });
+  list.scrollTop = keep;
+  const foot = [];
+  if (orderChanged() || hiddenChanged()) foot.push('Номера страниц на листах обновятся после сборки.');
+  $('#ed-foot').textContent = foot.join(' ');
+  if (S.hasOrder || S.resetOrder) {
+    $('#ed-foot').append(foot.length ? ' ' : '', S.resetOrder ? 'Порядок вернётся к порядку генератора после сборки. ' : 'Порядок страниц задан вручную. ',
+      h('a', { class: 'ed-link', text: S.resetOrder ? 'Оставить ручной' : 'Вернуть как в генераторе', onclick: () => { const b = deckState(); S.resetOrder = !S.resetOrder; commitDeck(b); } }));
+  }
+  $('#ed-foot').hidden = !$('#ed-foot').textContent;
+}
+function movePage(pid, d) {
+  const i = S.order.indexOf(pid), j = i + d; if (j < 0 || j >= S.order.length) return;
+  const before = deckState(); S.order.splice(i, 1); S.order.splice(j, 0, pid); S.resetOrder = false; commitDeck(before); showPage(pid);
+}
+function toggleHidden(pid) { const before = deckState(); S.hidden.has(pid) ? S.hidden.delete(pid) : S.hidden.add(pid); commitDeck(before); }
+async function resetPage(pid) {
+  await leaveModes();
+  const info = S.info[pid], before = S.cur[pid];
+  if (S.sel && pidOf(S.sel) === pid) select(null);
+  setPage(pid, info.edited ? info.generated : info.html); commit(pid, before); drawCtx();
+}
+async function unhideAll(pid) {
+  await leaveModes();
+  const before = S.cur[pid];
+  for (const n of S.sec[pid].querySelectorAll('[data-ed-hidden]')) unhide(n);
+  commit(pid, before);
+}
+function unhide(n) { const was = n.getAttribute('data-ed-hidden'); n.removeAttribute('data-ed-hidden'); was ? n.style.display = was : n.style.removeProperty('display'); tidy(n); }
+
+function drawState() {
+  $('#ed-undo').disabled = !S.undo.length; $('#ed-redo').disabled = !S.redo.length;
+  const st = $('#ed-state'), parts = [];
+  if (S.dirty.size) parts.push(S.dirty.size + ' ' + plural(S.dirty.size, 'страница', 'страницы', 'страниц'));
+  if (orderChanged() || S.resetOrder) parts.push('порядок');
+  if (hiddenChanged()) parts.push('скрытые страницы');
+  st.textContent = parts.length ? 'Не сохранено: ' + parts.join(', ') : 'Все правки сохранены';
+  st.classList.toggle('ed-dirty', parts.length > 0);
+  const a = $('#ed-pdf'); a.hidden = !S.pdf;
+  if (S.pdf) { a.href = S.pdf.url + '?t=' + S.pdf.t; a.textContent = 'Открыть PDF' + (S.pdf.mb ? ' · ' + num(S.pdf.mb) + ' МБ' : ''); }
+}
+
+// ---------- selection ----------
+const isPic = el => /^(IMG|svg|VIDEO|CANVAS)$/.test(el.tagName);
+const ownsText = el => !isPic(el) && [...el.childNodes].some(n => n.nodeType === 3 && n.nodeValue.trim());
+const isDecor = el => !el.firstChild && !isPic(el);                // an empty element: a gradient, a plate, a rule
+function hits(x, y) {
+  const out = [];
+  for (let el of document.elementsFromPoint(x, y)) {
+    if (!flow.contains(el)) continue;
+    const sec = el.closest('section[data-pid]'); if (!sec || el === sec) continue;
+    const svg = el.closest('svg'); if (svg) el = svg;
+    if (!out.includes(el)) out.push(el);
+  }
+  return out;
+}
+function pick(x, y) {
+  // the thing under the pointer that a person means: not the empty shade lying over a photo, and not a block whose ::after covers its picture
+  const list = hits(x, y); if (!list.length) return null;
+  let el = list.find(e => !isDecor(e)) || list[0];
+  for (;;) { const d = list.slice(list.indexOf(el) + 1).find(e => e !== el && el.contains(e) && !isDecor(e)); if (!d) break; el = d; }
+  return el;
+}
+function pickNext(x, y) { const list = hits(x, y); if (!list.length) return null; return list[(list.indexOf(S.sel) + 1) % list.length]; }
+function select(el) {
+  if (el && (!el.isConnected || el.hasAttribute('data-pid'))) el = null;
+  S.sel = el || null; if (el) setActive(pidOf(el));
+  drawCtx();
+}
+function kind(el) { return el.tagName === 'IMG' ? 'картинка' : el.tagName === 'svg' ? 'графика' : ownsText(el) ? 'текст' : isDecor(el) ? 'плашка' : 'блок'; }
+function movable(el) {
+  // CSS cannot shift or scale a piece of a text line by itself: such a piece moves together with its paragraph
+  for (let n = el; n && !n.hasAttribute('data-pid'); n = n.parentElement) { const d = getComputedStyle(n).display; if (isPic(n) || (d !== 'inline' && d !== 'contents')) return n; }
+  return null;
+}
+function getTranslate(el) { const m = /(-?[\d.]+)mm(?:\s+(-?[\d.]+)mm)?/.exec(el.style.translate || ''); return m ? [+m[1], +(m[2] || 0)] : [0, 0]; }
+function setTranslate(el, x, y) { x = Math.round(x * 100) / 100; y = Math.round(y * 100) / 100; if (!x && !y) el.style.removeProperty('translate'); else el.style.translate = x + 'mm ' + y + 'mm'; tidy(el); }
+function getScale(el) { const v = parseFloat(el.style.scale); return v > 0 ? v : 1; }
+function setScale(el, s) { if (Math.abs(s - 1) < .0005) el.style.removeProperty('scale'); else el.style.scale = String(Math.round(s * 1000) / 1000); tidy(el); }
+function tidy(el) { if (el.getAttribute('style') === '') el.removeAttribute('style'); }
+function ancScale(el) { let k = 1; for (let n = el.parentElement; n && !n.hasAttribute('data-pid'); n = n.parentElement) k *= getScale(n); return k; }
+
+function drawCtx() {
+  const bar = $('#ed-ctx'); bar.textContent = '';
+  const el = S.sel && S.sel.isConnected ? S.sel : null;
+  if (S.crop) { bar.append(h('span', { class: 'ed-muted', text: 'Кадр: тяните картинку внутри рамки, колесо или ползунок — приблизить. Enter или щелчок мимо — готово, Esc — отмена.' })); return; }
+  if (!el) {
+    bar.append(h('span', { class: 'ed-muted', text: 'Щелчок — выбрать · двойной щелчок — править текст · тянуть — двигать · уголки — размер · стрелки — сдвиг на 0,25 мм (с Shift — 1 мм) · Delete — скрыть · Esc — на уровень выше · ⌘Z — отменить' }));
+    return;
+  }
+  const chain = []; for (let n = el; n && !n.hasAttribute('data-pid'); n = n.parentElement) chain.unshift(n);
+  const crumbs = h('div', { class: 'ed-crumbs' }, h('button', { class: 'ed-crumb', text: 'страница', title: 'Снять выделение', onclick: () => select(null) }));
+  for (const n of chain.slice(-5)) {
+    const cls = (n.getAttribute('class') || '').trim().split(/\s+/)[0];
+    crumbs.append(h('span', { class: 'ed-arrow', text: '›' }), h('button', { class: 'ed-crumb', onclick: () => select(n) }, kind(n), cls ? h('span', { text: cls }) : null));
+  }
+  bar.append(crumbs);
+  if (S.edit) { bar.append(h('span', { class: 'ed-read', text: 'Правка текста: Enter — новая строка, Esc или щелчок мимо — закончить' })); return; }
+  const r = el.getBoundingClientRect(), mv = movable(el), [tx, ty] = mv ? getTranslate(mv) : [0, 0], sc = mv ? getScale(mv) : 1;
+  let read = num(r.width / S.zoom / MM) + ' × ' + num(r.height / S.zoom / MM) + ' мм';
+  if (tx || ty) read += ' · сдвиг ' + num(tx, 2) + ' / ' + num(ty, 2) + ' мм';
+  if (sc !== 1) read += ' · масштаб ' + Math.round(sc * 100) + ' %';
+  bar.append(h('span', { class: 'ed-read', text: read }), h('span', { class: 'ed-grow' }));
+  const btn = (text, title, fn) => h('button', { text, title, onclick: fn });
+  if (chain.length > 1) bar.append(btn('↑ Уровень выше', 'Выбрать блок, в котором лежит этот элемент (Esc)', () => select(el.parentElement)));
+  if (ownsText(el)) bar.append(btn('Править текст', 'Или двойной щелчок по тексту', () => startEdit(el)));
+  if (el.tagName === 'IMG') bar.append(btn('Кадр', 'Подвинуть и приблизить картинку внутри рамки (двойной щелчок)', () => cropStart(el)), btn('Заменить', 'Поставить другую картинку в эту рамку', () => libOpen()));
+  if (mv && (tx || ty || sc !== 1)) bar.append(btn('Вернуть на место', 'Убрать сдвиг и масштаб', () => { const pid = pidOf(mv), b = S.cur[pid]; setTranslate(mv, 0, 0); setScale(mv, 1); commit(pid, b); drawCtx(); }));
+  bar.append(btn('Скрыть', 'Убрать элемент со страницы (Delete). Вернуть — «Отменить» или «Вернуть элементы» у страницы', hideSel));
+}
+function place(box, el, tag) {
+  if (!el || !el.isConnected) { box.hidden = true; box._k = ''; return; }
+  const r = el.getBoundingClientRect(), w = work.getBoundingClientRect();
+  const k = [r.left - w.left + work.scrollLeft, r.top - w.top + work.scrollTop, r.width, r.height, S.zoom].map(v => Math.round(v * 2) / 2).join();
+  if (box._k !== k) {
+    box._k = k; const [x, y, ww, hh] = k.split(',').map(parseFloat);
+    box.style.left = x + 'px'; box.style.top = y + 'px'; box.style.width = ww + 'px'; box.style.height = hh + 'px';
+    if (tag) tag.textContent = num(r.width / S.zoom / MM) + ' × ' + num(r.height / S.zoom / MM) + ' мм';
+  }
+  box.hidden = false;
+}
+function frame() {
+  if (S.crop) { selBox.hidden = hoverBox.hidden = true; selBox._k = hoverBox._k = ''; cropPlace(); }
+  else {
+    place(selBox, S.edit ? null : S.sel, selBox.lastElementChild);          // a text being edited has its own outline
+    place(hoverBox, S.hover && S.hover !== S.sel && !S.drag && !S.edit ? S.hover : null);
+  }
+  requestAnimationFrame(frame);
+}
+function hideSel() {
+  const el = S.sel; if (!el || S.edit || S.crop) return;
+  const pid = pidOf(el), before = S.cur[pid];
+  el.setAttribute('data-ed-hidden', el.style.display && el.style.display !== 'none' ? el.style.display : ''); el.style.display = 'none';
+  select(null); commit(pid, before);
+  toast('Элемент скрыт.', 'Отменить', undo, 6000);
+}
+function nudge(dx, dy) {
+  const el = S.sel && movable(S.sel); if (!el) return;
+  if (el !== S.sel) select(el);
+  const pid = pidOf(el), before = S.cur[pid], [x, y] = getTranslate(el);
+  setTranslate(el, x + dx, y + dy); commit(pid, before, 'nudge'); drawCtx();
+}
+
+// ---------- pointer: select, move, scale ----------
+function onDown(e) {
+  if (e.button !== 0 || S.busy || S.crop) return;
+  const hd = e.target.closest('.ed-h');
+  if (hd) { e.preventDefault(); startScale(e, hd.dataset.c); return; }
+  if (e.target.closest('.ed-ui')) return;
+  if (S.edit) { if (S.edit.el.contains(e.target)) return; endEdit(); }
+  if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
+  const sec = e.target.closest('section[data-pid]');
+  if (!sec) { select(null); return; }
+  e.preventDefault();
+  const x = e.clientX, y = e.clientY, deeper = e.altKey || e.metaKey || e.ctrlKey;
+  let inSel = false;
+  if (!deeper && S.sel && S.sel.isConnected && pageOf(S.sel) === sec) {
+    const r = S.sel.getBoundingClientRect();
+    inSel = (x >= r.left && x <= r.right && y >= r.top && y <= r.bottom) || hits(x, y).some(n => S.sel.contains(n));
+  }
+  const target = deeper ? pickNext(x, y) : inSel ? S.sel : pick(x, y);
+  if (!inSel) select(target);
+  setActive(sec.getAttribute('data-pid'));
+  if (!target) return;
+  S.drag = { kind: 'wait', el: target, x, y, inSel, id: e.pointerId }; S.hover = null;
+  work.setPointerCapture(e.pointerId);
+}
+function onMove(e) {
+  const d = S.drag;
+  if (!d) { S.hover = !S.edit && !S.crop && !S.busy && !e.buttons && flow.contains(e.target) ? pick(e.clientX, e.clientY) : null; return; }
+  if (d.kind === 'wait') {
+    if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 4) return;
+    const el = movable(d.el);
+    if (!el) { S.drag = null; return; }
+    if (el !== S.sel) select(el);
+    const pid = pidOf(el), [tx, ty] = getTranslate(el);
+    Object.assign(d, { kind: 'move', el, pid, before: S.cur[pid], tx, ty, k: S.zoom * ancScale(el) * MM });
+  }
+  if (d.kind === 'move') {
+    let dx = (e.clientX - d.x) / d.k, dy = (e.clientY - d.y) / d.k;
+    if (e.shiftKey) { if (Math.abs(dx) > Math.abs(dy)) dy = 0; else dx = 0; }
+    setTranslate(d.el, d.tx + dx, d.ty + dy);
+  } else if (d.kind === 'scale') {
+    const len2 = d.vx * d.vx + d.vy * d.vy; if (!len2) return;
+    const f = ((e.clientX - d.ax) * d.vx + (e.clientY - d.ay) * d.vy) / len2;            // along the diagonal of the box
+    setScale(d.el, Math.min(20, Math.max(.05, d.s0 * f))); setTranslate(d.el, d.tx, d.ty);
+    const r = d.el.getBoundingClientRect();                                                // the opposite corner stays where it was
+    setTranslate(d.el, d.tx + (d.ax - (d.c.includes('w') ? r.right : r.left)) / d.k, d.ty + (d.ay - (d.c.includes('n') ? r.bottom : r.top)) / d.k);
+  }
+  if (d.kind !== 'wait') drawCtxSoon();
+}
+function onUp(e) {
+  const d = S.drag; if (!d) return; S.drag = null;
+  try { work.releasePointerCapture(d.id); } catch (err) { /* already released */ }
+  if (d.kind === 'move' || d.kind === 'scale') { commit(d.pid, d.before); drawCtx(); }
+  else if (d.inSel && e.type === 'pointerup') select(pick(e.clientX, e.clientY));
+}
+function startScale(e, c) {
+  const el = S.sel && movable(S.sel); if (!el) return;
+  if (el !== S.sel) select(el);
+  const pid = pidOf(el), r = el.getBoundingClientRect(), [tx, ty] = getTranslate(el);
+  const ax = c.includes('w') ? r.right : r.left, ay = c.includes('n') ? r.bottom : r.top;
+  S.drag = { kind: 'scale', el, pid, before: S.cur[pid], c, ax, ay, vx: (c.includes('w') ? r.left : r.right) - ax, vy: (c.includes('n') ? r.top : r.bottom) - ay,
+    s0: getScale(el), tx, ty, k: S.zoom * ancScale(el) * MM, id: e.pointerId };
+  work.setPointerCapture(e.pointerId);
+}
+let ctxTimer = 0;
+function drawCtxSoon() { if (!ctxTimer) ctxTimer = requestAnimationFrame(() => { ctxTimer = 0; drawCtx(); }); }
+
+// ---------- text ----------
+function textOwnerAt(x, y) {
+  // the smallest element whose own text is under the pointer
+  for (const el of hits(x, y)) {
+    if (isPic(el)) continue;
+    for (const n of el.childNodes) {
+      if (n.nodeType !== 3 || !n.nodeValue.trim()) continue;
+      const r = document.createRange(); r.selectNodeContents(n);
+      for (const q of r.getClientRects()) if (x >= q.left - 2 && x <= q.right + 2 && y >= q.top - 2 && y <= q.bottom + 2) return el;
+    }
+  }
+  const p = pick(x, y); return p && ownsText(p) ? p : null;
+}
+function startEdit(el, x, y) {
+  if (S.edit) endEdit();
+  const pid = pidOf(el); if (!pid) return;
+  select(el);
+  let block = el; while (block.parentElement && !block.hasAttribute('data-pid') && getComputedStyle(block).display === 'inline') block = block.parentElement;
+  S.edit = { el, pid, before: S.cur[pid], pads: [], block };
+  el.setAttribute('contenteditable', 'plaintext-only'); el.setAttribute('spellcheck', 'false'); el.focus({ preventScroll: true });
+  let r = x != null && document.caretRangeFromPoint ? document.caretRangeFromPoint(x, y) : null;
+  if (!r || !el.contains(r.startContainer)) { r = document.createRange(); r.selectNodeContents(el); r.collapse(false); }
+  const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+  drawCtx();
+}
+function nothingAfter(node, root) {
+  for (let n = node; n && n !== root; n = n.parentNode) for (let s = n.nextSibling; s; s = s.nextSibling) if (s.nodeType !== 3 || s.nodeValue.length) return false;
+  return true;
+}
+function insertBreak() {
+  // plaintext-only editing would put a "\n" character here; the page needs a <br>
+  const ed = S.edit, sel = getSelection(); if (!sel.rangeCount) return;
+  const r = sel.getRangeAt(0); if (!ed.el.contains(r.commonAncestorContainer)) return;
+  r.deleteContents();
+  const br = document.createElement('br'); r.insertNode(br);
+  if (nothingAfter(br, ed.block)) { const pad = document.createElement('br'); br.after(pad); ed.pads.push(pad); }   // a last <br> shows no new line by itself
+  r.setStartAfter(br); r.collapse(true); sel.removeAllRanges(); sel.addRange(r);
+}
+function endEdit() {
+  const ed = S.edit; if (!ed) return; S.edit = null;
+  for (const p of ed.pads) if (p.isConnected && nothingAfter(p, ed.block)) p.remove();
+  ed.el.removeAttribute('contenteditable'); ed.el.removeAttribute('spellcheck'); ed.el.normalize();
+  getSelection().removeAllRanges(); if (document.activeElement === ed.el) ed.el.blur();
+  commit(ed.pid, ed.before); drawCtx();
+}
+function onPaste(e) {
+  if (!S.edit) return; e.preventDefault();
+  const lines = (e.clipboardData.getData('text/plain') || '').replace(/\r/g, '').split('\n');
+  lines.forEach((ln, i) => { if (i) insertBreak(); if (ln) document.execCommand('insertText', false, ln); });
+}
+
+// ---------- pictures: «Кадр» ----------
+const pf = v => parseFloat(v) || 0;
+async function cropStart(img, o) {
+  o = o || {};
+  if (S.edit) endEdit();
+  if (S.crop) await cropEnd(true);
+  if (!img || !img.isConnected || img.tagName !== 'IMG') return;
+  const pid = pidOf(img), before = o.before || S.cur[pid], path = pathOf(img);
+  const orig = img.getAttribute('data-src') || img.getAttribute('src'), cur = img.getAttribute('src');
+  const cs = getComputedStyle(img), bw = pf(cs.width), bh = pf(cs.height);
+  const fw = (bw - pf(cs.paddingLeft) - pf(cs.paddingRight) - pf(cs.borderLeftWidth) - pf(cs.borderRightWidth)) / MM;
+  const fh = (bh - pf(cs.paddingTop) - pf(cs.paddingBottom) - pf(cs.borderTopWidth) - pf(cs.borderBottomWidth)) / MM;
+  if (!(fw > .5 && fh > .5)) { toast('У этой картинки нет рамки, в которой можно кадрировать.'); return; }
+  const fit = cs.objectFit, pos = cs.objectPosition.split(' ').map(v => v.endsWith('%') ? parseFloat(v) / 100 : .5), nat = { w: img.naturalWidth, h: img.naturalHeight };
+  let info;
+  try { info = await api('/api/picinfo?orig=' + encodeURIComponent(orig) + (o.fresh ? '' : '&cur=' + encodeURIComponent(cur))); }
+  catch (e) { toast(e.message); if (o.before) setPage(pid, o.before); return; }
+  if (!img.isConnected) return;
+  const k = fw * info.h / (fh * info.w);                                    // box width : box height, as fractions of the picture
+  const c = { img, pid, path, before, orig, W: info.w, H: info.h, px: info.px || info.w, fw, fh, k, free: !!info.alpha, uCover: Math.min(1, k), uContain: Math.max(1, k),
+    changed: !!o.fresh, fresh: !!o.fresh, busy: false, u: 0, cx: .5, cy: .5 };
+  if (info.box && !o.fresh && nat.w && nat.h) {
+    // the part of the file on the page that the frame shows now, carried over to the original
+    const fa = fw / fh, ia = nat.w / nat.h; let p = [0, 0, 1, 1];
+    if (fit === 'cover' || fit === 'contain' || fit === 'scale-down') {
+      const uu = fit === 'cover' ? Math.min(1, fa / ia) : Math.max(1, fa / ia), vv = fit === 'cover' ? Math.min(1, ia / fa) : Math.max(1, ia / fa);
+      p = [(1 - uu) * pos[0], (1 - vv) * pos[1], (1 - uu) * pos[0] + uu, (1 - vv) * pos[1] + vv];
+    }
+    const b = info.box, bw2 = b[2] - b[0], bh2 = b[3] - b[1];
+    c.u = (p[2] - p[0]) * bw2; c.cx = b[0] + (p[0] + p[2]) / 2 * bw2; c.cy = b[1] + (p[1] + p[3]) / 2 * bh2;
+  } else { c.u = c.free ? c.uContain : c.uCover; c.cx = c.free ? .5 : pos[0]; c.cy = c.free ? .5 : pos[1]; }
+  c.uMin = c.uCover / 12; c.uMax = c.free ? c.uContain * 1.8 : c.uCover;
+  S.crop = c; select(img); S.hover = null;
+  img.setAttribute('data-ed-crop', '');
+  img.style.width = +(bw / MM).toFixed(2) + 'mm'; img.style.height = +(bh / MM).toFixed(2) + 'mm';      // the frame keeps its size whatever picture is in it
+  img.src = BLANK; img.style.backgroundImage = 'url("/' + encodeURI(orig) + '")'; img.style.backgroundRepeat = 'no-repeat';
+  img.style.backgroundOrigin = 'content-box'; img.style.backgroundClip = 'content-box';
+  $('#ed-ghost').src = '/' + encodeURI(orig); $('#ed-cfit').hidden = !c.free;
+  for (const id of ['#ed-shield', '#ed-ghost', '#ed-cropframe', '#ed-cropbar']) $(id).hidden = false;
+  cropClamp(); cropDraw(); drawCtx();
+}
+function cropClamp() {
+  const c = S.crop; c.u = Math.min(c.uMax, Math.max(c.uMin, c.u)); const v = c.u / c.k;
+  if (c.free) { c.cx = Math.min(1, Math.max(0, c.cx)); c.cy = Math.min(1, Math.max(0, c.cy)); }
+  else { c.cx = Math.min(1 - c.u / 2, Math.max(c.u / 2, c.cx)); c.cy = Math.min(1 - v / 2, Math.max(v / 2, c.cy)); }
+}
+function cropDraw() {
+  const c = S.crop, v = c.u / c.k, bw = c.fw / c.u, bh = c.fh / v;       // the whole picture at the frame's scale, mm
+  c.img.style.backgroundSize = bw.toFixed(3) + 'mm ' + bh.toFixed(3) + 'mm';
+  c.img.style.backgroundPosition = (-(c.cx - c.u / 2) * bw).toFixed(3) + 'mm ' + (-(c.cy - v / 2) * bh).toFixed(3) + 'mm';
+  $('#ed-cz').value = Math.round(1000 * Math.log(c.u / c.uMax) / Math.log(c.uMin / c.uMax));
+  const r = c.img.getBoundingClientRect(), ppi = Math.round(c.u * c.px / (r.width / S.zoom / MM / 25.4)), low = ppi < 130;
+  const note = $('#ed-cppi'); note.textContent = low ? 'мало точек для печати (' + ppi + ' на дюйм) — выйдет мягко' : ''; note.classList.toggle('ed-warn', low); note.hidden = !low;
+  cropPlace();
+}
+function cropPlace() {
+  const c = S.crop; if (!c) return;
+  const r = c.img.getBoundingClientRect(), w = work.getBoundingClientRect(), x = r.left - w.left + work.scrollLeft, y = r.top - w.top + work.scrollTop;
+  const v = c.u / c.k, gw = r.width / c.u, gh = r.height / v, gx = x - (c.cx - c.u / 2) * gw, gy = y - (c.cy - v / 2) * gh;
+  const key = [x, y, r.width, r.height, gx, gy, gw, gh].map(n => Math.round(n * 2) / 2).join();
+  if (c.key === key) return; c.key = key;
+  const sh = $('#ed-shield'), g = $('#ed-ghost'), f = $('#ed-cropframe'), bar = $('#ed-cropbar');
+  sh.style.width = work.scrollWidth + 'px'; sh.style.height = work.scrollHeight + 'px';
+  Object.assign(g.style, { left: gx + 'px', top: gy + 'px', width: gw + 'px', height: gh + 'px' });
+  const a = x - gx, b = y - gy;                                              // a hole in the ghost where the real picture shows
+  g.style.clipPath = `polygon(evenodd, 0 0, ${gw}px 0, ${gw}px ${gh}px, 0 ${gh}px, 0 0, ${a}px ${b}px, ${a + r.width}px ${b}px, ${a + r.width}px ${b + r.height}px, ${a}px ${b + r.height}px, ${a}px ${b}px)`;
+  Object.assign(f.style, { left: x + 'px', top: y + 'px', width: r.width + 'px', height: r.height + 'px' });
+  const bh = 44, below = y + r.height + 10, room = work.scrollTop + work.clientHeight - bh - 8;
+  bar.style.top = Math.max(work.scrollTop + 8, Math.min(below, room)) + 'px';
+  bar.style.left = Math.max(work.scrollLeft + 8, Math.min(x, work.scrollLeft + work.clientWidth - bar.offsetWidth - 12)) + 'px';
+}
+function cropZoom(u, fx, fy) {
+  // (fx, fy): the point of the frame that stays on the same spot of the picture
+  const c = S.crop, v = c.u / c.k, ix = c.cx - c.u / 2 + fx * c.u, iy = c.cy - v / 2 + fy * v;
+  c.u = Math.min(c.uMax, Math.max(c.uMin, u)); const v2 = c.u / c.k;
+  c.cx = ix - fx * c.u + c.u / 2; c.cy = iy - fy * v2 + v2 / 2; c.changed = true; cropClamp(); cropDraw();
+}
+async function cropEnd(apply) {
+  const c = S.crop; if (!c || c.busy) return;
+  const hide = () => { for (const id of ['#ed-shield', '#ed-ghost', '#ed-cropframe', '#ed-cropbar']) $(id).hidden = true; };
+  if (!apply || !c.changed) {
+    S.crop = null; hide(); setPage(c.pid, c.before); select(resolve(c.pid, c.path)); drawCtx(); return;
+  }
+  c.busy = true;
+  const v = c.u / c.k, box = [c.cx - c.u / 2, c.cy - v / 2, c.cx + c.u / 2, c.cy + v / 2].map(n => +n.toFixed(5));
+  const r = c.img.getBoundingClientRect();
+  let res;
+  try {
+    res = await post('/api/crop', { src: c.orig, box, w_mm: +Math.max(c.fw, r.width / S.zoom / MM).toFixed(2) });
+    await new Promise(ok => { const t = new Image(); t.onload = t.onerror = ok; t.src = '/' + res.path; });
+  } catch (e) { c.busy = false; toast('Кадр не сохранился: ' + e.message); return; }
+  const img = c.img;
+  for (const p of ['background-image', 'background-size', 'background-position', 'background-repeat', 'background-origin', 'background-clip']) img.style.removeProperty(p);
+  img.removeAttribute('data-ed-crop'); img.setAttribute('src', res.path); img.setAttribute('data-src', c.orig);
+  S.crops[res.path] = { src: c.orig, box };
+  S.crop = null; hide(); select(img); commit(c.pid, c.before); drawCtx();
+}
+function cropWire() {
+  const f = $('#ed-cropframe'), sh = $('#ed-shield'); let pan = null;
+  f.addEventListener('pointerdown', e => { if (e.button !== 0 || !S.crop) return; e.preventDefault(); pan = { x: e.clientX, y: e.clientY, cx: S.crop.cx, cy: S.crop.cy }; f.setPointerCapture(e.pointerId); });
+  f.addEventListener('pointermove', e => {
+    const c = S.crop; if (!pan || !c) return;
+    const r = c.img.getBoundingClientRect();
+    c.cx = pan.cx - (e.clientX - pan.x) / r.width * c.u; c.cy = pan.cy - (e.clientY - pan.y) / r.height * (c.u / c.k); c.changed = true; cropClamp(); cropDraw();
+  });
+  const stop = () => { pan = null; }; f.addEventListener('pointerup', stop); f.addEventListener('pointercancel', stop);
+  f.addEventListener('wheel', e => {
+    const c = S.crop; if (!c) return; e.preventDefault();
+    const r = c.img.getBoundingClientRect(); cropZoom(c.u * Math.exp(e.deltaY * .0018), (e.clientX - r.left) / r.width, (e.clientY - r.top) / r.height);
+  }, { passive: false });
+  sh.addEventListener('pointerdown', e => { if (e.button === 0) { e.preventDefault(); cropEnd(true); } });
+  $('#ed-cz').addEventListener('input', e => { const c = S.crop; if (c) cropZoom(c.uMax * Math.pow(c.uMin / c.uMax, e.target.value / 1000), .5, .5); });
+  $('#ed-czin').addEventListener('click', () => S.crop && cropZoom(S.crop.u / 1.12, .5, .5));
+  $('#ed-czout').addEventListener('click', () => S.crop && cropZoom(S.crop.u * 1.12, .5, .5));
+  $('#ed-cfill').addEventListener('click', () => S.crop && cropZoom(S.crop.uCover, .5, .5));
+  $('#ed-cfit').addEventListener('click', () => { const c = S.crop; if (c) { c.cx = c.cy = .5; cropZoom(c.uContain, .5, .5); } });
+  $('#ed-cok').addEventListener('click', () => cropEnd(true)); $('#ed-ccancel').addEventListener('click', () => cropEnd(false));
+}
+
+// ---------- pictures: «Заменить» ----------
+async function replacePic(file) {
+  let img = null;
+  if (S.crop) { const t = { pid: S.crop.pid, path: S.crop.path }; await cropEnd(false); img = resolve(t.pid, t.path); }
+  else if (S.sel && S.sel.tagName === 'IMG') img = S.sel;
+  if (!img || img.tagName !== 'IMG') { toast('Сначала выберите на странице картинку, которую нужно заменить.'); return; }
+  if (S.edit) endEdit();
+  const pid = pidOf(img), before = S.cur[pid];
+  img.setAttribute('data-src', file);
+  img.style.objectFit = /\.png$/i.test(file) || file.startsWith('img/cut/') ? 'contain' : 'cover';       // cut-outs keep their proportions inside the frame
+  await cropStart(img, { before, fresh: true });
+}
+async function libOpen() {
+  const L = S.lib; L.open = true; $('#ed-lib').hidden = false; layoutSoon();
+  if (!L.files) await libLoad();
+  libDraw(); $('#ed-q').focus({ preventScroll: true });
+}
+function libClose() { S.lib.open = false; $('#ed-lib').hidden = true; layoutSoon(); }
+async function libLoad() {
+  try { const d = await api('/api/library'); S.lib.files = d.files; S.lib.groups = d.groups.filter(g => d.files.some(f => f.group === g)); }
+  catch (e) { S.lib.files = []; toast(e.message); }
+}
+function libDraw() {
+  const L = S.lib, groups = $('#ed-groups'), grid = $('#ed-grid'); groups.textContent = ''; grid.textContent = '';
+  for (const g of ['', ...L.groups]) groups.append(h('button', { class: L.group === g ? 'ed-on' : '', text: g || 'Все', onclick: () => { L.group = g; libDraw(); } }));
+  const q = L.q.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  let list = (L.files || []).filter(f => (!L.group || f.group === L.group) && q.every(w => f.name.toLowerCase().includes(w)));
+  list = [...list.filter(f => L.fresh.includes(f.f)), ...list.filter(f => !L.fresh.includes(f.f))];
+  if (!list.length) grid.append(h('div', { class: 'ed-note', text: L.files && L.files.length ? 'Ничего не найдено.' : 'Картинок пока нет.' }));
+  for (const f of list.slice(0, 450)) {
+    grid.append(h('div', { class: 'ed-pic', title: f.f + ' · ' + f.kb + ' КБ', onclick: () => replacePic(f.f) },
+      h('div', null, h('img', { loading: 'lazy', alt: '', src: '/api/thumb?f=' + encodeURIComponent(f.f) + '&v=' + f.v })), h('span', { text: f.name })));
+  }
+  if (list.length > 450) grid.append(h('div', { class: 'ed-note', text: 'Показаны первые 450 из ' + list.length + ' — уточните поиск.' }));
+}
+async function upload(files, target) {
+  files = [...files].filter(f => /^image\//.test(f.type) || /\.(jpe?g|png|webp)$/i.test(f.name));
+  if (!files.length) { toast('Это не картинка. Подходят JPEG, PNG и WebP.'); return; }
+  const done = [];
+  for (const f of files) {
+    try { const r = await api('/api/upload?name=' + encodeURIComponent(f.name), { method: 'POST', body: f }); done.push(r.path); }
+    catch (e) { toast(f.name + ': ' + e.message); }
+  }
+  if (!done.length) return;
+  S.lib.fresh = done.concat(S.lib.fresh); await libLoad(); if (S.lib.open) libDraw();
+  if (target && target.isConnected) select(target);
+  if (S.crop || (S.sel && S.sel.tagName === 'IMG')) await replacePic(done[0]);
+  else toast(done.length > 1 ? 'Загружено картинок: ' + done.length + '. Они в разделе «Мои».' : 'Картинка загружена — она в разделе «Мои».');
+}
+function dropWire() {
+  const lib = $('#ed-lib'); let depth = 0;
+  const hasFiles = e => e.dataTransfer && [...e.dataTransfer.types].includes('Files');
+  window.addEventListener('dragover', e => { if (hasFiles(e)) e.preventDefault(); });
+  window.addEventListener('drop', e => {
+    if (!hasFiles(e)) return; e.preventDefault(); lib.classList.remove('ed-over-drop'); depth = 0;
+    const onPage = flow.contains(e.target) ? pick(e.clientX, e.clientY) : null;
+    if (S.busy) return;
+    upload(e.dataTransfer.files, onPage && onPage.tagName === 'IMG' && !S.crop ? onPage : null);
+  });
+  lib.addEventListener('dragenter', e => { if (hasFiles(e)) { depth++; lib.classList.add('ed-over-drop'); } });
+  lib.addEventListener('dragleave', e => { if (hasFiles(e) && --depth <= 0) { depth = 0; lib.classList.remove('ed-over-drop'); } });
+  flow.addEventListener('dragstart', e => e.preventDefault());
+}
+
+// ---------- save ----------
+function payload() {
+  const pages = {}, reset = [];
+  for (const pid of S.order) { if (resetPending(pid)) reset.push(pid); else if (S.cur[pid] !== S.loadedClean[pid]) pages[pid] = S.cur[pid]; }
+  const base = {}; for (const pid in pages) if (!S.info[pid].stale) base[pid] = S.info[pid].base;
+  const body = { pages, base, reset, hidden: S.order.filter(p => S.hidden.has(p)) };
+  if (S.resetOrder) body.order = []; else if (orderChanged()) body.order = S.order.slice();
+  return body;
+}
+const ISSUES = [
+  [/^outside page\/margin: (.*)$/, 'текст выходит за страницу или поле — $1'], [/^over folio: (.*)$/, 'текст наезжает на нижнюю строку с номером — $1'],
+  [/^too wide: (.*)$/, 'строка не помещается по ширине — $1'], [/^wider than the panel by ([\d.]+) mm: (.*)$/, (m, a, t) => 'текст шире колонки на ' + a.replace('.', ',') + ' мм — ' + t],
+  [/^container overflow by (\d+) mm$/, 'содержимое не помещается в блок, лишних $1 мм'], [/^heading wider than its column: (.*)$/, 'заголовок шире своей колонки — $1'],
+];
+function issueLine(s) {
+  const m = /^p(\d+)\s+(.*)$/.exec(s); if (!m) return h('li', { text: s });
+  const pid = S.order.filter(p => !S.hidden.has(p))[+m[1] - 1]; let text = m[2];
+  for (const [re, ru] of ISSUES) if (re.test(text)) { text = text.replace(re, ru); break; }
+  return h('li', null, pid ? h('a', { class: 'ed-link', text: 'Стр. ' + m[1] + ' (' + pid + ')', onclick: () => { dlg(null); showPage(pid, true); } }) : 'Стр. ' + m[1], ': ' + text);
+}
+function dlg(...kids) { const d = $('#ed-dlg'), c = d.firstElementChild; c.textContent = ''; if (kids[0] == null) { d.hidden = true; return; } c.append(...kids.flat().filter(Boolean)); d.hidden = false; }
+const clock = s => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+async function save() {
+  if (S.busy) return;
+  await leaveModes();
+  const body = payload(), n = Object.keys(body.pages).length, t0 = Date.now();
+  S.busy = true; $('#ed-save').disabled = true;
+  const line = h('p', { class: 'ed-muted', text: 'Записываю правки…' }), time = h('b', { text: '0:00' }), fill = h('i');
+  dlg(h('h3', { text: 'Собираю PDF' }), h('p', null, 'Прошло ', time, '. Обычно это занимает около полутора минут — окно можно не закрывать.'), h('div', { id: 'ed-bar' }, fill), line);
+  const tick = setInterval(async () => {
+    const s = Math.round((Date.now() - t0) / 1000); time.textContent = clock(s); fill.style.width = Math.min(96, s / 95 * 100) + '%';
+    if (s % 2 === 0) try { const st = await api('/api/status'); if (st.running && st.last) line.textContent = st.last; } catch (e) { /* keep waiting */ }
+  }, 1000);
+  let res, err = null;
+  try { res = await post('/api/save', body); } catch (e) { err = e; res = e.data || {}; }
+  clearInterval(tick); S.busy = false; $('#ed-save').disabled = false;
+  const close = h('div', { class: 'ed-row' }, h('button', { class: 'ed-primary', text: 'Закрыть', onclick: () => dlg(null) }));
+  const log = res.log_tail ? h('details', null, h('summary', { text: 'Журнал сборки' }), h('pre', { text: res.log_tail })) : null;
+  if (err) {
+    dlg(h('h3', { class: 'ed-bad', text: res.saved ? 'PDF не собран' : 'Не сохранено' }), h('p', { text: err.message }),
+      h('p', { class: 'ed-muted', text: res.saved ? 'Ваши правки записаны и остаются в редакторе. Покажите журнал тому, кто ведёт проект, и попробуйте ещё раз.' : 'Правки остаются в редакторе — попробуйте ещё раз.' }), log && (log.open = true, log), close);
+    return;
+  }
+  draftClear(); $('#ed-toast').hidden = true;
+  try { await load(); } catch (e) { toast(e.message); }
+  const made = [n ? n + ' ' + plural(n, 'страница', 'страницы', 'страниц') + ' с правками' : '', body.reset.length ? 'сброшено к генератору: ' + body.reset.length : '', body.hidden.length ? 'скрыто: ' + body.hidden.length : '', body.order ? (body.order.length ? 'порядок изменён' : 'порядок как в генераторе') : ''].filter(Boolean).join(' · ');
+  const lay = res.layout === 'clean' ? h('p', { class: 'ed-good', text: 'Вёрстка чистая.' })
+    : res.layout === 'issues' ? [h('p', { class: 'ed-bad', text: 'Замечания к вёрстке: ' + res.issues.length }), h('ul', null, res.issues.map(issueLine))]
+    : h('p', { class: 'ed-muted', text: 'Сборщик не сообщил о проверке вёрстки — посмотрите журнал.' });
+  dlg(h('h3', { text: 'PDF собран' }),
+    h('p', null, 'За ' + clock(res.seconds || 0) + (res.pdf_mb ? ' · ' + num(res.pdf_mb) + ' МБ · ' : ' · '), res.pdf ? h('a', { class: 'ed-link', href: res.pdf + '?t=' + Date.now(), target: '_blank', text: 'Открыть PDF' }) : 'файл PDF не найден'),
+    made ? h('p', { class: 'ed-muted', text: 'Записано: ' + made + '.' }) : null, lay, log, close);
+}
+
+// ---------- draft: unsaved work survives a reload ----------
+let draftTimer = 0;
+function draftSoon() { clearTimeout(draftTimer); draftTimer = setTimeout(draftSave, 350); }
+function draftSave() {
+  try {
+    if (!isDirty()) { localStorage.removeItem(DRAFT); return; }
+    const d = { t: Date.now(), pages: {}, order: orderChanged() ? S.order : null, hidden: [...S.hidden], hiddenFrom: S.loadedHidden.slice().sort().join('|'), resetOrder: S.resetOrder };
+    for (const pid of S.dirty) d.pages[pid] = { html: S.cur[pid], from: hash(S.loadedClean[pid]) };
+    localStorage.setItem(DRAFT, JSON.stringify(d));
+  } catch (e) { /* storage is full or closed: the work is still on the screen */ }
+}
+function draftClear() { clearTimeout(draftTimer); try { localStorage.removeItem(DRAFT); } catch (e) { /* nothing to clear */ } }
+function draftApply() {
+  let d; try { d = JSON.parse(localStorage.getItem(DRAFT) || 'null'); } catch (e) { d = null; }
+  if (!d) return '';
+  let n = 0, old = 0; const what = [];
+  for (const pid in d.pages || {}) {
+    if (!S.sec[pid] || hash(S.loadedClean[pid]) !== d.pages[pid].from) { old++; continue; }      // the page has changed on disk since: the draft of it is void
+    const neu = parsePage(d.pages[pid].html); S.sec[pid].replaceWith(neu); S.sec[pid] = neu; S.cur[pid] = clean(neu); S.title[pid] = titleOf(neu);
+    if (S.cur[pid] !== S.loadedClean[pid]) { S.dirty.add(pid); n++; }
+  }
+  if (n) what.push(n + ' ' + plural(n, 'страница', 'страницы', 'страниц'));
+  if (d.order && d.order.length === S.order.length && d.order.every(p => S.sec[p])) { S.order = d.order.slice(); if (orderChanged()) what.push('порядок'); }
+  if (d.hiddenFrom === S.loadedHidden.slice().sort().join('|')) { S.hidden = new Set((d.hidden || []).filter(p => S.sec[p])); if (hiddenChanged()) what.push('скрытые страницы'); }
+  if (d.resetOrder && S.hasOrder) S.resetOrder = true;
+  if (old) setTimeout(() => toast('Часть черновика (' + old + ' стр.) устарела: эти страницы с тех пор пересобраны.'), 400);
+  return what.join(', ');
+}
+
+// ---------- keys ----------
+function onKey(e) {
+  const mod = e.metaKey || e.ctrlKey, t = e.target, inField = t && t.closest && t.closest('input, textarea, select') && !S.edit;
+  if (!$('#ed-dlg').hidden) { if (e.key === 'Escape' && !S.busy) dlg(null); return; }
+  if (mod && e.code === 'KeyS') { e.preventDefault(); save(); return; }
+  if (inField) { if (e.key === 'Escape') t.blur(); return; }
+  if ((e.key === 'Enter' || e.key === ' ') && t && t.closest && t.closest('button, a, summary') && !S.edit) return;      // the key presses that control
+  if (S.edit) {
+    if (e.key === 'Escape') { e.preventDefault(); endEdit(); }
+    else if (e.key === 'Enter') { e.preventDefault(); if (mod) endEdit(); else insertBreak(); }
+    return;                                                    // everything else is ordinary typing, with the browser's own undo
+  }
+  if (S.crop) {
+    if (e.key === 'Escape') { e.preventDefault(); cropEnd(false); } else if (e.key === 'Enter') { e.preventDefault(); cropEnd(true); }
+    else if (mod && e.code === 'KeyZ') { e.preventDefault(); cropEnd(false); }
+    return;
+  }
+  if (mod && e.code === 'KeyZ') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
+  if (mod && e.code === 'KeyY') { e.preventDefault(); redo(); return; }
+  if (mod || e.altKey) return;
+  if (e.key === 'Escape') { if (S.sel) select(S.sel.parentElement); else if (S.lib.open) libClose(); return; }
+  if (!S.sel) return;
+  const step = e.shiftKey ? 1 : .25, arrows = { ArrowLeft: [-step, 0], ArrowRight: [step, 0], ArrowUp: [0, -step], ArrowDown: [0, step] };
+  if (arrows[e.key]) { e.preventDefault(); nudge(...arrows[e.key]); }
+  else if (e.key === 'Delete' || e.key === 'Backspace') { e.preventDefault(); hideSel(); }
+  else if (e.key === 'Enter') { e.preventDefault(); if (S.sel.tagName === 'IMG') cropStart(S.sel); else if (ownsText(S.sel)) startEdit(S.sel); }
+}
+
+// ---------- wiring ----------
+let layTimer = 0;
+function layoutSoon() { cancelAnimationFrame(layTimer); layTimer = requestAnimationFrame(layout); }
+function wire() {
+  work.addEventListener('pointerdown', onDown); work.addEventListener('pointermove', onMove); work.addEventListener('pointerup', onUp); work.addEventListener('pointercancel', onUp);
+  work.addEventListener('pointerleave', () => { if (!S.drag) S.hover = null; });
+  work.addEventListener('dblclick', e => {
+    if (S.crop || S.busy || e.target.closest('.ed-ui')) return;
+    if (S.edit && S.edit.el.contains(e.target)) return;
+    const x = e.clientX, y = e.clientY, t = textOwnerAt(x, y);
+    if (t) { startEdit(t, x, y); return; }
+    const p = pick(x, y); if (p && p.tagName === 'IMG') { select(p); cropStart(p); }
+  });
+  flow.addEventListener('click', e => { if (e.target.closest('a')) e.preventDefault(); });
+  flow.addEventListener('paste', onPaste);
+  work.addEventListener('scroll', () => {
+    if (S.drag) return;
+    const mid = work.scrollTop + work.clientHeight * .4; let best = null;
+    for (const pid of S.order) { const s = S.slot[pid]; if (s.offsetTop <= mid) best = pid; else break; }
+    if (best) setActive(best);
+  }, { passive: true });
+  work.addEventListener('wheel', e => { if ((e.ctrlKey || e.metaKey) && !S.crop) { e.preventDefault(); setZoom(S.zoom * Math.exp(-e.deltaY * .01)); } }, { passive: false });   // pinch on a trackpad
+  window.addEventListener('keydown', onKey);
+  window.addEventListener('resize', layoutSoon);
+  window.addEventListener('beforeunload', e => { draftSave(); if (isDirty() && !S.leaving) { e.preventDefault(); e.returnValue = ''; } });
+  $('#ed-zin').onclick = () => setZoom(S.zoom * 1.15); $('#ed-zout').onclick = () => setZoom(S.zoom / 1.15); $('#ed-zfit').onclick = () => { S.fit = true; layout(); };
+  $('#ed-undo').onclick = undo; $('#ed-redo').onclick = redo; $('#ed-save').onclick = save;
+  $('#ed-libx').onclick = libClose; $('#ed-upbtn').onclick = () => $('#ed-file').click();
+  $('#ed-file').onchange = e => { upload(e.target.files); e.target.value = ''; };
+  $('#ed-q').oninput = e => { S.lib.q = e.target.value; libDraw(); };
+  cropWire(); dropWire(); requestAnimationFrame(frame);
+}
+wire();
+load().catch(e => dlg(h('h3', { class: 'ed-bad', text: 'Редактор не открылся' }), h('p', { text: e.message }), h('div', { class: 'ed-row' }, h('button', { class: 'ed-primary', text: 'Попробовать ещё раз', onclick: () => location.reload() }))));
+})();
+</script>
+</body>
+</html>

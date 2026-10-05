@@ -413,7 +413,7 @@ def apply_edits(pages, pids, builder):
     if hidden or order:
         num = {it["pid"]: n + 1 for n, it in enumerate(shown)}
         for it in shown:
-            it["html"] = re.sub(r'(<p class="folio">.*?<span>)(\d\d)(</span></p>)', lambda m: f'{m.group(1)}{num[it["pid"]]:02d}{m.group(3)}', it["html"], flags=re.S)
+            it["html"] = re.sub(r'(<p class="folio"[^>]*>.*?<span[^>]*>)(\d\d)(</span></p>)', lambda m: f'{m.group(1)}{num[it["pid"]]:02d}{m.group(3)}', it["html"], flags=re.S)
             if "terms" in num: it["html"] = re.sub(r"(стор\.[\s\u00a0\u202f]*)(\d+)", lambda m: m.group(1) + str(num["terms"]), it["html"])
     EDITOR_PAGES.write_text(json.dumps(dict(builder=builder, pages=items), ensure_ascii=False), encoding="utf-8")
     if saved or hidden or order: print("edits:", len([i for i in items if i["edited"]]), "pages edited by hand ·", len(hidden & {i["pid"] for i in items}), "hidden ·", "order changed" if order else "order as built")

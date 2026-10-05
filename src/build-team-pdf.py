@@ -404,6 +404,9 @@ def apply_edits(pages, pids, builder):
             it.update(html=saved[pid]["html"], edited=True, stale=saved[pid].get("base") != h)
             if it["stale"]: print(f"edits: «{pid}» — the generator changed after the manual edit; the manual version is kept (reset the page in the editor to take the new one)")
         items.append(it)
+    for pid, sv in saved.items():          # pages duplicated in the editor: no generated twin, printed from the saved html
+        if pid not in pids and isinstance(sv, dict) and sv.get("html"):
+            items.append(dict(pid=pid, generated=None, base=None, html=sv["html"], edited=True, stale=False, hidden=pid in hidden, copy_of=sv.get("copy_of")))
     if order:
         pos = {pid: i for i, pid in enumerate(order)}; key = {}; last = -1
         for it in items:                       # pages the editor has not seen stay after their generated neighbour

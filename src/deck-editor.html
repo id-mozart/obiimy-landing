@@ -9,7 +9,7 @@
 <style id="ed-deck-css"></style>
 <style>
 html, body { height: 100%; overflow: hidden; }
-body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail work lib" minmax(0, 1fr) / 252px minmax(0, 1fr) auto; }
+body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail work lib" minmax(0, 1fr) / 300px minmax(0, 1fr) auto; }
 [hidden] { display: none !important; }
 .ed-ui { font: 400 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; color: #22241f; letter-spacing: 0; text-transform: none; font-variant-numeric: normal; text-align: left; white-space: normal; }
 .ed-ui button, .ed-ui input { font: inherit; color: inherit; }
@@ -21,6 +21,7 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 .ed-ui button.ed-quiet { border-color: transparent; background: transparent; }
 .ed-ui button.ed-quiet:hover:not(:disabled) { background: #e9e9e5; }
 .ed-ui a.ed-link { color: #2459c9; text-decoration: underline; cursor: pointer; }
+.ed-ui input[type=text], .ed-ui input[type=search] { height: 30px; padding: 0 9px; border: 1px solid #d3d3ce; border-radius: 6px; background: #fff; width: 100%; }
 .ed-muted { color: #70726c; }
 
 #ed-top { grid-area: top; display: flex; align-items: center; gap: 8px; padding: 0 12px; background: #fbfbf9; border-bottom: 1px solid #dcdcd8; }
@@ -32,37 +33,50 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 #ed-state.ed-dirty { color: #8a5a00; }
 
 #ed-ctx { grid-area: ctx; display: flex; align-items: center; gap: 6px; padding: 0 12px; background: #f3f3f0; border-bottom: 1px solid #dcdcd8; overflow: hidden; white-space: nowrap; }
-#ed-ctx .ed-crumbs { display: flex; align-items: center; gap: 2px; min-width: 0; overflow: hidden; }
+#ed-ctx .ed-crumbs { display: flex; align-items: center; gap: 2px; min-width: 0; overflow: hidden; flex: none; }
 #ed-ctx .ed-crumb { height: 24px; padding: 0 7px; border: 0; background: transparent; border-radius: 5px; }
 #ed-ctx .ed-crumb:last-child { background: #dfe8fb; color: #1d4bb0; font-weight: 600; }
 #ed-ctx .ed-crumb span { color: #8d8f89; font-weight: 400; margin-left: 4px; }
 #ed-ctx .ed-arrow { color: #a2a49e; }
 #ed-ctx .ed-read { margin-left: 8px; color: #55574f; font-variant-numeric: tabular-nums; }
-#ed-ctx .ed-grow { flex: 1; }
+#ed-ctx .ed-hint { color: #70726c; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+#ed-ctx .ed-grow { flex: 1; min-width: 8px; }
+#ed-ctx .ed-add { display: flex; gap: 6px; flex: none; margin-left: 8px; padding-left: 10px; border-left: 1px solid #dcdcd8; }
 #ed-ctx button { height: 26px; }
+#ed-work.ed-placing { cursor: crosshair; }
+#ed-work.ed-placing #ed-flow .pg { cursor: crosshair; }
 
 #ed-rail { grid-area: rail; display: flex; flex-direction: column; min-height: 0; background: #fbfbf9; border-right: 1px solid #dcdcd8; }
 #ed-rail .ed-rail-head { padding: 10px 12px 8px; font-weight: 600; border-bottom: 1px solid #ecece8; }
 #ed-rail .ed-rail-head span { font-weight: 400; color: #70726c; }
-#ed-pages { flex: 1; overflow-y: auto; padding: 6px; }
-.ed-item { padding: 7px 8px 7px; border-radius: 7px; cursor: pointer; border: 1px solid transparent; }
+#ed-pages { flex: 1; overflow-y: auto; padding: 6px; position: relative; }
+.ed-item { display: grid; grid-template-columns: 104px 1fr; gap: 0 10px; padding: 7px 8px; border-radius: 8px; cursor: pointer; border: 1px solid transparent; touch-action: none; }
 .ed-item:hover { background: #f1f1ee; }
 .ed-item.ed-on { background: #eef2fb; border-color: #c9d6f3; }
-.ed-item.ed-off .ed-item-title, .ed-item.ed-off .ed-pid, .ed-item.ed-off .ed-num { opacity: .5; }
-.ed-item-top { display: flex; align-items: baseline; gap: 7px; }
-.ed-num { font-variant-numeric: tabular-nums; color: #70726c; min-width: 17px; }
-.ed-pid { font-weight: 600; }
+.ed-item.ed-dragging { opacity: .25; }
+.ed-item.ed-off .ed-thumb { opacity: .4; }
+.ed-item.ed-off .ed-name, .ed-item.ed-off .ed-pid, .ed-item.ed-off .ed-num { opacity: .5; }
+.ed-thumb { width: 104px; height: 74px; overflow: hidden; border-radius: 3px; background: #e6e6e2; box-shadow: 0 0 0 1px rgba(0,0,0,.12); pointer-events: none; }
+.ed-thumb-in { width: 297mm; height: 210mm; transform: scale(.0927); transform-origin: 0 0; }
+.ed-thumb-in .pg { page-break-after: auto; break-after: auto; }
+.ed-item-body { min-width: 0; align-self: start; }
+.ed-item-top { display: flex; align-items: baseline; gap: 6px; }
+.ed-num { font-variant-numeric: tabular-nums; color: #70726c; flex: none; }
+.ed-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
 .ed-dot { width: 7px; height: 7px; border-radius: 50%; background: #2f6feb; align-self: center; margin-left: auto; flex: none; }
-.ed-item-title { color: #55574f; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin: 1px 0 0 24px; }
-.ed-badges { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 0 24px; }
+.ed-pid { font-size: 11px; color: #8d8f89; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.ed-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
 .ed-badges:empty { display: none; }
 .ed-badge { font-size: 11px; line-height: 16px; padding: 0 6px; border-radius: 8px; background: #ecece8; color: #55574f; white-space: nowrap; }
 .ed-badge.ed-b-mod { background: #fbefd0; color: #7a5200; }
 .ed-badge.ed-b-stale { background: #fde6e2; color: #9a2b1c; }
 .ed-badge.ed-b-reset { background: #e3f1e4; color: #23602a; }
-.ed-acts { display: none; gap: 4px; margin: 6px 0 0 24px; flex-wrap: wrap; }
+.ed-badge.ed-b-copy { background: #e4ecfb; color: #1d4bb0; }
+.ed-acts { grid-column: 1 / -1; display: none; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
 .ed-item.ed-on .ed-acts, .ed-item:hover .ed-acts { display: flex; }
-.ed-ui .ed-acts button { height: 23px; padding: 0 7px; font-size: 12px; border-radius: 5px; }
+.ed-ui.ed-acts button { height: 23px; padding: 0 7px; font-size: 12px; border-radius: 5px; }
+.ed-drop-line { position: absolute; left: 10px; right: 10px; height: 3px; border-radius: 2px; background: #2f6feb; pointer-events: none; z-index: 3; }
+.ed-ghost { position: fixed; z-index: 200; pointer-events: none; opacity: .9; background: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.25); border-color: #c9d6f3; }
 #ed-rail .ed-rail-foot { padding: 8px 12px; border-top: 1px solid #ecece8; font-size: 12px; color: #70726c; }
 
 #ed-work { grid-area: work; position: relative; overflow: auto; background: #d6d6d2; }
@@ -70,6 +84,7 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 .ed-slot { margin: 0 auto 22px; }
 .ed-slot-head { display: flex; align-items: center; gap: 8px; height: 24px; font-size: 12px; color: #55574f; }
 .ed-slot-head b { font-weight: 600; color: #22241f; }
+.ed-slot-head i { font-style: normal; font-family: ui-monospace, Menlo, monospace; font-size: 11px; color: #8d8f89; }
 .ed-paper { position: relative; box-shadow: 0 1px 5px rgba(0,0,0,.22); background: #fff; }
 .ed-scale { width: 297mm; height: 210mm; transform-origin: 0 0; }
 .ed-slot[data-ed-off] .ed-scale { opacity: .3; }
@@ -77,7 +92,7 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 #ed-flow .pg { user-select: none; -webkit-user-select: none; cursor: default; }
 #ed-flow .pg a { cursor: default; }
 #ed-flow .pg img { -webkit-user-drag: none; }
-#ed-flow .pg [data-ed-hidden] { display: none !important; }
+.pg [data-ed-hidden] { display: none !important; }
 #ed-flow .pg [contenteditable], #ed-flow .pg [contenteditable] * { user-select: text; -webkit-user-select: text; cursor: text; }
 #ed-flow .pg [contenteditable] { outline: .45mm solid #2f6feb; outline-offset: .7mm; caret-color: #2f6feb; }
 
@@ -100,7 +115,6 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 #ed-lib .ed-lib-head { display: flex; align-items: center; padding: 8px 8px 8px 12px; font-weight: 600; border-bottom: 1px solid #ecece8; }
 #ed-lib .ed-lib-head span { flex: 1; }
 #ed-lib .ed-lib-tools { padding: 10px 12px; display: grid; gap: 8px; border-bottom: 1px solid #ecece8; }
-#ed-lib input[type=search] { height: 30px; padding: 0 9px; border: 1px solid #d3d3ce; border-radius: 6px; background: #fff; width: 100%; }
 #ed-drop { border: 1.5px dashed #c3c3be; border-radius: 8px; padding: 9px 10px; display: flex; align-items: center; gap: 8px; font-size: 12px; color: #55574f; }
 #ed-drop.ed-over-drop, #ed-lib.ed-over-drop #ed-drop { border-color: #2f6feb; background: #eef2fb; }
 #ed-groups { display: flex; flex-wrap: wrap; gap: 4px; }
@@ -115,9 +129,10 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 #ed-grid .ed-note { grid-column: 1 / -1; font-size: 12px; color: #70726c; padding: 6px 0; }
 
 #ed-dlg { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: rgba(30,30,28,.38); }
-#ed-dlg .ed-card { width: min(560px, calc(100vw - 40px)); max-height: calc(100vh - 60px); overflow: auto; background: #fff; border-radius: 12px; padding: 22px 24px 18px; box-shadow: 0 12px 48px rgba(0,0,0,.3); }
+#ed-dlg .ed-card { width: min(580px, calc(100vw - 40px)); max-height: calc(100vh - 60px); overflow: auto; background: #fff; border-radius: 12px; padding: 22px 24px 18px; box-shadow: 0 12px 48px rgba(0,0,0,.3); }
 #ed-dlg h3 { font: 600 17px/1.3 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; margin-bottom: 8px; letter-spacing: 0; }
 #ed-dlg p { margin-bottom: 8px; }
+#ed-dlg label { display: block; margin: 10px 0 4px; color: #55574f; font-size: 12px; }
 #ed-dlg ul { margin: 4px 0 10px 18px; }
 #ed-dlg li { margin-bottom: 4px; }
 #ed-dlg pre { font: 11px/1.45 ui-monospace, Menlo, monospace; background: #f3f3f0; border-radius: 6px; padding: 8px 10px; max-height: 200px; overflow: auto; white-space: pre-wrap; margin: 6px 0 10px; }
@@ -125,6 +140,11 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 #ed-dlg .ed-row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
 #ed-dlg .ed-good { color: #23602a; font-weight: 600; }
 #ed-dlg .ed-bad { color: #9a2b1c; font-weight: 600; }
+#ed-dlg .ed-steps { list-style: none; margin: 10px 0 4px; padding: 0; }
+#ed-dlg .ed-steps li { display: grid; grid-template-columns: 22px 1fr auto; gap: 0 8px; align-items: baseline; padding: 4px 0; border-top: 1px solid #f0f0ed; }
+#ed-dlg .ed-steps li small { grid-column: 2 / -1; font-size: 11px; color: #8d8f89; font-family: ui-monospace, Menlo, monospace; white-space: pre-wrap; word-break: break-word; }
+#ed-dlg .ed-steps .ed-st { text-align: center; }
+#ed-dlg .ed-steps .ed-sec { color: #8d8f89; font-variant-numeric: tabular-nums; }
 #ed-bar { height: 4px; border-radius: 2px; background: #ecece8; overflow: hidden; margin: 12px 0 8px; }
 #ed-bar i { display: block; height: 100%; width: 0; background: #2f6feb; transition: width 1s linear; }
 #ed-toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 120; background: #22241f; color: #fff; padding: 9px 14px; border-radius: 8px; box-shadow: 0 6px 24px rgba(0,0,0,.3); display: flex; gap: 12px; align-items: center; max-width: min(720px, calc(100vw - 40px)); }
@@ -143,12 +163,13 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
   <span id="ed-state" class="ed-muted"></span>
   <a id="ed-pdf" class="ed-link" target="_blank" hidden>Открыть PDF</a>
   <button id="ed-save" class="ed-primary" title="Записать правки и пересобрать PDF (⌘S)">Сохранить и собрать PDF</button>
+  <button id="ed-publish" title="Выложить собранный PDF на сайт: GitHub и Railway">Опубликовать</button>
 </header>
 <div id="ed-ctx" class="ed-ui"></div>
-<aside id="ed-rail" class="ed-ui">
-  <div class="ed-rail-head">Страницы <span id="ed-count"></span></div>
+<aside id="ed-rail">
+  <div class="ed-rail-head ed-ui">Страницы <span id="ed-count"></span></div>
   <div id="ed-pages"></div>
-  <div class="ed-rail-foot" id="ed-foot"></div>
+  <div class="ed-rail-foot ed-ui" id="ed-foot"></div>
 </aside>
 <main id="ed-work">
   <div id="ed-flow"></div>
@@ -169,7 +190,7 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
   </div>
 </main>
 <aside id="ed-lib" class="ed-ui" hidden>
-  <div class="ed-lib-head"><span>Заменить картинку</span><button id="ed-libx" class="ed-quiet" title="Закрыть">✕</button></div>
+  <div class="ed-lib-head"><span id="ed-lib-title">Заменить картинку</span><button id="ed-libx" class="ed-quiet" title="Закрыть">✕</button></div>
   <div class="ed-lib-tools">
     <div id="ed-drop"><button id="ed-upbtn">Загрузить свою…</button><span>или перетащите файл сюда</span><input id="ed-file" type="file" accept="image/*" multiple hidden></div>
     <input id="ed-q" type="search" placeholder="Поиск по имени файла" autocomplete="off">
@@ -183,15 +204,15 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 <script>
 'use strict';
 (() => {
-const MM = 96 / 25.4, PW = 297, PH = 210;
+const MM = 96 / 25.4, PW = 297, PH = 210, THUMB = 104 / (PW * MM);
 const BLANK = 'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
-const DRAFT = 'deck-editor-draft-v1';
+const DRAFT = 'deck-editor-draft-v2';
 const INERT = document.implementation.createHTMLDocument('');      // clones made here do not load their pictures
 const $ = s => document.querySelector(s);
-const work = $('#ed-work'), flow = $('#ed-flow'), selBox = $('#ed-selbox'), hoverBox = $('#ed-hoverbox');
-const S = { pages: [], info: {}, sec: {}, slot: {}, cur: {}, title: {}, loadedClean: {}, genClean: {}, order: [], hidden: new Set(), loadedOrder: [], loadedHidden: [],
-  dirty: new Set(), resetOrder: false, hasOrder: false, crops: {}, zoom: 1, fit: true, active: null, sel: null, hover: null, edit: null, crop: null, drag: null,
-  undo: [], redo: [], busy: false, pdf: null, lib: { open: false, files: null, groups: [], group: '', q: '', fresh: [] } };
+const work = $('#ed-work'), flow = $('#ed-flow'), selBox = $('#ed-selbox'), hoverBox = $('#ed-hoverbox'), rail = $('#ed-pages');
+const S = { pages: [], info: {}, sec: {}, slot: {}, thumb: {}, cur: {}, title: {}, names: {}, loadedClean: {}, genClean: {}, order: [], hidden: new Set(), loadedOrder: [], loadedHidden: [],
+  copies: {}, removed: new Set(), dirty: new Set(), resetOrder: false, hasOrder: false, crops: {}, made: new Set(), zoom: 1, fit: true, active: null, sel: null, hover: null, edit: null, crop: null, drag: null, place: null,
+  undo: [], redo: [], busy: false, pdf: null, livePdf: '', lib: { open: false, mode: 'replace', files: null, groups: [], group: '', q: '', fresh: [] } };
 window.deckEditor = S;                                             // for a look from the console
 
 // ---------- small things ----------
@@ -216,12 +237,17 @@ async function api(url, opt) {
   if (!r.ok || !data || data.ok === false) { const err = new Error(data && data.error || 'Ошибка ' + r.status); err.data = data; throw err; }
   return data;
 }
-const post = (url, body) => api(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+const post = (url, body, method) => api(url, { method: method || 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
 let toastTimer = 0;
 function toast(text, action, fn, ms) {
   const t = $('#ed-toast'); t.textContent = ''; t.append(h('span', { text }));
   if (action) t.append(h('a', { text: action, onclick: () => { t.hidden = true; fn(); } }));
   t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.hidden = true; }, ms || (action ? 12000 : 4200));
+}
+function nameOf(pid) {
+  if (!pid) return ''; if (S.names[pid]) return S.names[pid];
+  const m = /^(.*?)-copy(\d*)$/.exec(pid); if (m) return nameOf(m[1]) + ' (копия' + (m[2] ? ' ' + m[2] : '') + ')';
+  return pid;
 }
 
 // ---------- pages: parse, clean, compare ----------
@@ -245,19 +271,21 @@ function titleOf(sec) {
 function pathOf(el) { const p = []; for (let n = el; n && !n.hasAttribute('data-pid'); n = n.parentElement) p.unshift([...n.parentElement.children].indexOf(n)); return p; }
 function resolve(pid, path) { let n = S.sec[pid]; for (const i of path || []) { n = n && n.children[i]; } return n || null; }
 function touch(pid) {
-  const sec = S.sec[pid]; S.cur[pid] = clean(sec); S.title[pid] = titleOf(sec);
+  const sec = S.sec[pid]; if (!sec) return;
+  S.cur[pid] = clean(sec); S.title[pid] = titleOf(sec);
   S.cur[pid] !== S.loadedClean[pid] ? S.dirty.add(pid) : S.dirty.delete(pid);
-  drawPages(); drawState(); draftSoon();
+  thumbSoon(pid); drawPages(); drawState(); draftSoon();
 }
 function setPage(pid, html) {
   const neu = parsePage(html); S.sec[pid].replaceWith(neu); S.sec[pid] = neu;
   if (S.sel && !S.sel.isConnected) S.sel = null;
   S.hover = null; touch(pid);
 }
-const resetPending = pid => S.info[pid].edited && S.cur[pid] === S.genClean[pid];
+const isCopy = pid => !!S.copies[pid];
+const resetPending = pid => !isCopy(pid) && S.info[pid].edited && S.cur[pid] === S.genClean[pid];
 const orderChanged = () => S.order.join('|') !== S.loadedOrder.join('|');
 const hiddenChanged = () => [...S.hidden].sort().join('|') !== S.loadedHidden.slice().sort().join('|');
-const isDirty = () => S.dirty.size > 0 || orderChanged() || hiddenChanged() || S.resetOrder;
+const isDirty = () => S.dirty.size > 0 || orderChanged() || hiddenChanged() || S.resetOrder || S.removed.size > 0;
 
 // ---------- history ----------
 function commit(pid, before, merge) {
@@ -266,21 +294,22 @@ function commit(pid, before, merge) {
   const path = S.sel && pidOf(S.sel) === pid ? pathOf(S.sel) : null, last = S.undo[S.undo.length - 1], now = Date.now();
   if (merge && last && last.merge === merge && last.pid === pid && now - last.t < 1500 && String(last.path) === String(path)) { last.after = after; last.t = now; }
   else { S.undo.push({ pid, before, after, path, merge, t: now }); if (S.undo.length > 400) S.undo.shift(); }
-  S.redo = []; drawState(); return true;
+  S.redo = []; drawState(); gcSoon(); return true;
 }
 const deckState = () => ({ order: S.order.slice(), hidden: [...S.hidden], resetOrder: S.resetOrder });
-function applyDeck(st) { S.order = st.order.slice(); S.hidden = new Set(st.hidden); S.resetOrder = st.resetOrder; reflow(); drawState(); draftSoon(); }
+function applyDeck(st) { S.order = st.order.filter(p => S.sec[p]); S.hidden = new Set(st.hidden.filter(p => S.sec[p])); S.resetOrder = st.resetOrder; reflow(); drawState(); draftSoon(); }
 function commitDeck(before) {
   const after = deckState(); if (JSON.stringify(after) === JSON.stringify(before)) return;
   S.undo.push({ deck: true, before, after }); S.redo = []; reflow(); drawState(); draftSoon();
 }
 async function step(from, to, key) {
-  await leaveModes();
+  await leaveModes(); if (S.place) placeEnd();
   const it = from.pop(); if (!it) return;
   to.push(it);
   if (it.deck) applyDeck(it[key]);
-  else { setPage(it.pid, it[key]); select(it.path ? resolve(it.pid, it.path) : null); showPage(it.pid); }
-  drawState(); drawCtx();
+  else if (it.copy) { const add = key === 'after' ? it.add : !it.add; add ? addCopy(it.copy) : dropCopy(it.copy.pid); if (add) showPage(it.copy.pid); }
+  else if (S.sec[it.pid]) { setPage(it.pid, it[key]); select(it.path ? resolve(it.pid, it.path) : null); showPage(it.pid); }
+  drawState(); drawCtx(); gcSoon();
 }
 const undo = () => step(S.undo, S.redo, 'before'), redo = () => step(S.redo, S.undo, 'after');
 async function leaveModes() { if (S.edit) endEdit(); if (S.crop) await cropEnd(true); }
@@ -289,23 +318,29 @@ async function leaveModes() { if (S.edit) endEdit(); if (S.crop) await cropEnd(t
 async function load() {
   const keep = S.active, d = await api('/api/pages');
   $('#ed-deck-css').textContent = d.css;
-  S.pages = d.pages; S.info = {}; S.sec = {}; S.slot = {}; S.cur = {}; S.title = {}; S.loadedClean = {}; S.genClean = {}; S.dirty = new Set();
-  S.order = d.pages.map(p => p.pid); S.hidden = new Set(d.pages.filter(p => p.hidden).map(p => p.pid));
-  S.loadedOrder = S.order.slice(); S.loadedHidden = [...S.hidden]; S.hasOrder = !!d.has_order; S.resetOrder = false; S.crops = d.crops || {};
-  S.undo = []; S.redo = []; S.sel = S.hover = S.edit = S.crop = S.drag = null; S.pdf = d.pdf ? { url: d.pdf, mb: d.pdf_mb, t: d.pdf_time } : null;
-  flow.textContent = '';
+  S.pages = d.pages; S.info = {}; S.sec = {}; S.slot = {}; S.thumb = {}; S.cur = {}; S.title = {}; S.loadedClean = {}; S.genClean = {}; S.dirty = new Set(); S.copies = {}; S.removed = new Set();
+  S.names = d.names || {}; S.order = d.pages.map(p => p.pid); S.hidden = new Set(d.pages.filter(p => p.hidden).map(p => p.pid));
+  S.loadedOrder = S.order.slice(); S.loadedHidden = [...S.hidden]; S.hasOrder = !!d.has_order; S.resetOrder = false; S.crops = d.crops || {}; S.livePdf = d.live_pdf || '';
+  S.undo = []; S.redo = []; S.sel = S.hover = S.edit = S.crop = S.drag = S.place = null; S.pdf = d.pdf ? { url: d.pdf, mb: d.pdf_mb, t: d.pdf_time } : null;
+  flow.textContent = ''; rail.textContent = '';
   for (const p of d.pages) {
-    S.info[p.pid] = p;
-    const sec = parsePage(p.html), slot = h('div', { class: 'ed-slot', dataset: { edSlot: p.pid } }, h('div', { class: 'ed-slot-head ed-ui' }), h('div', { class: 'ed-paper' }, h('div', { class: 'ed-scale' }, sec)));
-    S.sec[p.pid] = sec; S.slot[p.pid] = slot; flow.append(slot);
-    S.loadedClean[p.pid] = S.cur[p.pid] = clean(sec); S.title[p.pid] = titleOf(sec);
-    if (p.edited) S.genClean[p.pid] = clean(parsePage(p.generated));
+    S.info[p.pid] = p; mountPage(p.pid, p.html);
+    S.loadedClean[p.pid] = S.cur[p.pid];
+    if (p.copy_of || p.generated == null) S.copies[p.pid] = p.copy_of || '?';           // a page that exists only in the editor
+    else if (p.edited) S.genClean[p.pid] = clean(parsePage(p.generated));
   }
   S.active = keep && S.sec[keep] ? keep : S.order[0];
   const restored = draftApply();
-  reflow(); layout(); drawState(); drawCtx();
+  reflow(); layout(); drawState(); drawCtx(); gcSoon();
   if (keep && S.sec[keep]) showPage(keep, true);
   if (restored) toast('Восстановлены несохранённые правки (' + restored + ').', 'Отбросить их', () => { draftClear(); load(); });
+  if (d.publishing) publishWatch();
+}
+function mountPage(pid, html) {
+  const sec = parsePage(html), slot = h('div', { class: 'ed-slot', dataset: { edSlot: pid } }, h('div', { class: 'ed-slot-head ed-ui' }), h('div', { class: 'ed-paper' }, h('div', { class: 'ed-scale' }, sec)));
+  S.sec[pid] = sec; S.slot[pid] = slot; flow.append(slot);
+  S.cur[pid] = clean(sec); S.title[pid] = titleOf(sec);
+  S.thumb[pid] = h('div', { class: 'ed-thumb' }, h('div', { class: 'ed-thumb-in' })); thumbNow(pid);
 }
 function reflow() {
   const shown = S.order.filter(p => !S.hidden.has(p));
@@ -333,52 +368,68 @@ function showPage(pid, instant) {
 }
 function setActive(pid) {
   if (S.active === pid) return; S.active = pid;
-  for (const it of document.querySelectorAll('.ed-item')) it.classList.toggle('ed-on', it.dataset.pid === pid);
-  const on = document.querySelector('.ed-item.ed-on'); if (on) on.scrollIntoView({ block: 'nearest' });
+  for (const it of rail.querySelectorAll('.ed-item')) it.classList.toggle('ed-on', it.dataset.pid === pid);
+  const on = rail.querySelector('.ed-item.ed-on'); if (on) on.scrollIntoView({ block: 'nearest' });
+  drawCtx();
 }
 
-// ---------- the rail ----------
+// ---------- the rail: thumbnails, list, drag to reorder ----------
+const thumbTimers = {};
+function thumbSoon(pid) { clearTimeout(thumbTimers[pid]); thumbTimers[pid] = setTimeout(() => thumbNow(pid), 150); }
+function thumbNow(pid) {
+  const box = S.thumb[pid], sec = S.sec[pid]; if (!box || !sec) return;
+  const c = sec.cloneNode(true);
+  for (const n of c.querySelectorAll('[contenteditable], [data-ed-crop]')) { n.removeAttribute('contenteditable'); n.removeAttribute('data-ed-crop'); }
+  box.firstChild.textContent = ''; box.firstChild.append(c);
+}
 function badges(pid) {
-  const info = S.info[pid], out = [];
+  const info = S.info[pid] || {}, out = [];
   if (S.hidden.has(pid)) out.push(h('span', { class: 'ed-badge', text: 'скрыта', title: 'Страница не попадёт в PDF' }));
+  if (isCopy(pid)) out.push(h('span', { class: 'ed-badge ed-b-copy', text: 'копия', title: 'Страница создана в редакторе как копия «' + nameOf(S.copies[pid]) + '»' }));
   if (resetPending(pid)) out.push(h('span', { class: 'ed-badge ed-b-reset', text: 'будет сброшена', title: 'После сохранения страница снова будет браться из генератора' }));
   else {
-    if (info.edited || S.dirty.has(pid)) out.push(h('span', { class: 'ed-badge ed-b-mod', text: 'изменена', title: 'Страница поправлена вручную — в PDF идёт ваша версия' }));
+    if ((info.edited && !isCopy(pid)) || S.dirty.has(pid)) out.push(h('span', { class: 'ed-badge ed-b-mod', text: 'изменена', title: 'Страница поправлена вручную — в PDF идёт ваша версия' }));
     if (info.stale) out.push(h('span', { class: 'ed-badge ed-b-stale', text: 'генератор изменился', title: 'После вашей правки эта страница поменялась в генераторе. В PDF идёт ваша версия; «Сбросить» — взять новую из генератора.' }));
   }
   return out;
 }
 function drawPages() {
-  const list = $('#ed-pages'), keep = list.scrollTop, shown = S.order.filter(p => !S.hidden.has(p)); list.textContent = '';
+  const keep = rail.scrollTop, shown = S.order.filter(p => !S.hidden.has(p)); rail.textContent = '';
   S.order.forEach((pid, i) => {
-    const info = S.info[pid], off = S.hidden.has(pid), n = off ? '—' : String(shown.indexOf(pid) + 1).padStart(2, '0');
-    const gone = S.sec[pid].querySelectorAll('[data-ed-hidden]').length, canReset = (info.edited && !resetPending(pid)) || S.dirty.has(pid);
+    const info = S.info[pid] || {}, off = S.hidden.has(pid), n = off ? '—' : String(shown.indexOf(pid) + 1).padStart(2, '0');
+    const gone = S.sec[pid].querySelectorAll('[data-ed-hidden]').length, canReset = (info.edited && !isCopy(pid) && !resetPending(pid)) || (S.dirty.has(pid) && !isCopy(pid));
     const act = (text, title, fn, dis) => h('button', { text, title, disabled: dis, onclick: e => { e.stopPropagation(); fn(); } });
-    list.append(h('div', { class: 'ed-item' + (pid === S.active ? ' ed-on' : '') + (off ? ' ed-off' : ''), dataset: { pid }, onclick: () => showPage(pid, true) },
-      h('div', { class: 'ed-item-top' }, h('span', { class: 'ed-num', text: n }), h('span', { class: 'ed-pid', text: pid }), S.dirty.has(pid) && h('span', { class: 'ed-dot', title: 'Есть несохранённые правки' })),
-      h('div', { class: 'ed-item-title', text: S.title[pid] }),
-      h('div', { class: 'ed-badges' }, badges(pid)),
-      h('div', { class: 'ed-acts' },
+    rail.append(h('div', { class: 'ed-item' + (pid === S.active ? ' ed-on' : '') + (off ? ' ed-off' : ''), dataset: { pid } },
+      S.thumb[pid],
+      h('div', { class: 'ed-item-body ed-ui' },
+        h('div', { class: 'ed-item-top' }, h('span', { class: 'ed-num', text: n }), h('span', { class: 'ed-name', text: nameOf(pid), title: S.title[pid] }), S.dirty.has(pid) && h('span', { class: 'ed-dot', title: 'Есть несохранённые правки' })),
+        h('div', { class: 'ed-pid', text: pid }),
+        h('div', { class: 'ed-badges' }, badges(pid))),
+      h('div', { class: 'ed-acts ed-ui' },
         act('↑', 'Передвинуть выше', () => movePage(pid, -1), i === 0), act('↓', 'Передвинуть ниже', () => movePage(pid, 1), i === S.order.length - 1),
         act(off ? 'Показать' : 'Скрыть', off ? 'Вернуть страницу в PDF' : 'Не печатать страницу в PDF', () => toggleHidden(pid)),
-        act('Сбросить', 'Вернуть страницу к виду из генератора', () => resetPage(pid), !canReset),
+        act('Дублировать', 'Сделать копию страницы сразу после этой', () => duplicatePage(pid)),
+        isCopy(pid) ? act('Удалить копию', 'Убрать эту копию из колоды', () => removeCopy(pid)) : act('Сбросить', 'Вернуть страницу к виду из генератора', () => resetPage(pid), !canReset),
         gone ? act('Вернуть элементы · ' + gone, 'Показать элементы, скрытые на этой странице клавишей Delete', () => unhideAll(pid)) : null)));
     const head = S.slot[pid].firstChild; head.textContent = '';
-    head.append(h('b', { text: n === '—' ? pid : n + ' · ' + pid }), ...badges(pid), off ? h('span', { class: 'ed-muted', text: '— не печатается' }) : '');
+    head.append(h('b', { text: (n === '—' ? '' : n + ' · ') + nameOf(pid) }), h('i', { text: pid }), ...badges(pid), off ? h('span', { class: 'ed-muted', text: '— не печатается' }) : '');
   });
-  list.scrollTop = keep;
-  const foot = [];
-  if (orderChanged() || hiddenChanged()) foot.push('Номера страниц на листах обновятся после сборки.');
-  $('#ed-foot').textContent = foot.join(' ');
+  rail.scrollTop = keep;
+  const foot = $('#ed-foot'); foot.textContent = '';
+  if (orderChanged() || hiddenChanged()) foot.append('Номера страниц на листах обновятся после сборки. ');
   if (S.hasOrder || S.resetOrder) {
-    $('#ed-foot').append(foot.length ? ' ' : '', S.resetOrder ? 'Порядок вернётся к порядку генератора после сборки. ' : 'Порядок страниц задан вручную. ',
+    foot.append(S.resetOrder ? 'Порядок вернётся к порядку генератора после сборки. ' : 'Порядок страниц задан вручную. ',
       h('a', { class: 'ed-link', text: S.resetOrder ? 'Оставить ручной' : 'Вернуть как в генераторе', onclick: () => { const b = deckState(); S.resetOrder = !S.resetOrder; commitDeck(b); } }));
   }
-  $('#ed-foot').hidden = !$('#ed-foot').textContent;
+  foot.hidden = !foot.textContent;
 }
 function movePage(pid, d) {
   const i = S.order.indexOf(pid), j = i + d; if (j < 0 || j >= S.order.length) return;
-  const before = deckState(); S.order.splice(i, 1); S.order.splice(j, 0, pid); S.resetOrder = false; commitDeck(before); showPage(pid);
+  moveTo(pid, j);
+}
+function moveTo(pid, j) {
+  const before = deckState(), i = S.order.indexOf(pid); if (i < 0) return;
+  S.order.splice(i, 1); S.order.splice(j, 0, pid); S.resetOrder = false; commitDeck(before); showPage(pid);
 }
 function toggleHidden(pid) { const before = deckState(); S.hidden.has(pid) ? S.hidden.delete(pid) : S.hidden.add(pid); commitDeck(before); }
 async function resetPage(pid) {
@@ -394,11 +445,87 @@ async function unhideAll(pid) {
   commit(pid, before);
 }
 function unhide(n) { const was = n.getAttribute('data-ed-hidden'); n.removeAttribute('data-ed-hidden'); was ? n.style.display = was : n.style.removeProperty('display'); tidy(n); }
+function railWire() {
+  // pages are reordered by dragging an item (the buttons inside keep their own clicks); a press without movement opens the page
+  let d = null, line = null, ghost = null, scroller = 0;
+  const items = () => [...rail.querySelectorAll('.ed-item')];
+  const cleanup = () => { if (line) line.remove(); if (ghost) ghost.remove(); line = ghost = null; cancelAnimationFrame(scroller); scroller = 0; for (const it of items()) it.classList.remove('ed-dragging'); d = null; };
+  const target = y => {                         // where the dragged page lands: before the item under the pointer, or after the last one
+    const list = items().filter(it => it.dataset.pid !== d.pid); let idx = list.length, top = null;
+    for (let i = 0; i < list.length; i++) { const r = list[i].getBoundingClientRect(); if (y < r.top + r.height / 2) { idx = i; top = list[i].offsetTop - 4; break; } }
+    if (top == null) { const last = list[list.length - 1]; top = last ? last.offsetTop + last.offsetHeight + 1 : 4; }
+    return { idx, top, list };
+  };
+  rail.addEventListener('pointerdown', e => {
+    const it = e.target.closest('.ed-item'); if (!it || e.button !== 0 || e.target.closest('button, a') || S.busy) return;
+    d = { pid: it.dataset.pid, x: e.clientX, y: e.clientY, started: false, id: e.pointerId, it }; rail.setPointerCapture(e.pointerId); e.preventDefault();
+  });
+  rail.addEventListener('pointermove', e => {
+    if (!d) return;
+    if (!d.started) {
+      if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 6) return;
+      d.started = true; d.it.classList.add('ed-dragging');
+      ghost = d.it.cloneNode(true); ghost.classList.add('ed-ghost'); ghost.classList.remove('ed-on'); ghost.style.width = d.it.offsetWidth + 'px'; ghost.querySelector('.ed-acts').remove(); document.body.append(ghost);
+      line = h('div', { class: 'ed-drop-line' }); rail.append(line);
+      d.dy = e.clientY - d.it.getBoundingClientRect().top; d.dx = e.clientX - d.it.getBoundingClientRect().left;
+    }
+    ghost.style.left = (e.clientX - d.dx) + 'px'; ghost.style.top = (e.clientY - d.dy) + 'px';
+    const t = target(e.clientY); d.idx = t.idx; line.style.top = t.top + 'px';
+    const r = rail.getBoundingClientRect(); d.scroll = e.clientY < r.top + 28 ? -1 : e.clientY > r.bottom - 28 ? 1 : 0;
+    if (d.scroll && !scroller) { const tick = () => { if (!d || !d.scroll) { scroller = 0; return; } rail.scrollTop += d.scroll * 7; const t2 = target(d.lastY); d.idx = t2.idx; line.style.top = t2.top + 'px'; scroller = requestAnimationFrame(tick); }; scroller = requestAnimationFrame(tick); }
+    d.lastY = e.clientY;
+  });
+  const up = e => {
+    if (!d) return;
+    const was = d; try { rail.releasePointerCapture(was.id); } catch (err) { /* released */ }
+    if (!was.started) { cleanup(); if (e.type === 'pointerup') showPage(was.pid, true); return; }
+    const rest = S.order.filter(p => p !== was.pid), j = Math.min(was.idx == null ? rest.length : was.idx, rest.length);
+    cleanup(); const neu = rest.slice(); neu.splice(j, 0, was.pid);
+    if (neu.join('|') !== S.order.join('|')) moveTo(was.pid, j);
+  };
+  rail.addEventListener('pointerup', up); rail.addEventListener('pointercancel', up);
+  window.addEventListener('keydown', e => { if (e.key === 'Escape' && d && d.started) cleanup(); });
+}
+
+// ---------- pages made in the editor: copies ----------
+function freePid(pid) {
+  const root = pid.replace(/-copy\d*$/, ''); let n = 1, cand = root + '-copy';
+  while (S.sec[cand] || S.info[cand]) { n++; cand = root + '-copy' + n; }
+  return cand;
+}
+function addCopy(c) {
+  // c = {pid, origin, html, index}
+  S.copies[c.pid] = c.origin; S.info[c.pid] = { pid: c.pid, html: c.html, generated: null, base: null, edited: false, stale: false, hidden: false, copy_of: c.origin };
+  mountPage(c.pid, c.html); S.loadedClean[c.pid] = S.removed.has(c.pid) ? S.loadedClean[c.pid] : null; S.removed.delete(c.pid);
+  if (S.cur[c.pid] !== S.loadedClean[c.pid]) S.dirty.add(c.pid);
+  S.order.splice(Math.min(c.index, S.order.length), 0, c.pid); S.resetOrder = false; reflow(); drawState(); draftSoon();
+}
+function dropCopy(pid) {
+  if (S.sel && pidOf(S.sel) === pid) select(null);
+  if (S.loadedClean[pid] != null) S.removed.add(pid);           // a copy that is already saved: tell the save to drop it
+  S.slot[pid].remove(); delete S.sec[pid]; delete S.slot[pid]; delete S.thumb[pid]; delete S.cur[pid]; delete S.copies[pid]; delete S.info[pid]; S.dirty.delete(pid);
+  S.order = S.order.filter(p => p !== pid); S.hidden.delete(pid); if (S.active === pid) S.active = S.order[0];
+  reflow(); drawState(); draftSoon();
+}
+async function duplicatePage(pid) {
+  await leaveModes();
+  const html = S.cur[pid].replace(/^<section\b([^>]*)\bdata-pid="[^"]*"/, '<section$1data-pid="__NEW__"'), neu = freePid(pid);
+  const c = { pid: neu, origin: S.copies[pid] || pid, html: html.replace('__NEW__', neu), index: S.order.indexOf(pid) + 1 };
+  addCopy(c); S.undo.push({ copy: c, add: true }); S.redo = []; drawState(); showPage(neu, true);
+  toast('Копия «' + nameOf(neu) + '» вставлена после оригинала.');
+}
+async function removeCopy(pid) {
+  await leaveModes(); if (S.place) placeEnd();
+  const c = { pid, origin: S.copies[pid], html: S.cur[pid], index: S.order.indexOf(pid) };
+  dropCopy(pid); S.undo.push({ copy: c, add: false }); S.redo = []; drawState();
+  toast('Копия удалена.', 'Отменить', undo, 6000);
+}
 
 function drawState() {
   $('#ed-undo').disabled = !S.undo.length; $('#ed-redo').disabled = !S.redo.length;
   const st = $('#ed-state'), parts = [];
   if (S.dirty.size) parts.push(S.dirty.size + ' ' + plural(S.dirty.size, 'страница', 'страницы', 'страниц'));
+  if (S.removed.size) parts.push('удалённые копии');
   if (orderChanged() || S.resetOrder) parts.push('порядок');
   if (hiddenChanged()) parts.push('скрытые страницы');
   st.textContent = parts.length ? 'Не сохранено: ' + parts.join(', ') : 'Все правки сохранены';
@@ -449,10 +576,16 @@ function ancScale(el) { let k = 1; for (let n = el.parentElement; n && !n.hasAtt
 
 function drawCtx() {
   const bar = $('#ed-ctx'); bar.textContent = '';
-  const el = S.sel && S.sel.isConnected ? S.sel : null;
-  if (S.crop) { bar.append(h('span', { class: 'ed-muted', text: 'Кадр: тяните картинку внутри рамки, колесо или ползунок — приблизить. Enter или щелчок мимо — готово, Esc — отмена.' })); return; }
+  const el = S.sel && S.sel.isConnected ? S.sel : null, btn = (text, title, fn, cls) => h('button', { text, title, class: cls, onclick: fn });
+  const adders = () => h('div', { class: 'ed-add' },
+    btn('+ Текст', 'Поставить на страницу новый абзац — щёлкните, где он должен быть', () => placeStart('text'), S.place === 'text' ? 'ed-primary' : ''),
+    btn('+ Картинка', 'Поставить на страницу новую картинку из библиотеки или свою', () => libOpen('add')),
+    btn('Дублировать страницу', 'Сделать копию текущей страницы «' + nameOf(S.active) + '»', () => S.active && duplicatePage(S.active)));
+  if (S.crop) { bar.append(h('span', { class: 'ed-hint', text: 'Кадр: тяните картинку внутри рамки, колесо или ползунок — приблизить. Enter или щелчок мимо — готово, Esc — отмена.' })); return; }
+  if (S.place) { bar.append(h('span', { class: 'ed-hint', text: 'Щёлкните на странице там, где должен появиться текст. Esc — отмена.' }), h('span', { class: 'ed-grow' }), btn('Отмена', '', placeEnd)); return; }
   if (!el) {
-    bar.append(h('span', { class: 'ed-muted', text: 'Щелчок — выбрать · двойной щелчок — править текст · тянуть — двигать · уголки — размер · стрелки — сдвиг на 0,25 мм (с Shift — 1 мм) · Delete — скрыть · Esc — на уровень выше · ⌘Z — отменить' }));
+    bar.append(h('span', { class: 'ed-hint', text: 'Щелчок — выбрать · двойной щелчок — править текст · тянуть — двигать · уголки — размер · стрелки — сдвиг на 0,25 мм (с Shift — 1 мм) · Delete — скрыть · Esc — на уровень выше · ⌘Z — отменить' }),
+      h('span', { class: 'ed-grow' }), adders());
     return;
   }
   const chain = []; for (let n = el; n && !n.hasAttribute('data-pid'); n = n.parentElement) chain.unshift(n);
@@ -468,12 +601,11 @@ function drawCtx() {
   if (tx || ty) read += ' · сдвиг ' + num(tx, 2) + ' / ' + num(ty, 2) + ' мм';
   if (sc !== 1) read += ' · масштаб ' + Math.round(sc * 100) + ' %';
   bar.append(h('span', { class: 'ed-read', text: read }), h('span', { class: 'ed-grow' }));
-  const btn = (text, title, fn) => h('button', { text, title, onclick: fn });
   if (chain.length > 1) bar.append(btn('↑ Уровень выше', 'Выбрать блок, в котором лежит этот элемент (Esc)', () => select(el.parentElement)));
   if (ownsText(el)) bar.append(btn('Править текст', 'Или двойной щелчок по тексту', () => startEdit(el)));
-  if (el.tagName === 'IMG') bar.append(btn('Кадр', 'Подвинуть и приблизить картинку внутри рамки (двойной щелчок)', () => cropStart(el)), btn('Заменить', 'Поставить другую картинку в эту рамку', () => libOpen()));
+  if (el.tagName === 'IMG') bar.append(btn('Кадр', 'Подвинуть и приблизить картинку внутри рамки (двойной щелчок)', () => cropStart(el)), btn('Заменить', 'Поставить другую картинку в эту рамку', () => libOpen('replace')));
   if (mv && (tx || ty || sc !== 1)) bar.append(btn('Вернуть на место', 'Убрать сдвиг и масштаб', () => { const pid = pidOf(mv), b = S.cur[pid]; setTranslate(mv, 0, 0); setScale(mv, 1); commit(pid, b); drawCtx(); }));
-  bar.append(btn('Скрыть', 'Убрать элемент со страницы (Delete). Вернуть — «Отменить» или «Вернуть элементы» у страницы', hideSel));
+  bar.append(btn('Скрыть', 'Убрать элемент со страницы (Delete). Вернуть — «Отменить» или «Вернуть элементы» у страницы', hideSel), adders());
 }
 function place(box, el, tag) {
   if (!el || !el.isConnected) { box.hidden = true; box._k = ''; return; }
@@ -517,6 +649,7 @@ function onDown(e) {
   if (S.edit) { if (S.edit.el.contains(e.target)) return; endEdit(); }
   if (document.activeElement && document.activeElement !== document.body) document.activeElement.blur();
   const sec = e.target.closest('section[data-pid]');
+  if (S.place) { e.preventDefault(); if (sec) placeAt(sec, e.clientX, e.clientY); else placeEnd(); return; }
   if (!sec) { select(null); return; }
   e.preventDefault();
   const x = e.clientX, y = e.clientY, deeper = e.altKey || e.metaKey || e.ctrlKey;
@@ -534,7 +667,7 @@ function onDown(e) {
 }
 function onMove(e) {
   const d = S.drag;
-  if (!d) { S.hover = !S.edit && !S.crop && !S.busy && !e.buttons && flow.contains(e.target) ? pick(e.clientX, e.clientY) : null; return; }
+  if (!d) { S.hover = !S.edit && !S.crop && !S.busy && !S.place && !e.buttons && flow.contains(e.target) ? pick(e.clientX, e.clientY) : null; return; }
   if (d.kind === 'wait') {
     if (Math.hypot(e.clientX - d.x, e.clientY - d.y) < 4) return;
     const el = movable(d.el);
@@ -574,6 +707,30 @@ function startScale(e, c) {
 let ctxTimer = 0;
 function drawCtxSoon() { if (!ctxTimer) ctxTimer = requestAnimationFrame(() => { ctxTimer = 0; drawCtx(); }); }
 
+// ---------- adding things to a page ----------
+function placeStart(what) { if (S.edit) endEdit(); if (S.crop) return; select(null); S.place = what; work.classList.add('ed-placing'); drawCtx(); }
+function placeEnd() { S.place = null; work.classList.remove('ed-placing'); drawCtx(); }
+function pageMm(sec, x, y) { const r = sec.getBoundingClientRect(); return [(x - r.left) / S.zoom / MM, (y - r.top) / S.zoom / MM]; }
+function placeAt(sec, x, y) {
+  const pid = sec.getAttribute('data-pid'), [mx, my] = pageMm(sec, x, y), what = S.place;
+  placeEnd();
+  if (what === 'text' && S.sec[pid]) {
+    const before = S.cur[pid], w = 70, p = h('p', { style: 'position:absolute;left:' + Math.max(2, Math.min(PW - w - 2, mx)).toFixed(1) + 'mm;top:' + Math.max(2, Math.min(PH - 10, my)).toFixed(1) + 'mm;width:' + w + 'mm;z-index:5', text: 'Текст' });
+    sec.append(p); select(p); startEdit(p, null, null, { before, fresh: true });
+    const sel = getSelection(), r = document.createRange(); r.selectNodeContents(p); sel.removeAllRanges(); sel.addRange(r);   // typing replaces the placeholder
+  }
+}
+async function addPic(file) {
+  const pid = S.active; const sec = S.sec[pid]; if (!sec) return;
+  if (S.edit) endEdit(); if (S.crop) await cropEnd(true);
+  let info; try { info = await api('/api/picinfo?orig=' + encodeURIComponent(file)); } catch (e) { toast(e.message); return; }
+  const before = S.cur[pid], w = 60, hh = Math.max(5, Math.round(w * info.h / info.w * 10) / 10), alpha = !!info.alpha;
+  const img = h('img', { src: file, alt: '', 'data-src': file, style: 'position:absolute;left:' + ((PW - w) / 2).toFixed(1) + 'mm;top:' + Math.max(2, (PH - hh) / 2).toFixed(1) + 'mm;width:' + w + 'mm;height:' + hh + 'mm;object-fit:' + (alpha ? 'contain' : 'cover') + ';z-index:4' });
+  sec.append(img); showPage(pid); select(img);
+  await new Promise(ok => { if (img.complete) ok(); else img.onload = img.onerror = ok; });
+  await cropStart(img, { before, fresh: true });
+}
+
 // ---------- text ----------
 function textOwnerAt(x, y) {
   // the smallest element whose own text is under the pointer
@@ -587,12 +744,12 @@ function textOwnerAt(x, y) {
   }
   const p = pick(x, y); return p && ownsText(p) ? p : null;
 }
-function startEdit(el, x, y) {
+function startEdit(el, x, y, o) {
   if (S.edit) endEdit();
   const pid = pidOf(el); if (!pid) return;
   select(el);
   let block = el; while (block.parentElement && !block.hasAttribute('data-pid') && getComputedStyle(block).display === 'inline') block = block.parentElement;
-  S.edit = { el, pid, before: S.cur[pid], pads: [], block };
+  S.edit = { el, pid, before: o && o.before || S.cur[pid], pads: [], block, fresh: !!(o && o.fresh), was: el.textContent };
   el.setAttribute('contenteditable', 'plaintext-only'); el.setAttribute('spellcheck', 'false'); el.focus({ preventScroll: true });
   let r = x != null && document.caretRangeFromPoint ? document.caretRangeFromPoint(x, y) : null;
   if (!r || !el.contains(r.startContainer)) { r = document.createRange(); r.selectNodeContents(el); r.collapse(false); }
@@ -612,11 +769,30 @@ function insertBreak() {
   if (nothingAfter(br, ed.block)) { const pad = document.createElement('br'); br.after(pad); ed.pads.push(pad); }   // a last <br> shows no new line by itself
   r.setStartAfter(br); r.collapse(true); sel.removeAllRanges(); sel.addRange(r);
 }
+const NBSP = ' ', THIN = ' ';
+function typoText(t) {
+  // the simple rules of typo() in src/imgs.py: thin spaces in thousands, no-break spaces around ×, before units, after short words, before a dash
+  t = t.replace(/(?<=\d) (?=\d{3}(?!\d))/g, THIN);
+  t = t.replace(/(\d) × (\d)/g, '$1' + NBSP + '×' + NBSP + '$2');
+  t = t.replace(/(\d) (грн|см|шт\.|°C)/g, '$1' + NBSP + '$2');
+  t = t.replace(/(до|від|з) (\d)/g, '$1' + NBSP + '$2');
+  t = t.replace(/(?<![\p{L}\p{N}_’'-])([ВвУуІіЙйЗзАаОо]|[Нн]а|[Дд]о|[Зз]а|[Нн]е|[Щщ]о|[Чч]и|[Тт]а|[Пп]о|[Іі]з|[Зз]і|[Яя]к|[Вв]ід|[Дд]ля|[Бб]ез|[Пп]ід|[Пп]ро|[Пп]ри) (?=\S)/gu, '$1' + NBSP);
+  t = t.replace(/(?<=\S) — /g, NBSP + '— ');
+  t = t.replace(/«([^»]{3,26})»/g, (m, a) => '«' + a.replace(/ /g, NBSP) + '»');
+  t = t.replace(/(?<=\d) ([+=]) (?=\d)/g, NBSP + '$1' + NBSP);
+  t = t.replace(/(?<=[\dа-яіїє])–(?=[\dа-яіїє])/g, '–⁠');
+  return t;
+}
+function typoApply(el) {
+  const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT); let n;
+  while ((n = w.nextNode())) { const t = typoText(n.nodeValue); if (t !== n.nodeValue) n.nodeValue = t; }
+}
 function endEdit() {
   const ed = S.edit; if (!ed) return; S.edit = null;
   for (const p of ed.pads) if (p.isConnected && nothingAfter(p, ed.block)) p.remove();
-  ed.el.removeAttribute('contenteditable'); ed.el.removeAttribute('spellcheck'); ed.el.normalize();
+  ed.el.removeAttribute('contenteditable'); ed.el.removeAttribute('spellcheck'); ed.el.normalize(); typoApply(ed.el);
   getSelection().removeAllRanges(); if (document.activeElement === ed.el) ed.el.blur();
+  if (ed.fresh && (!ed.el.textContent.trim() || ed.el.textContent === ed.was)) { ed.el.remove(); if (S.sel === ed.el) S.sel = null; }   // nothing was written: no new paragraph
   commit(ed.pid, ed.before); drawCtx();
 }
 function onPaste(e) {
@@ -637,7 +813,7 @@ async function cropStart(img, o) {
   const cs = getComputedStyle(img), bw = pf(cs.width), bh = pf(cs.height);
   const fw = (bw - pf(cs.paddingLeft) - pf(cs.paddingRight) - pf(cs.borderLeftWidth) - pf(cs.borderRightWidth)) / MM;
   const fh = (bh - pf(cs.paddingTop) - pf(cs.paddingBottom) - pf(cs.borderTopWidth) - pf(cs.borderBottomWidth)) / MM;
-  if (!(fw > .5 && fh > .5)) { toast('У этой картинки нет рамки, в которой можно кадрировать.'); return; }
+  if (!(fw > .5 && fh > .5)) { toast('У этой картинки нет рамки, в которой можно кадрировать.'); if (o.before) setPage(pid, o.before); return; }
   const fit = cs.objectFit, pos = cs.objectPosition.split(' ').map(v => v.endsWith('%') ? parseFloat(v) / 100 : .5), nat = { w: img.naturalWidth, h: img.naturalHeight };
   let info;
   try { info = await api('/api/picinfo?orig=' + encodeURIComponent(orig) + (o.fresh ? '' : '&cur=' + encodeURIComponent(cur))); }
@@ -719,7 +895,7 @@ async function cropEnd(apply) {
   const img = c.img;
   for (const p of ['background-image', 'background-size', 'background-position', 'background-repeat', 'background-origin', 'background-clip']) img.style.removeProperty(p);
   img.removeAttribute('data-ed-crop'); img.setAttribute('src', res.path); img.setAttribute('data-src', c.orig);
-  S.crops[res.path] = { src: c.orig, box };
+  S.crops[res.path] = { src: c.orig, box }; S.made.add(res.path);
   S.crop = null; hide(); select(img); commit(c.pid, c.before); drawCtx();
 }
 function cropWire() {
@@ -743,8 +919,19 @@ function cropWire() {
   $('#ed-cfit').addEventListener('click', () => { const c = S.crop; if (c) { c.cx = c.cy = .5; cropZoom(c.uContain, .5, .5); } });
   $('#ed-cok').addEventListener('click', () => cropEnd(true)); $('#ed-ccancel').addEventListener('click', () => cropEnd(false));
 }
+// re-framed pictures nobody refers to any more (undone, replaced, dropped) are deleted from img/edit
+let gcTimer = 0;
+function gcSoon() { clearTimeout(gcTimer); gcTimer = setTimeout(gcCrops, 600); }
+async function gcCrops() {
+  if (!S.made.size) return;
+  const texts = [...Object.values(S.cur), ...S.undo.flatMap(x => [x.before, x.after, x.copy && x.copy.html]), ...S.redo.flatMap(x => [x.before, x.after, x.copy && x.copy.html]), S.edit && S.edit.before, S.crop && S.crop.before].filter(x => typeof x === 'string');
+  const gone = [...S.made].filter(p => !texts.some(t => t.includes(p)));
+  if (!gone.length) return;
+  for (const p of gone) { S.made.delete(p); delete S.crops[p]; }
+  try { await post('/api/crop', { paths: gone }, 'DELETE'); } catch (e) { /* a leftover file is no tragedy */ }
+}
 
-// ---------- pictures: «Заменить» ----------
+// ---------- pictures: «Заменить» and «+ Картинка» ----------
 async function replacePic(file) {
   let img = null;
   if (S.crop) { const t = { pid: S.crop.pid, path: S.crop.path }; await cropEnd(false); img = resolve(t.pid, t.path); }
@@ -756,8 +943,10 @@ async function replacePic(file) {
   img.style.objectFit = /\.png$/i.test(file) || file.startsWith('img/cut/') ? 'contain' : 'cover';       // cut-outs keep their proportions inside the frame
   await cropStart(img, { before, fresh: true });
 }
-async function libOpen() {
-  const L = S.lib; L.open = true; $('#ed-lib').hidden = false; layoutSoon();
+function libPick(file) { return S.lib.mode === 'add' ? addPic(file) : replacePic(file); }
+async function libOpen(mode) {
+  const L = S.lib; L.open = true; L.mode = mode || 'replace'; $('#ed-lib').hidden = false; layoutSoon();
+  $('#ed-lib-title').textContent = L.mode === 'add' ? 'Новая картинка на страницу «' + nameOf(S.active) + '»' : 'Заменить картинку';
   if (!L.files) await libLoad();
   libDraw(); $('#ed-q').focus({ preventScroll: true });
 }
@@ -774,7 +963,7 @@ function libDraw() {
   list = [...list.filter(f => L.fresh.includes(f.f)), ...list.filter(f => !L.fresh.includes(f.f))];
   if (!list.length) grid.append(h('div', { class: 'ed-note', text: L.files && L.files.length ? 'Ничего не найдено.' : 'Картинок пока нет.' }));
   for (const f of list.slice(0, 450)) {
-    grid.append(h('div', { class: 'ed-pic', title: f.f + ' · ' + f.kb + ' КБ', onclick: () => replacePic(f.f) },
+    grid.append(h('div', { class: 'ed-pic', title: f.f + ' · ' + f.kb + ' КБ', onclick: () => libPick(f.f) },
       h('div', null, h('img', { loading: 'lazy', alt: '', src: '/api/thumb?f=' + encodeURIComponent(f.f) + '&v=' + f.v })), h('span', { text: f.name })));
   }
   if (list.length > 450) grid.append(h('div', { class: 'ed-note', text: 'Показаны первые 450 из ' + list.length + ' — уточните поиск.' }));
@@ -790,7 +979,8 @@ async function upload(files, target) {
   if (!done.length) return;
   S.lib.fresh = done.concat(S.lib.fresh); await libLoad(); if (S.lib.open) libDraw();
   if (target && target.isConnected) select(target);
-  if (S.crop || (S.sel && S.sel.tagName === 'IMG')) await replacePic(done[0]);
+  if (S.lib.open && S.lib.mode === 'add' && !target) await addPic(done[0]);
+  else if (S.crop || (S.sel && S.sel.tagName === 'IMG')) await replacePic(done[0]);
   else toast(done.length > 1 ? 'Загружено картинок: ' + done.length + '. Они в разделе «Мои».' : 'Картинка загружена — она в разделе «Мои».');
 }
 function dropWire() {
@@ -810,10 +1000,13 @@ function dropWire() {
 
 // ---------- save ----------
 function payload() {
-  const pages = {}, reset = [];
-  for (const pid of S.order) { if (resetPending(pid)) reset.push(pid); else if (S.cur[pid] !== S.loadedClean[pid]) pages[pid] = S.cur[pid]; }
-  const base = {}; for (const pid in pages) if (!S.info[pid].stale) base[pid] = S.info[pid].base;
-  const body = { pages, base, reset, hidden: S.order.filter(p => S.hidden.has(p)) };
+  const pages = {}, reset = [], copies = {}, base = {};
+  for (const pid of S.order) {
+    if (isCopy(pid)) { if (S.cur[pid] !== S.loadedClean[pid]) { pages[pid] = S.cur[pid]; copies[pid] = S.copies[pid]; } continue; }
+    if (resetPending(pid)) reset.push(pid); else if (S.cur[pid] !== S.loadedClean[pid]) { pages[pid] = S.cur[pid]; if (!S.info[pid].stale) base[pid] = S.info[pid].base; }
+  }
+  reset.push(...S.removed);
+  const body = { pages, base, copies, reset, hidden: S.order.filter(p => S.hidden.has(p)) };
   if (S.resetOrder) body.order = []; else if (orderChanged()) body.order = S.order.slice();
   return body;
 }
@@ -826,15 +1019,15 @@ function issueLine(s) {
   const m = /^p(\d+)\s+(.*)$/.exec(s); if (!m) return h('li', { text: s });
   const pid = S.order.filter(p => !S.hidden.has(p))[+m[1] - 1]; let text = m[2];
   for (const [re, ru] of ISSUES) if (re.test(text)) { text = text.replace(re, ru); break; }
-  return h('li', null, pid ? h('a', { class: 'ed-link', text: 'Стр. ' + m[1] + ' (' + pid + ')', onclick: () => { dlg(null); showPage(pid, true); } }) : 'Стр. ' + m[1], ': ' + text);
+  return h('li', null, pid ? h('a', { class: 'ed-link', text: 'Стр. ' + m[1] + ' · ' + nameOf(pid), title: pid, onclick: () => { dlg(null); showPage(pid, true); } }) : 'Стр. ' + m[1], ': ' + text);
 }
 function dlg(...kids) { const d = $('#ed-dlg'), c = d.firstElementChild; c.textContent = ''; if (kids[0] == null) { d.hidden = true; return; } c.append(...kids.flat().filter(Boolean)); d.hidden = false; }
 const clock = s => Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
-async function save() {
-  if (S.busy) return;
-  await leaveModes();
+async function save(then) {
+  if (S.busy) return false;
+  await leaveModes(); if (S.place) placeEnd();
   const body = payload(), n = Object.keys(body.pages).length, t0 = Date.now();
-  S.busy = true; $('#ed-save').disabled = true;
+  S.busy = true; $('#ed-save').disabled = $('#ed-publish').disabled = true;
   const line = h('p', { class: 'ed-muted', text: 'Записываю правки…' }), time = h('b', { text: '0:00' }), fill = h('i');
   dlg(h('h3', { text: 'Собираю PDF' }), h('p', null, 'Прошло ', time, '. Обычно это занимает около полутора минут — окно можно не закрывать.'), h('div', { id: 'ed-bar' }, fill), line);
   const tick = setInterval(async () => {
@@ -843,23 +1036,76 @@ async function save() {
   }, 1000);
   let res, err = null;
   try { res = await post('/api/save', body); } catch (e) { err = e; res = e.data || {}; }
-  clearInterval(tick); S.busy = false; $('#ed-save').disabled = false;
+  clearInterval(tick); S.busy = false; $('#ed-save').disabled = $('#ed-publish').disabled = false;
   const close = h('div', { class: 'ed-row' }, h('button', { class: 'ed-primary', text: 'Закрыть', onclick: () => dlg(null) }));
   const log = res.log_tail ? h('details', null, h('summary', { text: 'Журнал сборки' }), h('pre', { text: res.log_tail })) : null;
   if (err) {
     dlg(h('h3', { class: 'ed-bad', text: res.saved ? 'PDF не собран' : 'Не сохранено' }), h('p', { text: err.message }),
       h('p', { class: 'ed-muted', text: res.saved ? 'Ваши правки записаны и остаются в редакторе. Покажите журнал тому, кто ведёт проект, и попробуйте ещё раз.' : 'Правки остаются в редакторе — попробуйте ещё раз.' }), log && (log.open = true, log), close);
-    return;
+    return false;
   }
   draftClear(); $('#ed-toast').hidden = true;
   try { await load(); } catch (e) { toast(e.message); }
-  const made = [n ? n + ' ' + plural(n, 'страница', 'страницы', 'страниц') + ' с правками' : '', body.reset.length ? 'сброшено к генератору: ' + body.reset.length : '', body.hidden.length ? 'скрыто: ' + body.hidden.length : '', body.order ? (body.order.length ? 'порядок изменён' : 'порядок как в генераторе') : ''].filter(Boolean).join(' · ');
+  const made = [n ? n + ' ' + plural(n, 'страница', 'страницы', 'страниц') + ' с правками' : '', Object.keys(body.copies).length ? 'новых копий: ' + Object.keys(body.copies).length : '', body.reset.length ? 'сброшено или удалено: ' + body.reset.length : '', body.hidden.length ? 'скрыто: ' + body.hidden.length : '', body.order ? (body.order.length ? 'порядок изменён' : 'порядок как в генераторе') : ''].filter(Boolean).join(' · ');
   const lay = res.layout === 'clean' ? h('p', { class: 'ed-good', text: 'Вёрстка чистая.' })
     : res.layout === 'issues' ? [h('p', { class: 'ed-bad', text: 'Замечания к вёрстке: ' + res.issues.length }), h('ul', null, res.issues.map(issueLine))]
     : h('p', { class: 'ed-muted', text: 'Сборщик не сообщил о проверке вёрстки — посмотрите журнал.' });
+  const row = then ? h('div', { class: 'ed-row' }, h('button', { text: 'Не публиковать', onclick: () => dlg(null) }), h('button', { class: 'ed-primary', text: 'Опубликовать ▸', onclick: then })) : close;
   dlg(h('h3', { text: 'PDF собран' }),
     h('p', null, 'За ' + clock(res.seconds || 0) + (res.pdf_mb ? ' · ' + num(res.pdf_mb) + ' МБ · ' : ' · '), res.pdf ? h('a', { class: 'ed-link', href: res.pdf + '?t=' + Date.now(), target: '_blank', text: 'Открыть PDF' }) : 'файл PDF не найден'),
-    made ? h('p', { class: 'ed-muted', text: 'Записано: ' + made + '.' }) : null, lay, log, close);
+    made ? h('p', { class: 'ed-muted', text: 'Записано: ' + made + '.' }) : null, lay, log, row);
+  return true;
+}
+
+// ---------- publish: site, GitHub, Railway ----------
+function publishAsk() {
+  if (S.busy) return;
+  const dirty = isDirty(), field = h('input', { type: 'text', value: 'Правки из редактора', maxlength: '300' });
+  dlg(h('h3', { text: 'Опубликовать на сайт' }),
+    h('p', { text: 'Сайт пересоберётся (около минуты), правки уйдут в GitHub, Railway выложит новую версию (5–12 минут), потом проверим, что PDF на сайте обновился.' }),
+    dirty ? h('p', { class: 'ed-bad', text: 'Есть несохранённые правки: сначала они будут сохранены и собран PDF, потом публикация.' }) : null,
+    h('label', { text: 'Сообщение для истории изменений' }), field,
+    h('div', { class: 'ed-row' }, h('button', { text: 'Отмена', onclick: () => dlg(null) }),
+      h('button', { class: 'ed-primary', text: dirty ? 'Сохранить, собрать и опубликовать' : 'Опубликовать', onclick: async () => {
+        const message = field.value.trim() || 'Правки из редактора';
+        if (dirty) { const ok = await save(() => publishStart(message)); if (!ok) return; } else publishStart(message);
+      } })));
+  field.focus(); field.select();
+}
+async function publishStart(message) {
+  try { await post('/api/publish', { message }); } catch (e) { dlg(h('h3', { class: 'ed-bad', text: 'Публикация не началась' }), h('p', { text: e.message }), h('div', { class: 'ed-row' }, h('button', { class: 'ed-primary', text: 'Закрыть', onclick: () => dlg(null) }))); return; }
+  publishWatch();
+}
+let pubTimer = 0;
+function publishWatch() {
+  clearInterval(pubTimer); S.busy = true; $('#ed-save').disabled = $('#ed-publish').disabled = true;
+  const time = h('b', { text: '0:00' }), list = h('ul', { class: 'ed-steps' });
+  dlg(h('h3', { text: 'Публикую' }), h('p', null, 'Прошло ', time, '. Деплой занимает 5–12 минут; окно можно закрыть — ход публикации не прервётся.'), list,
+    h('div', { class: 'ed-row' }, h('button', { text: 'Скрыть окно', onclick: () => dlg(null) })));
+  const show = st => {
+    time.textContent = clock(st.seconds || 0); list.textContent = '';
+    for (const s of st.steps) {
+      const icon = s.state === 'done' ? '✓' : s.state === 'failed' ? '✗' : '…';
+      list.append(h('li', null, h('span', { class: 'ed-st ' + (s.state === 'done' ? 'ed-good' : s.state === 'failed' ? 'ed-bad' : ''), text: icon }), h('span', { text: s.name }), h('span', { class: 'ed-sec', text: clock(s.seconds || 0) }),
+        (s.note || (s.tail && s.tail.length)) ? h('small', { text: s.note || s.tail[s.tail.length - 1] }) : null));
+    }
+  };
+  const finish = st => {
+    clearInterval(pubTimer); S.busy = false; $('#ed-save').disabled = $('#ed-publish').disabled = false;
+    const r = st.result || {}, close = h('div', { class: 'ed-row' }, h('button', { class: 'ed-primary', text: 'Закрыть', onclick: () => dlg(null) }));
+    const steps = h('ul', { class: 'ed-steps' });
+    for (const s of st.steps) steps.append(h('li', null, h('span', { class: 'ed-st ' + (s.state === 'done' ? 'ed-good' : 'ed-bad'), text: s.state === 'done' ? '✓' : '✗' }), h('span', { text: s.name }), h('span', { class: 'ed-sec', text: clock(s.seconds || 0) }),
+      s.state === 'failed' && s.tail && s.tail.length ? h('small', { text: s.tail.join('\n') }) : s.note ? h('small', { text: s.note }) : null));
+    if (r.ok) dlg(h('h3', { class: 'ed-good', text: 'Опубликовано' }), h('p', null, 'За ' + clock(r.seconds || 0) + (r.pdf_mb ? ' · PDF на сайте совпадает с собранным (' + num(r.pdf_mb) + ' МБ) · ' : ' · '), h('a', { class: 'ed-link', href: r.url, target: '_blank', text: 'Открыть PDF на сайте' })), steps, close);
+    else dlg(h('h3', { class: 'ed-bad', text: 'Не опубликовано' }), h('p', { text: r.error || 'Публикация прервалась.' }), h('p', { class: 'ed-muted', text: 'Правки и PDF сохранены локально. Покажите журнал тому, кто ведёт проект.' }), steps, close);
+  };
+  const poll = async () => {
+    let st; try { st = (await api('/api/status')).publish; } catch (e) { return; }
+    if (!st) return;
+    if (st.running) { if (!$('#ed-dlg').hidden && list.isConnected) show(st); }
+    else finish(st);
+  };
+  poll(); pubTimer = setInterval(poll, 2000);
 }
 
 // ---------- draft: unsaved work survives a reload ----------
@@ -868,8 +1114,9 @@ function draftSoon() { clearTimeout(draftTimer); draftTimer = setTimeout(draftSa
 function draftSave() {
   try {
     if (!isDirty()) { localStorage.removeItem(DRAFT); return; }
-    const d = { t: Date.now(), pages: {}, order: orderChanged() ? S.order : null, hidden: [...S.hidden], hiddenFrom: S.loadedHidden.slice().sort().join('|'), resetOrder: S.resetOrder };
-    for (const pid of S.dirty) d.pages[pid] = { html: S.cur[pid], from: hash(S.loadedClean[pid]) };
+    const d = { t: Date.now(), pages: {}, copies: {}, removed: [...S.removed], order: orderChanged() ? S.order : null, hidden: [...S.hidden], hiddenFrom: S.loadedHidden.slice().sort().join('|'), resetOrder: S.resetOrder };
+    for (const pid of S.dirty) d.pages[pid] = { html: S.cur[pid], from: S.loadedClean[pid] == null ? null : hash(S.loadedClean[pid]) };
+    for (const pid in S.copies) if (S.loadedClean[pid] == null) d.copies[pid] = { origin: S.copies[pid], html: S.cur[pid], index: S.order.indexOf(pid) };
     localStorage.setItem(DRAFT, JSON.stringify(d));
   } catch (e) { /* storage is full or closed: the work is still on the screen */ }
 }
@@ -879,10 +1126,15 @@ function draftApply() {
   if (!d) return '';
   let n = 0, old = 0; const what = [];
   for (const pid in d.pages || {}) {
-    if (!S.sec[pid] || hash(S.loadedClean[pid]) !== d.pages[pid].from) { old++; continue; }      // the page has changed on disk since: the draft of it is void
-    const neu = parsePage(d.pages[pid].html); S.sec[pid].replaceWith(neu); S.sec[pid] = neu; S.cur[pid] = clean(neu); S.title[pid] = titleOf(neu);
+    if (!S.sec[pid] || S.loadedClean[pid] == null || hash(S.loadedClean[pid]) !== d.pages[pid].from) { if (!(d.copies || {})[pid]) old++; continue; }      // the page has changed on disk since: the draft of it is void
+    const neu = parsePage(d.pages[pid].html); S.sec[pid].replaceWith(neu); S.sec[pid] = neu; S.cur[pid] = clean(neu); S.title[pid] = titleOf(neu); thumbNow(pid);
     if (S.cur[pid] !== S.loadedClean[pid]) { S.dirty.add(pid); n++; }
   }
+  for (const pid in d.copies || {}) {
+    const c = d.copies[pid]; if (S.sec[pid] || !S.sec[c.origin] && !S.info[c.origin]) continue;
+    addCopy({ pid, origin: c.origin, html: c.html, index: Math.min(c.index, S.order.length) }); n++;
+  }
+  for (const pid of d.removed || []) if (S.sec[pid] && isCopy(pid)) dropCopy(pid);
   if (n) what.push(n + ' ' + plural(n, 'страница', 'страницы', 'страниц'));
   if (d.order && d.order.length === S.order.length && d.order.every(p => S.sec[p])) { S.order = d.order.slice(); if (orderChanged()) what.push('порядок'); }
   if (d.hiddenFrom === S.loadedHidden.slice().sort().join('|')) { S.hidden = new Set((d.hidden || []).filter(p => S.sec[p])); if (hiddenChanged()) what.push('скрытые страницы'); }
@@ -908,6 +1160,7 @@ function onKey(e) {
     else if (mod && e.code === 'KeyZ') { e.preventDefault(); cropEnd(false); }
     return;
   }
+  if (S.place) { if (e.key === 'Escape') placeEnd(); return; }
   if (mod && e.code === 'KeyZ') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
   if (mod && e.code === 'KeyY') { e.preventDefault(); redo(); return; }
   if (mod || e.altKey) return;
@@ -926,7 +1179,7 @@ function wire() {
   work.addEventListener('pointerdown', onDown); work.addEventListener('pointermove', onMove); work.addEventListener('pointerup', onUp); work.addEventListener('pointercancel', onUp);
   work.addEventListener('pointerleave', () => { if (!S.drag) S.hover = null; });
   work.addEventListener('dblclick', e => {
-    if (S.crop || S.busy || e.target.closest('.ed-ui')) return;
+    if (S.crop || S.busy || S.place || e.target.closest('.ed-ui')) return;
     if (S.edit && S.edit.el.contains(e.target)) return;
     const x = e.clientX, y = e.clientY, t = textOwnerAt(x, y);
     if (t) { startEdit(t, x, y); return; }
@@ -943,13 +1196,13 @@ function wire() {
   work.addEventListener('wheel', e => { if ((e.ctrlKey || e.metaKey) && !S.crop) { e.preventDefault(); setZoom(S.zoom * Math.exp(-e.deltaY * .01)); } }, { passive: false });   // pinch on a trackpad
   window.addEventListener('keydown', onKey);
   window.addEventListener('resize', layoutSoon);
-  window.addEventListener('beforeunload', e => { draftSave(); if (isDirty() && !S.leaving) { e.preventDefault(); e.returnValue = ''; } });
+  window.addEventListener('beforeunload', e => { draftSave(); if (isDirty()) { e.preventDefault(); e.returnValue = ''; } });
   $('#ed-zin').onclick = () => setZoom(S.zoom * 1.15); $('#ed-zout').onclick = () => setZoom(S.zoom / 1.15); $('#ed-zfit').onclick = () => { S.fit = true; layout(); };
-  $('#ed-undo').onclick = undo; $('#ed-redo').onclick = redo; $('#ed-save').onclick = save;
+  $('#ed-undo').onclick = undo; $('#ed-redo').onclick = redo; $('#ed-save').onclick = () => save(); $('#ed-publish').onclick = publishAsk;
   $('#ed-libx').onclick = libClose; $('#ed-upbtn').onclick = () => $('#ed-file').click();
   $('#ed-file').onchange = e => { upload(e.target.files); e.target.value = ''; };
   $('#ed-q').oninput = e => { S.lib.q = e.target.value; libDraw(); };
-  cropWire(); dropWire(); requestAnimationFrame(frame);
+  cropWire(); dropWire(); railWire(); requestAnimationFrame(frame);
 }
 wire();
 load().catch(e => dlg(h('h3', { class: 'ed-bad', text: 'Редактор не открылся' }), h('p', { text: e.message }), h('div', { class: 'ed-row' }, h('button', { class: 'ed-primary', text: 'Попробовать ещё раз', onclick: () => location.reload() }))));

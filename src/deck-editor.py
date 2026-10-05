@@ -7,9 +7,10 @@ Reads   review/deck-editor-pages.json and review/deck-editor.css (written by eve
 Writes  src/deck-edits.json (applied by the build, see apply_edits in src/build-team-pdf.py), img/edit/ (pictures re-framed in the editor),
         photo/user/ (uploaded pictures), review/lb/thumbs/ (thumbnail cache). On «save» it runs the builder and reports the layout check.
 Env     DECK_EDITS — the edits file; DECK_EDITOR_BUILDER — the command to run on save; DECK_EDITOR_PAGES — the pages file (tests);
-        DECK_EDITOR_PORT — the port (8770).
+        DECK_EDITOR_PUBLISH — the command «Опубликовать» runs instead of site build + git + railway (tests); DECK_EDITOR_PUBLISH_URL — the
+        live PDF to check after publishing; DECK_EDITOR_PORT — the port (8770).
 The page itself (HTML, CSS, JS) is src/deck-editor.html."""
-import hashlib, io, json, os, pathlib, re, shlex, subprocess, sys, tempfile, threading, time, urllib.parse
+import hashlib, io, json, os, pathlib, re, shlex, shutil, subprocess, sys, tempfile, threading, time, urllib.parse, urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from PIL import Image, ImageChops, ImageOps, ImageStat
 
@@ -27,7 +28,24 @@ LIBRARY = [("photo/user", "Мои"), ("photo/solo", "SOLO"), ("photo/site", "С�
 PICS = {".jpg", ".jpeg", ".png", ".webp"}
 PPI = 200
 BUILD_TIMEOUT = 15 * 60
-BUILD = {"lock": threading.Lock(), "running": False, "started": 0.0, "lines": []}
+BUILD = {"lock": threading.Lock(), "running": False, "started": 0.0, "lines": []}      # the lock covers a build and a publication alike
+LIVE_PDF = os.environ.get("DECK_EDITOR_PUBLISH_URL") or "https://obiimy-landing-production.up.railway.app/" + PDF
+PUBLISH = {"running": False, "started": 0.0, "steps": [], "result": None}
+PID_OK = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,60}$")
+NAMES = {"who": "Кто мы", "p3-now": "Стр. 3 · таблица (сейчас)", "gift-twilly": "Подарок 01 · Твилли", "gift-ring": "Подарок 02 · Платок и кольцо",
+         "gift-mask": "Подарок 03 · Маска и резинка", "gift-set": "Подарок 04 · Платок и твилли", "logo": "Ваш логотип", "ways-twilly": "Как носить твилли",
+         "ways-scarf": "Как носить платок", "range": "Ассортимент", "solo": "SOLO", "prints": "Семь принтов", "terms": "Условия", "contacts": "Контакты"}
+
+def page_name(pid):
+    """A readable name for the rail and the dialogs; a copy made in the editor is «… (копия)», an unknown pid stays as it is."""
+    m = re.match(r"^(.*?)-copy(\d*)$", pid)
+    if m: return page_name(m.group(1)) + " (копия" + (" " + m.group(2) if m.group(2) else "") + ")"
+    if pid in NAMES: return NAMES[pid]
+    m = re.match(r"^cover-([A-Z])$", pid)
+    if m: return "Обложка " + m.group(1)
+    m = re.match(r"^p3-([A-Z])$", pid)
+    if m: return "Стр. 3 · вариант " + m.group(1)
+    return pid
 FILES = threading.Lock()                 # the edits file and the crops index are rewritten under it
 
 
@@ -95,7 +113,8 @@ def api_pages():
     d = load_pages(); ed = load_edits() if EDITS.exists() else {}
     with FILES: crops = read_json(CROPS, {}) if CROPS.exists() else {}
     return dict(d, css=CSS.read_text(encoding="utf-8") if CSS.exists() else "", has_order=bool(ed.get("order")), crops=crops,
-                building=BUILD["running"], **pdf_info())
+                names={p["pid"]: page_name(p["pid"]) for p in d.get("pages", [])}, building=BUILD["running"], publishing=PUBLISH["running"],
+                live_pdf=LIVE_PDF, **pdf_info())
 
 def layout_report(lines):
     """What the builder said about the layout: ("clean" | "issues" | "unknown", [issue, …]).
@@ -137,26 +156,32 @@ def run_builder(cmd):
 def api_save(body):
     pages, reset, hidden, order = body.get("pages") or {}, body.get("reset") or [], body.get("hidden"), body.get("order")
     seen = body.get("base") if isinstance(body.get("base"), dict) else {}     # the hashes the editor loaded the pages with
+    copies = body.get("copies") if isinstance(body.get("copies"), dict) else {}   # pages made in the editor: new pid → the page it copies
     if not isinstance(pages, dict) or not isinstance(reset, list) or not all(isinstance(v, list) or v is None for v in (hidden, order)):
         raise Problem("Неверный запрос на сохранение.")
-    if not BUILD["lock"].acquire(blocking=False): raise Problem("Сборка уже идёт — дождитесь её окончания.", 409)
+    if not BUILD["lock"].acquire(blocking=False): raise Problem("Сборка или публикация уже идёт — дождитесь её окончания.", 409)
     try:
         deck = load_pages(); base = {p["pid"]: p["base"] for p in deck.get("pages", [])}
+        with FILES: ed = load_edits(); saved = ed.get("pages") if isinstance(ed.get("pages"), dict) else {}
+        known = set(base) | {pid for pid, v in saved.items() if isinstance(v, dict) and v.get("copy_of")}
         for pid, html in pages.items():
-            if pid not in base: raise Problem(f"Страницы «{pid}» нет в сборке — обновите редактор.")
+            if pid not in known and not (pid in copies and PID_OK.match(pid)): raise Problem(f"Страницы «{pid}» нет в сборке — обновите редактор.")
             if not isinstance(html, str) or not re.match(r"<section\b[^>]*\bdata-pid=\"" + re.escape(pid) + r"\"", html) or not html.rstrip().endswith("</section>"):
                 raise Problem(f"Страница «{pid}» пришла в неожиданном виде — не сохраняю.")
         with FILES:
             ed = load_edits(); saved = ed.get("pages") if isinstance(ed.get("pages"), dict) else {}
             for pid, html in pages.items():
+                was = saved[pid] if isinstance(saved.get(pid), dict) else {}
+                if pid not in base:                    # a duplicate made in the editor has no generated twin: no base, but the page it came from
+                    saved[pid] = dict(html=html, base=None, copy_of=was.get("copy_of") or str(copies.get(pid))); continue
                 # base = the generated page this edit was made from: the one the editor had open (if the deck was rebuilt meanwhile, the page
                 # comes back marked stale); a page saved earlier and not told otherwise keeps its base; else the page as built now
-                was = saved[pid].get("base") if isinstance(saved.get(pid), dict) else None
-                saved[pid] = dict(html=html, base=seen[pid] if re.fullmatch(r"[0-9a-f]{40}", str(seen.get(pid))) else was or base[pid])
+                saved[pid] = dict(html=html, base=seen[pid] if re.fullmatch(r"[0-9a-f]{40}", str(seen.get(pid))) else was.get("base") or base[pid])
             for pid in reset: saved.pop(pid, None)
             ed["pages"] = saved
-            if hidden is not None: ed["hidden"] = [pid for pid in dict.fromkeys(hidden) if pid in base]
-            if order is not None: ed["order"] = [pid for pid in dict.fromkeys(order) if pid in base]
+            known = set(base) | {pid for pid, v in saved.items() if isinstance(v, dict) and v.get("copy_of")}
+            if hidden is not None: ed["hidden"] = [pid for pid in dict.fromkeys(hidden) if pid in known]
+            if order is not None: ed["order"] = [pid for pid in dict.fromkeys(order) if pid in known]
             ed.setdefault("hidden", []); ed.setdefault("order", [])
             write_atomic(EDITS, json.dumps(ed, ensure_ascii=False, indent=1) + "\n")
         t0 = time.time()
@@ -169,6 +194,97 @@ def api_save(body):
         state, issues = layout_report(lines)
         return dict(ok=True, saved=True, layout=state, issues=issues, log_tail=tail, seconds=took, **pdf_info())
     finally: BUILD["lock"].release()
+
+
+# ---------- publication: site build, git, railway, a look at the live PDF ----------
+
+def tool(name):
+    """A command-line tool by name; railway lives in nvm's bin, which an app launched from the Dock may not have in PATH."""
+    found = shutil.which(name)
+    if found: return found
+    hits = sorted(pathlib.Path.home().glob(".nvm/versions/node/*/bin/" + name)) + [p for p in (pathlib.Path("/opt/homebrew/bin") / name, pathlib.Path("/usr/local/bin") / name) if p.exists()]
+    return str(hits[-1]) if hits else name
+
+def publish_steps(message):
+    """The deploy as the owner's instructions define it (CLAUDE.md): commit, push, railway up, check the live page. DECK_EDITOR_PUBLISH
+    (tests) stands in for everything but the final check."""
+    site = ROOT / "site"
+    def copy_pdf():
+        if not (ROOT / PDF).exists(): raise Problem("Нет собранного PDF — сначала «Сохранить и собрать PDF».")
+        site.mkdir(exist_ok=True); shutil.copy2(ROOT / PDF, site / PDF); return [f"{PDF} → site/ ({round((ROOT / PDF).stat().st_size / 1048576, 1)} MB)"]
+    if os.environ.get("DECK_EDITOR_PUBLISH"):
+        return [("Публикую (тестовая команда)", shlex.split(os.environ["DECK_EDITOR_PUBLISH"]), {})]
+    return [("Собираю сайт", [sys.executable, str(ROOT / "build-site.py")], {"env": {"SKIP_THUMBS": "1"}}),
+            ("Кладу PDF в site/", copy_pdf, {}),
+            ("Сохраняю в git", ["git", "add", "-A"], {}),
+            ("Коммит", ["git", "commit", "-m", message], {"nothing_to_commit_ok": True}),
+            ("Отправляю на GitHub", ["git", "push"], {}),
+            ("Деплой на Railway (5–12 минут)", [tool("railway"), "up", "-y", "-c", "--service", "obiimy-landing"], {"timeout": 25 * 60})]
+
+def run_step(step):
+    """Runs one step of the publication, filling its log; raises Problem when it fails."""
+    name, what, opt = step; step_log = step_rec(name)
+    if callable(what):
+        step_log["lines"] += what(); return
+    env = dict(os.environ, PYTHONUNBUFFERED="1", **opt.get("env", {}))
+    try: p = subprocess.Popen(what, cwd=str(ROOT), stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", env=env)
+    except OSError as e: raise Problem(f"Не запускается «{what[0]}»: {e}")
+    killed = []; guard = threading.Timer(opt.get("timeout", BUILD_TIMEOUT), lambda: (killed.append(1), p.kill())); guard.start()
+    try:
+        for line in p.stdout: step_log["lines"].append(line.rstrip("\n")[:300])
+        code = p.wait()
+    finally: guard.cancel()
+    if killed: raise Problem(f"Шаг «{name}» не уложился во время и остановлен.")
+    if code != 0:
+        if opt.get("nothing_to_commit_ok") and any("nothing to commit" in ln for ln in step_log["lines"]): step_log["note"] = "нечего коммитить — пропускаю"; return
+        raise Problem(f"Шаг «{name}» завершился с ошибкой (код {code}).")
+
+def step_rec(name):
+    rec = dict(name=name, state="running", started=time.time(), lines=[], seconds=0)
+    for r in PUBLISH["steps"]:
+        if r["state"] == "running": r["state"] = "done"; r["seconds"] = round(time.time() - r["started"])
+    PUBLISH["steps"].append(rec); return rec
+
+def live_size(url):
+    req = urllib.request.Request(url, method="HEAD", headers={"User-Agent": "deck-editor", "Cache-Control": "no-cache"})
+    with urllib.request.urlopen(req, timeout=30) as r: return int(r.headers.get("Content-Length") or 0)
+
+def check_live(url, want, minutes=12):
+    """The live PDF must be the one just built: same size as the local file. Polls for up to 12 minutes."""
+    rec = step_rec("Проверяю PDF на сайте"); t0 = time.time(); last = None
+    while time.time() - t0 < minutes * 60:
+        try: last = live_size(url); rec["lines"] = [f"на сайте {round(last / 1048576, 2)} MB, нужно {round(want / 1048576, 2)} MB"]
+        except Exception as e: rec["lines"] = [f"{type(e).__name__}: {str(e)[:120]}"]
+        if last == want: rec["lines"].append("совпадает"); return
+        time.sleep(15)
+    raise Problem(f"За {minutes} минут PDF на сайте так и не обновился (на сайте {round((last or 0) / 1048576, 2)} MB, локально {round(want / 1048576, 2)} MB).")
+
+def publish_job(message):
+    PUBLISH.update(running=True, started=time.time(), steps=[], result=None)
+    try:
+        for step in publish_steps(message): run_step(step)
+        check_live(LIVE_PDF, (ROOT / PDF).stat().st_size)
+        for r in PUBLISH["steps"]:
+            if r["state"] == "running": r["state"] = "done"; r["seconds"] = round(time.time() - r["started"])
+        PUBLISH["result"] = dict(ok=True, seconds=round(time.time() - PUBLISH["started"]), url=LIVE_PDF, **pdf_info())
+    except Exception as e:
+        for r in PUBLISH["steps"]:
+            if r["state"] == "running": r["state"] = "failed"; r["seconds"] = round(time.time() - r["started"])
+        PUBLISH["result"] = dict(ok=False, error=str(e) if isinstance(e, Problem) else f"{type(e).__name__}: {e}", seconds=round(time.time() - PUBLISH["started"]))
+    finally:
+        PUBLISH["running"] = False; BUILD["lock"].release()
+
+def api_publish(body):
+    message = str(body.get("message") or "").strip().replace("\r", "")[:300] or "Правки из редактора"
+    if not BUILD["lock"].acquire(blocking=False): raise Problem("Сборка или публикация уже идёт — дождитесь её окончания.", 409)
+    if not (ROOT / PDF).exists(): BUILD["lock"].release(); raise Problem("Нет собранного PDF — сначала «Сохранить и собрать PDF».")
+    threading.Thread(target=publish_job, args=(message,), daemon=True).start()
+    return dict(ok=True, started=True)
+
+def publish_status():
+    steps = [dict(name=r["name"], state=r["state"], seconds=r["seconds"] if r["state"] != "running" else round(time.time() - r["started"]),
+                  tail=r["lines"][-6:], note=r.get("note")) for r in PUBLISH["steps"]]
+    return dict(running=PUBLISH["running"], seconds=round(time.time() - PUBLISH["started"]) if PUBLISH["started"] else 0, steps=steps, result=PUBLISH["result"])
 
 
 # ---------- pictures ----------
@@ -263,6 +379,21 @@ def api_crop(body):
         crops[rel(out)] = dict(src=rel(src), box=[round(v, 5) for v in box], w_mm=round(w_mm, 2))
         write_atomic(CROPS, json.dumps(crops, ensure_ascii=False, indent=1) + "\n")
     return dict(ok=True, path=rel(out), w=im.width, h=im.height, ppi=round(src_px / (w_mm / 25.4)), kb=round(len(buf.getvalue()) / 1024))
+
+def api_uncrop(body):
+    """Deletes re-framed pictures the editor no longer needs — only files under img/edit/ that are on record in crops.json."""
+    paths = body.get("paths") if isinstance(body.get("paths"), list) else []
+    gone = []
+    with FILES:
+        crops = read_json(CROPS, {}) if CROPS.exists() else {}
+        for rp in paths:
+            p = safe_path(str(rp)) if isinstance(rp, str) else None
+            if not p or rel(p) not in crops or not rel(p).startswith("img/edit/") or p.parent != EDIT_DIR: continue
+            crops.pop(rel(p), None)
+            try: p.unlink(); gone.append(rel(p))
+            except OSError: pass
+        if CROPS.exists(): write_atomic(CROPS, json.dumps(crops, ensure_ascii=False, indent=1) + "\n")
+    return dict(ok=True, deleted=gone)
 
 TRANSLIT = dict(zip("абвгґдеєёжзиіїйклмнопрстуфхцчшщъыьэюя", "a b v g g d e ie e zh z i i i i k l m n o p r s t u f kh ts ch sh shch  y  e iu ia".split(" ")))
 
@@ -369,7 +500,8 @@ class Handler(SimpleHTTPRequestHandler):
         if u.path == "/api/library": return self.api(api_library)
         if u.path == "/api/picinfo": return self.api(lambda: api_picinfo(q))
         if u.path == "/api/status":
-            return self.send_json(dict(ok=True, running=BUILD["running"], seconds=round(time.time() - BUILD["started"]) if BUILD["running"] else 0, last=(BUILD["lines"] or [""])[-1][:200]))
+            return self.send_json(dict(ok=True, running=BUILD["running"], seconds=round(time.time() - BUILD["started"]) if BUILD["running"] else 0,
+                                       last=(BUILD["lines"] or [""])[-1][:200], publish=publish_status()))
         if u.path == "/api/thumb":
             try:
                 t = thumb(picture(q.get("f")))
@@ -391,11 +523,20 @@ class Handler(SimpleHTTPRequestHandler):
         if n < 0 or n > 80 * 1048576: return self.send_json(dict(ok=False, error="Файл слишком большой (больше 80 МБ)."), 413)
         data = self.rfile.read(n)
         if u.path == "/api/upload": return self.api(lambda: api_upload(q.get("name") or "foto", data))
-        if u.path not in ("/api/save", "/api/crop"): return self.send_error(404, "Not found")
+        routes = {"/api/save": api_save, "/api/crop": api_crop, "/api/publish": api_publish}
+        if u.path not in routes: return self.send_error(404, "Not found")
         if "application/json" not in (self.headers.get("Content-Type") or ""): return self.send_json(dict(ok=False, error="Ожидается JSON."), 415)
         try: body = json.loads(data.decode("utf-8")); assert isinstance(body, dict)
         except (ValueError, AssertionError): return self.send_json(dict(ok=False, error="Запрос не разобрать."), 400)
-        return self.api(lambda: (api_save if u.path == "/api/save" else api_crop)(body))
+        return self.api(lambda: routes[u.path](body))
+
+    def do_DELETE(self):
+        if not self.local(post=True): return self.send_error(403, "Local use only")
+        u = urllib.parse.urlsplit(self.path)
+        if u.path != "/api/crop": return self.send_error(404, "Not found")
+        try: n = int(self.headers.get("Content-Length") or 0); body = json.loads(self.rfile.read(n).decode("utf-8")); assert isinstance(body, dict)
+        except (ValueError, AssertionError): return self.send_json(dict(ok=False, error="Запрос не разобрать."), 400)
+        return self.api(lambda: api_uncrop(body))
 
 
 class Server(ThreadingHTTPServer):

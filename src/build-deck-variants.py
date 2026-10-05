@@ -50,7 +50,7 @@ POSTER = [  # file, window in the source (x0, y0, x1, y1 as fractions; beyond 0�
             # where the fade into the base starts (mm from the top), extra layer over the photograph, name in two lines, what the gift is, what is in the frame
     ("photo/site/tvilli-shovkovyi-probudzhennia-03.jpg", (0.07, 0.0, 0.93, 0.70), 74, "",
      "Шовкова<br>твіллі", "Стрічка 84 × 5 — на шию, волосся, сумку", "твіллі «Пробудження»"),
-    ("photo/site/khustka-potsilunok-sontsia-44x44-03.jpg", (0.09, 0.0, 0.908, 1.0), 76, "",
+    ("photo/site/khustka-potsilunok-sontsia-44x44-03.jpg", (0.103, 0.03, 0.897, 1.0), 76, "",
      "Хустка<br>й кільце", "Хустка 44 × 44 і кільце для хустки", "«Поцілунок сонця» 44 × 44"),
     ("photo/site/set-ta-rezynka-litnie-pole-04.jpg", (0.11, 0.153, 0.885, 1.10), 64, "",
      "Маска<br>й резинка", "Маска для сну й резинка, один принт", "набір «Літнє поле»"),
@@ -316,13 +316,17 @@ def cover_n(k, n, letter, big, cred, extra=""):
 <div class="lxt"><p class="cap">Корпоративні подарунки · 2026 · варіант {letter}</p><h1 class="{big}">{H4}</h1>
 <p class="price">{PR2}</p><p class="pack">{PACK}</p><p class="t8 cred">{cred}</p></div>
 <p class="folio">{CONT2}</p></section>''')
-COVERS.append(cover_n(1, 10, "P", "h40", "На обкладинці — твіллі «Маків цвіт», 1 600 грн."))
 COVERS.append(cover_n(2, 11, "Q", "h40", "На обкладинці — хустка «Поцілунок сонця» 44 × 44,<br>1 600 грн; у подарунку з кільцем — 2 050 грн."))
 COVERS.append(cover_n(3, 12, "R", "h40", "На обкладинці — набір «Спокуса»: хустка 44 × 44 і твіллі, 3 200 грн."))
-COVERS.append(cover_n(4, 13, "S", "h40", "На обкладинці — твіллі «Мелодія двох», 1 600 грн."))
-COVERS.append(cover_n(5, 14, "T", "h40", "На обкладинці — твіллі «Соковиті спогади», 1 600 грн."))
 SHELF = "".join(f'<p class="lxs" style="left:{x}mm"><b>0{i + 1}</b>{t}</p>' for i, (x, t) in enumerate(((151, "Твіллі"), (175, "Хустка й кільце"), (211, "Маска й резинка"), (247, "Хустка й твіллі"))))
 COVERS.append(cover_n(6, 15, "U", "h40", "На фото — твіллі «Єднання», 1 600 грн.", SHELF))
+# V · H + U: the gifts large on one line, a two-line headline, the real portrait at the right (P, S, T dropped after the cold-buyer test: 6 / 5,5 / 7)
+SHELF_V = "".join(f'<p class="lxs" style="left:{x}mm"><b>0{i + 1}</b>{t}</p>' for i, (x, t) in enumerate(((16.5, "Твіллі"), (48.5, "Хустка й кільце"), (92.5, "Маска для сну й резинка"), (136.5, "Хустка й твіллі в коробці"))))
+COVERS.append(f'''<section class="pg lx nw nw7"><img class="plate" src="img/p3/cover-16.jpg" alt=""><img src="brand/logo-ink.png" class="lxlogo" alt="Obiimy">
+<p class="cap who">{WHO}</p>{SHELF_V}
+<div class="lxt"><p class="cap">Корпоративні подарунки · 2026 · варіант V</p><h1 class="h40">{H1W}</h1>
+<p class="price">{PRICE}</p><p class="pack">{PACK}</p><p class="t8 cred">На фото — хустка «Поцілунок сонця» 44 × 44, 1 600 грн; у подарунку з кільцем — 2 050 грн.</p></div>
+<p class="folio">{CONT2}</p></section>''')
 
 CSS = deck.CSS + """
 /* P–U — covers on the brand's editorial photographs (classes nw*, on top of .lx) */
@@ -331,6 +335,7 @@ CSS = deck.CSS + """
 .lx.nw1 .lxlogo, .lx.nw1 .who, .nw1 .lxt, .nw1 .folio { left: 157mm; } .nw1 .lxt { width: 123.5mm; }
 .nw2 .lxt { width: 120mm; bottom: auto; top: 52mm; } .nw3 .lxt, .nw4 .lxt, .nw5 .lxt { width: 132mm; }
 .lx.nw6 .lxlogo, .lx.nw6 .who, .nw6 .lxt, .nw6 .folio { left: 151mm; } .nw6 .lxt { width: 129.5mm; bottom: auto; top: 104mm; } .nw6 .lxt h1 { margin-bottom: 4.5mm; } .nw6 .lxt .cred { margin-top: 1.5mm; }
+.nw7 .lxt { width: 176mm; bottom: auto; top: 112mm; } .nw7 .lxt h1 { margin-bottom: 5mm; white-space: nowrap; } .nw7 .lxs { top: 103mm; } .nw7 .lxt .cred { margin-top: 1.5mm; }
 .lxs { position: absolute; top: 95mm; font: 400 8pt/3.75mm Tenor, sans-serif; color: #141414; white-space: nowrap; z-index: 2; } .lxs b { font: italic 400 8pt/3.75mm Playfair, serif; color: #6E6A63; margin-right: 1.5mm; }
 /* M, N, O — covers after a fresh look (classes nv*, on top of .lx) */
 .nv1 .lxt { left: 16.5mm; width: 102mm; bottom: 33mm; } .nv1 h1 i, .nv2 h1 i { color: #6E6A63; } .nv1 .lxt h1 { margin-bottom: 6mm; } .nv1 .cred, .nv3 .credit { color: #6E6A63; } .nv1 .cred { margin-top: 3.75mm; }
@@ -457,6 +462,9 @@ FULL = deck.PAGES[:1] + COVERS + deck.PAGES[1:2] + PAGES + deck.PAGES[3:]
 print("cover variants:", len(COVERS), "· page 3 variants:", len(PAGES) - 1)
 # stable ids for the editor (src/deck-editor.py): the pages of the deck keep their names, the variants get letters
 P = deck.PIDS; assert len(deck.PAGES) == len(P)
-PID = (["cover-A"] + ["cover-" + "BCDEFGHIJKLMNOPQRSTUVWXYZ"[i] for i in range(len(COVERS))] + [P[1], "p3-now"]
+import re as _re
+def _letter(i, html):
+    m = _re.search(r"варіант ([A-Z])\b", html); return m.group(1) if m else "BCDEFGHIJKLMNOPQRSTUVWXYZ"[i]
+PID = (["cover-A"] + ["cover-" + _letter(i, h) for i, h in enumerate(COVERS)] + [P[1], "p3-now"]
        + ["p3-" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i] for i in range(len(PAGES) - 1)] + P[3:])
 deck.render(FULL, CSS, PID, builder="src/build-deck-variants.py")

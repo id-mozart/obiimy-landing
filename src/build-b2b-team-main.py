@@ -63,6 +63,8 @@ CSS = DECK_SKIN + """
   .hero.cover .cover-img { width: 100%; height: clamp(540px, 82vh, 860px); object-fit: cover; object-position: 50% 28%; display: block; }
   .hero.cover::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(0,0,0,.66) 0%, rgba(0,0,0,.34) 38%, rgba(0,0,0,0) 62%), linear-gradient(0deg, rgba(0,0,0,.6) 0%, rgba(0,0,0,0) 50%); pointer-events: none; }
   .hero.cover .wrap { display: block; }
+  @media (max-width: 640px) { .hero.cover .cover-img { object-position: 60% 0% !important; } .hero.cover .eyebrow { display: none; }
+    .hero.cover::after { background: linear-gradient(0deg, rgba(0,0,0,.88) 0%, rgba(0,0,0,.72) 40%, rgba(0,0,0,.25) 62%, rgba(0,0,0,0) 78%); } }   /* on a phone the text sits on a dark ramp below the face, the kicker is left out */
   .hero.cover .cover-t { position: absolute; left: 0; right: 0; bottom: clamp(32px, 6vw, 72px); z-index: 1; color: #fff; }
   .hero.cover .eyebrow { color: rgba(255,255,255,.78); }
   .hero.cover h1 { font-size: clamp(2.6rem, 5.2vw, 4.6rem); line-height: 1; margin-top: 14px; }
@@ -365,11 +367,11 @@ ARGS = [  # why Obiimy — buyer arguments (deck p. 2, landing)
     ("Ваш логотип — безкоштовно", "Подарункове пакування кожної речі й наліпка з логотипом вашої компанії всередині коробки — у кожному корпоративному замовленні."),
 ]
 RANGE = [  # name, retail price, cut-out, «for everyone»
-    ("Твіллі 84 × 5", "1 600 грн", "zolote-tw-1", 0), ("Хустка 44 × 44", "від 1 600 грн", "krok-44-1", 0), ("Хустка 65 × 65", "від 3 200 грн", "kolo-sontsia", 0),
-    ("Хустка 88 × 88", "від 4 400 грн", "prob88", 0), ("Кільце для хустки", "450 грн", "ring-n", 0), ("Шовкова резинка", "700 грн", "scrunchie-pole", 0),
+    ("Твіллі 84 × 5", "1 600 грн", "zolote-tw-1", 0), ("Хустка 44 × 44", "від 1 600 грн", "flat-smilyvist-44x44", 0), ("Хустка 65 × 65", "від 3 200 грн", "flat-rankova-kava-65x65", 0),
+    ("Хустка 88 × 88", "від 4 400 грн", "flat-kolo-sontsia-88x88", 0), ("Кільце для хустки", "450 грн", "ring-n", 0), ("Шовкова резинка", "700 грн", "scrunchie-pole", 0),
     ("Маска для сну", "2 700 грн", "mask-synii", 1), ("Закладка для книги", "800 грн", "bookmark-melodiia", 1), ("Наволочка 50 × 70", "від 4 200 грн", "pillow-tuman", 1),
     ("Твіллі й резинка", "набір — 2 200 грн", "twscr-makiv", 0)]
-SIZE = {"zolote-tw-1": 34, "krok-44-1": 27, "kolo-sontsia": 32, "prob88": 37.5, "ring-n": 9, "scrunchie-pole": 29, "mask-synii": 34, "bookmark-melodiia": 33, "pillow-tuman": 37, "twscr-makiv": 34, "turban-bilyi": 31, "obruch": 27}   # mm on the long side in the deck; the landing keeps the proportions
+SIZE = {"zolote-tw-1": 34, "flat-smilyvist-44x44": 27, "flat-rankova-kava-65x65": 32, "flat-kolo-sontsia-88x88": 37.5, "krok-44-1": 27, "kolo-sontsia": 32, "prob88": 37.5, "ring-n": 9, "scrunchie-pole": 29, "mask-synii": 34, "bookmark-melodiia": 33, "pillow-tuman": 37, "twscr-makiv": 34, "turban-bilyi": 31, "obruch": 27}   # mm on the long side in the deck; the landing keeps the proportions
 RANGE_MORE = [("Тюрбан", "3 500 грн", "turban-bilyi", 0), ("Обруч для вмивання", "700 грн", "obruch", 0)]
 ASK = [("Нашивна бирка", "Із логотипом компанії — на самій хустці чи твіллі."),
        ("Листівка й друковані матеріали", "Привітання вашими словами, з вашим логотипом."),
@@ -427,14 +429,14 @@ SETS4 = [  # one page each, in the deck and on the site. Facts: SITE-FACTS (size
     dict(slug="b2b-set-twilly", b50="80 000 грн", short="Твіллі", name="Твіллі — подарунок на всю команду", lb="Знак уваги · 01", pr="1 600 грн", prnote="роздрібна ціна; довга 140 × 5 «Літній віночок» — 1 850 грн",
          lead="Шовкова стрічка 84 × 5 см. Універсальний подарунок із каталогу: на шию, у волосся, на сумку, на зап’ястя чи поясом. 38 авторських принтів — для кожного в команді можна обрати свій.",
          hero=("photo/solo/zolote-tw-2.webp", "Твіллі «Золоте світло» на ручці сумки, набережна", "50% 35%"),
-         gal=[("photo/solo/avantiura-tw-3.webp", "У волоссі — твіллі «Авантюра»", "60% 15%"), ("photo/solo/krok-tw-3.webp", "З келихом — твіллі «Сміливий крок»", "50% 25%"), ("photo/solo/flirt-tw-4.webp", "Поясом на тренчі — «Флірт»", "50% 40%"), ("img/twilly-zolote.webp", "Твіллі «Золоте світло», 84 × 5", "")],
+         gal=[("photo/site/tvilli-shovkovyi-probudzhennia-03.jpg", "На шиї — твіллі «Пробудження»", "50% 15%"), ("photo/site/tvilli-shovkovyi-sokovyti-spohady-06.jpg", "У волоссі — «Соковиті спогади»", "50% 6%"), ("photo/site/tvilli-shovkovyi-yednannia-03.jpg", "На зап’ясті — «Єднання»", "50% 30%"), ("img/twilly-zolote.webp", "Твіллі «Золоте світло», 84 × 5", "")],
          inside=[("Що всередині", "Шовкова твіллі 84 × 5 см, авторський принт"), ("Шовк", "100% натуральний італійський шовк"), ("Принти", "38 принтів, зокрема з нової колекції SOLO"), ("Пакування", "Подарункове пакування Obiimy — безкоштовно; наліпка з вашим логотипом усередині"), ("Привітання", "Листівка з вашим текстом і логотипом — формат у розрахунку"), ("Кому", "Усій команді, новим співробітникам, гостям події")],
          ways=[("На шиї", "Вузол або бант під комір — класичний спосіб."), ("У волоссі", "Вплітається в косу, зав’язується на хвості чи пучку."), ("На сумці", "Обмотується навколо ручки — помітна деталь образу."), ("Поясом", "На тренчі чи сукні — як на зйомці SOLO.")],
          who="Коли треба один подарунок для всіх — і щоб кожен отримав свій принт."),
     dict(slug="b2b-set-scarf-ring", b50="від 102 500 грн", short="Хустка й кільце", name="Хустка й кільце — готовий образ", lb="Тим, хто носить аксесуари · 02", pr="від 2 050 грн", prnote="2 050 = хустка 1 600 + кільце Gold 450; з двостороннім друком — 2 850 (2 400 + 450)",
          lead="Невелика шовкова хустка 44 × 44 і кільце для хустки Gold: воно фіксує хустку на шиї, сумці чи поясі. Збираємо під замовлення; строк — у розрахунку.",
          hero=("photo/solo/zolote-44-3.webp", "Хустка «Золоте світло» 44 × 44 на шиї, чорний жакет", "50% 20%"),
-         gal=[("photo/solo/krok-44-4.webp", "«Сміливий крок» на шиї, із сумкою", "50% 20%"), ("photo/solo/krok-44-2.webp", "«Сміливий крок» на шиї", "50% 20%"), ("photo/solo/zolote-44-1.webp", "Хустка «Золоте світло» 44 × 44", ""), ("photo/hratsiia-flat.webp", "Хустка «Грація» 44 × 44", "")],
+         gal=[("photo/solo/krok-44-4.webp", "«Сміливий крок» на шиї, із сумкою", "50% 20%"), ("photo/site/khustka-litnie-pole-44x44-02.jpg", "«Літнє поле» 44 × 44 на шиї", "50% 30%"), ("photo/solo/zolote-44-1.webp", "Хустка «Золоте світло» 44 × 44", ""), ("photo/hratsiia-flat.webp", "Хустка «Грація» 44 × 44", "")],
          inside=[("Що всередині", "Хустка 44 × 44 см і кільце для хустки Gold, 450 грн — п’ять моделей на вибір"), ("Шовк", "100% натуральний італійський шовк, кутики оброблені вручну"), ("Друк", "Хустка з одностороннім друком — 1 600 грн, із двостороннім — 2 400 грн"), ("Принти", "Із чотирьох колекцій і SOLO — наявність у 44 × 44 підтвердимо в добірці"), ("Пакування", "Подарункове пакування Obiimy — безкоштовно; наліпка з логотипом усередині"), ("Кому", "Тим, хто носить аксесуари; ключовим людям")],
          ways=[("На шиї", "Трикутником або скрученою стрічкою — кінці протягнуті в кільце замість вузла."), ("На сумці", "Складена в стрічку — на ручці."), ("На зап’ясті", "Як браслет — для теплого сезону."), ("У волоссі", "Пов’язка чи стрічка на хвості.")],
          who="Кільце підказує, як носити."),
@@ -454,7 +456,8 @@ SETS4 = [  # one page each, in the deck and on the site. Facts: SITE-FACTS (size
          who="Коли подарунок має сказати більше, ніж річ."),
 ]
 PROD = [3, 2, 1, 2]
-ALT = {"photo/site/solo-zolote-svitlo-84x5-02.jpg": "На фото — твіллі «Золоте світло»", "photo/site/solo-flirt-84x5-01.jpg": "Твіллі «Флірт» у зачісці", "photo/site/solo-smilyvyi-krok-84x5-03.jpg": "Твіллі «Сміливий крок» на моделі",
+ALT = {"photo/site/khustka-litnie-pole-44x44-02.jpg": "На фото — хустка «Літнє поле» 44 × 44 на шиї; у подарунку з кільцем — 2 050 грн", "photo/site/tvilli-shovkovyi-probudzhennia-03.jpg": "На фото — твіллі «Пробудження»", "photo/site/tvilli-shovkovyi-yednannia-04.jpg": "На фото — твіллі «Єднання»", "photo/site/khustka-potsilunok-sontsia-44x44-02.jpg": "На фото — хустка «Поцілунок сонця» 44 × 44; у подарунку з кільцем — 2 050 грн", "photo/site/khustka-potsilunok-sontsia-44x44-02-wide.jpg": "На фото — хустка «Поцілунок сонця» 44 × 44", "photo/site/khustka-potsilunok-sontsia-44x44-03.jpg": "Хустка «Поцілунок сонця» 44 × 44 на шиї", "photo/site/khustka-shchyri-pochuttia-44x44-02.jpg": "На фото — хустка «Щирі почуття» 44 × 44 пов’язкою", "photo/site/tvilli-shovkovyi-melodiia-dvokh-02.jpg": "На фото — твіллі «Мелодія двох»",
+       "photo/site/solo-zolote-svitlo-84x5-02.jpg": "На фото — твіллі «Золоте світло»", "photo/site/solo-flirt-84x5-01.jpg": "Твіллі «Флірт» у зачісці", "photo/site/solo-smilyvyi-krok-84x5-03.jpg": "Твіллі «Сміливий крок» на моделі",
        "photo/solo/krok-44-2.webp": "На фото — «Сміливий крок» 44 × 44, двосторонній друк, зав’язана вузлом; у подарунку з кільцем — 2 850 грн", "img/cut/ring-in-use.webp": "Кільце «Н стиль» Gold тримає хустку замість вузла", "img/cut/men-mask.webp": "Чоловікам — маска окремо, 2 700 грн; на фото — «Синій»", "img/cut/duo-hratsiia-ring.webp": "Хустка «Грація» 44 × 44 і кільце «Н стиль» Gold", "photo/solo/flirt-scr-3.webp": "Шовкова резинка на волоссі; на фото — «Флірт», приклад", "photo/site/solo-zolote-svitlo-44kh44-02.jpg": "Хустка «Золоте світло» 44 × 44, двосторонній друк — 2 400 грн", "photo/site/solo-smilyvyi-krok-44kh44-02.jpg": "Хустка «Сміливий крок» 44 × 44 на моделі",
        "photo/site/mask-vpevnenist-04.jpg": "На фото — маска для сну «Впевненість»", "photo/site/set-ta-rezynka-litnie-pole-04.jpg": "Набір «Літнє поле»: маска для сну в коробці Obiimy", "photo/site/set-ta-rezynka-litnie-pole-03.jpg": "Набори «Літнє поле»: маски й резинки",
        "photo/site/set-tvilli-845-ta-khustky-4444-natkhne-04.jpg": "На фото — набір «Натхнення»: твіллі в зачісці", "photo/site/set-tvilli-845-ta-khustky-4444-smilyvy-02.jpg": "Твіллі з набору «Сміливий дотик» у косі", "photo/site/set-tvilli-845-ta-khustky-4444-vpevnen-02.jpg": "Набір «Впевненість» на моделі",
@@ -520,13 +523,14 @@ def ways_section():
     <div class="w6g w4g">{ways}</div>
   </div></section>'''
 
-W6 = [("На сумці", "62% 50%"), ("На голові", "66% 50%"), ("На шиї", "56% 50%"), ("Поясом", "50% 50%"), ("Банданою", "50% 50%"), ("Топом", "56% 50%")]   # the client's collage, photo/ways
+W6 = [("На сумці", "photo/site/khustka-shchyri-pochuttia-44x44-04.jpg", "50% 62%"), ("На голові", "photo/site/khustka-yednannia-44x44-03.jpg", "50% 22%"), ("На шиї", "photo/site/khustka-potsilunok-sontsia-44x44-03.jpg", "50% 50%"),
+      ("Поясом", "photo/site/khustka-hratsiia-65x65-02.jpg", "50% 42%"), ("Пов’язкою", "photo/site/khustka-natkhnennia-44x44-03.jpg", "50% 12%"), ("Топом", "photo/site/khustka-balans-44x44-04.jpg", "50% 18%")]   # the same six frames as on deck page 10
 def scarf_ways_section():
     """«Одна хустка — шість образів» — the same six frames as on page 10 of the deck."""
-    tiles = "".join(f'<figure class="w6">{img(f"photo/ways/ways-{i + 1}.jpg", f"{n} — шовкова хустка Obiimy", sizes="(max-width: 640px) 50vw, 33vw", style=pos(ps))}<figcaption>{n}</figcaption></figure>' for i, (n, ps) in enumerate(W6))
+    tiles = "".join(f'<figure class="w6">{img(f, f"{n} — шовкова хустка Obiimy", sizes="(max-width: 640px) 50vw, 33vw", style=pos(ps))}<figcaption>{n}</figcaption></figure>' for n, f, ps in W6)
     return f'''
   <section class="block" id="scarf-ways"><div class="wrap">
-    <div class="head"><p class="eyebrow">Як носити</p><h2>Одна хустка — <i>шість образів</i></h2><p class="sub">Шовкову хустку носять на сумці, на голові й на шиї, поясом, банданою чи топом. Хустки 44 × 44 — від 1 600 грн, 65 × 65 — від 3 200 грн, 88 × 88 — від 4 400 грн; який формат під який спосіб — підкажемо в добірці.</p></div>
+    <div class="head"><p class="eyebrow">Як носити</p><h2>Одна хустка — <i>шість образів</i></h2><p class="sub">Шовкову хустку носять на сумці, на голові й на шиї, поясом, пов’язкою чи топом. На фото — принти «Щирі почуття», «Єднання», «Поцілунок сонця», «Грація», «Натхнення», «Баланс». Хустки 44 × 44 — від 1 600 грн, 65 × 65 — від 3 200 грн, 88 × 88 — від 4 400 грн; який формат під який спосіб — підкажемо в добірці.</p></div>
     <div class="w6g">{tiles}</div>
   </div></section>'''
 
@@ -569,7 +573,7 @@ def tiers_b():
   </div></section>'''
 
 OFFER_CUT = ["krok-tw-1", "duo-hratsiia-ring", "maskscr-litnie-pole", "set-natkhnennia-box"]
-OFFER_CAP = ["На фото — твіллі «Сміливий крок»", "На фото — «Сміливий крок» 44 × 44, двосторонній друк, зав’язана вузлом; із кільцем — 2 850 грн", "На фото — маска «Впевненість»", "На фото — набір «Натхнення»"]   # the cut-out rhymes with the photo next to it
+OFFER_CAP = ["На фото — твіллі «Пробудження»", "На фото — хустка «Поцілунок сонця» 44 × 44; із кільцем — 2 050 грн", "На фото — набір «Літнє поле»: маска й резинка в коробці", "На фото — набір «Натхнення»"]   # the cut-out rhymes with the photo next to it
 def offer_card(i, T, S):
     lb, n, t, pr, note, ph = T
     b3 = "".join(f'<div><dt>{k} людей</dt><dd class="num">{bud(i, k)}</dd></div>' for k in (20, 50, 100))
@@ -646,7 +650,7 @@ def whyhow():
 def main():
     js = ""
     body = f'''
-  <section class="hero cover" id="top">{img(HERO[0], "Шовкова хустка на моделі — колекція SOLO", sizes="100vw", lazy=False, eager_priority=True, cls="cover-img", style=pos(HERO[1]))}
+  <section class="hero cover" id="top">{img(HERO[0], "Хустка «Поцілунок сонця» 44 × 44 на моделі", sizes="100vw", lazy=False, eager_priority=True, cls="cover-img", style=pos(HERO[1]))}
     <div class="cover-t"><div class="wrap">
       <p class="eyebrow">Obiimy · український бренд шовкових хусток і аксесуарів</p>
       <h1>Подарунки<br>для команди —<br><i>шовк, який носять</i></h1>

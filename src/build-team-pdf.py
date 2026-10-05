@@ -109,7 +109,7 @@ page(f"""<figure class="ph">{pic("photo/kolo-1.webp", 148.5, 210, "50% 22%")}<fi
 
 # ── 3 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────
 GIFTS = [  # label, name, description, price, ceiling (double-sided print) or None, cut-out
-    ("Знак уваги", "Твіллі", "Шовкова стрічка 84 × 5: на шию, у волосся, на сумку. 38 принтів.", 1600, None, "zolote-tw-1"),
+    ("Знак уваги", "Твіллі", "Шовкова стрічка 84 × 5: на шию, у волосся, на сумку. 38 принтів.", 1600, None, "krok-tw-1"),
     ("Тим, хто носить аксесуари", "Хустка й кільце", "Хустка 44 × 44 і кільце для хустки Gold. Збираємо під замовлення.", 2050, 2850, "duo-hratsiia-ring"),
     ("Для відпочинку", "Маска для сну й резинка", "Один принт, фірмове пакування Obiimy. Підходить і тим, хто не носить хустки.", 3100, None, "maskscr-litnie-pole"),
     ("Ключовим людям", "Хустка й твіллі в коробці", "Один принт, святкова коробка. Майстер-клас від засновниці — окремо, за бажанням.", 3200, 3600, "set-natkhnennia-box"),
@@ -144,8 +144,8 @@ SETS = [
          tag="Одна річ — на шию, у волосся й на сумку."),
     dict(cap="02 · Тим, хто носить аксесуари", h="Хустка й кільце —", hi="готовий образ",
          lead="Невелика шовкова хустка 44 × 44 і кільце для хустки Gold: воно фіксує хустку на шиї, сумці чи поясі.",
-         p=2050, frm=True, note="На вирізці — «Грація» 44 × 44 і кільце «Н стиль»: 1 600 + 450 = 2 050 грн; із двостороннім друком — 2 400 + 450 = 2 850 грн.",
-         photo=("photo/site/khustka-potsilunok-sontsia-44x44-02.jpg", "50% 50%", 1.0), phcap="На фото — хустка «Поцілунок сонця» 44 × 44, зав’язана вузлом; у подарунку з кільцем — 2 050 грн.",
+         p=2050, frm=True, note="На вирізці — «Грація» 44 × 44 і кільце «Н стиль»: 1 600 + 450 = 2 050 грн; принти з двостороннім друком — 2 400 + 450 = 2 850 грн.",
+         photo=("photo/site/khustka-litnie-pole-44x44-02.jpg", "50% 40%", 1.0), phcap="На фото — хустка «Літнє поле» 44 × 44 на шиї.",
          cuts=["duo-hratsiia-ring"], cutcls="one", ccap="Хустка «Грація» 44 × 44 і кільце «Н стиль» Gold",
          extra=("cut:ring-in-use", "", 1.0, "Кільце замість вузла", "Gold, 450 грн — п’ять моделей на вибір. На фото — «Н стиль»."),
          kv=[("Принти", "Із чотирьох колекцій і SOLO"), ("Строк", "Під замовлення; строк — у розрахунку")],
@@ -188,34 +188,35 @@ for i, S in enumerate(SETS):
 
 # ── 8 · your logo (sheet): the box bleeds off the left edge, its cut top sits on the rule ───────────
 ask = "".join(f'<div class="arg"><b class="num">0{i + 1}</b><div><h3 class="h13">{t}</h3><p>{d}</p></div></div>' for i, (t, d) in enumerate(ASK))
-_f, _pad, _h = cutsh("box-gold", 145.5, layers=((3.0, 4.0, 0.18),), tint=(0, 0, 0))
-page(f"""{rh("Персоналізація")}<figure class="boxcut" style="left:{-_pad:.1f}mm;top:{16.5 - _pad:.1f}mm;width:{145.5 + 2 * _pad:.1f}mm"><img src="review/lb/{_f}" alt=""></figure>
+_f, _pad, _h = cutsh("box-book-makiv", 140.0, layers=((3.0, 4.0, 0.18),), tint=(0, 0, 0))   # the hinged gift box whole in the frame (obiimy.world, «Маків цвіт»)
+page(f"""{rh("Персоналізація")}<figure class="boxcut" style="left:{6 - _pad:.1f}mm;top:{22 - _pad:.1f}mm;width:{140 + 2 * _pad:.1f}mm"><img src="review/lb/{_f}" alt=""></figure>
 <div class="sheet logo2"><h2 class="h28">Ваш логотип —<br><i>від наліпки</i><br><i>до власного принта</i></h2>
-<div class="free"><p class="cap">У кожному корпоративному замовленні</p><p class="h28">Безкоштовно</p><p>Подарункове пакування кожної речі й наліпка з логотипом вашої компанії всередині коробки. Від вас — логотип; як виглядатиме наліпка, покажемо на фото в добірці.</p></div>
+<div class="free"><p class="cap">У кожному корпоративному замовленні</p><p class="h28">Безкоштовно</p><p>Подарункове пакування кожної речі й наліпка з логотипом вашої компанії всередині. Від вас — логотип. Пакування кожного подарунка покажемо в добірці.</p></div>
 <p class="cap req">За запитом</p><div class="args">{ask}</div>
-<p class="t8 end">Що встигаємо до вашої дати й скільки це коштує — пишемо в розрахунку. На фото — подарункове пакування Obiimy: коробка, папір тішью, хустка й твіллі в одному принті.</p></div>""", "paper")
+<p class="t8 end">Що встигаємо до вашої дати й скільки це коштує — пишемо в розрахунку. На фото — коробка-книжка набору «Маків цвіт»: твіллі й резинка, 2 200 грн.</p></div>""", "paper")
 
 # ── 9 · one twilly, four looks: a paper panel and four photographs to the edge ─────────────────────────
 WAYS = [("У волоссі", "photo/site/tvilli-shovkovyi-sokovyti-spohady-06.jpg", "50% 6%", 1.0), ("На шиї", "photo/site/tvilli-shovkovyi-melodiia-dvokh-04.jpg", "50% 12%", 1.0),   # the brand's own editorial frames (obiimy.world galleries)
         ("На зап’ясті", "photo/site/tvilli-shovkovyi-yednannia-03.jpg", "50% 30%", 1.0), ("Краваткою", "photo/site/tvilli-shovkovyi-pidnesennia-02.jpg", "50% 28%", 1.0)]
 tiles4 = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps, hi=True, zoom=z)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps, z in WAYS)
-TW4 = [("avantiura-tw-2", "«Авантюра»"), ("flirt-tw-2", "«Флірт»"), ("zolote-tw-1", "«Золоте світло»"), ("krok-tw-1", "«Сміливий крок»")]
+TW4 = [("tw-flat-sokovyti-spohady", "«Соковиті спогади»"), ("tw-flat-melodiia-dvokh", "«Мелодія двох»"), ("tw-flat-yednannia", "«Єднання»"), ("tw-flat-pidnesennia", "«Піднесення»")]   # the prints worn on the four photographs
 prints4 = "".join(f'<figure>{cut(c, 27, fix=True)}</figure>' for c, n in TW4)
 page(f"""<div class="panel"><p class="cap">Як носити</p><h2 class="h28">Одна твіллі —<br><i>чотири образи</i></h2>
 <p class="lead">Твіллі — шовкова стрічка 84 × 5 см, найдоступніший із чотирьох подарунків: 1 600 грн. Її носять у волоссі, на шиї, на зап’ясті й краваткою.</p>
 <div class="sz3 tw4">{prints4}</div>
-<p class="t8 end">Принти SOLO, зліва направо: {", ".join(n for c, n in TW4)}. На фото — «Соковиті спогади», «Мелодія двох», «Єднання», «Піднесення». Один принт на всіх — і жодних однакових образів.</p></div>
+<p class="t8 end">Принти, зліва направо: {", ".join(n for c, n in TW4)} — ті самі, що на фото. Один принт на всіх — і жодних однакових образів.</p></div>
 <div class="w6g w4g">{tiles4}</div>""", "ways6", short=True)
 
 # ── 10 · one scarf, six looks: a paper panel and six photographs to the edge (the client's collage, photo/ways) ──────
-W6 = [("На сумці", "62% 50%"), ("На голові", "66% 50%"), ("На шиї", "56% 50%"), ("Поясом", "50% 50%"), ("Банданою", "50% 50%"), ("Топом", "56% 50%")]
-tiles6 = "".join(f'<figure class="w6">{pic(f"photo/ways/ways-{i + 1}.jpg", 61.5, 103.5, ps)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for i, (n, ps) in enumerate(W6))
-SZ3 = [("krok-44-1", 17, "44 × 44", "від 1 600 грн"), ("kolo-sontsia", 25, "65 × 65", "від 3 200 грн"), ("prob88", 34, "88 × 88", "від 4 400 грн")]
+W6 = [("На сумці", "photo/site/khustka-shchyri-pochuttia-44x44-04.jpg", "50% 62%"), ("На голові", "photo/site/khustka-yednannia-44x44-03.jpg", "50% 22%"), ("На шиї", "photo/site/khustka-potsilunok-sontsia-44x44-03.jpg", "50% 50%"),
+      ("Поясом", "photo/site/khustka-hratsiia-65x65-02.jpg", "50% 42%"), ("Пов’язкою", "photo/site/khustka-natkhnennia-44x44-03.jpg", "50% 12%"), ("Топом", "photo/site/khustka-balans-44x44-04.jpg", "50% 18%")]   # the brand's editorial frames (the client's collage stays in photo/ways)
+tiles6 = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps in W6)
+SZ3 = [("flat-smilyvist-44x44", 17, "44 × 44", "від 1 600 грн"), ("flat-rankova-kava-65x65", 25, "65 × 65", "від 3 200 грн"), ("flat-kolo-sontsia-88x88", 34, "88 × 88", "від 4 400 грн")]   # prints sold at exactly these prices (listing 05.10)
 sizes3 = "".join(f'<figure>{cut(c, mm, fix=True)}<figcaption><b class="h13">{n}</b><span class="t8">{pz}</span></figcaption></figure>' for c, mm, n, pz in SZ3)
 page(f"""<div class="panel"><p class="cap">Як носити</p><h2 class="h28">Одна хустка —<br><i>шість образів</i></h2>
-<p class="lead">Шовкову хустку носять на сумці, на голові й на шиї, поясом, банданою чи топом. Один подарунок — і щодня інший образ.</p>
+<p class="lead">Шовкову хустку носять на сумці, на голові й на шиї, поясом, пов’язкою чи топом. Один подарунок — і щодня інший образ.</p>
 <div class="sz3">{sizes3}</div>
-<p class="t8 end">Три формати хусток; ціни — роздрібні, obiimy.world. Який формат під який спосіб — підкажемо в добірці.</p></div>
+<p class="t8 end">Три формати хусток; ціни — роздрібні, obiimy.world. На вирізках — «Сміливість» 44 × 44, «Ранкова кава» 65 × 65, «Коло сонця» 88 × 88; на фото — «Щирі почуття», «Єднання», «Поцілунок сонця», «Грація», «Натхнення», «Баланс».</p></div>
 <div class="w6g">{tiles6}</div>""", "ways6", short=True)
 
 # ── 11 · the range (sheet): 6 × 2 cut-outs on a shelf line, sizes in three steps ─────────────────────
@@ -374,7 +375,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .ways6 .panel { left: 16.5mm; width: 84mm; } .ways6 .lead { color: #4A4A47; } .ways6 .folio { right: 196.5mm; } .ways6 .fq { display: none; }
 .w6g { position: absolute; left: 106.5mm; right: 0; top: 0; bottom: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: 1fr 1fr; gap: 3mm; }
 .w6 { position: relative; overflow: hidden; } .w6 img { width: 100%; height: 100%; object-fit: cover; }
-.w6::after { content: ""; position: absolute; inset: 55% 0 0; background: linear-gradient(0deg, rgba(0,0,0,.62), rgba(0,0,0,0)); }
+.w6::after { content: ""; position: absolute; inset: 52% 0 0; background: linear-gradient(0deg, rgba(0,0,0,.8) 0%, rgba(0,0,0,.45) 40%, rgba(0,0,0,0) 100%); }   /* the gold label stays legible on light frames */
 .w6 figcaption { position: absolute; left: 6mm; bottom: 5.25mm; z-index: 2; color: #E7D9A6; }
 .sz3 { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; } .sz3 figure { display: flex; flex-direction: column; align-items: flex-start; } .sz3 img { filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.14)); }
 .w4g { grid-template-columns: repeat(2, 1fr); } .tw4 { border-bottom: .35pt solid #C9C6C0; padding-bottom: 2.25mm; } .tw4 img { filter: drop-shadow(0 1mm 1.5mm rgba(0,0,0,.14)); }

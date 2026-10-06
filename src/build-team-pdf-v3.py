@@ -41,7 +41,7 @@ page(f'''{pic(wide("photo/site/khustka-vpevnenist-44x44-04.jpg", ext=1120, botto
 
 # ── 3 · the price: four posters on models (the page-3 variant B of the full deck, trimmed) ──────────
 POSTER = [("photo/site/tvilli-shovkovyi-pidnesennia-02.jpg", (0.05, 0.0, 0.95, 0.80), 70, "Шовкова<br>твіллі", "Стрічка 84 × 5 см, 38 принтів", "твіллі «Піднесення»"),
-          ("photo/site/khustka-potsilunok-sontsia-44x44-03.jpg", (0.103, 0.03, 0.897, 1.0), 60, "Хустка<br>й кільце", "Хустка 44 × 44 і кільце Gold", "«Поцілунок сонця» 44 × 44"),
+          ("photo/site/khustka-potsilunok-sontsia-44x44-03.jpg", (0.103, 0.03, 0.897, 1.0), 60, "Хустка<br>й кільце", "Хустка 44 × 44 і кільце Gold", "хустка «Поцілунок сонця»"),
           ("photo/site/set-ta-rezynka-litnie-pole-04.jpg", (0.135, 0.12, 0.855, 1.10), 73, "Маска<br>й резинка", "Маска для сну й резинка, 8 принтів", "набір «Літнє поле»"),
           ("photo/site/set-tvilli-845-ta-khustky-4444-natkhne-02.jpg", (-0.026, 0.08, 1.026, 0.938), 58, "Хустка<br>й твіллі", "Хустка 44 × 44 і твіллі в коробці", "набір «Натхнення»")]
 ADD = {1: ("ring-in-use", 19.5, "rnd")}
@@ -101,7 +101,7 @@ POSTER_CSS = pathlib.Path("/private/tmp/claude-501/-Users-ivan-obiimy/9336a79c-f
 .po-t { position: relative; margin-bottom: 1.5mm; } .po-t b { display: block; color: #fff; }
 .po .add { position: absolute; right: 3mm; bottom: 63mm; z-index: 2; } .po .add.rnd { border-radius: 50%; box-shadow: 0 0 0 .5pt rgba(231,217,166,.5); }
 .po .pp { color: #E7D9A6; white-space: nowrap; margin-bottom: 1.5mm; font-size: 26pt; line-height: 28pt; } .po .pp small { font: 400 9.5pt/30pt Tenor, sans-serif; letter-spacing: 0; color: rgba(231,217,166,.9); }
-.po .t8 { display: block; color: rgba(255,255,255,.88); white-space: nowrap; } .po .t8.pf { overflow: hidden; text-overflow: clip; } .po .t8.wh { margin-bottom: 2.5mm; } .po .t8.pf { color: rgba(255,255,255,.62); }
+.po .t8 { display: block; color: rgba(255,255,255,.88); white-space: nowrap; } .po .t8.wh { margin-bottom: 2.5mm; } .po .t8.pf { color: rgba(255,255,255,.62); }
 .v3b .folio { color: rgba(255,255,255,.7); z-index: 3; }
 """
 CSS = deck.CSS + """

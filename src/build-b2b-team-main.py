@@ -456,6 +456,7 @@ SETS4 = [  # one page each, in the deck and on the site. Facts: SITE-FACTS (size
          who="Коли подарунок має сказати більше, ніж річ."),
 ]
 PROD = [3, 2, 1, 2]
+_p2 = pathlib.Path(__file__).resolve().parent.parent / "obiimy-podarunky-dlia-komandy-v2.pdf"; PDF2_MB = str(round(_p2.stat().st_size / 1048576, 1)).replace(".", ",") if _p2.exists() else "4"   # the short deck, src/build-team-pdf-v2.py
 ALT = {"photo/site/khustka-litnie-pole-44x44-02.jpg": "На фото — хустка «Літнє поле» 44 × 44 на шиї; у подарунку з кільцем — 2 050 грн", "photo/site/tvilli-shovkovyi-probudzhennia-03.jpg": "На фото — твіллі «Пробудження»", "photo/site/tvilli-shovkovyi-yednannia-04.jpg": "На фото — твіллі «Єднання»", "photo/site/khustka-potsilunok-sontsia-44x44-02.jpg": "На фото — хустка «Поцілунок сонця» 44 × 44; у подарунку з кільцем — 2 050 грн", "photo/site/khustka-potsilunok-sontsia-44x44-02-wide.jpg": "На фото — хустка «Поцілунок сонця» 44 × 44", "photo/site/khustka-potsilunok-sontsia-44x44-03.jpg": "Хустка «Поцілунок сонця» 44 × 44 на шиї", "photo/site/khustka-shchyri-pochuttia-44x44-02.jpg": "На фото — хустка «Щирі почуття» 44 × 44 пов’язкою", "photo/site/tvilli-shovkovyi-melodiia-dvokh-02.jpg": "На фото — твіллі «Мелодія двох»",
        "photo/site/solo-zolote-svitlo-84x5-02.jpg": "На фото — твіллі «Золоте світло»", "photo/site/solo-flirt-84x5-01.jpg": "Твіллі «Флірт» у зачісці", "photo/site/solo-smilyvyi-krok-84x5-03.jpg": "Твіллі «Сміливий крок» на моделі",
        "photo/solo/krok-44-2.webp": "На фото — «Сміливий крок» 44 × 44, двосторонній друк, зав’язана вузлом; у подарунку з кільцем — 2 850 грн", "img/cut/ring-in-use.webp": "Кільце «Н стиль» Gold тримає хустку замість вузла", "img/cut/men-mask.webp": "Чоловікам — маска окремо, 2 700 грн; на фото — «Синій»", "img/cut/duo-hratsiia-ring.webp": "Хустка «Грація» 44 × 44 і кільце «Н стиль» Gold", "photo/solo/flirt-scr-3.webp": "Шовкова резинка на волоссі; на фото — «Флірт», приклад", "photo/site/solo-zolote-svitlo-44kh44-02.jpg": "Хустка «Золоте світло» 44 × 44, двосторонній друк — 2 400 грн", "photo/site/solo-smilyvyi-krok-44kh44-02.jpg": "Хустка «Сміливий крок» 44 × 44 на моделі",
@@ -618,7 +619,7 @@ def terms_section():
         <table class="qt"><thead><tr><th>Виріб</th><th>Шт.</th><th>Ціна</th><th>Сума</th></tr></thead><tbody>{calc}</tbody>
         <tfoot><tr><th>Разом</th><td></td><td></td><td class="num">{money(sum(q * pz for _n, q, pz in EXAMPLE))}</td></tr></tfoot></table>
         <p>Строк у робочих днях — окремим рядком.</p></div>
-      <p class="note"><a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація для погодження (PDF, {team.PDF_MB} МБ) ↓</a></p></div>
+      <p class="note"><a href="obiimy-podarunky-dlia-komandy-v2.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Коротка презентація — 7 сторінок (PDF, {PDF2_MB} МБ) ↓</a> · <a href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy-varianty.pdf" type="application/pdf">повна, з варіантами ({team.PDF_MB} МБ) ↓</a></p></div>
     <div><dl class="tkv">{rows}</dl><p class="season">Потрібно до конкретної дати? <i>Напишіть її — скажемо, що встигаємо.</i></p><p style="margin-top:18px"><a class="btn btn-gold" href="#request">Отримати розрахунок</a></p></div>
   </div></section>'''
 

@@ -10,7 +10,7 @@ System agreed with three reviewers (presentation expert, sales lead, designer):
 - client rule: no «product in a white rectangle» — products are transparent cut-outs (img/cut, src/cutout.py) sitting on the page;
 - no frame is used twice; the build checks duplicates, overflow and collisions with the folio.
 Facts: review/SITE-FACTS.md, review/SOLO-RELEASE.md; retail prices from obiimy.world; what is unknown is «у розрахунку»."""
-import importlib.util, json, pathlib, subprocess, sys
+import importlib.util, json, os, pathlib, subprocess, sys
 ROOT = pathlib.Path(__file__).resolve().parent
 OUT = ROOT.parent
 sys.path.insert(0, str(ROOT))
@@ -389,12 +389,13 @@ PIDS = ["cover", "who", "offer", "gift-twilly", "gift-ring", "gift-mask", "gift-
 EDITS = OUT / "src" / "deck-edits.json"          # written by the WYSIWYG editor (src/deck-editor.py), applied on every build
 EDITOR_PAGES = OUT / "review" / "deck-editor-pages.json"   # what the editor opens: every page (hidden ones too) as built
 
-def apply_edits(pages, pids, builder):
+def apply_edits(pages, pids, builder, edits_file=None, pages_file=None):
     """Manual edits from the WYSIWYG editor. A page saved there replaces the generated one (its HTML is kept as is), hidden pages
     are not printed, the order is the editor's; with pages hidden or moved the folios are renumbered. Returns the pages to print.
     deck-edits.json: {"pages": {pid: {"html": …, "base": sha1 of the generated page it was made from}}, "hidden": [pid], "order": [pid]}."""
     import hashlib, json, re
-    ed = json.loads(EDITS.read_text(encoding="utf-8")) if EDITS.exists() else {}
+    EDITS_F, PAGES_F = edits_file or EDITS, pages_file or EDITOR_PAGES
+    ed = json.loads(EDITS_F.read_text(encoding="utf-8")) if EDITS_F.exists() else {}
     saved, hidden, order = ed.get("pages", {}), set(ed.get("hidden", [])), ed.get("order", [])
     items = []
     for html, pid in zip(pages, pids):
@@ -419,18 +420,20 @@ def apply_edits(pages, pids, builder):
         for it in shown:
             it["html"] = re.sub(r'(<p class="folio"[^>]*>.*?<span[^>]*>)(\d\d)(</span></p>)', lambda m: f'{m.group(1)}{num[it["pid"]]:02d}{m.group(3)}', it["html"], flags=re.S)
             if "terms" in num: it["html"] = re.sub(r"(стор\.[\s\u00a0\u202f]*)(\d+)", lambda m: m.group(1) + str(num["terms"]), it["html"])
-    EDITOR_PAGES.write_text(json.dumps(dict(builder=builder, pages=items), ensure_ascii=False), encoding="utf-8")
+    PAGES_F.write_text(json.dumps(dict(builder=builder, pages=items), ensure_ascii=False), encoding="utf-8")
     if saved or hidden or order: print("edits:", len([i for i in items if i["edited"]]), "pages edited by hand ·", len(hidden & {i["pid"] for i in items}), "hidden ·", "order changed" if order else "order as built")
     return [it["html"] for it in shown]
 
-def render(pages=None, css=None, pids=None, builder="src/build-team-pdf.py"):
-    """Writes team-deck.html, the PDF and page screenshots. build-deck-variants.py passes the deck with variant pages inserted."""
+def render(pages=None, css=None, pids=None, builder="src/build-team-pdf.py", out_html=None, out_pdf=None, shots=None, edits_file=None, pages_file=None):
+    """Writes team-deck.html, the PDF and page screenshots. build-deck-variants.py passes the deck with variant pages inserted;
+    build-team-pdf-v2.py passes its own pages and output paths."""
+    out_html = out_html or OUT / "team-deck.html"; out_pdf = out_pdf or OUT / "obiimy-podarunky-dlia-komandy.pdf"; shots = shots or OUT / "review" / "pp" / "team" / "deck"
     pages = pages or PAGES; css = css or CSS
     pids = pids or (PIDS if len(pages) == len(PIDS) else [f"p{i + 1:02d}" for i in range(len(pages))])
     assert len(pids) == len(pages) == len(set(pids)), "every page needs its own id"
-    pages = apply_edits(pages, pids, builder)
+    pages = apply_edits(pages, pids, builder, edits_file, pages_file)
     head = typo(f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>Obiimy — подарунки для команди 2026</title><style>{css}</style></head><body>')
-    (OUT / "team-deck.html").write_text(head + "".join(pages) + "</body></html>")
+    out_html.write_text(head + "".join(pages) + "</body></html>")
     (OUT / "review" / "deck-editor.css").write_text(typo(css))
 
     dups = sorted({f for f in USED if USED.count(f) > 1})
@@ -481,8 +484,9 @@ def render(pages=None, css=None, pids=None, builder="src/build-team-pdf.py"):
     const els = await p.$$('.pg'); for (let i = 0; i < els.length; i++) await els[i].screenshot({ path: `${dir}/p${String(i + 1).padStart(2, '0')}.png` });
     await b.close();
     ''')
-    subprocess.run(["node", str(script)], cwd=OUT / "review" / "pp", check=True)
-    print("size:", round((OUT / "obiimy-podarunky-dlia-komandy.pdf").stat().st_size / 1048576, 1), "MB")
+    script.write_text(script.read_text().replace("file:///Users/ivan/obiimy/team-deck.html", out_html.resolve().as_uri()).replace("'/Users/ivan/obiimy/obiimy-podarunky-dlia-komandy.pdf'", repr(str(out_pdf.resolve()))))
+    subprocess.run(["node", str(script)], cwd=OUT / "review" / "pp", check=True, env=dict(os.environ, DECK_SHOTS=str(shots)))
+    print("size:", round(out_pdf.stat().st_size / 1048576, 1), "MB")
 
     def qr_ok(png):
         """The QR on the last page must decode (a slight blur stands in for a phone camera) — a styled code is easy to break."""
@@ -495,8 +499,7 @@ def render(pages=None, css=None, pids=None, builder="src/build-team-pdf.py"):
             v = d.detectAndDecode(cv2.resize(crop, None, fx=sc, fy=sc, interpolation=cv2.INTER_AREA if sc < 1 else cv2.INTER_CUBIC))[0]
             if v: hits.append(v)
         return f"ok at {len(hits)}/4 scales without blur → {hits[0]}" if len(hits) >= 2 else f"WEAK: decodes at {len(hits)}/4 scales"
-    import os
-    print("QR:", qr_ok(pathlib.Path(os.environ.get("DECK_SHOTS", OUT / "review" / "pp" / "team" / "deck")) / f"p{len(pages):02d}.png"))
+    print("QR:", qr_ok(pathlib.Path(shots) / f"p{len(pages):02d}.png"))
 
 if __name__ == "__main__":
     render()

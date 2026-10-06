@@ -39,7 +39,7 @@ c.save("sets-m.jpg", q=86)
 # N · one box large (the scarf and twilly set), the three others as a column beside the text
 c = Canvas(297, 210, ppi=200)
 print("N hero", [round(v, 1) for v in lay(c, BOX[2], 16.5 + 54, 94, 108, -4)])
-for name, cy, w in ((BOX[0], 66, 52), (BOX[1], 116, 52), (BOX[3], 165, 46)):
+for name, cy, w in ((BOX[0], 75, 50), (BOX[1], 122, 50), (BOX[3], 168, 44)):
     print("N", name, [round(v, 1) for v in lay(c, name, 186, cy, w)])
 c.save("sets-n.jpg", q=86)
 print("plates:", sorted(p.name for p in (ROOT / "img" / "p3").glob("sets-*.jpg")))

@@ -188,7 +188,7 @@ FINE = "Базові роздрібні ціни obiimy.world на людину,
 PAGES.append(f"""<section class="pg paper x1"><img class="bg" src="img/p3/lux-k1.jpg" alt="">
 <div class="ttl"><h2 class="h28">Що в коробці —<br><i>і скільки це коштує</i></h2></div>
 <p class="lab" style="left:16.5mm;top:105mm"><b>04</b><span>набір «Сміливий дотик»</span></p><p class="lab" style="left:102mm;top:105mm"><b>01</b><span>твіллі «Тиша всередині»</span></p>
-<p class="lab" style="left:139mm;top:105mm"><b>02</b><span>хустка «Грація», кільце «Н стиль»</span></p><p class="lab r" style="right:16.5mm;top:105mm"><b>03</b><span>набір «Літнє поле»</span></p>
+<p class="lab" style="left:148mm;top:105mm"><b>02</b><span>хустка «Грація», кільце «Н стиль»</span></p><p class="lab r" style="right:16.5mm;top:105mm"><b>03</b><span>набір «Літнє поле»</span></p>
 <div class="x1b"><div class="xlg head"><span></span><span class="cap">Подарунок</span><span class="cap" style="padding-left:8.5mm">На людину</span><span></span><span class="cap bd">20 людей</span><span class="cap bd">50 людей</span><span class="cap bd">100 людей</span></div>
 {"".join(row_i(i, G) for i, G in enumerate(GIFTS))}<p class="t8 fine">{FINE}</p></div>{folio_tag("варіант I — стіл і дві коробки")}</section>""")
 # J · the page is the box: brand yellow to the edge, four compartments
@@ -392,7 +392,7 @@ CSS = deck.CSS + """
 .ed1-col { position: absolute; left: 154.5mm; right: 16.5mm; top: 16.5mm; bottom: 22.5mm; display: flex; flex-direction: column; } .ed1-col .ed-logo { width: 62mm; height: auto; } .ed1-col .ed-who { margin-top: 4.5mm; }
 .ed1-b { margin-top: auto; } .ed1-b .cap { margin-bottom: 3.75mm; } .ed1-b h1 { margin-bottom: 6mm; white-space: nowrap; } .ed1-b .ed-price { border-top: .5pt solid #141414; padding-top: 3mm; }
 .pg.ed2 { background: #FDD31A; color: #141414; } .ed2 .cap { color: rgba(20,20,20,.72); } .ed2 .ed-logo { position: absolute; left: 16.5mm; top: 16.5mm; width: 70mm; height: auto; } .ed2 .ed-who { position: absolute; left: 16.5mm; top: 36mm; }
-.ed2-t { position: absolute; left: 16.5mm; bottom: 22.5mm; } .ed2-t .cap { margin-bottom: 3.75mm; } .ed2-t h1 { font: 400 62pt/61pt Playfair, serif; letter-spacing: -.012em; white-space: nowrap; } .ed2-t h1 i { color: rgba(20,20,20,.6); }
+.ed2-t { position: absolute; left: 16.5mm; bottom: 22.5mm; } .ed2-t .cap { margin-bottom: 3.75mm; } .ed2-t h1 { font: 400 62pt/61pt Playfair, serif; letter-spacing: -.012em; white-space: nowrap; width: fit-content; } .ed2-t h1 i { color: rgba(20,20,20,.6); }
 .ed2-p { position: absolute; right: 16.5mm; bottom: 24mm; text-align: right; } .ed2 .ed-pack { color: rgba(20,20,20,.76); } .ed2 .folio { color: rgba(20,20,20,.68); }
 .ed3-m { position: absolute; left: 118mm; top: 16.5mm; width: 52.5mm; } .ed3-m .ed-logo { width: 52.5mm; height: auto; } .ed3-m .ed-who { margin-top: 4.5mm; } .ed3-m .t8 { margin-top: 3mm; }
 .ed3-t { position: absolute; left: 16.5mm; bottom: 22.5mm; width: 150mm; } .ed3-t .cap { margin-bottom: 3mm; } .ed3-t h1 { margin-bottom: 4.5mm; white-space: nowrap; } .ed3 .folio { right: 134.5mm; }
@@ -437,11 +437,11 @@ CSS = deck.CSS + """
 .lc .d { color: #4A4A47; min-height: 13.5mm; margin-bottom: 1.5mm; } .lc .nt { color: #6E6A63; margin: .75mm 0 2.25mm; min-height: 7.5mm; } .lc .b3 { margin-top: 0; min-height: 11.25mm; } .lc .ph { color: #8E8A84; margin-top: 3mm; }
 .mled { position: absolute; left: 214mm; width: 66.5mm; top: 16.5mm; z-index: 2; } .mled h2 { margin-bottom: 3mm; } .mled .lead { color: #6E6A63; margin-bottom: 3mm; } .mled h2 i { color: #6E6A63; }
 .mr { display: grid; grid-template-columns: 7.5mm 1fr; border-top: .35pt solid #C9C6C0; padding: 1.5mm 0 1.5mm; } .mr .num { font: italic 400 9.5pt/4.5mm Playfair, serif; color: #6E6A63; } .mr .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .5mm; }
-.mr h3 { white-space: nowrap; margin-bottom: .75mm; } .mr .t8 { color: #4A4A47; } .mr .pr { grid-column: 2; margin-top: .5mm; line-height: 22pt; } .mr .t8 { white-space: nowrap; } .mr .bd { grid-column: 2; color: #6E6A63; } .mled .ph { color: #8E8A84; margin-top: 3mm; }
+.mr h3 { white-space: nowrap; margin-bottom: .75mm; } .mr .t8 { color: #4A4A47; } .mr .pr { grid-column: 2; margin-top: 1.5mm; line-height: 22pt; } .mr .t8 { white-space: nowrap; } .mr .bd { grid-column: 2; color: #6E6A63; } .mled .ph { color: #8E8A84; margin-top: 3mm; }
 .mcap { position: absolute; z-index: 2; white-space: nowrap; letter-spacing: .13em; color: #141414; }
-.nhero { position: absolute; left: 16.5mm; width: 150mm; top: 158mm; z-index: 2; } .nhero .bd { color: #6E6A63; margin-top: 1.5mm; } .nhero .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .75mm; } .nhero h3 { margin-bottom: 1.5mm; }
+.nhero { position: absolute; left: 16.5mm; width: 150mm; top: 155mm; z-index: 2; } .nhero .bd { color: #6E6A63; margin-top: 1.5mm; } .nhero .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .75mm; } .nhero h3 { margin-bottom: 1.5mm; }
 .nhero .t8 { color: #4A4A47; max-width: 150mm; } .nhero .b3 { width: 124mm; margin-top: .75mm; } .nhero .pr { margin-bottom: .75mm; line-height: 26pt; }
-.nlist { position: absolute; left: 218mm; width: 62.5mm; top: 46mm; z-index: 2; } .nr { height: 50mm; } .nr .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .5mm; } .nr h3 { white-space: nowrap; margin-bottom: .75mm; } .nr .pr { line-height: 26pt; margin-bottom: .75mm; } .nr .t8 { color: #4A4A47; } .nr .bd { color: #6E6A63; margin-top: .75mm; }
+.nlist { position: absolute; left: 218mm; width: 62.5mm; top: 56mm; z-index: 2; } .nr { height: 47mm; } .nr .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .5mm; } .nr h3 { white-space: nowrap; margin-bottom: .75mm; } .nr .pr { line-height: 26pt; margin: 1.5mm 0 .75mm; } .nr .t8 { color: #4A4A47; } .nr .bd { color: #6E6A63; margin-top: .75mm; }
 .v3c .obj { height: 63mm; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2.25mm; border-bottom: .5pt solid #141414; } .v3c .obj img { filter: drop-shadow(0 2mm 2.5mm rgba(0,0,0,.16)); }
 .v3c .pr { margin: 1.5mm 0 0; }
 .rows { margin-top: -1.5mm; } .rw { display: grid; grid-template-columns: 21mm 1fr auto; column-gap: 4.5mm; align-items: baseline; padding: 1.5mm 0; border-top: .35pt solid #C9C6C0; } .rw:last-child { border-bottom: .35pt solid #C9C6C0; }
@@ -497,12 +497,12 @@ CSS = deck.CSS + """
 .cv .logo { position: absolute; left: 16.5mm; top: 16.5mm; height: 9mm; width: 42.4mm; z-index: 2; } .cv .folio { z-index: 2; }
 .cvc .cph, .cph { position: absolute; right: 0; top: 0; width: 148.5mm; height: 210mm; } .cph img { width: 100%; height: 100%; object-fit: cover; }
 .cvt { position: absolute; left: 16.5mm; bottom: 22.5mm; width: 126mm; z-index: 2; } .cve .cvt { width: 138mm; } .cvc .cvt h1 { font-size: 50pt; line-height: 50pt; } .cvt .cap { max-width: 112mm; } .cvt .cap { margin-bottom: 3mm; } .cvt h1 { margin-bottom: 6mm; }
-.cvc .vtag, .cve .vtag { color: #6E6A63; } .cvc .vtag { color: rgba(255,255,255,.8); }
+.cvc .vtag, .cve .vtag { color: #6E6A63; } .cvc .vtag { left: 16.5mm; right: auto; top: 36mm; }
 .cvc .folio span:last-child { color: rgba(255,255,255,.8); }
 .tri { position: absolute; left: 0; right: 0; top: 0; height: 129mm; display: grid; grid-template-columns: repeat(3, 1fr); gap: 3mm; } .tri img { width: 100%; height: 129mm; object-fit: cover; }
-.cvd .cvt { width: 264mm; bottom: 21mm; } .cvd .cvt h1 { margin-bottom: 0; } .cvd .cvp { position: absolute; right: 16.5mm; bottom: 24mm; text-align: right; color: #4A4A47; }
-.cvd .logo { left: auto; right: 16.5mm; top: 141mm; } .cvd .vtag { color: rgba(255,255,255,.85); }
-.cvb .fr-t { left: auto; right: 16.5mm; width: 130mm; text-align: right; } .cvb .chip { text-align: left; }
+.cvd .cvt { width: 264mm; bottom: 21mm; } .cvd .cvt h1 { margin-bottom: 0; width: fit-content; } .cvd .cvp { position: absolute; right: 16.5mm; bottom: 24mm; text-align: right; color: #4A4A47; }
+.cvd .logo { left: auto; right: 16.5mm; top: 141mm; } .cvd .vtag { color: rgba(255,255,255,.85); left: 16.5mm; right: auto; top: 16.5mm; }
+.cvb .fr-t { left: auto; right: 16.5mm; width: 150mm; text-align: right; } .cvb .chip { text-align: left; }
 .cvb::after { background: linear-gradient(270deg, rgba(0,0,0,.62) 0%, rgba(0,0,0,.3) 36%, rgba(0,0,0,0) 60%), linear-gradient(0deg, rgba(0,0,0,.7) 0%, rgba(0,0,0,0) 46%), linear-gradient(180deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,0) 24%); }
 .cvb .vtag { top: 28.5mm; }
 .cve .ob { position: absolute; }

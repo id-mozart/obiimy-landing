@@ -458,6 +458,18 @@ def render(pages=None, css=None, pids=None, builder="src/build-team-pdf.py"):
         });
         pg.querySelectorAll('.panel a, .panel span, .panel p, .panel h2, .panel h3').forEach(el => { const P = el.closest('.panel').getBoundingClientRect(), r = el.getBoundingClientRect(); if (r.width && r.right > P.right + 1) out.push(`p${i + 1} wider than the panel by ${((r.right - P.right) / mm).toFixed(1)} mm: «${el.textContent.trim().slice(0, 30)}»`); });
         pg.querySelectorAll('.panel,.sheet').forEach(c => { if (c.scrollHeight > c.clientHeight + 2) out.push(`p${i + 1} container overflow by ${Math.round((c.scrollHeight - c.clientHeight) / mm)} mm`); });
+        // text over text: line boxes of two text runs (not nested, not in one heading) overlap by more than 1 mm both ways
+        const runs = [];
+        pg.querySelectorAll('h1,h2,h3,p,span,b,em,small,dt,dd,a,i,figcaption').forEach(el => { [...el.childNodes].forEach(n => { if (n.nodeType !== 3 || !n.textContent.trim()) return; const rg = document.createRange(); rg.selectNodeContents(n); [...rg.getClientRects()].forEach(r => { if (r.width > 1 && r.height > 1) runs.push({ el, r, t: n.textContent.trim().slice(0, 22) }); }); }); });
+        for (let a = 0; a < runs.length; a++) for (let b = a + 1; b < runs.length; b++) {
+          const A = runs[a], B = runs[b]; if (A.el === B.el || A.el.contains(B.el) || B.el.contains(A.el)) continue;
+          const ha = A.el.closest('h1,h2,h3'), hb = B.el.closest('h1,h2,h3'); if (ha && ha === hb) continue;
+          const ox = Math.min(A.r.right, B.r.right) - Math.max(A.r.left, B.r.left), oy = Math.min(A.r.bottom, B.r.bottom) - Math.max(A.r.top, B.r.top);
+          if (ox > mm && oy > mm) out.push(`p${i + 1} text over text: «${A.t}» / «${B.t}» (${(ox / mm).toFixed(1)} × ${(oy / mm).toFixed(1)} mm)`);
+        }
+        // text leaving the left margin or too close to the right trim on paper pages
+        pg.querySelectorAll('h1,h2,h3,p,dt,dd,figcaption').forEach(el => { if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return; const r = el.getBoundingClientRect(); if (!r.width) return;
+          if (r.left < R.left + 16.5 * mm - 1.5 && !el.closest('.frame,.cv,.lx,.ed,.po,.w6,.folio,.rh,.tile,.chip,.x2,.k1,.k3,.x1,.x3')) out.push(`p${i + 1} text in the left margin (${((r.left - R.left) / mm).toFixed(1)} mm): «${el.textContent.trim().slice(0, 22)}»`); });
         pg.querySelectorAll('h2').forEach(h => { const pr = h.parentElement.getBoundingClientRect(), r = h.getBoundingClientRect(); [...h.childNodes].forEach(n => { const rg = document.createRange(); rg.selectNodeContents(n); const w = rg.getBoundingClientRect(); if (w.right > pr.right + 1) out.push(`p${i + 1} heading wider than its column: «${h.textContent.trim().slice(0, 30)}»`); }); });
       });
       return [...new Set(out)];

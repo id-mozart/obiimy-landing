@@ -369,6 +369,16 @@ COVERS.append(f'''<section class="pg lx nw nw7"><img class="plate" src="img/p3/c
 <p class="price">{PRICE}</p><p class="pack">{PACK}</p><p class="t8 cred">На фото — хустка «Поцілунок сонця» 44 × 44, 1 600 грн; у подарунку з кільцем — 2 050 грн.</p></div>
 <p class="folio">{CONT2}</p></section>''')
 
+# W · the client's brief (06.10): four products on models across the top, «Подаруй» + the logo as the headline, a line about
+# Ukrainian premium silk accessories and corporate gifts below (photos: the brand's product galleries)
+FOUR_W = [("photo/site/tvilli-shovkovyi-probudzhennia-03.jpg", "50% 18%", "твіллі «Пробудження»"), ("photo/site/khustka-potsilunok-sontsia-44x44-02.jpg", "50% 50%", "хустка «Поцілунок сонця» 44 × 44"),
+          ("photo/site/mask-vpevnenist-04.jpg", "50% 30%", "маска для сну «Впевненість»"), ("photo/site/khustka-vidnovlennia-88x88-02.jpg", "50% 30%", "хустка «Відновлення» 88 × 88")]
+COVERS.append(f'''<section class="pg cv cvw"><div class="four">{"".join(pic(f, 72, 122, ps, once=False) for f, ps, _c in FOUR_W)}</div>
+<div class="cvw-t"><h1 class="h54">Подаруй <img src="brand/logo-ink.png" class="cvw-logo" alt="Obiimy"></h1>
+<p class="h13 cvw-d">Українські преміальні шовкові аксесуари —<br>корпоративні подарунки для команди, партнерів і клієнтів.</p>
+<div class="cvw-r"><p class="cap">Корпоративні подарунки · 2026 · варіант W</p><p class="h13">{PRICE}</p><p class="t8">{PACK}. На фото — {", ".join(c for _f, _p, c in FOUR_W)}.</p></div></div>
+{LINE}</section>''')
+
 CSS = deck.CSS + """
 /* P–U — covers on the brand's editorial photographs (classes nw*, on top of .lx) */
 .nw h1 i { color: #6E6A63; } .nw .lxt h1 { margin-bottom: 6mm; } .nw .cred { color: #6E6A63; margin-top: 3.75mm; } .nw .lxt { left: 16.5mm; bottom: 33mm; }
@@ -378,6 +388,11 @@ CSS = deck.CSS + """
 .lx.nw6 .lxlogo, .lx.nw6 .who, .nw6 .lxt, .nw6 .folio { left: 151mm; } .nw6 .lxt { width: 129.5mm; bottom: auto; top: 104mm; } .nw6 .lxt h1 { margin-bottom: 4.5mm; } .nw6 .lxt .cred { margin-top: 1.5mm; }
 .nw7 .lxt { width: 176mm; bottom: auto; top: 112mm; } .nw7 .lxt h1 { margin-bottom: 5mm; white-space: nowrap; } .nw7 .lxs { top: 103mm; } .nw7 .lxt .cred { margin-top: 1.5mm; }
 .lxs { position: absolute; top: 95mm; font: 400 8pt/3.75mm Tenor, sans-serif; color: #141414; white-space: nowrap; z-index: 2; } .lxs b { font: italic 400 8pt/3.75mm Playfair, serif; color: #6E6A63; margin-right: 1.5mm; }
+/* W — four products on models, «Подаруй» + the logo */
+.cvw .four { position: absolute; left: 0; right: 0; top: 0; height: 122mm; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; } .cvw .four img { width: 100%; height: 122mm; object-fit: cover; }
+.cvw-t { position: absolute; left: 16.5mm; right: 16.5mm; top: 134mm; z-index: 2; } .cvw-t h1 { white-space: nowrap; margin-bottom: 7.5mm; } .cvw-logo { display: inline-block; height: 14.4mm; width: auto; vertical-align: baseline; margin-left: 4.5mm; position: relative; top: .6mm; }
+.cvw-d { color: #141414; } .cvw-r { position: absolute; right: 0; top: 0; width: 106.5mm; text-align: right; } .cvw-r .cap { margin-bottom: 3mm; } .cvw-r .h13 { margin-bottom: 1.5mm; } .cvw-r .t8 { color: #6E6A63; }
+.cvw .folio { color: #6E6A63; }
 /* M, N, O — covers after a fresh look (classes nv*, on top of .lx) */
 .nv1 .lxt { left: 16.5mm; width: 102mm; bottom: 33mm; } .nv1 h1 i, .nv2 h1 i { color: #6E6A63; } .nv1 .lxt h1 { margin-bottom: 6mm; } .nv1 .cred, .nv3 .credit { color: #6E6A63; } .nv1 .cred { margin-top: 3.75mm; }
 .nv1 .folio, .nv3 .folio { right: auto; display: block; top: 192.65mm; } .nv1 .folio span, .nv3 .folio span { display: block; }

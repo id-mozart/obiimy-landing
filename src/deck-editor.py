@@ -216,6 +216,7 @@ def publish_steps(message):
         return [("Публикую (тестовая команда)", shlex.split(os.environ["DECK_EDITOR_PUBLISH"]), {})]
     return [("Собираю сайт", [sys.executable, str(ROOT / "build-site.py")], {"env": {"SKIP_THUMBS": "1"}}),
             ("Кладу PDF в site/", copy_pdf, {}),
+            ("Возвращаю миниатюры хаба", ["git", "checkout", "--", "site/thumbs"], {}),      # SKIP_THUMBS leaves site/thumbs emptied; the committed thumbnails stay
             ("Сохраняю в git", ["git", "add", "-A"], {}),
             ("Коммит", ["git", "commit", "-m", message + "\n\nPublished from the deck editor (src/deck-editor.py)."], {"nothing_to_commit_ok": True}),
             ("Отправляю на GitHub", ["git", "push"], {}),

@@ -21,6 +21,24 @@ def variants(src):
     out.append((src, w))
     _cache[src] = (out, (w, h)); return _cache[src]
 
+def wide(src, ext=1000, bottom=None, patch=(10, 200, 120, 700), seed=1):
+    """A studio portrait continued to the left by its own backdrop (ext px of the median colour of `patch`, a faint top-to-bottom
+    light fall-off, a soft 160 px join, a touch of grain) → <stem>-wide.jpg beside the source. For full-bleed landscape slots
+    where the text stands on the left: nothing is invented but plain backdrop. bottom — crop the source to this height first."""
+    import numpy as np
+    srcp = ROOT / src; dst = srcp.with_name(srcp.stem + "-wide.jpg")
+    if dst.exists() and dst.stat().st_mtime >= srcp.stat().st_mtime: return str(dst.relative_to(ROOT))
+    im = Image.open(srcp).convert("RGB"); W, H = im.size
+    if bottom: im = im.crop((0, 0, W, bottom)); H = bottom
+    a = np.asarray(im).astype(np.float32); bg = np.median(a[patch[1]:patch[3], patch[0]:patch[2]].reshape(-1, 3), 0)
+    g = np.linspace(1.015, 0.985, H)[:, None, None]
+    out = np.ones((H, ext + W, 3), np.float32) * bg; out[:, :ext] *= g; out[:, ext:] = a
+    n = 160; t = np.linspace(0, 1, n); w = (t * t * (3 - 2 * t))[None, :, None]
+    out[:, ext:ext + n] = out[:, ext:ext + n] * w + (np.ones((H, n, 3)) * bg * g) * (1 - w)
+    out[:, :ext] += np.random.default_rng(seed).normal(0, 1.2, (H, ext, 3))
+    Image.fromarray(np.clip(out, 0, 255).astype(np.uint8)).save(dst, quality=90, subsampling=0)
+    return str(dst.relative_to(ROOT))
+
 def img(src, alt, sizes="100vw", lazy=True, cls="", extra="", eager_priority=False, style=""):
     vs, (w, h) = variants(src)
     srcset = ", ".join(f"{p} {tw}w" for p, tw in vs)

@@ -217,7 +217,7 @@ def publish_steps(message):
     return [("Собираю сайт", [sys.executable, str(ROOT / "build-site.py")], {"env": {"SKIP_THUMBS": "1"}}),
             ("Кладу PDF в site/", copy_pdf, {}),
             ("Сохраняю в git", ["git", "add", "-A"], {}),
-            ("Коммит", ["git", "commit", "-m", message], {"nothing_to_commit_ok": True}),
+            ("Коммит", ["git", "commit", "-m", message + "\n\nPublished from the deck editor (src/deck-editor.py)."], {"nothing_to_commit_ok": True}),
             ("Отправляю на GitHub", ["git", "push"], {}),
             ("Деплой на Railway (5–12 минут)", [tool("railway"), "up", "-y", "-c", "--service", "obiimy-landing"], {"timeout": 25 * 60})]
 

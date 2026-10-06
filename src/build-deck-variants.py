@@ -11,8 +11,8 @@ _spec = importlib.util.spec_from_file_location("deck", ROOT / "build-team-pdf.py
 pic, cut, money, GIFTS, typo = deck.pic, deck.cut, deck.money, deck.GIFTS, deck.typo
 
 PHOTO = [  # one model or lifestyle shot per gift (none of them is used elsewhere in the deck): file, crop for a tall tile, caption
-    ("photo/solo/krok-tw-3.webp", "34% 50%", "твіллі «Сміливий крок»"),
-    ("photo/solo/puls-44-5.webp", "40% 50%", "хустка «Пульс» 44 × 44, двосторонній друк"),
+    ("photo/site/tvilli-shovkovyi-melodiia-dvokh-02.jpg", "50% 30%", "твіллі «Мелодія двох»"),
+    ("photo/site/khustka-shchyri-pochuttia-44x44-02.jpg", "50% 20%", "хустка «Щирі почуття» 44 × 44"),
     ("photo/site/set-ta-rezynka-litnie-pole-04.jpg", "45% 50%", "набір «Літнє поле»"),
     ("photo/site/set-tvilli-845-ta-khustky-4444-vpevnen-02.jpg", "50% 30%", "набір «Впевненість»"),
 ]
@@ -119,7 +119,8 @@ def chip_e(i, G):
     team = f"від {money(p * 50)}" if hi else money(p * 50)
     short = n.replace(" в коробці", "").replace("Маска для сну й резинка", "Маска й резинка")
     return f'<div class="chip">{cut(c, 16)}<div><span>0{i + 1} · {short}</span><em>{rng}</em><span>50 людей — {team}</span></div></div>'
-PAGES.append(f'''<section class="pg frame v3e">{pic("photo/solo/krok-tw-3.webp", 297, 210, "50% 35%", "bg", hi=True, once=False)}
+from imgs import wide
+PAGES.append(f'''<section class="pg frame v3e">{pic(wide("photo/site/khustka-vpevnenist-44x44-04.jpg", ext=1120, bottom=1500, patch=(20, 40, 160, 300)), 297, 210, "100% 20%", "bg", once=False)}
 <p class="vtag cap">Чотири подарунки · сторінка 3 · варіант E — кадр і чипи</p>
 <div class="fr-t"><h1 class="h40">Що в коробці —<br><i>і скільки це коштує</i></h1>
 <p class="fr-p">Ціна на людину — базова роздрібна, obiimy.world, жовтень 2026. Пакування й наліпка з вашим логотипом — безкоштовно. Бюджети на 20 і 100 людей, змішана команда й приклад розрахунку — на стор. {deck.TERMS_P}.</p>

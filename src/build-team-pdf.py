@@ -265,7 +265,7 @@ page(f"""{rh("Умови й замовлення")}<div class="sheet terms">
 <p class="h28 season">До Дня святого Миколая чи Нового року? <i>Напишіть дату зараз.</i></p></div></div>""", "paper")
 
 # ── 15 · contacts (dark split, photo right) ─────────────────────────────────────────────────────────
-page(f"""<figure class="ph">{pic("photo/solo/iskra-tw-2.webp", 148.5, 210, "50% 0%", hi=True, zoom=1.18)}</figure>
+page(f"""<figure class="ph">{pic("photo/site/khustka-pidnesennia-44x44-03.jpg", 148.5, 210, "50% 0%")}</figure>
 <div class="panel"><p class="cap">Запит</p><h2 class="h28">Напишіть —<br><i>надішлемо добірку</i><br><i>й розрахунок</i></h2>
 <p class="tel h40"><a href="{PHONE_HREF}">{PHONE}</a></p>
 <p class="h13 lines"><a href="{TG}">Telegram @OBIIMY_sales</a><br><a href="mailto:{MAIL}">{MAIL}</a><br><a href="https://obiimy.world/">obiimy.world</a></p>

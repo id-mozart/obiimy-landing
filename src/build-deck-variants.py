@@ -472,7 +472,7 @@ CSS = deck.CSS + """
 .x2 .fine { position: absolute; left: 16.5mm; right: 16.5mm; top: 181.25mm; color: rgba(20,20,20,.7); z-index: 2; }
 .x3 .ttl { position: absolute; left: 16.5mm; top: 16.5mm; z-index: 2; } .x3 .ttl .cap { margin-bottom: 3.75mm; }
 .x3 .c { position: absolute; top: 133mm; width: 58.5mm; z-index: 2; } .x3 .c1 { left: 16.5mm; } .x3 .c2 { left: 84mm; } .x3 .c3 { left: 151.5mm; } .x3 .c4 { left: 219mm; width: 61.5mm; }
-.x3 .c .cap { margin-bottom: .75mm; } .x3 .c .pr { white-space: nowrap; } .x3 .c .nt { color: rgba(20,20,20,.66); white-space: nowrap; min-height: 3.75mm; margin: 0 0 1.5mm; } .x3 .bl > div { padding: .4mm 0; }
+.x3 .c .cap { margin-bottom: .75mm; } .x3 .c .pr { white-space: nowrap; margin-top: 1.5mm; } .x3 .c .nt { color: rgba(20,20,20,.66); white-space: nowrap; min-height: 3.75mm; margin: 0 0 1.5mm; } .x3 .bl > div { padding: .4mm 0; }
 .x3 .fine { position: absolute; left: 16.5mm; right: 16.5mm; top: 182.25mm; color: rgba(20,20,20,.7); z-index: 2; }
 /* F, G, H — the editorial art director's concepts */
 .k1 .k1-cap, .k3 .k3-cap { position: absolute; left: 16.5mm; top: 16.5mm; } .k1 .k1-h, .k3 .k3-h { position: absolute; left: 16.5mm; top: 22.5mm; white-space: nowrap; }

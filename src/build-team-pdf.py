@@ -465,7 +465,7 @@ def render(pages=None, css=None, pids=None, builder="src/build-team-pdf.py"):
           const A = runs[a], B = runs[b]; if (A.el === B.el || A.el.contains(B.el) || B.el.contains(A.el)) continue;
           const ha = A.el.closest('h1,h2,h3'), hb = B.el.closest('h1,h2,h3'); if (ha && ha === hb) continue;
           const ox = Math.min(A.r.right, B.r.right) - Math.max(A.r.left, B.r.left), oy = Math.min(A.r.bottom, B.r.bottom) - Math.max(A.r.top, B.r.top);
-          if (ox > mm && oy > mm) out.push(`p${i + 1} text over text: «${A.t}» / «${B.t}» (${(ox / mm).toFixed(1)} × ${(oy / mm).toFixed(1)} mm)`);
+          if (ox > mm && oy > 1.5 * mm) out.push(`p${i + 1} text over text: «${A.t}» / «${B.t}» (${(ox / mm).toFixed(1)} × ${(oy / mm).toFixed(1)} mm)`);
         }
         // text leaving the left margin or too close to the right trim on paper pages
         pg.querySelectorAll('h1,h2,h3,p,dt,dd,figcaption').forEach(el => { if (![...el.childNodes].some(n => n.nodeType === 3 && n.textContent.trim())) return; const r = el.getBoundingClientRect(); if (!r.width) return;

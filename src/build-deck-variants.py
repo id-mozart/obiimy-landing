@@ -203,22 +203,45 @@ PAGES.append(f"""<section class="pg paper x3"><img class="bg" src="img/p3/lux-k3
 <p class="t8 fine">На вирізках: твіллі «Авантюра»; хустка «Грація» 44 × 44 і кільце «Н стиль»; набір «Літнє поле»; на фото — набір «Впевненість».<br>{FINE}</p>{FOLIO}</section>""")
 NAMES += ["vI", "vJ", "vK"]
 
-# L · the shop's own gift sets (06.10): four boxes photographed by the brand for obiimy.world, laid on the paper (plate: src/build-sets-plate.py)
-SETS_L = [  # label, name, what is inside (SITE-FACTS), price, ceiling or None, prints, what is on the photo
-    ("Усій команді", "Твіллі й резинка", "Шовкова твіллі 84 × 5 і резинка в одному принті, коробка-книжка.", 2200, None, "8 принтів; довга твіллі 140 × 5 — 2 700 грн", "набір «Літнє поле»"),
-    ("Для відпочинку", "Маска для сну й резинка", "Маска для сну й резинка в одному принті, у коробці Obiimy.", 3100, None, "8 принтів", "набір «Літнє поле»"),
-    ("Ключовим людям", "Хустка й твіллі", "Хустка 44 × 44 і твіллі 84 × 5 в одному принті, святкова коробка.", 3200, 3600, "11 принтів; 7 із двостороннім друком — 3 600 грн", "набір «Свобода»"),
-    ("Тим, хто читає", "Маска, закладка й резинка", "Маска для сну, закладка для книги й резинка — колекція «Співоча душа».", 3600, None, "принти «Піднесення», «Мелодія двох»", "набір «Піднесення»"),
+# L–N · the shop's own gift sets (06.10): four boxes photographed by the brand for obiimy.world, cut out whole and laid on the paper
+# (plates: src/build-sets-plate.py; cut-outs box-* in src/cutout.py). L · a row of four · M · flat lay two by two and a ledger · N · one large, three small (O, a soft 1500 px photo to the edge, was dropped)
+SETS_L = [  # label, name, what is inside (SITE-FACTS), price, ceiling or None, prints, what is on the photo, cut-out
+    ("Усій команді", "Твіллі й резинка", "Шовкова твіллі 84 × 5 і резинка в одному принті, коробка-книжка.", 2200, None, "8 принтів; довга твіллі 140 × 5 — 2 700 грн", "набір «Літнє поле»", "box-twscr-litnie-pole"),
+    ("Для відпочинку", "Маска для сну й резинка", "Маска для сну й резинка в одному принті, у коробці Obiimy.", 3100, None, "8 принтів; «Серцебиття» — у двох кольорах", "набір «Літнє поле»", "box-maskscr-litnie-pole"),
+    ("Ключовим людям", "Хустка й твіллі", "Хустка 44 × 44 і твіллі 84 × 5 в одному принті, святкова коробка.", 3200, 3600, "18 принтів: 11 — 3 200 грн, 7 із двостороннім друком — 3 600 грн", "набір «Спокуса»", "box-sctw-spokusa"),
+    ("Тим, хто читає", "Маска, закладка й резинка", "Маска для сну, закладка для книги й резинка — колекція «Співоча душа».", 3600, None, "принти «Піднесення», «Мелодія двох»", "набір «Піднесення»", "box-maskbm-pidnesennia"),
 ]
+NOTE_L = "Чотири набори, які вже є на obiimy.world: коробка, один принт на всі речі. Базові роздрібні ціни на людину, жовтень 2026; наліпка з вашим логотипом — безкоштовно. Окремо: твіллі — 1 600 грн, хустка 44 × 44 і кільце — від 2 050 грн; тим, хто не носить аксесуари, — сертифікат на 1 000–4 000 грн."
+def rng_l(p, hi): return f"{money(p)}–{money(hi)}" if hi else money(p)
 def col_l(i, S):
-    lb, n, d, p, hi, pr, ph = S
-    rng = f"{money(p)}–{money(hi)}" if hi else money(p)
-    return (f'<article class="lc"><p class="cap">0{i + 1} · {lb}</p><h3 class="h13">{n}</h3><p class="h28 pr">{rng} <small>грн</small></p><p class="d">{d}</p>'
+    lb, n, d, p, hi, pr, ph, c = S
+    return (f'<article class="lc"><p class="cap">0{i + 1} · {lb}</p><h3 class="h13">{n}</h3><p class="h28 pr">{rng_l(p, hi)} <small>грн</small></p><p class="d">{d}</p>'
             f'<p class="t8 nt">{pr}</p>{b3(p, hi)}<p class="t8 ph">На фото — {ph}</p></article>')
-PAGES.append(f"""<section class="pg paper v3l"><img class="bg" src="img/p3/sets-l.jpg" alt=""><p class="rh"><span>Чотири подарунки</span><span>Сторінка 3 · варіант L — набори з каталогу</span></p>
-<div class="lhd"><h2 class="h28">Готові набори — <i>з каталогу</i></h2><p>Чотири набори, які вже є на obiimy.world: коробка, один принт на всі речі. Базові роздрібні ціни на людину, жовтень 2026; наліпка з вашим логотипом — безкоштовно. Окремо: твіллі — 1 600 грн, хустка 44 × 44 і кільце — від 2 050 грн.</p></div>
-<div class="lcols">{"".join(col_l(i, S) for i, S in enumerate(SETS_L))}</div>{FOLIO}</section>""")
-NAMES += ["vL"]
+def sets_page(cls, tag, plate, body, extra=""):
+    return (f'<section class="pg paper v3l {cls}"><img class="bg" src="img/p3/{plate}" alt=""><p class="rh"><span>Чотири подарунки</span><span>Сторінка 3 · варіант {tag}</span></p>{extra}'
+            f'{body}{FOLIO}</section>')
+# L · a row of four boxes, the text under each
+PAGES.append(sets_page("lrow", "L — набори з каталогу", "sets-l.jpg",
+    f'<div class="lhd"><h2 class="h28">Готові набори — <i>з каталогу</i></h2><p>{NOTE_L}</p></div><div class="lcols">{"".join(col_l(i, S) for i, S in enumerate(SETS_L))}</div>'))
+# M · still life: the boxes fill the left two thirds, numbered; the ledger on the right
+def row_m(i, S):
+    lb, n, d, p, hi, pr, ph, c = S
+    return (f'<div class="mr"><b class="num">0{i + 1}</b><div><p class="cap">{lb}</p><h3 class="h13">{n}</h3><p class="t8">{SHORT_M[i]}</p></div>'
+            f'<p class="h28 pr">{rng_l(p, hi)} <small>грн</small></p><p class="t8 bd">50 людей — {money(p * 50)}{"–" + money(hi * 50) if hi else ""} грн</p></div>')
+SHORT_M = ["Твіллі 84 × 5 і резинка, коробка-книжка", "Маска для сну й резинка, коробка Obiimy", "Хустка 44 × 44 і твіллі 84 × 5, коробка", "Маска, закладка для книги й резинка"]
+CAP_M = "".join(f'<p class="cap mcap" style="left:{x}mm;top:{y}mm">0{i + 1} · {S[1]} · {S[6].replace("набір ", "")}</p>' for i, (S, (x, y)) in enumerate(zip(SETS_L, ((16.5, 97), (116, 97), (16.5, 186), (116, 186)))))
+PAGES.append(sets_page("mstill", "M — натюрморт", "sets-m.jpg",
+    f'<div class="mled"><h2 class="h28">Готові набори<br><i>з каталогу</i></h2><p class="t8 lead">{NOTE_L.split("; наліпка")[0]}; наліпка з вашим логотипом — безкоштовно.</p>{"".join(row_m(i, S) for i, S in enumerate(SETS_L))}</div>{CAP_M}'))
+# N · one box large, three small beside the text
+def row_n(i, S):
+    lb, n, d, p, hi, pr, ph, c = S
+    return (f'<div class="nr"><div><p class="cap">0{i + 1} · {lb}</p><h3 class="h13">{n}</h3><p class="h28 pr">{rng_l(p, hi)} <small>грн</small></p><p class="t8">{d} {pr}.</p><p class="t8 bd">50 людей — {money(p * 50)}{"–" + money(hi * 50) if hi else ""} грн</p></div></div>')
+S3 = SETS_L[2]
+PAGES.append(sets_page("npage", "N — одна коробка", "sets-n.jpg",
+    f'<div class="lhd"><h2 class="h28">Готові набори — <i>з каталогу</i></h2><p>{NOTE_L}</p></div>'
+    f'<div class="nhero"><p class="cap">03 · {S3[0]} · на фото — {S3[6]}</p><h3 class="h13">{S3[1]}</h3><p class="h28 pr">{rng_l(S3[3], S3[4])} <small>грн</small></p><p class="t8">Хустка 44 × 44 і твіллі 84 × 5 в одному принті, коробка. 18 принтів: 11 — 3 200 грн, 7 двосторонніх — 3 600 грн.</p><p class="t8 bd">20 / 50 / 100 людей — 64 000–72 000 / 160 000–180 000 / 320 000–360 000 грн</p></div>'
+    f'<div class="nlist">{"".join(row_n(i, S) for i, S in enumerate(SETS_L) if i != 2)}</div>'))
+NAMES += ["vL", "vM", "vN"]
 
 # ── cover variants ──────────────────────────────────────────────────────────────────────────────────
 LINE = deck.COVER_LINE
@@ -407,13 +430,18 @@ CSS = deck.CSS + """
 .po .pp { color: #E7D9A6; white-space: nowrap; margin-bottom: 1.5mm; } .po .pp small { font: 400 9.5pt/30pt Tenor, sans-serif; letter-spacing: 0; color: rgba(231,217,166,.9); }
 .po .t8 { display: block; color: rgba(255,255,255,.88); white-space: nowrap; } .po .t8.wh { margin-bottom: 2.5mm; } .po .t8.pf { color: rgba(255,255,255,.62); }
 .v3b .folio { color: rgba(255,255,255,.7); z-index: 3; }
-.v3l .bg { position: absolute; left: 0; top: 0; width: 297mm; height: 210mm; } .v3l .rh { z-index: 2; }
+.v3l .bg { position: absolute; left: 0; top: 0; width: 297mm; height: 210mm; } .v3l .rh { z-index: 2; } .v3l .pr { white-space: nowrap; } .v3l .pr small { font: 400 9.5pt/30pt Tenor, sans-serif; color: #8E8A84; }
 .lhd { position: absolute; left: 16.5mm; right: 16.5mm; top: 22.5mm; display: grid; grid-template-columns: 1fr 106.5mm; gap: 6mm; align-items: start; z-index: 2; } .lhd p { color: #4A4A47; } .lhd h2 { white-space: nowrap; }
-.lcols { position: absolute; left: 16.5mm; right: 16.5mm; top: 112mm; display: grid; grid-template-columns: repeat(4, 61.5mm); column-gap: 6mm; z-index: 2; }
-.lc .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .75mm; } .lc h3 { white-space: nowrap; margin-bottom: 1.5mm; } .lc .pr { white-space: nowrap; margin-bottom: 1.5mm; } .lc .pr small { font: 400 9.5pt/30pt Tenor, sans-serif; color: #8E8A84; }
-.lc .d { color: #4A4A47; min-height: 13.5mm; } .lc .nt { color: #6E6A63; margin: .75mm 0 2.25mm; min-height: 7.5mm; }
-.lc .b3 { margin-top: 0; }
-.lc .ph { color: #8E8A84; margin-top: 3mm; }
+.lcols { position: absolute; left: 16.5mm; right: 16.5mm; top: 118mm; display: grid; grid-template-columns: repeat(4, 61.5mm); column-gap: 6mm; z-index: 2; }
+.lc .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .75mm; } .lc h3 { white-space: nowrap; margin-bottom: 1.5mm; } .lc .pr { margin-bottom: 1.5mm; }
+.lc .d { color: #4A4A47; min-height: 13.5mm; margin-bottom: 1.5mm; } .lc .nt { color: #6E6A63; margin: .75mm 0 2.25mm; min-height: 7.5mm; } .lc .b3 { margin-top: 0; min-height: 11.25mm; } .lc .ph { color: #8E8A84; margin-top: 3mm; }
+.mled { position: absolute; left: 214mm; width: 66.5mm; top: 16.5mm; z-index: 2; } .mled h2 { margin-bottom: 3mm; } .mled .lead { color: #6E6A63; margin-bottom: 3mm; } .mled h2 i { color: #6E6A63; }
+.mr { display: grid; grid-template-columns: 7.5mm 1fr; border-top: .35pt solid #C9C6C0; padding: 1.5mm 0 1.5mm; } .mr .num { font: italic 400 9.5pt/4.5mm Playfair, serif; color: #6E6A63; } .mr .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .5mm; }
+.mr h3 { white-space: nowrap; margin-bottom: .75mm; } .mr .t8 { color: #4A4A47; } .mr .pr { grid-column: 2; margin-top: .5mm; line-height: 22pt; } .mr .t8 { white-space: nowrap; } .mr .bd { grid-column: 2; color: #6E6A63; } .mled .ph { color: #8E8A84; margin-top: 3mm; }
+.mcap { position: absolute; z-index: 2; white-space: nowrap; letter-spacing: .13em; color: #141414; }
+.nhero { position: absolute; left: 16.5mm; width: 150mm; top: 158mm; z-index: 2; } .nhero .bd { color: #6E6A63; margin-top: 1.5mm; } .nhero .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .75mm; } .nhero h3 { margin-bottom: 1.5mm; }
+.nhero .t8 { color: #4A4A47; max-width: 150mm; } .nhero .b3 { width: 124mm; margin-top: .75mm; } .nhero .pr { margin-bottom: .75mm; line-height: 26pt; }
+.nlist { position: absolute; left: 218mm; width: 62.5mm; top: 46mm; z-index: 2; } .nr { height: 50mm; } .nr .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .5mm; } .nr h3 { white-space: nowrap; margin-bottom: .75mm; } .nr .pr { line-height: 26pt; margin-bottom: .75mm; } .nr .t8 { color: #4A4A47; } .nr .bd { color: #6E6A63; margin-top: .75mm; }
 .v3c .obj { height: 63mm; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2.25mm; border-bottom: .5pt solid #141414; } .v3c .obj img { filter: drop-shadow(0 2mm 2.5mm rgba(0,0,0,.16)); }
 .v3c .pr { margin: 1.5mm 0 0; }
 .rows { margin-top: -1.5mm; } .rw { display: grid; grid-template-columns: 21mm 1fr auto; column-gap: 4.5mm; align-items: baseline; padding: 1.5mm 0; border-top: .35pt solid #C9C6C0; } .rw:last-child { border-bottom: .35pt solid #C9C6C0; }

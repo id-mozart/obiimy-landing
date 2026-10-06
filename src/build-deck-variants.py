@@ -226,7 +226,7 @@ PAGES.append(sets_page("lrow", "L — набори з каталогу", "sets-l
 # M · still life: the boxes fill the left two thirds, numbered; the ledger on the right
 def row_m(i, S):
     lb, n, d, p, hi, pr, ph, c = S
-    return (f'<div class="mr"><b class="num">0{i + 1}</b><div><p class="cap">{lb}</p><h3 class="h13">{n}</h3><p class="t8">{SHORT_M[i]}</p></div>'
+    return (f'<div class="mlr"><b class="num">0{i + 1}</b><div><p class="cap">{lb}</p><h3 class="h13">{n}</h3><p class="t8">{SHORT_M[i]}</p></div>'
             f'<p class="h28 pr">{rng_l(p, hi)} <small>грн</small></p><p class="t8 bd">50 людей — {money(p * 50)}{"–" + money(hi * 50) if hi else ""} грн</p></div>')
 SHORT_M = ["Твіллі 84 × 5 і резинка, коробка-книжка", "Маска для сну й резинка, коробка Obiimy", "Хустка 44 × 44 і твіллі 84 × 5, коробка", "Маска, закладка для книги й резинка"]
 CAP_M = "".join(f'<p class="cap mcap" style="left:{x}mm;top:{y}mm">0{i + 1} · {S[1]} · {S[6].replace("набір ", "")}</p>' for i, (S, (x, y)) in enumerate(zip(SETS_L, ((16.5, 97), (116, 97), (16.5, 186), (116, 186)))))
@@ -436,8 +436,8 @@ CSS = deck.CSS + """
 .lc .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .75mm; } .lc h3 { white-space: nowrap; margin-bottom: 1.5mm; } .lc .pr { margin-bottom: 1.5mm; }
 .lc .d { color: #4A4A47; min-height: 13.5mm; margin-bottom: 1.5mm; } .lc .nt { color: #6E6A63; margin: .75mm 0 2.25mm; min-height: 7.5mm; } .lc .b3 { margin-top: 0; min-height: 11.25mm; } .lc .ph { color: #8E8A84; margin-top: 3mm; }
 .mled { position: absolute; left: 214mm; width: 66.5mm; top: 16.5mm; z-index: 2; } .mled h2 { margin-bottom: 2mm; } .mled .lead { color: #6E6A63; margin-bottom: 2mm; } .mled h2 i { color: #6E6A63; }
-.mr { display: grid; grid-template-columns: 7.5mm 1fr; border-top: .35pt solid #C9C6C0; padding: 1.5mm 0 1.25mm; } .mr .num { font: italic 400 9.5pt/4.5mm Playfair, serif; color: #6E6A63; } .mr .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .5mm; }
-.mr h3 { white-space: nowrap; margin-bottom: .75mm; } .mr .t8 { color: #4A4A47; } .mr .pr { grid-column: 2; margin-top: 1.5mm; line-height: 22pt; } .mr .t8 { white-space: nowrap; } .mr .bd { grid-column: 2; color: #6E6A63; } .mled .ph { color: #8E8A84; margin-top: 3mm; }
+.mlr { display: grid; grid-template-columns: 7.5mm 1fr; border-top: .35pt solid #C9C6C0; padding: 1.5mm 0 1.25mm; } .mlr .num { font: italic 400 9.5pt/4.5mm Playfair, serif; color: #6E6A63; } .mlr .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .5mm; }
+.mlr h3 { white-space: nowrap; margin-bottom: .75mm; } .mlr .t8 { color: #4A4A47; } .mlr .pr { grid-column: 2; margin-top: 1.5mm; line-height: 22pt; } .mlr .t8 { white-space: nowrap; } .mlr .bd { grid-column: 2; color: #6E6A63; } .mled .ph { color: #8E8A84; margin-top: 3mm; }
 .mcap { position: absolute; z-index: 2; white-space: nowrap; letter-spacing: .13em; color: #141414; }
 .nhero { position: absolute; left: 16.5mm; width: 150mm; top: 155mm; z-index: 2; } .nhero .bd { color: #6E6A63; margin-top: 1.5mm; } .nhero .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .75mm; } .nhero h3 { margin-bottom: 1.5mm; }
 .nhero .t8 { color: #4A4A47; max-width: 150mm; } .nhero .b3 { width: 124mm; margin-top: .75mm; } .nhero .pr { margin-bottom: .75mm; line-height: 26pt; }

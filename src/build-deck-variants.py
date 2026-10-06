@@ -203,6 +203,23 @@ PAGES.append(f"""<section class="pg paper x3"><img class="bg" src="img/p3/lux-k3
 <p class="t8 fine">На вирізках: твіллі «Авантюра»; хустка «Грація» 44 × 44 і кільце «Н стиль»; набір «Літнє поле»; на фото — набір «Впевненість».<br>{FINE}</p>{FOLIO}</section>""")
 NAMES += ["vI", "vJ", "vK"]
 
+# L · the shop's own gift sets (06.10): four boxes photographed by the brand for obiimy.world, laid on the paper (plate: src/build-sets-plate.py)
+SETS_L = [  # label, name, what is inside (SITE-FACTS), price, ceiling or None, prints, what is on the photo
+    ("Усій команді", "Твіллі й резинка", "Шовкова твіллі 84 × 5 і резинка в одному принті, коробка-книжка.", 2200, None, "8 принтів; довга твіллі 140 × 5 — 2 700 грн", "набір «Літнє поле»"),
+    ("Для відпочинку", "Маска для сну й резинка", "Маска для сну й резинка в одному принті, у коробці Obiimy.", 3100, None, "8 принтів", "набір «Літнє поле»"),
+    ("Ключовим людям", "Хустка й твіллі", "Хустка 44 × 44 і твіллі 84 × 5 в одному принті, святкова коробка.", 3200, 3600, "11 принтів; 7 із двостороннім друком — 3 600 грн", "набір «Свобода»"),
+    ("Тим, хто читає", "Маска, закладка й резинка", "Маска для сну, закладка для книги й резинка — колекція «Співоча душа».", 3600, None, "принти «Піднесення», «Мелодія двох»", "набір «Піднесення»"),
+]
+def col_l(i, S):
+    lb, n, d, p, hi, pr, ph = S
+    rng = f"{money(p)}–{money(hi)}" if hi else money(p)
+    return (f'<article class="lc"><p class="cap">0{i + 1} · {lb}</p><h3 class="h13">{n}</h3><p class="h28 pr">{rng} <small>грн</small></p><p class="d">{d}</p>'
+            f'<p class="t8 nt">{pr}</p>{b3(p, hi)}<p class="t8 ph">На фото — {ph}</p></article>')
+PAGES.append(f"""<section class="pg paper v3l"><img class="bg" src="img/p3/sets-l.jpg" alt=""><p class="rh"><span>Чотири подарунки</span><span>Сторінка 3 · варіант L — набори з каталогу</span></p>
+<div class="lhd"><h2 class="h28">Готові набори — <i>з каталогу</i></h2><p>Чотири набори, які вже є на obiimy.world: коробка, один принт на всі речі. Базові роздрібні ціни на людину, жовтень 2026; наліпка з вашим логотипом — безкоштовно. Окремо: твіллі — 1 600 грн, хустка 44 × 44 і кільце — від 2 050 грн.</p></div>
+<div class="lcols">{"".join(col_l(i, S) for i, S in enumerate(SETS_L))}</div>{FOLIO}</section>""")
+NAMES += ["vL"]
+
 # ── cover variants ──────────────────────────────────────────────────────────────────────────────────
 LINE = deck.COVER_LINE
 CAP = deck.COVER_CAP
@@ -390,6 +407,13 @@ CSS = deck.CSS + """
 .po .pp { color: #E7D9A6; white-space: nowrap; margin-bottom: 1.5mm; } .po .pp small { font: 400 9.5pt/30pt Tenor, sans-serif; letter-spacing: 0; color: rgba(231,217,166,.9); }
 .po .t8 { display: block; color: rgba(255,255,255,.88); white-space: nowrap; } .po .t8.wh { margin-bottom: 2.5mm; } .po .t8.pf { color: rgba(255,255,255,.62); }
 .v3b .folio { color: rgba(255,255,255,.7); z-index: 3; }
+.v3l .bg { position: absolute; left: 0; top: 0; width: 297mm; height: 210mm; } .v3l .rh { z-index: 2; }
+.lhd { position: absolute; left: 16.5mm; right: 16.5mm; top: 22.5mm; display: grid; grid-template-columns: 1fr 106.5mm; gap: 6mm; align-items: start; z-index: 2; } .lhd p { color: #4A4A47; } .lhd h2 { white-space: nowrap; }
+.lcols { position: absolute; left: 16.5mm; right: 16.5mm; top: 112mm; display: grid; grid-template-columns: repeat(4, 61.5mm); column-gap: 6mm; z-index: 2; }
+.lc .cap { white-space: nowrap; letter-spacing: .13em; margin-bottom: .75mm; } .lc h3 { white-space: nowrap; margin-bottom: 1.5mm; } .lc .pr { white-space: nowrap; margin-bottom: 1.5mm; } .lc .pr small { font: 400 9.5pt/30pt Tenor, sans-serif; color: #8E8A84; }
+.lc .d { color: #4A4A47; min-height: 13.5mm; } .lc .nt { color: #6E6A63; margin: .75mm 0 2.25mm; min-height: 7.5mm; }
+.lc .b3 { margin-top: 0; }
+.lc .ph { color: #8E8A84; margin-top: 3mm; }
 .v3c .obj { height: 63mm; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 2.25mm; border-bottom: .5pt solid #141414; } .v3c .obj img { filter: drop-shadow(0 2mm 2.5mm rgba(0,0,0,.16)); }
 .v3c .pr { margin: 1.5mm 0 0; }
 .rows { margin-top: -1.5mm; } .rw { display: grid; grid-template-columns: 21mm 1fr auto; column-gap: 4.5mm; align-items: baseline; padding: 1.5mm 0; border-top: .35pt solid #C9C6C0; } .rw:last-child { border-bottom: .35pt solid #C9C6C0; }

@@ -100,12 +100,22 @@ page(f"""{pic("photo/solo/zolote-44-2.webp", 297, 210, "50% 24%", "bg", hi=True)
 <div class="chip">{cut("zolote-44-1", 13)}<div><span>Чотири варіанти подарунка · на людину</span><em>від 1 600 до 3 600 грн</em></div></div></div>
 {COVER_LINE}""", "frame", folio=False)
 
-# ── 2 · why Obiimy (split, photo left) ──────────────────────────────────────────────────────────────
-args = "".join(f'<div class="arg"><b class="num">0{i + 1}</b><div><h3 class="h13">{t}</h3><p>{d}</p></div></div>' for i, (t, d) in enumerate(ARGS))
-page(f"""<figure class="ph">{pic("photo/kolo-1.webp", 148.5, 210, "50% 22%")}<figcaption class="h13">«Кожна коробочка — це обійми, що нагадують: ти варта краси»</figcaption></figure>
-<div class="panel"><p class="cap">Хто ми — і чому Obiimy</p><h2 class="h28">Подарунок, що носять,<br><i>а не кладуть у шухляду</i></h2>
-<p class="proof">{INTRO}</p>
-<div class="args">{args}</div></div>""", "split l shade")
+# ── 2 · who we are: the «Про нас» text of obiimy.world, word for word (the client, 07.10); photo left, two text columns ───────
+# Two sentences of it are lifted out: «Obiimy — це про любов до себе, до природи, до людей» is the headline,
+# «Кожна коробочка — це обійми, що нагадують: ти варта краси» is the quote on the photo.
+ABOUT_LEAD = "Obiimy — український бренд натуральних шовкових виробів з авторськими принтами художниці та засновниці Світлани Сніжко. Ми створюємо речі, що поєднують красу, мистецтво та турботу — і дарують емоції з першого дотику."
+ABOUT_LIST = ["шовкові хустки та твіллі;", "резинки та маски для сну;", "аксесуари для дому й догляду;", "витончені прикраси."]
+ABOUT = ["Усі вироби виготовлені з 100% натурального шовку преміум-класу. Він має ніжний блиск, м’яку текстуру й додає кожному образу вишуканості.",
+         "Запрошуємо знайти свій особливий шовковий подарунок — для себе або для когось, кого хочеться обійняти.",
+         "Наш бренд — не лише про красу, але й про здоров’я. Шовк дуже м’який і дбайливий до шкіри, він не викликає подразнень чи алергічних реакцій. Саме тому з нього виходять, зокрема, найкращі маски для сну.",
+         "«Обійми» були засновані в часи війни, коли Україна потребувала підтримки та єдності. З цією метою бренд активно бере участь у благодійних ініціативах, спрямованих на допомогу військовим і тим, хто постраждав від конфлікту.",
+         "Придбавши аксесуари «Обійми», ти стаєш частиною благородної місії. І за це ми тобі надзвичайно вдячні.",
+         "«Обійми» — це поєднання тендітності, стилю, трендів, оригінальності та надзвичайної ніжності. Ми створюємо не просто аксесуари, а спосіб виразити власну індивідуальність та почуття. Ти заслуговуєш на найкраще. Дозволь собі насолоджуватися любов’ю та вишуканістю разом з «Обійми»."]
+about = (f'<p class="h13 ab-lead">{ABOUT_LEAD}</p><p>У нашій колекції ви знайдете:</p><ul>{"".join(f"<li>{x}</li>" for x in ABOUT_LIST)}</ul>'
+         + "".join(f"<p>{x}</p>" for x in ABOUT))
+page(f"""<figure class="ab-ph">{pic("photo/kolo-1.webp", 100.5, 210, "50% 22%")}<figcaption class="h13">«Кожна коробочка — це обійми, що нагадують: ти варта краси»</figcaption></figure>
+<div class="ab"><p class="cap">Хто ми</p><h2 class="h28">Obiimy — це про любов<br><i>до себе, до природи, до людей</i></h2>
+<div class="ab-t">{about}</div></div>""", "about")
 
 # ── 3 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────
 GIFTS = [  # label, name, description, price, ceiling (double-sided print) or None, cut-out
@@ -327,6 +337,14 @@ small { font-size: 13pt; letter-spacing: 0; }
 .args { display: grid; } .arg { display: grid; grid-template-columns: 10.5mm 1fr; padding: 3.75mm 0; border-top: .35pt solid #C9C6C0; } .arg h3 { margin-bottom: .75mm; } .arg p { color: #4A4A47; }
 .dark .arg { border-color: rgba(255,255,255,.22); }
 .end { margin-top: auto; }
+/* page 2 · who we are: photo 100.5 mm to the edge, the text on columns 5–12 in two columns */
+.ab-ph { position: absolute; left: 0; top: 0; width: 100.5mm; height: 210mm; } .ab-ph > img { width: 100%; height: 100%; object-fit: cover; }
+.ab-ph::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 70mm; background: linear-gradient(0deg, rgba(0,0,0,.74), rgba(0,0,0,.4) 45%, rgba(0,0,0,0)); }
+.ab-ph figcaption { position: absolute; left: 16.5mm; right: 9mm; bottom: 10.05mm; z-index: 2; color: #fff; text-wrap: balance; }
+.ab { position: absolute; left: 106.5mm; right: 16.5mm; top: 16.5mm; bottom: 19.5mm; display: flex; flex-direction: column; } .ab > .cap { margin-bottom: 3.75mm; } .ab h2 { margin-bottom: 6mm; white-space: nowrap; }
+.ab-t { column-count: 2; column-gap: 6mm; color: #4A4A47; } .ab-t p { margin-bottom: 2.25mm; break-inside: avoid; } .ab-t .ab-lead { color: #141414; margin-bottom: 3mm; }
+.ab-t ul { list-style: none; margin: -1mm 0 2.25mm; break-inside: avoid; } .ab-t li { padding-left: 4.5mm; text-indent: -4.5mm; } .ab-t li::before { content: "— "; color: #8E8A84; }
+.about .folio { left: 106.5mm; }
 /* gift pages */
 .gift .lead { color: #4A4A47; margin-bottom: 4.5mm; min-height: 13.5mm; }
 .prow { display: grid; grid-template-columns: 1fr 46mm; gap: 6mm; align-items: start; height: 46.5mm; margin-bottom: 3mm; } .pcell { padding-top: 21mm; }

@@ -51,6 +51,14 @@ small { font-size: 13pt; letter-spacing: 0; }
 .args { display: grid; } .arg { display: grid; grid-template-columns: 10.5mm 1fr; padding: 3.75mm 0; border-top: .35pt solid #C9C6C0; } .arg h3 { margin-bottom: .75mm; } .arg p { color: #4A4A47; }
 .dark .arg { border-color: rgba(255,255,255,.22); }
 .end { margin-top: auto; }
+/* page 2 · who we are: photo 100.5 mm to the edge, the text on columns 5–12 in two columns */
+.ab-ph { position: absolute; left: 0; top: 0; width: 100.5mm; height: 210mm; } .ab-ph > img { width: 100%; height: 100%; object-fit: cover; }
+.ab-ph::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 70mm; background: linear-gradient(0deg, rgba(0,0,0,.74), rgba(0,0,0,.4) 45%, rgba(0,0,0,0)); }
+.ab-ph figcaption { position: absolute; left: 16.5mm; right: 9mm; bottom: 10.05mm; z-index: 2; color: #fff; text-wrap: balance; }
+.ab { position: absolute; left: 106.5mm; right: 16.5mm; top: 16.5mm; bottom: 19.5mm; display: flex; flex-direction: column; } .ab > .cap { margin-bottom: 3.75mm; } .ab h2 { margin-bottom: 6mm; white-space: nowrap; }
+.ab-t { column-count: 2; column-gap: 6mm; color: #4A4A47; } .ab-t p { margin-bottom: 2.25mm; break-inside: avoid; } .ab-t .ab-lead { color: #141414; margin-bottom: 3mm; }
+.ab-t ul { list-style: none; margin: -1mm 0 2.25mm; break-inside: avoid; } .ab-t li { padding-left: 4.5mm; text-indent: -4.5mm; } .ab-t li::before { content: "— "; color: #8E8A84; }
+.about .folio { left: 106.5mm; }
 /* gift pages */
 .gift .lead { color: #4A4A47; margin-bottom: 4.5mm; min-height: 13.5mm; }
 .prow { display: grid; grid-template-columns: 1fr 46mm; gap: 6mm; align-items: start; height: 46.5mm; margin-bottom: 3mm; } .pcell { padding-top: 21mm; }

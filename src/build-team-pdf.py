@@ -288,19 +288,17 @@ page(f"""<div class="sh sh7"><h2 class="h40">Колекція SOLO</h2>
 <div><p class="st7">Сім принтів — сім станів</p><p>Кожен принт — про свій стан. Обирайте один для всієї команди або свій для кожного.</p></div></div>
 <div class="tiles t7">{tiles}</div>""", "strip dark")
 
-# ── 14 · terms and how to order (sheet) — 07.10: simplified, three steps and four terms, no sample quote ──────────────
-STEPS9 = [("Напишіть нам", "Нагода, кількість людей, дата вручення. Якщо є — бюджет на людину."),
-          ("Добірка й розрахунок", "У відповідь — принти з фото на вибір, ціни й строк у робочих днях окремими рядками."),
-          ("Виготовлення й доставка", "Пакування й наліпка з вашим логотипом — у ціні. Новою поштою в офіс однією посилкою або кожному окремо.")]
-TERMS9 = [("Строки", "З наявності без наліпки — відправка в день замовлення (до 16:00). З наліпкою й наборами під замовлення — строк у робочих днях у розрахунку."),
-          ("Доставка", "Нова пошта: в офіс або кожному окремо. Безкоштовно від 5 000 грн. За кордон — за тарифами перевізника."),
-          ("Оплата", "Рахунок на юридичну особу, з ПДВ чи без, і потрібні документи — підтвердимо в розрахунку."),
-          ("Зразки", f"Подивитися й потримати речі до замовлення — у шоурумі: {SHOWROOM}.")]
-steps = "".join(f'<div class="arg"><b class="num">0{i + 1}</b><div><h3 class="h13">{t}</h3><p>{d}</p></div></div>' for i, (t, d) in enumerate(STEPS9))
-page(f"""{rh("Умови й замовлення")}<div class="sheet terms">
-<div><h2 class="h28">Як замовити</h2><div class="args">{steps}</div></div>
-<div><div class="kv wide">{kv(TERMS9)}</div>
-<p class="h28 season">До Дня святого Миколая чи Нового року? <i>Напишіть дату зараз.</i></p></div></div>""", "paper")
+# ── 14 · questions and answers (sheet) — 07.10: the terms page rewritten as eight short Q&A ──────────────────────────
+FAQ9 = [("Як замовити?", "Напишіть нам нагоду, кількість людей і дату вручення. У відповідь надішлемо добірку з фото й розрахунок."),
+        ("Один принт на всіх чи кожному свій?", "Як вам зручніше: обирайте з добірки один на всіх або кожному свій."),
+        ("Чи можна з нашим логотипом?", "Так. Наліпка з логотипом на пакуванні — у ціні. Нашивна бирка чи власний принт — за запитом."),
+        ("Чи є мінімальна кількість?", "Мінімальну кількість і наявність потрібного принта підтвердимо в розрахунку — напишіть, скільки людей у команді."),
+        ("Скільки часу займає?", "Речі з наявності без наліпки відправляємо в день замовлення (до 16:00). З наліпкою й наборами під замовлення — строк у робочих днях у розрахунку."),
+        ("Як доставляєте?", "Новою поштою: в офіс однією посилкою або кожному окремо. Безкоштовно від 5 000 грн. За кордон — за тарифами перевізника."),
+        ("Як з оплатою й документами?", "Рахунок на юридичну особу, з ПДВ чи без, і потрібні документи — підтвердимо в розрахунку."),
+        ("Чи можна побачити речі наживо?", f"Так, у шоурумі: {SHOWROOM}.")]
+faq = "".join(f'<div><h3 class="h13">{q}</h3><p>{a}</p></div>' for q, a in FAQ9)
+page(f"""{rh("Запитання та відповіді")}<div class="sheet"><h2 class="h28">Запитання та відповіді</h2><div class="faq2">{faq}</div></div>""", "paper")
 
 # ── 15 · contacts (dark split, photo right) ─────────────────────────────────────────────────────────
 page(f"""<figure class="ph">{pic("photo/site/khustka-pidnesennia-44x44-03.jpg", 148.5, 210, "50% 0%")}</figure>
@@ -310,7 +308,7 @@ page(f"""<figure class="ph">{pic("photo/site/khustka-pidnesennia-44x44-03.jpg", 
 <div class="tpl"><p class="cap">Шаблон запиту — скопіюйте й допишіть</p><p>Нагода — … · людей — … · дата вручення — … · бюджет на людину — … · доставка: в офіс / кожному · рахунок на юрособу: так / ні</p></div>
 <div class="qr">{qr_svg(TG, 132, ink="#141414", plate="#F1EFEA")}<p class="t8">Скануйте — чат із менеджером у Telegram.<br><a href="{LANDING}">Сторінка для команд із формою запиту</a><br>Шоурум: {SHOWROOM}</p></div></div>""", "split r dark last", folio=False)
 
-assert "Умови й замовлення" in PAGES[TERMS_P - 1], "TERMS_P does not point at the terms page"
+assert "Запитання та відповіді" in PAGES[TERMS_P - 1], "TERMS_P does not point at the terms page"
 
 CSS = """
 @font-face { font-family: Playfair; font-style: normal; font-weight: 400; src: url(brand/fonts/playfair-cyrillic-400-normal.woff2) format("woff2"); unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116; }
@@ -400,6 +398,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .free { border-top: .5pt solid #141414; border-bottom: .5pt solid #141414; padding: 3.75mm 0; margin-bottom: 4.5mm; } .free .h28 { margin: .75mm 0 1.5mm; } .free p:last-child { color: #4A4A47; }
 .req { margin-bottom: 1.5mm; } .logo2 .arg { padding: 3mm 0; }
 .terms { display: grid; grid-template-columns: 106.5mm 1fr; gap: 28.5mm; } .terms h2 { margin-bottom: 4.5mm; } .terms .arg { padding: 2.25mm 0; } .terms > div { display: flex; flex-direction: column; }
+.faq2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 18mm; margin-top: 9mm; } .faq2 div { border-top: .35pt solid #C9C6C0; padding: 6mm 0 7mm; } .faq2 h3 { font-size: 14.5pt; line-height: 18pt; margin-bottom: 2mm; } .faq2 p { color: #4A4A47; font-size: 10.5pt; line-height: 5.3mm; }
 .got { margin-top: auto; border-top: .5pt solid #141414; padding-top: 3.75mm; } .got .cap { margin-bottom: 2.25mm; } .got .t8 { margin-top: 2.25mm; }
 .cr { display: grid; grid-template-columns: 1fr 9mm 13.5mm 18mm; column-gap: 3mm; padding: 1.5mm 0; border-bottom: .35pt solid #C9C6C0; font-variant-numeric: lining-nums tabular-nums; } .cr span:not(:first-child) { text-align: right; }
 .cr.th { padding-top: 0; } .cr.th span { font-size: 7pt; line-height: 3.75mm; letter-spacing: .2em; text-transform: uppercase; color: #6E6A63; } .cr.sum { border-bottom: .5pt solid #141414; } .cr.sum span { font: 400 13pt/16.5pt Playfair, serif; }

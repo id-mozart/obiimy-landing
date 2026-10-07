@@ -543,7 +543,7 @@ DROP_BASE = {"gift-twilly", "gift-ring", "gift-mask", "gift-set", "logo", "range
 TAIL = [h for pid, h in zip(deck.PIDS[OFFER + 1:], deck.PAGES[OFFER + 1:]) if pid not in DROP_BASE]
 FULL = COVER_W + deck.PAGES[1:OFFER] + VAR + TAIL
 import re as _re
-TERMS_N = next(i for i, h in enumerate(FULL) if "Умови й замовлення" in h) + 1
+TERMS_N = next(i for i, h in enumerate(FULL) if "Запитання та відповіді" in h) + 1
 FULL = [_re.sub(r"(стор\.[\s\u00a0\u202f]*)(\d+)", lambda m: m.group(1) + str(TERMS_N), h) for h in FULL]
 def _folio(h, n): return _re.sub(r'(<p class="folio"[^>]*>.*?<span[^>]*>)(\d\d)(</span></p>)', lambda m: f"{m.group(1)}{n:02d}{m.group(3)}", h, flags=_re.S)
 FULL = [_folio(h, i + 1) if not ("Сторінка " in h and "варіант" in h) and "p3-now" not in h else h for i, h in enumerate(FULL)]

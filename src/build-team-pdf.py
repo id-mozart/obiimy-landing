@@ -123,7 +123,7 @@ nest = ("".join(f'<figure class="n{i}">{cut(c, mm, fix=True)}</figure>' for i, (
 page(f"""<div class="panel"><h2 class="h28">Хустки</h2>
 <span class="from">від 1 600 грн</span>
 <p class="lead">Хустка — подарунок, який носять по-різному: на шиї, на голові, на сумці, поясом чи топом. Одна річ — багато образів, тому вона підходить і тим, кого ви знаєте добре, і тим, кого — ще ні.</p>
-<p class="lead">Три розміри: маленька — на шию й на сумку, середня — на голову й на плечі, велика — як шаль. Принт один на всю команду або кожному свій.</p>
+<p class="lead">Три розміри — для різних образів і нагод. Принт один на всю команду або кожному свій.</p>
 <div class="nest">{nest}</div></div>
 <div class="w6g">{tiles6}</div>""", "ways6", short=True)
 
@@ -190,8 +190,8 @@ page(f"""{rh("Чотири подарунки")}<div class="sheet">
 
 # ── 7b · gifts for men (07.10): the «ways» layout — four photographs; facts from SITE-FACTS, the team FAQ and the store's pocket-square collections
 MEN4 = [("Хустка-паше", "від 1 600 грн", "photo/site/pashe-probudzhennia-02.jpg", "50% 50%"), ("Маска для сну", "від 2 700 грн", "photo/site/mask-synii-02.jpg", "50% 20%"),
-        ("Закладка", "від 800 грн", "photo/site/bookmark-melodiia-dvokh-02.jpg", "50% 50%"), ("Сертифікат", "1 000–4 000 грн", "img/sets/cert-2000.webp", "50% 45%")]
-tilesM = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps)}<figcaption class="h28"><i>{n}</i><span class="wp">{pz}</span></figcaption></figure>' for n, pz, f, ps in MEN4)
+        ("Закладка", "від 800 грн", "photo/site/bookmark-melodiia-dvokh-02.jpg", "50% 50%"), ("Сертифікат", "1 000–4 000 грн", "photo/site/sertyfikat-02.jpg", "45% 12%", 1.15)]   # 07.10: the far shot — the handwritten name is not legible
+tilesM = "".join(f'<figure class="w6">{pic(t[2], 93.75, 103.5, t[3], zoom=(t[4] if len(t) > 4 else 1.0))}<figcaption class="h28"><i>{t[0]}</i><span class="wp">{t[1]}</span></figcaption></figure>' for t in MEN4)
 page(f"""<div class="panel"><h2 class="h28">Для чоловіків</h2>
 <span class="from">від 800 грн</span>
 <p class="lead">Чоловікам у команді — речі з того самого шовку, тільки стриманіші: хустка-паше в кишеню піджака, маска для сну, закладка для книги або однотонна наволочка.</p>
@@ -316,8 +316,8 @@ page(f"""{rh("Запитання та відповіді")}<div class="sheet"><h
 page(f"""<figure class="ph">{pic("photo/site/khustka-pidnesennia-44x44-03.jpg", 148.5, 210, "50% 0%")}</figure>
 <div class="panel"><p class="cap">Контакти</p><h2 class="h28">Зв’яжіться з нами —<br><i>разом підберемо</i><br><i>все для вашої команди</i></h2>
 <div class="cts"><p class="tel"><a href="{PHONE_HREF}">{PHONE}</a></p>
-<p><span>Telegram</span><a href="{TG}">@OBIIMY_sales</a></p><p><span>Пошта</span><a href="mailto:{MAIL}">{MAIL}</a></p><p><span>Сайт</span><a href="https://obiimy.world/">obiimy.world</a></p><p><span>Шоурум</span>{SHOWROOM}</p></div>
-<div class="qr">{qr_svg("https://obiimy.world/", 132, ink="#141414", plate="#F1EFEA")}<p class="t8">Скануйте — сайт obiimy.world:<br>весь асортимент і ціни.</p></div></div>""", "split r dark last", folio=False)
+<p><span>Telegram</span><a href="{TG}">@OBIIMY_sales</a></p><p><span>Пошта</span><a href="mailto:{MAIL}">{MAIL}</a></p><p><span>Шоурум</span>{SHOWROOM}</p></div>
+<div class="qr">{qr_svg("https://obiimy.world/", 132, ink="#141414", plate="#F1EFEA")}<p class="site"><a href="https://obiimy.world/">obiimy.world</a><span class="t8">Скануйте — весь асортимент і ціни на сайті.</span></p></div></div>""", "split r dark last", folio=False)
 
 assert "Запитання та відповіді" in PAGES[TERMS_P - 1], "TERMS_P does not point at the terms page"
 
@@ -457,7 +457,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .last h2 { margin-bottom: 10mm; }
 .cts { font-family: Tenor, sans-serif; color: #F1EFEA; } .cts .tel { font-size: 24pt; line-height: 28pt; color: #E7D9A6; margin-bottom: 6mm; white-space: nowrap; }
 .cts p { font-size: 10.5pt; line-height: 6.5mm; display: grid; grid-template-columns: 22mm 1fr; } .cts p span { color: #8E8A84; font-size: 7pt; letter-spacing: .2em; text-transform: uppercase; }
-.cts a { color: #F1EFEA; text-decoration: none; } .tel { color: #E7D9A6; margin-bottom: 4.5mm; white-space: nowrap; letter-spacing: -.035em; word-spacing: -.06em; } .lines { color: #F1EFEA; }
+.cts a { color: #F1EFEA; text-decoration: none; } .qr .site { font-family: Tenor, sans-serif; } .qr .site a { display: block; font-size: 20pt; line-height: 24pt; color: #F1EFEA; text-decoration: none; border: 0; margin-bottom: 2mm; } .qr .site .t8 { display: block; } .tel { color: #E7D9A6; margin-bottom: 4.5mm; white-space: nowrap; letter-spacing: -.035em; word-spacing: -.06em; } .lines { color: #F1EFEA; }
 .tpl { margin-top: 9mm; border-top: .35pt solid rgba(255,255,255,.3); border-bottom: .35pt solid rgba(255,255,255,.3); padding: 3.75mm 0; } .tpl .cap { margin-bottom: 1.5mm; } .tpl p:last-child { color: #F1EFEA; }
 .qr { margin-top: auto; display: grid; grid-template-columns: 33mm 1fr; gap: 6mm; align-items: center; } .qr svg { width: 33mm; height: 33mm; } .qr a { border-bottom: .35pt solid rgba(255,255,255,.4); }
 """

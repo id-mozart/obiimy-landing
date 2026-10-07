@@ -119,7 +119,7 @@ page(f"""<figure class="ph">{pic("photo/solo/iskra-65-2.webp", 148.5, 210, "44% 
 
 # ── 3 · scarves: three sizes nested one in another (scale), the price from 1 600, six looks to the edge ─────────────────
 W6 = [("На сумці", "photo/solo/iskra-65-3.webp", "50% 50%"), ("На голові", "photo/solo/tysha-88-3.webp", "50% 20%"), ("На шиї", "photo/solo/krok-44-3.webp", "50% 20%"),
-      ("На плечах", "photo/solo/iskra-65-5.webp", "50% 40%"), ("Поясом", "photo/solo/avantiura-88-2.webp", "50% 40%"), ("Пов’язкою", "photo/site/khustka-natkhnennia-44x44-03.jpg", "50% 12%")]   # SOLO campaign frames and one editorial frame from the site (07.10)
+      ("На плечах", "photo/solo/avantiura-88-3.webp", "50% 20%"), ("Поясом", "photo/solo/avantiura-88-2.webp", "50% 40%"), ("Пов’язкою", "photo/site/khustka-natkhnennia-44x44-03.jpg", "50% 12%")]   # SOLO campaign frames and one editorial frame from the site (07.10)
 tiles6 = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps, hi=True)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps in W6)
 NEST = [("flat-kolo-sontsia-88x88", 44, "88 × 88", 4400), ("flat-rankova-kava-65x65", 32.5, "65 × 65", 3200), ("flat-smilyvist-44x44", 22, "44 × 44", 1600)]   # mm on the long side = cm / 2 → true proportions; prices from the listing (05.10)
 nest = ("".join(f'<figure class="n{i}">{cut(c, mm, fix=True)}</figure>' for i, (c, mm, n, pz) in enumerate(NEST))
@@ -132,8 +132,8 @@ page(f"""<div class="panel"><h2 class="h28">Хустки</h2>
 <div class="w6g">{tiles6}</div>""", "ways6", short=True)
 
 # ── 4 · twillies: the price from 1 600, four looks to the edge ─────────────────────────────────────────
-WAYS = [("У волоссі", "photo/solo/krok-tw-3.webp", "50% 20%", 1.0), ("На шиї", "photo/solo/krok-tw-4.webp", "50% 15%", 1.0), ("На сумці", "photo/solo/zolote-tw-2.webp", "50% 45%", 1.0),   # SOLO campaign frames and one editorial frame from the site (07.10)
-        ("На зап’ясті", "photo/site/tvilli-shovkovyi-yednannia-03.jpg", "50% 30%", 1.0), ("Краваткою", "photo/solo/avantiura-tw-4.webp", "50% 15%", 1.0), ("Бантом", "photo/solo/flirt-tw-3.webp", "50% 12%", 1.0)]
+WAYS = [("У волоссі", "photo/solo/krok-tw-2.webp", "50% 30%", 1.0), ("На шиї", "photo/solo/flirt-tw-3.webp", "50% 15%", 1.0), ("На сумці", "photo/solo/iskra-tw-3.webp", "50% 50%", 1.0),   # SOLO campaign frames and one editorial frame from the site (07.10)
+        ("На зап’ясті", "photo/solo/krok-tw-3.webp", "50% 35%", 1.0), ("Краваткою", "photo/solo/avantiura-tw-4.webp", "50% 15%", 1.0), ("Бантом", "photo/solo/puls-tw-1.webp", "50% 45%", 1.0)]
 tiles4 = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps, hi=True, zoom=z)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps, z in WAYS)
 PAIR = [("photo/paris-dots.jpg", "50% 30%"), ("photo/paris-bag.jpg", "50% 50%")]   # scarf and twilly of one print — the pair from the c18 banner
 pair = "".join(f'<figure>{pic(f, 40.5, 50, ps)}</figure>' for f, ps in PAIR)

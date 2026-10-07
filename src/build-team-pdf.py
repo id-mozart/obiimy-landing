@@ -89,7 +89,7 @@ TERMS_P = 16   # the page with terms and the sample quote — page 3 refers to i
 def page(html, cls, folio=True, short=False):
     n = len(PAGES) + 1
     tg = "@OBIIMY_sales" if short else "Telegram @OBIIMY_sales"      # short=True — a folio that fits a narrow panel
-    f = (f'<p class="folio"><span><i class="fq">Запит: </i><a href="{PHONE_HREF}">{PHONE}</a> · <a href="{TG}">{tg}</a></span><span>{n:02d}</span></p>' if folio else "")
+    f = (f'<p class="folio"><span></span><span>{n:02d}</span></p>' if folio else "")   # 07.10: the page number only — the contacts are on the last page
     PAGES.append(f'<section class="pg {cls}">{html}{f}</section>')
 def rh(section): return f'<p class="rh"><span>{section}</span><span>Obiimy · Подарунки для команди · 2026</span></p>'
 

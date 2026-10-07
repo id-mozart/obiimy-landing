@@ -148,9 +148,9 @@ page(f"""<div class="panel"><h2 class="h28">Твіллі</h2>
 <div class="w6g">{tiles4}</div>""", "ways6", short=True)
 
 # ── 5 · accessories: sleep masks, scrunchies, bookmarks, pillowcases, turbans — the things for everyone ───────────────
-ACC4 = [("Маска для сну", "від 2 700 грн", "photo/site/mask-rankova-kava-04.jpg", "50% 30%"), ("Резинка", "від 700 грн", "photo/solo/flirt-scr-3.webp", "38% 50%"),
+ACC4 = [("Маска для сну", "від 2 700 грн", "photo/site/mask-vpevnenist-04.jpg", "50% 25%"), ("Резинка", "від 700 грн", "photo/site/mask-shchyri-pochuttia-04.jpg", "0% 15%", 1.6),
         ("Закладка", "від 800 грн", "photo/site/bookmark-melodiia-dvokh-01.jpg", "55% 30%"), ("Тримач для хустки", "від 450 грн", "photo/site/ring-zoloto-01.jpg", "50% 40%")]   # four things, the price in the caption
-tilesA = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps)}<figcaption class="h28"><i>{n}</i><span class="wp">{pz}</span></figcaption></figure>' for n, pz, f, ps in ACC4)
+tilesA = "".join(f'<figure class="w6">{pic(t[2], 93.75, 103.5, t[3], zoom=(t[4] if len(t) > 4 else 1.0))}<figcaption class="h28"><i>{t[0]}</i><span class="wp">{t[1]}</span></figcaption></figure>' for t in ACC4)
 page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 <span class="from">від 700 грн</span>
 <p class="lead">Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги, тримач для хустки.</p>

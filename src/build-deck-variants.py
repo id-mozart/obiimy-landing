@@ -535,8 +535,9 @@ def doc(pages, title): return typo(f'<!DOCTYPE html><html lang="uk"><head><meta 
 COVER_W = [c for c in COVERS if 'class="pg cv cvw"' in c and "варіант X" not in c]; assert len(COVER_W) == 1
 # the variants still call themselves «сторінка 3»; renumber them to the real page of the offer and renumber the folios and the «стор. N» reference
 OFF_N = OFFER + 1
-DROP = set("FGHIJK")   # 07.10: the client removed these page-3 variants from the file; they stay in the code
+DROP = set("ABCFGHIJK")   # 07.10: the client removed these page-3 variants and the «зараз — таблиця» page from the file; they stay in the code
 PAGES = [v for v in PAGES if not any(f"варіант {L}" in v for L in DROP)]
+PAGES_NOW = PAGES[:1]; PAGES = PAGES[1:]   # the table page is no longer printed
 VAR = [v.replace("Сторінка 3", f"Сторінка {OFF_N}").replace("сторінка 3", f"сторінка {OFF_N}").replace("<span>03</span>", f"<span>{OFF_N:02d}</span>") for v in PAGES]
 DROP_BASE = {"gift-twilly", "gift-ring", "gift-mask", "gift-set", "logo"}   # 07.10: the client removed the four gift pages and «Персоналізація» from the file
 TAIL = [h for pid, h in zip(deck.PIDS[OFFER + 1:], deck.PAGES[OFFER + 1:]) if pid not in DROP_BASE]
@@ -546,12 +547,12 @@ TERMS_N = next(i for i, h in enumerate(FULL) if "Умови й замовлен�
 FULL = [_re.sub(r"(стор\.[\s\u00a0\u202f]*)(\d+)", lambda m: m.group(1) + str(TERMS_N), h) for h in FULL]
 def _folio(h, n): return _re.sub(r'(<p class="folio"[^>]*>.*?<span[^>]*>)(\d\d)(</span></p>)', lambda m: f"{m.group(1)}{n:02d}{m.group(3)}", h, flags=_re.S)
 FULL = [_folio(h, i + 1) if not ("Сторінка " in h and "варіант" in h) and "p3-now" not in h else h for i, h in enumerate(FULL)]
-print("covers printed:", len(COVER_W), "of", len(COVERS) + 1, "· page 3 variants:", len(PAGES) - 1)
+print("covers printed:", len(COVER_W), "of", len(COVERS) + 1, "· page 3 variants:", len(PAGES))
 # stable ids for the editor (src/deck-editor.py): the pages of the deck keep their names, the variants get letters
 P = deck.PIDS; assert len(deck.PAGES) == len(P)
 import re as _re
 def _letter(i, html):
     m = _re.search(r"варіант ([A-Z])\b", html); return m.group(1) if m else "BCDEFGHIJKLMNOPQRSTUVWXYZ"[i]
-PID = (["cover-W"] + P[1:OFFER] + ["p3-now"]
-       + ["p3-" + _letter(i, v) for i, v in enumerate(PAGES[1:])] + [pid for pid in P[OFFER + 1:] if pid not in DROP_BASE])
+PID = (["cover-W"] + P[1:OFFER]
+       + ["p3-" + _letter(i, v) for i, v in enumerate(PAGES)] + [pid for pid in P[OFFER + 1:] if pid not in DROP_BASE])
 deck.render(FULL, CSS, PID, builder="src/build-deck-variants.py")

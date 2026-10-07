@@ -124,11 +124,11 @@ tiles6 = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps)}<figcaption class
 NEST = [("flat-kolo-sontsia-88x88", 44, "88 × 88", 4400), ("flat-rankova-kava-65x65", 32.5, "65 × 65", 3200), ("flat-smilyvist-44x44", 22, "44 × 44", 1600)]   # mm on the long side = cm / 2 → true proportions; prices from the listing (05.10)
 nest = ("".join(f'<figure class="n{i}">{cut(c, mm, fix=True)}</figure>' for i, (c, mm, n, pz) in enumerate(NEST))
         + '<div class="nl">' + "".join(f'<p><b class="h13">{n}</b><span class="t8">від {money(pz)} грн</span></p>' for c, mm, n, pz in NEST) + '</div>')
-page(f"""<div class="panel"><p class="cap">Хустки</p><h2 class="h28">Хустки</h2>
+page(f"""<div class="panel"><h2 class="h28">Хустки</h2>
 <span class="pv h28"><small>від</small> 1 600 <small>грн</small></span>
-<p class="lead">Шовкова хустка — найгнучкіший подарунок: її носять на сумці, на голові й на шиї, поясом, пов’язкою чи топом — щодня інший образ. Три формати: 44 × 44 — на шию і на сумку, 65 × 65 — на голову й на плечі, 88 × 88 — шаль, пояс, топ. Друк односторонній або двосторонній; край оброблено вручну. Один принт на всю команду або різні — на вибір.</p>
-<div class="nest">{nest}</div>
-<p class="t8 end">Розміри — у масштабі один до одного. Ціни роздрібні, obiimy.world; двосторонній друк — дорожче. На вирізках — «Коло сонця» 88 × 88, «Ранкова кава» 65 × 65, «Сміливість» 44 × 44; на фото — «Щирі почуття», «Єднання», «Поцілунок сонця», «Грація», «Натхнення», «Баланс».</p></div>
+<p class="lead">Хустка — подарунок, який носять по-різному: на шиї, на голові, на сумці, поясом чи топом. Одна річ — багато образів, тому вона підходить і тим, кого ви знаєте добре, і тим, кого — ще ні.</p>
+<p class="lead">Три розміри: маленька — на шию й на сумку, середня — на голову й на плечі, велика — як шаль. Принт один на всю команду або кожному свій.</p>
+<div class="nest">{nest}</div></div>
 <div class="w6g">{tiles6}</div>""", "ways6", short=True)
 
 # ── 4 · twillies: the price from 1 600, four looks to the edge ─────────────────────────────────────────
@@ -137,24 +137,24 @@ WAYS = [("У волоссі", "photo/site/tvilli-shovkovyi-sokovyti-spohady-06.j
 tiles4 = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps, hi=True, zoom=z)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps, z in WAYS)
 TW4 = [("tw-flat-sokovyti-spohady", "«Соковиті спогади»"), ("tw-flat-melodiia-dvokh", "«Мелодія двох»"), ("tw-flat-yednannia", "«Єднання»"), ("tw-flat-pidnesennia", "«Піднесення»")]   # the prints worn on the four photographs
 prints4 = "".join(f'<figure>{cut(c, 27, fix=True)}</figure>' for c, n in TW4)
-page(f"""<div class="panel"><p class="cap">Твіллі</p><h2 class="h28">Твіллі</h2>
+page(f"""<div class="panel"><h2 class="h28">Твіллі</h2>
 <span class="pv h28"><small>від</small> 1 600 <small>грн</small></span>
-<p class="lead">Твіллі — вузька шовкова стрічка 84 × 5 см, найдоступніший подарунок у каталозі. Її носять у волоссі, на шиї, на зап’ясті, краваткою й на ручці сумки; 38 авторських принтів — один на всіх або кожному свій. Є довгі твіллі 140 × 5 і широка 140 × 15. Для команди це подарунок, який точно носитимуть, і помітний знак уваги за невеликий бюджет.</p>
-<div class="sz3 tw4">{prints4}</div>
-<p class="t8 end">Ціна роздрібна, obiimy.world. Принти, зліва направо: {", ".join(n for c, n in TW4)} — ті самі, що на фото. Один принт на всіх — і жодних однакових образів.</p></div>
+<p class="lead">Твіллі — вузька шовкова стрічка. Її зав’язують у волоссі, на шиї, на зап’ясті, краваткою або на ручці сумки — і носять щодня.</p>
+<p class="lead">Найдоступніший подарунок у каталозі й найлегший у виборі: підходить усім, хто носить аксесуари. Десятки авторських принтів — один на всю команду або кожному свій.</p>
+<div class="sz3 tw4">{prints4}</div></div>
 <div class="w6g w4g">{tiles4}</div>""", "ways6", short=True)
 
 # ── 5 · accessories: sleep masks, scrunchies, bookmarks, pillowcases, turbans — the things for everyone ───────────────
 ACC6 = [("Маска для сну", "photo/site/mask-rankova-kava-04.jpg", "50% 30%"), ("Тюрбан", "photo/turban-1200.webp", "50% 10%"), ("Резинка", "photo/scrunchie-1200.webp", "50% 50%"),
         ("Дві маски", "photo/site/mask-sertsebyttia-05.jpg", "50% 50%"), ("Наволочка", "img/sets/pillow-khmara.webp", "50% 50%"), ("Закладка", "img/sets/bookmark-melodiia.webp", "50% 50%")]
 tilesA = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps in ACC6)
-ACC3 = [("mask-synii", 30, "Маска для сну", "2 700 грн"), ("scrunchie-pole", 24, "Резинка", "700 грн"), ("bookmark-melodiia", 27, "Закладка", "800 грн")]
+ACC3 = [("mask-synii", 30, "Маска для сну", "від 2 700 грн"), ("scrunchie-pole", 24, "Резинка", "від 700 грн"), ("bookmark-melodiia", 27, "Закладка", "від 800 грн")]
 acc3 = "".join(f'<figure>{cut(c, mm, fix=True)}<figcaption><b class="h13">{n}</b><span class="t8">{pz}</span></figcaption></figure>' for c, mm, n, pz in ACC3)
-page(f"""<div class="panel"><p class="cap">Аксесуари</p><h2 class="h28">Аксесуари</h2>
+page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 <span class="pv h28"><small>від</small> 700 <small>грн</small></span>
-<p class="lead">Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок». Маска для сну — 2 700 грн, 15 принтів: шовк м’який і дбайливий до шкіри, тому з нього виходять найкращі маски. Шовкова резинка — 700 грн, понад 30 принтів; набори з трьох — від 1 250 грн. Закладка для книги — 800 грн. Для дому: однотонна наволочка 50 × 70 — 4 200 грн, з принтом — 5 700 грн; тюрбан — 3 500 грн; обруч для вмивання — 700 грн.</p>
-<div class="sz3">{acc3}</div>
-<p class="t8 end">Ціни роздрібні, obiimy.world. На вирізках — маска «Синій», резинка «Літнє поле», закладка «Мелодія двох»; на фото — маска «Ранкова кава», тюрбан, резинка, маски «Серцебиття», наволочка «Хмара», закладка «Мелодія двох».</p></div>
+<p class="lead">Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги, наволочка, тюрбан.</p>
+<p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. Наволочка й тюрбан — подарунок для дому, який підходить усім.</p>
+<div class="sz3">{acc3}</div></div>
 <div class="w6g">{tilesA}</div>""", "ways6", short=True)
 
 # ── 6 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────

@@ -379,9 +379,9 @@ def cover_w(four, letter):
     return (f'''<section class="pg cv cvw"><div class="four">{"".join(pic(f, 72, 122, ps, once=False) for f, ps, _c in four)}</div>
 <div class="cvw-t"><h1 class="h54"><i>подаруй</i> <img src="brand/logo-ink.png" class="cvw-logo" alt="Obiimy"></h1>
 <p class="h13 cvw-d">Українські преміальні шовкові аксесуари —<br>корпоративні подарунки для команди, партнерів і клієнтів.</p>
-<div class="cvw-r"><p class="cap">Корпоративні подарунки · 2026 · варіант {letter}</p><p class="h13">{PRICE}</p><p class="t8">На фото — {", ".join(c for _f, _p, c in four)}.</p></div></div>
+<div class="cvw-r"><p class="cap">Корпоративні подарунки · 2026{" · варіант " + letter if letter else ""}</p><p class="h13">{PRICE}</p><p class="t8">На фото — {", ".join(c for _f, _p, c in four)}.</p></div></div>
 {LINE}</section>''')
-COVERS.append(cover_w(FOUR_W, "W")); COVERS.append(cover_w(FOUR_X, "X"))
+COVERS.append(cover_w(FOUR_W, "")); COVERS.append(cover_w(FOUR_X, "X"))
 
 CSS = deck.CSS + """
 /* P–U — covers on the brand's editorial photographs (classes nw*, on top of .lx) */
@@ -530,13 +530,15 @@ CSS = deck.CSS + """
 """
 def doc(pages, title): return typo(f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>{title}</title><style>{CSS}</style></head><body>{"".join(pages)}</body></html>')
 (OUT / "p3-variants.html").write_text(doc(PAGES, "Obiimy — сторінка 3, варіанти"))     # page 3 alone: a base for mock-ups
-FULL = deck.PAGES[:1] + COVERS + deck.PAGES[1:2] + PAGES + deck.PAGES[3:]
-print("cover variants:", len(COVERS), "· page 3 variants:", len(PAGES) - 1)
+# 07.10: the client chose the yellow cover (W) — it is the only cover printed; the other covers (A–V, X) stay in the code, not in the file
+COVER_W = [c for c in COVERS if 'class="pg cv cvw"' in c and "варіант X" not in c]; assert len(COVER_W) == 1
+FULL = COVER_W + deck.PAGES[1:2] + PAGES + deck.PAGES[3:]
+print("covers printed:", len(COVER_W), "of", len(COVERS) + 1, "· page 3 variants:", len(PAGES) - 1)
 # stable ids for the editor (src/deck-editor.py): the pages of the deck keep their names, the variants get letters
 P = deck.PIDS; assert len(deck.PAGES) == len(P)
 import re as _re
 def _letter(i, html):
     m = _re.search(r"варіант ([A-Z])\b", html); return m.group(1) if m else "BCDEFGHIJKLMNOPQRSTUVWXYZ"[i]
-PID = (["cover-A"] + ["cover-" + _letter(i, h) for i, h in enumerate(COVERS)] + [P[1], "p3-now"]
+PID = (["cover-W"] + [P[1], "p3-now"]
        + ["p3-" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i] for i in range(len(PAGES) - 1)] + P[3:])
 deck.render(FULL, CSS, PID, builder="src/build-deck-variants.py")

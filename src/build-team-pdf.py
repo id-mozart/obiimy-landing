@@ -161,7 +161,7 @@ SETS3 = [  # name, inside, price line, box cut-out, width mm
     ("Маска + резинка", "Подарунок про відпочинок, а не про роботу. Підходить і тим, хто хустки не носить.", "від 3 100 грн", "box-maskscr-litnie-pole", 78),
 ]
 cols = "".join(f'<div class="scol"><figure>{cut(c, w, fix=True)}</figure><h3 class="h28">{n}</h3><p>{d}</p><span class="from">{pz}</span></div>' for n, d, pz, c, w in SETS3)
-page(f"""<div class="setsp"><div class="sh2"><h2 class="h28">Подарункові набори</h2><span class="from">від 2 200 грн · у коробці Obiimy</span></div><div class="scols">{cols}</div></div>""", "sets3", short=True)
+page(f"""<div class="setsp"><div class="sh2"><h2 class="h28">Подарункові набори</h2><p class="brand-note">Пакування й наліпка з вашим логотипом — у ціні.<br>Нашивна бирка чи власний принт — за запитом.</p></div><div class="scols">{cols}</div></div>""", "sets3", short=True)
 
 # ── 7 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────
 GIFTS = [  # label, name, description, price, ceiling (double-sided print) or None, cut-out
@@ -421,7 +421,8 @@ small { font-size: 13pt; letter-spacing: 0; }
 .sh2 { display: flex; align-items: baseline; justify-content: space-between; gap: 6mm; margin-bottom: 4.5mm; } .sh2 .from { margin: 0; }
 .scols { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 9mm; flex: 1; align-items: start; border-top: .35pt solid #C9C6C0; padding-top: 6mm; }
 .scol figure { height: 92mm; display: flex; align-items: center; justify-content: center; margin: 0 0 6mm; } .scol figure img { filter: drop-shadow(0 2mm 3mm rgba(40,25,10,.18)); }
-.scol h3 { margin-bottom: 2.25mm; } .scol p { font-size: 10.5pt; line-height: 5.2mm; color: #4A4A47; } .scol .from { font-size: 12pt; margin: 3mm 0 0; }
+.scol h3 { margin-bottom: 2.25mm; } .scol p { font-size: 10.5pt; line-height: 5.2mm; color: #4A4A47; } .scol .from { font: 400 18pt/20pt Playfair, serif; font-style: normal; color: #141414; margin: 4mm 0 0; } .scol .from::first-letter { font-style: italic; }
+.sh2 .brand-note { text-align: right; font-size: 9.5pt; line-height: 4.5mm; color: #4A4A47; }
 .sets3 .folio { left: 16.5mm; }
 .from { display: block; font: italic 400 13pt/16.5pt Playfair, serif; color: #6E6A63; margin-bottom: 7.5mm; }   /* the price as a quiet line under the heading */
 .ways6 .lead { font-size: 11pt; line-height: 5.6mm; color: #2E2C29; margin-bottom: 4.5mm; } .ways6 .lead + .lead { color: #4A4A47; }

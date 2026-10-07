@@ -16,8 +16,8 @@ PHONE, PHONE_HREF, TG, MAIL, SHOWROOM = team.PHONE, team.PHONE_HREF, team.TG, te
 money = deck.money
 
 # ── data straight from the deck ───────────────────────────────────────────────────────────────────────────────────
-MOSAIC = [("photo/solo/iskra-65-4.webp", "50% 34%"), ("photo/solo/flirt-tw-1.webp", "50% 30%"), ("photo/site/mask-shchyri-pochuttia-04.jpg", "0% 72%"), ("photo/solo/zolote-44-2.webp", "50% 30%"),
-          ("photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg", "50% 50%"), ("photo/solo/tysha-88-4.webp", "50% 32%"), ("photo/solo/krok-44-2.webp", "50% 30%"), ("photo/solo/flirt-65-4.webp", "50% 32%")]   # the cover (cvz9); crops for the strips above and below the band
+MOSAIC = [("photo/solo/iskra-65-4.webp", "50% 34%"), ("photo/solo/flirt-tw-1.webp", "50% 30%"), ("photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg", "50% 45%"), ("photo/solo/zolote-44-2.webp", "50% 30%"),
+          ("photo/site/mask-shchyri-pochuttia-04.jpg", "0% 60%"), ("photo/solo/tysha-88-4.webp", "50% 32%"), ("photo/solo/krok-44-2.webp", "50% 30%"), ("photo/solo/flirt-65-4.webp", "50% 32%")]   # the cover (cvz9); crops for the strips above and below the band
 MORE = [("Сертифікат", "Номінали 1 000, 1 500, 2 000, 2 500 і 4 000 грн; діє три місяці.", 1000, "img/cert-card.png"),
         ("Маска, закладка й резинка", "Три речі в одному принті, у коробці.", 3600, "img/cut/sleep-pidnesennia.webp"),
         ("Хустка й кільце", "Хустка 65 × 65 і кільце — збираємо на замовлення.", 3650, "img/cut/duo-kava-ring.webp"),
@@ -36,7 +36,6 @@ def cutimg(name, alt, w=240): return img(f"img/cut/{name}.webp", alt, sizes=f"{w
 NAV = [("Хустки", "scarves"), ("Твіллі", "twilly"), ("Аксесуари", "acc"), ("Набори", "sets"), ("Чоловікам", "men"), ("SOLO", "solo"), ("Питання", "faq")]
 def hero():
     frames = "".join(img(f, "", sizes="(max-width: 900px) 50vw, 25vw", lazy=i > 3, style=f"object-position:{p}") for i, (f, p) in enumerate(MOSAIC))
-    chips = "".join(f'<a href="#{h}">{t}</a>' for t, h in NAV)
     return f'''
   <section class="hero dk-cover" id="top">
     <div class="dk-mosaic">{frames}</div>
@@ -46,8 +45,10 @@ def hero():
       <div class="cta"><a class="btn btn-gold" href="#request">Отримати розрахунок</a><a class="btn btn-line" href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація (PDF, {team.PDF_MB} МБ) ↓</a></div></div>
       <div class="dk-band-art">{"".join(f'<figure class="dk-n{i}">{img(f"img/cut/{c}.webp", f"Хустка {n}", sizes="260px")}</figure>' for i, (c, mm, n, p) in enumerate(deck.NEST))}</div>
     </div></div>
-    <nav class="dk-chips" aria-label="Розділи сторінки">{chips}</nav>
   </section>'''
+
+def chips():   # the phone's section menu — outside the hero so that sticky works down the whole page
+    return '<nav class="dk-chips" aria-label="Розділи сторінки">' + "".join(f'<a href="#{h}">{t}</a>' for t, h in NAV) + '</nav>'
 
 def about():
     paras = "".join(f"<p>{x}</p>" for x in (deck.ABOUT[0], deck.ABOUT[3]))   # the lead, the silk and the charity — the rest of the site's text is for a shopper, not a buyer
@@ -143,7 +144,7 @@ def faq():
   <section class="dk-faq" id="faq"><div class="wrap"><h2>Запитання та відповіді</h2><div class="dk-faq2">{items}</div></div></section>'''
 
 def page():
-    body = hero() + about() + steps() + scarves() + twilly() + accessories() + sets() + midcta() + more() + men() + solo() + faq() + main.with_qr(
+    body = hero() + chips() + about() + steps() + scarves() + twilly() + accessories() + sets() + midcta() + more() + men() + solo() + faq() + main.with_qr(
         team.request_section("f-deck", "Подарунки для команди (презентація)", "Зв’яжіться з нами — <i>разом підберемо все для вашої команди</i>",
                              "Нагода, кількість людей і дата вручення — цього досить для першого листа. У відповідь надішлемо добірку з фото й розрахунок.", "sets", corp=True)) + team.script("f-deck", "")
     return dict(slug="b2b-deck", skin="deck", bar=team.BAR, title="Подарунки для команди — преміальні шовкові вироби Obiimy · хустки, твіллі, аксесуари, набори",
@@ -156,14 +157,15 @@ CSS = """
   .hero.dk-cover { padding: 0; position: relative; }
   .dk-mosaic { display: grid; grid-template-columns: repeat(4, 1fr); max-height: calc(100vh - 112px); overflow: hidden; } .dk-mosaic img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; }
   .dk-band { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); background: #FDD31A; color: #141414; padding: clamp(18px, 2.4vw, 28px) 0; box-shadow: 0 10px 40px rgba(0,0,0,.25); } .dk-band .wrap { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 32px; }
-  .dk-band-art { position: relative; width: 300px; height: 190px; } .dk-band-art figure { position: absolute; bottom: 0; margin: 0; } .dk-band-art img { display: block; filter: drop-shadow(0 6px 10px rgba(0,0,0,.2)); } .dk-band-art .dk-n0 { left: 0; width: 56%; } .dk-band-art .dk-n1 { left: 22%; width: 42%; } .dk-band-art .dk-n2 { left: 44%; width: 28%; }
+  .dk-band-art { position: relative; width: clamp(240px, 22vw, 320px); height: 200px; justify-self: end; } .dk-band-art figure { position: absolute; bottom: 0; margin: 0; } .dk-band-art img { display: block; filter: drop-shadow(0 6px 10px rgba(0,0,0,.2)); } .dk-band-art .dk-n0 { left: 0; width: 56%; } .dk-band-art .dk-n1 { left: 22%; width: 42%; } .dk-band-art .dk-n2 { left: 44%; width: 28%; }
   .dk-band-t { max-width: 760px; } .dk-band .eyebrow { color: #141414; font-weight: 400; margin: 0 0 10px; }
   .dk-band h1 { font-size: clamp(2.4rem, 4.6vw, 3.8rem); line-height: 1.02; margin: 0 0 12px; } .dk-band h1 i { color: #4A4A47; }
   .dk-band-lead { font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.5; color: #141414; margin: 0 0 16px; max-width: 640px; }
   .dk-band .cta { display: flex; gap: 10px; flex-wrap: wrap; } .dk-band .btn-gold { background: #141414; color: #F1EFEA; } .dk-band .btn-line { border-color: #141414; color: #141414; }
   .dk-chips { display: none; }
-  @media (max-width: 900px) { .dk-mosaic { grid-template-columns: repeat(2, 1fr); max-height: 52vh; } .dk-mosaic img { aspect-ratio: 1 / 1; } .dk-mosaic img:nth-child(n+5) { display: none; } .dk-band { position: static; transform: none; box-shadow: none; padding: 22px 0 20px; } .dk-band .wrap { grid-template-columns: 1fr; } .dk-band-art { display: none; } .dk-band .cta { gap: 14px; } }
-  @media (max-width: 760px) { .dk-chips { display: flex; gap: 8px; overflow-x: auto; padding: 8px clamp(16px, 4vw, 48px); scrollbar-width: none; background: var(--bg); border-bottom: 1px solid var(--line); position: sticky; top: 69px; z-index: 40; } .dk-chips::-webkit-scrollbar { display: none; }
+  @media (max-width: 900px) { .dk-mosaic { grid-template-columns: repeat(2, 1fr); max-height: 52vh; } .dk-mosaic img { aspect-ratio: 4 / 3; } .dk-mosaic img:nth-child(n+5) { display: none; } .dk-band { position: static; transform: none; box-shadow: none; padding: 22px 0 20px; } .dk-band .wrap { grid-template-columns: 1fr; } .dk-band-art { display: none; } .dk-band .cta { gap: 14px; } }
+  @media (max-width: 640px) { .bar { display: none; } }
+  @media (max-width: 760px) { section[id] { scroll-margin-top: 150px; } .dk-chips { display: flex; gap: 8px; overflow-x: auto; padding: 8px clamp(16px, 4vw, 48px); scrollbar-width: none; background: var(--bg); border-bottom: 1px solid var(--line); position: sticky; top: 69px; z-index: 40; } .dk-chips::-webkit-scrollbar { display: none; }
     .dk-chips a { flex: none; font-size: .82rem; letter-spacing: .04em; padding: 10px 14px; min-height: 44px; display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); text-decoration: none; } }
   .dk-split { padding-block: clamp(40px, 6vw, 96px); } .dk-split .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 72px); align-items: center; }
   .dk-split figure { margin: 0; } .dk-split figure img { width: 100%; aspect-ratio: 148.5 / 210; object-fit: cover; display: block; }

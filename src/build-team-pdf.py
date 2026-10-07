@@ -146,12 +146,12 @@ page(f"""<div class="panel"><h2 class="h28">Твіллі</h2>
 
 # ── 5 · accessories: sleep masks, scrunchies, bookmarks, pillowcases, turbans — the things for everyone ───────────────
 ACC4 = [("Маска для сну", "від 2 700 грн", "photo/site/mask-rankova-kava-04.jpg", "50% 30%"), ("Резинка", "від 700 грн", "photo/scrunchie-1200.webp", "50% 50%"),
-        ("Закладка", "від 800 грн", "img/sets/bookmark-melodiia.webp", "50% 50%"), ("Сертифікат", "від 1 000 грн", "img/sets/cert-2000.webp", "50% 50%")]   # four things, the price in the caption
+        ("Закладка", "від 800 грн", "img/sets/bookmark-melodiia.webp", "50% 50%"), ("Тримач для хустки", "від 450 грн", "photo/site/ring-zoloto-01.jpg", "50% 40%")]   # four things, the price in the caption
 tilesA = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps)}<figcaption class="h28"><i>{n}</i><span class="wp">{pz}</span></figcaption></figure>' for n, pz, f, ps in ACC4)
 page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 <span class="from">від 700 грн</span>
-<p class="lead">Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги.</p>
-<p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. А коли смаків не знаєте — сертифікат: людина обере сама.</p></div>
+<p class="lead">Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги, тримач для хустки.</p>
+<p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. Тримач — маленьке кільце, яке тримає хустку чи твіллі й робить із них готовий образ.</p></div>
 <div class="w6g w4g">{tilesA}</div>""", "ways6", short=True)
 
 # ── 6 · gift sets: three bands across the page — the box from the site, the words, the set worn ──────────────────────

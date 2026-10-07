@@ -110,7 +110,7 @@ MORE = [("Три твіллі", "Три принти на вибір в одні
         ("Пара масок «Серцебиття»", "Дві маски у формі сердець — для двох.", 4200, False, "masks-sertsebyttia"),
         ("Хустка й кільце", "Хустка 44 × 44 і кільце для хустки.", 2050, True, "duo-hratsiia-ring")]
 def row_m(n, d, p, frm, c):
-    return f'<div class="rw rw2">{cut(c, 23, "th")}<h3 class="h13">{n}</h3><p class="pr h28">{"<small>від</small> " if frm else ""}{money(p)} <small>грн</small></p><span class="t8 d">{d}</span></div>'
+    return f'<div class="rw rw2">{cut(c, 24, "th")}<h3 class="h13">{n}</h3><p class="pr h28">{"<small>від</small> " if frm else ""}{money(p)} <small>грн</small></p><span class="t8 d">{d}</span></div>'
 PAGES.append(f'''<section class="pg split l v3d"><!-- варіант D --><figure class="ph">{pic("photo/site/set-ta-rezynka-litnie-pole-04.jpg", 148.5, 210, "42% 50%", once=False)}</figure>
 <div class="panel"><h2 class="h28">Є й інші набори —<br><i>і ще десятки варіантів</i></h2>
 <div class="rows">{"".join(row_m(*M) for M in MORE)}</div>
@@ -489,7 +489,10 @@ CSS = deck.CSS + """
 .rows { margin-top: -1.5mm; } .rw { display: grid; grid-template-columns: 21mm 1fr auto; column-gap: 4.5mm; align-items: baseline; padding: 1.5mm 0; border-top: .35pt solid #C9C6C0; } .rw:last-child { border-bottom: .35pt solid #C9C6C0; }
 .rw .th { grid-row: 1 / 4; align-self: center; width: 21mm; height: 21mm; object-fit: contain; filter: drop-shadow(0 1mm 1.5mm rgba(0,0,0,.14)); } .rw .cap { grid-column: 2 / 4; letter-spacing: .13em; }
 .rw .b3 { grid-column: 2 / 4; margin-top: 0; padding-top: .75mm; } .rw .pr { line-height: 26pt; } .v3d .panel h2 { margin-bottom: 4.5mm; }
-.v3d .phc { margin-top: auto; } .rw2 { padding: 3mm 0; } .rw2 .th { grid-row: 1 / 3; } .rw2 .d { grid-column: 2 / 4; color: #6E6A63; } .rw2 .pr { line-height: 24pt; }
+.v3d .phc { margin-top: auto; } .v3d .rows:has(.rw2) { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; margin: 2mm 0 6mm; }
+.rw2 { grid-template-columns: 24mm 1fr auto; column-gap: 4.5mm; padding: 3.5mm 0; align-items: start; border-top: .35pt solid #C9C6C0; } .rw2:last-child { border-bottom: .35pt solid #C9C6C0; }
+.rw2 .th { grid-row: 1 / 3; width: 24mm; height: 24mm; align-self: center; } .rw2 h3 { font-size: 14pt; line-height: 17pt; align-self: baseline; } .rw2 .d { grid-column: 2 / 4; color: #6E6A63; font-size: 9.5pt; line-height: 4.5mm; margin-top: 1.5mm; }
+.rw2 .pr { font-size: 22pt; line-height: 17pt; align-self: baseline; white-space: nowrap; }
 /* I, J, K — the luxury-catalogue art director's concepts */
 .x1 .bg, .x2 .bg, .x3 .bg { position: absolute; left: 0; top: 0; width: 297mm; height: 210mm; } .vt { color: inherit; }
 .x1 .lab { position: absolute; display: flex; align-items: baseline; gap: 2.25mm; white-space: nowrap; z-index: 2; } .x1 .lab b { font: italic 400 13pt/16.5pt Playfair, serif; color: #141414; }

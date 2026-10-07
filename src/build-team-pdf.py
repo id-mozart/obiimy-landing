@@ -284,7 +284,7 @@ def tile7(F, P):
     return f'<figure class="tile">{pic(f, 35.14, 108, ps, zoom=z)}<figcaption><b class="h13"><i>{n}</i></b><span class="t8">{st}</span></figcaption></figure>'
 ST7 = {"Іскра": "Енергія і сміливість бути помітною.", "Флірт": "Оптимізм і невимушена жіночність."}   # 07.10: every state in two lines
 tiles = "".join(tile7(F, P) for F, P in zip(STRIP, SOLO))
-page(f"""<div class="sh sh7"><h2 class="h40">Колекція SOLO</h2>
+page(f"""<div class="sh sh7"><div><p class="cap">Нова колекція · 2026</p><h2 class="h40">Колекція SOLO</h2><p class="st7 sub">Шлях до себе. <span>Натхнення — обкладинки модних журналів 40–50-х.</span></p></div>
 <div><p class="st7">Сім принтів — сім станів</p><p>Кожен принт — про свій стан. Обирайте один для всієї команди або свій для кожного.</p></div></div>
 <div class="tiles t7">{tiles}</div>""", "strip dark")
 
@@ -407,7 +407,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 /* strip: header + tiles in the margins, captions under the photos */
 .sh { position: absolute; left: 16.5mm; right: 16.5mm; top: 16.5mm; height: 30mm; display: grid; grid-template-columns: 1fr 106.5mm; gap: 6mm; align-items: start; }
 .sh .cap { margin-bottom: 3.75mm; } .sh > p { color: #C9C6C0; padding-top: 9mm; }
-.sh7 { align-items: start; top: 15mm; } .sh7 h2 { margin: 0; } .strip .tiles { top: 54mm; } .strip .t7 .tile img { height: 102mm; } .sh7 .st7 { font: italic 400 15pt/18pt Playfair, serif; color: #E7D9A6; margin-bottom: 2mm; } .sh7 div > p:last-child { color: #C9C6C0; }   /* 07.10: SOLO as the heading, the seven states on the right */
+.sh7 { align-items: start; top: 13mm; } .sh7 h2 { margin: 0 0 2.5mm; } .sh7 .cap { margin-bottom: 2.5mm; } .sh7 .sub { margin: 0; } .sh7 .sub span { color: #C9C6C0; font-style: normal; font-family: Tenor, sans-serif; font-size: 10.5pt; } .sh7 > div:last-child { padding-top: 6.5mm; } .strip .tiles { top: 58mm; } .strip .t7 .tile img { height: 98mm; } .sh7 .st7 { font: italic 400 15pt/18pt Playfair, serif; color: #E7D9A6; margin-bottom: 2mm; } .sh7 div > p:last-child { color: #C9C6C0; }   /* 07.10: SOLO as the heading, the seven states on the right */
 .tiles { position: absolute; left: 16.5mm; right: 16.5mm; top: 49.5mm; bottom: 19.5mm; display: grid; gap: 3mm; } .t7 { grid-template-columns: repeat(7, 1fr); } .t4 { grid-template-columns: repeat(4, 1fr); }
 .tile img { width: 100%; object-fit: cover; } .t7 .tile img { height: 108mm; } .t4 .tile img { height: 117mm; }
 .tile figcaption { padding-top: 3.75mm; color: #fff; } .tile b { display: block; color: #E7D9A6; white-space: nowrap; margin-bottom: 1.5mm; }

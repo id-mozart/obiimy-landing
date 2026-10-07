@@ -156,10 +156,10 @@ page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 <div class="w6g w4g">{tilesA}</div>""", "ways6", short=True)
 
 # ── 6 · gift sets: three columns, one open box per set (the shop's own cut-outs on the paper), the words and the price under it ──
-SETS3 = [  # name, inside, price line, box cut-out, width mm
-    ("Твіллі + хустка", "Стрічка й маленька хустка в одному принті, у довгій коробці. Разом або окремо — на шиї, у волоссі, на сумці.", "від 3 200 грн", "box-sctw-spokusa", 84),
+SETS3 = [  # name, inside, price line, box cut-out, width mm — 07.10: by price; the scarf-and-twilly box in a print that is not yellow
     ("Твіллі + резинка", "Дві речі в одному принті, у святковій коробці. Найпростіший набір для всієї команди.", "від 2 200 грн", "box-twscr-smilyvist", 82),
     ("Маска + резинка", "Подарунок про відпочинок, а не про роботу. Підходить і тим, хто хустки не носить.", "від 3 100 грн", "box-maskscr-litnie-pole", 78),
+    ("Твіллі + хустка", "Стрічка й маленька хустка в одному принті, у довгій коробці. Разом або окремо — на шиї, у волоссі, на сумці.", "від 3 200 грн", "box-sctw-vinochok", 84),
 ]
 cols = "".join(f'<div class="scol"><figure>{cut(c, w, fix=True)}</figure><h3 class="h28">{n}</h3><p>{d}</p><span class="from">{pz}</span></div>' for n, d, pz, c, w in SETS3)
 page(f"""<div class="setsp"><div class="sh2"><h2 class="h28">Подарункові набори</h2><p class="brand-note">Разом із вами підберемо або створимо<br>унікальний набір саме для вашої команди.</p></div><div class="scols">{cols}</div></div>""", "sets3", short=True)

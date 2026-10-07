@@ -387,8 +387,8 @@ def cover_w(four, letter):
 {LINE}</section>''')
 COVERS.append(cover_w(FOUR_W, "")); COVERS.append(cover_w(FOUR_X, "X"))
 # Z · 07.10: the client's brief — one big logo with the photographs showing through it, nothing else (img/cover-logo.png is built by hand: the logo's alpha over six frames)
-MOSAIC = [("photo/solo/iskra-65-3.webp", "50% 50%"), ("photo/solo/flirt-65-3.webp", "58% 10%"), ("photo/solo/puls-44-3.webp", "50% 20%"), ("photo/solo/zolote-44-3.webp", "50% 20%"),
-          ("photo/solo/avantiura-88-3.webp", "50% 20%"), ("photo/solo/tysha-88-3.webp", "50% 40%"), ("photo/solo/krok-44-4.webp", "50% 20%"), ("photo/solo/krok-tw-2.webp", "50% 30%")]
+MOSAIC = [("photo/solo/iskra-65-3.webp", "50% 50%"), ("photo/site/mask-vpevnenist-04.jpg", "50% 30%"), ("photo/solo/flirt-65-3.webp", "58% 10%"), ("photo/site/bookmark-melodiia-dvokh-01.jpg", "55% 30%"),
+          ("photo/solo/avantiura-88-3.webp", "50% 20%"), ("photo/site/ring-zoloto-01.jpg", "50% 40%"), ("photo/solo/krok-tw-2.webp", "50% 30%"), ("photo/solo/flirt-scr-3.webp", "38% 50%")]   # 07.10: scarves, twilly and the accessories alike
 LINE_Z = '<p class="cap cvz-l">Подарунки для команди · 2026</p>'
 COVERS += [   # 07.10: five covers of a different kind each, all printed — the client picks one
     f'<section class="pg cv cvz cvz1"><img src="img/cover-logo.png" class="cvz-logo" alt="Obiimy">{LINE_Z}</section>',   # A · the logo as a window on six frames, brand yellow
@@ -554,7 +554,7 @@ CSS = deck.CSS + """
 def doc(pages, title): return typo(f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>{title}</title><style>{CSS}</style></head><body>{"".join(pages)}</body></html>')
 (OUT / "p3-variants.html").write_text(doc(PAGES, "Obiimy — сторінка 3, варіанти"))     # page 3 alone: a base for mock-ups
 # 07.10: the client chose the yellow cover (W) — it is the only cover printed; the other covers (A–V, X) stay in the code, not in the file
-COVER_W = [c for c in COVERS if 'class="pg cv cvz' in c]; assert len(COVER_W) == 5   # 07.10: the five logo covers (Z1–Z5) are printed, the client picks one
+COVER_W = [c for c in COVERS if 'class="pg cv cvz cvz5"' in c]; assert len(COVER_W) == 1   # 07.10: the client chose the mosaic (E); the other covers stay in the code
 # the variants still call themselves «сторінка 3»; renumber them to the real page of the offer and renumber the folios and the «стор. N» reference
 OFF_N = OFFER + 1
 DROP = set("ABCEFGHIJKLMN")   # 07.10: the client removed these page-3 variants and the «зараз — таблиця» page from the file; they stay in the code

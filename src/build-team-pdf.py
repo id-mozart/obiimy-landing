@@ -154,7 +154,9 @@ tilesA = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps)}<figcaption clas
 page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 <span class="from">від 700 грн</span>
 <p class="lead">Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги, тримач для хустки.</p>
-<p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. Тримач — маленьке кільце, яке тримає хустку чи твіллі й робить із них готовий образ.</p></div>
+<p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. Тримач — маленьке кільце, яке тримає хустку чи твіллі й робить із них готовий образ.</p>
+<div class="pair one"><figure>{pic("photo/site/set-maska-zakladka-rezynka-pidnesennia-01.jpg", 80, 42, "50% 62%")}</figure></div>
+<p class="pair-cap">Кілька аксесуарів чудово складаються в набір: маска для сну, закладка й резинка «Піднесення» в коробці — 3 600 грн.</p></div>
 <div class="w6g w4g">{tilesA}</div>""", "ways6", short=True)
 
 # ── 6 · gift sets: three columns, one open box per set (the shop's own cut-outs on the paper), the words and the price under it ──
@@ -426,6 +428,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .scol figure { height: 92mm; display: flex; align-items: center; justify-content: center; margin: 0 0 6mm; } .scol figure img { filter: drop-shadow(0 2mm 3mm rgba(40,25,10,.18)); }
 .scol h3 { margin-bottom: 2.25mm; } .scol p { font-size: 10.5pt; line-height: 5.2mm; color: #4A4A47; } .scol .from { font: 400 18pt/20pt Playfair, serif; font-style: normal; color: #141414; margin: 4mm 0 0; } .scol .from::first-letter { font-style: italic; }
 .pair { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; } .pair figure { margin: 0; overflow: hidden; } .pair img { width: 40.5mm; height: 50mm; object-fit: cover; display: block; }
+.pair.one { grid-template-columns: 1fr; } .pair.one img { width: 100%; height: 42mm; }
 .pair-cap { margin-top: 3mm; font-size: 9.5pt; line-height: 4.5mm; color: #4A4A47; }
 .sh2 .brand-note { text-align: right; font-size: 9.5pt; line-height: 4.5mm; color: #4A4A47; }
 .sets3 .folio { left: 16.5mm; }

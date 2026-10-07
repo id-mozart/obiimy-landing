@@ -162,7 +162,7 @@ SETS3 = [  # name, inside, price line, box cut-out, width mm
     ("Маска + резинка", "Подарунок про відпочинок, а не про роботу. Підходить і тим, хто хустки не носить.", "від 3 100 грн", "box-maskscr-litnie-pole", 78),
 ]
 cols = "".join(f'<div class="scol"><figure>{cut(c, w, fix=True)}</figure><h3 class="h28">{n}</h3><p>{d}</p><span class="from">{pz}</span></div>' for n, d, pz, c, w in SETS3)
-page(f"""<div class="setsp"><div class="sh2"><h2 class="h28">Подарункові набори</h2><p class="brand-note">Пакування й наліпка з вашим логотипом — у ціні.<br>Нашивна бирка чи власний принт — за запитом.</p></div><div class="scols">{cols}</div></div>""", "sets3", short=True)
+page(f"""<div class="setsp"><div class="sh2"><h2 class="h28">Подарункові набори</h2><p class="brand-note">Разом із вами підберемо або створимо<br>унікальний набір саме для вашої команди.</p></div><div class="scols">{cols}</div></div>""", "sets3", short=True)
 
 # ── 7 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────
 GIFTS = [  # label, name, description, price, ceiling (double-sided print) or None, cut-out

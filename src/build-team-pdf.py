@@ -282,10 +282,10 @@ import re as _re
 def fmt7(fm): return "Твіллі · хустка " + _re.search(r"хустка (\d+ × \d+)", fm).group(1)
 def tile7(F, P):
     f, ps, z = F; n, st, fm = P[:3]
-    return f'<figure class="tile">{pic(f, 35.14, 108, ps, zoom=z)}<figcaption><b class="h13"><i>{n}</i></b><span class="t8">{st}</span><span class="t8 fm">{fmt7(fm)}</span></figcaption></figure>'
+    return f'<figure class="tile">{pic(f, 35.14, 108, ps, zoom=z)}<figcaption><b class="h13"><i>{n}</i></b><span class="t8">{st}</span></figcaption></figure>'
 tiles = "".join(tile7(F, P) for F, P in zip(STRIP, SOLO))
 page(f"""<div class="sh"><div><p class="cap">Колекція SOLO</p><h2 class="h28">Сім принтів — <i>сім станів</i></h2></div>
-<p>Назва принта — готовий текст листівки: «Сміливий крок» — на підвищення, «Тиша всередині» — після складного кварталу. Твіллі в усіх принтах — 1 600 грн; хустки з двостороннім друком — 2 400–6 600 грн, формат — під фото.</p></div>
+<p>Кожен принт — про свій стан. Обирайте один для всієї команди або свій для кожного: «Сміливий крок» — на підвищення, «Тиша всередині» — після складного кварталу. Назва принта стане текстом листівки.</p></div>
 <div class="tiles t7">{tiles}</div>""", "strip dark")
 
 # ── 14 · terms and how to order (sheet) ─────────────────────────────────────────────────────────────

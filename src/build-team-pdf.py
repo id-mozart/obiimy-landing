@@ -151,8 +151,8 @@ page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 <span class="from">від 700 грн</span>
 <p class="lead">Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги, тримач для хустки.</p>
 <p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. Тримач — маленьке кільце, яке тримає хустку чи твіллі й робить із них готовий образ.</p>
-<figure class="setcut">{cut("sleep-pidnesennia", 58, fix=True)}</figure>
-<p class="pair-cap">Кілька аксесуарів чудово складаються в набір — наприклад, маска для сну, закладка й резинка одного принту в коробці.</p></div>
+<figure class="setcut">{cut("box-maskscr-melodiia", 64, fix=True)}</figure>
+<p class="pair-cap">Кілька аксесуарів чудово складаються в набір — наприклад, маска для сну й резинка одного принту в коробці.</p></div>
 <div class="w6g w4g">{tilesA}</div>""", "ways6", short=True)
 
 # ── 6 · gift sets: three columns, one open box per set (the shop's own cut-outs on the paper), the words and the price under it ──

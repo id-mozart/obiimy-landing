@@ -106,7 +106,7 @@ PAGES.append(f'''<section class="pg paper v3c">{rh("варіант C — пол�
 # D · one photograph for half the page and four more sets — 07.10: the client wants this page to show that there are many other
 # sets beyond the three on page 6 (no overlap with them), without the people counts; prices and the count of sets from SITE-FACTS
 MORE = [("Сертифікат", "На будь-яку суму від 1 000 до 4 000 грн.", 1000, True, "img/sets/cert-2000.webp"),   # 07.10: sets only, from the cheapest up, every name on one line
-        ("Маска, закладка й резинка", "Один принт із колекції «Співоча душа».", 3600, True, "sleep-pidnesennia"),
+        ("Маска, закладка й резинка", "Три речі в одному принті, у коробці.", 3600, True, "sleep-pidnesennia"),
         ("Хустка й кільце", "Хустка 65 × 65 і кільце для хустки.", 3650, True, "duo-iskra-ring"),   # the medium scarf (3 200) with the ring (450), a SOLO print
         ("Три твіллі", "Три принти на вибір в одній коробці.", 4800, True, "three-twilly-2")]
 def row_m(n, d, p, frm, c):

@@ -538,7 +538,9 @@ OFF_N = OFFER + 1
 DROP = set("FGHIJK")   # 07.10: the client removed these page-3 variants from the file; they stay in the code
 PAGES = [v for v in PAGES if not any(f"варіант {L}" in v for L in DROP)]
 VAR = [v.replace("Сторінка 3", f"Сторінка {OFF_N}").replace("сторінка 3", f"сторінка {OFF_N}").replace("<span>03</span>", f"<span>{OFF_N:02d}</span>") for v in PAGES]
-FULL = COVER_W + deck.PAGES[1:OFFER] + VAR + deck.PAGES[OFFER + 1:]
+DROP_BASE = {"gift-twilly", "gift-ring", "gift-mask", "gift-set", "logo"}   # 07.10: the client removed the four gift pages and «Персоналізація» from the file
+TAIL = [h for pid, h in zip(deck.PIDS[OFFER + 1:], deck.PAGES[OFFER + 1:]) if pid not in DROP_BASE]
+FULL = COVER_W + deck.PAGES[1:OFFER] + VAR + TAIL
 import re as _re
 TERMS_N = next(i for i, h in enumerate(FULL) if "Умови й замовлення" in h) + 1
 FULL = [_re.sub(r"(стор\.[\s\u00a0\u202f]*)(\d+)", lambda m: m.group(1) + str(TERMS_N), h) for h in FULL]
@@ -551,5 +553,5 @@ import re as _re
 def _letter(i, html):
     m = _re.search(r"варіант ([A-Z])\b", html); return m.group(1) if m else "BCDEFGHIJKLMNOPQRSTUVWXYZ"[i]
 PID = (["cover-W"] + P[1:OFFER] + ["p3-now"]
-       + ["p3-" + _letter(i, v) for i, v in enumerate(PAGES[1:])] + P[OFFER + 1:])
+       + ["p3-" + _letter(i, v) for i, v in enumerate(PAGES[1:])] + [pid for pid in P[OFFER + 1:] if pid not in DROP_BASE])
 deck.render(FULL, CSS, PID, builder="src/build-deck-variants.py")

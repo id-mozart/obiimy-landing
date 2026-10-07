@@ -118,9 +118,9 @@ page(f"""<figure class="ph">{pic("photo/solo/iskra-65-2.webp", 148.5, 210, "44% 
 <div class="panel ab"><div class="ab-t">{about}</div></div>""", "split l about")
 
 # ── 3 · scarves: three sizes nested one in another (scale), the price from 1 600, six looks to the edge ─────────────────
-W6 = [("На сумці", "photo/site/khustka-shchyri-pochuttia-44x44-04.jpg", "50% 62%"), ("На голові", "photo/site/khustka-yednannia-44x44-03.jpg", "50% 22%"), ("На шиї", "photo/site/khustka-potsilunok-sontsia-44x44-03.jpg", "50% 50%"),
-      ("Поясом", "photo/site/khustka-hratsiia-65x65-02.jpg", "50% 42%"), ("Пов’язкою", "photo/site/khustka-natkhnennia-44x44-03.jpg", "50% 12%"), ("Топом", "photo/site/khustka-balans-44x44-04.jpg", "50% 18%")]   # the brand's editorial frames (the client's collage stays in photo/ways)
-tiles6 = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps in W6)
+W6 = [("На сумці", "photo/solo/iskra-65-3.webp", "50% 50%"), ("На голові", "photo/solo/tysha-88-3.webp", "50% 20%"), ("На шиї", "photo/solo/krok-44-3.webp", "50% 20%"),
+      ("На плечах", "photo/solo/iskra-65-5.webp", "50% 40%"), ("Поясом", "photo/solo/avantiura-88-2.webp", "50% 40%"), ("Пов’язкою", "photo/site/khustka-natkhnennia-44x44-03.jpg", "50% 12%")]   # SOLO campaign frames and one editorial frame from the site (07.10)
+tiles6 = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps, hi=True)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps in W6)
 NEST = [("flat-kolo-sontsia-88x88", 44, "88 × 88", 4400), ("flat-rankova-kava-65x65", 32.5, "65 × 65", 3200), ("flat-smilyvist-44x44", 22, "44 × 44", 1600)]   # mm on the long side = cm / 2 → true proportions; prices from the listing (05.10)
 nest = ("".join(f'<figure class="n{i}">{cut(c, mm, fix=True)}</figure>' for i, (c, mm, n, pz) in enumerate(NEST))
         + '<div class="nl">' + "".join(f'<p><b class="h13">{n}</b><span class="t8">від {money(pz)} грн</span></p>' for c, mm, n, pz in NEST) + '</div>')
@@ -132,17 +132,20 @@ page(f"""<div class="panel"><h2 class="h28">Хустки</h2>
 <div class="w6g">{tiles6}</div>""", "ways6", short=True)
 
 # ── 4 · twillies: the price from 1 600, four looks to the edge ─────────────────────────────────────────
-WAYS = [("У волоссі", "photo/site/tvilli-shovkovyi-sokovyti-spohady-06.jpg", "50% 6%", 1.0), ("На шиї", "photo/site/tvilli-shovkovyi-melodiia-dvokh-04.jpg", "50% 12%", 1.0),   # the brand's own frames
-        ("На зап’ясті", "photo/site/tvilli-shovkovyi-yednannia-03.jpg", "50% 30%", 1.0), ("Краваткою", "photo/site/tvilli-shovkovyi-pidnesennia-02.jpg", "50% 28%", 1.0)]
-tiles4 = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps, hi=True, zoom=z)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps, z in WAYS)
+WAYS = [("У волоссі", "photo/solo/krok-tw-3.webp", "50% 20%", 1.0), ("На шиї", "photo/solo/krok-tw-4.webp", "50% 15%", 1.0), ("На сумці", "photo/solo/zolote-tw-2.webp", "50% 45%", 1.0),   # SOLO campaign frames and one editorial frame from the site (07.10)
+        ("На зап’ясті", "photo/site/tvilli-shovkovyi-yednannia-03.jpg", "50% 30%", 1.0), ("Краваткою", "photo/solo/avantiura-tw-4.webp", "50% 15%", 1.0), ("Бантом", "photo/solo/flirt-tw-3.webp", "50% 12%", 1.0)]
+tiles4 = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps, hi=True, zoom=z)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps, z in WAYS)
+PAIR = [("photo/paris-dots.jpg", "50% 30%"), ("photo/paris-bag.jpg", "50% 50%")]   # scarf and twilly of one print — the pair from the c18 banner
+pair = "".join(f'<figure>{pic(f, 40.5, 50, ps)}</figure>' for f, ps in PAIR)
 TW4 = [("tw-flat-sokovyti-spohady", "«Соковиті спогади»"), ("tw-flat-melodiia-dvokh", "«Мелодія двох»"), ("tw-flat-yednannia", "«Єднання»"), ("tw-flat-pidnesennia", "«Піднесення»")]   # the prints worn on the four photographs
 prints4 = "".join(f'<figure>{cut(c, 27, fix=True)}</figure>' for c, n in TW4)
 page(f"""<div class="panel"><h2 class="h28">Твіллі</h2>
 <span class="from">від 1 600 грн</span>
 <p class="lead">Твіллі — вузька шовкова стрічка. Її зав’язують у волоссі, на шиї, на зап’ясті, краваткою або на ручці сумки — і носять щодня.</p>
 <p class="lead">Найдоступніший подарунок у каталозі й найлегший у виборі: підходить усім, хто носить аксесуари. Десятки авторських принтів — один на всю команду або кожному свій.</p>
-<div class="sz3 tw4">{prints4}</div></div>
-<div class="w6g w4g">{tiles4}</div>""", "ways6", short=True)
+<div class="pair">{pair}</div>
+<p class="pair-cap">Твіллі добре працює в парі: хустка й твіллі одного принту — на плечах і на сумці.</p></div>
+<div class="w6g">{tiles4}</div>""", "ways6", short=True)
 
 # ── 5 · accessories: sleep masks, scrunchies, bookmarks, pillowcases, turbans — the things for everyone ───────────────
 ACC4 = [("Маска для сну", "від 2 700 грн", "photo/site/mask-rankova-kava-04.jpg", "50% 30%"), ("Резинка", "від 700 грн", "photo/scrunchie-1200.webp", "50% 50%"),
@@ -422,6 +425,8 @@ small { font-size: 13pt; letter-spacing: 0; }
 .scols { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 9mm; flex: 1; align-items: start; border-top: .35pt solid #C9C6C0; padding-top: 6mm; }
 .scol figure { height: 92mm; display: flex; align-items: center; justify-content: center; margin: 0 0 6mm; } .scol figure img { filter: drop-shadow(0 2mm 3mm rgba(40,25,10,.18)); }
 .scol h3 { margin-bottom: 2.25mm; } .scol p { font-size: 10.5pt; line-height: 5.2mm; color: #4A4A47; } .scol .from { font: 400 18pt/20pt Playfair, serif; font-style: normal; color: #141414; margin: 4mm 0 0; } .scol .from::first-letter { font-style: italic; }
+.pair { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; } .pair figure { margin: 0; overflow: hidden; } .pair img { width: 40.5mm; height: 50mm; object-fit: cover; display: block; }
+.pair-cap { margin-top: 3mm; font-size: 9.5pt; line-height: 4.5mm; color: #4A4A47; }
 .sh2 .brand-note { text-align: right; font-size: 9.5pt; line-height: 4.5mm; color: #4A4A47; }
 .sets3 .folio { left: 16.5mm; }
 .from { display: block; font: italic 400 13pt/16.5pt Playfair, serif; color: #6E6A63; margin-bottom: 7.5mm; }   /* the price as a quiet line under the heading */

@@ -114,7 +114,7 @@ page(f"""<figure class="ph">{pic("photo/solo/iskra-65-2.webp", 148.5, 210, "44% 
 <div class="panel ab"><div class="ab-t">{about}</div></div>""", "split l about")
 
 # ── 3 · scarves: three sizes nested one in another (scale), the price from 1 600, six looks to the edge ─────────────────
-W6 = [("На сумці", "photo/solo/iskra-65-3.webp", "50% 50%"), ("На голові", "photo/solo/tysha-88-3.webp", "50% 20%"), ("На шиї", "photo/site/khustka-potsilunok-sontsia-44x44-02.jpg", "50% 0%"),
+W6 = [("На сумці", "photo/solo/iskra-65-3.webp", "50% 50%"), ("На голові", "photo/site/khustka-spokusa-44x44-02.jpg", "50% 0%"), ("На шиї", "photo/site/khustka-potsilunok-sontsia-44x44-02.jpg", "50% 0%"),
       ("На плечах", "photo/site/khustka-vidnovlennia-88x88-02.jpg", "50% 15%"), ("Поясом", "photo/solo/avantiura-88-2.webp", "50% 40%"), ("Топом", "photo/site/khustka-balans-44x44-04.jpg", "50% 0%")]   # 07.10: SOLO frames and site editorials, different women and ages
 tiles6 = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps, hi=True)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps in W6)
 NEST = [("avantiura-88-1", 44, "88 × 88", 4400), ("iskra-65-1", 32.5, "65 × 65", 3200), ("zolote-44-1", 22, "44 × 44", 1600)]   # mm on the long side = cm / 2 → true proportions; prices from the listing (05.10)
@@ -274,8 +274,8 @@ page(f"""{pic("photo/solo/tysha-88-2.webp", 297, 210, "0% 30%", "bg", hi=True, z
 
 # ── 13 · seven prints (dark strip): eye lines on one height (zoom and crop per frame) ───────────────
 STRIP = [("photo/solo/iskra-65-4.webp", "50% 0%", 1.12),   # iskra-65-2 is on page 2 (07.10)
-         ("photo/solo/flirt-65-3.webp", "61% 50%", 1.0), ("photo/solo/puls-44-4.webp", "74% 45%", 1.0), ("photo/solo/zolote-44-3.webp", "53% 60%", 1.1),
-         ("photo/solo/avantiura-tw-1.webp", "50% 0%", 1.07), ("photo/solo/tysha-88-2.webp", "40% 45%", 1.0), ("photo/solo/krok-44-4.webp", "56% 60%", 1.1)]
+         ("photo/solo/flirt-65-3.webp", "61% 50%", 1.0), ("photo/solo/puls-44-3.webp", "50% 50%", 1.0), ("photo/solo/zolote-44-3.webp", "53% 60%", 1.1),
+         ("photo/solo/avantiura-tw-1.webp", "50% 0%", 1.07), ("photo/solo/tysha-88-3.webp", "50% 50%", 1.0), ("photo/solo/krok-44-4.webp", "56% 60%", 1.1)]
 import re as _re
 def fmt7(fm): return "Твіллі · хустка " + _re.search(r"хустка (\d+ × \d+)", fm).group(1)
 def tile7(F, P):
@@ -284,7 +284,7 @@ def tile7(F, P):
     return f'<figure class="tile">{pic(f, 35.14, 108, ps, zoom=z)}<figcaption><b class="h13"><i>{n}</i></b><span class="t8">{st}</span></figcaption></figure>'
 ST7 = {"Іскра": "Енергія і сміливість бути помітною.", "Флірт": "Оптимізм і невимушена жіночність."}   # 07.10: every state in two lines
 tiles = "".join(tile7(F, P) for F, P in zip(STRIP, SOLO))
-page(f"""<div class="sh sh7"><h2 class="h40">Колекція <i>SOLO</i></h2>
+page(f"""<div class="sh sh7"><h2 class="h40">Колекція SOLO</h2>
 <div><p class="st7">Сім принтів — сім станів</p><p>Кожен принт — про свій стан. Обирайте один для всієї команди або свій для кожного.</p></div></div>
 <div class="tiles t7">{tiles}</div>""", "strip dark")
 
@@ -408,7 +408,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 /* strip: header + tiles in the margins, captions under the photos */
 .sh { position: absolute; left: 16.5mm; right: 16.5mm; top: 16.5mm; height: 30mm; display: grid; grid-template-columns: 1fr 106.5mm; gap: 6mm; align-items: start; }
 .sh .cap { margin-bottom: 3.75mm; } .sh > p { color: #C9C6C0; padding-top: 9mm; }
-.sh7 { align-items: end; } .sh7 h2 { margin: 0; } .sh7 .st7 { font: italic 400 15pt/18pt Playfair, serif; color: #E7D9A6; margin-bottom: 2mm; } .sh7 div > p:last-child { color: #C9C6C0; }   /* 07.10: SOLO as the heading, the seven states on the right */
+.sh7 { align-items: start; top: 15mm; } .sh7 h2 { margin: 0; } .strip .tiles { top: 54mm; } .strip .t7 .tile img { height: 102mm; } .sh7 .st7 { font: italic 400 15pt/18pt Playfair, serif; color: #E7D9A6; margin-bottom: 2mm; } .sh7 div > p:last-child { color: #C9C6C0; }   /* 07.10: SOLO as the heading, the seven states on the right */
 .tiles { position: absolute; left: 16.5mm; right: 16.5mm; top: 49.5mm; bottom: 19.5mm; display: grid; gap: 3mm; } .t7 { grid-template-columns: repeat(7, 1fr); } .t4 { grid-template-columns: repeat(4, 1fr); }
 .tile img { width: 100%; object-fit: cover; } .t7 .tile img { height: 108mm; } .t4 .tile img { height: 117mm; }
 .tile figcaption { padding-top: 3.75mm; color: #fff; } .tile b { display: block; color: #E7D9A6; white-space: nowrap; margin-bottom: 1.5mm; }

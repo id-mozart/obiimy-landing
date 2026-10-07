@@ -392,6 +392,14 @@ MOSAIC = [("photo/solo/iskra-65-3.webp", "50% 50%"), ("photo/site/mask-vpevnenis
 MOSAIC2 = [("photo/solo/tysha-88-2.webp", "30% 30%"), ("photo/solo/iskra-65-2.webp", "50% 15%"), ("photo/solo/zolote-44-5.webp", "50% 20%"), ("photo/site/mask-shchyri-pochuttia-04.jpg", "15% 25%"),
            ("photo/solo/flirt-65-2.webp", "50% 25%"), ("photo/solo/puls-44-4.webp", "75% 30%"), ("photo/site/ring-zoloto-01.jpg", "50% 40%"), ("photo/solo/avantiura-tw-4.webp", "50% 12%")]   # 07.10: a second mosaic — more SOLO, scenes of different kinds
 BAND2 = "Преміальні шовкові вироби · Подарунки для команди · 2026"
+MOSAICS = {   # 07.10: three more sets of frames for the same band cover
+    "cvz7": [("photo/paris-blazer.jpg", "50% 15%"), ("photo/paris-bun.jpg", "50% 20%"), ("photo/riviera-boat.jpg", "50% 30%"), ("photo/site/mask-nizhnist-03.jpg", "50% 30%"),
+             ("photo/paris-green.jpg", "50% 20%"), ("photo/solo/zolote-tw-2.webp", "50% 40%"), ("photo/riviera-red.jpg", "50% 25%"), ("photo/solo/krok-tw-4.webp", "50% 20%")],   # Paris and the Riviera
+    "cvz8": [("photo/vyr-3.webp", "50% 10%"), ("photo/site/khustka-balans-44x44-04.jpg", "50% 0%"), ("photo/site/bookmark-melodiia-dvokh-02.jpg", "50% 50%"), ("photo/probudzhennia-1.webp", "50% 15%"),
+             ("photo/site/khustka-vidnovlennia-88x88-02.jpg", "50% 15%"), ("photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg", "50% 40%"), ("photo/site/khustka-yednannia-44x44-03.jpg", "50% 15%"), ("photo/site/tvilli-ta-rezynka-makovyi-tsvit-02.jpg", "50% 30%")],   # the site's editorials, different women
+    "cvz9": [("photo/solo/iskra-65-4.webp", "50% 15%"), ("photo/solo/flirt-tw-1.webp", "50% 20%"), ("photo/solo/puls-44-2.webp", "50% 25%"), ("photo/solo/zolote-44-2.webp", "50% 15%"),
+             ("photo/solo/avantiura-88-5.webp", "50% 20%"), ("photo/solo/tysha-88-4.webp", "50% 10%"), ("photo/solo/krok-44-2.webp", "50% 20%"), ("photo/solo/flirt-scr-2.webp", "40% 30%")],   # SOLO only
+}
 LINE_Z = '<p class="cap cvz-l">Подарунки для команди · 2026</p>'
 COVERS += [   # 07.10: five covers of a different kind each, all printed — the client picks one
     f'<section class="pg cv cvz cvz1"><img src="img/cover-logo.png" class="cvz-logo" alt="Obiimy">{LINE_Z}</section>',   # A · the logo as a window on six frames, brand yellow
@@ -400,6 +408,8 @@ COVERS += [   # 07.10: five covers of a different kind each, all printed — the
     f'<section class="pg cv cvz cvz4"><img src="brand/logo-ink.png" class="cvz-small" alt="Obiimy"><figure class="cvz-obj">{cut("box-sctw-spokusa", 168, fix=True)}</figure>{LINE_Z}</section>',   # D · the open box on brand yellow
     f'<section class="pg cv cvz cvz5"><div class="cvz-m">{"".join(pic(f, 74.25, 105, ps, once=False) for f, ps in MOSAIC)}</div><div class="cvz-band"><img src="brand/logo-ink.png" alt="Obiimy"><p class="cap">Подарунки для команди · 2026</p></div></section>',   # E · a mosaic of eight frames with the yellow band
     f'<section class="pg cv cvz cvz5 cvz6"><div class="cvz-m">{"".join(pic(f, 74.25, 105, ps, once=False) for f, ps in MOSAIC2)}</div><div class="cvz-band"><img src="brand/logo-ink.png" alt="Obiimy"><p class="cap">{BAND2}</p></div></section>',   # E2 · the same band, other frames
+] + [
+    f'<section class="pg cv cvz cvz5 {k}"><div class="cvz-m">{"".join(pic(f, 74.25, 105, ps, once=False) for f, ps in M)}</div><div class="cvz-band"><img src="brand/logo-ink.png" alt="Obiimy"><p class="cap">{BAND2}</p></div></section>' for k, M in MOSAICS.items()
 ]
 
 CSS = deck.CSS + """
@@ -561,7 +571,7 @@ CSS = deck.CSS + """
 def doc(pages, title): return typo(f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>{title}</title><style>{CSS}</style></head><body>{"".join(pages)}</body></html>')
 (OUT / "p3-variants.html").write_text(doc(PAGES, "Obiimy — сторінка 3, варіанти"))     # page 3 alone: a base for mock-ups
 # 07.10: the client chose the yellow cover (W) — it is the only cover printed; the other covers (A–V, X) stay in the code, not in the file
-COVER_W = [c for c in COVERS if 'class="pg cv cvz cvz5' in c]; assert len(COVER_W) == 2   # 07.10: the client chose the mosaic (E) — two versions printed; the other covers stay in the code
+COVER_W = [c for c in COVERS if 'class="pg cv cvz cvz5' in c]; assert len(COVER_W) == 5   # 07.10: the client chose the mosaic (E) — five sets of frames printed; the other covers stay in the code
 # the variants still call themselves «сторінка 3»; renumber them to the real page of the offer and renumber the folios and the «стор. N» reference
 OFF_N = OFFER + 1
 DROP = set("ABCEFGHIJKLMN")   # 07.10: the client removed these page-3 variants and the «зараз — таблиця» page from the file; they stay in the code

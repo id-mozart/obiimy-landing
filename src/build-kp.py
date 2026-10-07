@@ -30,6 +30,20 @@ ITEMS += [
     dict(k="pilp", n="Шовкова наволочка 50 × 70 з принтом", p=5700, ph=photo("img/sets/pillow-enerhiia.webp")),
     dict(k="custom", n="Інша позиція (вписати)", p=0, ph=photo("photo/box-gold.jpg")),
 ]
+LIFE = {k: photo(f) for k, f in {   # a photograph of the thing worn or in use for the «Що пропонуємо» page (the catalogue carries renders)
+    "scr": "photo/site/mask-shchyri-pochuttia-04.jpg", "book": "photo/site/bookmark-melodiia-dvokh-01.jpg", "tw": "photo/solo/krok-tw-2.webp", "tw140": "photo/solo/avantiura-tw-4.webp",
+    "h44": "photo/solo/krok-44-3.webp", "h44s": "photo/site/khustka-potsilunok-sontsia-44x44-02.jpg", "h65": "photo/solo/iskra-65-3.webp", "h65d": "photo/solo/flirt-65-3.webp", "h88": "photo/solo/avantiura-88-3.webp", "h88d": "photo/solo/tysha-88-3.webp",
+    "mask": "photo/site/mask-vpevnenist-04.jpg", "maskscr": "photo/site/set-ta-rezynka-litnie-pole-04.jpg", "masks2": "photo/site/set-ta-rezynka-litnie-pole-04.jpg", "ring": "photo/site/ring-zoloto-01.jpg",
+    "twscr": "photo/site/tvilli-ta-rezynka-makovyi-tsvit-02.jpg", "twscr140": "photo/site/tvilli-ta-rezynka-makovyi-tsvit-02.jpg", "tw44": "photo/paris-dots.jpg", "tw44d": "photo/paris-bag.jpg", "pil": "photo/turban-bath.jpg", "pilp": "photo/turban-bath.jpg",
+}.items()}
+LIFE_POS = {"scr": "0% 50%", "book": "55% 30%", "tw": "50% 30%", "h44": "50% 20%", "h44s": "50% 0%", "h65": "50% 50%", "h65d": "58% 6%", "h88": "50% 20%", "h88d": "50% 50%", "mask": "50% 25%", "ring": "50% 40%", "twscr": "50% 30%", "tw44": "50% 30%", "tw44d": "50% 50%"}
+MOSAIC = [photo(f) for f in ("photo/solo/iskra-65-4.webp", "photo/solo/flirt-tw-1.webp", "photo/site/mask-shchyri-pochuttia-04.jpg", "photo/solo/zolote-44-2.webp", "photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg",
+                               "photo/solo/tysha-88-4.webp", "photo/solo/krok-44-2.webp", "photo/solo/flirt-65-4.webp")]   # the deck's cover (07.10)
+MOSAIC_POS = ["50% 15%", "50% 20%", "0% 50%", "50% 15%", "50% 50%", "50% 10%", "50% 20%", "50% 15%"]
+FONTS = "".join(f'@font-face {{ font-family: {fam}; font-style: {st}; font-weight: 400; src: url(brand/fonts/{f}) format("woff2"); {ur} }}'
+                for fam, st, f, ur in (("Playfair", "normal", "playfair-cyrillic-400-normal.woff2", "unicode-range: U+0400-04FF;"), ("Playfair", "normal", "playfair-latin-400-normal.woff2", ""),
+                                       ("Playfair", "italic", "playfair-cyrillic-400-italic.woff2", "unicode-range: U+0400-04FF;"), ("Playfair", "italic", "playfair-latin-400-italic.woff2", ""),
+                                       ("Tenor", "normal", "tenor-cyrillic-400-normal.woff2", "unicode-range: U+0400-04FF;"), ("Tenor", "normal", "tenor-latin-400-normal.woff2", "")))
 EXTRAS = [  # personalisation levels: id, name, default note; price is typed by the manager (facts: level 1 free)
     ("pack", "Подарункове пакування кожної речі", "безкоштовно"),
     ("stick", "Наліпка з логотипом компанії всередині коробки", "безкоштовно"),
@@ -45,74 +59,79 @@ HTML = f'''<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
 <title>Obiimy — конструктор комерційної пропозиції</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400&family=Tenor+Sans&display=swap" rel="stylesheet">
 <style>
-  :root {{ --ink: #111; --ink2: #4A4A47; --ink3: #6B6772; --line: #E5E3DD; --bg: #F3F1EC; --paper: #fff; --gold: #F7C600; --radius: 10px; }}
+  {FONTS}
+  :root {{ --ink: #141414; --ink2: #4A4A47; --ink3: #6E6A63; --line: #C9C6C0; --bg: #E7E4DD; --paper: #F1EFEA; --gold: #E7D9A6; --yellow: #FDD31A; --radius: 0; }}
   * {{ box-sizing: border-box; }}
-  html, body {{ margin: 0; background: var(--bg); color: var(--ink); font-family: 'Tenor Sans', sans-serif; font-size: 14px; line-height: 1.5; font-variant-numeric: lining-nums tabular-nums; }}
-  h1, h2, h3 {{ font-family: 'Cormorant Garamond', serif; font-weight: 300; margin: 0; line-height: 1.05; }}
+  html, body {{ margin: 0; background: var(--bg); color: var(--ink); font-family: Tenor, 'Tenor Sans', sans-serif; font-size: 14px; line-height: 1.5; font-variant-numeric: lining-nums tabular-nums; }}
+  h1, h2, h3 {{ font-family: Playfair, 'Playfair Display', serif; font-weight: 400; margin: 0; line-height: 1.08; letter-spacing: -.01em; }}
   .app {{ display: grid; grid-template-columns: 420px minmax(0, 1fr); min-height: 100vh; }}
-  .panel {{ background: #fff; border-right: 1px solid var(--line); padding: 22px 22px 60px; overflow: auto; height: 100vh; position: sticky; top: 0; }}
+  .panel {{ background: var(--paper); border-right: 1px solid var(--line); padding: 22px 22px 60px; overflow: auto; height: 100vh; position: sticky; top: 0; }}
   .panel h1 {{ font-size: 1.7rem; margin-bottom: 4px; }}
   .panel .hint {{ color: var(--ink3); font-size: .8rem; margin: 0 0 16px; }}
   .f {{ display: grid; gap: 4px; margin-bottom: 10px; }}
-  .f label {{ font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; color: var(--ink3); }}
-  input, select, textarea {{ font: inherit; color: inherit; border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; background: #fff; width: 100%; }}
+  .f label {{ font-size: .7rem; letter-spacing: .18em; text-transform: uppercase; color: var(--ink3); }}
+  input, select, textarea {{ font: inherit; color: inherit; border: 1px solid var(--line); border-radius: 0; padding: 8px 10px; background: #fff; width: 100%; }}
   textarea {{ min-height: 64px; resize: vertical; }}
   .two {{ display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }}
   .sec {{ border-top: 1px solid var(--line); padding-top: 14px; margin-top: 14px; }}
   .sec h2 {{ font-size: 1.25rem; margin-bottom: 10px; }}
-  .row {{ border: 1px solid var(--line); border-radius: var(--radius); padding: 10px; margin-bottom: 10px; display: grid; gap: 8px; }}
+  .row {{ border: 1px solid var(--line); padding: 10px; margin-bottom: 10px; display: grid; gap: 8px; background: #fff; }}
   .row .g {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }}
   .row .g2 {{ display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: end; }}
   .row small {{ color: var(--ink3); }}
   .ex {{ display: grid; grid-template-columns: 1fr 110px; gap: 8px; align-items: center; margin-bottom: 6px; font-size: .9rem; }}
-  .btn {{ font: inherit; border: 1px solid var(--ink); background: var(--ink); color: #fff; border-radius: 999px; padding: 9px 16px; cursor: pointer; }}
-  .btn.line {{ background: #fff; color: var(--ink); }}
-  .btn.gold {{ background: var(--gold); border-color: var(--gold); color: var(--ink); }}
+  .btn {{ font: inherit; border: 1px solid var(--ink); background: var(--ink); color: #F1EFEA; border-radius: 999px; padding: 9px 16px; cursor: pointer; letter-spacing: .02em; }}
+  .btn.line {{ background: transparent; color: var(--ink); }}
+  .btn.gold {{ background: var(--yellow); border-color: var(--yellow); color: var(--ink); }}
   .btn.sm {{ padding: 5px 11px; font-size: .82rem; }}
-  .acts {{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; position: sticky; bottom: 0; background: #fff; padding: 12px 0; border-top: 1px solid var(--line); box-shadow: 0 -8px 16px #fff; }}
+  .acts {{ display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; position: sticky; bottom: 0; background: var(--paper); padding: 12px 0; border-top: 1px solid var(--line); box-shadow: 0 -8px 16px var(--paper); }}
   .ok {{ color: #2b7a3d; font-size: .82rem; }}
-  /* document */
+  /* document — the deck's pages: paper #F1EFEA, Playfair, gold italic captions on the tiles */
   .doc {{ padding: 28px; display: grid; gap: 22px; justify-items: center; }}
-  .pg {{ width: 210mm; min-height: 297mm; background: var(--paper); box-shadow: 0 4px 30px rgba(0,0,0,.08); padding: 18mm 18mm 16mm; position: relative; display: flex; flex-direction: column; break-after: page; page-break-after: always; }}
-  .pg .logo {{ width: 42mm; height: 9mm; flex: none; align-self: flex-start; object-fit: contain; object-position: left center; }}
-  .pg .foot {{ margin-top: auto; color: var(--ink3); font-size: 9.5pt; display: flex; justify-content: space-between; gap: 10mm; border-top: 1px solid var(--line); padding-top: 4mm; }}
-  .cover {{ background: var(--gold); color: var(--ink); justify-content: center; align-items: center; text-align: center; }}
-  .cover .logo {{ position: absolute; top: 18mm; left: 18mm; width: 47mm; height: 10mm; }}
-  .cover .for {{ font-size: 11pt; letter-spacing: .25em; text-transform: uppercase; margin: 10mm 0 6mm; }}
-  .cover h1 {{ font-size: 34pt; max-width: 150mm; }}
-  .cover h2 {{ font-size: 20pt; margin-top: 6mm; max-width: 150mm; }}
-  .cover .sub {{ margin-top: 8mm; font-size: 12pt; }}
-  .cover .meta {{ position: absolute; bottom: 16mm; left: 18mm; right: 18mm; font-size: 10pt; display: flex; justify-content: space-between; }}
-  .eb {{ font-size: 8pt; letter-spacing: .22em; text-transform: uppercase; color: var(--ink3); margin: 0 0 2mm; }}
-  .pg h2.t {{ font-size: 24pt; margin: 0 0 6mm; }}
-  .photos {{ display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }}
-  .photos figure {{ margin: 0; }}
-  .photos img {{ width: 100%; aspect-ratio: 1 / 1; object-fit: cover; background: #fff; border: 1px solid var(--line); }}
-  .photos figcaption {{ font-size: 10pt; margin-top: 2mm; }} .photos figcaption b {{ font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 13pt; display: block; }}
+  .pg {{ width: 210mm; min-height: 297mm; background: var(--paper); box-shadow: 0 4px 30px rgba(0,0,0,.1); padding: 16.5mm 16.5mm 14mm; position: relative; display: flex; flex-direction: column; break-after: page; page-break-after: always; }}
+  .pg .logo {{ width: 38mm; height: 8.1mm; flex: none; align-self: flex-start; object-fit: contain; object-position: left center; }}
+  .pg .foot {{ margin-top: auto; color: var(--ink3); font-size: 7.5pt; letter-spacing: .2em; text-transform: uppercase; display: flex; justify-content: space-between; gap: 10mm; padding-top: 4mm; }}
+  .cover {{ padding: 0; display: grid; grid-template-rows: 1fr auto 1fr; }}
+  .cover .mos {{ display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); }} .cover .mos img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
+  .cover .band {{ background: var(--yellow); padding: 10mm 16.5mm; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8mm; }}
+  .cover .band img {{ width: 46mm; height: auto; display: block; margin-bottom: 4mm; }}
+  .cover h1 {{ font-size: 24pt; }} .cover h1 i {{ font-style: italic; color: #4A4A47; }}
+  .cover .for {{ font-size: 8pt; letter-spacing: .24em; text-transform: uppercase; margin: 3mm 0 0; color: #141414; }}
+  .cover .meta {{ text-align: right; font-size: 8.5pt; line-height: 1.7; color: #141414; }}
+  .eb {{ font-size: 7pt; letter-spacing: .24em; text-transform: uppercase; color: var(--ink3); margin: 0 0 3mm; }}
+  .pg h2.t {{ font-size: 26pt; margin: 0 0 6mm; }} .pg h2.t i {{ color: #8E8A84; }}
+  .pg .from {{ font-family: Playfair, serif; font-style: italic; font-size: 13pt; color: var(--ink2); margin: -4mm 0 6mm; }}
+  .photos {{ display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }}
+  .photos figure {{ margin: 0; position: relative; overflow: hidden; }}
+  .photos img {{ width: 100%; aspect-ratio: 86 / 96; object-fit: cover; display: block; background: #ddd; }}
+  .photos figure::after {{ content: ""; position: absolute; inset: 52% 0 0; background: linear-gradient(0deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.4) 45%, rgba(0,0,0,0) 100%); }}
+  .photos figcaption {{ position: absolute; left: 6mm; bottom: 5mm; z-index: 2; color: var(--gold); font-family: Playfair, serif; font-style: italic; font-size: 17pt; line-height: 1.1; }}
+  .photos figure.flat::after {{ display: none; }} .photos figure.flat img {{ object-fit: contain; background: #fff; padding: 6mm; }} .photos figure.flat figcaption {{ color: var(--ink); }} .photos figure.flat figcaption span {{ color: var(--ink3); }}
+  .photos figcaption span {{ display: block; font-family: Tenor, sans-serif; font-style: normal; font-size: 8.5pt; color: rgba(231,217,166,.85); margin-top: 1mm; }}
   table {{ width: 100%; border-collapse: collapse; font-size: 10pt; }}
-  th, td {{ border: 1px solid var(--line); padding: 2.4mm 2.6mm; text-align: left; vertical-align: top; }}
-  th {{ background: #F6F4EF; font-weight: 400; font-size: 8.5pt; letter-spacing: .06em; text-transform: uppercase; color: var(--ink3); }}
+  th, td {{ border: 0; border-top: .35pt solid var(--line); padding: 3mm 2mm; text-align: left; vertical-align: top; }}
+  th {{ font-weight: 400; font-size: 7pt; letter-spacing: .2em; text-transform: uppercase; color: var(--ink3); border-top: 0; padding-top: 0; }}
   td.num, th.num {{ text-align: right; white-space: nowrap; }}
-  tr.tot td {{ background: #FFF5C2; font-weight: 600; }}
-  tr.sum td {{ border-top: 2px solid var(--ink); font-size: 12pt; font-family: 'Cormorant Garamond', serif; }}
+  tr.tot td {{ border-top: .5pt solid var(--ink); font-family: Playfair, serif; font-size: 12pt; }}
+  tr.sum td {{ border-top: .5pt solid var(--ink); border-bottom: .5pt solid var(--ink); font-size: 16pt; font-family: Playfair, serif; }}
+  tr.sum td.num small, tr.tot td.num small {{ font-family: Playfair, serif; font-style: italic; font-size: 9pt; color: var(--ink3); }}
   .kv {{ display: grid; grid-template-columns: 1fr; gap: 0; margin-top: 6mm; }}
-  .kv div {{ display: grid; grid-template-columns: 62mm 1fr; gap: 6mm; padding: 2.6mm 0; border-top: 1px solid var(--line); font-size: 10.5pt; }}
-  .kv div span:first-child {{ color: var(--ink3); }}
+  .kv div {{ display: grid; grid-template-columns: 48mm 1fr; gap: 6mm; padding: 3mm 0; border-top: .35pt solid var(--line); font-size: 10pt; }}
+  .kv div span:first-child {{ font-family: Playfair, serif; font-size: 12pt; color: var(--ink); }}
   .pg p {{ margin: 0 0 3mm; }}
-  .contact {{ font-size: 12pt; line-height: 1.7; margin-top: 8mm; }}
-  .why3 {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; margin: 6mm 0 10mm; }}
-  .why3 div {{ border-top: 1px solid var(--ink); padding-top: 3mm; font-size: 9.5pt; color: var(--ink2); }}
-  .why3 b {{ display: block; font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 14pt; color: var(--ink); margin-bottom: 1.5mm; }}
+  .contact {{ font-size: 11pt; line-height: 1.8; margin-top: 8mm; }} .contact b {{ font-family: Playfair, serif; font-weight: 400; font-size: 16pt; display: block; margin-bottom: 2mm; }}
+  .why3 {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; margin: 8mm 0 6mm; }}
+  .why3 div {{ border-top: .35pt solid var(--ink); padding-top: 3mm; font-size: 9.5pt; color: var(--ink2); }}
+  .why3 b {{ display: block; font-family: Playfair, serif; font-weight: 400; font-size: 13pt; color: var(--ink); margin-bottom: 1.5mm; }}
+  .fine {{ color: var(--ink3); font-size: 8.5pt; margin-top: 5mm; }}
   .hide {{ display: none; }}
   @media (max-width: 1100px) {{ .app {{ grid-template-columns: 1fr; }} .panel {{ position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }} .doc {{ padding: 12px; overflow: auto; }} }}
   @media print {{
     @page {{ size: A4 portrait; margin: 0; }}
     html, body {{ background: #fff; }} .panel {{ display: none; }} .app {{ display: block; }} .doc {{ padding: 0; gap: 0; display: block; }}
     .pg {{ box-shadow: none; width: 210mm; height: 297mm; min-height: 0; overflow: hidden; }}
-    .cover {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }} th, tr.tot td {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
+    .pg, .cover .band, .photos figure::after, th, tr.tot td {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
   }}
 </style>
 <div class="app">
@@ -144,6 +163,7 @@ HTML = f'''<meta charset="utf-8">
 <script>
 var ITEMS = {json.dumps(ITEMS, ensure_ascii=False)};
 var EXTRAS = {json.dumps(EXTRAS, ensure_ascii=False)};
+var MOSAIC = {json.dumps(MOSAIC)}, MOSAIC_POS = {json.dumps(MOSAIC_POS)}, LIFE = {json.dumps(LIFE)}, LIFE_POS = {json.dumps(LIFE_POS)};
 var DEF = {json.dumps(DEFAULT, ensure_ascii=False)};
 var BY = {{}}; ITEMS.forEach(function (i) {{ BY[i.k] = i; }});
 var PHONE = {json.dumps(b2b.PHONE)}, MAIL = {json.dumps(b2b.MAIL)}, SHOWROOM = {json.dumps(b2b.SHOWROOM)};
@@ -189,12 +209,14 @@ function renderDoc() {{
   var logo = '<img class="logo" src="brand/logo-ink.png" alt="Obiimy">';
   var foot = '<div class="foot"><span>Obiimy · шоурум: ' + esc(SHOWROOM) + '</span><span>' + esc(PHONE) + ' · ' + esc(MAIL) + ' · obiimy.world</span></div>';
   var pages = [];
-  pages.push('<section class="pg cover">' + logo + '<p class="for">' + (S.client ? 'Obiimy для' : 'Obiimy') + '</p>' + (S.client ? '<h1>' + esc(S.client) + '</h1>' : '') + '<h2>' + esc(S.title) + '</h2>' + (S.sub ? '<p class="sub">' + esc(S.sub) + '</p>' : '')
-    + '<div class="meta"><span>' + (S.date ? 'Дата: ' + fmtDate(S.date) : '') + (S.valid ? ' · дійсна до ' + fmtDate(S.valid) : '') + '</span><span>' + (S.contact ? 'Для: ' + esc(S.contact) : '') + '</span></div></section>');
+  var mos = function (from) {{ var o = ''; for (var i = from; i < from + 4; i++) o += '<img src="' + MOSAIC[i] + '" style="object-position:' + MOSAIC_POS[i] + '" alt="">'; return '<div class="mos">' + o + '</div>'; }};
+  pages.push('<section class="pg cover">' + mos(0) + '<div class="band"><div><img src="brand/logo-ink.png" alt="Obiimy"><h1>' + esc(S.title) + (S.client ? '<br><i>для ' + esc(S.client) + '</i>' : '') + '</h1>'
+    + '<p class="for">Преміальні шовкові вироби' + (S.sub ? ' · ' + esc(S.sub) : '') + '</p></div>'
+    + '<div class="meta">' + (S.date ? 'Дата: ' + fmtDate(S.date) + '<br>' : '') + (S.valid ? 'Дійсна до ' + fmtDate(S.valid) + '<br>' : '') + (S.contact ? 'Для: ' + esc(S.contact) : '') + '</div></div>' + mos(4) + '</section>');
   // photos of the chosen items (unique)
   var seen = {{}}, figs = [];
-  S.rows.forEach(function (r) {{ var it = BY[r.k] || BY.custom; if (seen[it.ph]) return; seen[it.ph] = 1; figs.push('<figure><img src="' + it.ph + '" alt=""><figcaption><b>' + esc(rowName(r)) + '</b>' + (BY[r.k] && BY[r.k].p ? 'Роздрібна ціна — ' + money(BY[r.k].p) : '') + '</figcaption></figure>'); }});
-  if (figs.length) pages.push('<section class="pg">' + logo + '<p class="eb" style="margin-top:10mm">Що пропонуємо</p><h2 class="t">' + esc(S.sub || 'Речі з каталогу Obiimy') + '</h2><div class="photos">' + figs.slice(0, 4).join('') + '</div><p style="margin-top:6mm;color:var(--ink2);font-size:10pt">Фото — приклад принта; принти обираються з добірки. 100% натуральний італійський шовк, авторські принти, виготовлено в Україні.</p>' + foot + '</section>');
+  S.rows.forEach(function (r) {{ var it = BY[r.k] || BY.custom, ph = LIFE[r.k] || it.ph, life = !!LIFE[r.k]; if (seen[ph]) return; seen[ph] = 1; figs.push('<figure class="' + (life ? '' : 'flat') + '"><img src="' + ph + '" style="object-position:' + (LIFE_POS[r.k] || '50% 50%') + '" alt=""><figcaption>' + esc(rowName(r)) + (BY[r.k] && BY[r.k].p ? '<span>від ' + money(BY[r.k].p) + '</span>' : '') + '</figcaption></figure>'); }});
+  if (figs.length) pages.push('<section class="pg">' + logo + '<p class="eb" style="margin-top:10mm">Що пропонуємо</p><h2 class="t">' + esc(S.sub || 'Речі з каталогу Obiimy') + '</h2><div class="photos">' + figs.slice(0, 4).join('') + '</div><p class="fine">Фото — приклад принта; принти обираються з добірки. 100% натуральний шовк, авторські принти, виготовлено в Україні. Пакування й наліпка з вашим логотипом — у ціні.</p>' + foot + '</section>');
   // table
   var tr = '', total = 0, totalFull = 0, qty = 0, hasDisc = false;
   S.rows.forEach(function (r) {{ var q = Number(r.q) || 0, p = rowPrice(r), d = Number(r.disc) || 0, pd = p * (1 - d / 100); if (d) hasDisc = true; total += pd * q; totalFull += p * q; qty += q;
@@ -210,7 +232,7 @@ function renderDoc() {{
   if (S.pay) kv += '<div><span>Оплата</span><span>' + nl(S.pay) + '</span></div>';
   if (S.note) kv += '<div><span>Примітка</span><span>' + nl(S.note) + '</span></div>';
   pages.push('<section class="pg">' + logo + '<p class="eb" style="margin-top:10mm">Розрахунок</p><h2 class="t">' + esc(S.title) + '</h2><table><thead><tr><th>Виріб</th><th class="num">К-сть</th><th class="num">Ціна, грн</th><th class="num">Знижка</th><th class="num">Ціна зі знижкою</th><th class="num">Сума, грн</th></tr></thead><tbody>' + tr + exr + sum + '</tbody></table>'
-    + '<div class="kv">' + kv + '</div><p style="margin-top:5mm;color:var(--ink3);font-size:9pt">Ціни в колонці «Ціна» — роздрібні, obiimy.world. Пропозиція не є публічною офертою.</p>' + foot + '</section>');
+    + '<div class="kv">' + kv + '</div><p class="fine">Ціни в колонці «Ціна» — роздрібні, obiimy.world. Пропозиція не є публічною офертою.</p>' + foot + '</section>');
   // packaging, personalisation, why
   pages.push('<section class="pg">' + logo + '<p class="eb" style="margin-top:10mm">Пакування й персоналізація</p><h2 class="t">Що входить у корпоративне замовлення</h2>'
     + '<div class="kv"><div><span>Подарункове пакування</span><span>Кожна річ — у подарунковому пакуванні Obiimy. Безкоштовно.</span></div><div><span>Наліпка з логотипом</span><span>Наліпка з логотипом вашої компанії всередині коробки. Безкоштовно.</span></div><div><span>Бирка з логотипом</span><span>Нашивна бирка з логотипом компанії на самій хустці чи твіллі — строки й вартість у розрахунку.</span></div><div><span>Друковані матеріали</span><span>Листівка з привітанням — з вашим логотипом і вашим текстом.</span></div><div><span>Індивідуальний принт</span><span>Принт, створений для вашої компанії: кольори бренду, символи, історія. Тираж і строки — у розрахунку.</span></div></div>'

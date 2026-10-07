@@ -120,7 +120,9 @@ python3 build-site.py
 git add -A && git commit -m "…" && git push origin main
 ```
 
-**Деплой з GitHub (з 07.10.2026).** Сервіс `obiimy-landing` на Railway підключений до репозиторію `id-mozart/obiimy-landing`, гілка `main`: кожен `git push` у `main` автоматично збирає й викладає прод. `railway up` більше не потрібен.
+**Деплой з GitHub (з 07.10.2026).** Прод живе в проєкті `obiimy-landing` у Railway-воркспейсі **«id-mozart's Projects»**; сервіс підключений до репозиторію `id-mozart/obiimy-landing`, гілка `main`, з тригером на пуш: кожен `git push` у `main` автоматично збирає й викладає прод. `railway up` більше не потрібен.
+- Доступ до цього воркспейсу з CLI/API — токен у `~/.config/obiimy/railway.env` (`RAILWAY_API_TOKEN`, не друкувати й не комітити). Це токен рівня воркспейсу: `railway whoami` з ним не працює, а запити GraphQL (`railway api …` або `curl` на `https://backboard.railway.com/graphql/v2` з `Authorization: Bearer`) — працюють. CLI без токена залогінений в інший акаунт (odinnserv@gmail.com), де лишився старий проєкт.
+- Старий проєкт (акаунт odinnserv, деплой через `railway up`) залишено як запасний на `https://obiimy-landing-old.up.railway.app`; ім'я `obiimy-landing-production` перенесене на новий проєкт, тому всі посилання (og:url, PDF, README) лишилися чинними.
 - Образ збирається за `Dockerfile`: Node 20 + `serve`, у образ потрапляють лише `package*.json` і весь `site/` (див. `.dockerignore`). Тому `site/` треба зібрати (`build-site.py`) і закомітити **до** пуша — прод показує рівно закомічений `site/`.
 - Ліміту завантаження CLI (~200 МБ) більше немає: на проді є всі файли `site/`, зокрема фото Paris/Riviera й оригінали JPG банерів, які раніше доводилось виключати.
 - Якщо збирання впаде, на проді лишається попередня версія. Стан: `railway deployment list --service obiimy-landing` (у колонці джерела — коміт GitHub), логи: `railway logs --build`.

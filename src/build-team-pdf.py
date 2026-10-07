@@ -276,8 +276,8 @@ page(f"""{pic("photo/solo/tysha-88-2.webp", 297, 210, "0% 30%", "bg", hi=True, z
 
 # ── 13 · seven prints (dark strip): eye lines on one height (zoom and crop per frame) ───────────────
 STRIP = [("photo/solo/iskra-65-4.webp", "50% 0%", 1.12),   # iskra-65-2 is on page 2 (07.10)
-         ("photo/solo/flirt-65-3.webp", "61% 50%", 1.0), ("photo/solo/puls-tw-3.webp", "49% 50%", 1.0), ("photo/solo/zolote-44-3.webp", "53% 60%", 1.1),
-         ("photo/solo/avantiura-tw-1.webp", "50% 0%", 1.07), ("photo/solo/tysha-88-4.webp", "50% 0%", 1.07), ("photo/solo/krok-44-4.webp", "56% 60%", 1.1)]
+         ("photo/solo/flirt-65-3.webp", "61% 50%", 1.0), ("photo/solo/puls-44-4.webp", "74% 45%", 1.0), ("photo/solo/zolote-44-3.webp", "53% 60%", 1.1),
+         ("photo/solo/avantiura-tw-1.webp", "50% 0%", 1.07), ("photo/solo/tysha-88-2.webp", "40% 45%", 1.0), ("photo/solo/krok-44-4.webp", "56% 60%", 1.1)]
 import re as _re
 def fmt7(fm): return "Твіллі · хустка " + _re.search(r"хустка (\d+ × \d+)", fm).group(1)
 def tile7(F, P):
@@ -285,7 +285,7 @@ def tile7(F, P):
     return f'<figure class="tile">{pic(f, 35.14, 108, ps, zoom=z)}<figcaption><b class="h13"><i>{n}</i></b><span class="t8">{st}</span></figcaption></figure>'
 tiles = "".join(tile7(F, P) for F, P in zip(STRIP, SOLO))
 page(f"""<div class="sh"><div><p class="cap">Колекція SOLO</p><h2 class="h28">Сім принтів — <i>сім станів</i></h2></div>
-<p>Кожен принт — про свій стан. Обирайте один для всієї команди або свій для кожного: «Сміливий крок» — на підвищення, «Тиша всередині» — після складного кварталу. Назва принта стане текстом листівки.</p></div>
+<p>Кожен принт — про свій стан. Обирайте один для всієї команди або свій для кожного.</p></div>
 <div class="tiles t7">{tiles}</div>""", "strip dark")
 
 # ── 14 · terms and how to order (sheet) ─────────────────────────────────────────────────────────────
@@ -345,7 +345,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .frame::after { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(0,0,0,.8) 0%, rgba(0,0,0,.42) 36%, rgba(0,0,0,0) 64%), linear-gradient(180deg, rgba(0,0,0,.42) 0%, rgba(0,0,0,0) 24%); }
 .frame .logo { position: absolute; left: 16.5mm; top: 16.5mm; height: 9mm; width: 42.4mm; z-index: 2; }
 .fr-t { position: absolute; left: 16.5mm; bottom: 22.5mm; width: 190mm; z-index: 2; color: #fff; }
-.fr-t .cap { margin-bottom: 3mm; max-width: 112mm; } .fr-t h1 { margin-bottom: 6mm; } .fr-p { max-width: 106.5mm; margin: -1.5mm 0 6mm; color: rgba(255,255,255,.92); }
+.fr-t .cap { margin-bottom: 3.5mm; max-width: 150mm; white-space: nowrap; font-size: 9pt; letter-spacing: .3em; color: #fff; } .fr-t h1 { margin-bottom: 6mm; } .fr-p { max-width: 106.5mm; margin: -1.5mm 0 6mm; color: rgba(255,255,255,.92); }
 .frame .folio { z-index: 2; }
 .frame.dark::after { background: linear-gradient(90deg, rgba(0,0,0,.74) 0%, rgba(0,0,0,.5) 34%, rgba(0,0,0,0) 58%), linear-gradient(0deg, rgba(0,0,0,.84) 0%, rgba(0,0,0,.52) 14%, rgba(0,0,0,0) 52%); }
 .frame.dark .fr-t { width: 112mm; }

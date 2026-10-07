@@ -154,14 +154,14 @@ page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 <p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. Тримач — маленьке кільце, яке тримає хустку чи твіллі й робить із них готовий образ.</p></div>
 <div class="w6g w4g">{tilesA}</div>""", "ways6", short=True)
 
-# ── 6 · gift sets: three bands across the page — the box from the site, the words, the set worn ──────────────────────
-SETS3 = [  # name, inside, price line, box photo, worn photo (crop)
-    ("Твіллі + хустка", "Стрічка й маленька хустка в одному принті, у довгій коробці. Можна носити разом або окремо — на шиї, у волоссі, на сумці.", "від 3 200 грн", "photo/site/set-tvilli-845-ta-khustky-4444-vpevnen-01.jpg", "50% 50%", "photo/site/set-tvilli-845-ta-khustky-4444-vpevnen-03.jpg", "50% 20%"),
-    ("Твіллі + резинка", "Дві речі в одному принті, у святковій коробці. Найпростіший набір для всієї команди: і для волосся, і для шиї.", "від 2 200 грн", "photo/site/set-makovyi-tsvit-01.jpg", "50% 50%", "photo/site/set-makovyi-tsvit-02.jpg", "50% 30%"),
-    ("Маска + резинка", "Подарунок про відпочинок, а не про роботу: шовкова маска для сну й резинка в одному принті. Підходить і тим, хто хустки не носить.", "від 3 100 грн", "photo/site/set-ta-rezynka-litnie-pole-02.jpg", "50% 55%", "photo/site/set-ta-rezynka-litnie-pole-04.jpg", "50% 50%"),
+# ── 6 · gift sets: three columns, one open box per set (the shop's own cut-outs on the paper), the words and the price under it ──
+SETS3 = [  # name, inside, price line, box cut-out, width mm
+    ("Твіллі + хустка", "Стрічка й маленька хустка в одному принті, у довгій коробці. Разом або окремо — на шиї, у волоссі, на сумці.", "від 3 200 грн", "set-vpevnenist-box", 80),
+    ("Твіллі + резинка", "Дві речі в одному принті, у святковій коробці. Найпростіший набір для всієї команди.", "від 2 200 грн", "box-twscr-smilyvist", 82),
+    ("Маска + резинка", "Подарунок про відпочинок, а не про роботу. Підходить і тим, хто хустки не носить.", "від 3 100 грн", "box-maskscr-litnie-pole", 78),
 ]
-bands = "".join(f'<div class="band"><figure class="bx">{pic(bx, 84, 46, bp)}</figure><div class="bnd"><h3 class="h28">{n}</h3><p>{d}</p><span class="from">{pz}</span></div><figure class="bw">{pic(wn, 46, 46, wp)}</figure></div>' for n, d, pz, bx, bp, wn, wp in SETS3)
-page(f"""<div class="setsp"><div class="sh2"><h2 class="h28">Подарункові набори</h2><span class="from">від 2 200 грн · у коробці Obiimy</span></div>{bands}</div>""", "sets3", short=True)
+cols = "".join(f'<div class="scol"><figure>{cut(c, w, fix=True)}</figure><h3 class="h28">{n}</h3><p>{d}</p><span class="from">{pz}</span></div>' for n, d, pz, c, w in SETS3)
+page(f"""<div class="setsp"><div class="sh2"><h2 class="h28">Подарункові набори</h2><span class="from">від 2 200 грн · у коробці Obiimy</span></div><div class="scols">{cols}</div></div>""", "sets3", short=True)
 
 # ── 7 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────
 GIFTS = [  # label, name, description, price, ceiling (double-sided print) or None, cut-out
@@ -419,9 +419,9 @@ small { font-size: 13pt; letter-spacing: 0; }
 .ways6 .panel h2 { margin-bottom: 1.5mm; }
 .setsp { position: absolute; left: 16.5mm; right: 16.5mm; top: 16.5mm; bottom: 19.5mm; display: flex; flex-direction: column; }
 .sh2 { display: flex; align-items: baseline; justify-content: space-between; gap: 6mm; margin-bottom: 4.5mm; } .sh2 .from { margin: 0; }
-.band { display: grid; grid-template-columns: 84mm minmax(0, 1fr) 46mm; column-gap: 7.5mm; align-items: center; border-top: .35pt solid #C9C6C0; padding: 3.75mm 0; } .band:last-child { border-bottom: .35pt solid #C9C6C0; }
-.band figure { margin: 0; overflow: hidden; } .band .bx img { width: 84mm; height: 46mm; object-fit: cover; display: block; } .band .bw img { width: 46mm; height: 46mm; object-fit: cover; display: block; }
-.band .bnd h3 { margin-bottom: 2mm; } .band .bnd p { font-size: 10.5pt; line-height: 5.2mm; color: #4A4A47; max-width: 92mm; } .band .bnd .from { font-size: 12pt; margin: 2.5mm 0 0; }
+.scols { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 9mm; flex: 1; align-items: start; border-top: .35pt solid #C9C6C0; padding-top: 6mm; }
+.scol figure { height: 92mm; display: flex; align-items: center; justify-content: center; margin: 0 0 6mm; } .scol figure img { filter: drop-shadow(0 2mm 3mm rgba(40,25,10,.18)); }
+.scol h3 { margin-bottom: 2.25mm; } .scol p { font-size: 10.5pt; line-height: 5.2mm; color: #4A4A47; } .scol .from { font-size: 12pt; margin: 3mm 0 0; }
 .sets3 .folio { left: 16.5mm; }
 .from { display: block; font: italic 400 13pt/16.5pt Playfair, serif; color: #6E6A63; margin-bottom: 7.5mm; }   /* the price as a quiet line under the heading */
 .ways6 .lead { font-size: 11pt; line-height: 5.6mm; color: #2E2C29; margin-bottom: 4.5mm; } .ways6 .lead + .lead { color: #4A4A47; }

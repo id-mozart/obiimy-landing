@@ -391,7 +391,7 @@ MOSAIC = [("photo/solo/iskra-65-3.webp", "50% 50%"), ("photo/site/mask-vpevnenis
           ("photo/solo/avantiura-88-3.webp", "50% 20%"), ("photo/site/ring-zoloto-01.jpg", "50% 40%"), ("photo/solo/krok-tw-2.webp", "50% 30%"), ("photo/solo/flirt-scr-3.webp", "38% 50%")]   # 07.10: scarves, twilly and the accessories alike
 MOSAIC2 = [("photo/solo/tysha-88-2.webp", "30% 30%"), ("photo/solo/iskra-65-2.webp", "50% 15%"), ("photo/solo/zolote-44-5.webp", "50% 20%"), ("photo/site/mask-shchyri-pochuttia-04.jpg", "15% 25%"),
            ("photo/solo/flirt-65-2.webp", "50% 25%"), ("photo/solo/puls-44-4.webp", "75% 30%"), ("photo/site/ring-zoloto-01.jpg", "50% 40%"), ("photo/solo/avantiura-tw-4.webp", "50% 12%")]   # 07.10: a second mosaic — more SOLO, scenes of different kinds
-BAND2 = "Преміальні шовкові вироби · Подарунки для команди · 2026"
+BAND2 = "Преміальні шовкові вироби"
 MOSAICS = {   # 07.10: three more sets of frames for the same band cover
     "cvz7": [("photo/paris-blazer.jpg", "50% 15%"), ("photo/paris-bun.jpg", "50% 20%"), ("photo/riviera-boat.jpg", "50% 30%"), ("photo/site/mask-nizhnist-03.jpg", "50% 30%"),
              ("photo/paris-green.jpg", "50% 20%"), ("photo/solo/zolote-tw-2.webp", "50% 40%"), ("photo/riviera-red.jpg", "50% 25%"), ("photo/solo/krok-tw-4.webp", "50% 20%")],   # Paris and the Riviera
@@ -429,7 +429,7 @@ CSS = deck.CSS + """
 .pg.cvz3 { background: #0E0E0E; } .cvz3 .cvz-t { bottom: auto; top: 58mm; } .cvz3 h1 { margin-bottom: 8mm; }
 .cvz4 .cvz-obj { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -52%); margin: 0; } .cvz4 .cvz-obj img { display: block; filter: drop-shadow(0 4mm 6mm rgba(0,0,0,.22)); }
 .cvz5 .cvz-m { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr; } .cvz5 .cvz-m img { width: 100%; height: 105mm; object-fit: cover; display: block; }
-.cvz5 .cvz-band { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 42mm; background: #FDD31A; display: flex; align-items: center; justify-content: space-between; padding: 0 16.5mm; z-index: 2; } .cvz5 .cvz-band img { width: 96mm; display: block; } .cvz5 .cvz-band .cap { color: #141414; }
+.cvz5 .cvz-band { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 42mm; background: #FDD31A; display: flex; align-items: center; justify-content: space-between; padding: 0 16.5mm; z-index: 2; } .cvz5 .cvz-band img { width: 72mm; display: block; } .cvz5 .cvz-band .cap { color: #141414; }
 .pg.cvw { background: #FDD31A; color: #141414; } .cvw .four { position: absolute; left: 0; right: 0; top: 0; height: 122mm; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; } .cvw .four img { width: 100%; height: 122mm; object-fit: cover; }
 .cvw-t { position: absolute; left: 16.5mm; right: 16.5mm; top: 139mm; z-index: 2; } .cvw-t h1 { white-space: nowrap; margin-bottom: 7.5mm; font-size: 58pt; line-height: 58pt; } .cvw-t h1 i { font-style: italic; color: #141414; } .cvw-logo { display: inline-block; height: 15.6mm; width: auto; vertical-align: baseline; margin-left: 0; position: relative; top: .6mm; }
 .cvw-d { color: #141414; } .cvw-r { position: absolute; right: 0; top: 0; width: 106.5mm; text-align: right; } .cvw-r .cap { margin-bottom: 3mm; } .cvw-r .h13 { margin-bottom: 1.5mm; } .cvw-r .t8 { color: #141414; margin-top: 8mm; } .cvw-r .cap { padding-top: 1.6mm; }

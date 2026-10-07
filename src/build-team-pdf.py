@@ -125,7 +125,7 @@ page(f"""<div class="panel"><h2 class="h28">Хустки</h2>
 <p class="lead">Хустка — подарунок, який носять по-різному: на шиї, на голові, на сумці, поясом чи топом. Одна річ — багато образів, тому вона підходить і тим, кого ви знаєте добре, і тим, кого — ще ні.</p>
 <p class="lead">Три розміри: маленька — на шию й на сумку, середня — на голову й на плечі, велика — як шаль. Принт один на всю команду або кожному свій.</p>
 <div class="nest">{nest}</div></div>
-<div class="w6g">{tiles6}</div>""", "ways6", short=True)
+<div class="w6g">{tiles6}</div>""", "ways6 dark", short=True)
 
 # ── 4 · twillies: the price from 1 600, four looks to the edge ─────────────────────────────────────────
 WAYS = [("У волоссі", "photo/solo/krok-tw-2.webp", "50% 30%", 1.0), ("На шиї", "photo/solo/flirt-tw-3.webp", "50% 15%", 1.0), ("На сумці", "photo/solo/iskra-tw-3.webp", "50% 50%", 1.0),   # SOLO campaign frames and one editorial frame from the site (07.10)
@@ -141,7 +141,7 @@ page(f"""<div class="panel"><h2 class="h28">Твіллі</h2>
 <p class="lead">Найдоступніший подарунок у каталозі й найлегший у виборі: підходить усім, хто носить аксесуари. Десятки авторських принтів — один на всю команду або кожному свій.</p>
 <div class="pair">{pair}</div>
 <p class="pair-cap">Твіллі добре працює в парі: хустка й твіллі одного принту — на плечах і на сумці.</p></div>
-<div class="w6g">{tiles4}</div>""", "ways6", short=True)
+<div class="w6g">{tiles4}</div>""", "ways6 dark", short=True)
 
 # ── 5 · accessories: sleep masks, scrunchies, bookmarks, pillowcases, turbans — the things for everyone ───────────────
 ACC4 = [("Маска для сну", "від 2 700 грн", "photo/site/mask-vpevnenist-04.jpg", "50% 25%"), ("Резинка", "від 700 грн", "photo/site/mask-shchyri-pochuttia-04.jpg", "0% 15%", 1.6),
@@ -153,7 +153,7 @@ page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 <p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. Тримач — маленьке кільце, яке тримає хустку чи твіллі й робить із них готовий образ.</p>
 <figure class="setcut">{cut("box-maskscr-melodiia", 64, fix=True)}</figure>
 <p class="pair-cap">Кілька аксесуарів чудово складаються в набір — наприклад, маска для сну й резинка одного принту в коробці.</p></div>
-<div class="w6g w4g">{tilesA}</div>""", "ways6", short=True)
+<div class="w6g w4g">{tilesA}</div>""", "ways6 dark", short=True)
 
 # ── 6 · gift sets: three columns, one open box per set (the shop's own cut-outs on the paper), the words and the price under it ──
 SETS3 = [  # name, inside, price line, box cut-out, width mm
@@ -430,6 +430,10 @@ small { font-size: 13pt; letter-spacing: 0; }
 .sets3 .folio { left: 16.5mm; }
 .from { display: block; font: italic 400 14pt/17pt Playfair, serif; color: #4A4A47; margin: 2mm 0 7mm; }   /* the price as a quiet line under the heading */
 .ways6 .lead { font-size: 11pt; line-height: 5.6mm; color: #2E2C29; margin-bottom: 4.5mm; } .ways6 .lead + .lead { color: #4A4A47; }
+/* 07.10: the three «ways» pages on black; the captions on the tiles a size smaller */
+.ways6.dark .lead { color: #F1EFEA; } .ways6.dark .lead + .lead { color: #D9D6D0; } .ways6.dark .pair-cap, .ways6.dark .from { color: #C9C6C0; }
+.ways6.dark .folio, .ways6.dark .folio a { color: rgba(255,255,255,.7); } .ways6.dark .nest img { filter: drop-shadow(0 1.5mm 2.5mm rgba(0,0,0,.6)); }
+.ways6.dark .w6 figcaption.h28 { font-size: 20pt; line-height: 24pt; } .ways6.dark .sh2 .brand-note { color: #C9C6C0; }
 .nest { position: relative; height: 52mm; margin-top: auto; } .nest figure { position: absolute; bottom: 0; } .nest img { filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.16)); }
 .nest .n0 { left: 0; } .nest .n1 { left: 13mm; } .nest .n2 { left: 26mm; }   /* each smaller square steps right: the three edges stay visible */
 .nest .nl { position: absolute; left: 55mm; bottom: 1mm; display: flex; flex-direction: column; gap: 3mm; } .nest .nl p { white-space: nowrap; } .nest .nl b { display: block; } .nest .nl p:nth-child(1) { margin-bottom: 6mm; }

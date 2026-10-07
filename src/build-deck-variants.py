@@ -535,6 +535,8 @@ def doc(pages, title): return typo(f'<!DOCTYPE html><html lang="uk"><head><meta 
 COVER_W = [c for c in COVERS if 'class="pg cv cvw"' in c and "варіант X" not in c]; assert len(COVER_W) == 1
 # the variants still call themselves «сторінка 3»; renumber them to the real page of the offer and renumber the folios and the «стор. N» reference
 OFF_N = OFFER + 1
+DROP = set("FGHIJK")   # 07.10: the client removed these page-3 variants from the file; they stay in the code
+PAGES = [v for v in PAGES if not any(f"варіант {L}" in v for L in DROP)]
 VAR = [v.replace("Сторінка 3", f"Сторінка {OFF_N}").replace("сторінка 3", f"сторінка {OFF_N}").replace("<span>03</span>", f"<span>{OFF_N:02d}</span>") for v in PAGES]
 FULL = COVER_W + deck.PAGES[1:OFFER] + VAR + deck.PAGES[OFFER + 1:]
 import re as _re
@@ -549,5 +551,5 @@ import re as _re
 def _letter(i, html):
     m = _re.search(r"варіант ([A-Z])\b", html); return m.group(1) if m else "BCDEFGHIJKLMNOPQRSTUVWXYZ"[i]
 PID = (["cover-W"] + P[1:OFFER] + ["p3-now"]
-       + ["p3-" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i] for i in range(len(PAGES) - 1)] + P[OFFER + 1:])
+       + ["p3-" + _letter(i, v) for i, v in enumerate(PAGES[1:])] + P[OFFER + 1:])
 deck.render(FULL, CSS, PID, builder="src/build-deck-variants.py")

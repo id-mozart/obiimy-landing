@@ -303,9 +303,9 @@ page(f"""{rh("Запитання та відповіді")}<div class="sheet"><h
 # ── 15 · contacts (dark split, photo right) ─────────────────────────────────────────────────────────
 page(f"""<figure class="ph">{pic("photo/site/khustka-pidnesennia-44x44-03.jpg", 148.5, 210, "50% 0%")}</figure>
 <div class="panel"><p class="cap">Контакти</p><h2 class="h28">Зв’яжіться з нами —<br><i>разом підберемо</i><br><i>все для вашої команди</i></h2>
-<p class="tel h40"><a href="{PHONE_HREF}">{PHONE}</a></p>
-<p class="h13 lines"><a href="{TG}">Telegram @OBIIMY_sales</a><br><a href="mailto:{MAIL}">{MAIL}</a><br><a href="https://obiimy.world/">obiimy.world</a></p>
-<div class="qr">{qr_svg(TG, 132, ink="#141414", plate="#F1EFEA")}<p class="t8">Скануйте — чат із менеджером у Telegram.<br>Шоурум: {SHOWROOM}</p></div></div>""", "split r dark last", folio=False)
+<div class="cts"><p class="tel"><a href="{PHONE_HREF}">{PHONE}</a></p>
+<p><span>Telegram</span><a href="{TG}">@OBIIMY_sales</a></p><p><span>Пошта</span><a href="mailto:{MAIL}">{MAIL}</a></p><p><span>Сайт</span><a href="https://obiimy.world/">obiimy.world</a></p><p><span>Шоурум</span>{SHOWROOM}</p></div>
+<div class="qr">{qr_svg("https://obiimy.world/", 132, ink="#141414", plate="#F1EFEA")}<p class="t8">Скануйте — сайт obiimy.world:<br>весь асортимент і ціни.</p></div></div>""", "split r dark last", folio=False)
 
 assert "Запитання та відповіді" in PAGES[TERMS_P - 1], "TERMS_P does not point at the terms page"
 
@@ -442,7 +442,10 @@ small { font-size: 13pt; letter-spacing: 0; }
 .nest .nl { position: absolute; left: 55mm; bottom: 1mm; display: flex; flex-direction: column; gap: 3mm; } .nest .nl p { white-space: nowrap; } .nest .nl b { display: block; } .nest .nl p:nth-child(1) { margin-bottom: 6mm; }
 .sz3 figcaption { margin-top: 3mm; border-top: .35pt solid #C9C6C0; padding-top: 1.5mm; min-width: 24mm; } .sz3 b { display: block; } .ways6 .end { margin-top: 6mm; }
 /* last page */
-.last h2 { margin-bottom: 9mm; } .tel { color: #E7D9A6; margin-bottom: 4.5mm; white-space: nowrap; letter-spacing: -.035em; word-spacing: -.06em; } .lines { color: #F1EFEA; }
+.last h2 { margin-bottom: 10mm; }
+.cts { font-family: Tenor, sans-serif; color: #F1EFEA; } .cts .tel { font-size: 24pt; line-height: 28pt; color: #E7D9A6; margin-bottom: 6mm; white-space: nowrap; }
+.cts p { font-size: 10.5pt; line-height: 6.5mm; display: grid; grid-template-columns: 22mm 1fr; } .cts p span { color: #8E8A84; font-size: 7pt; letter-spacing: .2em; text-transform: uppercase; }
+.cts a { color: #F1EFEA; text-decoration: none; } .tel { color: #E7D9A6; margin-bottom: 4.5mm; white-space: nowrap; letter-spacing: -.035em; word-spacing: -.06em; } .lines { color: #F1EFEA; }
 .tpl { margin-top: 9mm; border-top: .35pt solid rgba(255,255,255,.3); border-bottom: .35pt solid rgba(255,255,255,.3); padding: 3.75mm 0; } .tpl .cap { margin-bottom: 1.5mm; } .tpl p:last-child { color: #F1EFEA; }
 .qr { margin-top: auto; display: grid; grid-template-columns: 33mm 1fr; gap: 6mm; align-items: center; } .qr svg { width: 33mm; height: 33mm; } .qr a { border-bottom: .35pt solid rgba(255,255,255,.4); }
 """

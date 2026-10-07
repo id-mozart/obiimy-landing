@@ -47,6 +47,15 @@ def hero():
     </div></div>
   </section>'''
 
+CHIPS_JS = """
+  var chips = document.querySelector('.dk-chips'), req = document.getElementById('request');
+  if (chips && req && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (es) { chips.classList.toggle('off', es[0].isIntersecting); }, { rootMargin: '-120px 0px 0px 0px' }).observe(req);
+    var links = [].slice.call(chips.querySelectorAll('a'));
+    var mark = new IntersectionObserver(function (es) { es.forEach(function (e) { if (!e.isIntersecting) return; links.forEach(function (a) { var on = a.getAttribute('href') === '#' + e.target.id; a.classList.toggle('on', on); if (on) a.scrollIntoView({ inline: 'center', block: 'nearest' }); }); }); }, { rootMargin: '-40% 0px -55% 0px' });
+    links.forEach(function (a) { var sct = document.getElementById(a.getAttribute('href').slice(1)); if (sct) mark.observe(sct); });
+  }
+"""
 def chips():   # the phone's section menu — outside the hero so that sticky works down the whole page
     return '<nav class="dk-chips" aria-label="Розділи сторінки">' + "".join(f'<a href="#{h}">{t}</a>' for t, h in NAV) + '</nav>'
 
@@ -134,7 +143,7 @@ def midcta():
 
 FAQ_FIX = {   # the same facts, said in the affirmative
     "Чи є мінімальна кількість?": "Фіксованого мінімуму не вказуємо — напишіть, скільки людей у команді, і наявність потрібного принта на вашу кількість підтвердимо в розрахунку.",
-    "Як з оплатою й документами?": "Так: рахунок на юридичну особу, з ПДВ або без. Перелік документів підтвердимо в розрахунку.",
+    "Як з оплатою й документами?": "Рахунок на юридичну особу; ПДВ і перелік документів підтвердимо в розрахунку.",
     "Як доставляєте?": "Новою поштою: в офіс однією посилкою або кожному окремо. Безкоштовно від 5 000 грн за замовлення; як це діє для розсилки кожному — напишемо в розрахунку. За кордон — за тарифами перевізника.",
 }
 def faq():
@@ -146,7 +155,7 @@ def faq():
 def page():
     body = hero() + chips() + about() + steps() + scarves() + twilly() + accessories() + sets() + midcta() + more() + men() + solo() + faq() + main.with_qr(
         team.request_section("f-deck", "Подарунки для команди (презентація)", "Зв’яжіться з нами — <i>разом підберемо все для вашої команди</i>",
-                             "Нагода, кількість людей і дата вручення — цього досить для першого листа. У відповідь надішлемо добірку з фото й розрахунок.", "sets", corp=True)) + team.script("f-deck", "")
+                             "Нагода, кількість людей і дата вручення — цього досить для першого листа. У відповідь надішлемо добірку з фото й розрахунок.", "sets", corp=True)) + team.script("f-deck", CHIPS_JS)
     return dict(slug="b2b-deck", skin="deck", bar=team.BAR, title="Подарунки для команди — преміальні шовкові вироби Obiimy · хустки, твіллі, аксесуари, набори",
                 desc="Корпоративні подарунки Obiimy за презентацією для команд: хустки від 1 600 грн, твіллі від 1 600, аксесуари від 450, набори в коробці від 2 200 грн, подарунки для чоловіків, нова колекція SOLO. Пакування й наліпка з вашим логотипом — у ціні.",
                 og="photo/solo/iskra-65-4.webp", nav=NAV,
@@ -166,6 +175,7 @@ CSS = """
   @media (max-width: 900px) { .dk-mosaic { grid-template-columns: repeat(2, 1fr); max-height: 52vh; } .dk-mosaic img { aspect-ratio: 4 / 3; } .dk-mosaic img:nth-child(n+5) { display: none; } .dk-band { position: static; transform: none; box-shadow: none; padding: 22px 0 20px; } .dk-band .wrap { grid-template-columns: 1fr; } .dk-band-art { display: none; } .dk-band .cta { gap: 14px; } }
   @media (max-width: 640px) { .bar { display: none; } }
   @media (max-width: 760px) { section[id] { scroll-margin-top: 150px; } .dk-chips { display: flex; gap: 8px; overflow-x: auto; padding: 8px clamp(16px, 4vw, 48px); scrollbar-width: none; background: var(--bg); border-bottom: 1px solid var(--line); position: sticky; top: 69px; z-index: 40; } .dk-chips::-webkit-scrollbar { display: none; }
+    .dk-chips.off { display: none; } .dk-chips a.on { background: #141414; color: #F1EFEA; border-color: #141414; }
     .dk-chips a { flex: none; font-size: .82rem; letter-spacing: .04em; padding: 10px 14px; min-height: 44px; display: inline-flex; align-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); text-decoration: none; } }
   .dk-split { padding-block: clamp(40px, 6vw, 96px); } .dk-split .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 72px); align-items: center; }
   .dk-split figure { margin: 0; } .dk-split figure img { width: 100%; aspect-ratio: 148.5 / 210; object-fit: cover; display: block; }

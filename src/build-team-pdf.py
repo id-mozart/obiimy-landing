@@ -85,7 +85,7 @@ def cutsh(name, w_mm, layers=((0.6, 0.5, 0.20), (3.2, 4.0, 0.16)), tint=(30, 22,
 
 def money(n): return f"{n:,}".replace(",", " ")
 PAGES = []
-TERMS_P = 15   # the page with terms and the sample quote — page 3 refers to it; checked after the pages are built
+TERMS_P = 16   # the page with terms and the sample quote — page 3 refers to it; checked after the pages are built
 def page(html, cls, folio=True, short=False):
     n = len(PAGES) + 1
     tg = "@OBIIMY_sales" if short else "Telegram @OBIIMY_sales"      # short=True — a folio that fits a narrow panel
@@ -154,7 +154,16 @@ page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 <p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. А коли смаків не знаєте — сертифікат: людина обере сама.</p></div>
 <div class="w6g w4g">{tilesA}</div>""", "ways6", short=True)
 
-# ── 6 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────
+# ── 6 · gift sets: three bands across the page — the box from the site, the words, the set worn ──────────────────────
+SETS3 = [  # name, inside, price line, box photo, worn photo (crop)
+    ("Твіллі + хустка", "Стрічка й маленька хустка в одному принті, у довгій коробці. Можна носити разом або окремо — на шиї, у волоссі, на сумці.", "від 3 200 грн", "photo/site/set-tvilli-845-ta-khustky-4444-vpevnen-01.jpg", "50% 50%", "photo/site/set-tvilli-845-ta-khustky-4444-vpevnen-03.jpg", "50% 20%"),
+    ("Твіллі + резинка", "Дві речі в одному принті, у святковій коробці. Найпростіший набір для всієї команди: і для волосся, і для шиї.", "від 2 200 грн", "photo/site/set-makovyi-tsvit-01.jpg", "50% 50%", "photo/site/set-makovyi-tsvit-02.jpg", "50% 30%"),
+    ("Маска + резинка", "Подарунок про відпочинок, а не про роботу: шовкова маска для сну й резинка в одному принті. Підходить і тим, хто хустки не носить.", "від 3 100 грн", "photo/site/set-ta-rezynka-litnie-pole-02.jpg", "50% 55%", "photo/site/set-ta-rezynka-litnie-pole-04.jpg", "50% 50%"),
+]
+bands = "".join(f'<div class="band"><figure class="bx">{pic(bx, 84, 46, bp)}</figure><div class="bnd"><h3 class="h28">{n}</h3><p>{d}</p><span class="from">{pz}</span></div><figure class="bw">{pic(wn, 46, 46, wp)}</figure></div>' for n, d, pz, bx, bp, wn, wp in SETS3)
+page(f"""<div class="setsp"><div class="sh2"><h2 class="h28">Подарункові набори</h2><span class="from">від 2 200 грн · у коробці Obiimy</span></div>{bands}</div>""", "sets3", short=True)
+
+# ── 7 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────
 GIFTS = [  # label, name, description, price, ceiling (double-sided print) or None, cut-out
     ("Знак уваги", "Твіллі", "Шовкова стрічка 84 × 5: на шию, у волосся, на сумку. 38 принтів.", 1600, None, "krok-tw-1"),
     ("Тим, хто носить аксесуари", "Хустка й кільце", "Хустка 44 × 44 і кільце для хустки Gold. Збираємо під замовлення.", 2050, 2850, "duo-hratsiia-ring"),
@@ -408,7 +417,13 @@ small { font-size: 13pt; letter-spacing: 0; }
 .sz3 { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; } .sz3 figure { display: flex; flex-direction: column; align-items: flex-start; } .sz3 img { filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.14)); }
 .w4g { grid-template-columns: repeat(2, 1fr); } .tw4 { border-bottom: .35pt solid #C9C6C0; padding-bottom: 2.25mm; } .tw4 img { filter: drop-shadow(0 1mm 1.5mm rgba(0,0,0,.14)); }
 .ways6 .panel h2 { margin-bottom: 1.5mm; }
-.ways6 .from { display: block; font: italic 400 13pt/16.5pt Playfair, serif; color: #6E6A63; margin-bottom: 7.5mm; }   /* the price as a quiet line under the heading */
+.setsp { position: absolute; left: 16.5mm; right: 16.5mm; top: 16.5mm; bottom: 19.5mm; display: flex; flex-direction: column; }
+.sh2 { display: flex; align-items: baseline; justify-content: space-between; gap: 6mm; margin-bottom: 4.5mm; } .sh2 .from { margin: 0; }
+.band { display: grid; grid-template-columns: 84mm minmax(0, 1fr) 46mm; column-gap: 7.5mm; align-items: center; border-top: .35pt solid #C9C6C0; padding: 3.75mm 0; } .band:last-child { border-bottom: .35pt solid #C9C6C0; }
+.band figure { margin: 0; overflow: hidden; } .band .bx img { width: 84mm; height: 46mm; object-fit: cover; display: block; } .band .bw img { width: 46mm; height: 46mm; object-fit: cover; display: block; }
+.band .bnd h3 { margin-bottom: 2mm; } .band .bnd p { font-size: 10.5pt; line-height: 5.2mm; color: #4A4A47; max-width: 92mm; } .band .bnd .from { font-size: 12pt; margin: 2.5mm 0 0; }
+.sets3 .folio { left: 16.5mm; }
+.from { display: block; font: italic 400 13pt/16.5pt Playfair, serif; color: #6E6A63; margin-bottom: 7.5mm; }   /* the price as a quiet line under the heading */
 .ways6 .lead { font-size: 11pt; line-height: 5.6mm; color: #2E2C29; margin-bottom: 4.5mm; } .ways6 .lead + .lead { color: #4A4A47; }
 .nest { position: relative; height: 52mm; margin-top: auto; } .nest figure { position: absolute; bottom: 0; } .nest img { filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.16)); }
 .nest .n0 { left: 0; } .nest .n1 { left: 13mm; } .nest .n2 { left: 26mm; }   /* each smaller square steps right: the three edges stay visible */
@@ -419,7 +434,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .tpl { margin-top: 9mm; border-top: .35pt solid rgba(255,255,255,.3); border-bottom: .35pt solid rgba(255,255,255,.3); padding: 3.75mm 0; } .tpl .cap { margin-bottom: 1.5mm; } .tpl p:last-child { color: #F1EFEA; }
 .qr { margin-top: auto; display: grid; grid-template-columns: 33mm 1fr; gap: 6mm; align-items: center; } .qr svg { width: 33mm; height: 33mm; } .qr a { border-bottom: .35pt solid rgba(255,255,255,.4); }
 """
-PIDS = ["cover", "who", "ways-scarf", "ways-twilly", "ways-acc", "offer", "gift-twilly", "gift-ring", "gift-mask", "gift-set", "logo", "range", "solo", "prints", "terms", "contacts"]
+PIDS = ["cover", "who", "ways-scarf", "ways-twilly", "ways-acc", "sets", "offer", "gift-twilly", "gift-ring", "gift-mask", "gift-set", "logo", "range", "solo", "prints", "terms", "contacts"]
 EDITS = OUT / "src" / "deck-edits.json"          # written by the WYSIWYG editor (src/deck-editor.py), applied on every build
 EDITOR_PAGES = OUT / "review" / "deck-editor-pages.json"   # what the editor opens: every page (hidden ones too) as built
 

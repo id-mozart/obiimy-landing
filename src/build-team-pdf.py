@@ -157,7 +157,7 @@ page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 
 # ── 6 · gift sets: three columns, one open box per set (the shop's own cut-outs on the paper), the words and the price under it ──
 SETS3 = [  # name, inside, price line, box cut-out, width mm — 07.10: from the dearest down; the scarf-and-twilly box in «Впевненість»
-    ("Твіллі + хустка", "Стрічка й маленька хустка в одному принті, у довгій коробці. Разом або окремо — на шиї, у волоссі, на сумці.", "від 3 200 грн", "set-vpevnenist-box", 86),
+    ("Твіллі + хустка", "Стрічка й маленька хустка в одному принті, у довгій коробці. Разом або окремо — на шиї, у волоссі, на сумці.", "від 3 200 грн", "box-sctw-spokusa", 84),
     ("Маска + резинка", "Подарунок про відпочинок, а не про роботу. Підходить і тим, хто хустки не носить.", "від 3 100 грн", "box-maskscr-litnie-pole", 78),
     ("Твіллі + резинка", "Дві речі в одному принті, у святковій коробці. Найпростіший набір для всієї команди.", "від 2 200 грн", "box-twscr-smilyvist", 82),
 ]

@@ -106,8 +106,8 @@ PAGES.append(f'''<section class="pg paper v3c">{rh("варіант C — пол�
 # D · one photograph for half the page and four more sets — 07.10: the client wants this page to show that there are many other
 # sets beyond the three on page 6 (no overlap with them), without the people counts; prices and the count of sets from SITE-FACTS
 MORE = [("Подарунковий сертифікат", "1 000–4 000 грн, діє три місяці — людина обирає сама.", 1000, True, "img/sets/cert-2000.webp"),   # 07.10: from the cheapest up; the certificate first (a photo, not a cut-out)
-        ("Хустка й кільце", "Хустка 44 × 44 і кільце для хустки.", 2050, True, "duo-hratsiia-ring"),
         ("Маска, закладка й резинка", "Один принт із колекції «Співоча душа».", 3600, False, "sleep-pidnesennia"),
+        ("Хустка й кільце", "Хустка 65 × 65 і кільце для хустки.", 3650, True, "flat-rankova-kava-65x65"),   # 07.10: the medium scarf (3 200) with the ring (450)
         ("Три твіллі", "Три принти на вибір в одній коробці.", 4800, False, "three-twilly")]
 def row_m(n, d, p, frm, c):
     th = pic(c, 24, 24, "50% 45%", "th", once=False) if "/" in c else cut(c, 24, "th")

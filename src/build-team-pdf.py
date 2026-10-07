@@ -100,7 +100,7 @@ page(f"""{pic("photo/solo/zolote-44-2.webp", 297, 210, "50% 24%", "bg", hi=True)
 <div class="chip">{cut("zolote-44-1", 13)}<div><span>Чотири варіанти подарунка · на людину</span><em>від 1 600 до 3 600 грн</em></div></div></div>
 {COVER_LINE}""", "frame", folio=False)
 
-# ── 2 · who we are: the «Про нас» text of obiimy.world, word for word (the client, 07.10); photo left, two text columns ───────
+# ── 2 · who we are: the «Про нас» text of obiimy.world, word for word (the client, 07.10); the «Іскра» photo on the left half ─────
 # Two sentences of it are lifted out: «Obiimy — це про любов до себе, до природи, до людей» is the headline,
 # «Кожна коробочка — це обійми, що нагадують: ти варта краси» is the quote on the photo.
 ABOUT_LEAD = "Obiimy — український бренд натуральних шовкових виробів з авторськими принтами художниці та засновниці Світлани Сніжко. Ми створюємо речі, що поєднують красу, мистецтво та турботу — і дарують емоції з першого дотику."
@@ -111,11 +111,11 @@ ABOUT = ["Усі вироби виготовлені з 100% натуральн�
          "«Обійми» були засновані в часи війни, коли Україна потребувала підтримки та єдності. З цією метою бренд активно бере участь у благодійних ініціативах, спрямованих на допомогу військовим і тим, хто постраждав від конфлікту.",
          "Придбавши аксесуари «Обійми», ти стаєш частиною благородної місії. І за це ми тобі надзвичайно вдячні.",
          "«Обійми» — це поєднання тендітності, стилю, трендів, оригінальності та надзвичайної ніжності. Ми створюємо не просто аксесуари, а спосіб виразити власну індивідуальність та почуття. Ти заслуговуєш на найкраще. Дозволь собі насолоджуватися любов’ю та вишуканістю разом з «Обійми»."]
-about = (f'<p class="h13 ab-lead">{ABOUT_LEAD}</p><p>У нашій колекції ви знайдете:</p><ul>{"".join(f"<li>{x}</li>" for x in ABOUT_LIST)}</ul>'
+about = (f'<p class="ab-lead">{ABOUT_LEAD}</p><p>У нашій колекції ви знайдете:</p><ul>{"".join(f"<li>{x}</li>" for x in ABOUT_LIST)}</ul>'
          + "".join(f"<p>{x}</p>" for x in ABOUT))
-page(f"""<figure class="ab-ph">{pic("photo/kolo-1.webp", 100.5, 210, "50% 22%")}<figcaption class="h13">«Кожна коробочка — це обійми, що нагадують: ти варта краси»</figcaption></figure>
-<div class="ab"><p class="cap">Хто ми</p><h2 class="h28">Obiimy — це про любов<br><i>до себе, до природи, до людей</i></h2>
-<div class="ab-t">{about}</div></div>""", "about")
+page(f"""<figure class="ph">{pic("photo/solo/iskra-65-2.webp", 148.5, 210, "44% 0%", hi=True)}<figcaption><span class="h13">«Кожна коробочка — це обійми, що нагадують: ти варта краси»</span><span class="t8">На фото — хустка «Іскра» 65 × 65, колекція SOLO</span></figcaption></figure>
+<div class="panel ab"><p class="cap">Хто ми</p><h2 class="h28">Obiimy — це про любов<br><i>до себе, до природи,<br>до людей</i></h2>
+<div class="ab-t">{about}</div></div>""", "split l shade about")
 
 # ── 3 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────
 GIFTS = [  # label, name, description, price, ceiling (double-sided print) or None, cut-out
@@ -250,7 +250,8 @@ page(f"""{pic("photo/solo/tysha-88-2.webp", 297, 210, "0% 30%", "bg", hi=True, z
 <div class="chip">{cut("tysha-88-1", 13)}<div><span>Принт «Тиша всередині» · твіллі й хустки</span><em>від 1 600 грн</em></div></div></div>""", "frame dark")
 
 # ── 13 · seven prints (dark strip): eye lines on one height (zoom and crop per frame) ───────────────
-STRIP = [("photo/solo/iskra-65-2.webp", "40% 0%", 1.23), ("photo/solo/flirt-65-3.webp", "61% 50%", 1.0), ("photo/solo/puls-tw-3.webp", "49% 50%", 1.0), ("photo/solo/zolote-44-3.webp", "53% 60%", 1.1),
+STRIP = [("photo/solo/iskra-65-4.webp", "50% 0%", 1.12),   # iskra-65-2 is on page 2 (07.10)
+         ("photo/solo/flirt-65-3.webp", "61% 50%", 1.0), ("photo/solo/puls-tw-3.webp", "49% 50%", 1.0), ("photo/solo/zolote-44-3.webp", "53% 60%", 1.1),
          ("photo/solo/avantiura-tw-1.webp", "50% 0%", 1.07), ("photo/solo/tysha-88-4.webp", "50% 0%", 1.07), ("photo/solo/krok-44-4.webp", "56% 60%", 1.1)]
 import re as _re
 def fmt7(fm): return "Твіллі · хустка " + _re.search(r"хустка (\d+ × \d+)", fm).group(1)
@@ -337,14 +338,10 @@ small { font-size: 13pt; letter-spacing: 0; }
 .args { display: grid; } .arg { display: grid; grid-template-columns: 10.5mm 1fr; padding: 3.75mm 0; border-top: .35pt solid #C9C6C0; } .arg h3 { margin-bottom: .75mm; } .arg p { color: #4A4A47; }
 .dark .arg { border-color: rgba(255,255,255,.22); }
 .end { margin-top: auto; }
-/* page 2 · who we are: photo 100.5 mm to the edge, the text on columns 5–12 in two columns */
-.ab-ph { position: absolute; left: 0; top: 0; width: 100.5mm; height: 210mm; } .ab-ph > img { width: 100%; height: 100%; object-fit: cover; }
-.ab-ph::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 70mm; background: linear-gradient(0deg, rgba(0,0,0,.74), rgba(0,0,0,.4) 45%, rgba(0,0,0,0)); }
-.ab-ph figcaption { position: absolute; left: 16.5mm; right: 9mm; bottom: 10.05mm; z-index: 2; color: #fff; text-wrap: balance; }
-.ab { position: absolute; left: 106.5mm; right: 16.5mm; top: 16.5mm; bottom: 19.5mm; display: flex; flex-direction: column; } .ab > .cap { margin-bottom: 3.75mm; } .ab h2 { margin-bottom: 6mm; white-space: nowrap; }
-.ab-t { column-count: 2; column-gap: 6mm; color: #4A4A47; } .ab-t p { margin-bottom: 2.25mm; break-inside: avoid; } .ab-t .ab-lead { color: #141414; margin-bottom: 3mm; }
-.ab-t ul { list-style: none; margin: -1mm 0 2.25mm; break-inside: avoid; } .ab-t li { padding-left: 4.5mm; text-indent: -4.5mm; } .ab-t li::before { content: "— "; color: #8E8A84; }
-.about .folio { left: 106.5mm; }
+/* page 2 · who we are: the photo on the left half, the «Про нас» text in the panel (body 8 pt, the lead 9.5 pt) */
+.about .ph figcaption span { display: block; } .about .ph figcaption .t8 { color: rgba(255,255,255,.72); margin-top: 2.25mm; }
+.ab h2 { margin-bottom: 5.25mm; } .ab-t { color: #4A4A47; font-size: 8pt; line-height: 3.75mm; } .ab-t p { margin-bottom: 1.9mm; } .ab-t .ab-lead { font: 400 9.5pt/4.5mm Tenor, sans-serif; color: #141414; margin-bottom: 2.6mm; }
+.ab-t ul { list-style: none; margin: -1.2mm 0 1.9mm; } .ab-t li { padding-left: 4mm; text-indent: -4mm; } .ab-t li::before { content: "— "; color: #8E8A84; }
 /* gift pages */
 .gift .lead { color: #4A4A47; margin-bottom: 4.5mm; min-height: 13.5mm; }
 .prow { display: grid; grid-template-columns: 1fr 46mm; gap: 6mm; align-items: start; height: 46.5mm; margin-bottom: 3mm; } .pcell { padding-top: 21mm; }

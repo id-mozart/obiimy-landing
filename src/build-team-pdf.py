@@ -125,7 +125,7 @@ NEST = [("flat-kolo-sontsia-88x88", 44, "88 × 88", 4400), ("flat-rankova-kava-6
 nest = ("".join(f'<figure class="n{i}">{cut(c, mm, fix=True)}</figure>' for i, (c, mm, n, pz) in enumerate(NEST))
         + '<div class="nl">' + "".join(f'<p><b class="h13">{n}</b><span class="t8">від {money(pz)} грн</span></p>' for c, mm, n, pz in NEST) + '</div>')
 page(f"""<div class="panel"><h2 class="h28">Хустки</h2>
-<span class="pv h28"><small>від</small> 1 600 <small>грн</small></span>
+<span class="from">від 1 600 грн</span>
 <p class="lead">Хустка — подарунок, який носять по-різному: на шиї, на голові, на сумці, поясом чи топом. Одна річ — багато образів, тому вона підходить і тим, кого ви знаєте добре, і тим, кого — ще ні.</p>
 <p class="lead">Три розміри: маленька — на шию й на сумку, середня — на голову й на плечі, велика — як шаль. Принт один на всю команду або кожному свій.</p>
 <div class="nest">{nest}</div></div>
@@ -138,7 +138,7 @@ tiles4 = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps, hi=True, zoom=z)
 TW4 = [("tw-flat-sokovyti-spohady", "«Соковиті спогади»"), ("tw-flat-melodiia-dvokh", "«Мелодія двох»"), ("tw-flat-yednannia", "«Єднання»"), ("tw-flat-pidnesennia", "«Піднесення»")]   # the prints worn on the four photographs
 prints4 = "".join(f'<figure>{cut(c, 27, fix=True)}</figure>' for c, n in TW4)
 page(f"""<div class="panel"><h2 class="h28">Твіллі</h2>
-<span class="pv h28"><small>від</small> 1 600 <small>грн</small></span>
+<span class="from">від 1 600 грн</span>
 <p class="lead">Твіллі — вузька шовкова стрічка. Її зав’язують у волоссі, на шиї, на зап’ясті, краваткою або на ручці сумки — і носять щодня.</p>
 <p class="lead">Найдоступніший подарунок у каталозі й найлегший у виборі: підходить усім, хто носить аксесуари. Десятки авторських принтів — один на всю команду або кожному свій.</p>
 <div class="sz3 tw4">{prints4}</div></div>
@@ -151,7 +151,7 @@ tilesA = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps)}<figcaption class
 ACC3 = [("mask-synii", 30, "Маска для сну", "від 2 700 грн"), ("scrunchie-pole", 24, "Резинка", "від 700 грн"), ("bookmark-melodiia", 27, "Закладка", "від 800 грн")]
 acc3 = "".join(f'<figure>{cut(c, mm, fix=True)}<figcaption><b class="h13">{n}</b><span class="t8">{pz}</span></figcaption></figure>' for c, mm, n, pz in ACC3)
 page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
-<span class="pv h28"><small>від</small> 700 <small>грн</small></span>
+<span class="from">від 700 грн</span>
 <p class="lead">Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги, наволочка, тюрбан.</p>
 <p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. Наволочка й тюрбан — подарунок для дому, який підходить усім.</p>
 <div class="sz3">{acc3}</div></div>
@@ -409,7 +409,9 @@ small { font-size: 13pt; letter-spacing: 0; }
 .w6 figcaption { position: absolute; left: 6mm; bottom: 5.25mm; z-index: 2; color: #E7D9A6; }
 .sz3 { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; } .sz3 figure { display: flex; flex-direction: column; align-items: flex-start; } .sz3 img { filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.14)); }
 .w4g { grid-template-columns: repeat(2, 1fr); } .tw4 { border-bottom: .35pt solid #C9C6C0; padding-bottom: 2.25mm; } .tw4 img { filter: drop-shadow(0 1mm 1.5mm rgba(0,0,0,.14)); }
-.ways6 .panel h2 { margin-bottom: 2.25mm; } .ways6 .panel > .pv { display: block; margin-bottom: 4.5mm; } .ways6 .panel > .pv small { font: 400 9.5pt/4.5mm Tenor, sans-serif; color: #8E8A84; font-style: italic; }
+.ways6 .panel h2 { margin-bottom: 1.5mm; }
+.ways6 .from { display: block; font: italic 400 13pt/16.5pt Playfair, serif; color: #6E6A63; margin-bottom: 7.5mm; }   /* the price as a quiet line under the heading */
+.ways6 .lead { font-size: 11pt; line-height: 5.6mm; color: #2E2C29; margin-bottom: 4.5mm; } .ways6 .lead + .lead { color: #4A4A47; }
 .nest { position: relative; height: 52mm; margin-top: auto; } .nest figure { position: absolute; bottom: 0; } .nest img { filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.16)); }
 .nest .n0 { left: 0; } .nest .n1 { left: 13mm; } .nest .n2 { left: 26mm; }   /* each smaller square steps right: the three edges stay visible */
 .nest .nl { position: absolute; left: 55mm; bottom: 1mm; display: flex; flex-direction: column; gap: 3mm; } .nest .nl p { white-space: nowrap; } .nest .nl b { display: block; } .nest .nl p:nth-child(1) { margin-bottom: 6mm; }

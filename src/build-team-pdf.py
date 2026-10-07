@@ -114,8 +114,8 @@ page(f"""<figure class="ph">{pic("photo/solo/iskra-65-2.webp", 148.5, 210, "44% 
 <div class="panel ab"><div class="ab-t">{about}</div></div>""", "split l about")
 
 # ── 3 · scarves: three sizes nested one in another (scale), the price from 1 600, six looks to the edge ─────────────────
-W6 = [("На сумці", "photo/solo/iskra-65-3.webp", "50% 50%"), ("На голові", "photo/solo/tysha-88-3.webp", "50% 20%"), ("На шиї", "photo/solo/krok-44-3.webp", "50% 20%"),
-      ("На плечах", "photo/solo/avantiura-88-3.webp", "50% 20%"), ("Поясом", "photo/solo/avantiura-88-2.webp", "50% 40%"), ("Пов’язкою", "photo/site/khustka-natkhnennia-44x44-03.jpg", "50% 12%")]   # SOLO campaign frames and one editorial frame from the site (07.10)
+W6 = [("На сумці", "photo/solo/iskra-65-3.webp", "50% 50%"), ("На голові", "photo/solo/tysha-88-3.webp", "50% 20%"), ("На шиї", "photo/site/khustka-potsilunok-sontsia-44x44-02.jpg", "50% 0%"),
+      ("На плечах", "photo/site/khustka-vidnovlennia-88x88-02.jpg", "50% 15%"), ("Поясом", "photo/solo/avantiura-88-2.webp", "50% 40%"), ("Топом", "photo/site/khustka-balans-44x44-04.jpg", "50% 0%")]   # 07.10: SOLO frames and site editorials, different women and ages
 tiles6 = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps, hi=True)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps in W6)
 NEST = [("avantiura-88-1", 44, "88 × 88", 4400), ("iskra-65-1", 32.5, "65 × 65", 3200), ("zolote-44-1", 22, "44 × 44", 1600)]   # mm on the long side = cm / 2 → true proportions; prices from the listing (05.10)
 nest = ("".join(f'<figure class="n{i}">{cut(c, mm, fix=True)}</figure>' for i, (c, mm, n, pz) in enumerate(NEST))

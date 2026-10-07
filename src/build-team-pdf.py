@@ -148,8 +148,8 @@ page(f"""<div class="panel"><h2 class="h28">Твіллі</h2>
 <div class="w6g">{tiles4}</div>""", "ways6", short=True)
 
 # ── 5 · accessories: sleep masks, scrunchies, bookmarks, pillowcases, turbans — the things for everyone ───────────────
-ACC4 = [("Маска для сну", "від 2 700 грн", "photo/site/mask-rankova-kava-04.jpg", "50% 30%"), ("Резинка", "від 700 грн", "photo/scrunchie-1200.webp", "50% 50%"),
-        ("Закладка", "від 800 грн", "img/sets/bookmark-melodiia.webp", "50% 50%"), ("Тримач для хустки", "від 450 грн", "photo/site/ring-zoloto-01.jpg", "50% 40%")]   # four things, the price in the caption
+ACC4 = [("Маска для сну", "від 2 700 грн", "photo/site/mask-rankova-kava-04.jpg", "50% 30%"), ("Резинка", "від 700 грн", "photo/solo/flirt-scr-3.webp", "38% 50%"),
+        ("Закладка", "від 800 грн", "photo/site/bookmark-melodiia-dvokh-01.jpg", "55% 30%"), ("Тримач для хустки", "від 450 грн", "photo/site/ring-zoloto-01.jpg", "50% 40%")]   # four things, the price in the caption
 tilesA = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps)}<figcaption class="h28"><i>{n}</i><span class="wp">{pz}</span></figcaption></figure>' for n, pz, f, ps in ACC4)
 page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 <span class="from">від 700 грн</span>

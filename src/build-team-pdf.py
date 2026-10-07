@@ -280,10 +280,12 @@ import re as _re
 def fmt7(fm): return "Твіллі · хустка " + _re.search(r"хустка (\d+ × \d+)", fm).group(1)
 def tile7(F, P):
     f, ps, z = F; n, st, fm = P[:3]
+    st = ST7.get(n, st)
     return f'<figure class="tile">{pic(f, 35.14, 108, ps, zoom=z)}<figcaption><b class="h13"><i>{n}</i></b><span class="t8">{st}</span></figcaption></figure>'
+ST7 = {"Іскра": "Енергія і сміливість бути помітною.", "Флірт": "Оптимізм і невимушена жіночність."}   # 07.10: every state in two lines
 tiles = "".join(tile7(F, P) for F, P in zip(STRIP, SOLO))
-page(f"""<div class="sh"><div><p class="cap">Колекція SOLO</p><h2 class="h28">Сім принтів — <i>сім станів</i></h2></div>
-<p>Кожен принт — про свій стан. Обирайте один для всієї команди або свій для кожного.</p></div>
+page(f"""<div class="sh sh7"><h2 class="h40">Колекція <i>SOLO</i></h2>
+<div><p class="st7">Сім принтів — сім станів</p><p>Кожен принт — про свій стан. Обирайте один для всієї команди або свій для кожного.</p></div></div>
 <div class="tiles t7">{tiles}</div>""", "strip dark")
 
 # ── 14 · terms and how to order (sheet) ─────────────────────────────────────────────────────────────
@@ -404,6 +406,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 /* strip: header + tiles in the margins, captions under the photos */
 .sh { position: absolute; left: 16.5mm; right: 16.5mm; top: 16.5mm; height: 30mm; display: grid; grid-template-columns: 1fr 106.5mm; gap: 6mm; align-items: start; }
 .sh .cap { margin-bottom: 3.75mm; } .sh > p { color: #C9C6C0; padding-top: 9mm; }
+.sh7 { align-items: end; } .sh7 h2 { margin: 0; } .sh7 .st7 { font: italic 400 15pt/18pt Playfair, serif; color: #E7D9A6; margin-bottom: 2mm; } .sh7 div > p:last-child { color: #C9C6C0; }   /* 07.10: SOLO as the heading, the seven states on the right */
 .tiles { position: absolute; left: 16.5mm; right: 16.5mm; top: 49.5mm; bottom: 19.5mm; display: grid; gap: 3mm; } .t7 { grid-template-columns: repeat(7, 1fr); } .t4 { grid-template-columns: repeat(4, 1fr); }
 .tile img { width: 100%; object-fit: cover; } .t7 .tile img { height: 108mm; } .t4 .tile img { height: 117mm; }
 .tile figcaption { padding-top: 3.75mm; color: #fff; } .tile b { display: block; color: #E7D9A6; white-space: nowrap; margin-bottom: 1.5mm; }

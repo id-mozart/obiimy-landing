@@ -101,11 +101,12 @@ page(f"""{pic("photo/solo/zolote-44-2.webp", 297, 210, "50% 24%", "bg", hi=True)
 {COVER_LINE}""", "frame", folio=False)
 
 # ── 2 · who we are: the «Про нас» text of obiimy.world, word for word (the client, 07.10); the «Іскра» photo on the left half ─────
-# Two sentences of it are lifted out: «Obiimy — це про любов до себе, до природи, до людей» is the headline,
-# «Кожна коробочка — це обійми, що нагадують: ти варта краси» is the quote on the photo.
+# 07.10, second pass: no caption on the photo, no kicker, no headline — the text alone, as on the site.
 ABOUT_LEAD = "Obiimy — український бренд натуральних шовкових виробів з авторськими принтами художниці та засновниці Світлани Сніжко. Ми створюємо речі, що поєднують красу, мистецтво та турботу — і дарують емоції з першого дотику."
 ABOUT_LIST = ["шовкові хустки та твіллі;", "резинки та маски для сну;", "аксесуари для дому й догляду;", "витончені прикраси."]
-ABOUT = ["Усі вироби виготовлені з 100% натурального шовку преміум-класу. Він має ніжний блиск, м’яку текстуру й додає кожному образу вишуканості.",
+ABOUT = ["Усі вироби виготовлені з 100% натурального шовку преміум-⁠класу. Він має ніжний блиск, м’яку текстуру й додає кожному образу вишуканості.",
+         "Obiimy — це про любов до себе, до природи, до людей.",
+         "Кожна коробочка — це обійми, що нагадують: ти варта краси.",
          "Запрошуємо знайти свій особливий шовковий подарунок — для себе або для когось, кого хочеться обійняти.",
          "Наш бренд — не лише про красу, але й про здоров’я. Шовк дуже м’який і дбайливий до шкіри, він не викликає подразнень чи алергічних реакцій. Саме тому з нього виходять, зокрема, найкращі маски для сну.",
          "«Обійми» були засновані в часи війни, коли Україна потребувала підтримки та єдності. З цією метою бренд активно бере участь у благодійних ініціативах, спрямованих на допомогу військовим і тим, хто постраждав від конфлікту.",
@@ -113,9 +114,8 @@ ABOUT = ["Усі вироби виготовлені з 100% натуральн�
          "«Обійми» — це поєднання тендітності, стилю, трендів, оригінальності та надзвичайної ніжності. Ми створюємо не просто аксесуари, а спосіб виразити власну індивідуальність та почуття. Ти заслуговуєш на найкраще. Дозволь собі насолоджуватися любов’ю та вишуканістю разом з «Обійми»."]
 about = (f'<p class="ab-lead">{ABOUT_LEAD}</p><p>У нашій колекції ви знайдете:</p><ul>{"".join(f"<li>{x}</li>" for x in ABOUT_LIST)}</ul>'
          + "".join(f"<p>{x}</p>" for x in ABOUT))
-page(f"""<figure class="ph">{pic("photo/solo/iskra-65-2.webp", 148.5, 210, "44% 0%", hi=True)}<figcaption><span class="h13">«Кожна коробочка — це обійми, що нагадують: ти варта краси»</span><span class="t8">На фото — хустка «Іскра» 65 × 65, колекція SOLO</span></figcaption></figure>
-<div class="panel ab"><p class="cap">Хто ми</p><h2 class="h28">Obiimy — це про любов<br><i>до себе, до природи,<br>до людей</i></h2>
-<div class="ab-t">{about}</div></div>""", "split l shade about")
+page(f"""<figure class="ph">{pic("photo/solo/iskra-65-2.webp", 148.5, 210, "44% 0%", hi=True)}</figure>
+<div class="panel ab"><div class="ab-t">{about}</div></div>""", "split l about")
 
 # ── 3 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────
 GIFTS = [  # label, name, description, price, ceiling (double-sided print) or None, cut-out
@@ -338,10 +338,9 @@ small { font-size: 13pt; letter-spacing: 0; }
 .args { display: grid; } .arg { display: grid; grid-template-columns: 10.5mm 1fr; padding: 3.75mm 0; border-top: .35pt solid #C9C6C0; } .arg h3 { margin-bottom: .75mm; } .arg p { color: #4A4A47; }
 .dark .arg { border-color: rgba(255,255,255,.22); }
 .end { margin-top: auto; }
-/* page 2 · who we are: the photo on the left half, the «Про нас» text in the panel (body 8 pt, the lead 9.5 pt) */
-.about .ph figcaption span { display: block; } .about .ph figcaption .t8 { color: rgba(255,255,255,.72); margin-top: 2.25mm; }
-.ab h2 { margin-bottom: 5.25mm; } .ab-t { color: #4A4A47; font-size: 8pt; line-height: 3.75mm; } .ab-t p { margin-bottom: 1.9mm; } .ab-t .ab-lead { font: 400 9.5pt/4.5mm Tenor, sans-serif; color: #141414; margin-bottom: 2.6mm; }
-.ab-t ul { list-style: none; margin: -1.2mm 0 1.9mm; } .ab-t li { padding-left: 4mm; text-indent: -4mm; } .ab-t li::before { content: "— "; color: #8E8A84; }
+/* page 2 · who we are: the photo on the left half, the «Про нас» text alone in the panel, centred on the page height */
+.ab { justify-content: center; } .ab-t { color: #4A4A47; } .ab-t p { margin-bottom: 1.6mm; } .ab-t .ab-lead { font: 400 13pt/16.5pt Playfair, serif; color: #141414; margin-bottom: 3mm; }
+.ab-t ul { list-style: none; margin: -.6mm 0 1.6mm; } .ab-t li { padding-left: 4.5mm; text-indent: -4.5mm; } .ab-t li::before { content: "— "; color: #8E8A84; }
 /* gift pages */
 .gift .lead { color: #4A4A47; margin-bottom: 4.5mm; min-height: 13.5mm; }
 .prow { display: grid; grid-template-columns: 1fr 46mm; gap: 6mm; align-items: start; height: 46.5mm; margin-bottom: 3mm; } .pcell { padding-top: 21mm; }

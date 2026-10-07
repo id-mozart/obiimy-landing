@@ -191,7 +191,7 @@ page(f"""{rh("Чотири подарунки")}<div class="sheet">
 # ── 7b · gifts for men (07.10): the «ways» layout — four photographs; facts from SITE-FACTS, the team FAQ and the store's pocket-square collections
 MEN4 = [("Хустка-паше", "від 1 600 грн", "photo/site/pashe-probudzhennia-02.jpg", "50% 50%"), ("Маска для сну", "від 2 700 грн", "photo/site/mask-synii-02.jpg", "50% 20%"),
         ("Закладка", "від 800 грн", "photo/site/bookmark-melodiia-dvokh-02.jpg", "50% 50%"), ("Сертифікат", "1 000–4 000 грн", None, "")]   # 07.10: drawn in CSS — a restrained card, no name on it (the site's photos carry a woman's name)
-CERT_CARD = '<div class="certcard"><div class="env"></div><img src="img/cert-card.png" class="cc-img" alt="Подарунковий сертифікат Obiimy"></div>'   # the card is rendered once by review/pp/cert-card.mjs (07.10)
+CERT_CARD = '<div class="certcard"><img src="img/cert-card.png" class="cc-img" alt="Подарунковий сертифікат Obiimy"></div>'   # the card is rendered once by review/pp/cert-card.mjs (07.10)
 tilesM = "".join(f'<figure class="w6">{pic(t[2], 93.75, 103.5, t[3], zoom=(t[4] if len(t) > 4 else 1.0)) if t[2] else CERT_CARD}<figcaption class="h28"><i>{t[0]}</i><span class="wp">{t[1]}</span></figcaption></figure>' for t in MEN4)
 page(f"""<div class="panel"><h2 class="h28">Для чоловіків</h2>
 <span class="from">від 800 грн</span>
@@ -450,9 +450,8 @@ small { font-size: 13pt; letter-spacing: 0; }
 .ways6.dark .lead { color: #F1EFEA; } .ways6.dark .lead + .lead { color: #D9D6D0; } .ways6.dark .pair-cap, .ways6.dark .from { color: #C9C6C0; }
 .ways6.dark .folio, .ways6.dark .folio a { color: rgba(255,255,255,.7); } .ways6.dark .nest img { filter: drop-shadow(0 1.5mm 2.5mm rgba(0,0,0,.6)); }
 .ways6 .w6 figcaption.h28 { font-size: 20pt; line-height: 24pt; }
-.certcard { width: 100%; height: 100%; background: radial-gradient(120% 90% at 50% 40%, #2A2622 0%, #141414 70%); display: flex; align-items: center; justify-content: center; position: relative; }   /* the certificate for the men's page (07.10): a PNG from review/pp/cert-card.mjs */
-.certcard .env { position: absolute; width: 74mm; height: 45mm; background: #0B0B0B; transform: rotate(-6deg) translate(2mm, 5mm); box-shadow: 0 2mm 4mm rgba(0,0,0,.5); }
-.w6 .certcard .cc-img { position: relative; width: 72mm; height: auto; object-fit: contain; transform: rotate(-6deg); box-shadow: 0 3mm 6mm rgba(0,0,0,.5); display: block; }
+.certcard { width: 100%; height: 100%; background: #141414; display: flex; align-items: center; justify-content: center; }   /* the certificate for the men's page (07.10): a PNG from review/pp/cert-card.mjs, tilt and shadow baked in */
+.w6 .certcard .cc-img { width: 93.75mm; height: auto; object-fit: contain; display: block; }
 .nest { position: relative; height: 52mm; margin-top: auto; } .nest figure { position: absolute; bottom: 0; } .nest img { filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.16)); }
 .nest .n0 { left: 0; } .nest .n1 { left: 13mm; } .nest .n2 { left: 26mm; }   /* each smaller square steps right: the three edges stay visible */
 .nest .nl { position: absolute; left: 55mm; bottom: 1mm; display: flex; flex-direction: column; gap: 3mm; } .nest .nl p { white-space: nowrap; } .nest .nl b { display: block; } .nest .nl p:nth-child(1) { margin-bottom: 6mm; }

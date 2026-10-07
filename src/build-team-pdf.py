@@ -145,17 +145,14 @@ page(f"""<div class="panel"><h2 class="h28">Твіллі</h2>
 <div class="w6g w4g">{tiles4}</div>""", "ways6", short=True)
 
 # ── 5 · accessories: sleep masks, scrunchies, bookmarks, pillowcases, turbans — the things for everyone ───────────────
-ACC6 = [("Маска для сну", "photo/site/mask-rankova-kava-04.jpg", "50% 30%"), ("Тюрбан", "photo/turban-1200.webp", "50% 10%"), ("Резинка", "photo/scrunchie-1200.webp", "50% 50%"),
-        ("Дві маски", "photo/site/mask-sertsebyttia-05.jpg", "50% 50%"), ("Наволочка", "img/sets/pillow-khmara.webp", "50% 50%"), ("Закладка", "img/sets/bookmark-melodiia.webp", "50% 50%")]
-tilesA = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps in ACC6)
-ACC3 = [("mask-synii", 30, "Маска для сну", "від 2 700 грн"), ("scrunchie-pole", 24, "Резинка", "від 700 грн"), ("bookmark-melodiia", 27, "Закладка", "від 800 грн")]
-acc3 = "".join(f'<figure>{cut(c, mm, fix=True)}<figcaption><b class="h13">{n}</b><span class="t8">{pz}</span></figcaption></figure>' for c, mm, n, pz in ACC3)
+ACC4 = [("Маска для сну", "від 2 700 грн", "photo/site/mask-rankova-kava-04.jpg", "50% 30%"), ("Резинка", "від 700 грн", "photo/scrunchie-1200.webp", "50% 50%"),
+        ("Закладка", "від 800 грн", "img/sets/bookmark-melodiia.webp", "50% 50%"), ("Сертифікат", "від 1 000 грн", "img/sets/cert-2000.webp", "50% 50%")]   # four things, the price in the caption
+tilesA = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps)}<figcaption class="h28"><i>{n}</i><span class="wp">{pz}</span></figcaption></figure>' for n, pz, f, ps in ACC4)
 page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 <span class="from">від 700 грн</span>
-<p class="lead">Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги, наволочка, тюрбан.</p>
-<p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. Наволочка й тюрбан — подарунок для дому, який підходить усім.</p>
-<div class="sz3">{acc3}</div></div>
-<div class="w6g">{tilesA}</div>""", "ways6", short=True)
+<p class="lead">Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги.</p>
+<p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. А коли смаків не знаєте — сертифікат: людина обере сама.</p></div>
+<div class="w6g w4g">{tilesA}</div>""", "ways6", short=True)
 
 # ── 6 · the offer (sheet): four gifts, price per person, budgets ────────────────────────────────────
 GIFTS = [  # label, name, description, price, ceiling (double-sided print) or None, cut-out
@@ -407,6 +404,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .w6 { position: relative; overflow: hidden; } .w6 img { width: 100%; height: 100%; object-fit: cover; }
 .w6::after { content: ""; position: absolute; inset: 52% 0 0; background: linear-gradient(0deg, rgba(0,0,0,.8) 0%, rgba(0,0,0,.45) 40%, rgba(0,0,0,0) 100%); }   /* the gold label stays legible on light frames */
 .w6 figcaption { position: absolute; left: 6mm; bottom: 5.25mm; z-index: 2; color: #E7D9A6; }
+.w6 .wp { display: block; font: 400 9.5pt/4.5mm Tenor, sans-serif; color: rgba(231,217,166,.85); letter-spacing: .02em; margin-top: 1mm; }   /* the price under the gold label */
 .sz3 { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; } .sz3 figure { display: flex; flex-direction: column; align-items: flex-start; } .sz3 img { filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.14)); }
 .w4g { grid-template-columns: repeat(2, 1fr); } .tw4 { border-bottom: .35pt solid #C9C6C0; padding-bottom: 2.25mm; } .tw4 img { filter: drop-shadow(0 1mm 1.5mm rgba(0,0,0,.14)); }
 .ways6 .panel h2 { margin-bottom: 1.5mm; }

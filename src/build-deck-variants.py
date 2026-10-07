@@ -19,7 +19,7 @@ PHOTO = [  # one model or lifestyle shot per gift (none of them is used elsewher
 NOTE = "Базові роздрібні ціни obiimy.world на людину, без акцій сайту, жовтень 2026. Пакування й наліпка з вашим логотипом — безкоштовно. Бюджети команди — у гривнях."
 MIX = "Тим, хто не носить аксесуари, — маска для сну (2 700 грн), закладка (800 грн) чи сертифікат на 1 000–4 000 грн · до 1 000 грн на людину — резинка, закладка, сертифікат · приклад розрахунку — на стор. " + str(deck.TERMS_P) + "."
 H2 = 'Що в коробці — <i>і скільки це коштує</i>'
-FOLIO = f'<p class="folio"><span><i class="fq">Запит: </i><a href="{deck.PHONE_HREF}">{deck.PHONE}</a> · <a href="{deck.TG}">Telegram @OBIIMY_sales</a></span><span>03</span></p>'
+FOLIO = '<p class="folio"><span></span><span>03</span></p>'   # 07.10: the page number only
 def rh(tag): return f'<p class="rh"><span>Чотири подарунки</span><span>Сторінка 3 · {tag}</span></p>'
 def price(p, hi, big="h28"):
     top = f'<span class="t8 hi">до {money(hi)} грн — двосторонній друк</span>' if hi else '<span class="t8 hi">&nbsp;</span>'
@@ -103,15 +103,18 @@ PAGES.append(f'''<section class="pg paper v3c">{rh("варіант C — пол�
 <div class="g4">{"".join(col_c(i, G) for i, G in enumerate(GIFTS))}</div>
 <p class="t8 end">На вирізках: твіллі «Сміливий крок»; хустка «Грація» 44 × 44 і кільце «Н стиль»; набір «Літнє поле»; хустка й твіллі «Золоте світло» (двосторонній друк, 3 600 грн). {MIX}</p></div>{FOLIO}</section>''')
 
-# D · one photograph for half the page — the open box — and the four gifts as a short list
-def row_d(i, G):
-    lb, n, d, p, hi, c = G
-    pr = f'<p class="pr h28">{"<small>від</small> " if hi else ""}{money(p)} <small>грн</small></p>'
-    return f'<div class="rw">{cut(c, 23, "th")}<p class="cap">0{i + 1} · {lb}</p><h3 class="h13">{n.replace(" в коробці", "").replace("Маска для сну й резинка", "Маска й резинка")}</h3>{pr}{b3(p, hi, one=True)}</div>'
-PAGES.append(f'''<section class="pg split l v3d"><figure class="ph">{pic("photo/site/set-ta-rezynka-litnie-pole-04.jpg", 148.5, 210, "42% 50%", once=False)}</figure>
-<div class="panel"><p class="cap">Чотири подарунки · варіант D — кадр і список</p><h2 class="h28">Що в коробці —<br><i>і скільки це коштує</i></h2>
-<div class="rows">{"".join(row_d(i, G) for i, G in enumerate(GIFTS))}</div>
-<p class="t8 phc">На фото — набір «Літнє поле». Базові роздрібні ціни obiimy.world, жовтень 2026; бюджети — у гривнях; пакування й наліпка з логотипом — безкоштовно.</p></div>{FOLIO}</section>''')
+# D · one photograph for half the page and four more sets — 07.10: the client wants this page to show that there are many other
+# sets beyond the three on page 6 (no overlap with them), without the people counts; prices and the count of sets from SITE-FACTS
+MORE = [("Три твіллі", "Три принти на вибір в одній коробці.", 4800, False, "three-twilly"),
+        ("Маска, закладка й резинка", "Один принт із колекції «Співоча душа».", 3600, False, "sleep-pidnesennia"),
+        ("Пара масок «Серцебиття»", "Дві маски у формі сердець — для двох.", 4200, False, "masks-sertsebyttia"),
+        ("Хустка й кільце", "Хустка 44 × 44 і кільце для хустки.", 2050, True, "duo-hratsiia-ring")]
+def row_m(n, d, p, frm, c):
+    return f'<div class="rw rw2">{cut(c, 23, "th")}<h3 class="h13">{n}</h3><p class="pr h28">{"<small>від</small> " if frm else ""}{money(p)} <small>грн</small></p><span class="t8 d">{d}</span></div>'
+PAGES.append(f'''<section class="pg split l v3d"><!-- варіант D --><figure class="ph">{pic("photo/site/set-ta-rezynka-litnie-pole-04.jpg", 148.5, 210, "42% 50%", once=False)}</figure>
+<div class="panel"><h2 class="h28">Є й інші набори —<br><i>і ще десятки варіантів</i></h2>
+<div class="rows">{"".join(row_m(*M) for M in MORE)}</div>
+<p class="t8 phc">У каталозі — 49 готових наборів у коробці. Підберемо під вашу нагоду й бюджет або зберемо власний.</p></div>{FOLIO}</section>''')
 
 # E · one frame to the edge and four chips, as in the SOLO banners; budgets stay on page 13
 def chip_e(i, G):
@@ -383,6 +386,17 @@ def cover_w(four, letter):
 <div class="cvw-r"><p class="cap">Корпоративні подарунки · 2026{" · варіант " + letter if letter else ""}</p><p class="h13">{PRICE}</p><p class="t8">На фото — {", ".join(c for _f, _p, c in four)}.</p></div></div>
 {LINE}</section>''')
 COVERS.append(cover_w(FOUR_W, "")); COVERS.append(cover_w(FOUR_X, "X"))
+# Z · 07.10: the client's brief — one big logo with the photographs showing through it, nothing else (img/cover-logo.png is built by hand: the logo's alpha over six frames)
+MOSAIC = [("photo/solo/iskra-65-3.webp", "50% 50%"), ("photo/solo/flirt-65-3.webp", "58% 10%"), ("photo/solo/puls-44-3.webp", "50% 20%"), ("photo/solo/zolote-44-3.webp", "50% 20%"),
+          ("photo/solo/avantiura-88-3.webp", "50% 20%"), ("photo/solo/tysha-88-3.webp", "50% 40%"), ("photo/solo/krok-44-4.webp", "50% 20%"), ("photo/solo/krok-tw-2.webp", "50% 30%")]
+LINE_Z = '<p class="cap cvz-l">Подарунки для команди · 2026</p>'
+COVERS += [   # 07.10: five covers of a different kind each, all printed — the client picks one
+    f'<section class="pg cv cvz cvz1"><img src="img/cover-logo.png" class="cvz-logo" alt="Obiimy">{LINE_Z}</section>',   # A · the logo as a window on six frames, brand yellow
+    f'<section class="pg cv cvz cvz2">{pic("photo/solo/tysha-88-2.webp", 297, 210, "0% 30%", "bg", hi=True, once=False)}<img src="brand/logo-white.png" class="cvz-small" alt="Obiimy"><div class="cvz-t"><h1 class="h54">Подарунки<br><i>для команди</i></h1><p class="cap">Українські преміальні шовкові аксесуари · 2026</p></div></section>',   # B · one editorial frame to the edge
+    f'<section class="pg cv cvz cvz3"><img src="brand/logo-white.png" class="cvz-small" alt="Obiimy"><div class="cvz-t"><h1 class="h72">Подарунки,<br><i>які носять.</i></h1><p class="cap">Шовкові хустки, твіллі й аксесуари для команди · 2026</p></div></section>',   # C · type only, black
+    f'<section class="pg cv cvz cvz4"><img src="brand/logo-ink.png" class="cvz-small" alt="Obiimy"><figure class="cvz-obj">{cut("box-sctw-spokusa", 168, fix=True)}</figure>{LINE_Z}</section>',   # D · the open box on brand yellow
+    f'<section class="pg cv cvz cvz5"><div class="cvz-m">{"".join(pic(f, 74.25, 105, ps, once=False) for f, ps in MOSAIC)}</div><div class="cvz-band"><img src="brand/logo-ink.png" alt="Obiimy"><p class="cap">Подарунки для команди · 2026</p></div></section>',   # E · a mosaic of eight frames with the yellow band
+]
 
 CSS = deck.CSS + """
 /* P–U — covers on the brand's editorial photographs (classes nw*, on top of .lx) */
@@ -394,6 +408,14 @@ CSS = deck.CSS + """
 .nw7 .lxt { width: 176mm; bottom: auto; top: 112mm; } .nw7 .lxt h1 { margin-bottom: 5mm; white-space: nowrap; } .nw7 .lxs { top: 103mm; } .nw7 .lxt .cred { margin-top: 1.5mm; }
 .lxs { position: absolute; top: 95mm; font: 400 8pt/3.75mm Tenor, sans-serif; color: #141414; white-space: nowrap; z-index: 2; } .lxs b { font: italic 400 8pt/3.75mm Playfair, serif; color: #6E6A63; margin-right: 1.5mm; }
 /* W, X — four products on models on the brand yellow, «подаруй» + the logo */
+.pg.cvz { background: #FDD31A; color: #141414; } .cvz-logo { position: absolute; left: 16.5mm; width: 264mm; top: 50%; transform: translateY(-50%); display: block; z-index: 2; } .cvz-l { position: absolute; left: 16.5mm; bottom: 16.5mm; color: #141414; z-index: 2; }
+.cvz-small { position: absolute; left: 16.5mm; top: 16.5mm; width: 42mm; z-index: 2; } .cvz-t { position: absolute; left: 16.5mm; right: 16.5mm; bottom: 18mm; z-index: 2; } .cvz-t h1 { margin-bottom: 5mm; } .h72 { font: 400 72pt/72pt Playfair, serif; }
+.cvz2 .bg { position: absolute; left: 0; top: 0; width: 297mm; height: 210mm; object-fit: cover; } .cvz2::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 110mm; background: linear-gradient(0deg, rgba(0,0,0,.72) 0%, rgba(0,0,0,.35) 50%, rgba(0,0,0,0) 100%); z-index: 1; }
+.cvz2 .cvz-t, .cvz3 .cvz-t { color: #F1EFEA; } .cvz2 h1 i, .cvz3 h1 i { color: #E7D9A6; } .cvz2 .cap, .cvz3 .cap { color: rgba(255,255,255,.78); }
+.pg.cvz3 { background: #0E0E0E; } .cvz3 .cvz-t { bottom: auto; top: 58mm; } .cvz3 h1 { margin-bottom: 8mm; }
+.cvz4 .cvz-obj { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -52%); margin: 0; } .cvz4 .cvz-obj img { display: block; filter: drop-shadow(0 4mm 6mm rgba(0,0,0,.22)); }
+.cvz5 .cvz-m { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr; } .cvz5 .cvz-m img { width: 100%; height: 105mm; object-fit: cover; display: block; }
+.cvz5 .cvz-band { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 42mm; background: #FDD31A; display: flex; align-items: center; justify-content: space-between; padding: 0 16.5mm; z-index: 2; } .cvz5 .cvz-band img { width: 96mm; display: block; } .cvz5 .cvz-band .cap { color: #141414; }
 .pg.cvw { background: #FDD31A; color: #141414; } .cvw .four { position: absolute; left: 0; right: 0; top: 0; height: 122mm; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; } .cvw .four img { width: 100%; height: 122mm; object-fit: cover; }
 .cvw-t { position: absolute; left: 16.5mm; right: 16.5mm; top: 139mm; z-index: 2; } .cvw-t h1 { white-space: nowrap; margin-bottom: 7.5mm; font-size: 58pt; line-height: 58pt; } .cvw-t h1 i { font-style: italic; color: #141414; } .cvw-logo { display: inline-block; height: 15.6mm; width: auto; vertical-align: baseline; margin-left: 0; position: relative; top: .6mm; }
 .cvw-d { color: #141414; } .cvw-r { position: absolute; right: 0; top: 0; width: 106.5mm; text-align: right; } .cvw-r .cap { margin-bottom: 3mm; } .cvw-r .h13 { margin-bottom: 1.5mm; } .cvw-r .t8 { color: #141414; margin-top: 8mm; } .cvw-r .cap { padding-top: 1.6mm; }
@@ -467,7 +489,7 @@ CSS = deck.CSS + """
 .rows { margin-top: -1.5mm; } .rw { display: grid; grid-template-columns: 21mm 1fr auto; column-gap: 4.5mm; align-items: baseline; padding: 1.5mm 0; border-top: .35pt solid #C9C6C0; } .rw:last-child { border-bottom: .35pt solid #C9C6C0; }
 .rw .th { grid-row: 1 / 4; align-self: center; width: 21mm; height: 21mm; object-fit: contain; filter: drop-shadow(0 1mm 1.5mm rgba(0,0,0,.14)); } .rw .cap { grid-column: 2 / 4; letter-spacing: .13em; }
 .rw .b3 { grid-column: 2 / 4; margin-top: 0; padding-top: .75mm; } .rw .pr { line-height: 26pt; } .v3d .panel h2 { margin-bottom: 4.5mm; }
-.v3d .phc { margin-top: auto; }
+.v3d .phc { margin-top: auto; } .rw2 { padding: 3mm 0; } .rw2 .th { grid-row: 1 / 3; } .rw2 .d { grid-column: 2 / 4; color: #6E6A63; } .rw2 .pr { line-height: 24pt; }
 /* I, J, K — the luxury-catalogue art director's concepts */
 .x1 .bg, .x2 .bg, .x3 .bg { position: absolute; left: 0; top: 0; width: 297mm; height: 210mm; } .vt { color: inherit; }
 .x1 .lab { position: absolute; display: flex; align-items: baseline; gap: 2.25mm; white-space: nowrap; z-index: 2; } .x1 .lab b { font: italic 400 13pt/16.5pt Playfair, serif; color: #141414; }
@@ -532,7 +554,7 @@ CSS = deck.CSS + """
 def doc(pages, title): return typo(f'<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><title>{title}</title><style>{CSS}</style></head><body>{"".join(pages)}</body></html>')
 (OUT / "p3-variants.html").write_text(doc(PAGES, "Obiimy — сторінка 3, варіанти"))     # page 3 alone: a base for mock-ups
 # 07.10: the client chose the yellow cover (W) — it is the only cover printed; the other covers (A–V, X) stay in the code, not in the file
-COVER_W = [c for c in COVERS if 'class="pg cv cvw"' in c and "варіант X" not in c]; assert len(COVER_W) == 1
+COVER_W = [c for c in COVERS if 'class="pg cv cvz' in c]; assert len(COVER_W) == 5   # 07.10: the five logo covers (Z1–Z5) are printed, the client picks one
 # the variants still call themselves «сторінка 3»; renumber them to the real page of the offer and renumber the folios and the «стор. N» reference
 OFF_N = OFFER + 1
 DROP = set("ABCEFGHIJKLMN")   # 07.10: the client removed these page-3 variants and the «зараз — таблиця» page from the file; they stay in the code
@@ -546,13 +568,13 @@ import re as _re
 TERMS_N = next(i for i, h in enumerate(FULL) if "Запитання та відповіді" in h) + 1
 FULL = [_re.sub(r"(стор\.[\s\u00a0\u202f]*)(\d+)", lambda m: m.group(1) + str(TERMS_N), h) for h in FULL]
 def _folio(h, n): return _re.sub(r'(<p class="folio"[^>]*>.*?<span[^>]*>)(\d\d)(</span></p>)', lambda m: f"{m.group(1)}{n:02d}{m.group(3)}", h, flags=_re.S)
-FULL = [_folio(h, i + 1) if not ("Сторінка " in h and "варіант" in h) and "p3-now" not in h else h for i, h in enumerate(FULL)]
+FULL = [_folio(h, i + 2 - len(COVER_W)) if not ("Сторінка " in h and "варіант" in h) and "p3-now" not in h else h for i, h in enumerate(FULL)]   # the covers count as one page
 print("covers printed:", len(COVER_W), "of", len(COVERS) + 1, "· page 3 variants:", len(PAGES))
 # stable ids for the editor (src/deck-editor.py): the pages of the deck keep their names, the variants get letters
 P = deck.PIDS; assert len(deck.PAGES) == len(P)
 import re as _re
 def _letter(i, html):
     m = _re.search(r"варіант ([A-Z])\b", html); return m.group(1) if m else "BCDEFGHIJKLMNOPQRSTUVWXYZ"[i]
-PID = (["cover-W"] + P[1:OFFER]
+PID = ([f"cover-Z{i + 1}" for i in range(len(COVER_W))] + P[1:OFFER]
        + ["p3-" + _letter(i, v) for i, v in enumerate(PAGES)] + [pid for pid in P[OFFER + 1:] if pid not in DROP_BASE])
 deck.render(FULL, CSS, PID, builder="src/build-deck-variants.py")

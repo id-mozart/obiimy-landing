@@ -188,12 +188,17 @@ page(f"""{rh("Чотири подарунки")}<div class="sheet">
 <div><p class="cap">До 1 000 грн на людину</p><p>Шовкова резинка — 700 грн, закладка для книги — 800 грн, сертифікат Obiimy — 1 000 грн.</p></div>
 <div><p class="cap">Приклад: 50 людей</p><p>30 твіллі (48 000 грн) + 20 сертифікатів по 1 500 грн (30 000 грн) = 78 000 грн. Ціну для вашої кількості підтвердимо в розрахунку — приклад на стор. {TERMS_P}.</p></div></div></div>""", "paper")
 
-# ── 7b · gifts for men (07.10): the same three columns as the sets page; facts from SITE-FACTS and the team FAQ ───────
-MEN3 = [("Маска для сну", "Однотонна або зі стриманим принтом: «Синій», «Ранкова кава», чорне «Серцебиття». Шовк м’який і дбайливий до шкіри.", "2 700 грн", "men-mask", 70),
-        ("Наволочка 50 × 70", "Однотонний шовк — «Туман», «Хмара», «Капучино». Подарунок про сон, який помічають щоранку.", "від 4 200 грн", "pillow-kapuchyno", 84),
-        ("Закладка для книги", "Шовкова стрічка з китицею — для тих, хто читає. Принти «Мелодія двох» і «Піднесення».", "800 грн", "bookmark-melodiia", 60)]
-cols_m = "".join(f'<div class="scol"><figure>{cut(c, w, fix=True)}</figure><h3 class="h28">{n}</h3><p>{d}</p><span class="from">{pz}</span></div>' for n, d, pz, c, w in MEN3)
-page(f"""<div class="setsp"><div class="sh2"><h2 class="h28">Для чоловіків</h2><p class="brand-note">Якщо потрібен один подарунок для всіх —<br>сертифікат на 1 000–4 000 грн.</p></div><div class="scols">{cols_m}</div></div>""", "sets3", short=True)
+# ── 7b · gifts for men (07.10): the «ways» layout — four photographs; facts from SITE-FACTS, the team FAQ and the store's pocket-square collections
+MEN4 = [("Хустка-паше", "від 1 600 грн", "photo/site/pashe-probudzhennia-02.jpg", "50% 50%"), ("Маска для сну", "від 2 700 грн", "photo/site/mask-synii-02.jpg", "50% 20%"),
+        ("Закладка", "від 800 грн", "photo/site/bookmark-melodiia-dvokh-02.jpg", "50% 50%"), ("Сертифікат", "1 000–4 000 грн", "img/sets/cert-2000.webp", "50% 45%")]
+tilesM = "".join(f'<figure class="w6">{pic(f, 93.75, 103.5, ps)}<figcaption class="h28"><i>{n}</i><span class="wp">{pz}</span></figcaption></figure>' for n, pz, f, ps in MEN4)
+page(f"""<div class="panel"><h2 class="h28">Для чоловіків</h2>
+<span class="from">від 800 грн</span>
+<p class="lead">Чоловікам у команді — речі з того самого шовку, тільки стриманіші: хустка-паше в кишеню піджака, маска для сну, закладка для книги або однотонна наволочка.</p>
+<p class="lead">Паше — 44 × 44, односторонні й двосторонні принти. Наволочка 50 × 70 — «Туман», «Хмара», «Капучино», від 4 200 грн. Якщо потрібен один подарунок для всіх — сертифікат: людина обирає сама.</p>
+<figure class="setcut">{cut("pillow-kapuchyno", 60, fix=True)}</figure>
+<p class="pair-cap">Наволочка 50 × 70 з однотонного шовку — подарунок про сон, для тих, хто не носить аксесуарів.</p></div>
+<div class="w6g w4g">{tilesM}</div>""", "ways6", short=True)
 
 # ── 6–9 · one page per gift (split, alternating) ────────────────────────────────────────────────────
 def kv(items): return "".join(f'<div><span class="t8">{k}</span><span>{v}</span></div>' for k, v in items)

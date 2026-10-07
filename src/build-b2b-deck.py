@@ -18,34 +18,38 @@ money = deck.money
 # ── data straight from the deck ───────────────────────────────────────────────────────────────────────────────────
 MOSAIC = [("photo/solo/iskra-65-4.webp", "50% 15%"), ("photo/solo/flirt-tw-1.webp", "50% 20%"), ("photo/site/mask-shchyri-pochuttia-04.jpg", "0% 50%"), ("photo/solo/zolote-44-2.webp", "50% 15%"),
           ("photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg", "50% 50%"), ("photo/solo/tysha-88-4.webp", "50% 10%"), ("photo/solo/krok-44-2.webp", "50% 20%"), ("photo/solo/flirt-65-4.webp", "50% 15%")]   # the cover (cvz9)
-MORE = [("Сертифікат", "На будь-яку суму від 1 000 до 4 000 грн.", 1000, "img/sets/cert-2000.webp"),
+MORE = [("Сертифікат", "Номінали 1 000, 1 500, 2 000, 2 500 і 4 000 грн; діє три місяці.", 1000, "img/cert-card.png"),
         ("Маска, закладка й резинка", "Три речі в одному принті, у коробці.", 3600, "img/cut/sleep-pidnesennia.webp"),
-        ("Хустка й кільце", "Хустка 65 × 65 і кільце для хустки.", 3650, "img/cut/duo-iskra-ring.webp"),
+        ("Хустка й кільце", "Хустка 65 × 65 і кільце — збираємо на замовлення.", 3650, "img/cut/duo-kava-ring.webp"),
         ("Три твіллі", "Три принти на вибір в одній коробці.", 4800, "img/cut/three-twilly-2.webp")]   # deck p. 7 (src/build-deck-variants.py MORE)
 ST7 = dict(deck.ST7)
 SZ6 = "(max-width: 640px) 50vw, (max-width: 1100px) 33vw, 22vw"
 
-def tile(f, pos, cap, sub="", zoom=1.0, alt=""):
+SZ4 = "(max-width: 640px) 50vw, (max-width: 1100px) 45vw, 33vw"
+def tile(f, pos, cap, sub="", zoom=1.0, alt="", sz=SZ6):
     z = f"transform:scale({zoom});transform-origin:{pos};" if zoom != 1.0 else ""
-    return (f'<figure class="dk-w6">{img(f, alt or cap, sizes=SZ6, style=f"object-position:{pos};{z}")}'
+    return (f'<figure class="dk-w6">{img(f, alt or cap, sizes=sz, style=f"object-position:{pos};{z}")}'
             f'<figcaption><i>{cap}</i>{f"<span>{sub}</span>" if sub else ""}</figcaption></figure>')
 def cutimg(name, alt, w=240): return img(f"img/cut/{name}.webp", alt, sizes=f"{w}px")
 
 # ── sections ──────────────────────────────────────────────────────────────────────────────────────────────────────
+NAV = [("Хустки", "scarves"), ("Твіллі", "twilly"), ("Аксесуари", "acc"), ("Набори", "sets"), ("Чоловікам", "men"), ("SOLO", "solo"), ("Питання", "faq")]
 def hero():
-    frames = "".join(img(f, "", sizes="(max-width: 640px) 50vw, 25vw", lazy=i > 3, style=f"object-position:{p}") for i, (f, p) in enumerate(MOSAIC))
+    frames = "".join(img(f, "", sizes="(max-width: 900px) 50vw, 25vw", lazy=i > 3, style=f"object-position:{p}") for i, (f, p) in enumerate(MOSAIC))
+    chips = "".join(f'<a href="#{h}">{t}</a>' for t, h in NAV)
     return f'''
   <section class="hero dk-cover" id="top">
     <div class="dk-mosaic">{frames}</div>
     <div class="dk-band"><div class="wrap">
-      <img src="brand/logo-ink-480.webp" alt="Obiimy" width="150" height="32" class="dk-band-logo">
-      <div class="dk-band-t"><h1>Подарунки для команди</h1><p class="eyebrow">Преміальні шовкові вироби · 2026</p></div>
-      <div class="cta"><a class="btn btn-gold" href="#request">Отримати розрахунок</a><a class="btn btn-line" href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація (PDF, {team.PDF_MB} МБ) ↓</a></div>
+      <div class="dk-band-t"><p class="eyebrow">Obiimy · преміальні шовкові вироби · 2026</p><h1>Подарунки <i>для команди</i></h1>
+      <p class="dk-band-lead">Хустки, твіллі, аксесуари й набори в коробці — від 450 до 6 600 грн за подарунок. Пакування й наліпка з вашим логотипом — у ціні.</p>
+      <div class="cta"><a class="btn btn-gold" href="#request">Отримати розрахунок</a><a class="btn btn-line" href="obiimy-podarunky-dlia-komandy.pdf" download="Obiimy-podarunky-dlia-komandy.pdf" type="application/pdf">Презентація (PDF, {team.PDF_MB} МБ) ↓</a></div></div>
     </div></div>
+    <nav class="dk-chips" aria-label="Розділи сторінки">{chips}</nav>
   </section>'''
 
 def about():
-    paras = "".join(f"<p>{x}</p>" for x in deck.ABOUT)
+    paras = "".join(f"<p>{x}</p>" for x in (deck.ABOUT[0], deck.ABOUT[3]))   # the lead, the silk and the charity — the rest of the site's text is for a shopper, not a buyer
     return f'''
   <section class="dk-split" id="about"><div class="wrap">
     <figure>{img("photo/solo/iskra-65-2.webp", "Хустка «Іскра» 65 × 65 на плечах", sizes="(max-width: 900px) 100vw, 50vw", style="object-position:44% 0%")}</figure>
@@ -70,15 +74,15 @@ def scarves():
 def twilly():
     tiles = "".join(tile(f, ps, n, zoom=z) for n, f, ps, z in deck.WAYS)
     pair = "".join(f'<figure>{img(f, "Хустка й твіллі одного принту", sizes="200px", style=f"object-position:{p}")}</figure>' for f, p in deck.PAIR)
-    aside = f'<div class="dk-pair">{pair}</div><p class="dk-pair-cap">Твіллі добре працює в парі: хустка й твіллі одного принту — на плечах і на сумці.</p>'
+    aside = f'<div class="dk-pair">{pair}</div><p class="dk-pair-cap">Твіллі добре працює в парі: хустка й твіллі одного принту — на плечах і у волоссі.</p>'
     return ways("twilly", "Твіллі", 1600, ["Твіллі — вузька шовкова стрічка. Її зав’язують у волоссі, на шиї, на зап’ясті, краваткою або на ручці сумки — і носять щодня.",
-                                         "Найдоступніший подарунок у каталозі й найлегший у виборі: підходить усім, хто носить аксесуари. Десятки авторських принтів — один на всю команду або кожному свій."], tiles, aside)
+                                         "Найлегший у виборі подарунок: підходить усім, хто носить аксесуари. Десятки авторських принтів — один на всю команду або кожному свій."], tiles, aside)
 
 def accessories():
-    tiles = "".join(tile(t[2], t[3], t[0], t[1], zoom=(t[4] if len(t) > 4 else 1.0)) for t in deck.ACC4)
+    tiles = "".join(tile(t[2], t[3], t[0], t[1], zoom=(t[4] if len(t) > 4 else 1.0), sz=SZ4) for t in deck.ACC4)
     aside = f'<figure class="dk-setcut">{cutimg("box-maskscr-melodiia", "Набір: маска для сну й резинка в коробці")}</figure><p class="dk-pair-cap">Кілька аксесуарів чудово складаються в набір — наприклад, маска для сну й резинка одного принту в коробці.</p>'
-    return ways("acc", "Аксесуари", 700, ["Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги, тримач для хустки.",
-                                        "Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. Тримач — маленьке кільце, яке тримає хустку чи твіллі й робить із них готовий образ."], tiles, aside, cls="dk-w4")
+    return ways("acc", "Аксесуари", 450, ["Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги, тримач для хустки.",
+                                        "Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — дбайливий подарунок про відпочинок. Резинка — найпростіший знак уваги на всю команду. Тримач — маленьке кільце, яке тримає хустку чи твіллі й робить із них готовий образ."], tiles, aside, cls="dk-w4")
 
 def sets():
     cols = "".join(f'<div class="dk-scol"><figure>{cutimg(c, n, 420)}</figure><h3>{n}</h3><p>{d}</p><p class="dk-from">{pz}</p></div>' for n, d, pz, c, w in deck.SETS3)
@@ -94,17 +98,17 @@ def more():
   <section class="dk-split dk-more" id="more"><div class="wrap">
     <figure>{img("photo/site/set-ta-rezynka-litnie-pole-04.jpg", "Набір «Літнє поле»: маска для сну й резинка в коробці", sizes="(max-width: 900px) 100vw, 50vw", style="object-position:42% 50%")}</figure>
     <div><h2>Є й інші набори — <i>і ще десятки варіантів</i></h2><div class="dk-rows">{rows}</div>
-    <p class="dk-fine">У каталозі — 49 готових наборів у коробці. Підберемо під вашу нагоду й бюджет або зберемо власний.</p></div>
+    <p class="dk-fine">У категорії подарункових наборів на сайті — 49 позицій. Підберемо під вашу нагоду й бюджет або зберемо власний.</p></div>
   </div></section>'''
 
 def men():
-    tiles = "".join((tile(t[2], t[3], t[0], t[1]) if t[2] else f'<figure class="dk-w6 dk-cert">{img("img/cert-card.png", "Подарунковий сертифікат Obiimy", sizes=SZ6)}<figcaption><i>{t[0]}</i><span>{t[1]}</span></figcaption></figure>') for t in deck.MEN4)
+    tiles = "".join((tile(t[2], t[3], t[0], t[1], sz=SZ4) if t[2] else f'<figure class="dk-w6 dk-cert">{img("img/cert-card.png", "Подарунковий сертифікат Obiimy", sizes=SZ6)}<figcaption><i>{t[0]}</i><span>{t[1]}</span></figcaption></figure>') for t in deck.MEN4)
     aside = f'<figure class="dk-setcut">{cutimg("pillow-tuman", "Шовкова наволочка «Туман»")}</figure><p class="dk-pair-cap">Наволочка з однотонного шовку — подарунок про сон, для тих, хто не носить аксесуарів.</p>'
     return ways("men", "Для чоловіків", 800, ["Чоловікам у команді — речі з того самого шовку, тільки стриманіші: хустка-паше в кишеню піджака, маска для сну, закладка для книги або однотонна наволочка.",
                                             "Паше в нагрудній кишені — найкоротший шлях до святкового вигляду: без краватки й зайвих слів. А коли хочеться лишити вибір за людиною — сертифікат."], tiles, aside, cls="dk-w4")
 
 def solo():
-    tiles = "".join(f'<figure class="dk-t7">{img(f, f"Принт «{P[0]}»", sizes="(max-width: 640px) 50vw, 14vw", style=f"object-position:{ps};" + (f"transform:scale({z});transform-origin:{ps}" if z != 1 else ""))}<figcaption><b>{P[0]}</b><span>{ST7.get(P[0], P[1])}</span></figcaption></figure>'
+    tiles = "".join(f'<figure class="dk-t7"><div class="dk-t7i">{img(f, f"Принт «{P[0]}»", sizes="(max-width: 640px) 50vw, 14vw", style=f"object-position:{ps};" + (f"transform:scale({z});transform-origin:{ps}" if z != 1 else ""))}</div><figcaption><b>{P[0]}</b><span>{ST7.get(P[0], P[1])}</span></figcaption></figure>'
                     for (f, ps, z), P in zip(deck.STRIP, deck.SOLO))
     return f'''
   <section class="dk-solo-dark" id="solo"><div class="wrap">
@@ -113,34 +117,51 @@ def solo():
     <div class="dk-strip">{tiles}</div>
   </div></section>'''
 
+def steps():
+    S3 = [("Напишіть нам", "Нагода, кількість людей і дата вручення. Якщо є — бюджет на людину."),
+          ("Добірка й розрахунок", "У відповідь — принти з фото на вибір, ціни й строк у робочих днях окремими рядками."),
+          ("Виготовлення й доставка", "Пакування й наліпка з вашим логотипом — у ціні. Новою поштою в офіс однією посилкою або кожному окремо.")]
+    items = "".join(f'<div><b>0{i + 1}</b><h3>{t}</h3><p>{d}</p></div>' for i, (t, d) in enumerate(S3))
+    return f'''
+  <section class="dk-steps" id="how"><div class="wrap"><h2>Як це працює</h2><div class="dk-s3">{items}</div></div></section>'''
+
+def midcta():
+    return '''
+  <section class="dk-cta"><div class="wrap"><p>Не знаєте, що обрати? Напишіть нагоду й кількість — надішлемо добірку з фото й розрахунок.</p><a class="btn btn-gold" href="#request">Отримати розрахунок</a></div></section>'''
+
 def faq():
     items = "".join(f'<details{" open" if i == 0 else ""}><summary>{q}</summary><p>{a}</p></details>' for i, (q, a) in enumerate(deck.FAQ9))
     return f'''
   <section class="dk-faq" id="faq"><div class="wrap"><h2>Запитання та відповіді</h2><div class="dk-faq2">{items}</div></div></section>'''
 
 def page():
-    body = hero() + about() + scarves() + twilly() + accessories() + sets() + more() + men() + solo() + faq() + main.with_qr(
+    body = hero() + about() + scarves() + twilly() + accessories() + sets() + midcta() + more() + men() + solo() + steps() + faq() + main.with_qr(
         team.request_section("f-deck", "Подарунки для команди (презентація)", "Зв’яжіться з нами — <i>разом підберемо все для вашої команди</i>",
                              "Нагода, кількість людей і дата вручення — цього досить для першого листа. У відповідь надішлемо добірку з фото й розрахунок.", "sets", corp=True)) + team.script("f-deck", "")
     return dict(slug="b2b-deck", skin="deck", bar=team.BAR, title="Подарунки для команди — преміальні шовкові вироби Obiimy · хустки, твіллі, аксесуари, набори",
                 desc="Корпоративні подарунки Obiimy за презентацією для команд: хустки від 1 600 грн, твіллі від 1 600, аксесуари від 700, набори в коробці від 2 200 грн, подарунки для чоловіків, нова колекція SOLO. Пакування й наліпка з вашим логотипом — у ціні.",
-                og="photo/solo/iskra-65-4.webp", nav=[("Хустки", "scarves"), ("Твіллі", "twilly"), ("Аксесуари", "acc"), ("Набори", "sets"), ("Чоловікам", "men"), ("SOLO", "solo"), ("Питання", "faq")],
+                og="photo/solo/iskra-65-4.webp", nav=NAV,
                 cta="Запит", sticky="Подарунки для команди · преміальний шовк", body=body)
 
 CSS = """
   /* b2b-deck: the deck's pages as sections */
-  .hero.dk-cover { padding: 0; }
-  .dk-mosaic { display: grid; grid-template-columns: repeat(4, 1fr); } .dk-mosaic img { width: 100%; aspect-ratio: 74.25 / 105; object-fit: cover; display: block; }
-  .dk-band { background: #FDD31A; color: #141414; padding: clamp(18px, 3vw, 34px) 0; } .dk-band .wrap { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: clamp(16px, 3vw, 40px); }
-  .dk-band-logo { width: clamp(110px, 12vw, 150px); height: auto; } .dk-band h1 { font-size: clamp(1.6rem, 2.8vw, 2.4rem); margin: 0 0 6px; } .dk-band .eyebrow { color: #141414; font-weight: 400; }
+  .hero.dk-cover { padding: 0; position: relative; }
+  .dk-mosaic { display: grid; grid-template-columns: repeat(4, 1fr); max-height: calc(100vh - 112px); overflow: hidden; } .dk-mosaic img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; }
+  .dk-band { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); background: #FDD31A; color: #141414; padding: clamp(22px, 3vw, 40px) 0; box-shadow: 0 10px 40px rgba(0,0,0,.25); }
+  .dk-band-t { max-width: 760px; } .dk-band .eyebrow { color: #141414; font-weight: 400; margin: 0 0 10px; }
+  .dk-band h1 { font-size: clamp(2.4rem, 5vw, 4.2rem); line-height: 1.02; margin: 0 0 14px; } .dk-band h1 i { color: #4A4A47; }
+  .dk-band-lead { font-size: clamp(1rem, 1.3vw, 1.15rem); line-height: 1.5; color: #141414; margin: 0 0 20px; max-width: 640px; }
   .dk-band .cta { display: flex; gap: 10px; flex-wrap: wrap; } .dk-band .btn-gold { background: #141414; color: #F1EFEA; } .dk-band .btn-line { border-color: #141414; color: #141414; }
-  @media (max-width: 900px) { .dk-band .wrap { grid-template-columns: 1fr; } .dk-mosaic { grid-template-columns: repeat(2, 1fr); } }
+  .dk-chips { display: none; }
+  @media (max-width: 900px) { .dk-mosaic { grid-template-columns: repeat(2, 1fr); max-height: 58vh; } .dk-mosaic img:nth-child(n+5) { display: none; } .dk-band { position: static; transform: none; box-shadow: none; padding: 26px 0 24px; } }
+  @media (max-width: 760px) { .dk-chips { display: flex; gap: 8px; overflow-x: auto; padding: 12px clamp(16px, 4vw, 48px); scrollbar-width: none; background: var(--bg); border-bottom: 1px solid var(--line); } .dk-chips::-webkit-scrollbar { display: none; }
+    .dk-chips a { flex: none; font-size: .82rem; letter-spacing: .04em; padding: 7px 12px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); text-decoration: none; } }
   .dk-split { padding-block: clamp(40px, 6vw, 96px); } .dk-split .wrap { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 5vw, 72px); align-items: center; }
   .dk-split figure { margin: 0; } .dk-split figure img { width: 100%; aspect-ratio: 148.5 / 210; object-fit: cover; display: block; }
   .dk-ab { color: var(--ink2); line-height: 1.6; } .dk-ab p { margin: 0 0 12px; } .dk-ab-lead { font-family: var(--display); font-size: clamp(1.2rem, 1.8vw, 1.5rem); line-height: 1.35; color: var(--ink); margin-bottom: 20px !important; }
   @media (max-width: 900px) { .dk-split .wrap { grid-template-columns: 1fr; } .dk-split figure img { aspect-ratio: 4 / 3; } }
   .dk-ways { padding-block: clamp(40px, 6vw, 96px); border-top: 1px solid var(--line); } .dk-ways .wrap { display: grid; grid-template-columns: 1fr 2fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
-  .dk-ways .dk-panel { display: flex; flex-direction: column; min-height: 100%; } .dk-ways h2 { margin: 0 0 4px; } .dk-ways .dk-from { font-family: var(--display); font-style: italic; font-size: 1.15rem; color: var(--ink2); margin: 0 0 20px; }
+  .dk-ways .dk-panel { position: sticky; top: 90px; } .dk-ways h2 { margin: 0 0 4px; } .dk-ways .dk-from { font-family: var(--display); font-style: italic; font-size: 1.15rem; color: var(--ink2); margin: 0 0 20px; }
   .dk-ways .dk-lead { color: var(--ink2); line-height: 1.6; margin: 0 0 14px; } .dk-ways .dk-lead:first-of-type { color: var(--ink); font-size: 1.05rem; }
   .dk-w6g { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; } .dk-ways.dk-w4 .dk-w6g { grid-template-columns: repeat(2, 1fr); }
   .dk-w6 { position: relative; margin: 0; overflow: hidden; background: #ddd; } .dk-w6 img { width: 100%; aspect-ratio: 61.5 / 103.5; object-fit: cover; display: block; } .dk-ways.dk-w4 .dk-w6 img { aspect-ratio: 93.75 / 103.5; }
@@ -148,29 +169,34 @@ CSS = """
   .dk-w6 figcaption { position: absolute; left: 14px; bottom: 12px; z-index: 2; color: #E7D9A6; font-family: var(--display); font-size: clamp(1.1rem, 1.6vw, 1.5rem); line-height: 1.1; }
   .dk-w6 figcaption span { display: block; font-family: var(--body); font-size: .8rem; color: rgba(231,217,166,.85); margin-top: 4px; }
   .dk-w6.dk-cert img { aspect-ratio: 93.75 / 103.5; }
-  .dk-nest { position: relative; margin-top: auto; padding-top: 24px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: end; min-height: 200px; }
+  .dk-nest { position: relative; margin-top: 28px; padding-top: 24px; display: grid; grid-template-columns: 1fr auto; gap: 16px; align-items: end; min-height: 250px; }
   .dk-nest figure { position: absolute; bottom: 0; margin: 0; } .dk-nest img { display: block; filter: drop-shadow(0 4px 8px rgba(0,0,0,.16)); } .dk-nest .dk-n0 { left: 0; width: 44%; } .dk-nest .dk-n1 { left: 13%; width: 33%; } .dk-nest .dk-n2 { left: 26%; width: 22%; }
-  .dk-nest .dk-nl { grid-column: 2; display: flex; flex-direction: column; gap: 10px; } .dk-nest .dk-nl p { margin: 0; } .dk-nest .dk-nl b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.1rem; } .dk-nest .dk-nl span { font-size: .8rem; color: var(--ink2); }
-  .dk-pair { margin-top: auto; padding-top: 24px; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 320px; } .dk-pair figure { margin: 0; } .dk-pair img { width: 100%; aspect-ratio: 40.5 / 50; object-fit: cover; display: block; }
-  .dk-pair-cap { font-size: .9rem; color: var(--ink2); margin: 12px 0 0; max-width: 360px; } .dk-setcut { margin: auto 0 0; padding-top: 24px; max-width: 260px; } .dk-setcut img { width: 100%; height: auto; display: block; }
-  @media (max-width: 900px) { .dk-ways .wrap { grid-template-columns: 1fr; } .dk-nest, .dk-pair, .dk-setcut { margin-top: 20px; } }
-  @media (max-width: 640px) { .dk-w6 figcaption { left: 10px; bottom: 9px; font-size: .95rem; } .dk-w6 figcaption span { font-size: .7rem; } .dk-w6g { gap: 6px; } }
+  .dk-nest .dk-nl { grid-column: 2; display: flex; flex-direction: column; gap: 10px; } .dk-nest .dk-nl p { margin: 0; } .dk-nest .dk-nl b { display: block; font-family: var(--display); font-weight: 400; font-size: 1.3rem; } .dk-nest .dk-nl span { font-size: .95rem; color: var(--ink); }
+  .dk-pair { margin-top: 28px; padding-top: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 320px; } .dk-pair figure { margin: 0; } .dk-pair img { width: 100%; aspect-ratio: 40.5 / 50; object-fit: cover; display: block; }
+  .dk-pair-cap { font-size: .9rem; color: var(--ink2); margin: 12px 0 0; max-width: 360px; } .dk-setcut { margin: 28px 0 0; max-width: 260px; } .dk-setcut img { width: 100%; height: auto; display: block; }
+  @media (max-width: 900px) { .dk-ways .wrap { grid-template-columns: 1fr; } .dk-ways .dk-panel { position: static; } }
+  @media (max-width: 640px) { .dk-w6 figcaption { left: 10px; bottom: 9px; font-size: 1rem; } .dk-w6 figcaption span { font-size: .82rem; color: #E7D9A6; } .dk-w6g { gap: 6px; } }
   .dk-sets { padding-block: clamp(40px, 6vw, 96px); border-top: 1px solid var(--line); } .dk-sh2 { display: flex; justify-content: space-between; align-items: end; gap: 24px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
   .dk-sh2 .dk-note { font-size: .85rem; color: var(--ink2); text-align: right; margin: 0; }
   .dk-scols { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 3vw, 48px); padding-top: 28px; } .dk-scol figure { margin: 0 0 18px; height: 300px; display: flex; align-items: center; justify-content: center; }
-  .dk-scol figure img { max-width: 100%; max-height: 100%; width: auto; height: auto; filter: drop-shadow(0 6px 10px rgba(40,25,10,.18)); } .dk-scol h3 { font-size: clamp(1.4rem, 2vw, 1.9rem); margin: 0 0 8px; } .dk-scol p { color: var(--ink2); margin: 0; }
+  .dk-scol figure img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 12px 28px rgba(40,25,10,.12)); } .dk-scol h3 { font-size: clamp(1.4rem, 2vw, 1.9rem); margin: 0 0 8px; } .dk-scol p { color: var(--ink2); margin: 0; }
   .dk-scol .dk-from { font-family: var(--display); font-size: 1.35rem; color: var(--ink); margin-top: 14px; } .dk-scol .dk-from::first-letter { font-style: italic; }
   @media (max-width: 900px) { .dk-sh2 { flex-direction: column; align-items: start; } .dk-sh2 .dk-note { text-align: left; } .dk-scols { grid-template-columns: 1fr; } .dk-scol figure { height: 220px; } }
   .dk-more .dk-rows { margin-top: 24px; } .dk-more .dk-rw { display: grid; grid-template-columns: 72px 1fr auto; column-gap: 16px; padding: 14px 0; border-top: 1px solid var(--line); align-items: center; }
   .dk-more .dk-rw img { grid-row: 1 / 3; width: 72px; height: 72px; object-fit: contain; } .dk-more .dk-rw h3 { font-size: 1.15rem; margin: 0; white-space: nowrap; } .dk-more .dk-rw .dk-pr { font-family: var(--display); font-size: 1.5rem; margin: 0; white-space: nowrap; }
   .dk-more .dk-rw .dk-pr small { font-family: var(--display); font-style: italic; font-size: .85rem; color: var(--ink2); } .dk-more .dk-rw span { grid-column: 2 / 4; font-size: .85rem; color: var(--ink2); } .dk-more .dk-rw:last-child { border-bottom: 1px solid var(--line); }
   .dk-more .dk-fine { font-size: .85rem; color: var(--ink2); margin-top: 18px; } .dk-more .wrap { align-items: start; }
-  .dk-solo-dark { background: #0E0E0E; color: #F1EFEA; padding-block: clamp(40px, 6vw, 96px); } .dk-solo-dark h2 { color: #F1EFEA; font-size: clamp(2.2rem, 4vw, 3.4rem); margin: 6px 0 10px; }
+  @media (max-width: 640px) { .dk-more .dk-rw { grid-template-columns: 64px 1fr; } .dk-more .dk-rw h3 { white-space: normal; font-size: 1.05rem; } .dk-more .dk-rw .dk-pr { grid-column: 2; font-size: 1.25rem; } .dk-more .dk-rw span { grid-column: 2; } .dk-more .dk-rw img { grid-row: 1 / 4; width: 64px; height: 64px; } }
+  .dk-solo-dark { background: #0E0E0E; color: #F1EFEA; padding-block: clamp(40px, 6vw, 96px); } .dk-solo-dark h2 { color: #F1EFEA; font-size: clamp(2.2rem, 3.4vw, 3rem); margin: 6px 0 10px; }
   .dk-sh7 { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: start; margin-bottom: 32px; } .dk-sh7 .eyebrow { color: rgba(255,255,255,.78); }
   .dk-sh7 .dk-sub { margin: 0; color: #C9C6C0; } .dk-sh7 .dk-sub i { color: #E7D9A6; font-family: var(--display); font-size: 1.15rem; } .dk-sh7 .dk-st { padding-top: 34px; } .dk-sh7 .dk-st7 { font-family: var(--display); font-style: italic; font-size: 1.3rem; color: #E7D9A6; margin: 0 0 8px; } .dk-sh7 .dk-st p:last-child { color: #C9C6C0; margin: 0; }
-  .dk-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; } .dk-t7 { margin: 0; overflow: hidden; } .dk-t7 img { width: 100%; aspect-ratio: 35.14 / 98; object-fit: cover; display: block; }
-  .dk-t7 figcaption { padding-top: 12px; } .dk-t7 b { display: block; font-family: var(--display); font-style: italic; font-weight: 400; color: #E7D9A6; font-size: 1.05rem; margin-bottom: 4px; } .dk-t7 span { font-size: .8rem; color: #C9C6C0; line-height: 1.4; }
-  @media (max-width: 900px) { .dk-sh7 { grid-template-columns: 1fr; } .dk-sh7 .dk-st { padding-top: 0; } .dk-strip { grid-template-columns: repeat(4, 1fr); } } @media (max-width: 640px) { .dk-strip { grid-template-columns: repeat(2, 1fr); } .dk-t7 img { aspect-ratio: 3 / 4; } }
+  .dk-strip { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; } .dk-t7 { margin: 0; } .dk-t7i { overflow: hidden; aspect-ratio: 35.14 / 98; } .dk-t7 img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .dk-t7 figcaption { padding-top: 12px; } .dk-t7 b { display: block; font-family: var(--display); font-style: italic; font-weight: 400; color: #E7D9A6; font-size: 1.05rem; margin-bottom: 4px; } .dk-t7 span { font-size: .82rem; color: #C9C6C0; line-height: 1.4; }
+  @media (max-width: 900px) { .dk-sh7 { grid-template-columns: 1fr; } .dk-sh7 .dk-st { padding-top: 0; } .dk-strip { grid-template-columns: repeat(4, 1fr); } } @media (max-width: 640px) { .dk-strip { grid-template-columns: repeat(2, 1fr); } .dk-t7i { aspect-ratio: 3 / 4; } .dk-t7 span { font-size: .85rem; } }
+  .dk-cta { background: #141414; color: #F1EFEA; padding: clamp(28px, 4vw, 48px) 0; } .dk-cta .wrap { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; } .dk-cta p { font-family: var(--display); font-size: clamp(1.2rem, 1.8vw, 1.6rem); margin: 0; max-width: 720px; } .dk-cta .btn-gold { background: #E7D9A6; color: #141414; }
+  .dk-steps { padding-block: clamp(40px, 6vw, 96px); border-top: 1px solid var(--line); } .dk-s3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 3vw, 48px); margin-top: 28px; }
+  .dk-s3 div { border-top: 1px solid var(--ink); padding-top: 16px; } .dk-s3 b { font-family: var(--display); font-weight: 400; color: var(--ink3); display: block; margin-bottom: 8px; } .dk-s3 h3 { font-size: 1.25rem; margin: 0 0 8px; } .dk-s3 p { color: var(--ink2); margin: 0; line-height: 1.55; }
+  @media (max-width: 900px) { .dk-s3 { grid-template-columns: 1fr; } } @media (max-width: 640px) { footer { padding-bottom: 72px; } }
   .dk-faq { padding-block: clamp(40px, 6vw, 96px); } .dk-faq2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 48px; margin-top: 24px; } .dk-faq2 details { border-top: 1px solid var(--line); padding: 14px 0; }
   .dk-faq2 summary { font-family: var(--display); font-size: 1.15rem; cursor: pointer; list-style: none; display: flex; justify-content: space-between; gap: 12px; } .dk-faq2 summary::after { content: "+"; color: var(--ink2); } .dk-faq2 details[open] summary::after { content: "–"; }
   .dk-faq2 p { color: var(--ink2); margin: 8px 0 0; line-height: 1.55; } @media (max-width: 900px) { .dk-faq2 { grid-template-columns: 1fr; } }

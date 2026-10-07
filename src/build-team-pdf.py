@@ -131,16 +131,16 @@ page(f"""<div class="panel"><h2 class="h28">Хустки</h2>
 WAYS = [("У волоссі", "photo/solo/krok-tw-2.webp", "50% 30%", 1.0), ("На шиї", "photo/solo/flirt-tw-3.webp", "50% 15%", 1.0), ("На сумці", "photo/solo/iskra-tw-3.webp", "50% 50%", 1.0),   # SOLO campaign frames and one editorial frame from the site (07.10)
         ("На зап’ясті", "photo/solo/krok-tw-3.webp", "50% 35%", 1.0), ("Краваткою", "photo/solo/avantiura-tw-4.webp", "50% 15%", 1.0), ("Бантом", "photo/solo/puls-tw-1.webp", "50% 45%", 1.0)]
 tiles4 = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps, hi=True, zoom=z)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps, z in WAYS)
-PAIR = [("photo/paris-dots.jpg", "50% 30%"), ("photo/paris-bag.jpg", "50% 50%")]   # scarf and twilly of one print — the pair from the c18 banner
+PAIR = [("photo/solo/avantiura-88-3.webp", "50% 20%"), ("photo/solo/avantiura-tw-3.webp", "50% 25%")]   # 07.10: SOLO «Авантюра» — the scarf and the twilly of one print   # scarf and twilly of one print — the pair from the c18 banner
 pair = "".join(f'<figure>{pic(f, 40.5, 50, ps)}</figure>' for f, ps in PAIR)
 TW4 = [("tw-flat-sokovyti-spohady", "«Соковиті спогади»"), ("tw-flat-melodiia-dvokh", "«Мелодія двох»"), ("tw-flat-yednannia", "«Єднання»"), ("tw-flat-pidnesennia", "«Піднесення»")]   # the prints worn on the four photographs
 prints4 = "".join(f'<figure>{cut(c, 27, fix=True)}</figure>' for c, n in TW4)
 page(f"""<div class="panel"><h2 class="h28">Твіллі</h2>
 <span class="from">від 1 600 грн</span>
 <p class="lead">Твіллі — вузька шовкова стрічка. Її зав’язують у волоссі, на шиї, на зап’ясті, краваткою або на ручці сумки — і носять щодня.</p>
-<p class="lead">Найдоступніший подарунок у каталозі й найлегший у виборі: підходить усім, хто носить аксесуари. Десятки авторських принтів — один на всю команду або кожному свій.</p>
+<p class="lead">Найлегший у виборі подарунок: підходить усім, хто носить аксесуари. Десятки авторських принтів — один на всю команду або кожному свій.</p>
 <div class="pair">{pair}</div>
-<p class="pair-cap">Твіллі добре працює в парі: хустка й твіллі одного принту — на плечах і на сумці.</p></div>
+<p class="pair-cap">Твіллі добре працює в парі: хустка й твіллі одного принту — на плечах і у волоссі.</p></div>
 <div class="w6g">{tiles4}</div>""", "ways6", short=True)
 
 # ── 5 · accessories: sleep masks, scrunchies, bookmarks, pillowcases, turbans — the things for everyone ───────────────
@@ -148,9 +148,9 @@ ACC4 = [("Маска для сну", "від 2 700 грн", "photo/site/mask-vpe
         ("Закладка", "від 800 грн", "photo/site/bookmark-melodiia-dvokh-01.jpg", "55% 30%"), ("Тримач для хустки", "від 450 грн", "photo/site/ring-zoloto-01.jpg", "50% 40%")]   # four things, the price in the caption
 tilesA = "".join(f'<figure class="w6">{pic(t[2], 93.75, 103.5, t[3], zoom=(t[4] if len(t) > 4 else 1.0))}<figcaption class="h28"><i>{t[0]}</i><span class="wp">{t[1]}</span></figcaption></figure>' for t in ACC4)
 page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
-<span class="from">від 700 грн</span>
+<span class="from">від 450 грн</span>
 <p class="lead">Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги, тримач для хустки.</p>
-<p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. Тримач — маленьке кільце, яке тримає хустку чи твіллі й робить із них готовий образ.</p>
+<p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — дбайливий подарунок про відпочинок. Резинка — найпростіший знак уваги на всю команду. Тримач — маленьке кільце, яке тримає хустку чи твіллі й робить із них готовий образ.</p>
 <figure class="setcut">{cut("box-maskscr-melodiia", 64, fix=True)}</figure>
 <p class="pair-cap">Кілька аксесуарів чудово складаються в набір — наприклад, маска для сну й резинка одного принту в коробці.</p></div>
 <div class="w6g w4g">{tilesA}</div>""", "ways6", short=True)

@@ -302,11 +302,10 @@ page(f"""{rh("Запитання та відповіді")}<div class="sheet"><h
 
 # ── 15 · contacts (dark split, photo right) ─────────────────────────────────────────────────────────
 page(f"""<figure class="ph">{pic("photo/site/khustka-pidnesennia-44x44-03.jpg", 148.5, 210, "50% 0%")}</figure>
-<div class="panel"><p class="cap">Запит</p><h2 class="h28">Напишіть —<br><i>надішлемо добірку</i><br><i>й розрахунок</i></h2>
+<div class="panel"><p class="cap">Контакти</p><h2 class="h28">Зв’яжіться з нами —<br><i>разом підберемо</i><br><i>все для вашої команди</i></h2>
 <p class="tel h40"><a href="{PHONE_HREF}">{PHONE}</a></p>
 <p class="h13 lines"><a href="{TG}">Telegram @OBIIMY_sales</a><br><a href="mailto:{MAIL}">{MAIL}</a><br><a href="https://obiimy.world/">obiimy.world</a></p>
-<div class="tpl"><p class="cap">Шаблон запиту — скопіюйте й допишіть</p><p>Нагода — … · людей — … · дата вручення — … · бюджет на людину — … · доставка: в офіс / кожному · рахунок на юрособу: так / ні</p></div>
-<div class="qr">{qr_svg(TG, 132, ink="#141414", plate="#F1EFEA")}<p class="t8">Скануйте — чат із менеджером у Telegram.<br><a href="{LANDING}">Сторінка для команд із формою запиту</a><br>Шоурум: {SHOWROOM}</p></div></div>""", "split r dark last", folio=False)
+<div class="qr">{qr_svg(TG, 132, ink="#141414", plate="#F1EFEA")}<p class="t8">Скануйте — чат із менеджером у Telegram.<br>Шоурум: {SHOWROOM}</p></div></div>""", "split r dark last", folio=False)
 
 assert "Запитання та відповіді" in PAGES[TERMS_P - 1], "TERMS_P does not point at the terms page"
 

@@ -535,11 +535,11 @@ def doc(pages, title): return typo(f'<!DOCTYPE html><html lang="uk"><head><meta 
 COVER_W = [c for c in COVERS if 'class="pg cv cvw"' in c and "варіант X" not in c]; assert len(COVER_W) == 1
 # the variants still call themselves «сторінка 3»; renumber them to the real page of the offer and renumber the folios and the «стор. N» reference
 OFF_N = OFFER + 1
-DROP = set("ABCFGHIJK")   # 07.10: the client removed these page-3 variants and the «зараз — таблиця» page from the file; they stay in the code
+DROP = set("ABCFGHIJKLMN")   # 07.10: the client removed these page-3 variants and the «зараз — таблиця» page from the file; they stay in the code
 PAGES = [v for v in PAGES if not any(f"варіант {L}" in v for L in DROP)]
 PAGES_NOW = PAGES[:1]; PAGES = PAGES[1:]   # the table page is no longer printed
 VAR = [v.replace("Сторінка 3", f"Сторінка {OFF_N}").replace("сторінка 3", f"сторінка {OFF_N}").replace("<span>03</span>", f"<span>{OFF_N:02d}</span>") for v in PAGES]
-DROP_BASE = {"gift-twilly", "gift-ring", "gift-mask", "gift-set", "logo"}   # 07.10: the client removed the four gift pages and «Персоналізація» from the file
+DROP_BASE = {"gift-twilly", "gift-ring", "gift-mask", "gift-set", "logo", "range", "solo"}   # 07.10: the client removed the four gift pages and «Персоналізація» from the file
 TAIL = [h for pid, h in zip(deck.PIDS[OFFER + 1:], deck.PAGES[OFFER + 1:]) if pid not in DROP_BASE]
 FULL = COVER_W + deck.PAGES[1:OFFER] + VAR + TAIL
 import re as _re

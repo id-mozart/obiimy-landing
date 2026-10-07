@@ -398,7 +398,7 @@ MOSAICS = {   # 07.10: three more sets of frames for the same band cover
     "cvz8": [("photo/vyr-3.webp", "50% 10%"), ("photo/site/khustka-balans-44x44-04.jpg", "50% 0%"), ("photo/site/bookmark-melodiia-dvokh-02.jpg", "50% 50%"), ("photo/probudzhennia-1.webp", "50% 15%"),
              ("photo/site/khustka-vidnovlennia-88x88-02.jpg", "50% 15%"), ("photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg", "50% 40%"), ("photo/site/khustka-yednannia-44x44-03.jpg", "50% 15%"), ("photo/site/tvilli-ta-rezynka-makovyi-tsvit-02.jpg", "50% 30%")],   # the site's editorials, different women
     "cvz9": [("photo/solo/iskra-65-4.webp", "50% 15%"), ("photo/solo/flirt-tw-1.webp", "50% 20%"), ("photo/solo/flirt-scr-2.webp", "40% 30%"), ("photo/solo/zolote-44-2.webp", "50% 15%"),
-             ("photo/site/mask-vpevnenist-04.jpg", "50% 0%"), ("photo/solo/tysha-88-4.webp", "50% 10%"), ("photo/solo/krok-44-2.webp", "50% 20%"), ("photo/solo/flirt-65-4.webp", "50% 15%")],   # SOLO only — the client's choice (07.10)
+             ("photo/site/mask-nizhnist-03.jpg", "50% 20%"), ("photo/solo/tysha-88-4.webp", "50% 10%"), ("photo/solo/krok-44-2.webp", "50% 20%"), ("photo/solo/flirt-65-4.webp", "50% 15%")],   # SOLO only — the client's choice (07.10)
 }
 LINE_Z = '<p class="cap cvz-l">Подарунки для команди · 2026</p>'
 COVERS += [   # 07.10: five covers of a different kind each, all printed — the client picks one

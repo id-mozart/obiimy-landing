@@ -33,7 +33,8 @@ def photo_note(): return "На фото: " + "; ".join(f"{i + 1} — {c}" for i,
 PAGES = []; NAMES = ['v0-now', 'vA', 'vB', 'vC', 'vD', 'vE']
 
 # 0 · the page as it is now (table) — for comparison
-PAGES.append(deck.PAGES[2].replace("Obiimy · Подарунки для команди · 2026", "Сторінка 3 · зараз — таблиця"))
+OFFER = deck.PIDS.index("offer")   # the base page the variants replace («Що в коробці — і скільки це коштує»); 07.10 it is page 6, after scarves, twillies and accessories
+PAGES.append(deck.PAGES[OFFER].replace("Obiimy · Подарунки для команди · 2026", "Сторінка 3 · зараз — таблиця"))
 
 # A · four photographs in the margins, the offer under each
 def col_a(i, G):
@@ -532,13 +533,21 @@ def doc(pages, title): return typo(f'<!DOCTYPE html><html lang="uk"><head><meta 
 (OUT / "p3-variants.html").write_text(doc(PAGES, "Obiimy — сторінка 3, варіанти"))     # page 3 alone: a base for mock-ups
 # 07.10: the client chose the yellow cover (W) — it is the only cover printed; the other covers (A–V, X) stay in the code, not in the file
 COVER_W = [c for c in COVERS if 'class="pg cv cvw"' in c and "варіант X" not in c]; assert len(COVER_W) == 1
-FULL = COVER_W + deck.PAGES[1:2] + PAGES + deck.PAGES[3:]
+# the variants still call themselves «сторінка 3»; renumber them to the real page of the offer and renumber the folios and the «стор. N» reference
+OFF_N = OFFER + 1
+VAR = [v.replace("Сторінка 3", f"Сторінка {OFF_N}").replace("сторінка 3", f"сторінка {OFF_N}").replace("<span>03</span>", f"<span>{OFF_N:02d}</span>") for v in PAGES]
+FULL = COVER_W + deck.PAGES[1:OFFER] + VAR + deck.PAGES[OFFER + 1:]
+import re as _re
+TERMS_N = next(i for i, h in enumerate(FULL) if "Умови й замовлення" in h) + 1
+FULL = [_re.sub(r"(стор\.[\s\u00a0\u202f]*)(\d+)", lambda m: m.group(1) + str(TERMS_N), h) for h in FULL]
+def _folio(h, n): return _re.sub(r'(<p class="folio"[^>]*>.*?<span[^>]*>)(\d\d)(</span></p>)', lambda m: f"{m.group(1)}{n:02d}{m.group(3)}", h, flags=_re.S)
+FULL = [_folio(h, i + 1) if not ("Сторінка " in h and "варіант" in h) and "p3-now" not in h else h for i, h in enumerate(FULL)]
 print("covers printed:", len(COVER_W), "of", len(COVERS) + 1, "· page 3 variants:", len(PAGES) - 1)
 # stable ids for the editor (src/deck-editor.py): the pages of the deck keep their names, the variants get letters
 P = deck.PIDS; assert len(deck.PAGES) == len(P)
 import re as _re
 def _letter(i, html):
     m = _re.search(r"варіант ([A-Z])\b", html); return m.group(1) if m else "BCDEFGHIJKLMNOPQRSTUVWXYZ"[i]
-PID = (["cover-W"] + [P[1], "p3-now"]
-       + ["p3-" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i] for i in range(len(PAGES) - 1)] + P[3:])
+PID = (["cover-W"] + P[1:OFFER] + ["p3-now"]
+       + ["p3-" + "ABCDEFGHIJKLMNOPQRSTUVWXYZ"[i] for i in range(len(PAGES) - 1)] + P[OFFER + 1:])
 deck.render(FULL, CSS, PID, builder="src/build-deck-variants.py")

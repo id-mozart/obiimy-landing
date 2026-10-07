@@ -121,7 +121,7 @@ page(f"""<figure class="ph">{pic("photo/solo/iskra-65-2.webp", 148.5, 210, "44% 
 W6 = [("На сумці", "photo/solo/iskra-65-3.webp", "50% 50%"), ("На голові", "photo/solo/tysha-88-3.webp", "50% 20%"), ("На шиї", "photo/solo/krok-44-3.webp", "50% 20%"),
       ("На плечах", "photo/solo/avantiura-88-3.webp", "50% 20%"), ("Поясом", "photo/solo/avantiura-88-2.webp", "50% 40%"), ("Пов’язкою", "photo/site/khustka-natkhnennia-44x44-03.jpg", "50% 12%")]   # SOLO campaign frames and one editorial frame from the site (07.10)
 tiles6 = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps, hi=True)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps in W6)
-NEST = [("flat-kolo-sontsia-88x88", 44, "88 × 88", 4400), ("flat-rankova-kava-65x65", 32.5, "65 × 65", 3200), ("flat-smilyvist-44x44", 22, "44 × 44", 1600)]   # mm on the long side = cm / 2 → true proportions; prices from the listing (05.10)
+NEST = [("avantiura-88-1", 44, "88 × 88", 4400), ("iskra-65-1", 32.5, "65 × 65", 3200), ("zolote-44-1", 22, "44 × 44", 1600)]   # mm on the long side = cm / 2 → true proportions; prices from the listing (05.10)
 nest = ("".join(f'<figure class="n{i}">{cut(c, mm, fix=True)}</figure>' for i, (c, mm, n, pz) in enumerate(NEST))
         + '<div class="nl">' + "".join(f'<p><b class="h13">{n}</b><span class="t8">від {money(pz)} грн</span></p>' for c, mm, n, pz in NEST) + '</div>')
 page(f"""<div class="panel"><h2 class="h28">Хустки</h2>
@@ -155,8 +155,8 @@ page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 <span class="from">від 700 грн</span>
 <p class="lead">Речі з того самого шовку — для тих, хто хустки не носить, і для подарунка «про відпочинок»: маска для сну, резинка для волосся, закладка для книги, тримач для хустки.</p>
 <p class="lead">Шовк м’який і дбайливий до шкіри, тому маска для сну з нього — одна з найкращих. Резинка — найпростіший знак уваги на всю команду. Тримач — маленьке кільце, яке тримає хустку чи твіллі й робить із них готовий образ.</p>
-<div class="pair one"><figure>{pic("photo/site/set-maska-zakladka-rezynka-pidnesennia-01.jpg", 80, 42, "50% 62%")}</figure></div>
-<p class="pair-cap">Кілька аксесуарів чудово складаються в набір: маска для сну, закладка й резинка «Піднесення» в коробці — 3 600 грн.</p></div>
+<figure class="setcut">{cut("sleep-pidnesennia", 58, fix=True)}</figure>
+<p class="pair-cap">Кілька аксесуарів чудово складаються в набір — наприклад, маска для сну, закладка й резинка одного принту в коробці.</p></div>
 <div class="w6g w4g">{tilesA}</div>""", "ways6", short=True)
 
 # ── 6 · gift sets: three columns, one open box per set (the shop's own cut-outs on the paper), the words and the price under it ──
@@ -428,11 +428,11 @@ small { font-size: 13pt; letter-spacing: 0; }
 .scol figure { height: 92mm; display: flex; align-items: center; justify-content: center; margin: 0 0 6mm; } .scol figure img { filter: drop-shadow(0 2mm 3mm rgba(40,25,10,.18)); }
 .scol h3 { margin-bottom: 2.25mm; } .scol p { font-size: 10.5pt; line-height: 5.2mm; color: #4A4A47; } .scol .from { font: 400 18pt/20pt Playfair, serif; font-style: normal; color: #141414; margin: 4mm 0 0; } .scol .from::first-letter { font-style: italic; }
 .pair { margin-top: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 3mm; } .pair figure { margin: 0; overflow: hidden; } .pair img { width: 40.5mm; height: 50mm; object-fit: cover; display: block; }
-.pair.one { grid-template-columns: 1fr; } .pair.one img { width: 100%; height: 42mm; }
+.setcut { margin: auto 0 0; } .setcut img { display: block; }
 .pair-cap { margin-top: 3mm; font-size: 9.5pt; line-height: 4.5mm; color: #4A4A47; }
 .sh2 .brand-note { text-align: right; font-size: 9.5pt; line-height: 4.5mm; color: #4A4A47; }
 .sets3 .folio { left: 16.5mm; }
-.from { display: block; font: italic 400 13pt/16.5pt Playfair, serif; color: #6E6A63; margin-bottom: 7.5mm; }   /* the price as a quiet line under the heading */
+.from { display: block; font: italic 400 14pt/17pt Playfair, serif; color: #4A4A47; margin: 2mm 0 7mm; }   /* the price as a quiet line under the heading */
 .ways6 .lead { font-size: 11pt; line-height: 5.6mm; color: #2E2C29; margin-bottom: 4.5mm; } .ways6 .lead + .lead { color: #4A4A47; }
 .nest { position: relative; height: 52mm; margin-top: auto; } .nest figure { position: absolute; bottom: 0; } .nest img { filter: drop-shadow(0 1.5mm 2mm rgba(0,0,0,.16)); }
 .nest .n0 { left: 0; } .nest .n1 { left: 13mm; } .nest .n2 { left: 26mm; }   /* each smaller square steps right: the three edges stay visible */

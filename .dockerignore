@@ -1,0 +1,5 @@
+# The image needs only the prebuilt site and the server dependency list.
+*
+!package.json
+!package-lock.json
+!site/

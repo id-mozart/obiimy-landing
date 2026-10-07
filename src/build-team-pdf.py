@@ -85,7 +85,7 @@ def cutsh(name, w_mm, layers=((0.6, 0.5, 0.20), (3.2, 4.0, 0.16)), tint=(30, 22,
 
 def money(n): return f"{n:,}".replace(",", " ")
 PAGES = []
-TERMS_P = 16   # the page with terms and the sample quote — page 3 refers to it; checked after the pages are built
+TERMS_P = 17   # the page with terms and the sample quote — page 3 refers to it; checked after the pages are built
 def page(html, cls, folio=True, short=False):
     n = len(PAGES) + 1
     tg = "@OBIIMY_sales" if short else "Telegram @OBIIMY_sales"      # short=True — a folio that fits a narrow panel
@@ -187,6 +187,13 @@ page(f"""{rh("Чотири подарунки")}<div class="sheet">
 <div class="three"><div><p class="cap">Змішана команда</p><p>Тим, хто не носить аксесуари, — маска для сну (2 700 грн), закладка для книги (800 грн), наволочка (від 4 200 грн) або сертифікат на 1 000–4 000 грн. Усе — в одному розрахунку.</p></div>
 <div><p class="cap">До 1 000 грн на людину</p><p>Шовкова резинка — 700 грн, закладка для книги — 800 грн, сертифікат Obiimy — 1 000 грн.</p></div>
 <div><p class="cap">Приклад: 50 людей</p><p>30 твіллі (48 000 грн) + 20 сертифікатів по 1 500 грн (30 000 грн) = 78 000 грн. Ціну для вашої кількості підтвердимо в розрахунку — приклад на стор. {TERMS_P}.</p></div></div></div>""", "paper")
+
+# ── 7b · gifts for men (07.10): the same three columns as the sets page; facts from SITE-FACTS and the team FAQ ───────
+MEN3 = [("Маска для сну", "Однотонна або зі стриманим принтом: «Синій», «Ранкова кава», чорне «Серцебиття». Шовк м’який і дбайливий до шкіри.", "2 700 грн", "men-mask", 70),
+        ("Наволочка 50 × 70", "Однотонний шовк — «Туман», «Хмара», «Капучино». Подарунок про сон, який помічають щоранку.", "від 4 200 грн", "pillow-kapuchyno", 84),
+        ("Закладка для книги", "Шовкова стрічка з китицею — для тих, хто читає. Принти «Мелодія двох» і «Піднесення».", "800 грн", "bookmark-melodiia", 60)]
+cols_m = "".join(f'<div class="scol"><figure>{cut(c, w, fix=True)}</figure><h3 class="h28">{n}</h3><p>{d}</p><span class="from">{pz}</span></div>' for n, d, pz, c, w in MEN3)
+page(f"""<div class="setsp"><div class="sh2"><h2 class="h28">Для чоловіків</h2><p class="brand-note">Якщо потрібен один подарунок для всіх —<br>сертифікат на 1 000–4 000 грн.</p></div><div class="scols">{cols_m}</div></div>""", "sets3", short=True)
 
 # ── 6–9 · one page per gift (split, alternating) ────────────────────────────────────────────────────
 def kv(items): return "".join(f'<div><span class="t8">{k}</span><span>{v}</span></div>' for k, v in items)
@@ -449,7 +456,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .tpl { margin-top: 9mm; border-top: .35pt solid rgba(255,255,255,.3); border-bottom: .35pt solid rgba(255,255,255,.3); padding: 3.75mm 0; } .tpl .cap { margin-bottom: 1.5mm; } .tpl p:last-child { color: #F1EFEA; }
 .qr { margin-top: auto; display: grid; grid-template-columns: 33mm 1fr; gap: 6mm; align-items: center; } .qr svg { width: 33mm; height: 33mm; } .qr a { border-bottom: .35pt solid rgba(255,255,255,.4); }
 """
-PIDS = ["cover", "who", "ways-scarf", "ways-twilly", "ways-acc", "sets", "offer", "gift-twilly", "gift-ring", "gift-mask", "gift-set", "logo", "range", "solo", "prints", "terms", "contacts"]
+PIDS = ["cover", "who", "ways-scarf", "ways-twilly", "ways-acc", "sets", "offer", "men", "gift-twilly", "gift-ring", "gift-mask", "gift-set", "logo", "range", "solo", "prints", "terms", "contacts"]
 EDITS = OUT / "src" / "deck-edits.json"          # written by the WYSIWYG editor (src/deck-editor.py), applied on every build
 EDITOR_PAGES = OUT / "review" / "deck-editor-pages.json"   # what the editor opens: every page (hidden ones too) as built
 

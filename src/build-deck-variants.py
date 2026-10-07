@@ -110,7 +110,7 @@ MORE = [("Сертифікат", "На будь-яку суму від 1 000 д�
         ("Хустка й кільце", "Хустка 65 × 65 і кільце для хустки.", 3650, True, "duo-iskra-ring"),   # the medium scarf (3 200) with the ring (450), a SOLO print
         ("Три твіллі", "Три принти на вибір в одній коробці.", 4800, True, "three-twilly-2")]
 def row_m(n, d, p, frm, c):
-    th = pic(c, 24, 24, "50% 45%", "th", once=False) if "/" in c else cut(c, 24, "th")
+    th = pic(c, 22, 22, "50% 45%", "th", once=False) if "/" in c else cut(c, 22, "th")
     return f'<div class="rw rw2">{th}<h3 class="h13">{n}</h3><p class="pr h28">{"<small>від</small> " if frm else ""}{money(p)} <small>грн</small></p><span class="t8 d">{d}</span></div>'
 PAGES.append(f'''<section class="pg split l v3d"><!-- варіант D --><figure class="ph">{pic("photo/site/set-ta-rezynka-litnie-pole-04.jpg", 148.5, 210, "42% 50%", once=False)}</figure>
 <div class="panel"><h2 class="h28">Є й інші набори —<br><i>і ще десятки варіантів</i></h2>
@@ -504,11 +504,11 @@ CSS = deck.CSS + """
 .rows { margin-top: -1.5mm; } .rw { display: grid; grid-template-columns: 21mm 1fr auto; column-gap: 4.5mm; align-items: baseline; padding: 1.5mm 0; border-top: .35pt solid #C9C6C0; } .rw:last-child { border-bottom: .35pt solid #C9C6C0; }
 .rw .th { grid-row: 1 / 4; align-self: center; width: 21mm; height: 21mm; object-fit: contain; filter: drop-shadow(0 1mm 1.5mm rgba(0,0,0,.14)); } .rw .cap { grid-column: 2 / 4; letter-spacing: .13em; }
 .rw .b3 { grid-column: 2 / 4; margin-top: 0; padding-top: .75mm; } .rw .pr { line-height: 26pt; } .v3d .panel h2 { margin-bottom: 4.5mm; }
-.pg.split.l.v3d .ph { width: 128mm; } .pg.split.l.v3d .panel { left: 142.5mm; width: 138mm; } .pg.split.l.v3d .folio { left: 142.5mm; }   /* 07.10: the photo narrower, the list wider — names and prices on one line */
+.pg.split.l.v3d .ph { width: 140mm; } .pg.split.l.v3d .panel { left: 152mm; width: 128.5mm; } .pg.split.l.v3d .folio { left: 152mm; }   /* 07.10: the photo narrower, the list wider — names and prices on one line */
 .v3d .phc { margin-top: auto; } .v3d .rows:has(.rw2) { flex: 1; display: flex; flex-direction: column; justify-content: space-evenly; margin: 2mm 0 6mm; }
-.rw2 { grid-template-columns: 24mm 1fr auto; grid-template-rows: auto auto; align-content: center; column-gap: 4.5mm; padding: 3.5mm 0; align-items: start; border-top: .35pt solid #C9C6C0; } .rw2:last-child { border-bottom: .35pt solid #C9C6C0; }
-.rw2 .th { grid-row: 1 / 3; width: 24mm; height: 24mm; align-self: center; } .rw2 h3 { font-size: 14pt; line-height: 17pt; align-self: baseline; white-space: nowrap; } .rw2 .d { grid-column: 2 / 4; color: #6E6A63; font-size: 9.5pt; line-height: 4.5mm; margin-top: .5mm; }
-.rw2 .pr { font-size: 22pt; line-height: 17pt; align-self: baseline; white-space: nowrap; }
+.rw2 { grid-template-columns: 22mm 1fr auto; grid-template-rows: auto auto; align-content: center; column-gap: 4.5mm; padding: 3.5mm 0; align-items: start; border-top: .35pt solid #C9C6C0; } .rw2:last-child { border-bottom: .35pt solid #C9C6C0; }
+.rw2 .th { grid-row: 1 / 3; width: 22mm; height: 22mm; align-self: center; } .rw2 h3 { font-size: 13.5pt; line-height: 17pt; align-self: baseline; white-space: nowrap; } .rw2 .d { grid-column: 2 / 4; color: #6E6A63; font-size: 9.5pt; line-height: 4.5mm; margin-top: .5mm; }
+.rw2 .pr { font-size: 20pt; line-height: 17pt; align-self: baseline; white-space: nowrap; }
 /* I, J, K — the luxury-catalogue art director's concepts */
 .x1 .bg, .x2 .bg, .x3 .bg { position: absolute; left: 0; top: 0; width: 297mm; height: 210mm; } .vt { color: inherit; }
 .x1 .lab { position: absolute; display: flex; align-items: baseline; gap: 2.25mm; white-space: nowrap; z-index: 2; } .x1 .lab b { font: italic 400 13pt/16.5pt Playfair, serif; color: #141414; }

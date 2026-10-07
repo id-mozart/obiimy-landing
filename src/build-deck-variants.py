@@ -397,8 +397,8 @@ MOSAICS = {   # 07.10: three more sets of frames for the same band cover
              ("photo/paris-green.jpg", "50% 20%"), ("photo/solo/zolote-tw-2.webp", "50% 40%"), ("photo/riviera-red.jpg", "50% 25%"), ("photo/solo/krok-tw-4.webp", "50% 20%")],   # Paris and the Riviera
     "cvz8": [("photo/vyr-3.webp", "50% 10%"), ("photo/site/khustka-balans-44x44-04.jpg", "50% 0%"), ("photo/site/bookmark-melodiia-dvokh-02.jpg", "50% 50%"), ("photo/probudzhennia-1.webp", "50% 15%"),
              ("photo/site/khustka-vidnovlennia-88x88-02.jpg", "50% 15%"), ("photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg", "50% 40%"), ("photo/site/khustka-yednannia-44x44-03.jpg", "50% 15%"), ("photo/site/tvilli-ta-rezynka-makovyi-tsvit-02.jpg", "50% 30%")],   # the site's editorials, different women
-    "cvz9": [("photo/solo/iskra-65-4.webp", "50% 15%"), ("photo/solo/flirt-tw-1.webp", "50% 20%"), ("photo/solo/flirt-scr-2.webp", "40% 30%"), ("photo/solo/zolote-44-2.webp", "50% 15%"),
-             ("photo/site/mask-nizhnist-03.jpg", "50% 20%"), ("photo/solo/tysha-88-4.webp", "50% 10%"), ("photo/solo/krok-44-2.webp", "50% 20%"), ("photo/solo/flirt-65-4.webp", "50% 15%")],   # SOLO only — the client's choice (07.10)
+    "cvz9": [("photo/solo/iskra-65-4.webp", "50% 15%"), ("photo/solo/flirt-tw-1.webp", "50% 20%"), ("photo/site/mask-shchyri-pochuttia-04.jpg", "0% 50%"), ("photo/solo/zolote-44-2.webp", "50% 15%"),
+             ("photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg", "50% 50%"), ("photo/solo/tysha-88-4.webp", "50% 10%"), ("photo/solo/krok-44-2.webp", "50% 20%"), ("photo/solo/flirt-65-4.webp", "50% 15%")],   # SOLO only — the client's choice (07.10)
 }
 LINE_Z = '<p class="cap cvz-l">Подарунки для команди · 2026</p>'
 COVERS += [   # 07.10: five covers of a different kind each, all printed — the client picks one
@@ -429,7 +429,7 @@ CSS = deck.CSS + """
 .pg.cvz3 { background: #0E0E0E; } .cvz3 .cvz-t { bottom: auto; top: 58mm; } .cvz3 h1 { margin-bottom: 8mm; }
 .cvz4 .cvz-obj { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -52%); margin: 0; } .cvz4 .cvz-obj img { display: block; filter: drop-shadow(0 4mm 6mm rgba(0,0,0,.22)); }
 .cvz5 .cvz-m { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: 1fr 1fr; } .cvz5 .cvz-m img { width: 100%; height: 105mm; object-fit: cover; display: block; }
-.cvz5 .cvz-band { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 42mm; background: #FDD31A; display: flex; align-items: center; justify-content: space-between; padding: 0 16.5mm; z-index: 2; } .cvz5 .cvz-band img { width: 72mm; display: block; } .cvz5 .cvz-band .cap { color: #141414; }
+.cvz5 .cvz-band { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); height: 42mm; background: #FDD31A; display: flex; align-items: center; justify-content: space-between; padding: 0 16.5mm; z-index: 2; } .cvz5 .cvz-band img { width: 54mm; display: block; } .cvz5 .cvz-band .cap { color: #141414; }
 .pg.cvw { background: #FDD31A; color: #141414; } .cvw .four { position: absolute; left: 0; right: 0; top: 0; height: 122mm; display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; } .cvw .four img { width: 100%; height: 122mm; object-fit: cover; }
 .cvw-t { position: absolute; left: 16.5mm; right: 16.5mm; top: 139mm; z-index: 2; } .cvw-t h1 { white-space: nowrap; margin-bottom: 7.5mm; font-size: 58pt; line-height: 58pt; } .cvw-t h1 i { font-style: italic; color: #141414; } .cvw-logo { display: inline-block; height: 15.6mm; width: auto; vertical-align: baseline; margin-left: 0; position: relative; top: .6mm; }
 .cvw-d { color: #141414; } .cvw-r { position: absolute; right: 0; top: 0; width: 106.5mm; text-align: right; } .cvw-r .cap { margin-bottom: 3mm; } .cvw-r .h13 { margin-bottom: 1.5mm; } .cvw-r .t8 { color: #141414; margin-top: 8mm; } .cvw-r .cap { padding-top: 1.6mm; }

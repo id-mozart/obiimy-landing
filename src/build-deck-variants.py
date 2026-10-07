@@ -105,12 +105,13 @@ PAGES.append(f'''<section class="pg paper v3c">{rh("варіант C — пол�
 
 # D · one photograph for half the page and four more sets — 07.10: the client wants this page to show that there are many other
 # sets beyond the three on page 6 (no overlap with them), without the people counts; prices and the count of sets from SITE-FACTS
-MORE = [("Набір резинок", "П’ять шовкових резинок у коробці.", 1250, True, "set-scrunchies-5"),   # 07.10: from the cheapest up; the pair of masks replaced by the scrunchie set
+MORE = [("Подарунковий сертифікат", "1 000–4 000 грн, діє три місяці — людина обирає сама.", 1000, True, "img/sets/cert-2000.webp"),   # 07.10: from the cheapest up; the certificate first (a photo, not a cut-out)
         ("Хустка й кільце", "Хустка 44 × 44 і кільце для хустки.", 2050, True, "duo-hratsiia-ring"),
         ("Маска, закладка й резинка", "Один принт із колекції «Співоча душа».", 3600, False, "sleep-pidnesennia"),
         ("Три твіллі", "Три принти на вибір в одній коробці.", 4800, False, "three-twilly")]
 def row_m(n, d, p, frm, c):
-    return f'<div class="rw rw2">{cut(c, 24, "th")}<h3 class="h13">{n}</h3><p class="pr h28">{"<small>від</small> " if frm else ""}{money(p)} <small>грн</small></p><span class="t8 d">{d}</span></div>'
+    th = pic(c, 24, 24, "50% 45%", "th", once=False) if "/" in c else cut(c, 24, "th")
+    return f'<div class="rw rw2">{th}<h3 class="h13">{n}</h3><p class="pr h28">{"<small>від</small> " if frm else ""}{money(p)} <small>грн</small></p><span class="t8 d">{d}</span></div>'
 PAGES.append(f'''<section class="pg split l v3d"><!-- варіант D --><figure class="ph">{pic("photo/site/set-ta-rezynka-litnie-pole-04.jpg", 148.5, 210, "42% 50%", once=False)}</figure>
 <div class="panel"><h2 class="h28">Є й інші набори —<br><i>і ще десятки варіантів</i></h2>
 <div class="rows">{"".join(row_m(*M) for M in MORE)}</div>

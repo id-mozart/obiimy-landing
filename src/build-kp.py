@@ -40,6 +40,18 @@ LIFE_POS = {"scr": "0% 50%", "book": "55% 30%", "tw": "50% 30%", "h44": "50% 20%
 MOSAIC = [photo(f) for f in ("photo/solo/iskra-65-4.webp", "photo/solo/flirt-tw-1.webp", "photo/site/mask-shchyri-pochuttia-04.jpg", "photo/solo/zolote-44-2.webp", "photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg",
                                "photo/solo/tysha-88-4.webp", "photo/solo/krok-44-2.webp", "photo/solo/flirt-65-4.webp")]   # the deck's cover (07.10)
 MOSAIC_POS = ["50% 15%", "50% 20%", "0% 50%", "50% 15%", "50% 50%", "50% 10%", "50% 20%", "50% 15%"]
+import os as _os
+def _lib():
+    out = []
+    for d, title in (("photo/solo", "SOLO"), ("photo/site", "Сайт"), ("photo", "Редакційні")):
+        folder = OUT / d
+        for f in sorted(folder.iterdir()):
+            if not f.is_file() or f.suffix.lower() not in (".jpg", ".webp") or f.name.startswith(".") or any(f.stem.endswith(x) for x in ("-480", "-800", "-1200", "-wide")): continue
+            if d == "photo" and not f.name.startswith(("paris", "riviera", "turban", "dotyk", "enerhiia", "hratsiia", "kolo", "makiv", "mizh", "probudzhennia", "vyr")): continue
+            if "flat" in f.name or f.name.endswith("-1.webp") and d == "photo/solo": continue
+            out.append(dict(f=photo(str(f.relative_to(OUT))), t=photo(str(f.relative_to(OUT))), g=title, n=f.name))
+    return out
+LIBRARY = _lib()
 FONTS = "".join(f'@font-face {{ font-family: {fam}; font-style: {st}; font-weight: 400; src: url(brand/fonts/{f}) format("woff2"); {ur} }}'
                 for fam, st, f, ur in (("Playfair", "normal", "playfair-cyrillic-400-normal.woff2", "unicode-range: U+0400-04FF;"), ("Playfair", "normal", "playfair-latin-400-normal.woff2", ""),
                                        ("Playfair", "italic", "playfair-cyrillic-400-italic.woff2", "unicode-range: U+0400-04FF;"), ("Playfair", "italic", "playfair-latin-400-italic.woff2", ""),
@@ -53,7 +65,7 @@ EXTRAS = [  # personalisation levels: id, name, default note; price is typed by 
     ("deliv", "Доставка", ""),
 ]
 DEFAULT = dict(client="", contact="", manager="", date="", valid="", title="Пропозиція корпоративного замовлення", sub="",
-               rows=[dict(k="tw", d="asst", q=100, disc=0, price=None)], ex={}, terms="", pay="", note="")
+               rows=[dict(k="tw", d="asst", q=100, disc=0, price=None)], ex={}, terms="", pay="", note="", html={})   # html: {page key: edited innerHTML}
 
 HTML = f'''<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -89,10 +101,10 @@ HTML = f'''<meta charset="utf-8">
   .ok {{ color: #2b7a3d; font-size: .82rem; }}
   /* document — the deck's pages: paper #F1EFEA, Playfair, gold italic captions on the tiles */
   .doc {{ padding: 28px; display: grid; gap: 22px; justify-items: center; }}
-  .pg {{ width: 210mm; min-height: 297mm; background: var(--paper); box-shadow: 0 4px 30px rgba(0,0,0,.1); padding: 16.5mm 16.5mm 14mm; position: relative; display: flex; flex-direction: column; break-after: page; page-break-after: always; }}
+  .pg {{ width: 210mm; height: 297mm; min-height: 297mm; overflow: hidden; background: var(--paper); box-shadow: 0 4px 30px rgba(0,0,0,.1); padding: 16.5mm 16.5mm 14mm; position: relative; display: flex; flex-direction: column; break-after: page; page-break-after: always; }}
   .pg .logo {{ width: 38mm; height: 8.1mm; flex: none; align-self: flex-start; object-fit: contain; object-position: left center; }}
   .pg .foot {{ margin-top: auto; color: var(--ink3); font-size: 7.5pt; letter-spacing: .2em; text-transform: uppercase; display: flex; justify-content: space-between; gap: 10mm; padding-top: 4mm; }}
-  .cover {{ padding: 0; display: grid; grid-template-rows: 1fr auto 1fr; }}
+  .cover {{ padding: 0; display: grid; grid-template-rows: 1fr auto 1fr; }} .cover .mos {{ min-height: 0; }} .cover .mos img {{ height: 100%; }}
   .cover .mos {{ display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); }} .cover .mos img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
   .cover .band {{ background: var(--yellow); padding: 10mm 16.5mm; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8mm; }}
   .cover .band img {{ width: 46mm; height: auto; display: block; margin-bottom: 4mm; }}
@@ -126,9 +138,23 @@ HTML = f'''<meta charset="utf-8">
   .why3 b {{ display: block; font-family: Playfair, serif; font-weight: 400; font-size: 13pt; color: var(--ink); margin-bottom: 1.5mm; }}
   .fine {{ color: var(--ink3); font-size: 8.5pt; margin-top: 5mm; }}
   .hide {{ display: none; }}
+  /* in-place editing: every page is contenteditable, pictures are replaced by a click */
+  .pg [contenteditable]:focus {{ outline: none; }} .pg.edit {{ outline: 2px dashed rgba(36,89,201,.45); outline-offset: -2px; }}
+  .doc img {{ cursor: pointer; }} .doc img:hover {{ outline: 2px solid #2459c9; outline-offset: -2px; }}
+  .pgtools {{ position: absolute; right: 8mm; top: 6mm; display: flex; gap: 6px; opacity: 0; transition: opacity .15s; z-index: 5; }} .pg:hover .pgtools {{ opacity: 1; }}
+  .pgtools button {{ font: inherit; font-size: 11px; border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 4px 10px; cursor: pointer; }}
+  .pgtools .on {{ background: #FFF5C2; border-color: #e3c84a; }}
+  #pick {{ position: fixed; inset: 0; z-index: 50; background: rgba(20,20,20,.5); display: grid; place-items: center; }} #pick[hidden] {{ display: none; }}
+  #pick .box {{ width: min(960px, calc(100vw - 40px)); max-height: calc(100vh - 60px); background: #fff; display: flex; flex-direction: column; }}
+  #pick .head {{ display: flex; gap: 10px; align-items: center; padding: 12px 16px; border-bottom: 1px solid var(--line); }} #pick .head h3 {{ font-size: 1.1rem; margin-right: auto; }}
+  #pick .grid {{ overflow: auto; padding: 12px 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }}
+  #pick .grid img {{ width: 100%; aspect-ratio: 1; object-fit: cover; cursor: pointer; display: block; }} #pick .grid img:hover {{ outline: 3px solid #2459c9; }}
+  #pick .grid figure {{ margin: 0; }} #pick .grid figcaption {{ font-size: 10px; color: var(--ink3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }}
+  @media print {{ .pgtools, #pick {{ display: none !important; }} .doc img {{ outline: none !important; }} }}
   @media (max-width: 1100px) {{ .app {{ grid-template-columns: 1fr; }} .panel {{ position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--line); }} .doc {{ padding: 12px; overflow: auto; }} }}
   @media print {{
     @page {{ size: A4 portrait; margin: 0; }}
+    .pg.edit {{ outline: none; }}
     html, body {{ background: #fff; }} .panel {{ display: none; }} .app {{ display: block; }} .doc {{ padding: 0; gap: 0; display: block; }}
     .pg {{ box-shadow: none; width: 210mm; height: 297mm; min-height: 0; overflow: hidden; }}
     .pg, .cover .band, .photos figure::after, th, tr.tot td {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
@@ -137,7 +163,7 @@ HTML = f'''<meta charset="utf-8">
 <div class="app">
 <aside class="panel">
   <h1>Комерційна пропозиція</h1>
-  <p class="hint">Службова сторінка для менеджерів. Заповніть поля — документ праворуч оновлюється одразу. «Друк / PDF» збереже A4; «Посилання» скопіює адресу з усіма даними, щоб переслати колезі.</p>
+  <p class="hint">Службова сторінка для менеджерів. Заповніть поля — документ праворуч оновлюється одразу. Будь-який текст у документі можна правити просто на сторінці, картинку — замінити клацанням (своя або з бібліотеки); правки зберігаються з документом. «Друк / PDF» збереже A4; «Посилання» скопіює адресу з усіма даними, щоб переслати колезі.</p>
   <div class="f"><label>Компанія-клієнт</label><input id="client" placeholder="DIAME"></div>
   <div class="two"><div class="f"><label>Контактна особа</label><input id="contact" placeholder="Ім’я, посада"></div><div class="f"><label>Менеджер Obiimy</label><input id="manager" placeholder="Ім’я, телефон"></div></div>
   <div class="two"><div class="f"><label>Дата</label><input id="date" type="date"></div><div class="f"><label>Дійсна до</label><input id="valid" type="date"></div></div>
@@ -159,11 +185,13 @@ HTML = f'''<meta charset="utf-8">
   <div class="acts"><button type="button" class="btn gold" id="print">Друк / PDF</button><button type="button" class="btn line" id="share">Посилання</button><button type="button" class="btn line" id="reset">Очистити</button><span class="ok" id="ok"></span></div>
 </aside>
 <main class="doc" id="doc"></main>
+<div id="pick" hidden><div class="box"><div class="head"><h3>Замінити картинку</h3><input id="pickfile" type="file" accept="image/*" hidden><button type="button" class="btn line sm" onclick="document.getElementById('pickfile').click()">Завантажити свою…</button><button type="button" class="btn line sm" data-pickclose>Закрити</button></div><div class="grid"></div></div></div>
 </div>
 <script>
 var ITEMS = {json.dumps(ITEMS, ensure_ascii=False)};
 var EXTRAS = {json.dumps(EXTRAS, ensure_ascii=False)};
 var MOSAIC = {json.dumps(MOSAIC)}, MOSAIC_POS = {json.dumps(MOSAIC_POS)}, LIFE = {json.dumps(LIFE)}, LIFE_POS = {json.dumps(LIFE_POS)};
+var LIBRARY = {json.dumps(LIBRARY, ensure_ascii=False)};
 var DEF = {json.dumps(DEFAULT, ensure_ascii=False)};
 var BY = {{}}; ITEMS.forEach(function (i) {{ BY[i.k] = i; }});
 var PHONE = {json.dumps(b2b.PHONE)}, MAIL = {json.dumps(b2b.MAIL)}, SHOWROOM = {json.dumps(b2b.SHOWROOM)};
@@ -210,13 +238,13 @@ function renderDoc() {{
   var foot = '<div class="foot"><span>Obiimy · шоурум: ' + esc(SHOWROOM) + '</span><span>' + esc(PHONE) + ' · ' + esc(MAIL) + ' · obiimy.world</span></div>';
   var pages = [];
   var mos = function (from) {{ var o = ''; for (var i = from; i < from + 4; i++) o += '<img src="' + MOSAIC[i] + '" style="object-position:' + MOSAIC_POS[i] + '" alt="">'; return '<div class="mos">' + o + '</div>'; }};
-  pages.push('<section class="pg cover">' + mos(0) + '<div class="band"><div><img src="brand/logo-ink.png" alt="Obiimy"><h1>' + esc(S.title) + (S.client ? '<br><i>для ' + esc(S.client) + '</i>' : '') + '</h1>'
+  pages.push('<section class="pg cover" data-key="cover">' + mos(0) + '<div class="band"><div><img src="brand/logo-ink.png" alt="Obiimy"><h1>' + esc(S.title) + (S.client ? '<br><i>для ' + esc(S.client) + '</i>' : '') + '</h1>'
     + '<p class="for">Преміальні шовкові вироби' + (S.sub ? ' · ' + esc(S.sub) : '') + '</p></div>'
     + '<div class="meta">' + (S.date ? 'Дата: ' + fmtDate(S.date) + '<br>' : '') + (S.valid ? 'Дійсна до ' + fmtDate(S.valid) + '<br>' : '') + (S.contact ? 'Для: ' + esc(S.contact) : '') + '</div></div>' + mos(4) + '</section>');
   // photos of the chosen items (unique)
   var seen = {{}}, figs = [];
   S.rows.forEach(function (r) {{ var it = BY[r.k] || BY.custom, ph = LIFE[r.k] || it.ph, life = !!LIFE[r.k]; if (seen[ph]) return; seen[ph] = 1; figs.push('<figure class="' + (life ? '' : 'flat') + '"><img src="' + ph + '" style="object-position:' + (LIFE_POS[r.k] || '50% 50%') + '" alt=""><figcaption>' + esc(rowName(r)) + (BY[r.k] && BY[r.k].p ? '<span>від ' + money(BY[r.k].p) + '</span>' : '') + '</figcaption></figure>'); }});
-  if (figs.length) pages.push('<section class="pg">' + logo + '<p class="eb" style="margin-top:10mm">Що пропонуємо</p><h2 class="t">' + esc(S.sub || 'Речі з каталогу Obiimy') + '</h2><div class="photos">' + figs.slice(0, 4).join('') + '</div><p class="fine">Фото — приклад принта; принти обираються з добірки. 100% натуральний шовк, авторські принти, виготовлено в Україні. Пакування й наліпка з вашим логотипом — у ціні.</p>' + foot + '</section>');
+  if (figs.length) pages.push('<section class="pg" data-key="photos">' + logo + '<p class="eb" style="margin-top:10mm">Що пропонуємо</p><h2 class="t">' + esc(S.sub || 'Речі з каталогу Obiimy') + '</h2><div class="photos">' + figs.slice(0, 4).join('') + '</div><p class="fine">Фото — приклад принта; принти обираються з добірки. 100% натуральний шовк, авторські принти, виготовлено в Україні. Пакування й наліпка з вашим логотипом — у ціні.</p>' + foot + '</section>');
   // table
   var tr = '', total = 0, totalFull = 0, qty = 0, hasDisc = false;
   S.rows.forEach(function (r) {{ var q = Number(r.q) || 0, p = rowPrice(r), d = Number(r.disc) || 0, pd = p * (1 - d / 100); if (d) hasDisc = true; total += pd * q; totalFull += p * q; qty += q;
@@ -231,15 +259,52 @@ function renderDoc() {{
   if (S.terms) kv += '<div><span>Строки</span><span>' + nl(S.terms) + '</span></div>';
   if (S.pay) kv += '<div><span>Оплата</span><span>' + nl(S.pay) + '</span></div>';
   if (S.note) kv += '<div><span>Примітка</span><span>' + nl(S.note) + '</span></div>';
-  pages.push('<section class="pg">' + logo + '<p class="eb" style="margin-top:10mm">Розрахунок</p><h2 class="t">' + esc(S.title) + '</h2><table><thead><tr><th>Виріб</th><th class="num">К-сть</th><th class="num">Ціна, грн</th><th class="num">Знижка</th><th class="num">Ціна зі знижкою</th><th class="num">Сума, грн</th></tr></thead><tbody>' + tr + exr + sum + '</tbody></table>'
+  pages.push('<section class="pg" data-key="table">' + logo + '<p class="eb" style="margin-top:10mm">Розрахунок</p><h2 class="t">' + esc(S.title) + '</h2><table><thead><tr><th>Виріб</th><th class="num">К-сть</th><th class="num">Ціна, грн</th><th class="num">Знижка</th><th class="num">Ціна зі знижкою</th><th class="num">Сума, грн</th></tr></thead><tbody>' + tr + exr + sum + '</tbody></table>'
     + '<div class="kv">' + kv + '</div><p class="fine">Ціни в колонці «Ціна» — роздрібні, obiimy.world. Пропозиція не є публічною офертою.</p>' + foot + '</section>');
   // packaging, personalisation, why
-  pages.push('<section class="pg">' + logo + '<p class="eb" style="margin-top:10mm">Пакування й персоналізація</p><h2 class="t">Що входить у корпоративне замовлення</h2>'
+  pages.push('<section class="pg" data-key="terms">' + logo + '<p class="eb" style="margin-top:10mm">Пакування й персоналізація</p><h2 class="t">Що входить у корпоративне замовлення</h2>'
     + '<div class="kv"><div><span>Подарункове пакування</span><span>Кожна річ — у подарунковому пакуванні Obiimy. Безкоштовно.</span></div><div><span>Наліпка з логотипом</span><span>Наліпка з логотипом вашої компанії всередині коробки. Безкоштовно.</span></div><div><span>Бирка з логотипом</span><span>Нашивна бирка з логотипом компанії на самій хустці чи твіллі — строки й вартість у розрахунку.</span></div><div><span>Друковані матеріали</span><span>Листівка з привітанням — з вашим логотипом і вашим текстом.</span></div><div><span>Індивідуальний принт</span><span>Принт, створений для вашої компанії: кольори бренду, символи, історія. Тираж і строки — у розрахунку.</span></div></div>'
     + '<div class="why3"><div><b>Унікальні принти</b>Авторські малюнки засновниці Світлани Сніжко та сучасних українських художниць.</div><div><b>Якість, яку відчувають</b>Лише 100% натуральний італійський шовк; кутики кожної хустки обробляють вручну. Повністю українське виробництво.</div><div><b>Бренд, який упізнають</b>INTERTOP і Hram в Україні, Be Brave у Канаді, UFD London; LIGA.net та INSIDER UA.</div></div>'
     + '<p class="contact"><b>Контакти</b><br>' + (S.manager ? esc(S.manager) + '<br>' : '') + esc(PHONE) + ' · Telegram @OBIIMY_sales<br>' + esc(MAIL) + ' · obiimy.world<br>Шоурум: ' + esc(SHOWROOM) + '</p>' + foot + '</section>');
   document.getElementById('doc').innerHTML = pages.join('');
+  document.querySelectorAll('#doc .pg').forEach(function (pg) {{
+    var key = pg.dataset.key, edited = S.html && S.html[key];
+    if (edited) {{ pg.innerHTML = edited; pg.classList.add('edit'); }}
+    pg.setAttribute('contenteditable', 'true'); pg.setAttribute('spellcheck', 'false');
+    var tools = document.createElement('div'); tools.className = 'pgtools'; tools.setAttribute('contenteditable', 'false');
+    tools.innerHTML = (edited ? '<button type="button" class="on" data-pgreset="' + key + '" title="Повернути сторінку до вигляду з форми">Правлено вручну · скинути</button>' : '<span class="hint" style="font-size:11px;color:#999">текст — правити тут, картинка — клацнути</span>');
+    pg.appendChild(tools);
+  }});
 }}
+// ---------- in-place editing: text and pictures ----------
+var editTimer = null;
+function pageSnapshot(pg) {{ var c = pg.cloneNode(true); c.querySelectorAll('.pgtools').forEach(function (t) {{ t.remove(); }}); return c.innerHTML; }}
+document.getElementById('doc').addEventListener('input', function (e) {{
+  var pg = e.target.closest('.pg'); if (!pg || e.target.closest('.pgtools')) return;
+  clearTimeout(editTimer); editTimer = setTimeout(function () {{ S.html = S.html || {{}}; S.html[pg.dataset.key] = pageSnapshot(pg); pg.classList.add('edit'); save();
+    var t = pg.querySelector('.pgtools'); if (t && !t.querySelector('[data-pgreset]')) t.innerHTML = '<button type="button" class="on" data-pgreset="' + pg.dataset.key + '" title="Повернути сторінку до вигляду з форми">Правлено вручну · скинути</button>'; }}, 400);
+}});
+document.getElementById('doc').addEventListener('paste', function (e) {{ if (!e.target.closest('.pg')) return; e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain')); }});
+document.getElementById('doc').addEventListener('click', function (e) {{
+  var b = e.target.closest('[data-pgreset]');
+  if (b) {{ if (!confirm('Скинути ручні правки цієї сторінки?')) return; delete S.html[b.dataset.pgreset]; save(); renderDoc(); return; }}
+  var im = e.target.closest('img'); if (im && !e.target.closest('.pgtools')) {{ e.preventDefault(); pickOpen(im); }}
+}});
+var PICK = null;
+function pickOpen(img) {{
+  PICK = img; var box = document.getElementById('pick'); box.hidden = false;
+  var grid = box.querySelector('.grid'); grid.innerHTML = LIBRARY.map(function (f, i) {{ return '<figure><img src="' + f.t + '" data-i="' + i + '" alt="" loading="lazy"><figcaption>' + esc(f.g + ' · ' + f.n) + '</figcaption></figure>'; }}).join('');
+}}
+function pickSet(src) {{ if (!PICK) return; PICK.src = src; PICK.removeAttribute('srcset'); var pg = PICK.closest('.pg'); document.getElementById('pick').hidden = true; S.html = S.html || {{}}; S.html[pg.dataset.key] = pageSnapshot(pg); save(); renderDoc(); PICK = null; }}
+document.getElementById('pick').addEventListener('click', function (e) {{
+  if (e.target.id === 'pick' || e.target.closest('[data-pickclose]')) {{ document.getElementById('pick').hidden = true; PICK = null; return; }}
+  var im = e.target.closest('.grid img'); if (im) pickSet(LIBRARY[Number(im.dataset.i)].f);
+}});
+document.getElementById('pickfile').addEventListener('change', function (e) {{
+  var f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return;
+  if (f.size > 4 * 1048576) {{ alert('Файл більший за 4 МБ — зменшіть його перед завантаженням.'); return; }}
+  var r = new FileReader(); r.onload = function () {{ pickSet(r.result); }}; r.readAsDataURL(f);
+}});
 
 function onInput(e) {{
   var t = e.target, i = t.dataset.i, f = t.dataset.f;
@@ -254,7 +319,7 @@ document.addEventListener('click', function (e) {{ var b = e.target.closest('[da
 document.getElementById('addrow').addEventListener('click', function () {{ S.rows.push(JSON.parse(JSON.stringify(DEF.rows[0]))); save(); renderForm(); renderDoc(); }});
 document.getElementById('print').addEventListener('click', function () {{ var t = document.title; document.title = 'Obiimy — пропозиція' + (S.client ? ' для ' + S.client : ''); window.print(); document.title = t; }});
 document.getElementById('share').addEventListener('click', function () {{ var h = btoa(unescape(encodeURIComponent(JSON.stringify(S)))); location.hash = h; var ok = document.getElementById('ok'); (navigator.clipboard ? navigator.clipboard.writeText(location.href) : Promise.reject()).then(function () {{ ok.textContent = 'Посилання скопійовано'; }}, function () {{ ok.textContent = 'Скопіюйте адресу з рядка браузера'; }}); setTimeout(function () {{ ok.textContent = ''; }}, 4000); }});
-document.getElementById('reset').addEventListener('click', function () {{ if (!confirm('Очистити всі поля?')) return; S = JSON.parse(JSON.stringify(DEF)); location.hash = ''; save(); renderForm(); renderDoc(); }});
+document.getElementById('reset').addEventListener('click', function () {{ if (!confirm('Очистити всі поля й ручні правки сторінок?')) return; S = JSON.parse(JSON.stringify(DEF)); location.hash = ''; save(); renderForm(); renderDoc(); }});
 renderForm(); renderDoc();
 </script>
 '''

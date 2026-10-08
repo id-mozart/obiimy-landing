@@ -32,7 +32,7 @@ BUILD = {"lock": threading.Lock(), "running": False, "started": 0.0, "lines": []
 LIVE_PDF = os.environ.get("DECK_EDITOR_PUBLISH_URL") or "https://obiimy-landing-production.up.railway.app/" + PDF
 PUBLISH = {"running": False, "started": 0.0, "steps": [], "result": None}
 PID_OK = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,60}$")
-NAMES = {"who": "Кто мы", "p3-now": "Стр. 3 · таблица (сейчас)", "gift-twilly": "Подарок 01 · Твилли", "gift-ring": "Подарок 02 · Платок и кольцо",
+NAMES = {"cover-Z1": "Обложка · мозаика", "ways-acc": "Аксессуары", "sets": "Подарочные наборы", "p3-D": "Другие наборы", "men": "Для мужчин", "who": "Кто мы", "p3-now": "Стр. 3 · таблица (сейчас)", "gift-twilly": "Подарок 01 · Твилли", "gift-ring": "Подарок 02 · Платок и кольцо",
          "gift-mask": "Подарок 03 · Маска и резинка", "gift-set": "Подарок 04 · Платок и твилли", "logo": "Ваш логотип", "ways-twilly": "Как носить твилли",
          "ways-scarf": "Как носить платок", "range": "Ассортимент", "solo": "SOLO", "prints": "Семь принтов", "terms": "Условия", "contacts": "Контакты"}
 
@@ -447,6 +447,90 @@ def thumb(p):
     return out
 
 
+# ---------- versions: named snapshots of the edits file and the built PDF (local, review/ is not in git) ----------
+VERS = ROOT / "review" / "deck-versions"
+VID_OK = re.compile(r"^[0-9]{8}-[0-9]{6}-[a-z0-9-]{1,40}$")
+
+def version_dir(vid):
+    if not isinstance(vid, str) or not VID_OK.match(vid): raise Problem("Такой версии нет.", 404)
+    d = VERS / vid
+    if not d.is_dir(): raise Problem("Такой версии нет.", 404)
+    return d
+
+def version_slug(name):
+    t = "".join(TRANSLIT.get(c, c) for c in name.lower())
+    t = re.sub(r"[^a-z0-9]+", "-", t).strip("-")[:40]
+    return t or "versiia"
+
+def edits_digest(data=None):
+    if data is None: data = EDITS.read_bytes() if EDITS.exists() else b"{}"
+    try: obj = json.loads(data.decode("utf-8") if isinstance(data, bytes) else data)
+    except ValueError: obj = None
+    return hashlib.sha1(json.dumps(obj, ensure_ascii=False, sort_keys=True).encode("utf-8")).hexdigest() if obj is not None else hashlib.sha1(data).hexdigest()
+
+def version_meta(d):
+    m = read_json(d / "meta.json", {}) if (d / "meta.json").exists() else {}
+    pdf = d / "deck.pdf"
+    return dict(id=d.name, name=m.get("name") or d.name, note=m.get("note") or "", created=m.get("created") or int(d.stat().st_mtime), pages=m.get("pages"),
+                pdf=("/" + rel(pdf)) if pdf.exists() else None, pdf_mb=round(pdf.stat().st_size / 1048576, 1) if pdf.exists() else None,
+                thumb=("/" + rel(d / "thumb.jpg")) if (d / "thumb.jpg").exists() else None, digest=m.get("digest"))
+
+def api_versions():
+    cur = edits_digest(); out = []
+    if VERS.is_dir():
+        for d in sorted(VERS.iterdir(), reverse=True):
+            if d.is_dir() and VID_OK.match(d.name): v = version_meta(d); v["current"] = v["digest"] == cur; out.append(v)
+    return dict(ok=True, versions=out, current=cur)
+
+def version_thumb(src, dst):
+    try:
+        import fitz
+        doc = fitz.open(str(src)); pix = doc[0].get_pixmap(matrix=fitz.Matrix(0.35, 0.35)); pix.save(str(dst)); doc.close()
+    except Exception: pass
+
+def api_version_save(body):
+    name = str(body.get("name") or "").strip()[:80] or time.strftime("Версия %d.%m %H:%M")
+    note = str(body.get("note") or "").strip()[:500]
+    if BUILD["running"]: raise Problem("Идёт сборка — сохраните версию, когда она закончится.", 409)
+    vid = time.strftime("%Y%m%d-%H%M%S") + "-" + version_slug(name)
+    d = VERS / vid; d.mkdir(parents=True, exist_ok=True)
+    with FILES:
+        data = EDITS.read_bytes() if EDITS.exists() else b'{"pages": {}, "hidden": [], "order": []}\n'
+        write_atomic(d / "edits.json", data)
+    pdf = ROOT / PDF
+    if pdf.exists(): shutil.copy2(pdf, d / "deck.pdf"); version_thumb(pdf, d / "thumb.jpg")
+    pages = None
+    try: pages = len([p for p in load_pages().get("pages", []) if not p.get("hidden")])
+    except Problem: pass
+    write_atomic(d / "meta.json", json.dumps(dict(name=name, note=note, created=int(time.time()), pages=pages, digest=edits_digest(data), pdf_time=pdf_info().get("pdf_time")), ensure_ascii=False, indent=1))
+    return dict(ok=True, version=version_meta(d))
+
+def api_version_load(body):
+    d = version_dir(body.get("id"))
+    if not (d / "edits.json").exists(): raise Problem("В этой версии нет файла правок.", 500)
+    if not BUILD["lock"].acquire(blocking=False): raise Problem("Сборка или публикация уже идёт — дождитесь её окончания.", 409)
+    try:
+        with FILES: write_atomic(EDITS, (d / "edits.json").read_bytes())
+        deck = load_pages(); t0 = time.time()
+        try: code, lines = run_builder(builder_command(deck))
+        except OSError as e: code, lines = -1, [f"{type(e).__name__}: {e}"]
+        tail = "\n".join(lines[-40:]); took = round(time.time() - t0)
+        if code != 0: return dict(ok=False, saved=True, error=f"Правки версии восстановлены, но сборка PDF завершилась с ошибкой (код {code}).", log_tail=tail, seconds=took)
+        state, issues = layout_report(lines)
+        return dict(ok=True, saved=True, layout=state, issues=issues, log_tail=tail, seconds=took, **pdf_info())
+    finally: BUILD["lock"].release()
+
+def api_version_delete(body):
+    d = version_dir(body.get("id")); shutil.rmtree(d); return dict(ok=True)
+
+def api_version_rename(body):
+    d = version_dir(body.get("id")); m = read_json(d / "meta.json", {}) if (d / "meta.json").exists() else {}
+    name = str(body.get("name") or "").strip()[:80]; note = body.get("note")
+    if name: m["name"] = name
+    if isinstance(note, str): m["note"] = note.strip()[:500]
+    write_atomic(d / "meta.json", json.dumps(m, ensure_ascii=False, indent=1)); return dict(ok=True, version=version_meta(d))
+
+
 # ---------- http ----------
 
 class Handler(SimpleHTTPRequestHandler):
@@ -499,6 +583,7 @@ class Handler(SimpleHTTPRequestHandler):
         if u.path in ("/", "/index.html"): return self.send_bytes(UI.read_bytes(), "text/html; charset=utf-8")
         if u.path == "/api/pages": return self.api(api_pages)
         if u.path == "/api/library": return self.api(api_library)
+        if u.path == "/api/versions": return self.api(api_versions)
         if u.path == "/api/picinfo": return self.api(lambda: api_picinfo(q))
         if u.path == "/api/status":
             return self.send_json(dict(ok=True, running=BUILD["running"], seconds=round(time.time() - BUILD["started"]) if BUILD["running"] else 0,
@@ -524,7 +609,7 @@ class Handler(SimpleHTTPRequestHandler):
         if n < 0 or n > 80 * 1048576: return self.send_json(dict(ok=False, error="Файл слишком большой (больше 80 МБ)."), 413)
         data = self.rfile.read(n)
         if u.path == "/api/upload": return self.api(lambda: api_upload(q.get("name") or "foto", data))
-        routes = {"/api/save": api_save, "/api/crop": api_crop, "/api/publish": api_publish}
+        routes = {"/api/save": api_save, "/api/crop": api_crop, "/api/publish": api_publish, "/api/version/save": api_version_save, "/api/version/load": api_version_load, "/api/version/delete": api_version_delete, "/api/version/rename": api_version_rename}
         if u.path not in routes: return self.send_error(404, "Not found")
         if "application/json" not in (self.headers.get("Content-Type") or ""): return self.send_json(dict(ok=False, error="Ожидается JSON."), 415)
         try: body = json.loads(data.decode("utf-8")); assert isinstance(body, dict)

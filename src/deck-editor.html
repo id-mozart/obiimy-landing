@@ -138,6 +138,13 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 #ed-dlg pre { font: 11px/1.45 ui-monospace, Menlo, monospace; background: #f3f3f0; border-radius: 6px; padding: 8px 10px; max-height: 200px; overflow: auto; white-space: pre-wrap; margin: 6px 0 10px; }
 #ed-dlg summary { cursor: pointer; color: #70726c; margin-bottom: 4px; }
 #ed-dlg .ed-row { display: flex; gap: 8px; justify-content: flex-end; margin-top: 14px; }
+#ed-dlg .ed-vers { display: grid; gap: 8px; margin: 10px 0 4px; max-height: 46vh; overflow: auto; }
+#ed-dlg .ed-ver { display: grid; grid-template-columns: 56px 1fr auto; gap: 10px; align-items: center; padding: 8px; border: 1px solid #e3e1dc; border-radius: 8px; }
+#ed-dlg .ed-ver.ed-ver-cur { border-color: #2459c9; background: #f3f6fd; }
+#ed-dlg .ed-ver img { width: 56px; height: 40px; object-fit: cover; border-radius: 4px; background: #eee; } #ed-dlg .ed-ver .ed-ver-ph { width: 56px; height: 40px; border-radius: 4px; background: #eee; }
+#ed-dlg .ed-ver b { display: block; font-weight: 600; } #ed-dlg .ed-ver small { color: #777; display: block; } #ed-dlg .ed-ver .ed-ver-acts { display: flex; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+#ed-dlg .ed-ver .ed-ver-acts button { padding: 5px 10px; font-size: 12px; }
+#ed-dlg .ed-vform { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; margin-top: 10px; } #ed-dlg .ed-vform input { padding: 8px 10px; border: 1px solid #ccc; border-radius: 6px; font: inherit; }
 #ed-dlg .ed-good { color: #23602a; font-weight: 600; }
 #ed-dlg .ed-bad { color: #9a2b1c; font-weight: 600; }
 #ed-dlg .ed-steps { list-style: none; margin: 10px 0 4px; padding: 0; }
@@ -162,6 +169,7 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
   <span class="ed-grow"></span>
   <span id="ed-state" class="ed-muted"></span>
   <a id="ed-pdf" class="ed-link" target="_blank" hidden>Открыть PDF</a>
+  <button id="ed-versions" title="Сохранённые версии колоды: сохранить текущую, открыть или восстановить прежнюю">Версии</button>
   <button id="ed-save" class="ed-primary" title="Записать правки и пересобрать PDF (⌘S)">Сохранить и собрать PDF</button>
   <button id="ed-publish" title="Выложить собранный PDF на сайт: GitHub и Railway">Опубликовать</button>
 </header>
@@ -1057,6 +1065,52 @@ async function save(then) {
   return true;
 }
 
+// ---------- versions: named snapshots of the edits and the built PDF ----------
+const when = t => { const d = new Date(t * 1000); return d.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' }) + ', ' + d.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' }); };
+async function versionsOpen(msg) {
+  if (S.busy) return;
+  let list; try { list = await api('/api/versions'); } catch (e) { toast(e.message); return; }
+  const dirty = isDirty(), name = h('input', { type: 'text', placeholder: 'Название версии — например, «Для Миколая, вариант 2»', maxlength: '80' });
+  const rows = list.versions.map(v => h('div', { class: 'ed-ver' + (v.current ? ' ed-ver-cur' : '') },
+    v.thumb ? h('img', { src: v.thumb + '?t=' + v.created, alt: '' }) : h('span', { class: 'ed-ver-ph' }),
+    h('div', null, h('b', { text: v.name + (v.current ? ' · сейчас в редакторе' : '') }), h('small', { text: when(v.created) + (v.pages ? ' · ' + v.pages + ' ' + plural(v.pages, 'страница', 'страницы', 'страниц') : '') + (v.pdf_mb ? ' · ' + num(v.pdf_mb) + ' МБ' : '') + (v.note ? ' · ' + v.note : '') })),
+    h('div', { class: 'ed-ver-acts' },
+      v.pdf ? h('a', { class: 'ed-link', href: v.pdf + '?t=' + v.created, target: '_blank', text: 'PDF' }) : null,
+      h('button', { text: 'Переименовать', onclick: async () => { const n = prompt('Новое название версии', v.name); if (n == null) return; try { await post('/api/version/rename', { id: v.id, name: n }); versionsOpen(); } catch (e) { toast(e.message); } } }),
+      v.current ? null : h('button', { text: 'Восстановить', onclick: () => versionRestore(v) }),
+      h('button', { text: 'Удалить', onclick: async () => { if (!confirm('Удалить версию «' + v.name + '»? Файл правок и PDF этой версии будут стёрты.')) return; try { await post('/api/version/delete', { id: v.id }); versionsOpen('Версия удалена.'); } catch (e) { toast(e.message); } } }))));
+  dlg(h('h3', { text: 'Версии колоды' }),
+    h('p', { class: 'ed-muted', text: 'Версия — это снимок правок и собранного PDF. Сохраняйте перед экспериментом, чтобы вернуться; восстановление заменяет текущие правки и пересобирает PDF.' }),
+    msg ? h('p', { class: 'ed-good', text: msg }) : null,
+    rows.length ? h('div', { class: 'ed-vers' }, rows) : h('p', { class: 'ed-muted', text: 'Сохранённых версий пока нет.' }),
+    h('div', { class: 'ed-vform' }, name, h('button', { class: 'ed-primary', text: dirty ? 'Сохранить, собрать и записать версию' : 'Записать текущую как версию', onclick: async () => {
+      const nm = name.value.trim();
+      if (dirty) { const ok = await save(); if (!ok) return; }
+      try { const r = await post('/api/version/save', { name: nm }); versionsOpen('Версия «' + r.version.name + '» записана.'); } catch (e) { toast(e.message); }
+    } })),
+    dirty ? h('p', { class: 'ed-bad', text: 'Есть несохранённые правки: перед записью версии они будут сохранены и PDF пересобран.' }) : null,
+    h('div', { class: 'ed-row' }, h('button', { text: 'Закрыть', onclick: () => dlg(null) })));
+  name.focus();
+}
+async function versionRestore(v) {
+  if (isDirty() && !confirm('Несохранённые правки будут потеряны. Восстановить версию «' + v.name + '»?')) return;
+  if (!isDirty() && !confirm('Восстановить версию «' + v.name + '»? Текущие правки заменятся, PDF пересоберётся.')) return;
+  S.busy = true; $('#ed-save').disabled = $('#ed-publish').disabled = true; const t0 = Date.now();
+  const time = h('b', { text: '0:00' }), fill = h('i'), line = h('p', { class: 'ed-muted', text: 'Восстанавливаю правки…' });
+  dlg(h('h3', { text: 'Восстанавливаю версию «' + v.name + '»' }), h('p', null, 'Прошло ', time, '. Собираю PDF — около полутора минут.'), h('div', { id: 'ed-bar' }, fill), line);
+  const tick = setInterval(async () => { const s = Math.round((Date.now() - t0) / 1000); time.textContent = clock(s); fill.style.width = Math.min(96, s / 95 * 100) + '%';
+    if (s % 2 === 0) try { const st = await api('/api/status'); if (st.running && st.last) line.textContent = st.last; } catch (e) { /* keep waiting */ } }, 1000);
+  let res, err = null;
+  try { res = await post('/api/version/load', { id: v.id }); } catch (e) { err = e; res = e.data || {}; }
+  clearInterval(tick); S.busy = false; $('#ed-save').disabled = $('#ed-publish').disabled = false;
+  draftClear(); S.dirty.clear(); $('#ed-toast').hidden = true;
+  try { await load(); } catch (e) { toast(e.message); }
+  const log = res.log_tail ? h('details', null, h('summary', { text: 'Журнал сборки' }), h('pre', { text: res.log_tail })) : null;
+  if (err) { dlg(h('h3', { class: 'ed-bad', text: 'Версия не восстановлена' }), h('p', { text: err.message }), log, h('div', { class: 'ed-row' }, h('button', { class: 'ed-primary', text: 'Закрыть', onclick: () => dlg(null) }))); return; }
+  dlg(h('h3', { text: 'Версия «' + v.name + '» восстановлена' }), h('p', null, 'PDF собран за ' + clock(res.seconds || 0) + '. ', res.pdf ? h('a', { class: 'ed-link', href: res.pdf + '?t=' + Date.now(), target: '_blank', text: 'Открыть PDF' }) : null),
+    res.layout === 'issues' ? h('p', { class: 'ed-bad', text: 'Замечания к вёрстке: ' + res.issues.length }) : null, log, h('div', { class: 'ed-row' }, h('button', { class: 'ed-primary', text: 'Закрыть', onclick: () => dlg(null) })));
+}
+
 // ---------- publish: site, GitHub, Railway ----------
 function publishAsk() {
   if (S.busy) return;
@@ -1198,7 +1252,7 @@ function wire() {
   window.addEventListener('resize', layoutSoon);
   window.addEventListener('beforeunload', e => { draftSave(); if (isDirty()) { e.preventDefault(); e.returnValue = ''; } });
   $('#ed-zin').onclick = () => setZoom(S.zoom * 1.15); $('#ed-zout').onclick = () => setZoom(S.zoom / 1.15); $('#ed-zfit').onclick = () => { S.fit = true; layout(); };
-  $('#ed-undo').onclick = undo; $('#ed-redo').onclick = redo; $('#ed-save').onclick = () => save(); $('#ed-publish').onclick = publishAsk;
+  $('#ed-undo').onclick = undo; $('#ed-redo').onclick = redo; $('#ed-save').onclick = () => save(); $('#ed-publish').onclick = publishAsk; $('#ed-versions').onclick = () => versionsOpen();
   $('#ed-libx').onclick = libClose; $('#ed-upbtn').onclick = () => $('#ed-file').click();
   $('#ed-file').onchange = e => { upload(e.target.files); e.target.value = ''; };
   $('#ed-q').oninput = e => { S.lib.q = e.target.value; libDraw(); };

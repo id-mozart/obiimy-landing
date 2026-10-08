@@ -307,6 +307,7 @@ document.getElementById('pickfile').addEventListener('change', function (e) {{
 }});
 
 function onInput(e) {{
+  if (e.target.closest('#doc')) return;        // typing in the document itself is handled by the in-place editor below
   var t = e.target, i = t.dataset.i, f = t.dataset.f;
   if (t.dataset.ex) {{ S.ex[t.dataset.ex] = t.value; }}
   else if (i != null) {{ S.rows[i][f] = t.value; if (f === 'k') {{ S.rows[i].price = null; renderForm(); }} }}

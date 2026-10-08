@@ -324,7 +324,8 @@ def proof_section(alt=False):
     </div>
   </div></section>"""
 
-PDF_MB = round((pathlib.Path(__file__).resolve().parent.parent / "obiimy-podarunky-dlia-komandy.pdf").stat().st_size / 1048576)
+_PDF = pathlib.Path(__file__).resolve().parent.parent / "obiimy-podarunky-dlia-komandy.pdf"
+PDF_MB = round(_PDF.stat().st_size / 1048576) if _PDF.exists() else 8   # the deck is built after the landings in a fresh checkout (Dockerfile.editor)
 def request_section(pid, subject, title, lead, back, alt=True, corp=False):
     """corp=True — the corporate funnel (b2b-team-main and gift pages): budget and documents fields, the request goes via Telegram or e-mail."""
     fields = [

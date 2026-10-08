@@ -1,0 +1,11 @@
+*
+!src/
+!brand/
+!img/
+!photo/
+!review/pp/package.json
+!review/pp/package-lock.json
+!editor-start.sh
+src/__pycache__/
+photo/user/
+img/edit/

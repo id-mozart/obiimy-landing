@@ -16,6 +16,9 @@ from PIL import Image, ImageChops, ImageOps, ImageStat
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PORT = int(os.environ.get("DECK_EDITOR_PORT") or 8770)
+BIND = os.environ.get("DECK_EDITOR_BIND") or "127.0.0.1"                 # 0.0.0.0 on Railway, with a password
+PASSWORD = os.environ.get("DECK_EDITOR_PASSWORD") or ""                 # set → HTTP Basic auth on every request but /pub/*
+PUBLISHED = ROOT / "data" / "published"                                 # the PDF «Опубликовать» copies here on Railway (src/deck-publish-prod.py)
 EDITS = pathlib.Path(os.environ.get("DECK_EDITS") or ROOT / "src" / "deck-edits.json")
 PAGES = pathlib.Path(os.environ.get("DECK_EDITOR_PAGES") or ROOT / "review" / "deck-editor-pages.json")
 CSS = ROOT / "review" / "deck-editor.css"
@@ -544,13 +547,30 @@ class Handler(SimpleHTTPRequestHandler):
 
     def local(self, post=False):
         """Only this machine's browser, and only the editor's own page for anything that writes: another site open in the browser
-        must not be able to save edits or start a build through a request to 127.0.0.1."""
-        names = ("127.0.0.1", "localhost", "[::1]")
-        host = (self.headers.get("Host") or "").rsplit(":", 1)[0] if ":" in (self.headers.get("Host") or "") else (self.headers.get("Host") or "")
-        if host not in names: return False
+        must not be able to save edits or start a build through a request to 127.0.0.1. With a password (Railway) any host is
+        allowed, but a write must still come from the editor's own origin."""
+        hdr = self.headers.get("Host") or ""
+        host = hdr.rsplit(":", 1)[0] if ":" in hdr and not hdr.endswith("]") else hdr
         origin = self.headers.get("Origin")
+        if PASSWORD:
+            if post and origin and urllib.parse.urlsplit(origin).netloc != hdr: return False
+            return True
+        if host not in ("127.0.0.1", "localhost", "[::1]"): return False
         if post and origin and urllib.parse.urlsplit(origin).hostname not in ("127.0.0.1", "localhost", "::1"): return False
         return True
+
+    def authed(self):
+        """HTTP Basic auth when DECK_EDITOR_PASSWORD is set (any user name); /pub/* is public — the site fetches the published PDF."""
+        if not PASSWORD or urllib.parse.urlsplit(self.path).path.startswith("/pub/"): return True
+        a = self.headers.get("Authorization") or ""
+        if a.startswith("Basic "):
+            try:
+                import base64, hmac
+                user, _, pw = base64.b64decode(a[6:].strip()).decode("utf-8").partition(":")
+                if hmac.compare_digest(pw, PASSWORD): return True
+            except Exception: pass
+        self.send_response(401); self.send_header("WWW-Authenticate", 'Basic realm="Obiimy deck editor", charset="UTF-8"'); self.send_header("Content-Length", "0"); self.end_headers()
+        return False
 
     def send_bytes(self, data, ctype, status=200, cache="no-store"):
         self.send_response(status); self.send_header("Content-Type", ctype); self.send_header("Content-Length", str(len(data)))
@@ -578,8 +598,13 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_json(dict(ok=False, error=f"Внутренняя ошибка редактора: {type(e).__name__}: {e}"), 500)
 
     def do_GET(self):
+        if not self.authed(): return
         if not self.local(): return self.send_error(403, "Local use only")
         u = urllib.parse.urlsplit(self.path); q = {k: v[0] for k, v in urllib.parse.parse_qs(u.query).items()}
+        if u.path == "/pub/deck.pdf":
+            f = PUBLISHED / "deck.pdf"
+            if not f.is_file(): return self.send_error(404, "Not published yet")
+            return self.send_bytes(f.read_bytes(), "application/pdf", cache="no-cache")
         if u.path in ("/", "/index.html"): return self.send_bytes(UI.read_bytes(), "text/html; charset=utf-8")
         if u.path == "/api/pages": return self.api(api_pages)
         if u.path == "/api/library": return self.api(api_library)
@@ -598,10 +623,16 @@ class Handler(SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_HEAD(self):
+        if not self.authed(): return
         if not self.local(): return self.send_error(403, "Local use only")
+        if urllib.parse.urlsplit(self.path).path == "/pub/deck.pdf":
+            f = PUBLISHED / "deck.pdf"
+            if not f.is_file(): return self.send_error(404, "Not published yet")
+            self.send_response(200); self.send_header("Content-Type", "application/pdf"); self.send_header("Content-Length", str(f.stat().st_size)); self.send_header("Cache-Control", "no-cache"); self.end_headers(); return
         return super().do_HEAD()
 
     def do_POST(self):
+        if not self.authed(): return
         if not self.local(post=True): return self.send_error(403, "Local use only")
         u = urllib.parse.urlsplit(self.path); q = {k: v[0] for k, v in urllib.parse.parse_qs(u.query).items()}
         try: n = int(self.headers.get("Content-Length") or 0)
@@ -617,6 +648,7 @@ class Handler(SimpleHTTPRequestHandler):
         return self.api(lambda: routes[u.path](body))
 
     def do_DELETE(self):
+        if not self.authed(): return
         if not self.local(post=True): return self.send_error(403, "Local use only")
         u = urllib.parse.urlsplit(self.path)
         if u.path != "/api/crop": return self.send_error(404, "Not found")
@@ -631,9 +663,9 @@ class Server(ThreadingHTTPServer):
         if not isinstance(sys.exc_info()[1], ConnectionError): super().handle_error(request, client_address)      # a browser dropping a request is not news
 
 def main():
-    try: srv = Server(("127.0.0.1", PORT), lambda *a, **k: Handler(*a, directory=str(ROOT), **k))
+    try: srv = Server((BIND, PORT), lambda *a, **k: Handler(*a, directory=str(ROOT), **k))
     except OSError as e: sys.exit(f"Порт {PORT} занят — редактор, похоже, уже запущен: http://127.0.0.1:{PORT}/  ({e})")
-    print(f"Редактор колоды: http://127.0.0.1:{PORT}/   (правки → {EDITS}; остановить — Ctrl+C)", flush=True)
+    print(f"Редактор колоды: http://{BIND}:{PORT}/   (правки → {EDITS}; пароль: {'да' if PASSWORD else 'нет, только localhost'}; остановить — Ctrl+C)", flush=True)
     try: srv.serve_forever()
     except KeyboardInterrupt: print("\nОстановлен.")
 

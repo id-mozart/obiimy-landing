@@ -521,7 +521,7 @@ def render(pages=None, css=None, pids=None, builder="src/build-team-pdf.py", out
     script = OUT / "review" / "pp" / "pdf-team.mjs"
     script.write_text('''import puppeteer from 'puppeteer-core';
     import fs from 'fs';
-    const b = await puppeteer.launch({ executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: 'new', args: ['--no-sandbox', '--allow-file-access-from-files'] });
+    const b = await puppeteer.launch({ executablePath: process.env.CHROME_PATH || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome', headless: 'new', args: ['--no-sandbox', '--disable-dev-shm-usage', '--allow-file-access-from-files'] });
     const p = await b.newPage(); await p.setViewport({ width: 1123, height: 794, deviceScaleFactor: 1.5 });
     await p.goto('file:///Users/ivan/obiimy/team-deck.html', { waitUntil: 'networkidle0', timeout: 120000 });
     await p.evaluate(() => document.fonts.ready);

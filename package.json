@@ -4,10 +4,10 @@
   "private": true,
   "description": "Premium landing page versions for the Obiimy silk scarves brand",
   "scripts": {
-    "start": "serve site -l ${PORT:-3000} --no-clipboard"
+    "start": "node server.js"
   },
   "dependencies": {
-    "serve": "^14.2.4"
+    "serve-handler": "^6.1.6"
   },
   "engines": {
     "node": ">=18"

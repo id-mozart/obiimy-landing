@@ -465,7 +465,7 @@ small { font-size: 13pt; letter-spacing: 0; }
 .qr { margin-top: auto; display: grid; grid-template-columns: 33mm 1fr; gap: 6mm; align-items: center; } .qr svg { width: 33mm; height: 33mm; } .qr a { border-bottom: .35pt solid rgba(255,255,255,.4); }
 """
 PIDS = ["cover", "who", "ways-scarf", "ways-twilly", "ways-acc", "sets", "offer", "men", "gift-twilly", "gift-ring", "gift-mask", "gift-set", "logo", "range", "solo", "prints", "terms", "contacts"]
-EDITS = OUT / "src" / "deck-edits.json"          # written by the WYSIWYG editor (src/deck-editor.py), applied on every build
+EDITS = pathlib.Path(os.environ["DECK_EDITS"]) if os.environ.get("DECK_EDITS") else OUT / "src" / "deck-edits.json"   # written by the WYSIWYG editor (src/deck-editor.py), applied on every build; DECK_EDITS — the volume on Railway
 EDITOR_PAGES = OUT / "review" / "deck-editor-pages.json"   # what the editor opens: every page (hidden ones too) as built
 
 def apply_edits(pages, pids, builder, edits_file=None, pages_file=None):

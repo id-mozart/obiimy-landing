@@ -175,6 +175,7 @@ body { display: grid; grid-template: "top top top" 52px "ctx ctx ctx" 40px "rail
   <span class="ed-grow"></span>
   <span id="ed-state" class="ed-muted"></span>
   <a id="ed-pdf" class="ed-btnlink" target="_blank" hidden>Открыть PDF</a>
+  <a id="ed-dl" class="ed-btnlink" download="Obiimy-podarunky-dlia-komandy.pdf" title="Скачать собранный PDF на компьютер" hidden>Скачать</a>
   <button id="ed-versions" title="Сохранённые версии колоды: сохранить текущую, открыть или восстановить прежнюю">Версии</button>
   <button id="ed-publish" title="Выложить собранный PDF на сайт">Опубликовать</button>
   <button id="ed-save" class="ed-primary" title="Записать правки и пересобрать PDF (⌘S)">Сохранить и собрать PDF</button>
@@ -546,6 +547,7 @@ function drawState() {
   st.classList.toggle('ed-dirty', parts.length > 0);
   const a = $('#ed-pdf'); a.hidden = !S.pdf;
   if (S.pdf) { a.href = S.pdf.url + '?t=' + S.pdf.t; a.textContent = 'Открыть PDF' + (S.pdf.mb ? ' · ' + num(S.pdf.mb) + ' МБ' : ''); }
+  const dl = $('#ed-dl'); dl.hidden = !S.pdf; if (S.pdf) dl.href = S.pdf.url + '?t=' + S.pdf.t;
 }
 
 // ---------- selection ----------

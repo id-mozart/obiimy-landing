@@ -9,14 +9,14 @@
 <style id="ed-deck-css"></style>
 <style>
 html, body { height: 100%; overflow: hidden; }
-body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail work lib" minmax(0, 1fr) / 300px minmax(0, 1fr) auto; }
+body { display: grid; grid-template: "top top top" 52px "ctx ctx ctx" 40px "rail work lib" minmax(0, 1fr) / 324px minmax(0, 1fr) auto; }
 [hidden] { display: none !important; }
 .ed-ui { font: 400 13px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif; color: #22241f; letter-spacing: 0; text-transform: none; font-variant-numeric: normal; text-align: left; white-space: normal; }
 .ed-ui button, .ed-ui input { font: inherit; color: inherit; }
-.ed-ui button { height: 28px; padding: 0 10px; border: 1px solid #d3d3ce; border-radius: 6px; background: #fff; cursor: pointer; white-space: nowrap; }
+.ed-ui button { height: 30px; padding: 0 12px; border: 1px solid #d6d6d1; border-radius: 8px; background: #fff; cursor: pointer; white-space: nowrap; line-height: 28px; }
 .ed-ui button:hover:not(:disabled) { background: #f1f1ee; }
 .ed-ui button:disabled { opacity: .4; cursor: default; }
-.ed-ui button.ed-primary { background: #22241f; border-color: #22241f; color: #fff; font-weight: 600; }
+.ed-ui button.ed-primary { background: #22241f; border-color: #22241f; color: #fff; font-weight: 600; padding: 0 16px; }
 .ed-ui button.ed-primary:hover:not(:disabled) { background: #3a3d36; }
 .ed-ui button.ed-quiet { border-color: transparent; background: transparent; }
 .ed-ui button.ed-quiet:hover:not(:disabled) { background: #e9e9e5; }
@@ -24,15 +24,21 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 .ed-ui input[type=text], .ed-ui input[type=search] { height: 30px; padding: 0 9px; border: 1px solid #d3d3ce; border-radius: 6px; background: #fff; width: 100%; }
 .ed-muted { color: #70726c; }
 
-#ed-top { grid-area: top; display: flex; align-items: center; gap: 8px; padding: 0 12px; background: #fbfbf9; border-bottom: 1px solid #dcdcd8; }
-#ed-top .ed-name { font-weight: 600; margin-right: 10px; white-space: nowrap; }
+#ed-top { grid-area: top; display: flex; align-items: center; gap: 10px; padding: 0 14px; background: #fff; border-bottom: 1px solid #dcdcd8; }
+#ed-top .ed-group { display: inline-flex; align-items: center; border: 1px solid #d6d6d1; border-radius: 8px; background: #fff; overflow: hidden; }
+#ed-top .ed-group button { height: 28px; border: 0; border-radius: 0; background: transparent; padding: 0 10px; } #ed-top .ed-group button + button, #ed-top .ed-group span + button { border-left: 1px solid #e6e6e2; }
+#ed-top .ed-group button:hover:not(:disabled) { background: #f1f1ee; } #ed-top .ed-group #ed-zoom { min-width: 52px; text-align: center; font-variant-numeric: tabular-nums; color: #55574f; border-left: 1px solid #e6e6e2; line-height: 28px; }
+#ed-top #ed-state { font-size: 12px; margin-right: 2px; }
+#ed-top .ed-btnlink { display: inline-flex; align-items: center; height: 30px; padding: 0 12px; border: 1px solid #d6d6d1; border-radius: 8px; color: #22241f; text-decoration: none; white-space: nowrap; }
+#ed-top .ed-btnlink:hover { background: #f1f1ee; }
+#ed-top .ed-name { font-weight: 600; margin-right: 6px; white-space: nowrap; font-size: 14px; }
 #ed-top .ed-sep { width: 1px; height: 22px; background: #dcdcd8; margin: 0 4px; }
 #ed-top .ed-grow { flex: 1; }
 #ed-zoom { min-width: 44px; text-align: center; font-variant-numeric: tabular-nums; }
 #ed-state { white-space: nowrap; }
 #ed-state.ed-dirty { color: #8a5a00; }
 
-#ed-ctx { grid-area: ctx; display: flex; align-items: center; gap: 6px; padding: 0 12px; background: #f3f3f0; border-bottom: 1px solid #dcdcd8; overflow: hidden; white-space: nowrap; }
+#ed-ctx { grid-area: ctx; display: flex; align-items: center; gap: 6px; padding: 0 14px; background: #f6f6f3; border-bottom: 1px solid #dcdcd8; overflow: hidden; white-space: nowrap; font-size: 12.5px; }
 #ed-ctx .ed-crumbs { display: flex; align-items: center; gap: 2px; min-width: 0; overflow: hidden; flex: none; }
 #ed-ctx .ed-crumb { height: 24px; padding: 0 7px; border: 0; background: transparent; border-radius: 5px; }
 #ed-ctx .ed-crumb:last-child { background: #dfe8fb; color: #1d4bb0; font-weight: 600; }
@@ -42,15 +48,15 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 #ed-ctx .ed-hint { color: #70726c; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
 #ed-ctx .ed-grow { flex: 1; min-width: 8px; }
 #ed-ctx .ed-add { display: flex; gap: 6px; flex: none; margin-left: 8px; padding-left: 10px; border-left: 1px solid #dcdcd8; }
-#ed-ctx button { height: 26px; }
+#ed-ctx button { height: 28px; padding: 0 11px; font-size: 12.5px; }
 #ed-work.ed-placing { cursor: crosshair; }
 #ed-work.ed-placing #ed-flow .pg { cursor: crosshair; }
 
 #ed-rail { grid-area: rail; display: flex; flex-direction: column; min-height: 0; background: #fbfbf9; border-right: 1px solid #dcdcd8; }
-#ed-rail .ed-rail-head { padding: 10px 12px 8px; font-weight: 600; border-bottom: 1px solid #ecece8; }
+#ed-rail .ed-rail-head { padding: 12px 14px 10px; font-weight: 600; border-bottom: 1px solid #ecece8; font-size: 13px; }
 #ed-rail .ed-rail-head span { font-weight: 400; color: #70726c; }
 #ed-pages { flex: 1; overflow-y: auto; padding: 6px; position: relative; }
-.ed-item { display: grid; grid-template-columns: 104px 1fr; gap: 0 10px; padding: 7px 8px; border-radius: 8px; cursor: pointer; border: 1px solid transparent; touch-action: none; }
+.ed-item { display: grid; grid-template-columns: 104px 1fr; gap: 0 12px; padding: 8px 10px; border-radius: 10px; cursor: pointer; border: 1px solid transparent; touch-action: none; }
 .ed-item:hover { background: #f1f1ee; }
 .ed-item.ed-on { background: #eef2fb; border-color: #c9d6f3; }
 .ed-item.ed-dragging { opacity: .25; }
@@ -62,7 +68,7 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 .ed-item-body { min-width: 0; align-self: start; }
 .ed-item-top { display: flex; align-items: baseline; gap: 6px; }
 .ed-num { font-variant-numeric: tabular-nums; color: #70726c; flex: none; }
-.ed-name { font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+.ed-name { font-weight: 600; overflow: hidden; min-width: 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; line-height: 1.3; }
 .ed-dot { width: 7px; height: 7px; border-radius: 50%; background: #2f6feb; align-self: center; margin-left: auto; flex: none; }
 .ed-pid { font-size: 11px; color: #8d8f89; font-family: ui-monospace, Menlo, monospace; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .ed-badges { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 4px; }
@@ -74,7 +80,7 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 .ed-badge.ed-b-copy { background: #e4ecfb; color: #1d4bb0; }
 .ed-acts { grid-column: 1 / -1; display: none; gap: 4px; margin-top: 6px; flex-wrap: wrap; }
 .ed-item.ed-on .ed-acts, .ed-item:hover .ed-acts { display: flex; }
-.ed-ui.ed-acts button { height: 23px; padding: 0 7px; font-size: 12px; border-radius: 5px; }
+.ed-ui.ed-acts button { height: 24px; line-height: 22px; padding: 0 8px; font-size: 12px; border-radius: 6px; }
 .ed-drop-line { position: absolute; left: 10px; right: 10px; height: 3px; border-radius: 2px; background: #2f6feb; pointer-events: none; z-index: 3; }
 .ed-ghost { position: fixed; z-index: 200; pointer-events: none; opacity: .9; background: #fff; box-shadow: 0 6px 24px rgba(0,0,0,.25); border-color: #c9d6f3; }
 #ed-rail .ed-rail-foot { padding: 8px 12px; border-top: 1px solid #ecece8; font-size: 12px; color: #70726c; }
@@ -161,17 +167,14 @@ body { display: grid; grid-template: "top top top" 46px "ctx ctx ctx" 38px "rail
 <body>
 <header id="ed-top" class="ed-ui">
   <span class="ed-name">Редактор PDF</span>
-  <button id="ed-zout" class="ed-quiet" title="Мельче">−</button><span id="ed-zoom">100 %</span><button id="ed-zin" class="ed-quiet" title="Крупнее">+</button>
-  <button id="ed-zfit" class="ed-quiet" title="Страница во всю ширину окна">По ширине</button>
-  <span class="ed-sep"></span>
-  <button id="ed-undo" class="ed-quiet" title="Отменить последнее действие (⌘Z)">↶ Отменить</button>
-  <button id="ed-redo" class="ed-quiet" title="Вернуть отменённое (⇧⌘Z)">↷ Вернуть</button>
+  <span class="ed-group" role="group" aria-label="Масштаб"><button id="ed-zout" title="Мельче">−</button><span id="ed-zoom">100 %</span><button id="ed-zin" title="Крупнее">+</button><button id="ed-zfit" title="Страница во всю ширину окна">По ширине</button></span>
+  <span class="ed-group" role="group" aria-label="История"><button id="ed-undo" title="Отменить последнее действие (⌘Z)">↶ Отменить</button><button id="ed-redo" title="Вернуть отменённое (⇧⌘Z)">↷ Вернуть</button></span>
   <span class="ed-grow"></span>
   <span id="ed-state" class="ed-muted"></span>
-  <a id="ed-pdf" class="ed-link" target="_blank" hidden>Открыть PDF</a>
+  <a id="ed-pdf" class="ed-btnlink" target="_blank" hidden>Открыть PDF</a>
   <button id="ed-versions" title="Сохранённые версии колоды: сохранить текущую, открыть или восстановить прежнюю">Версии</button>
+  <button id="ed-publish" title="Выложить собранный PDF на сайт">Опубликовать</button>
   <button id="ed-save" class="ed-primary" title="Записать правки и пересобрать PDF (⌘S)">Сохранить и собрать PDF</button>
-  <button id="ed-publish" title="Выложить собранный PDF на сайт: GitHub и Railway">Опубликовать</button>
 </header>
 <div id="ed-ctx" class="ed-ui"></div>
 <aside id="ed-rail">

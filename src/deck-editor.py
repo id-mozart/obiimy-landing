@@ -18,6 +18,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 PORT = int(os.environ.get("DECK_EDITOR_PORT") or 8770)
 BIND = os.environ.get("DECK_EDITOR_BIND") or "127.0.0.1"                 # 0.0.0.0 on Railway, with a password
 PASSWORD = os.environ.get("DECK_EDITOR_PASSWORD") or ""                 # set → HTTP Basic auth on every request but /pub/*
+PUBLIC = os.environ.get("DECK_EDITOR_PUBLIC") == "1"                   # Railway without a password (the owner's call, 09.10): any host, writes only from the editor's own origin
 PUBLISHED = ROOT / "data" / "published"                                 # the PDF «Опубликовать» copies here on Railway (src/deck-publish-prod.py)
 EDITS = pathlib.Path(os.environ.get("DECK_EDITS") or ROOT / "src" / "deck-edits.json")
 PAGES = pathlib.Path(os.environ.get("DECK_EDITOR_PAGES") or ROOT / "review" / "deck-editor-pages.json")
@@ -552,7 +553,7 @@ class Handler(SimpleHTTPRequestHandler):
         hdr = self.headers.get("Host") or ""
         host = hdr.rsplit(":", 1)[0] if ":" in hdr and not hdr.endswith("]") else hdr
         origin = self.headers.get("Origin")
-        if PASSWORD:
+        if PASSWORD or PUBLIC:
             if post and origin and urllib.parse.urlsplit(origin).netloc != hdr: return False
             return True
         if host not in ("127.0.0.1", "localhost", "[::1]"): return False

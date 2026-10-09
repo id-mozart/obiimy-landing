@@ -182,6 +182,12 @@ HTML = f'''<meta charset="utf-8">
     <div class="f"><label>Оплата</label><textarea id="pay" placeholder="Напр.: безготівковий рахунок, 50% передоплата"></textarea></div>
     <div class="f"><label>Примітка</label><textarea id="note" placeholder="Що ще важливо для клієнта"></textarea></div>
   </div>
+  <div class="sec"><h2>Версії</h2>
+    <p class="hint">Знімок усіх полів і ручних правок. Зберігаються в цьому браузері; «Посилання» біля версії відкриє її на будь-якому пристрої.</p>
+    <div class="two"><input id="vname" placeholder="Назва версії, напр. «DIAME, 100 твіллі»"><button type="button" class="btn line sm" id="vsave">Зберегти версію</button></div>
+    <div id="versions"></div>
+    <div class="two" style="margin-top:8px"><button type="button" class="btn line sm" id="vexport">Експорт усіх (файл)</button><button type="button" class="btn line sm" id="vimport">Імпорт із файлу</button><input id="vfile" type="file" accept="application/json" hidden></div>
+  </div>
   <div class="acts"><button type="button" class="btn gold" id="print">Друк / PDF</button><button type="button" class="btn line" id="share">Посилання</button><button type="button" class="btn line" id="reset">Очистити</button><span class="ok" id="ok"></span></div>
 </aside>
 <main class="doc" id="doc"></main>
@@ -321,6 +327,39 @@ document.getElementById('addrow').addEventListener('click', function () {{ S.row
 document.getElementById('print').addEventListener('click', function () {{ var t = document.title; document.title = 'Obiimy — пропозиція' + (S.client ? ' для ' + S.client : ''); window.print(); document.title = t; }});
 document.getElementById('share').addEventListener('click', function () {{ var h = btoa(unescape(encodeURIComponent(JSON.stringify(S)))); location.hash = h; var ok = document.getElementById('ok'); (navigator.clipboard ? navigator.clipboard.writeText(location.href) : Promise.reject()).then(function () {{ ok.textContent = 'Посилання скопійовано'; }}, function () {{ ok.textContent = 'Скопіюйте адресу з рядка браузера'; }}); setTimeout(function () {{ ok.textContent = ''; }}, 4000); }});
 document.getElementById('reset').addEventListener('click', function () {{ if (!confirm('Очистити всі поля й ручні правки сторінок?')) return; S = JSON.parse(JSON.stringify(DEF)); location.hash = ''; save(); renderForm(); renderDoc(); }});
+// ---------- versions of the proposal (this browser; a link carries one anywhere) ----------
+function vlist() {{ try {{ return JSON.parse(localStorage.getItem('kp-versions') || '[]'); }} catch (e) {{ return []; }} }}
+function vstore(v) {{ try {{ localStorage.setItem('kp-versions', JSON.stringify(v)); }} catch (e) {{ alert('Не вдалося зберегти: сховище браузера переповнене (великі картинки?).'); }} }}
+function vlink(st) {{ return location.origin + location.pathname + '#' + btoa(unescape(encodeURIComponent(JSON.stringify(st)))); }}
+function renderVersions() {{
+  var box = document.getElementById('versions'), v = vlist(); box.innerHTML = '';
+  if (!v.length) {{ box.innerHTML = '<p class="hint">Збережених версій ще немає.</p>'; return; }}
+  v.slice().reverse().forEach(function (x) {{
+    var d = document.createElement('div'); d.className = 'row';
+    d.innerHTML = '<div class="g2"><div><b>' + esc(x.name) + '</b><br><small>' + new Date(x.created).toLocaleString('uk-UA') + (x.state.client ? ' · ' + esc(x.state.client) : '') + '</small></div>'
+      + '<div style="display:flex;gap:6px"><button type="button" class="btn line sm" data-vopen="' + x.id + '">Відкрити</button><button type="button" class="btn line sm" data-vlink="' + x.id + '">Посилання</button><button type="button" class="btn line sm" data-vdel="' + x.id + '">✕</button></div></div>';
+    box.appendChild(d);
+  }});
+}}
+document.getElementById('vsave').addEventListener('click', function () {{
+  var name = document.getElementById('vname').value.trim() || ('Версія ' + new Date().toLocaleString('uk-UA'));
+  var v = vlist(); v.push({{ id: Date.now().toString(36), name: name, created: Date.now(), state: JSON.parse(JSON.stringify(S)) }}); vstore(v); document.getElementById('vname').value = ''; renderVersions();
+}});
+document.getElementById('versions').addEventListener('click', function (e) {{
+  var b = e.target.closest('button'); if (!b) return; var v = vlist(), x = v.filter(function (y) {{ return y.id === (b.dataset.vopen || b.dataset.vlink || b.dataset.vdel); }})[0]; if (!x) return;
+  if (b.dataset.vopen) {{ if (!confirm('Відкрити версію «' + x.name + '»? Поточні незбережені зміни буде замінено.')) return; S = Object.assign(JSON.parse(JSON.stringify(DEF)), JSON.parse(JSON.stringify(x.state))); location.hash = ''; save(); renderForm(); renderDoc(); }}
+  if (b.dataset.vlink) {{ var l = vlink(x.state); (navigator.clipboard ? navigator.clipboard.writeText(l) : Promise.reject()).then(function () {{ document.getElementById('ok').textContent = 'Посилання на версію скопійовано.'; }}, function () {{ prompt('Посилання на версію', l); }}); }}
+  if (b.dataset.vdel) {{ if (!confirm('Видалити версію «' + x.name + '»?')) return; vstore(v.filter(function (y) {{ return y.id !== x.id; }})); renderVersions(); }}
+}});
+document.getElementById('vexport').addEventListener('click', function () {{
+  var blob = new Blob([JSON.stringify({{ versions: vlist(), current: S }}, null, 1)], {{ type: 'application/json' }}); var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'obiimy-kp-versii.json'; a.click();
+}});
+document.getElementById('vimport').addEventListener('click', function () {{ document.getElementById('vfile').click(); }});
+document.getElementById('vfile').addEventListener('change', function (e) {{
+  var f = e.target.files && e.target.files[0]; e.target.value = ''; if (!f) return;
+  var r = new FileReader(); r.onload = function () {{ try {{ var d = JSON.parse(r.result), have = vlist(), ids = {{}}; have.forEach(function (x) {{ ids[x.id] = 1; }}); (d.versions || []).forEach(function (x) {{ if (x && x.id && x.state && !ids[x.id]) have.push(x); }}); vstore(have); renderVersions(); document.getElementById('ok').textContent = 'Імпортовано: ' + (d.versions || []).length + ' версій.'; }} catch (err) {{ alert('Файл не розібрати.'); }} }}; r.readAsText(f);
+}});
+renderVersions();
 renderForm(); renderDoc();
 </script>
 '''

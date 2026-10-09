@@ -45,7 +45,10 @@ body { display: grid; grid-template: "top top top" 52px "ctx ctx ctx" 40px "rail
 #ed-ctx .ed-crumb span { color: #8d8f89; font-weight: 400; margin-left: 4px; }
 #ed-ctx .ed-arrow { color: #a2a49e; }
 #ed-ctx .ed-read { margin-left: 8px; color: #55574f; font-variant-numeric: tabular-nums; }
-#ed-ctx .ed-hint { color: #70726c; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+#ed-ctx .ed-hint { color: #8d8f89; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+#ed-ctx .ed-help { width: 24px; height: 24px; padding: 0; border-radius: 50%; border-color: #d6d6d1; color: #55574f; font-weight: 600; line-height: 22px; text-align: center; margin-left: 4px; }
+#ed-helppop { position: fixed; z-index: 120; width: 360px; background: #fff; border: 1px solid #d6d6d1; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.14); padding: 12px 14px; font-size: 12.5px; }
+#ed-helppop b { display: block; margin-bottom: 8px; } #ed-helppop dl { display: grid; grid-template-columns: auto 1fr; gap: 4px 12px; margin: 0; } #ed-helppop dt { color: #22241f; font-weight: 600; white-space: nowrap; } #ed-helppop dd { margin: 0; color: #55574f; }
 #ed-ctx .ed-grow { flex: 1; min-width: 8px; }
 #ed-ctx .ed-add { display: flex; gap: 6px; flex: none; margin-left: 8px; padding-left: 10px; border-left: 1px solid #dcdcd8; }
 #ed-ctx button { height: 28px; padding: 0 11px; font-size: 12.5px; }
@@ -595,8 +598,8 @@ function drawCtx() {
   if (S.crop) { bar.append(h('span', { class: 'ed-hint', text: 'Кадр: тяните картинку внутри рамки, колесо или ползунок — приблизить. Enter или щелчок мимо — готово, Esc — отмена.' })); return; }
   if (S.place) { bar.append(h('span', { class: 'ed-hint', text: 'Щёлкните на странице там, где должен появиться текст. Esc — отмена.' }), h('span', { class: 'ed-grow' }), btn('Отмена', '', placeEnd)); return; }
   if (!el) {
-    bar.append(h('span', { class: 'ed-hint', text: 'Щелчок — выбрать · двойной щелчок — править текст · тянуть — двигать · уголки — размер · стрелки — сдвиг на 0,25 мм (с Shift — 1 мм) · Delete — скрыть · Esc — на уровень выше · ⌘Z — отменить' }),
-      h('span', { class: 'ed-grow' }), adders());
+    bar.append(h('span', { class: 'ed-hint', text: 'Щёлкните элемент на странице, чтобы его править' }),
+      h('button', { class: 'ed-help', text: '?', title: 'Подсказки и клавиши', onclick: helpToggle }), h('span', { class: 'ed-grow' }), adders());
     return;
   }
   const chain = []; for (let n = el; n && !n.hasAttribute('data-pid'); n = n.parentElement) chain.unshift(n);
@@ -1066,6 +1069,17 @@ async function save(then) {
     h('p', null, 'За ' + clock(res.seconds || 0) + (res.pdf_mb ? ' · ' + num(res.pdf_mb) + ' МБ · ' : ' · '), res.pdf ? h('a', { class: 'ed-link', href: res.pdf + '?t=' + Date.now(), target: '_blank', text: 'Открыть PDF' }) : 'файл PDF не найден'),
     made ? h('p', { class: 'ed-muted', text: 'Записано: ' + made + '.' }) : null, lay, log, row);
   return true;
+}
+
+// ---------- help popover ----------
+function helpToggle(e) {
+  let p = $('#ed-helppop');
+  if (p) { p.remove(); return; }
+  const rows = [['Щелчок', 'выбрать элемент'], ['Двойной щелчок', 'править текст'], ['Тянуть', 'двигать'], ['Уголки рамки', 'размер'], ['Стрелки', 'сдвиг на 0,25 мм (с Shift — 1 мм)'], ['Delete', 'скрыть элемент'], ['Esc', 'на уровень выше / снять выделение'], ['⌘Z · ⇧⌘Z', 'отменить · вернуть'], ['⌘S', 'сохранить и собрать PDF'], ['Картинка', 'двойной щелчок — кадр; «Заменить» — другая картинка']];
+  p = h('div', { id: 'ed-helppop', class: 'ed-ui' }, h('b', { text: 'Как редактировать' }), h('dl', null, rows.map(([k, v]) => [h('dt', { text: k }), h('dd', { text: v })]).flat()));
+  document.body.append(p);
+  const r = e.currentTarget.getBoundingClientRect(); p.style.left = Math.max(8, r.left) + 'px'; p.style.top = (r.bottom + 6) + 'px';
+  setTimeout(() => document.addEventListener('pointerdown', ev => { if (!p.contains(ev.target)) p.remove(); }, { once: true, capture: true }), 0);
 }
 
 // ---------- versions: named snapshots of the edits and the built PDF ----------

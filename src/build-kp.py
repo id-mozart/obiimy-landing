@@ -36,7 +36,9 @@ LIFE = {k: photo(f) for k, f in {   # a photograph of the thing worn or in use f
     "mask": "photo/site/mask-vpevnenist-04.jpg", "maskscr": "photo/site/set-ta-rezynka-litnie-pole-04.jpg", "masks2": "photo/site/set-ta-rezynka-litnie-pole-04.jpg", "ring": "photo/site/ring-zoloto-01.jpg",
     "twscr": "photo/site/tvilli-ta-rezynka-makovyi-tsvit-02.jpg", "twscr140": "photo/site/tvilli-ta-rezynka-makovyi-tsvit-02.jpg", "tw44": "photo/paris-dots.jpg", "tw44d": "photo/paris-bag.jpg", "pil": "photo/turban-bath.jpg", "pilp": "photo/turban-bath.jpg",
 }.items()}
-LIFE_POS = {"scr": "0% 50%", "book": "55% 30%", "tw": "50% 30%", "h44": "50% 20%", "h44s": "50% 0%", "h65": "50% 50%", "h65d": "58% 6%", "h88": "50% 20%", "h88d": "50% 50%", "mask": "50% 25%", "ring": "50% 40%", "twscr": "50% 30%", "tw44": "50% 30%", "tw44d": "50% 50%"}
+for _k in ("cert1", "cert15", "cert2", "cert25", "cert4"): LIFE[_k] = "img/cert-card.png"
+HERO = photo("photo/solo/tysha-88-2.webp")
+LIFE_POS = {"cert1": "50% 50%", "cert15": "50% 50%", "cert2": "50% 50%", "cert25": "50% 50%", "cert4": "50% 50%", "scr": "0% 50%", "book": "55% 30%", "tw": "50% 30%", "h44": "50% 20%", "h44s": "50% 0%", "h65": "50% 50%", "h65d": "58% 6%", "h88": "50% 20%", "h88d": "50% 50%", "mask": "50% 25%", "ring": "50% 40%", "twscr": "50% 30%", "tw44": "50% 30%", "tw44d": "50% 50%"}
 MOSAIC = [photo(f) for f in ("photo/solo/iskra-65-4.webp", "photo/solo/flirt-tw-1.webp", "photo/site/mask-shchyri-pochuttia-04.jpg", "photo/solo/zolote-44-2.webp", "photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg",
                                "photo/solo/tysha-88-4.webp", "photo/solo/krok-44-2.webp", "photo/solo/flirt-65-4.webp")]   # the deck's cover (07.10)
 MOSAIC_POS = ["50% 15%", "50% 20%", "0% 50%", "50% 15%", "50% 50%", "50% 10%", "50% 20%", "50% 15%"]
@@ -104,23 +106,24 @@ HTML = f'''<meta charset="utf-8">
   .pg {{ width: 210mm; height: 297mm; min-height: 297mm; overflow: hidden; background: var(--paper); box-shadow: 0 4px 30px rgba(0,0,0,.1); padding: 16.5mm 16.5mm 14mm; position: relative; display: flex; flex-direction: column; break-after: page; page-break-after: always; }}
   .pg .logo {{ width: 38mm; height: 8.1mm; flex: none; align-self: flex-start; object-fit: contain; object-position: left center; }}
   .pg .foot {{ margin-top: auto; color: var(--ink3); font-size: 7.5pt; letter-spacing: .2em; text-transform: uppercase; display: flex; justify-content: space-between; gap: 10mm; padding-top: 4mm; }}
-  .cover {{ padding: 0; display: grid; grid-template-rows: 1fr auto 1fr; }} .cover .mos {{ min-height: 0; }} .cover .mos img {{ height: 100%; }}
-  .cover .mos {{ display: grid; grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(2, 1fr); }} .cover .mos img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
-  .cover .band {{ background: var(--yellow); padding: 10mm 16.5mm; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8mm; }}
-  .cover .band img {{ width: 46mm; height: auto; display: block; margin-bottom: 4mm; }}
-  .cover h1 {{ font-size: 24pt; }} .cover h1 i {{ font-style: italic; color: #4A4A47; }}
-  .cover .for {{ font-size: 8pt; letter-spacing: .24em; text-transform: uppercase; margin: 3mm 0 0; color: #141414; }}
-  .cover .meta {{ text-align: right; font-size: 8.5pt; line-height: 1.7; color: #141414; }}
+  .cover {{ padding: 0; display: grid; grid-template-rows: 168mm 1fr; }}
+  .cover .cv-ph {{ overflow: hidden; }} .cover .cv-ph img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
+  .cover .cv-band {{ background: var(--yellow); padding: 11mm 16.5mm 12mm; display: flex; flex-direction: column; color: #141414; }}
+  .cover .cv-band > img {{ width: 40mm; height: auto; display: block; margin-bottom: 7mm; }}
+  .cover .cv-kicker {{ font-size: 7.5pt; letter-spacing: .26em; text-transform: uppercase; margin: 0 0 3mm; }}
+  .cover h1 {{ font-size: 26pt; line-height: 1.05; margin: 0; }} .cover .cv-client {{ font-family: Playfair, serif; font-style: italic; font-weight: 400; font-size: 26pt; line-height: 1.05; color: #4A4A47; margin: 1mm 0 0; }}
+  .cover .cv-sub {{ font-size: 11pt; margin: 5mm 0 0; max-width: 150mm; }}
+  .cover .cv-meta {{ margin-top: auto; display: flex; gap: 10mm; font-size: 8pt; letter-spacing: .14em; text-transform: uppercase; }} .cover .cv-meta span:empty {{ display: none; }}
   .eb {{ font-size: 7pt; letter-spacing: .24em; text-transform: uppercase; color: var(--ink3); margin: 0 0 3mm; }}
   .pg h2.t {{ font-size: 26pt; margin: 0 0 6mm; }} .pg h2.t i {{ color: #8E8A84; }}
   .pg .from {{ font-family: Playfair, serif; font-style: italic; font-size: 13pt; color: var(--ink2); margin: -4mm 0 6mm; }}
-  .photos {{ display: grid; grid-template-columns: 1fr 1fr; gap: 4mm; }}
-  .photos figure {{ margin: 0; position: relative; overflow: hidden; }}
-  .photos img {{ width: 100%; aspect-ratio: 86 / 96; object-fit: cover; display: block; background: #ddd; }}
-  .photos figure::after {{ content: ""; position: absolute; inset: 52% 0 0; background: linear-gradient(0deg, rgba(0,0,0,.78) 0%, rgba(0,0,0,.4) 45%, rgba(0,0,0,0) 100%); }}
-  .photos figcaption {{ position: absolute; left: 6mm; bottom: 5mm; z-index: 2; color: var(--gold); font-family: Playfair, serif; font-style: italic; font-size: 17pt; line-height: 1.1; }}
-  .photos figure.flat::after {{ display: none; }} .photos figure.flat img {{ object-fit: contain; background: #fff; padding: 6mm; }} .photos figure.flat figcaption {{ color: var(--ink); }} .photos figure.flat figcaption span {{ color: var(--ink3); }}
-  .photos figcaption span {{ display: block; font-family: Tenor, sans-serif; font-style: normal; font-size: 8.5pt; color: rgba(231,217,166,.85); margin-top: 1mm; }}
+  .items {{ display: grid; gap: 0; margin-top: 2mm; }}
+  .item {{ display: grid; grid-template-columns: 30mm 1fr auto; column-gap: 6mm; align-items: center; padding: 4mm 0; border-top: .35pt solid var(--line); }}
+  .item:last-child {{ border-bottom: .35pt solid var(--line); }}
+  .item figure {{ margin: 0; width: 30mm; height: 30mm; overflow: hidden; position: relative; background: #F7F5F1; }} .item figure img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
+  .item figure.flat img {{ object-fit: contain; padding: 2mm; }}
+  .item h3 {{ font-size: 13pt; margin: 0 0 1mm; }} .item .d {{ font-size: 9pt; color: var(--ink3); }}
+  .item .p {{ text-align: right; white-space: nowrap; }} .item .p b {{ display: block; font-family: Playfair, serif; font-weight: 400; font-size: 15pt; }} .item .p small {{ font-size: 8.5pt; color: var(--ink3); }}
   table {{ width: 100%; border-collapse: collapse; font-size: 10pt; }}
   th, td {{ border: 0; border-top: .35pt solid var(--line); padding: 3mm 2mm; text-align: left; vertical-align: top; }}
   th {{ font-weight: 400; font-size: 7pt; letter-spacing: .2em; text-transform: uppercase; color: var(--ink3); border-top: 0; padding-top: 0; }}
@@ -157,13 +160,13 @@ HTML = f'''<meta charset="utf-8">
     .pg.edit {{ outline: none; }}
     html, body {{ background: #fff; }} .panel {{ display: none; }} .app {{ display: block; }} .doc {{ padding: 0; gap: 0; display: block; }}
     .pg {{ box-shadow: none; width: 210mm; height: 297mm; min-height: 0; overflow: hidden; }}
-    .pg, .cover .band, .photos figure::after, th, tr.tot td {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
+    .pg, .cover .cv-band, th, tr.tot td {{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }}
   }}
 </style>
 <div class="app">
 <aside class="panel">
   <h1>Комерційна пропозиція</h1>
-  <p class="hint">Службова сторінка для менеджерів. Заповніть поля — документ праворуч оновлюється одразу. Будь-який текст у документі можна правити просто на сторінці, картинку — замінити клацанням (своя або з бібліотеки); правки зберігаються з документом. «Друк / PDF» збереже A4; «Посилання» скопіює адресу з усіма даними, щоб переслати колезі.</p>
+  <p class="hint">Заповніть поля — документ праворуч оновлюється одразу. Текст можна правити просто в документі, картинку — замінити клацанням; «Друк / PDF» збереже A4, «Посилання» — адреса з усіма даними, щоб переслати колезі.</p>
   <div class="f"><label>Компанія-клієнт</label><input id="client" placeholder="DIAME"></div>
   <div class="two"><div class="f"><label>Контактна особа</label><input id="contact" placeholder="Ім’я, посада"></div><div class="f"><label>Менеджер Obiimy</label><input id="manager" placeholder="Ім’я, телефон"></div></div>
   <div class="two"><div class="f"><label>Дата</label><input id="date" type="date"></div><div class="f"><label>Дійсна до</label><input id="valid" type="date"></div></div>
@@ -196,7 +199,7 @@ HTML = f'''<meta charset="utf-8">
 <script>
 var ITEMS = {json.dumps(ITEMS, ensure_ascii=False)};
 var EXTRAS = {json.dumps(EXTRAS, ensure_ascii=False)};
-var MOSAIC = {json.dumps(MOSAIC)}, MOSAIC_POS = {json.dumps(MOSAIC_POS)}, LIFE = {json.dumps(LIFE)}, LIFE_POS = {json.dumps(LIFE_POS)};
+var MOSAIC = {json.dumps(MOSAIC)}, MOSAIC_POS = {json.dumps(MOSAIC_POS)}, LIFE = {json.dumps(LIFE)}, LIFE_POS = {json.dumps(LIFE_POS)}, HERO = {json.dumps(HERO)};
 var LIBRARY = {json.dumps(LIBRARY, ensure_ascii=False)};
 var DEF = {json.dumps(DEFAULT, ensure_ascii=False)};
 var BY = {{}}; ITEMS.forEach(function (i) {{ BY[i.k] = i; }});
@@ -243,14 +246,21 @@ function renderDoc() {{
   var logo = '<img class="logo" src="brand/logo-ink.png" alt="Obiimy">';
   var foot = '<div class="foot"><span>Obiimy · шоурум: ' + esc(SHOWROOM) + '</span><span>' + esc(PHONE) + ' · ' + esc(MAIL) + ' · obiimy.world</span></div>';
   var pages = [];
-  var mos = function (from) {{ var o = ''; for (var i = from; i < from + 4; i++) o += '<img src="' + MOSAIC[i] + '" style="object-position:' + MOSAIC_POS[i] + '" alt="">'; return '<div class="mos">' + o + '</div>'; }};
-  pages.push('<section class="pg cover" data-key="cover">' + mos(0) + '<div class="band"><div><img src="brand/logo-ink.png" alt="Obiimy"><h1>' + esc(S.title) + (S.client ? '<br><i>для ' + esc(S.client) + '</i>' : '') + '</h1>'
-    + '<p class="for">Преміальні шовкові вироби' + (S.sub ? ' · ' + esc(S.sub) : '') + '</p></div>'
-    + '<div class="meta">' + (S.date ? 'Дата: ' + fmtDate(S.date) + '<br>' : '') + (S.valid ? 'Дійсна до ' + fmtDate(S.valid) + '<br>' : '') + (S.contact ? 'Для: ' + esc(S.contact) : '') + '</div></div>' + mos(4) + '</section>');
-  // photos of the chosen items (unique)
-  var seen = {{}}, figs = [];
-  S.rows.forEach(function (r) {{ var it = BY[r.k] || BY.custom, ph = LIFE[r.k] || it.ph, life = !!LIFE[r.k]; if (seen[ph]) return; seen[ph] = 1; figs.push('<figure class="' + (life ? '' : 'flat') + '"><img src="' + ph + '" style="object-position:' + (LIFE_POS[r.k] || '50% 50%') + '" alt=""><figcaption>' + esc(rowName(r)) + (BY[r.k] && BY[r.k].p ? '<span>від ' + money(BY[r.k].p) + '</span>' : '') + '</figcaption></figure>'); }});
-  if (figs.length) pages.push('<section class="pg" data-key="photos">' + logo + '<p class="eb" style="margin-top:10mm">Що пропонуємо</p><h2 class="t">' + esc(S.sub || 'Речі з каталогу Obiimy') + '</h2><div class="photos">' + figs.slice(0, 4).join('') + '</div><p class="fine">Фото — приклад принта; принти обираються з добірки. 100% натуральний шовк, авторські принти, виготовлено в Україні. Пакування й наліпка з вашим логотипом — у ціні.</p>' + foot + '</section>');
+  var dateLine = (S.date ? fmtDate(S.date) : '') + (S.valid ? (S.date ? ' · ' : '') + 'дійсна до ' + fmtDate(S.valid) : '');
+  pages.push('<section class="pg cover" data-key="cover"><div class="cv-ph"><img src="' + HERO + '" style="object-position:30% 30%" alt=""></div>'
+    + '<div class="cv-band"><img src="brand/logo-ink.png" alt="Obiimy"><p class="cv-kicker">Комерційна пропозиція' + (dateLine ? ' · ' + esc(dateLine) : '') + '</p>'
+    + '<h1>' + esc(S.title) + '</h1>' + (S.client ? '<p class="cv-client">для ' + esc(S.client) + '</p>' : '')
+    + (S.sub ? '<p class="cv-sub">' + esc(S.sub) + '</p>' : '')
+    + '<div class="cv-meta"><span>Преміальні шовкові вироби</span><span>' + (S.contact ? 'Для: ' + esc(S.contact) : '') + '</span><span>' + (S.manager ? 'Менеджер: ' + esc(S.manager) : '') + '</span></div></div></section>');
+  // every position as a row: a photograph of the thing, name and design, quantity × price = sum; six rows a page
+  var items = S.rows.map(function (r) {{
+    var it = BY[r.k] || BY.custom, ph = LIFE[r.k] || it.ph, life = !!LIFE[r.k], q = Number(r.q) || 0, p = rowPrice(r), d = Number(r.disc) || 0, pd = p * (1 - d / 100);
+    return '<div class="item"><figure class="' + (life ? '' : 'flat') + '"><img src="' + ph + '" style="object-position:' + (LIFE_POS[r.k] || '50% 50%') + '" alt=""></figure>'
+      + '<div><h3>' + esc(rowName(r)) + '</h3><div class="d">' + DESIGN[r.d === 'author' ? 'author' : 'asst'] + (BY[r.k] && BY[r.k].p ? ' · роздрібна ціна ' + money(BY[r.k].p) : '') + '</div></div>'
+      + '<div class="p"><b>' + money(pd * q) + '</b><small>' + q + ' шт. × ' + money(pd) + (d ? ' (−' + d + '%)' : '') + '</small></div></div>';
+  }});
+  for (var i = 0; i < items.length; i += 6) pages.push('<section class="pg" data-key="items' + (i / 6 + 1) + '">' + logo + '<p class="eb" style="margin-top:10mm">Що пропонуємо' + (items.length > 6 ? ' · ' + (i / 6 + 1) : '') + '</p><h2 class="t">' + esc(S.sub || 'Речі з каталогу Obiimy') + '</h2>'
+    + '<div class="items">' + items.slice(i, i + 6).join('') + '</div>' + (i + 6 >= items.length ? '<p class="fine">Фото — приклад принта; принти обираються з добірки. 100% натуральний шовк, авторські принти, виготовлено в Україні. Пакування й наліпка з вашим логотипом — у ціні.</p>' : '') + foot + '</section>');
   // table
   var tr = '', total = 0, totalFull = 0, qty = 0, hasDisc = false;
   S.rows.forEach(function (r) {{ var q = Number(r.q) || 0, p = rowPrice(r), d = Number(r.disc) || 0, pd = p * (1 - d / 100); if (d) hasDisc = true; total += pd * q; totalFull += p * q; qty += q;
@@ -273,8 +283,10 @@ function renderDoc() {{
     + '<div class="why3"><div><b>Унікальні принти</b>Авторські малюнки засновниці Світлани Сніжко та сучасних українських художниць.</div><div><b>Якість, яку відчувають</b>Лише 100% натуральний італійський шовк; кутики кожної хустки обробляють вручну. Повністю українське виробництво.</div><div><b>Бренд, який упізнають</b>INTERTOP і Hram в Україні, Be Brave у Канаді, UFD London; LIGA.net та INSIDER UA.</div></div>'
     + '<p class="contact"><b>Контакти</b><br>' + (S.manager ? esc(S.manager) + '<br>' : '') + esc(PHONE) + ' · Telegram @OBIIMY_sales<br>' + esc(MAIL) + ' · obiimy.world<br>Шоурум: ' + esc(SHOWROOM) + '</p>' + foot + '</section>');
   document.getElementById('doc').innerHTML = pages.join('');
+  var sig = JSON.stringify(S.rows.map(function (r) {{ return [r.k, r.q, r.disc, r.price, r.d, r.name]; }}).concat([S.ex]));
   document.querySelectorAll('#doc .pg').forEach(function (pg) {{
-    var key = pg.dataset.key, edited = S.html && S.html[key];
+    var key = pg.dataset.key, saved = S.html && S.html[key], edited = saved && (typeof saved === 'string' ? saved : saved.h);
+    if (saved && typeof saved === 'object' && saved.sig && saved.sig !== sig) {{ delete S.html[key]; edited = null; save(); }}   // the positions changed: the page is rebuilt from them
     if (edited) {{ pg.innerHTML = edited; pg.classList.add('edit'); }}
     pg.setAttribute('contenteditable', 'true'); pg.setAttribute('spellcheck', 'false');
     var tools = document.createElement('div'); tools.className = 'pgtools'; tools.setAttribute('contenteditable', 'false');
@@ -285,9 +297,10 @@ function renderDoc() {{
 // ---------- in-place editing: text and pictures ----------
 var editTimer = null;
 function pageSnapshot(pg) {{ var c = pg.cloneNode(true); c.querySelectorAll('.pgtools').forEach(function (t) {{ t.remove(); }}); return c.innerHTML; }}
+function snapshotFor(pg) {{ var k = pg.dataset.key, data = /^(items|table)/.test(k); return data ? {{ h: pageSnapshot(pg), sig: JSON.stringify(S.rows.map(function (r) {{ return [r.k, r.q, r.disc, r.price, r.d, r.name]; }}).concat([S.ex])) }} : pageSnapshot(pg); }}
 document.getElementById('doc').addEventListener('input', function (e) {{
   var pg = e.target.closest('.pg'); if (!pg || e.target.closest('.pgtools')) return;
-  clearTimeout(editTimer); editTimer = setTimeout(function () {{ S.html = S.html || {{}}; S.html[pg.dataset.key] = pageSnapshot(pg); pg.classList.add('edit'); save();
+  clearTimeout(editTimer); editTimer = setTimeout(function () {{ S.html = S.html || {{}}; S.html[pg.dataset.key] = snapshotFor(pg); pg.classList.add('edit'); save();
     var t = pg.querySelector('.pgtools'); if (t && !t.querySelector('[data-pgreset]')) t.innerHTML = '<button type="button" class="on" data-pgreset="' + pg.dataset.key + '" title="Повернути сторінку до вигляду з форми">Правлено вручну · скинути</button>'; }}, 400);
 }});
 document.getElementById('doc').addEventListener('paste', function (e) {{ if (!e.target.closest('.pg')) return; e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain')); }});
@@ -301,7 +314,7 @@ function pickOpen(img) {{
   PICK = img; var box = document.getElementById('pick'); box.hidden = false;
   var grid = box.querySelector('.grid'); grid.innerHTML = LIBRARY.map(function (f, i) {{ return '<figure><img src="' + f.t + '" data-i="' + i + '" alt="" loading="lazy"><figcaption>' + esc(f.g + ' · ' + f.n) + '</figcaption></figure>'; }}).join('');
 }}
-function pickSet(src) {{ if (!PICK) return; PICK.src = src; PICK.removeAttribute('srcset'); var pg = PICK.closest('.pg'); document.getElementById('pick').hidden = true; S.html = S.html || {{}}; S.html[pg.dataset.key] = pageSnapshot(pg); save(); renderDoc(); PICK = null; }}
+function pickSet(src) {{ if (!PICK) return; PICK.src = src; PICK.removeAttribute('srcset'); var pg = PICK.closest('.pg'); document.getElementById('pick').hidden = true; S.html = S.html || {{}}; S.html[pg.dataset.key] = snapshotFor(pg); save(); renderDoc(); PICK = null; }}
 document.getElementById('pick').addEventListener('click', function (e) {{
   if (e.target.id === 'pick' || e.target.closest('[data-pickclose]')) {{ document.getElementById('pick').hidden = true; PICK = null; return; }}
   var im = e.target.closest('.grid img'); if (im) pickSet(LIBRARY[Number(im.dataset.i)].f);

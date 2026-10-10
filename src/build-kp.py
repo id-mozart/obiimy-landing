@@ -81,7 +81,7 @@ EXTRAS = [  # personalisation levels: id, name, default note; price is typed by 
     ("design", "Розробка індивідуального принта", ""),
     ("deliv", "Доставка", ""),
 ]
-DEFAULT = dict(client="", contact="", manager="", date="", valid="", title="Шовкові подарунки", sub="", people="", cover="tysha", intro="", split="", alt="", due="",
+DEFAULT = dict(client="", contact="", manager="", date="", valid="", title="Шовкові подарунки", sub="", people="", cover="tysha", layout="mosaic", intro="", split="", alt="", due="",
                rows=[dict(k="tw", d="asst", q="", disc=0, price=None, ph=None)], ex={}, terms="", pay="", note="", disccond="", html={}, pics={})   # html: {page key: edited innerHTML}
 
 HTML = f'''<meta charset="utf-8">
@@ -126,6 +126,9 @@ HTML = f'''<meta charset="utf-8">
   .pg .logo {{ width: 30mm; height: 6.4mm; flex: none; align-self: flex-start; object-fit: contain; object-position: left center; }}
   .pg .foot {{ margin-top: auto; color: var(--ink3); font-size: 7pt; letter-spacing: .16em; text-transform: uppercase; display: grid; grid-template-columns: 1fr auto 1fr; gap: 6mm; padding-top: 4mm; white-space: nowrap; }} .pg .foot span:last-child {{ text-align: right; }} .pg .foot .pn {{ color: var(--ink2); }}
   .cover {{ padding: 0; display: grid; grid-template-rows: 168mm 1fr; }}
+  .cover.mosaic, .cover.card {{ grid-template-rows: 1fr; }} .cover .cv-m {{ grid-row: 1; position: relative; height: 297mm; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 74.25mm); }} .cover .cv-m img {{ width: 100%; height: 74.25mm; object-fit: cover; display: block; }}
+  .cover.mosaic .cv-band {{ position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); padding: 9mm 16.5mm 10mm; z-index: 2; }} .cover.mosaic .cv-main {{ flex: none; margin: 7mm 0; }} .cover.mosaic h1, .cover.mosaic .cv-client {{ font-size: 26pt; }}
+  .cover.card .cv-ph {{ grid-row: 1; height: 297mm; }} .cover.card .cv-band {{ position: absolute; left: 16.5mm; bottom: 16.5mm; width: 130mm; padding: 9mm 10mm 10mm; z-index: 2; }} .cover.card .cv-top {{ flex-direction: column; align-items: flex-start; gap: 5mm; }} .cover.card .cv-kicker {{ text-align: left; white-space: normal; }} .cover.card .cv-main {{ flex: none; margin: 6mm 0 7mm; }} .cover.card h1, .cover.card .cv-client {{ font-size: 24pt; }} .cover.card .cv-meta {{ grid-template-columns: 1fr 1fr; gap: 4mm; }} .cover.card .cv-cap2 {{ display: block; margin-top: 1.2mm; }}
   .cover .cv-ph {{ overflow: hidden; }} .cover .cv-ph img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
   .cover .cv-band {{ background: var(--yellow); padding: 11mm 16.5mm 12mm; display: flex; flex-direction: column; color: #141414; }}
   .cover .cv-top {{ display: flex; justify-content: space-between; align-items: center; gap: 8mm; }} .cover .cv-top img {{ width: 34mm; height: auto; display: block; }} .cover .cv-main {{ flex: 1; display: flex; flex-direction: column; justify-content: center; margin: 0; }}
@@ -211,7 +214,7 @@ HTML = f'''<meta charset="utf-8">
   <div class="two"><div class="f"><label for="date">Дата</label><input id="date" type="date"></div><div class="f"><label for="valid">Дійсна до</label><input id="valid" type="date"></div></div>
   <div class="f"><label for="title">Заголовок</label><input id="title" value="Шовкові подарунки"></div>
   <div class="two"><div class="f"><label for="sub">Підзаголовок (привід)</label><input id="sub" placeholder="До Дня святого Миколая"></div><div class="f"><label for="people">Кількість людей</label><input id="people" type="number" min="1" placeholder="120"></div></div>
-  <div class="f"><label for="cover">Обкладинка</label><select id="cover"></select></div>
+  <div class="two"><div class="f"><label for="layout">Макет обкладинки</label><select id="layout"><option value="mosaic">Мозаїка SOLO (як у презентації)</option><option value="band">Одне фото + жовта смуга</option><option value="card">Фото на всю сторінку з карткою</option></select></div><div class="f"><label for="cover">Фото обкладинки</label><select id="cover"></select></div></div>
 
   <div class="sec"><h2>Позиції</h2><p class="hint">Порожня ціна = роздрібна obiimy.world. Вкажіть або знижку, або ціну за шт. Позиція без кількості в документ не потрапляє.</p><div id="rows"></div><button type="button" class="btn line sm" id="addrow">+ Додати позицію</button></div>
 
@@ -273,7 +276,7 @@ function pct(d) {{ return (Math.round(d * 10) / 10).toLocaleString('uk-UA'); }}
 function rowWarn(card, r) {{ var w = card.querySelector('.warn'); if (!w) return; var on = r.price != null && r.price !== '' && Number(r.disc) > 0 && BY[r.k] && BY[r.k].p; w.hidden = !on; if (on) {{ var pd = Number(r.price) * (1 - Number(r.disc) / 100); w.textContent = 'Ціна ' + money(Number(r.price)) + ' − ' + Number(r.disc) + '% = ' + money(pd) + '. ' + (pd >= BY[r.k].p ? 'Це не нижче за роздрібну ' + money(BY[r.k].p) + ' — у документі знижки не буде.' : 'У документі: знижка ' + pct((1 - pd / BY[r.k].p) * 100) + '% від роздрібної ' + money(BY[r.k].p) + '.') + ' Вкажіть або знижку, або ціну.'; }} }}
 function renderForm() {{
   var cs = document.getElementById('cover'); cs.innerHTML = Object.keys(COVERS).map(function (k) {{ return '<option value="' + k + '">' + esc(COVERS[k].n) + '</option>'; }}).join('');
-  ['client', 'contact', 'manager', 'date', 'valid', 'title', 'sub', 'people', 'cover', 'due', 'terms', 'pay', 'disccond', 'note'].forEach(function (id) {{ document.getElementById(id).value = S[id] || (id === 'cover' ? DEF.cover : ''); }});
+  ['client', 'contact', 'manager', 'date', 'valid', 'title', 'sub', 'people', 'layout', 'cover', 'due', 'terms', 'pay', 'disccond', 'note'].forEach(function (id) {{ document.getElementById(id).value = S[id] || (id === 'cover' || id === 'layout' ? DEF[id] : ''); }});
   var rows = document.getElementById('rows'); rows.innerHTML = '';
   S.rows.forEach(function (r, i) {{
     var d = document.createElement('div'); d.className = 'row';
@@ -317,8 +320,11 @@ function renderDoc() {{
   var extrasSum = 0; extra.forEach(function (e) {{ extrasSum += e[1]; }}); var pay = qtyPaid ? total + extrasSum : 0;
   // 1 · cover
   var cv = COVERS[S.cover] || COVERS[DEF.cover], pic = function (n, d) {{ return (S.pics && S.pics[n]) || d; }};
-  pages.push('<section class="pg cover" data-key="cover"><div class="cv-ph"><img src="' + pic('cover', cv.f) + '" data-pic="cover" style="object-position:' + (S.pics && S.pics.cover ? '50% 30%' : cv.pos) + '" alt=""></div>'
-    + '<div class="cv-band"><div class="cv-top"><img src="brand/logo-ink.png" alt="Obiimy"><p class="cv-kicker">Комерційна пропозиція' + (S.date ? ' · ' + fmtDate(S.date) : '') + (S.pics && S.pics.cover ? '' : '<span class="cv-cap2">На фото — ' + esc(cv.n.charAt(0).toLowerCase() + cv.n.slice(1)) + '</span>') + '</p></div><div class="cv-main">'
+  var lay = S.layout || DEF.layout, own = S.pics && S.pics.cover, cap = lay === 'mosaic' || own ? '' : '<span class="cv-cap2">На фото — ' + esc(cv.n.charAt(0).toLowerCase() + cv.n.slice(1)) + '</span>';
+  var art = lay === 'mosaic' ? '<div class="cv-m">' + MOSAIC.map(function (f, i) {{ return '<img src="' + pic('m' + i, f) + '" data-pic="m' + i + '" style="object-position:' + (S.pics && S.pics['m' + i] ? '50% 30%' : MOSAIC_POS[i]) + '" alt="">'; }}).join('') + '</div>'
+    : '<div class="cv-ph"><img src="' + pic('cover', cv.f) + '" data-pic="cover" style="object-position:' + (own ? '50% 30%' : cv.pos) + '" alt=""></div>';
+  pages.push('<section class="pg cover ' + lay + '" data-key="cover">' + art
+    + '<div class="cv-band"><div class="cv-top"><img src="brand/logo-ink.png" alt="Obiimy"><p class="cv-kicker">Комерційна пропозиція' + (S.date ? ' · ' + fmtDate(S.date) : '') + cap + '</p></div><div class="cv-main">'
     + '<h1' + (S.title.length > 26 ? ' style="font-size:24pt"' : '') + '>' + esc(S.title) + '</h1>' + (S.client ? '<p class="cv-client"' + (S.client.length > 20 ? ' style="font-size:22pt"' : '') + '>для ' + esc(S.client) + '</p>' : '')
     + (S.sub || people ? '<p class="cv-sub">' + esc(S.sub) + (S.sub && people ? ' · ' : '') + (people ? people + ' ' + peopleWord(people) : '') + '</p>' : '') + '</div>'
     + '<div class="cv-meta">' + (S.contact ? '<div><small>Контактна особа</small>' + esc(S.contact).replace(/-/g, '\u2011') + '</div>' : '') + (S.manager ? '<div><small>Менеджер Obiimy</small>' + esc(S.manager) + '</div>' : '')

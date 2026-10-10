@@ -143,7 +143,7 @@ HTML = f'''<meta charset="utf-8">
   .cover .cv-sub {{ font-size: 11pt; margin: 5mm 0 0; max-width: 150mm; }}
   .cover .cv-meta {{ margin-top: 0; display: grid; grid-template-columns: 1.7fr 1.4fr .9fr .9fr; gap: 6mm; font-size: 9.5pt; line-height: 1.35; align-items: start; }}
   .cover .cv-meta small {{ display: block; font-size: 6.5pt; letter-spacing: .22em; text-transform: uppercase; color: #5C4E0E; margin-bottom: 1mm; }}
-  .eb {{ font-size: 7pt; letter-spacing: .22em; text-transform: uppercase; color: var(--ink3); margin: 0 0 3mm; }} .eb.sec {{ margin: 3mm 0 .3mm; color: var(--ink2); }}
+  .eb {{ font-size: 7pt; letter-spacing: .22em; text-transform: uppercase; color: var(--ink3); margin: 0 0 3mm; }} .eb.sec {{ margin: 2.6mm 0 .3mm; color: var(--ink2); }}
   .intro {{ font-size: 10.5pt; max-width: 150mm; margin: -1mm 0 5mm; }}
   .kpinote {{ font-size: 8pt; color: var(--ink3); margin: .5mm 0 0; }}
   .kpi {{ display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 5mm; margin: 0 0 2mm; }} .kpi div {{ border-top: .5pt solid var(--ink); padding-top: 2.5mm; font-size: 8.5pt; color: var(--ink3); }} .kpi b {{ display: block; font-family: Playfair, serif; font-weight: 400; font-size: 20pt; color: var(--ink); line-height: 1.1; margin-bottom: 1mm; }}
@@ -154,7 +154,7 @@ HTML = f'''<meta charset="utf-8">
   .strip3 + .foot, .strip2 + .foot {{ margin-top: 6mm; }}
   .strip3 {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; margin-top: auto; padding-top: 6mm; }} .strip3 img {{ width: 100%; height: 56mm; object-fit: cover; display: block; }}
   .tbc {{ color: var(--ink3); font-family: Playfair, serif; font-style: italic; }}
-  .tbcbox {{ margin-top: 5mm; font-size: 9pt; color: var(--ink2); }} .tbcbox b {{ font-family: Playfair, serif; font-weight: 400; font-size: 12pt; color: var(--ink); }} .tbcbox .bul {{ margin-top: 1mm; }}
+  .pg p.tbcbox {{ margin: 3mm 0 0; font-size: 8.8pt; color: var(--ink2); line-height: 1.45; }} .tbcbox b {{ font-family: Playfair, serif; font-weight: 400; font-size: 12pt; color: var(--ink); }} .tbcbox .bul {{ margin-top: 1mm; }}
   .steps {{ margin: 0; padding: 0 0 0 4.5mm; }} .steps li {{ padding: .6mm 0; }}
   .pg h2.t {{ font-size: 26pt; margin: 0 0 6mm; }} .pg h2.t i {{ color: #8E8A84; }} .pg h2.t.s {{ font-size: 22pt; margin-bottom: 5mm; }}
   .pg .from {{ font-family: Playfair, serif; font-style: italic; font-size: 13pt; color: var(--ink2); margin: -4mm 0 6mm; }}
@@ -166,7 +166,7 @@ HTML = f'''<meta charset="utf-8">
   .item h3 {{ font-size: 14pt; margin: 0 0 1mm; }} .item .d {{ font-size: 9pt; color: var(--ink3); }}
   .item .p {{ text-align: right; white-space: nowrap; }} .item .p b {{ display: block; font-family: Playfair, serif; font-weight: 400; font-size: 14pt; }} .item .p small {{ font-size: 8.5pt; color: var(--ink3); }}
   table {{ width: 100%; border-collapse: collapse; font-size: 10pt; }}
-  th, td {{ border: 0; border-top: .35pt solid var(--line); padding: 2.2mm 2mm; text-align: left; vertical-align: top; }}
+  th, td {{ border: 0; border-top: .35pt solid var(--line); padding: 1.6mm 2mm; text-align: left; vertical-align: top; }}
   th {{ font-weight: 400; font-size: 7pt; letter-spacing: .2em; text-transform: uppercase; color: var(--ink3); border-top: 0; padding-top: 0; }}
   td.num, th.num {{ text-align: right; white-space: nowrap; }}
   tr.tot td {{ border-top: .5pt solid var(--ink); font-size: 11pt; }} tr.tot td:first-child {{ font-family: Playfair, serif; font-size: 12pt; }}
@@ -176,9 +176,11 @@ HTML = f'''<meta charset="utf-8">
   .kv {{ display: grid; grid-template-columns: 1fr; gap: 0; margin-top: 4mm; }}
   .kv div {{ display: grid; grid-template-columns: 50mm 1fr; gap: 5mm; padding: 1.1mm 0; border-top: .35pt solid var(--line); font-size: 8.6pt; align-items: baseline; }}
   .kv div span:first-child {{ font-family: Playfair, serif; font-size: 12pt; color: var(--ink); }}
-  .pg p {{ margin: 0 0 3mm; }} .pg p.fine {{ margin: 5mm 0 0; }} .pg p.fine.ln {{ margin-top: 4mm; }} .pg p.kpinote {{ margin: 1.5mm 0 0; }}
-  .last {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; margin-top: 3mm; }} .last > div:first-child {{ grid-column: span 2; }} .last {{ font-size: 8.5pt; line-height: 1.45; color: var(--ink2); }}
-  .last b {{ font-family: Playfair, serif; font-weight: 400; font-size: 12pt; display: block; margin-bottom: 1mm; color: var(--ink); }} .last .big {{ color: var(--ink); font-size: 10.5pt; }}
+  .pg p {{ margin: 0 0 3mm; }} .pg p.fine {{ margin: 5mm 0 0; }} .pg p.fine.ln {{ margin-top: 3.5mm; font-size: 7.2pt; }} .pg p.kpinote {{ margin: 1.5mm 0 0; }}
+  .last {{ display: block; margin-top: 2.5mm; font-size: 8.8pt; line-height: 1.45; color: var(--ink2); }} .why1 {{ font-size: 8pt; color: var(--ink2); margin: 2.5mm 0 0; border-top: .35pt solid var(--line); padding-top: 2mm; line-height: 1.45; }} .why1 b {{ font-family: Playfair, serif; font-weight: 400; color: var(--ink); }}
+  .contacts {{ margin-top: 3mm; border-top: .5pt solid var(--ink); padding-top: 2.5mm; }} .contacts > b {{ font-family: Playfair, serif; font-weight: 400; font-size: 13pt; display: block; margin-bottom: 1.5mm; }} .cgrid {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; font-size: 9pt; line-height: 1.45; color: var(--ink); }} .cgrid small {{ display: block; font-size: 6.5pt; letter-spacing: .2em; text-transform: uppercase; color: var(--ink3); margin-bottom: 1mm; }}
+  table.wph td.ph {{ padding: 1.2mm 2mm 1.2mm 0; }} table.wph td.ph figure {{ margin: 0; width: 11mm; height: 11mm; overflow: hidden; background: var(--paper); }} table.wph td.ph img {{ width: 100%; height: 100%; object-fit: cover; display: block; }} table.wph td.ph figure.flat img {{ object-fit: contain; padding: .5mm; mix-blend-mode: multiply; }} table.wph td {{ vertical-align: middle; }} table.wph th:first-child {{ padding: 0; }} .last {{ font-size: 8.5pt; line-height: 1.45; color: var(--ink2); }}
+  .last > b {{ font-family: Playfair, serif; font-weight: 400; font-size: 12pt; display: block; margin-bottom: 1mm; color: var(--ink); }} .last .big {{ color: var(--ink); font-size: 10.5pt; }}
   .why3 {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; margin: 3mm 0 0; }}
   .why3 div {{ border-top: .35pt solid var(--line); padding-top: 2.2mm; font-size: 8.3pt; color: var(--ink2); line-height: 1.42; }}
   .why3 b {{ display: block; font-family: Playfair, serif; font-weight: 400; font-size: 12pt; color: var(--ink); margin-bottom: 1mm; }}
@@ -334,46 +336,37 @@ function renderDoc() {{
     + (S.sub || people ? '<p class="cv-sub">' + esc(S.sub) + (S.sub && people ? ' · ' : '') + (people ? people + ' ' + peopleWord(people) : '') + '</p>' : '') + '</div>'
     + '<div class="cv-meta">' + (S.contact ? '<div><small>Контактна особа</small>' + esc(S.contact).replace(/-/g, '\u2011') + '</div>' : '') + (S.manager ? '<div><small>Менеджер Obiimy</small>' + esc(S.manager) + '</div>' : '')
     + (qtyPaid ? '<div><small>До сплати</small>' + money(pay) + '</div>' : '') + (S.valid ? '<div><small>Дійсна до</small>' + fmtDate(S.valid) + '</div>' : '') + '</div></div></section>');
-  // 3… · every position as a row, the pages balanced (7 = 4 + 3), a sparse last page gets three photographs
-  var items = R.map(function (x) {{
-    var ph = x.r.ph || LIFE[x.r.k] || x.it.ph, life = !!(x.r.ph || LIFE[x.r.k]), d2 = x.open ? (x.retail ? 'Роздрібна ціна (' + rowName(x.r).charAt(0).toLowerCase() + rowName(x.r).slice(1) + ') — ' + money(x.retail) + ' · ' : '') + 'розробка принта, тираж і строки — уточнимо в розрахунку' : (DESC[x.r.k] != null ? DESC[x.r.k] : '');
-    if (x.retail && !x.open && Math.round(x.pd) < x.retail) d2 += (d2 ? ' · роздрібна ціна ' : 'Роздрібна ціна ') + money(x.retail);
-    return '<div class="item"><figure class="' + (life ? '' : 'flat') + '"><img src="' + ph + '" data-row="' + x.idx + '" style="object-position:' + (x.r.ph ? '50% 50%' : (LIFE_POS[x.r.k] || '50% 50%')) + '" alt=""></figure>'
-      + '<div><h3>' + esc(x.name) + '</h3>' + (d2 ? '<div class="d">' + esc(d2) + '</div>' : '') + '</div>'
-      + (x.open ? '<div class="p"><b class="tbc">у розрахунку</b><small>' + x.q + ' шт.</small></div>' : '<div class="p"><b>' + money(x.pd * x.q) + '</b><small>' + x.q + ' шт. × ' + money(x.pd) + (x.d ? ' (−' + pct(x.d) + '%)' : '') + '</small></div>') + '</div>';
-  }});
-  var np = Math.max(1, Math.ceil(items.length / 5)), per = Math.ceil(items.length / np);
-  for (var i = 0, k = 1; i < items.length; i += per, k++) {{
-    var chunk = items.slice(i, i + per), last = i + per >= items.length;
-    page('items' + k, '<p class="eb" style="margin-top:10mm">' + esc(S.sub || 'Склад замовлення') + (np > 1 ? ' · сторінка ' + k + ' з ' + np : '') + '</p><h2 class="t">Що пропонуємо</h2><div class="items">' + chunk.join('') + '</div>'
-      + (last ? '<p class="fine">На фото — приклад принта. Принти ви обираєте з добірки Obiimy: один для всієї команди або свій для кожного. 100% натуральний шовк, авторські принти, виготовлено в Україні.</p>' : '')
-      + (chunk.length <= 4 ? '<div class="strip3">' + [[0, 6, 5], [3, 1, 7]][(k - 1) % 2].map(function (m) {{ var nm = 's' + k + '_' + m; return '<img src="' + pic(nm, MOSAIC[m]) + '" data-pic="' + nm + '" style="object-position:' + (S.pics && S.pics[nm] ? '50% 30%' : MOSAIC_POS[m]) + '" alt="">'; }}).join('') + '</div>' : ''));
-  }}
+  // · the second line of a position (for the table): the certificate, the ring, the author print, the twilly
+  var d2of = function (x) {{ var d2 = x.open ? (x.retail ? 'Роздрібна ціна (' + rowName(x.r).charAt(0).toLowerCase() + rowName(x.r).slice(1) + ') — ' + money(x.retail) + ' · ' : '') + 'розробка принта, тираж і строки — уточнимо в розрахунку' : (DESC[x.r.k] != null ? DESC[x.r.k] : ''); return d2; }};
   // · the calculation
-  var sum = (full > total ? '<tr class="tot"><td colspan="5">Разом за роздрібними цінами (' + qtyPaid + ' шт.' + (qty > qtyPaid ? '; ще ' + (qty - qtyPaid) + ' — у розрахунку' : '') + ')</td><td class="num">' + num(full) + '</td></tr><tr class="disc"><td colspan="5">Корпоративна знижка</td><td class="num">−' + num(full - total) + '</td></tr><tr class="tot lite"><td colspan="5">Разом зі знижкою</td><td class="num">' + num(total) + '</td></tr>'
-      : '<tr class="tot"><td colspan="5">Разом за позиції (' + qtyPaid + ' шт.' + (qty > qtyPaid ? '; ще ' + (qty - qtyPaid) + ' — у розрахунку' : '') + ')</td><td class="num">' + num(total) + '</td></tr>')
-    + extra.map(function (e) {{ return '<tr><td colspan="5">' + esc(e[0]) + (e[3] ? '<br><small>' + esc(e[3]) + '</small>' : '') + '</td><td class="num">' + (e[1] ? num(e[1]) : 'безкоштовно') + '</td></tr>'; }}).join('')
-    + '<tr class="sum"><td colspan="5">До сплати за цим складом</td><td class="num">' + num(pay) + ' грн</td></tr>';
+  var sum = (full > total ? '<tr class="tot"><td colspan="6">Разом за роздрібними цінами (' + qtyPaid + ' шт.' + (qty > qtyPaid ? '; ще ' + (qty - qtyPaid) + ' — у розрахунку' : '') + ')</td><td class="num">' + num(full) + '</td></tr><tr class="disc"><td colspan="6">Корпоративна знижка</td><td class="num">−' + num(full - total) + '</td></tr><tr class="tot lite"><td colspan="6">Разом зі знижкою</td><td class="num">' + num(total) + '</td></tr>'
+      : '<tr class="tot"><td colspan="6">Разом за позиції (' + qtyPaid + ' шт.' + (qty > qtyPaid ? '; ще ' + (qty - qtyPaid) + ' — у розрахунку' : '') + ')</td><td class="num">' + num(total) + '</td></tr>')
+    + (function () {{ var free = extra.filter(function (e) {{ return e[2] === 'pack' || e[2] === 'stick'; }}), rest = extra.filter(function (e) {{ return e[2] !== 'pack' && e[2] !== 'stick'; }}), out = '';
+        if (free.length === 2) out += '<tr><td colspan="6">Подарункове пакування кожної речі й наліпка з логотипом компанії всередині коробки</td><td class="num">безкоштовно</td></tr>'; else free.forEach(function (e) {{ out += '<tr><td colspan="6">' + esc(e[0]) + '</td><td class="num">безкоштовно</td></tr>'; }});
+        rest.forEach(function (e) {{ out += '<tr><td colspan="6">' + esc(e[0]) + (e[3] ? ' <small>— ' + esc(e[3]) + '</small>' : '') + '</td><td class="num">' + (e[1] ? num(e[1]) : 'безкоштовно') + '</td></tr>'; }}); return out; }})()
+    + '<tr class="sum"><td colspan="6">До сплати за цим складом</td><td class="num">' + num(pay) + ' грн</td></tr>';
   var dg = {{}}, dmix = false; R.forEach(function (x) {{ if (x.open) return; (dg[x.d] = dg[x.d] || []).push(x.name); }}); var dk = Object.keys(dg); dmix = dk.length > 1;
   var dnote = dmix && dg[0] ? 'Без знижки: ' + dg[0].map(function (n) {{ return n.charAt(0).toLowerCase() + n.slice(1); }}).join(', ') + '. ' : '';
   var trs = R.map(function (x) {{
-    return '<tr><td>' + (x.author ? esc(x.name.split(' · ')[0]) + '<br><small>' + esc(x.name.split(' · ')[1]) + '</small>' : esc(x.name)) + '</td><td class="num">' + x.q + '</td>'
+    var ph = x.r.ph || LIFE[x.r.k] || x.it.ph, life = !!(x.r.ph || LIFE[x.r.k]), d2 = x.author ? x.name.split(' · ')[1] + ' · розробка принта, тираж і строки — уточнимо' : (/^cert/.test(x.r.k) ? 'Електронний або фізичний; діє три місяці' : x.r.k === 'ring' ? 'П’ять форм на вибір' : /^tw/.test(x.r.k) ? '' : d2of(x));
+    return '<tr><td class="ph"><figure class="' + (life ? '' : 'flat') + '"><img src="' + ph + '" data-row="' + x.idx + '" style="object-position:' + (x.r.ph ? '50% 50%' : (LIFE_POS[x.r.k] || '50% 50%')) + '" alt=""></figure></td><td>' + esc(x.author ? x.name.split(' · ')[0] : x.name) + (d2 ? '<br><small>' + esc(d2) + '</small>' : '') + '</td><td class="num">' + x.q + '</td>'
       + (x.open ? '<td class="num">' + (x.retail ? num(x.retail) : '<span class="mute">—</span>') + '</td><td class="num"><span class="mute">—</span></td><td class="num"><span class="mute">—</span></td><td class="num tbc">у розрахунку</td>' : '<td class="num">' + num(x.p) + '</td><td class="num">' + (x.d ? '−' + pct(x.d) + '%' : '<span class="mute">—</span>') + '</td><td class="num">' + num(x.pd) + '</td><td class="num">' + num(x.pd * x.q) + '</td>') + '</tr>';
   }});
-  var TP = 9, tnp = Math.max(1, Math.ceil(trs.length / TP)), thead = '<table><colgroup><col><col style="width:12mm"><col style="width:22mm"><col style="width:18mm"><col style="width:20mm"><col style="width:26mm"></colgroup><thead><tr><th>Виріб</th><th class="num">Шт.</th><th class="num">Роздрібна</th><th class="num">Знижка</th><th class="num">Ціна</th><th class="num">Сума</th></tr></thead><tbody>';
-  for (var tp = 0; tp < tnp - 1; tp++) page('table' + (tp + 1), '<p class="eb" style="margin-top:10mm">Розрахунок' + (S.client ? ' · для ' + esc(S.client) : '') + ' · ціни в грн · сторінка ' + (tp + 1) + ' з ' + tnp + '</p><h2 class="t">Вартість замовлення</h2>' + thead + trs.slice(tp * TP, tp * TP + TP).join('') + '</tbody></table>');
-  page(tnp > 1 ? 'table' + tnp : 'table', '<p class="eb" style="margin-top:10mm">Розрахунок' + (S.client ? ' · для ' + esc(S.client) : '') + ' · ціни в грн' + (tnp > 1 ? ' · сторінка ' + tnp + ' з ' + tnp : '') + '</p><h2 class="t">Вартість замовлення</h2>'
-    + thead + trs.slice((tnp - 1) * TP).join('') + (R.length ? '' : '<tr><td colspan="6" class="mute2">Додайте позиції у формі ліворуч.</td></tr>') + sum + '</tbody></table>'
-    + (tbc.length ? '<div class="tbcbox"><b>Порахуємо додатково</b> — не входить у суму «До сплати»:<ul class="bul">' + tbc.map(function (t) {{ return '<li>' + esc(t) + '</li>'; }}).join('') + '</ul></div>' : '')
+  var TP = 10, TL = 7, tnp = trs.length <= TL ? 1 : 1 + Math.ceil((trs.length - TL) / TP), TF = tnp > 1 ? Math.ceil(trs.length / tnp) : 0; while (tnp > 1 && trs.length - TF * (tnp - 1) > TL && TF < TP) TF++;
+  var thead = '<table class="wph"><colgroup><col style="width:13mm"><col><col style="width:12mm"><col style="width:22mm"><col style="width:17mm"><col style="width:19mm"><col style="width:25mm"></colgroup><thead><tr><th></th><th>Виріб</th><th class="num">Шт.</th><th class="num">Роздрібна</th><th class="num">Знижка</th><th class="num">Ціна</th><th class="num">Сума</th></tr></thead><tbody>';
+  for (var tp = 0; tp < tnp - 1; tp++) page('table' + (tp + 1), '<p class="eb" style="margin-top:8mm">' + esc(S.sub || 'Розрахунок') + (S.client ? ' · для ' + esc(S.client) : '') + ' · ціни в грн · сторінка ' + (tp + 1) + ' з ' + tnp + '</p><h2 class="t">Що пропонуємо</h2>' + thead + trs.slice(tp * TF, tp * TF + TF).join('') + '</tbody></table>');
+  page(tnp > 1 ? 'table' + tnp : 'table', '<p class="eb" style="margin-top:8mm">' + esc(S.sub || 'Розрахунок') + (S.client ? ' · для ' + esc(S.client) : '') + ' · ціни в грн' + (tnp > 1 ? ' · сторінка ' + tnp + ' з ' + tnp : '') + '</p><h2 class="t" style="margin-bottom:4mm">Що пропонуємо</h2>'
+    + thead + trs.slice((tnp - 1) * TF).join('') + (R.length ? '' : '<tr><td colspan="7" class="mute2">Додайте позиції у формі ліворуч.</td></tr>') + sum + '</tbody></table>'
+    + (tbc.length ? '<p class="tbcbox"><b>Порахуємо додатково</b> (не входить у суму «До сплати»): ' + tbc.map(function (t) {{ return esc(t); }}).join('; ') + '.</p>' : '')
     + '<p class="fine ln">' + dnote + (S.disccond ? 'Умова знижки: ' + esc(S.disccond) + ' ' : '') + (people && pay ? 'У середньому ≈ ' + money(pay / people) + ' на людину (' + people + ' ' + peopleWord(people) + '; від суми «До сплати»). ' : '')
-    + 'Ціни в гривнях; роздрібні — obiimy.world. Умови оплати й документи — на сторінці «Умови замовлення». Пропозиція не є публічною офертою' + (S.valid ? '; дійсна до ' + fmtDate(S.valid) : '') + '.</p>');
+    + 'На фото — приклад принта; принти ви обираєте з добірки Obiimy: один для всієї команди або свій для кожного. Ціни в гривнях; роздрібні — obiimy.world. Умови оплати й документи — на сторінці «Умови замовлення». Пропозиція не є публічною офертою' + (S.valid ? '; дійсна до ' + fmtDate(S.valid) : '') + '.</p>');
   // · terms, packaging and personalisation, why Obiimy, the next step and contacts
   function exLine(id, base) {{ var x = exVal(id); return base + (x && x.n != null ? (x.note ? ': ' + esc(x.note) : '') + ' — ' + (x.n ? money(x.n) + ' за весь тираж' : 'безкоштовно') + '.' : ' — можливість, строки й вартість у розрахунку.'); }}
   var deliv = exVal('deliv');
   var kv1 = '<div><span>Подарункове пакування</span><span>Кожна річ — у подарунковому пакуванні Obiimy.</span></div><div><span>Наліпка з логотипом</span><span>Наліпка з логотипом вашої компанії всередині коробки.</span></div>';
   var kv2 = '<div><span>Нашивна бирка</span><span>' + exLine('tag', 'З логотипом вашої компанії') + '</span></div><div><span>Друковані матеріали</span><span>' + exLine('print', exVal('print') && exVal('print').note ? 'З логотипом вашої компанії' : 'З логотипом вашої компанії, наприклад листівка з привітанням') + '</span></div><div><span>Індивідуальний принт</span><span>' + exLine('design', 'Принт, створений для вашої компанії') + '</span></div>';
   var kv3 = '<div><span>Строки</span><span>' + (S.terms ? nl(S.terms) : 'Підтвердимо після узгодження складу й кількості' + (S.due ? ' — з орієнтиром на вручення ' + fmtDate(S.due) : '') + '.') + '</span></div><div><span>Оплата</span><span>' + (S.pay ? nl(S.pay) : 'Форму оплати, передоплату, ПДВ і документи узгодимо з вашою бухгалтерією.') + '</span></div>'
-    + '<div><span>Доставка</span><span>' + (deliv ? (deliv.n != null ? (deliv.n ? money(deliv.n) : 'Безкоштовно') + (deliv.note ? ' — ' + esc(deliv.note) : '') : esc(deliv.v)) : 'Спосіб, адресу й кількість відправлень узгодимо; розсилку співробітникам — уточнимо.') + '</span></div>' + '<div><span>Зразки</span><span>У шоурумі (адреса внизу сторінки): пн–пт 10:00–18:00, сб 11:00–18:00.</span></div><div><span>Обмін і повернення</span><span>Умови узгодимо до підтвердження замовлення.</span></div>'
+    + '<div><span>Доставка</span><span>' + (deliv ? (deliv.n != null ? (deliv.n ? money(deliv.n) : 'Безкоштовно') + (deliv.note ? ' — ' + esc(deliv.note) : '') : esc(deliv.v)) : 'Спосіб, адресу й кількість відправлень узгодимо; розсилку співробітникам — уточнимо.') + '</span></div>' + '<div><span>Обмін і повернення</span><span>Умови узгодимо до підтвердження замовлення.</span></div>'
     + (S.disccond ? '<div><span>Знижка</span><span>' + nl(S.disccond) + '</span></div>' : '') + (S.note ? '<div><span>Примітка</span><span>' + nl(S.note) + '</span></div>' : '');
   var ph = PHONE.replace(/\D/g, ''), mg = S.manager || '', hasPh = mg.replace(/\D/g, '').indexOf(ph) >= 0, needLogo = true, hasPrint = exVal('print');
   var steps = '<ol class="steps"><li>Підтвердіть склад і кількість — відповіддю на лист або в Telegram' + (S.valid ? ', до ' + fmtDate(S.valid) : '') + '.</li>'
@@ -381,8 +374,9 @@ function renderDoc() {{
     + '<li>Ми перевіримо наявність принтів і підтвердимо дату відвантаження' + (S.due ? ' до вручення ' + fmtDate(S.due) : '') + ', оплату й документи, розподіл подарунків' + (tbc.length ? ', вартість пунктів «Порахуємо додатково»' : '') + ', умови обміну й повернення — і запросимо подивитися зразки в шоурумі.</li></ol>';
   page('terms', '<p class="eb" style="margin-top:5mm">Умови й персоналізація</p><h2 class="t" style="margin-bottom:2mm">Умови замовлення</h2>'
     + '<p class="eb sec">Безкоштовно в кожному замовленні</p><div class="kv">' + kv1 + '</div><p class="eb sec">Додатково, за запитом</p><div class="kv">' + kv2 + '</div><p class="eb sec">Умови</p><div class="kv">' + kv3 + '</div>'
-    + '<div class="why3"><div><b>Унікальні принти</b>Авторські малюнки засновниці Світлани Сніжко та сучасних українських художниць.</div><div><b>Якість, яку відчувають</b>Лише 100% натуральний шовк преміум-класу: італійський шовк, українське виробництво; кутики кожної хустки обробляють вручну.</div><div><b>Бренд, який упізнають</b>У продажу в INTERTOP і Hram (Україна), Be Brave (Канада), UFD London. Про бренд писали LIGA.net та INSIDER UA.</div></div>'
-    + '<div class="last"><div><b>Наступний крок</b>' + steps + '</div><div><b>Контакти</b>' + (mg ? '<span class="big">' + esc(mg) + '</span><br>' : '') + (hasPh ? '' : nb(PHONE) + ' · ') + 'Telegram @OBIIMY_sales<br>' + esc(MAIL) + ' · obiimy.world</div></div>');
+    + '<div class="last"><b>Наступний крок</b>' + steps + '</div>'
+    + '<p class="why1"><b>Про Obiimy.</b> Авторські принти засновниці Світлани Сніжко та сучасних українських художниць · лише 100% натуральний шовк преміум-класу, італійський шовк і українське виробництво, кутики кожної хустки обробляють вручну · у продажу в INTERTOP і Hram (Україна), Be Brave (Канада), UFD London; про бренд писали LIGA.net та INSIDER UA.</p>'
+    + '<div class="contacts"><b>Контакти</b><div class="cgrid"><div><small>Менеджер Obiimy</small>' + (mg ? esc(mg) + '<br>' : '') + (hasPh ? '' : nb(PHONE) + '<br>') + 'Telegram @OBIIMY_sales</div><div><small>Пошта й сайт</small>' + esc(MAIL) + '<br>obiimy.world</div><div><small>Шоурум</small>' + esc(SHOWROOM) + '<br>пн–пт 10:00–18:00, сб 11:00–18:00</div></div></div>');
   document.getElementById('doc').innerHTML = pages.join('').replace(/§N§/g, pages.length);
   var sl = document.getElementById('sumline'); sl.dataset.pay = money(pay); sl.textContent = (qtyPaid ? 'До сплати ' + money(pay) + (tbc.length ? ' *' : '') : 'Додайте позиції') + ' · ' + qty + '\u00a0шт. · ' + pages.length + '\u00a0стор.';
   var sig = dataSig();

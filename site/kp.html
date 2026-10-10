@@ -50,7 +50,7 @@
   .cover .cv-cap2 { display: block; font-size: 6.5pt; color: #5C4E0E; margin-top: 1.2mm; }
   .cover h1 { font-size: 30pt; line-height: 1.02; margin: 0; } .cover .cv-client { font-family: Playfair, serif; font-style: italic; font-weight: 400; font-size: 30pt; line-height: 1.02; color: #4A4A47; margin: 1mm 0 0; }
   .cover .cv-sub { font-size: 11pt; margin: 5mm 0 0; max-width: 150mm; }
-  .cover .cv-meta { margin-top: 0; display: grid; grid-template-columns: 1.5fr 1.3fr 1fr 1fr; gap: 6mm; font-size: 9.5pt; line-height: 1.35; align-items: start; }
+  .cover .cv-meta { margin-top: 0; display: grid; grid-template-columns: 1.7fr 1.4fr .9fr .9fr; gap: 6mm; font-size: 9.5pt; line-height: 1.35; align-items: start; }
   .cover .cv-meta small { display: block; font-size: 6.5pt; letter-spacing: .22em; text-transform: uppercase; color: #5C4E0E; margin-bottom: 1mm; }
   .eb { font-size: 7pt; letter-spacing: .22em; text-transform: uppercase; color: var(--ink3); margin: 0 0 3mm; } .eb.sec { margin: 3mm 0 .3mm; color: var(--ink2); }
   .intro { font-size: 10.5pt; max-width: 150mm; margin: -1mm 0 5mm; }
@@ -255,7 +255,7 @@ function renderDoc() {
   var who = R.map(function (x) { return '<div><b>' + x.q + '</b><span>' + esc(x.name) + '</span></div>'; }).join('');
   var inbox = '<li>Подарункове пакування Obiimy для кожної речі — безкоштовно</li><li>Наліпка з логотипом ' + (S.client ? esc(S.client) : 'вашої компанії') + ' всередині коробки — безкоштовно</li>'
     + extra.filter(function (e) { return e[2] !== 'pack' && e[2] !== 'stick'; }).map(function (e) { return '<li>' + esc(e[0]) + ' — ' + (e[1] ? money(e[1]) + ' за весь тираж' : 'безкоштовно' + (e[3] ? ', ' + esc(e[3]) : '')) + '</li>'; }).join('');
-  var later = tbc.length ? '<p class="eb sec">Порахуємо додатково · не входить у «До сплати»</p><ul class="bul">' + tbc.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '';
+  var later = tbc.length ? '<p class="eb sec">Порахуємо окремо</p><ul class="bul">' + tbc.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '';
   page('brief', '<p class="eb" style="margin-top:10mm">Коротко' + (S.client ? ' · для ' + esc(S.client) : '') + (S.sub ? ' · ' + esc(S.sub) : '') + '</p><h2 class="t">Пропозиція коротко</h2>'
     + '<p class="intro">' + (S.intro ? nl(S.intro) : 'Дякуємо за запит. Нижче — склад, вартість і умови пропозиції. Склад і кількість можна змінити — перерахуємо.') + '</p>' + kpi + (S.alt ? '<p class="alt"><b>Альтернатива.</b> ' + nl(S.alt) + '</p>' : '')
     + (R.length > 7 ? '<p class="eb sec">Що отримує команда</p><div class="who cols2">' + who + '</div>' + split + '<div class="cols"><div><p class="eb sec">Входить у замовлення</p><ul class="bul">' + inbox + '</ul></div><div>' + later + '</div></div>'

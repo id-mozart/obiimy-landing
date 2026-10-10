@@ -126,9 +126,6 @@
   <div class="f"><label for="title">Заголовок</label><input id="title" value="Шовкові подарунки"></div>
   <div class="two"><div class="f"><label for="sub">Підзаголовок (привід)</label><input id="sub" placeholder="До Дня святого Миколая"></div><div class="f"><label for="people">Кількість людей</label><input id="people" type="number" min="1" placeholder="120"></div></div>
   <div class="f"><label for="cover">Обкладинка</label><select id="cover"></select></div>
-  <div class="f"><label for="intro">Вступ (сторінка «Коротко»)</label><textarea id="intro" placeholder="Дякуємо за запит. Нижче — склад, вартість і умови пропозиції. Склад і кількість можна змінити — перерахуємо."></textarea></div>
-  <div class="f"><label for="split">Розподіл: хто що отримує</label><textarea id="split" placeholder="Напр.: 60 менеджерам — твіллі; 30 керівницям — хустка 44 × 44 з кільцем; 20 партнерам — сертифікат. Порожнє → «розподіл узгодимо»"></textarea></div>
-  <div class="f"><label for="alt">Альтернатива (за бажанням)</label><input id="alt" placeholder="Напр.: інший варіант у цьому бюджеті — 120 × твіллі з кільцем; надішлемо за запитом"></div>
 
   <div class="sec"><h2>Позиції</h2><p class="hint">Порожня ціна = роздрібна obiimy.world. Вкажіть або знижку, або ціну за шт. Позиція без кількості в документ не потрапляє.</p><div id="rows"></div><button type="button" class="btn line sm" id="addrow">+ Додати позицію</button></div>
 
@@ -190,7 +187,7 @@ function pct(d) { return (Math.round(d * 10) / 10).toLocaleString('uk-UA'); }
 function rowWarn(card, r) { var w = card.querySelector('.warn'); if (!w) return; var on = r.price != null && r.price !== '' && Number(r.disc) > 0 && BY[r.k] && BY[r.k].p; w.hidden = !on; if (on) { var pd = Number(r.price) * (1 - Number(r.disc) / 100); w.textContent = 'Ціна ' + money(Number(r.price)) + ' − ' + Number(r.disc) + '% = ' + money(pd) + '. ' + (pd >= BY[r.k].p ? 'Це не нижче за роздрібну ' + money(BY[r.k].p) + ' — у документі знижки не буде.' : 'У документі: знижка ' + pct((1 - pd / BY[r.k].p) * 100) + '% від роздрібної ' + money(BY[r.k].p) + '.') + ' Вкажіть або знижку, або ціну.'; } }
 function renderForm() {
   var cs = document.getElementById('cover'); cs.innerHTML = Object.keys(COVERS).map(function (k) { return '<option value="' + k + '">' + esc(COVERS[k].n) + '</option>'; }).join('');
-  ['client', 'contact', 'manager', 'date', 'valid', 'title', 'sub', 'people', 'cover', 'intro', 'split', 'alt', 'due', 'terms', 'pay', 'disccond', 'note'].forEach(function (id) { document.getElementById(id).value = S[id] || (id === 'cover' ? DEF.cover : ''); });
+  ['client', 'contact', 'manager', 'date', 'valid', 'title', 'sub', 'people', 'cover', 'due', 'terms', 'pay', 'disccond', 'note'].forEach(function (id) { document.getElementById(id).value = S[id] || (id === 'cover' ? DEF.cover : ''); });
   var rows = document.getElementById('rows'); rows.innerHTML = '';
   S.rows.forEach(function (r, i) {
     var d = document.createElement('div'); d.className = 'row';
@@ -240,21 +237,6 @@ function renderDoc() {
     + (S.sub || people ? '<p class="cv-sub">' + esc(S.sub) + (S.sub && people ? ' · ' : '') + (people ? people + ' ' + peopleWord(people) : '') + '</p>' : '') + '</div>'
     + '<div class="cv-meta">' + (S.contact ? '<div><small>Контактна особа</small>' + esc(S.contact).replace(/-/g, '‑') + '</div>' : '') + (S.manager ? '<div><small>Менеджер Obiimy</small>' + esc(S.manager) + '</div>' : '')
     + (qtyPaid ? '<div><small>До сплати</small>' + money(pay) + '</div>' : '') + (S.valid ? '<div><small>Дійсна до</small>' + fmtDate(S.valid) + '</div>' : '') + '</div></div></section>');
-  // 2 · the proposal in brief: numbers, who gets what, what is in every gift, what is costed later, the box
-  var kpi = '<div class="kpi">' + (people ? '<div><b>' + people + '</b>' + peopleWord(people) + '</div>' : '') + '<div><b>' + qty + '</b>' + giftWord(qty) + (qty > qtyPaid ? ' *' : '') + '</div>'
-    + '<div><b>' + num(pay) + '</b>грн до сплати' + (tbc.length ? ' *' : '') + '</div>'
-    + (people && pay ? '<div><b>≈ ' + num(pay / people) + '</b>грн на людину **</div>' : (qtyPaid && pay ? '<div><b>≈ ' + num(pay / qtyPaid) + '</b>грн за подарунок **</div>' : '')) + '</div>'
-    + '<p class="kpinote">' + (qty > qtyPaid ? '* ' + (qty - qtyPaid) + ' — у розрахунку, не входять у «До сплати». ' : '') + (pay ? '** Від суми «До сплати».' : '') + '</p>';
-  var split = '<p class="split">' + (S.split ? nl(S.split) : 'Розподіл подарунків між людьми й комплекти (наприклад, хустка + кільце) узгодимо після підтвердження складу; варіанти для чоловіків у команді підкажемо.') + '</p>';
-  var who = R.map(function (x) { return '<div><b>' + x.q + '</b><span>' + esc(x.name) + '</span></div>'; }).join('');
-  var inbox = '<li>Подарункове пакування Obiimy для кожної речі — безкоштовно</li><li>Наліпка з логотипом ' + (S.client ? esc(S.client) : 'вашої компанії') + ' всередині коробки — безкоштовно</li>'
-    + extra.filter(function (e) { return e[2] !== 'pack' && e[2] !== 'stick'; }).map(function (e) { return '<li>' + esc(e[0]) + ' — ' + (e[1] ? money(e[1]) + ' за весь тираж' : 'безкоштовно' + (e[3] ? ', ' + esc(e[3]) : '')) + '</li>'; }).join('');
-  var later = tbc.length ? '<p class="eb sec">Порахуємо окремо</p><ul class="bul">' + tbc.map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul>' : '';
-  page('brief', '<p class="eb" style="margin-top:10mm">Коротко' + (S.client ? ' · для ' + esc(S.client) : '') + (S.sub ? ' · ' + esc(S.sub) : '') + '</p><h2 class="t">Пропозиція коротко</h2>'
-    + '<p class="intro">' + (S.intro ? nl(S.intro) : 'Дякуємо за запит. Нижче — склад, вартість і умови пропозиції. Склад і кількість можна змінити — перерахуємо.') + '</p>' + kpi + (S.alt ? '<p class="alt"><b>Альтернатива.</b> ' + nl(S.alt) + '</p>' : '')
-    + (R.length > 7 ? '<p class="eb sec">Що отримує команда</p><div class="who cols2">' + who + '</div>' + split + '<div class="cols"><div><p class="eb sec">Входить у замовлення</p><ul class="bul">' + inbox + '</ul></div><div>' + later + '</div></div>'
-      : '<div class="cols"><div><p class="eb sec">Що отримує команда</p><div class="who">' + who + '</div>' + split + '</div><div><p class="eb sec">Входить у замовлення</p><ul class="bul">' + inbox + '</ul>' + later + '</div></div>')
-    + (R.length > 11 ? '' : '<div class="strip2"><figure><img src="' + pic('box0', BOX[0]) + '" data-pic="box0" alt=""><figcaption>Подарункове пакування Obiimy</figcaption></figure><figure><img src="' + pic('box1', BOX[1]) + '" data-pic="box1" alt=""><figcaption>Твіллі та резинка у святковій коробці</figcaption></figure></div>'));
   // 3… · every position as a row, the pages balanced (7 = 4 + 3), a sparse last page gets three photographs
   var items = R.map(function (x) {
     var ph = x.r.ph || LIFE[x.r.k] || x.it.ph, life = !!(x.r.ph || LIFE[x.r.k]), d2 = x.open ? (x.retail ? 'Роздрібна ціна (' + rowName(x.r).charAt(0).toLowerCase() + rowName(x.r).slice(1) + ') — ' + money(x.retail) + ' · ' : '') + 'розробка принта, тираж і строки — уточнимо в розрахунку' : (DESC[x.r.k] != null ? DESC[x.r.k] : '');
@@ -330,8 +312,8 @@ function toast(msg, undoLabel, undoFn) {
 // ---------- in-place editing: text and pictures ----------
 var editTimer = null;
 function pageSnapshot(pg) { var c = pg.cloneNode(true); c.querySelectorAll('.pgtools').forEach(function (t) { t.remove(); }); return c.innerHTML; }
-function snapshotFor(pg) { var k = pg.dataset.key, data = /^(items|table|brief)/.test(k); return data ? { h: pageSnapshot(pg), sig: dataSig() } : pageSnapshot(pg); }
-function pageTitle(key) { return { cover: 'Обкладинка', brief: 'Коротко', terms: 'Умови' }[key] || (/^items/.test(key) ? 'Що пропонуємо ' + key.slice(5) : 'Розрахунок' + key.slice(5)); }
+function snapshotFor(pg) { var k = pg.dataset.key, data = /^(items|table)/.test(k); return data ? { h: pageSnapshot(pg), sig: dataSig() } : pageSnapshot(pg); }
+function pageTitle(key) { return { cover: 'Обкладинка', terms: 'Умови' }[key] || (/^items/.test(key) ? 'Що пропонуємо ' + key.slice(5) : 'Розрахунок' + key.slice(5)); }
 document.getElementById('doc').addEventListener('input', function (e) {
   var pg = e.target.closest('.pg'); if (!pg || e.target.closest('.pgtools')) return;
   clearTimeout(editTimer); editTimer = setTimeout(function () { S.html = S.html || {}; S.html[pg.dataset.key] = snapshotFor(pg); pg.classList.add('edit'); save(); markTools(pg, true); renderEdited(); }, 400);

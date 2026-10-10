@@ -81,7 +81,7 @@ EXTRAS = [  # personalisation levels: id, name, default note; price is typed by 
     ("design", "Розробка індивідуального принта", ""),
     ("deliv", "Доставка", ""),
 ]
-DEFAULT = dict(client="", contact="", manager="", date="", valid="", title="Шовкові подарунки", sub="", people="", cover="tysha", intro="", split="", alt="",
+DEFAULT = dict(client="", contact="", manager="", date="", valid="", title="Шовкові подарунки", sub="", people="", cover="tysha", intro="", split="", alt="", due="",
                rows=[dict(k="tw", d="asst", q="", disc=0, price=None, ph=None)], ex={}, terms="", pay="", note="", disccond="", html={}, pics={})   # html: {page key: edited innerHTML}
 
 HTML = f'''<meta charset="utf-8">
@@ -110,7 +110,7 @@ HTML = f'''<meta charset="utf-8">
   .row {{ border: 1px solid var(--line); padding: 10px; margin-bottom: 10px; display: grid; gap: 8px; background: #fff; }}
   .row .g {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }}
   .row .g2 {{ display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: end; }}
-  .row small {{ color: var(--ink3); }} .row small.warn {{ color: #8a5a00; background: #FFF5C2; padding: 4px 6px; }}
+  .row small {{ color: var(--ink3); }} .row small.warn {{ color: #8a5a00; background: #FFF5C2; padding: 4px 6px; }} .row small.warn[hidden] {{ display: none; }}
   .ex {{ display: grid; grid-template-columns: 1fr 110px; gap: 8px; align-items: center; margin-bottom: 6px; font-size: .9rem; }}
   .btn {{ font: inherit; border: 1px solid var(--ink); background: var(--ink); color: #F1EFEA; border-radius: 999px; padding: 9px 16px; cursor: pointer; letter-spacing: .02em; }}
   .btn.line {{ background: transparent; color: var(--ink); }}
@@ -128,20 +128,23 @@ HTML = f'''<meta charset="utf-8">
   .cover {{ padding: 0; display: grid; grid-template-rows: 168mm 1fr; }}
   .cover .cv-ph {{ overflow: hidden; }} .cover .cv-ph img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
   .cover .cv-band {{ background: var(--yellow); padding: 11mm 16.5mm 12mm; display: flex; flex-direction: column; color: #141414; }}
-  .cover .cv-top {{ display: flex; justify-content: space-between; align-items: center; gap: 8mm; }} .cover .cv-top img {{ width: 34mm; height: auto; display: block; }} .cover .cv-main {{ margin-top: 11mm; }}
-  .cover .cv-kicker {{ font-size: 7.5pt; letter-spacing: .22em; text-transform: uppercase; margin: 0; text-align: right; }}
+  .cover .cv-top {{ display: flex; justify-content: space-between; align-items: center; gap: 8mm; }} .cover .cv-top img {{ width: 34mm; height: auto; display: block; }} .cover .cv-main {{ margin: auto 0; }}
+  .cover .cv-kicker {{ font-size: 7pt; letter-spacing: .22em; text-transform: uppercase; margin: 0; text-align: right; white-space: nowrap; }}
+  .cover .cv-ph {{ position: relative; }} .cover .cv-cap {{ position: absolute; right: 8mm; bottom: 5mm; color: #fff; font-size: 6.5pt; letter-spacing: .2em; text-transform: uppercase; text-shadow: 0 0 8px rgba(0,0,0,.6); }}
   .cover h1 {{ font-size: 30pt; line-height: 1.02; margin: 0; }} .cover .cv-client {{ font-family: Playfair, serif; font-style: italic; font-weight: 400; font-size: 30pt; line-height: 1.02; color: #4A4A47; margin: 1mm 0 0; }}
   .cover .cv-sub {{ font-size: 11pt; margin: 5mm 0 0; max-width: 150mm; }}
-  .cover .cv-meta {{ margin-top: auto; display: grid; grid-template-columns: 1.5fr 1.3fr 1fr 1fr; gap: 6mm; font-size: 9.5pt; line-height: 1.35; }}
+  .cover .cv-meta {{ margin-top: auto; display: grid; grid-template-columns: 1.5fr 1.3fr 1fr 1fr; gap: 6mm; font-size: 9.5pt; line-height: 1.35; align-items: start; }}
   .cover .cv-meta small {{ display: block; font-size: 6.5pt; letter-spacing: .22em; text-transform: uppercase; color: #5C4E0E; margin-bottom: 1mm; }}
   .eb {{ font-size: 7pt; letter-spacing: .22em; text-transform: uppercase; color: var(--ink3); margin: 0 0 3mm; }} .eb.sec {{ margin: 3mm 0 .3mm; color: var(--ink2); }}
   .intro {{ font-size: 10.5pt; max-width: 150mm; margin: -1mm 0 5mm; }}
+  .kpinote {{ font-size: 8pt; color: var(--ink3); margin: 1mm 0 0; }}
   .kpi {{ display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 5mm; margin: 0 0 2mm; }} .kpi div {{ border-top: .5pt solid var(--ink); padding-top: 2.5mm; font-size: 8.5pt; color: var(--ink3); }} .kpi b {{ display: block; font-family: Playfair, serif; font-weight: 400; font-size: 20pt; color: var(--ink); line-height: 1.1; margin-bottom: 1mm; }}
   .cols {{ display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; }}
   .who div {{ display: grid; grid-template-columns: 11mm 1fr; gap: 2mm; padding: 1.6mm 0; border-top: .35pt solid var(--line); font-size: 9.5pt; break-inside: avoid; }} .who.cols2 {{ columns: 2; column-gap: 8mm; }} .who.cols2 div {{ padding: 1.2mm 0; font-size: 9pt; }} .who b {{ font-family: Playfair, serif; font-weight: 400; font-size: 12pt; }} .who i {{ color: var(--ink3); }}
   .bul {{ margin: 0; padding: 0 0 0 4mm; font-size: 9.5pt; color: var(--ink2); }} .bul li {{ padding: .8mm 0; }}
   .strip2 {{ display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin-top: auto; padding-top: 6mm; }} .strip2 figure {{ margin: 0; }} .strip2 img {{ width: 100%; height: 58mm; object-fit: cover; display: block; mix-blend-mode: multiply; }} .strip2 figcaption {{ font-family: Playfair, serif; font-style: italic; font-size: 9.5pt; color: var(--ink2); margin-top: 2mm; }}
-  .strip3 {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; margin-top: auto; padding-top: 6mm; }} .strip3 img {{ width: 100%; height: 58mm; object-fit: cover; display: block; }}
+  .strip3 + .foot, .strip2 + .foot {{ margin-top: 6mm; }}
+  .strip3 {{ display: grid; grid-template-columns: repeat(3, 1fr); gap: 5mm; margin-top: auto; padding-top: 6mm; }} .strip3 img {{ width: 100%; height: 56mm; object-fit: cover; display: block; }}
   .tbc {{ color: var(--ink3); font-family: Playfair, serif; font-style: italic; }}
   .tbcbox {{ margin-top: 5mm; font-size: 9pt; color: var(--ink2); }} .tbcbox b {{ font-family: Playfair, serif; font-weight: 400; font-size: 12pt; color: var(--ink); }} .tbcbox .bul {{ margin-top: 1mm; }}
   .steps {{ margin: 0; padding: 0 0 0 4.5mm; }} .steps li {{ padding: .6mm 0; }}
@@ -163,13 +166,13 @@ HTML = f'''<meta charset="utf-8">
   tr.sum td.num small, tr.tot td.num small {{ font-family: Playfair, serif; font-style: italic; font-size: 9pt; color: var(--ink3); }}
   tr.disc td {{ color: var(--ink2); }} td small {{ color: var(--ink3); font-size: 8.5pt; }} tr.tot.lite td {{ border-top: .35pt solid var(--line); }} tr.tot td.num, tr.sum td.num {{ font-family: Tenor, 'Tenor Sans', sans-serif; letter-spacing: 0; }} .mute {{ color: var(--ink3); }}
   .kv {{ display: grid; grid-template-columns: 1fr; gap: 0; margin-top: 4mm; }}
-  .kv div {{ display: grid; grid-template-columns: 50mm 1fr; gap: 5mm; padding: 1.4mm 0; border-top: .35pt solid var(--line); font-size: 8.8pt; align-items: baseline; }}
+  .kv div {{ display: grid; grid-template-columns: 50mm 1fr; gap: 5mm; padding: 1.1mm 0; border-top: .35pt solid var(--line); font-size: 8.6pt; align-items: baseline; }}
   .kv div span:first-child {{ font-family: Playfair, serif; font-size: 12pt; color: var(--ink); }}
-  .pg p {{ margin: 0 0 3mm; }}
-  .last {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; margin-top: 3.5mm; }} .last > div:first-child {{ grid-column: span 2; }} .last {{ font-size: 8.5pt; line-height: 1.5; color: var(--ink2); }}
+  .pg p {{ margin: 0 0 3mm; }} .pg p.fine {{ margin: 5mm 0 0; }} .pg p.fine.ln {{ margin-top: 4mm; }} .pg p.kpinote {{ margin: 1.5mm 0 0; }}
+  .last {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; margin-top: 3mm; }} .last > div:first-child {{ grid-column: span 2; }} .last {{ font-size: 8.5pt; line-height: 1.45; color: var(--ink2); }}
   .last b {{ font-family: Playfair, serif; font-weight: 400; font-size: 12pt; display: block; margin-bottom: 1mm; color: var(--ink); }} .last .big {{ color: var(--ink); font-size: 10.5pt; }}
-  .why3 {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; margin: 4mm 0 0; }}
-  .why3 div {{ border-top: .35pt solid var(--line); padding-top: 2.5mm; font-size: 8.5pt; color: var(--ink2); line-height: 1.45; }}
+  .why3 {{ display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6mm; margin: 3mm 0 0; }}
+  .why3 div {{ border-top: .35pt solid var(--line); padding-top: 2.2mm; font-size: 8.3pt; color: var(--ink2); line-height: 1.42; }}
   .why3 b {{ display: block; font-family: Playfair, serif; font-weight: 400; font-size: 12pt; color: var(--ink); margin-bottom: 1mm; }}
   .fine {{ color: var(--ink3); font-size: 7.5pt; margin-top: 5mm; }} .fine.ln {{ border-top: .35pt solid var(--line); padding-top: 2mm; margin-top: 4mm; }}
   .split {{ font-size: 9pt; color: var(--ink2); margin: 3mm 0 0; }} .alt {{ font-size: 9.5pt; margin: 2mm 0 0; }} .alt b {{ font-family: Playfair, serif; font-weight: 400; }}
@@ -177,7 +180,7 @@ HTML = f'''<meta charset="utf-8">
   /* in-place editing: every page is contenteditable, pictures are replaced by a click */
   .pg [contenteditable]:focus {{ outline: none; }} .pg.edit {{ outline: 2px dashed rgba(36,89,201,.45); outline-offset: -2px; }}
   .doc img {{ cursor: pointer; }} .doc img:hover {{ outline: 2px solid #2459c9; outline-offset: -2px; }}
-  .pgtools {{ position: absolute; right: 8mm; top: 6mm; display: flex; gap: 6px; opacity: 0; transition: opacity .15s; z-index: 5; }} .pg:hover .pgtools, .pg:focus-within .pgtools, .pgtools:has(.on) {{ opacity: 1; }} .pgtools .hint {{ font-size: 11px; color: var(--ink3); margin: 0; }} .mute2 {{ color: var(--ink3); text-align: center; padding: 8mm 0; }}
+  .pgtools {{ position: absolute; right: 8mm; top: 6mm; display: flex; gap: 6px; opacity: 0; transition: opacity .15s; z-index: 5; }} .pg:hover .pgtools, .pg:focus-within .pgtools, .pgtools:has(.on) {{ opacity: 1; }} .pgtools .hint {{ font-size: 11px; color: var(--ink2); margin: 0; background: rgba(241,239,234,.9); padding: 3px 8px; border-radius: 999px; }} .mute2 {{ color: var(--ink3); text-align: center; padding: 8mm 0; }}
   .pgtools button {{ font: inherit; font-size: 11px; border: 1px solid var(--line); background: #fff; border-radius: 999px; padding: 4px 10px; cursor: pointer; }}
   .pgtools .on {{ background: #FFF5C2; border-color: #e3c84a; }}
   .pg.over::after {{ content: 'Не вміщається на сторінку — скоротіть текст або приберіть позицію'; position: absolute; left: 0; right: 0; bottom: 0; background: #C62828; color: #fff; font-size: 11px; padding: 6px 10px; z-index: 6; }}
@@ -221,6 +224,7 @@ HTML = f'''<meta charset="utf-8">
   </div>
 
   <div class="sec"><h2>Умови</h2>
+    <div class="two"><div class="f"><label for="due">Дата вручення (орієнтир)</label><input id="due" type="date"></div><div></div></div>
     <p class="hint">Вписуйте лише строки й умови, підтверджені виробництвом. Порожнє поле → «Підтвердимо після узгодження складу й кількості» / «Узгодимо після підтвердження замовлення».</p>
     <div class="f"><label for="terms">Строки виготовлення й відправки</label><textarea id="terms" placeholder="Підтверджені строки для цього замовлення"></textarea></div>
     <div class="f"><label for="pay">Оплата</label><textarea id="pay" placeholder="Узгоджені з клієнтом умови оплати"></textarea></div>
@@ -269,20 +273,22 @@ function rowDesc(r) {{ if (DESC[r.k] != null) return DESC[r.k]; return r.d === '
 function num(n) {{ return Math.round(n).toLocaleString('uk-UA').replace(/[,\s\u00a0]/g, '\u00a0'); }}
 function pct(d) {{ return (Math.round(d * 10) / 10).toLocaleString('uk-UA'); }}
 
+function rowWarn(card, r) {{ var w = card.querySelector('.warn'); if (!w) return; var on = r.price != null && r.price !== '' && Number(r.disc) > 0 && BY[r.k] && BY[r.k].p; w.hidden = !on; if (on) w.textContent = 'Ціна ' + money(Number(r.price)) + ' − ' + Number(r.disc) + '% = ' + money(Number(r.price) * (1 - Number(r.disc) / 100)) + '. У документі: знижка ' + pct((1 - Number(r.price) * (1 - Number(r.disc) / 100) / BY[r.k].p) * 100) + '% від роздрібної ' + money(BY[r.k].p) + '. Вкажіть або знижку, або ціну.'; }}
 function renderForm() {{
   var cs = document.getElementById('cover'); cs.innerHTML = Object.keys(COVERS).map(function (k) {{ return '<option value="' + k + '">' + esc(COVERS[k].n) + '</option>'; }}).join('');
-  ['client', 'contact', 'manager', 'date', 'valid', 'title', 'sub', 'people', 'cover', 'intro', 'split', 'alt', 'terms', 'pay', 'disccond', 'note'].forEach(function (id) {{ document.getElementById(id).value = S[id] || (id === 'cover' ? DEF.cover : ''); }});
+  ['client', 'contact', 'manager', 'date', 'valid', 'title', 'sub', 'people', 'cover', 'intro', 'split', 'alt', 'due', 'terms', 'pay', 'disccond', 'note'].forEach(function (id) {{ document.getElementById(id).value = S[id] || (id === 'cover' ? DEF.cover : ''); }});
   var rows = document.getElementById('rows'); rows.innerHTML = '';
   S.rows.forEach(function (r, i) {{
     var d = document.createElement('div'); d.className = 'row';
-    d.innerHTML = '<div class="g2"><select data-i="' + i + '" data-f="k">' + GROUPS.map(function (g) {{ return '<optgroup label="' + esc(g[0]) + '">' + g[1].map(function (k) {{ var it = BY[k]; return '<option value="' + it.k + '"' + (it.k === r.k ? ' selected' : '') + '>' + esc(it.n) + (it.p && !/^cert/.test(it.k) ? ' — ' + money(it.p) : '') + '</option>'; }}).join('') + '</optgroup>'; }}).join('') + '</select><button type="button" class="btn line sm" data-del="' + i + '" aria-label="Видалити позицію" title="Видалити позицію">×</button></div>'
+    d.innerHTML = '<div class="g2"><select aria-label="Позиція" data-i="' + i + '" data-f="k">' + GROUPS.map(function (g) {{ return '<optgroup label="' + esc(g[0]) + '">' + g[1].map(function (k) {{ var it = BY[k]; return '<option value="' + it.k + '"' + (it.k === r.k ? ' selected' : '') + '>' + esc(it.n) + (it.p && !/^cert/.test(it.k) ? ' — ' + money(it.p) : '') + '</option>'; }}).join('') + '</optgroup>'; }}).join('') + '</select><button type="button" class="btn line sm" data-del="' + i + '" aria-label="Видалити позицію" title="Видалити позицію">×</button></div>'
       + (r.k === 'custom' ? '<input data-i="' + i + '" data-f="name" placeholder="Назва позиції" value="' + esc(r.name || '') + '">' : '')
-      + '<div class="g"><div class="f"><label>Кількість</label><input type="number" min="1" data-i="' + i + '" data-f="q" value="' + esc(r.q) + '"></div>'
-      + '<div class="f"><label>Знижка, %</label><input type="number" min="0" max="100" data-i="' + i + '" data-f="disc" value="' + esc(r.disc || 0) + '"></div>'
-      + '<div class="f"><label>Ціна за шт.</label><input type="number" min="0" data-i="' + i + '" data-f="price" placeholder="' + (BY[r.k] ? BY[r.k].p : '') + '" value="' + (r.price != null && r.price !== '' ? esc(r.price) : '') + '"></div></div>'
-      + '<div class="f"><label>Принт</label><select data-i="' + i + '" data-f="d"><option value="asst"' + (r.d !== 'author' ? ' selected' : '') + '>Із добірки Obiimy</option><option value="author"' + (r.d === 'author' ? ' selected' : '') + '>Авторський принт для клієнта</option></select></div>'
+      + '<div class="g"><div class="f"><label for="r' + i + '-q">Кількість</label><input id="r' + i + '-q" type="number" min="1" data-i="' + i + '" data-f="q" value="' + esc(r.q) + '"></div>'
+      + '<div class="f"><label for="r' + i + '-disc">Знижка, %</label><input id="r' + i + '-disc" type="number" min="0" max="100" data-i="' + i + '" data-f="disc" value="' + esc(r.disc || 0) + '"></div>'
+      + '<div class="f"><label for="r' + i + '-price">Ціна за шт.</label><input id="r' + i + '-price" type="number" min="0" data-i="' + i + '" data-f="price" placeholder="' + (BY[r.k] ? BY[r.k].p : '') + '" value="' + (r.price != null && r.price !== '' ? esc(r.price) : '') + '"></div></div>'
+      + '<div class="f"><label for="r' + i + '-d">Принт</label><select id="r' + i + '-d" data-i="' + i + '" data-f="d"><option value="asst"' + (r.d !== 'author' ? ' selected' : '') + '>Із добірки Obiimy</option><option value="author"' + (r.d === 'author' ? ' selected' : '') + '>Авторський принт для клієнта</option></select></div>'
       + (r.d === 'author' ? '<small>Авторський принт: без вписаної ціни позиція йде в «Порахуємо додатково» і не входить у «До сплати».</small>' : '')
-      + (r.price != null && r.price !== '' && Number(r.disc) > 0 && BY[r.k] && BY[r.k].p ? '<small class="warn">Ціна ' + money(Number(r.price)) + ' − ' + Number(r.disc) + '% = ' + money(Number(r.price) * (1 - Number(r.disc) / 100)) + '. У документі: знижка ' + pct((1 - Number(r.price) * (1 - Number(r.disc) / 100) / BY[r.k].p) * 100) + '% від роздрібної ' + money(BY[r.k].p) + '. Вкажіть або знижку, або ціну.</small>' : '');
+      + '<small class="warn" hidden></small>';
+    rowWarn(d, r);
     rows.appendChild(d);
   }});
   var ex = document.getElementById('extras'); ex.innerHTML = '';
@@ -314,29 +320,30 @@ function renderDoc() {{
   var extrasSum = 0; extra.forEach(function (e) {{ extrasSum += e[1]; }}); var pay = qtyPaid ? total + extrasSum : 0;
   // 1 · cover
   var cv = COVERS[S.cover] || COVERS[DEF.cover], pic = function (n, d) {{ return (S.pics && S.pics[n]) || d; }};
-  pages.push('<section class="pg cover" data-key="cover"><div class="cv-ph"><img src="' + pic('cover', cv.f) + '" data-pic="cover" style="object-position:' + (S.pics && S.pics.cover ? '50% 30%' : cv.pos) + '" alt=""></div>'
-    + '<div class="cv-band"><div class="cv-top"><img src="brand/logo-ink.png" alt="Obiimy"><p class="cv-kicker">Преміальні шовкові вироби · Комерційна пропозиція' + (S.date ? ' · ' + fmtDate(S.date) : '') + '</p></div><div class="cv-main">'
+  pages.push('<section class="pg cover" data-key="cover"><div class="cv-ph"><img src="' + pic('cover', cv.f) + '" data-pic="cover" style="object-position:' + (S.pics && S.pics.cover ? '50% 30%' : cv.pos) + '" alt="">' + (S.pics && S.pics.cover ? '' : '<span class="cv-cap">На фото — ' + esc(cv.n.charAt(0).toLowerCase() + cv.n.slice(1)) + '</span>') + '</div>'
+    + '<div class="cv-band"><div class="cv-top"><img src="brand/logo-ink.png" alt="Obiimy"><p class="cv-kicker">Комерційна пропозиція' + (S.date ? ' · ' + fmtDate(S.date) : '') + '</p></div><div class="cv-main">'
     + '<h1' + (S.title.length > 26 ? ' style="font-size:24pt"' : '') + '>' + esc(S.title) + '</h1>' + (S.client ? '<p class="cv-client"' + (S.client.length > 20 ? ' style="font-size:22pt"' : '') + '>для ' + esc(S.client) + '</p>' : '')
     + (S.sub || people ? '<p class="cv-sub">' + esc(S.sub) + (S.sub && people ? ' · ' : '') + (people ? people + ' ' + peopleWord(people) : '') + '</p>' : '') + '</div>'
     + '<div class="cv-meta">' + (S.contact ? '<div><small>Контактна особа</small>' + esc(S.contact).replace(/-/g, '\u2011') + '</div>' : '') + (S.manager ? '<div><small>Менеджер Obiimy</small>' + esc(S.manager) + '</div>' : '')
-    + (qtyPaid ? '<div><small>До сплати за цим складом</small>' + money(pay) + '</div>' : '') + (S.valid ? '<div><small>Дійсна до</small>' + fmtDate(S.valid) + '</div>' : '') + '</div></div></section>');
+    + (qtyPaid ? '<div><small>До сплати</small>' + money(pay) + '</div>' : '') + (S.valid ? '<div><small>Дійсна до</small>' + fmtDate(S.valid) + '</div>' : '') + '</div></div></section>');
   // 2 · the proposal in brief: numbers, who gets what, what is in every gift, what is costed later, the box
-  var kpi = '<div class="kpi">' + (people ? '<div><b>' + people + '</b>' + peopleWord(people) + '</div>' : '') + '<div><b>' + qty + '</b>' + giftWord(qty) + (qty > qtyPaid ? ', з них ' + (qty - qtyPaid) + ' — у розрахунку' : '') + '</div>'
+  var kpi = '<div class="kpi">' + (people ? '<div><b>' + people + '</b>' + peopleWord(people) + '</div>' : '') + '<div><b>' + qty + '</b>' + giftWord(qty) + (qty > qtyPaid ? ' *' : '') + '</div>'
     + '<div><b>' + num(pay) + '</b>грн до сплати' + (tbc.length ? ' *' : '') + '</div>'
-    + (people && pay ? '<div><b>≈ ' + num(pay / people) + '</b>грн на людину, з усім, що в «До сплати»</div>' : (qtyPaid && pay ? '<div><b>≈ ' + num(pay / qtyPaid) + '</b>грн за подарунок, з усім, що в «До сплати»</div>' : '')) + '</div>';
+    + (people && pay ? '<div><b>≈ ' + num(pay / people) + '</b>грн на людину **</div>' : (qtyPaid && pay ? '<div><b>≈ ' + num(pay / qtyPaid) + '</b>грн за подарунок **</div>' : '')) + '</div>'
+    + '<p class="kpinote">' + (qty > qtyPaid ? '* ' + (qty - qtyPaid) + ' — у розрахунку, не входять у «До сплати». ' : '') + (pay ? '** Від суми «До сплати».' : '') + '</p>';
   var split = '<p class="split">' + (S.split ? nl(S.split) : 'Розподіл подарунків між людьми й комплекти (наприклад, хустка + кільце) узгодимо після підтвердження складу.') + '</p>';
   var who = R.map(function (x) {{ return '<div><b>' + x.q + '</b><span>' + esc(x.name) + '</span></div>'; }}).join('');
   var inbox = '<li>Подарункове пакування Obiimy для кожної речі — безкоштовно</li><li>Наліпка з логотипом ' + (S.client ? esc(S.client) : 'вашої компанії') + ' всередині коробки — безкоштовно</li>'
     + extra.filter(function (e) {{ return e[2] !== 'pack' && e[2] !== 'stick'; }}).map(function (e) {{ return '<li>' + esc(e[0]) + ' — ' + (e[1] ? money(e[1]) + ' за весь тираж' : 'безкоштовно' + (e[3] ? ', ' + esc(e[3]) : '')) + '</li>'; }}).join('');
-  var later = tbc.length ? '<p class="eb sec">Порахуємо додатково *</p><ul class="bul">' + tbc.map(function (t) {{ return '<li>' + esc(t) + '</li>'; }}).join('') + '</ul><p class="fine">* не входить у суму «До сплати»; вартість підтвердимо після уточнення.</p>' : '';
+  var later = tbc.length ? '<p class="eb sec">Порахуємо додатково *</p><ul class="bul">' + tbc.map(function (t) {{ return '<li>' + esc(t) + '</li>'; }}).join('') + '</ul><p class="fine">* У розрахунку, не входить у «До сплати».</p>' : '';
   page('brief', '<p class="eb" style="margin-top:10mm">Коротко' + (S.client ? ' · для ' + esc(S.client) : '') + (S.sub ? ' · ' + esc(S.sub) : '') + '</p><h2 class="t">Пропозиція коротко</h2>'
     + '<p class="intro">' + (S.intro ? nl(S.intro) : 'Дякуємо за запит. Нижче — склад, вартість і умови пропозиції. Склад і кількість можна змінити — перерахуємо.') + '</p>' + kpi + (S.alt ? '<p class="alt"><b>Альтернатива.</b> ' + nl(S.alt) + '</p>' : '')
-    + (R.length > 7 ? '<p class="eb sec">Що отримує команда</p><div class="who cols2">' + who + '</div>' + split + '<div class="cols"><div><p class="eb sec">Включено в замовлення</p><ul class="bul">' + inbox + '</ul></div><div>' + later + '</div></div>'
-      : '<div class="cols"><div><p class="eb sec">Що отримує команда</p><div class="who">' + who + '</div>' + split + '</div><div><p class="eb sec">Включено в замовлення</p><ul class="bul">' + inbox + '</ul>' + later + '</div></div>')
+    + (R.length > 7 ? '<p class="eb sec">Що отримує команда</p><div class="who cols2">' + who + '</div>' + split + '<div class="cols"><div><p class="eb sec">Входить у замовлення</p><ul class="bul">' + inbox + '</ul></div><div>' + later + '</div></div>'
+      : '<div class="cols"><div><p class="eb sec">Що отримує команда</p><div class="who">' + who + '</div>' + split + '</div><div><p class="eb sec">Входить у замовлення</p><ul class="bul">' + inbox + '</ul>' + later + '</div></div>')
     + (R.length > 11 ? '' : '<div class="strip2"><figure><img src="' + pic('box0', BOX[0]) + '" data-pic="box0" alt=""><figcaption>Подарункове пакування Obiimy</figcaption></figure><figure><img src="' + pic('box1', BOX[1]) + '" data-pic="box1" alt=""><figcaption>Твіллі та резинка у святковій коробці</figcaption></figure></div>'));
   // 3… · every position as a row, the pages balanced (7 = 4 + 3), a sparse last page gets three photographs
   var items = R.map(function (x) {{
-    var ph = x.r.ph || LIFE[x.r.k] || x.it.ph, life = !!(x.r.ph || LIFE[x.r.k]), d2 = x.open ? (x.retail ? 'Роздрібна ціна виробу ' + money(x.retail) + ' · ' : '') + 'розробка принта, тираж і строки — уточнимо в розрахунку' : (DESC[x.r.k] != null ? DESC[x.r.k] : '');
+    var ph = x.r.ph || LIFE[x.r.k] || x.it.ph, life = !!(x.r.ph || LIFE[x.r.k]), d2 = x.open ? (x.retail ? 'Роздрібна ціна (' + rowName(x.r).charAt(0).toLowerCase() + rowName(x.r).slice(1) + ') — ' + money(x.retail) + ' · ' : '') + 'розробка принта, тираж і строки — уточнимо в розрахунку' : (DESC[x.r.k] != null ? DESC[x.r.k] : '');
     if (x.retail && !x.open && Math.round(x.pd) < x.retail) d2 += (d2 ? ' · роздрібна ціна ' : 'Роздрібна ціна ') + money(x.retail);
     return '<div class="item"><figure class="' + (life ? '' : 'flat') + '"><img src="' + ph + '" data-row="' + x.idx + '" style="object-position:' + (x.r.ph ? '50% 50%' : (LIFE_POS[x.r.k] || '50% 50%')) + '" alt=""></figure>'
       + '<div><h3>' + esc(x.name) + '</h3>' + (d2 ? '<div class="d">' + esc(d2) + '</div>' : '') + '</div>'
@@ -357,7 +364,7 @@ function renderDoc() {{
   var dg = {{}}, dmix = false; R.forEach(function (x) {{ if (x.open) return; (dg[x.d] = dg[x.d] || []).push(x.name); }}); var dk = Object.keys(dg); dmix = dk.length > 1;
   var dnote = dmix && dg[0] ? 'Без знижки: ' + dg[0].map(function (n) {{ return n.charAt(0).toLowerCase() + n.slice(1); }}).join(', ') + '. ' : '';
   var trs = R.map(function (x) {{
-    return '<tr><td>' + esc(x.name) + '</td><td class="num">' + x.q + '</td>'
+    return '<tr><td>' + (x.author ? esc(x.name.split(' · ')[0]) + '<br><small>' + esc(x.name.split(' · ')[1]) + '</small>' : esc(x.name)) + '</td><td class="num">' + x.q + '</td>'
       + (x.open ? '<td class="num">' + (x.retail ? num(x.retail) : '<span class="mute">—</span>') + '</td><td class="num"><span class="mute">—</span></td><td class="num"><span class="mute">—</span></td><td class="num tbc">у розрахунку</td>' : '<td class="num">' + num(x.p) + '</td><td class="num">' + (x.d ? '−' + pct(x.d) + '%' : '<span class="mute">—</span>') + '</td><td class="num">' + num(x.pd) + '</td><td class="num">' + num(x.pd * x.q) + '</td>') + '</tr>';
   }});
   var TP = 9, tnp = Math.max(1, Math.ceil(trs.length / TP)), thead = '<table><colgroup><col><col style="width:12mm"><col style="width:22mm"><col style="width:18mm"><col style="width:20mm"><col style="width:26mm"></colgroup><thead><tr><th>Виріб</th><th class="num">Шт.</th><th class="num">Роздрібна</th><th class="num">Знижка</th><th class="num">Ціна</th><th class="num">Сума</th></tr></thead><tbody>';
@@ -365,21 +372,21 @@ function renderDoc() {{
   page(tnp > 1 ? 'table' + tnp : 'table', '<p class="eb" style="margin-top:10mm">Розрахунок' + (S.client ? ' · для ' + esc(S.client) : '') + ' · ціни в грн' + (tnp > 1 ? ' · сторінка ' + tnp + ' з ' + tnp : '') + '</p><h2 class="t">Вартість замовлення</h2>'
     + thead + trs.slice((tnp - 1) * TP).join('') + (R.length ? '' : '<tr><td colspan="6" class="mute2">Додайте позиції у формі ліворуч.</td></tr>') + sum + '</tbody></table>'
     + (tbc.length ? '<div class="tbcbox"><b>Порахуємо додатково</b> — не входить у суму «До сплати»:<ul class="bul">' + tbc.map(function (t) {{ return '<li>' + esc(t) + '</li>'; }}).join('') + '</ul></div>' : '')
-    + '<p class="fine ln">' + dnote + (S.disccond ? 'Умова знижки: ' + esc(S.disccond) + ' ' : '') + (people && pay ? 'У середньому ≈ ' + money(pay / people) + ' на людину (' + people + ' ' + peopleWord(people) + ', усе з «До сплати»). ' : '')
+    + '<p class="fine ln">' + dnote + (S.disccond ? 'Умова знижки: ' + esc(S.disccond) + ' ' : '') + (people && pay ? 'У середньому ≈ ' + money(pay / people) + ' на людину (' + people + ' ' + peopleWord(people) + '; від суми «До сплати»). ' : '')
     + 'Ціни в гривнях; роздрібні — obiimy.world. Умови оплати й документи — на сторінці «Умови замовлення». Пропозиція не є публічною офертою' + (S.valid ? '; дійсна до ' + fmtDate(S.valid) : '') + '.</p>');
   // · terms, packaging and personalisation, why Obiimy, the next step and contacts
-  function exLine(id, base) {{ var x = exVal(id); return base + (x && x.n != null ? (x.note ? ' — ' + esc(x.note) : '') + ' — ' + (x.n ? money(x.n) + ' за весь тираж' : 'безкоштовно') + '.' : ' — можливість, строки й вартість у розрахунку.'); }}
+  function exLine(id, base) {{ var x = exVal(id); return base + (x && x.n != null ? (x.note ? ': ' + esc(x.note) : '') + ' — ' + (x.n ? money(x.n) + ' за весь тираж' : 'безкоштовно') + '.' : ' — можливість, строки й вартість у розрахунку.'); }}
   var deliv = exVal('deliv');
   var kv1 = '<div><span>Подарункове пакування</span><span>Кожна річ — у подарунковому пакуванні Obiimy.</span></div><div><span>Наліпка з логотипом</span><span>Наліпка з логотипом вашої компанії всередині коробки.</span></div>';
   var kv2 = '<div><span>Нашивна бирка</span><span>' + exLine('tag', 'З логотипом вашої компанії') + '</span></div><div><span>Друковані матеріали</span><span>' + exLine('print', exVal('print') && exVal('print').note ? 'З логотипом вашої компанії' : 'З логотипом вашої компанії, наприклад листівка з привітанням') + '</span></div><div><span>Індивідуальний принт</span><span>' + exLine('design', 'Принт, створений для вашої компанії') + '</span></div>';
-  var kv3 = '<div><span>Строки</span><span>' + (S.terms ? nl(S.terms) : 'Підтвердимо після узгодження складу й кількості.') + '</span></div><div><span>Оплата</span><span>' + (S.pay ? nl(S.pay) : 'Форму оплати, передоплату, ПДВ і документи узгодимо з бухгалтерією.') + '</span></div>'
-    + '<div><span>Доставка</span><span>' + (deliv ? (deliv.n != null ? (deliv.n ? money(deliv.n) : 'Безкоштовно') + (deliv.note ? ' — ' + esc(deliv.note) : '') : esc(deliv.v)) : 'Спосіб, адресу й кількість відправлень узгодимо; розсилку співробітникам — уточнимо.') + '</span></div>' + '<div><span>Зразки</span><span>У шоурумі (адреса внизу сторінки): пн–пт 10:00–18:00, сб 11:00–18:00.</span></div><div><span>Заміна</span><span>Умови заміни за браком узгодимо до підтвердження замовлення.</span></div>'
+  var kv3 = '<div><span>Строки</span><span>' + (S.terms ? nl(S.terms) : 'Підтвердимо після узгодження складу й кількості' + (S.due ? ' — з орієнтиром на вручення ' + fmtDate(S.due) : '') + '.') + '</span></div><div><span>Оплата</span><span>' + (S.pay ? nl(S.pay) : 'Форму оплати, передоплату, ПДВ і документи узгодимо з вашою бухгалтерією.') + '</span></div>'
+    + '<div><span>Доставка</span><span>' + (deliv ? (deliv.n != null ? (deliv.n ? money(deliv.n) : 'Безкоштовно') + (deliv.note ? ' — ' + esc(deliv.note) : '') : esc(deliv.v)) : 'Спосіб, адресу й кількість відправлень узгодимо; розсилку співробітникам — уточнимо.') + '</span></div>' + '<div><span>Зразки</span><span>У шоурумі (адреса внизу сторінки): пн–пт 10:00–18:00, сб 11:00–18:00.</span></div><div><span>Обмін і повернення</span><span>Умови узгодимо до підтвердження замовлення.</span></div>'
     + (S.disccond ? '<div><span>Знижка</span><span>' + nl(S.disccond) + '</span></div>' : '') + (S.note ? '<div><span>Примітка</span><span>' + nl(S.note) + '</span></div>' : '');
   var ph = PHONE.replace(/\D/g, ''), mg = S.manager || '', hasPh = mg.replace(/\D/g, '').indexOf(ph) >= 0, needLogo = true, hasPrint = exVal('print');
-  var steps = '<ol class="steps"><li>Підтвердіть склад і кількість — відповіддю на лист або в Telegram' + (S.valid ? ', до ' + fmtDate(S.valid) : '') + '.</li>'
+  var steps = '<ol class="steps"><li>Підтвердіть склад і кількість — відповіддю на лист або в Telegram' + (S.valid ? ', до ' + fmtDate(S.valid) : '') + '.</li>'
     + '<li>Надішліть логотип для наліпки' + (hasPrint ? ' й текст для друкованих матеріалів' : '') + ' — вимоги до файлів надішлемо одразу.</li>'
-    + '<li>Ми перевіримо наявність принтів, підтвердимо строки' + (tbc.length ? ' й вартість пунктів «Порахуємо додатково»' : '') + ' і запросимо подивитися зразки в шоурумі.</li></ol>';
-  page('terms', '<p class="eb" style="margin-top:6mm">Умови й персоналізація</p><h2 class="t" style="margin-bottom:2mm">Умови замовлення</h2>'
+    + '<li>Ми перевіримо наявність принтів і підтвердимо дату відвантаження' + (S.due ? ' до вручення ' + fmtDate(S.due) : '') + ', оплату й документи, розподіл подарунків' + (tbc.length ? ', вартість пунктів «Порахуємо додатково»' : '') + ', умови обміну й повернення — і запросимо подивитися зразки в шоурумі.</li></ol>';
+  page('terms', '<p class="eb" style="margin-top:5mm">Умови й персоналізація</p><h2 class="t" style="margin-bottom:2mm">Умови замовлення</h2>'
     + '<p class="eb sec">Безкоштовно в кожному замовленні</p><div class="kv">' + kv1 + '</div><p class="eb sec">Додатково, за запитом</p><div class="kv">' + kv2 + '</div><p class="eb sec">Строки, оплата, доставка</p><div class="kv">' + kv3 + '</div>'
     + '<div class="why3"><div><b>Унікальні принти</b>Авторські малюнки засновниці Світлани Сніжко та сучасних українських художниць.</div><div><b>Якість, яку відчувають</b>Лише 100% натуральний шовк преміум-класу: італійський шовк, українське виробництво; кутики кожної хустки обробляють вручну.</div><div><b>Бренд, який упізнають</b>У продажу в INTERTOP і Hram (Україна), Be Brave (Канада), UFD London. Про бренд писали LIGA.net та INSIDER UA.</div></div>'
     + '<div class="last"><div><b>Наступний крок</b>' + steps + '</div><div><b>Контакти</b>' + (mg ? '<span class="big">' + esc(mg) + '</span><br>' : '') + (hasPh ? '' : nb(PHONE) + ' · ') + 'Telegram @OBIIMY_sales<br>' + esc(MAIL) + ' · obiimy.world</div></div>');
@@ -397,7 +404,7 @@ function renderDoc() {{
   }});
   renderEdited(); checkOver(); if (document.fonts && document.fonts.ready) document.fonts.ready.then(checkOver);
 }}
-function dataSig() {{ return JSON.stringify(S.rows.map(function (r) {{ return [r.k, r.q, r.disc, r.price, r.d, r.name]; }}).concat([S.ex, S.people, S.valid, S.client, S.sub, S.intro, S.split, S.alt, S.terms, S.pay, S.note, S.disccond, S.manager])); }}
+function dataSig() {{ return JSON.stringify(S.rows.map(function (r) {{ return [r.k, r.q, r.disc, r.price, r.d, r.name]; }}).concat([S.ex, S.people, S.valid, S.due, S.client, S.sub, S.intro, S.split, S.alt, S.terms, S.pay, S.note, S.disccond, S.manager])); }}
 function checkOver() {{ document.querySelectorAll('#doc .pg').forEach(function (pg) {{ pg.classList.toggle('over', pg.scrollHeight > pg.clientHeight + 2); }}); }}
 // ---------- feedback: one toast, optional undo ----------
 var toastTimer = null;
@@ -418,7 +425,7 @@ document.getElementById('doc').addEventListener('input', function (e) {{
 function markTools(pg, edited) {{ var t = pg.querySelector('.pgtools'); if (!t) return; t.innerHTML = edited ? '<button type="button" class="on" data-pgreset="' + pg.dataset.key + '" title="Повернути сторінку до вигляду з форми">Правлено вручну · скинути</button>' : '<span class="hint">текст — правити тут · картинку — клацнути</span>'; }}
 document.getElementById('doc').addEventListener('keydown', function (e) {{
   if (e.key === 'Escape') {{ document.activeElement && document.activeElement.blur(); return; }}
-  if (e.key === 'Enter' && e.target.closest('h1, h2, h3, b, .p, .kpi, .cv-meta, .cv-kicker, .cv-sub, .cv-client, .eb')) e.preventDefault();   // a heading stays one block
+  if (e.key === 'Enter') {{ var sel = window.getSelection(), n = sel && sel.anchorNode, el = n && (n.nodeType === 1 ? n : n.parentElement); e.preventDefault(); if (!(el && el.closest('h1, h2, h3, b, .p, .kpi, .cv-meta, .cv-kicker, .cv-sub, .cv-client, .eb'))) document.execCommand('insertLineBreak'); }}   // a heading stays one block; elsewhere Enter is a line break, never a new block
 }});
 document.getElementById('doc').addEventListener('paste', function (e) {{ if (!e.target.closest('.pg')) return; e.preventDefault(); document.execCommand('insertText', false, (e.clipboardData || window.clipboardData).getData('text/plain')); }});
 document.getElementById('doc').addEventListener('click', function (e) {{
@@ -478,7 +485,7 @@ function onInput(e) {{
     var r = S.rows[i]; if (!r) return;
     if (f === 'disc' && t.value !== '') {{ var dv = Math.min(100, Math.max(0, Number(t.value) || 0)); if (String(dv) !== t.value) t.value = dv; }}
     if ((f === 'q' || f === 'price') && t.value !== '' && Number(t.value) < 0) t.value = 0;
-    r[f] = t.value;
+    r[f] = t.value; if (f === 'price' || f === 'disc') rowWarn(t.closest('.row'), r);
     if (f === 'k') {{ var had = r.price != null && r.price !== ''; r.price = null; r.ph = null; renderForm(); var s = document.querySelector('[data-i="' + i + '"][data-f="k"]'); if (s) s.focus(); if (had) toast('Вписану ціну скинуто: для нової позиції діє роздрібна ' + (BY[t.value] && BY[t.value].p ? money(BY[t.value].p) : 'ціна') + '.'); }}
     if (f === 'd') {{ renderForm(); var s2 = document.querySelector('[data-i="' + i + '"][data-f="d"]'); if (s2) s2.focus(); }}
   }}

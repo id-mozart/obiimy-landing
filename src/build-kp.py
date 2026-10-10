@@ -57,6 +57,11 @@ LIFE_POS = {"cert1": "50% 50%", "cert15": "50% 50%", "cert2": "50% 50%", "cert25
 MOSAIC = [photo(f) for f in ("photo/solo/iskra-65-4.webp", "photo/solo/flirt-tw-1.webp", "photo/site/mask-shchyri-pochuttia-04.jpg", "photo/solo/zolote-44-2.webp", "photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg",
                                "photo/solo/tysha-88-4.webp", "photo/solo/krok-44-2.webp", "photo/solo/flirt-65-4.webp")]   # the deck's cover (07.10)
 MOSAIC_POS = ["50% 15%", "50% 20%", "0% 50%", "50% 15%", "50% 50%", "50% 10%", "50% 20%", "50% 15%"]
+MOS12 = [(photo(f), ps) for f, ps in (   # the KP cover: twelve frames, three a row, the band between rows two and three (10.10)
+    ("photo/solo/avantiura-88-3.webp", "50% 20%"), ("photo/solo/flirt-tw-3.webp", "50% 15%"), ("photo/solo/krok-44-3.webp", "50% 20%"),
+    ("photo/solo/iskra-65-4.webp", "50% 15%"), ("photo/solo/zolote-44-4.webp", "50% 25%"), ("photo/solo/puls-44-4.webp", "50% 20%"),
+    ("photo/solo/tysha-88-2.webp", "40% 30%"), ("photo/solo/flirt-scr-2.webp", "50% 40%"), ("photo/solo/avantiura-tw-3.webp", "50% 30%"),
+    ("photo/solo/zolote-44-5.webp", "50% 25%"), ("photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg", "50% 50%"), ("photo/solo/iskra-tw-3.webp", "50% 55%"))]
 import os as _os
 def _lib():
     out = []
@@ -126,8 +131,8 @@ HTML = f'''<meta charset="utf-8">
   .pg .logo {{ width: 30mm; height: 6.4mm; flex: none; align-self: flex-start; object-fit: contain; object-position: left center; }}
   .pg .foot {{ margin-top: auto; color: var(--ink3); font-size: 7pt; letter-spacing: .16em; text-transform: uppercase; display: grid; grid-template-columns: 1fr auto 1fr; gap: 6mm; padding-top: 4mm; white-space: nowrap; }} .pg .foot span:last-child {{ text-align: right; }} .pg .foot .pn {{ color: var(--ink2); }}
   .cover {{ padding: 0; display: grid; grid-template-rows: 168mm 1fr; }}
-  .cover.mosaic, .cover.card {{ grid-template-rows: 1fr; }} .cover .cv-m {{ grid-row: 1; position: relative; height: 297mm; display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(4, 74.25mm); }} .cover .cv-m img {{ width: 100%; height: 74.25mm; object-fit: cover; display: block; }}
-  .cover.mosaic .cv-band {{ position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); padding: 9mm 16.5mm 10mm; z-index: 2; }} .cover.mosaic .cv-main {{ flex: none; margin: 7mm 0; }} .cover.mosaic h1, .cover.mosaic .cv-client {{ font-size: 26pt; }}
+  .cover.mosaic, .cover.card {{ grid-template-rows: 1fr; }} .cover .cv-m {{ grid-row: 1; position: relative; height: 297mm; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 56mm) 73mm repeat(2, 56mm); }} .cover .cv-m img {{ width: 100%; height: 56mm; object-fit: cover; display: block; }} .cover .cv-m img:nth-child(n+7) {{ grid-row: 4; }} .cover .cv-m img:nth-child(n+10) {{ grid-row: 5; }}
+  .cover.mosaic .cv-band {{ position: absolute; left: 0; right: 0; top: 112mm; height: 73mm; padding: 7mm 16.5mm 7mm; z-index: 2; }} .cover.mosaic .cv-main {{ flex: 1; margin: 0; }} .cover.mosaic h1, .cover.mosaic .cv-client {{ font-size: 24pt; line-height: 1; }} .cover.mosaic .cv-sub {{ margin-top: 3mm; font-size: 10pt; }} .cover.mosaic .cv-meta {{ font-size: 8.5pt; }} .cover.mosaic .cv-meta small {{ margin-bottom: .5mm; }}
   .cover.card .cv-ph {{ grid-row: 1; height: 297mm; }} .cover.card .cv-band {{ position: absolute; left: 16.5mm; bottom: 16.5mm; width: 130mm; padding: 9mm 10mm 10mm; z-index: 2; }} .cover.card .cv-top {{ flex-direction: column; align-items: flex-start; gap: 5mm; }} .cover.card .cv-kicker {{ text-align: left; white-space: normal; }} .cover.card .cv-main {{ flex: none; margin: 6mm 0 7mm; }} .cover.card h1, .cover.card .cv-client {{ font-size: 24pt; }} .cover.card .cv-meta {{ grid-template-columns: 1fr 1fr; gap: 4mm; }} .cover.card .cv-cap2 {{ display: block; margin-top: 1.2mm; }}
   .cover .cv-ph {{ overflow: hidden; }} .cover .cv-ph img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
   .cover .cv-band {{ background: var(--yellow); padding: 11mm 16.5mm 12mm; display: flex; flex-direction: column; color: #141414; }}
@@ -248,7 +253,7 @@ HTML = f'''<meta charset="utf-8">
 <script>
 var ITEMS = {json.dumps(ITEMS, ensure_ascii=False)};
 var EXTRAS = {json.dumps(EXTRAS, ensure_ascii=False)};
-var MOSAIC = {json.dumps(MOSAIC)}, MOSAIC_POS = {json.dumps(MOSAIC_POS)}, LIFE = {json.dumps(LIFE)}, LIFE_POS = {json.dumps(LIFE_POS)}, COVERS = {json.dumps(COVERS, ensure_ascii=False)}, BOX = {json.dumps(BOX)}, DESC = {json.dumps(DESC, ensure_ascii=False)}, GROUPS = {json.dumps(GROUPS, ensure_ascii=False)};
+var MOSAIC = {json.dumps(MOSAIC)}, MOSAIC_POS = {json.dumps(MOSAIC_POS)}, LIFE = {json.dumps(LIFE)}, LIFE_POS = {json.dumps(LIFE_POS)}, COVERS = {json.dumps(COVERS, ensure_ascii=False)}, BOX = {json.dumps(BOX)}, MOS12 = {json.dumps(MOS12)}, DESC = {json.dumps(DESC, ensure_ascii=False)}, GROUPS = {json.dumps(GROUPS, ensure_ascii=False)};
 var LIBRARY = {json.dumps(LIBRARY, ensure_ascii=False)};
 var DEF = {json.dumps(DEFAULT, ensure_ascii=False)};
 var BY = {{}}; ITEMS.forEach(function (i) {{ BY[i.k] = i; }});
@@ -321,7 +326,7 @@ function renderDoc() {{
   // 1 · cover
   var cv = COVERS[S.cover] || COVERS[DEF.cover], pic = function (n, d) {{ return (S.pics && S.pics[n]) || d; }};
   var lay = S.layout || DEF.layout, own = S.pics && S.pics.cover, cap = lay === 'mosaic' || own ? '' : '<span class="cv-cap2">На фото — ' + esc(cv.n.charAt(0).toLowerCase() + cv.n.slice(1)) + '</span>';
-  var art = lay === 'mosaic' ? '<div class="cv-m">' + MOSAIC.map(function (f, i) {{ return '<img src="' + pic('m' + i, f) + '" data-pic="m' + i + '" style="object-position:' + (S.pics && S.pics['m' + i] ? '50% 30%' : MOSAIC_POS[i]) + '" alt="">'; }}).join('') + '</div>'
+  var art = lay === 'mosaic' ? '<div class="cv-m">' + MOS12.map(function (m, i) {{ return '<img src="' + pic('m' + i, m[0]) + '" data-pic="m' + i + '" style="object-position:' + (S.pics && S.pics['m' + i] ? '50% 30%' : m[1]) + '" alt="">'; }}).join('') + '</div>'
     : '<div class="cv-ph"><img src="' + pic('cover', cv.f) + '" data-pic="cover" style="object-position:' + (own ? '50% 30%' : cv.pos) + '" alt=""></div>';
   pages.push('<section class="pg cover ' + lay + '" data-key="cover">' + art
     + '<div class="cv-band"><div class="cv-top"><img src="brand/logo-ink.png" alt="Obiimy"><p class="cv-kicker">Комерційна пропозиція' + (S.date ? ' · ' + fmtDate(S.date) : '') + cap + '</p></div><div class="cv-main">'

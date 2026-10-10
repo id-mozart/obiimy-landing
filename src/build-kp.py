@@ -60,7 +60,7 @@ MOSAIC_POS = ["50% 15%", "50% 20%", "0% 50%", "50% 15%", "50% 50%", "50% 10%", "
 MOS12 = [(photo(f), ps) for f, ps in (   # the KP cover: twelve frames, three a row, the band between rows two and three (10.10)
     ("photo/solo/avantiura-88-3.webp", "50% 20%"), ("photo/solo/flirt-tw-3.webp", "50% 15%"), ("photo/solo/krok-44-3.webp", "50% 20%"),
     ("photo/solo/iskra-65-4.webp", "50% 15%"), ("photo/solo/zolote-44-4.webp", "50% 25%"), ("photo/solo/puls-44-4.webp", "50% 20%"),
-    ("photo/solo/tysha-88-2.webp", "40% 30%"), ("photo/solo/flirt-scr-2.webp", "50% 40%"), ("photo/solo/avantiura-tw-3.webp", "50% 30%"),
+    ("photo/solo/tysha-88-2.webp", "40% 30%"), ("photo/solo/puls-tw-3.webp", "50% 20%"), ("photo/solo/avantiura-tw-3.webp", "50% 30%"),
     ("photo/solo/zolote-44-5.webp", "50% 25%"), ("photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg", "50% 50%"), ("photo/solo/iskra-tw-3.webp", "50% 55%"))]
 import os as _os
 def _lib():

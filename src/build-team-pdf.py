@@ -131,7 +131,7 @@ page(f"""<div class="panel"><h2 class="h28">Хустки</h2>
 WAYS = [("У волоссі", "photo/solo/krok-tw-2.webp", "50% 30%", 1.0), ("На шиї", "photo/solo/flirt-tw-3.webp", "50% 15%", 1.0), ("На сумці", "photo/solo/iskra-tw-3.webp", "50% 50%", 1.0),   # SOLO campaign frames and one editorial frame from the site (07.10)
         ("На зап’ясті", "photo/solo/krok-tw-3.webp", "50% 35%", 1.0), ("Краваткою", "photo/solo/avantiura-tw-4.webp", "50% 15%", 1.0), ("Бантом", "photo/solo/puls-tw-1.webp", "50% 45%", 1.0)]
 tiles4 = "".join(f'<figure class="w6">{pic(f, 61.5, 103.5, ps, hi=True, zoom=z)}<figcaption class="h28"><i>{n}</i></figcaption></figure>' for n, f, ps, z in WAYS)
-PAIR = [("photo/solo/avantiura-88-3.webp", "50% 20%"), ("photo/solo/avantiura-tw-3.webp", "50% 25%")]   # 07.10: SOLO «Авантюра» — the scarf and the twilly of one print   # scarf and twilly of one print — the pair from the c18 banner
+PAIR = [("photo/paris-dots.jpg", "50% 30%"), ("photo/paris-bag.jpg", "50% 50%")]   # 07.10: SOLO «Авантюра» — the scarf and the twilly of one print   # scarf and twilly of one print — the pair from the c18 banner
 pair = "".join(f'<figure>{pic(f, 40.5, 50, ps)}</figure>' for f, ps in PAIR)
 TW4 = [("tw-flat-sokovyti-spohady", "«Соковиті спогади»"), ("tw-flat-melodiia-dvokh", "«Мелодія двох»"), ("tw-flat-yednannia", "«Єднання»"), ("tw-flat-pidnesennia", "«Піднесення»")]   # the prints worn on the four photographs
 prints4 = "".join(f'<figure>{cut(c, 27, fix=True)}</figure>' for c, n in TW4)
@@ -140,7 +140,7 @@ page(f"""<div class="panel"><h2 class="h28">Твіллі</h2>
 <p class="lead">Твіллі — вузька шовкова стрічка. Її зав’язують у волоссі, на шиї, на зап’ясті, краваткою або на ручці сумки — і носять щодня.</p>
 <p class="lead">Найлегший у виборі подарунок: підходить усім, хто носить аксесуари. Десятки авторських принтів — один на всю команду або кожному свій.</p>
 <div class="pair">{pair}</div>
-<p class="pair-cap">Твіллі добре працює в парі: хустка й твіллі одного принту — на плечах і у волоссі.</p></div>
+<p class="pair-cap">Твіллі добре працює в парі: хустка й твіллі одного принту — на плечах і на сумці.</p></div>
 <div class="w6g">{tiles4}</div>""", "ways6", short=True)
 
 # ── 5 · accessories: sleep masks, scrunchies, bookmarks, pillowcases, turbans — the things for everyone ───────────────

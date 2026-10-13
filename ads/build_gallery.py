@@ -1,6 +1,6 @@
 """Creatives gallery page for the Railway hub: site/creatives.html + site/creatives/<series>/<file>.
 Called from build-site.py; images: full JPG for download, 540px WebP preview for the grid."""
-import hashlib, html, pathlib, shutil
+import hashlib, html, json, pathlib, shutil
 from PIL import Image
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -60,7 +60,20 @@ def build(site: pathlib.Path):
                 im.save(dst, "JPEG", quality=85, optimize=True, progressive=True)   # the deploy upload must stay well under 200 MB
                 t = im.copy(); t.thumbnail((540, 960)); t.save(prev, quality=80)
             v = hashlib.md5(f.read_bytes()).hexdigest()[:8]
-            cards.append((f"{series}/{f.name}", f'''<figure class="c {cls}" data-f="{cls}" data-id="{series}/{f.name}"><a href="creatives/{series}/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/{series}/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="{t.width}" height="{t.height}"></a>
+            # the other formats of the same banner, rendered next to the plain one: <out>-story/<file> (story UI zones kept free) and <out>-feed/<file> (1080 × 1350)
+            alts = {}
+            for key, suf in (("story", "-story"), ("feed", "-45")):
+                src = f.parent.with_name(f.parent.name + "-" + key) / f.name
+                if not src.exists(): continue
+                vd = d / (f.stem + suf + ".jpg"); vp = d / (f.stem + suf + "-540.webp")
+                if not (vd.exists() and vp.exists() and vd.stat().st_mtime >= src.stat().st_mtime and vp.stat().st_mtime >= src.stat().st_mtime):
+                    im2 = Image.open(src).convert("RGB"); im2.save(vd, "JPEG", quality=85, optimize=True, progressive=True); t2 = im2.copy(); t2.thumbnail((540, 960)); t2.save(vp, quality=80)
+                with Image.open(vp) as t2: tw, th = t2.size
+                vv = hashlib.md5(src.read_bytes()).hexdigest()[:8]
+                alts[key] = dict(f=f"creatives/{series}/{vd.name}?v={vv}", p=f"creatives/{series}/{vp.name}?v={vv}", n=vd.name, w=tw, h=th)
+            plain = dict(f=f"creatives/{series}/{f.name}?v={v}", p=f"creatives/{series}/{prev.name}?v={v}", n=f.name, w=t.width, h=t.height)
+            data_alt = f' data-alt="{html.escape(json.dumps(alts, ensure_ascii=False), quote=True)}"' if alts else ""
+            cards.append((f"{series}/{f.name}", f'''<figure class="c {cls}" data-f="{cls}" data-id="{series}/{f.name}" data-plain="{html.escape(json.dumps(plain, ensure_ascii=False), quote=True)}"{data_alt}><a href="creatives/{series}/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/{series}/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="{t.width}" height="{t.height}"></a>
         <figcaption><label class="pick"><input type="checkbox" data-id="{series}/{f.name}"><span>Залишити</span></label><span class="fid">{f.stem.split("-")[0]}</span><a href="creatives/{series}/{f.name}?v={v}" download="{f.name}">JPG ↓</a></figcaption></figure>'''))
         groups.append(dict(part=part[0], title=title, desc=desc, cards=cards))
     classic = sorted((ROOT / "ads/solo/out4").glob("*.jpg"))
@@ -140,7 +153,6 @@ def build(site: pathlib.Path):
         return f'<section class="grp flat"><div class="grid">{"".join(cards)}</div></section>', len(cards)
     all_ids = {i for g in groups for i, _ in g["cards"]}
     n_keep = len(keep_set & all_ids)
-    import json
     defaults = json.dumps(sorted(keep_set & all_ids), ensure_ascii=False)
     keep_ver = hashlib.md5("\n".join(sorted(keep_set)).encode()).hexdigest()[:8]
 
@@ -218,6 +230,13 @@ header.solo {{ justify-content: flex-end; }}
 body.shared .picks, body.shared .pick, body.shared .fid {{ display: none; }}
 body.shared .c figcaption {{ justify-content: flex-end; }}
 body.shared #lb .row {{ gap: 22px; }}
+.fmt {{ display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 14px 0 0; }}
+.fmt b {{ font-size: .95rem; margin-right: 8px; white-space: nowrap; }}
+.fmt button {{ font: inherit; font-size: .88rem; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 10px 16px; cursor: pointer; }}
+.fmt button[aria-pressed="true"] {{ background: var(--ink); color: var(--bg); border-color: var(--ink); }}
+.fmt .fn {{ font-size: .85rem; color: var(--ink2); }}
+.c.nov img {{ opacity: .3; }} .c.nov::before {{ content: "немає в цьому форматі"; position: absolute; left: 10px; top: 10px; z-index: 1; font-size: .72rem; padding: 4px 8px; border-radius: 999px; background: var(--card); color: var(--ink2); border: 1px solid var(--line); }}
+.c {{ position: relative; }}
 .all {{ display: none; margin: 40px 0 0; text-align: center; }}
 body.shared .all {{ display: block; }}
 .all a {{ color: var(--ink2); font-size: .9rem; text-decoration: none; border: 1px solid var(--line); border-radius: 999px; padding: 12px 20px; display: inline-block; }}
@@ -242,6 +261,7 @@ footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1
 <button type="button" id="link">Скопіювати посилання з відбором</button>
 <button type="button" id="clear">Очистити</button>
 <textarea id="out" readonly aria-label="Список відмічених банерів"></textarea></div>
+<div class="fmt" role="group" aria-label="Формат банерів"><b>Формат:</b><button type="button" data-fmt="plain" aria-pressed="true">Банер 9:16</button><button type="button" data-fmt="story" aria-pressed="false">Сторіс · безпечна зона</button><button type="button" data-fmt="feed" aria-pressed="false">Стрічка 4:5</button><span class="fn" id="fmtn"></span></div>
 {f'<nav class="toc">{toc_html}</nav>' if toc_html else ""}
 {body_html}
 <p class="all"><a href="creatives">Показати всі банери</a></p>
@@ -268,7 +288,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
   var KEY = 'obiimy-picks-{keep_ver}', picks = new Set(), only = false;     // a new selection starts from the saved list
   var DEF = {defaults}, stored = null;
   try {{ stored = localStorage.getItem(KEY); }} catch (e) {{}}
-  var m = location.hash.match(/sel=([^&]+)/), shared = !!m;
+  var m = location.hash.match(/sel=([^&]+)/), shared = !!m, mf = location.hash.match(/fmt=(plain|story|feed)/);
   if (shared) {{
     // a link with a selection: show exactly these banners and nothing else; the saved working selection is not touched
     decodeURIComponent(m[1]).split(',').forEach(function (x) {{ if (x) picks.add(x); }});
@@ -303,7 +323,25 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
   }}
   document.getElementById('only').addEventListener('click', function () {{ only = !only; this.setAttribute('aria-pressed', only ? 'true' : 'false'); paint(); }});
   document.getElementById('copy').addEventListener('click', function () {{ var l = list(); copy('Залишити для подальшої роботи (' + l.length + '):\\n' + l.join('\\n'), this); }});
-  document.getElementById('link').addEventListener('click', function () {{ copy(location.origin + location.pathname + '#sel=' + encodeURIComponent(list().join(',')), this); }});
+  document.getElementById('link').addEventListener('click', function () {{ copy(location.origin + location.pathname + '#sel=' + encodeURIComponent(list().join(',')) + (FMT !== 'plain' ? '&fmt=' + FMT : ''), this); }});
+  // the format of every card: the plain banner, the story with free UI zones or the 4:5 feed version
+  var FMT = 'plain';
+  function applyFmt(f) {{
+    FMT = f; var have = 0, all = 0;
+    document.querySelectorAll('.fmt button').forEach(function (b) {{ b.setAttribute('aria-pressed', b.dataset.fmt === f ? 'true' : 'false'); }});
+    document.querySelectorAll('.c').forEach(function (c) {{
+      var plain = JSON.parse(c.dataset.plain), alt = c.dataset.alt ? JSON.parse(c.dataset.alt) : {{}}, v = f === 'plain' ? plain : alt[f];
+      all++; if (v) have++; c.classList.toggle('nov', !v); if (!v) v = plain;
+      var a = c.querySelector('a'), img = a.querySelector('img'), dl = c.querySelector('figcaption a[download]');
+      if (a.getAttribute('href') !== v.f) {{ a.href = v.f; img.src = v.p; img.width = v.w; img.height = v.h; }}
+      if (dl) {{ dl.href = v.f; dl.setAttribute('download', v.n); }}
+    }});
+    document.getElementById('fmtn').textContent = f === 'plain' ? '' : 'є для ' + have + ' з ' + all;
+    try {{ localStorage.setItem('obiimy-fmt', f); }} catch (e) {{}}
+  }}
+  document.querySelectorAll('.fmt button').forEach(function (b) {{ b.addEventListener('click', function () {{ applyFmt(b.dataset.fmt); }}); }});
+  var f0 = mf ? mf[1] : null; if (!f0) try {{ f0 = localStorage.getItem('obiimy-fmt'); }} catch (e) {{}}
+  if (f0 && f0 !== 'plain') applyFmt(f0);
   document.getElementById('clear').addEventListener('click', function () {{ if (confirm('Зняти всі позначки?')) {{ picks.clear(); paint(); }} }});
   paint();
 
@@ -317,7 +355,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
     var c = items[cur], a = c.querySelector('a');
     im.style.animation = 'none'; im.offsetWidth; im.style.animation = '';
     im.src = a.href; im.alt = 'Банер ' + c.querySelector('.fid').textContent;
-    lbd.href = a.href; lbd.setAttribute('download', c.dataset.id.split('/').pop());
+    var dl0 = c.querySelector('figcaption a[download]'); lbd.href = a.href; lbd.setAttribute('download', dl0 ? dl0.getAttribute('download') : c.dataset.id.split('/').pop());
     lbc.checked = picks.has(c.dataset.id);
     lbn.textContent = (shared ? '' : c.querySelector('.fid').textContent + ' · ') + (cur + 1) + ' / ' + items.length;
     var nx = items[(cur + 1) % items.length].querySelector('a'); (new Image()).src = nx.href;

@@ -8,11 +8,15 @@ sys.path.insert(0, str(HERE))
 from kit import P, PP, S, CUT, HI, spot_photo, nb, LOGO_W, LOGO_K, GRAIN
 
 YELLOW = os.environ.get("YELLOW") == "1"
+FORMAT = os.environ.get("FORMAT", "plain")   # plain | story (UI zones free) | feed (1080×1350)
+H = 1350 if FORMAT == "feed" else 1920
+TOPL = 250 if FORMAT == "story" else 58       # the logo line of the plain header
+BOTB = 340 if FORMAT == "story" else 60       # the product-and-button row from the bottom
 
 CSS = """
 * { box-sizing: border-box; }
 body { margin: 0; background: #555; font-family: 'Onest', Arial, sans-serif; -webkit-font-smoothing: antialiased; }
-.ad { width: 1080px; height: 1920px; position: relative; overflow: hidden; background: #141110; margin: 20px auto; color: #F3EADB; }
+.ad { width: 1080px; height: HPXpx; position: relative; overflow: hidden; background: #141110; margin: 20px auto; color: #F3EADB; }
 .ad > * { position: absolute; margin: 0; }
 .ad p { margin: 0; }
 .ad::after { content: ""; position: absolute; inset: 0; z-index: 90; pointer-events: none; opacity: .3; mix-blend-mode: soft-light; background-image: GRAIN; }
@@ -25,7 +29,7 @@ body { margin: 0; background: #555; font-family: 'Onest', Arial, sans-serif; -we
 .kicker { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: .14em; font-size: 28px; color: #E0B040; white-space: nowrap; }
 .tag { display: inline-block; margin-top: 16px; font-family: 'Onest'; font-weight: 600; font-size: 28px; letter-spacing: .04em; padding: 10px 20px; border-radius: 999px; background: rgba(243,234,219,.16); border: 1.5px solid rgba(243,234,219,.4); }
 .cta { font-family: 'Onest'; font-weight: 600; font-size: 30px; padding: 24px 38px; border-radius: 999px; background: #F2B705; color: #141216; white-space: nowrap; flex: none; }
-""".replace("GRAIN", GRAIN)
+""".replace("GRAIN", GRAIN).replace("HPX", str(H))
 
 ads = []
 def ad(id, body, note=""):
@@ -107,9 +111,9 @@ def band(top, height, b, n=3):
 
 def triptych(id, kicker, bands, tagline, product, cta, note="", plain=False, bare=False, logo_col=""):
     """bands: 3 × (photo, object-position, big label, small line, look[, {tag, size}]); product: (cutouts, title, price)."""
-    n = len(bands); top, gap = (176 if plain else 280), 12
+    n = len(bands); top, gap = ((TOPL + 118) if plain else 280), 12
     if plain: tagline = ""
-    h = ((1676 if plain else 1522) - top - (n - 1) * gap) // n
+    h = (((H - BOTB - 184) if plain else 1522) - top - (n - 1) * gap) // n
     body = "".join(band(top + k * (h + gap), h, b, n) for k, b in enumerate(bands))
     cuts, title, price = product
     if len(cuts) == 3 and len(cta) > 13: cuts = cuts[:2]
@@ -120,10 +124,10 @@ def triptych(id, kicker, bands, tagline, product, cta, note="", plain=False, bar
     plate_bd = "none" if YELLOW else "1.5px solid rgba(243,234,219,.3)"
     if bare and not YELLOW: plate_bg, plate_bd = "transparent", "none"
     y0 = top + n * h + (n - 1) * gap
-    lg = (f'<div style="left:64px;top:58px;height:58px;width:273px;background:{logo_col};-webkit-mask:url({LOGO_W}) 0 0/100% 100% no-repeat;mask:url({LOGO_W}) 0 0/100% 100% no-repeat"></div>'
-          if logo_col else f'<img src="{LOGO_W}" alt="" style="left:64px;top:58px;height:58px">')
+    lg = (f'<div style="left:64px;top:{TOPL}px;height:58px;width:273px;background:{logo_col};-webkit-mask:url({LOGO_W}) 0 0/100% 100% no-repeat;mask:url({LOGO_W}) 0 0/100% 100% no-repeat"></div>'
+          if logo_col else f'<img src="{LOGO_W}" alt="" style="left:64px;top:{TOPL}px;height:58px">')
     header = (f'''{lg}
-  <p style="right:64px;top:76px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#F3EADB">Авторські шовкові вироби</p>''' if plain else f'''  <div style="left:64px;top:44px;font-family:Montserrat,sans-serif;text-transform:uppercase;color:#fff;line-height:1">
+  <p style="right:64px;top:{TOPL + 18}px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#F3EADB">Авторські шовкові вироби</p>''' if plain else f'''  <div style="left:64px;top:44px;font-family:Montserrat,sans-serif;text-transform:uppercase;color:#fff;line-height:1">
     <p style="font-size:34px;font-weight:400;letter-spacing:.02em">Колекція</p>
     <p style="font-size:132px;font-weight:300;letter-spacing:-.01em;margin-top:6px">Соло</p>
     <p style="font-size:34px;font-weight:400;letter-spacing:.02em;margin-top:8px">Шлях до себе</p></div>
@@ -135,7 +139,7 @@ def triptych(id, kicker, bands, tagline, product, cta, note="", plain=False, bar
   {header}
   {body}
   {f"""<p style="left:64px;right:64px;top:{y0 + 34}px;font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:600;font-size:44px;line-height:1.15;text-wrap:balance">{nb(tagline)}</p>""" if tagline else ""}
-  <div style="left:64px;right:64px;bottom:60px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+  <div style="left:64px;right:64px;bottom:{BOTB if plain else 60}px;display:flex;align-items:center;justify-content:space-between;gap:24px">
     <div style="display:flex;align-items:center;gap:{26 if bare else 20}px;padding:{"0" if bare and not YELLOW else "12px 28px 12px 14px"};border-radius:{6 if YELLOW else 20}px;background:{plate_bg};border:{plate_bd};color:{plate_fg};flex:0 1 auto;min-width:0">
       <div style="display:flex;align-items:center;flex:none">{thumbs}</div>
       <div style="min-width:0"><p style="font-size:{(54 if (bare and not price) else 29) if len(title) < 30 else 25}px;font-weight:600;line-height:1.1;text-wrap:balance">{title if "<br>" in title else nb(title)}</p>{f"""<p style="font-family:'Playfair Display',serif;font-size:46px;line-height:1.05;margin-top:4px;white-space:nowrap">{price}</p>""" if price else ""}</div>
@@ -441,5 +445,5 @@ HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO triptych</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=EB+Garamond:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Oswald:wght@500&family=Montserrat:wght@300;400;500&family=Onest:wght@400;600&display=swap">
 <style>""" + CSS + "</style></head><body>"
-(HERE / ("solo7.html" if YELLOW else "solo6.html")).write_text(HEAD + "".join(ads) + "\n</body></html>")
+(HERE / (("solo7" if YELLOW else "solo6") + ("" if FORMAT == "plain" else "-" + FORMAT) + ".html")).write_text(HEAD + "".join(ads) + "\n</body></html>")
 print(len(ads), "triptych banners", "(yellow)" if YELLOW else "")

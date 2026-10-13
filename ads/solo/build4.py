@@ -4,6 +4,12 @@ Rules kept from the audits: all text and logo inside the story safe zone (y 280�
 no third-party brands, verbatim quotes, no price next to war-related lines. Output: solo4.html → out4/*.jpg"""
 import pathlib, sys, os
 YELLOW = os.environ.get("YELLOW") == "1"   # variant B: product named on a yellow brand plate
+FORMAT = os.environ.get("FORMAT", "plain")   # plain — 1080×1920 to the edges; story — the same with the story UI zones kept free (250 top, 340 bottom); feed — 1080×1350
+H = 1350 if FORMAT == "feed" else 1920
+TOP = 250 if FORMAT == "story" else 64        # the logo line
+BOT = 340 if FORMAT == "story" else (80 if FORMAT == "feed" else 96)   # the text block from the bottom
+def sy(v): return round(v * H / 1920)        # a 1920-based vertical measure in the current frame
+
 HERE = pathlib.Path(__file__).parent
 sys.path.insert(0, str(HERE))
 from kit import P, PP, S, CUT, HI, spot_photo, nb, LOGO_W, LOGO_K, GRAIN
@@ -14,7 +20,7 @@ CSS = """
 :root { --ivory: #F4F2ED; --stone: #E8E2D8; --ink: #141216; --ink-2: #4A4750; --ink-3: #8A8592; --gold: #F2B705; --plum: #1B1430; --line: rgba(20,18,22,.16); }
 * { box-sizing: border-box; }
 body { margin: 0; background: #666; font-family: 'Onest', 'Helvetica Neue', Arial, sans-serif; color: var(--ink); -webkit-font-smoothing: antialiased; }
-.ad { width: 1080px; height: 1920px; position: relative; overflow: hidden; background: var(--ivory); margin: 20px auto; }
+.ad { width: 1080px; height: HPXpx; position: relative; overflow: hidden; background: var(--ivory); margin: 20px auto; }
 .ad > * { position: absolute; margin: 0; }
 .ad p, .ad h1 { margin: 0; }
 .ad::after { content: ""; position: absolute; inset: 0; z-index: 90; pointer-events: none; opacity: .12; mix-blend-mode: multiply; background-image: GRAIN; }
@@ -42,7 +48,7 @@ body { margin: 0; background: #666; font-family: 'Onest', 'Helvetica Neue', Aria
 .frame { left: 90px; right: 90px; overflow: hidden; }
 .frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .cut { display: block; filter: drop-shadow(0 28px 32px rgba(40,25,10,.28)); }
-""".replace("GRAIN", GRAIN)
+""".replace("GRAIN", GRAIN).replace("HPX", str(H))
 
 ads = []
 def ad(id, cls, body, note=""):
@@ -122,8 +128,9 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
     """Plain banner: the photo fills the frame, logo at the top edge, text block at the bottom edge
     (or at the top for back-view frames). If the photo box does not start at 0, the gap takes the photo's edge tone."""
     t, hgt = box
+    if FORMAT == "feed": t, hgt = sy(t), sy(hgt)
     top_rgb = edge_tone(photo, spot)
-    grad = ("linear-gradient(180deg,transparent 0,#000 140px,#000 calc(100% - 300px),transparent 100%)" if t + hgt < 1920
+    grad = ("linear-gradient(180deg,transparent 0,#000 140px,#000 calc(100% - 300px),transparent 100%)" if t + hgt < H
             else "linear-gradient(180deg,transparent 0,#000 140px)")      # the photo melts into the dark ground where it ends inside the frame
     feather = (f"-webkit-mask-image:{grad};mask-image:{grad}" if t > 0 else "")
     st = f"position:absolute;left:0;right:0;top:{t}px;height:{hgt}px;{feather}"
@@ -140,18 +147,18 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
     {"" if id in INLINE else f'<div class="cta" style="position:static;transform:none;margin-top:26px">{cta}</div>'}"""
     if top_text:
         shade = '<div style="left:0;right:0;top:0;height:900px;background:linear-gradient(180deg,#141216 0%,rgba(20,18,22,.88) 42%,rgba(20,18,22,.5) 72%,rgba(20,18,22,0) 100%)"></div>'
-        pos_block = "top:200px"
+        pos_block = f"top:{TOP + 136}px"
     else:
         shade = ('<div style="left:0;right:0;top:0;height:260px;background:linear-gradient(180deg,rgba(20,18,22,.55) 0%,rgba(20,18,22,0) 100%)"></div>'
-                 f'<div style="left:0;right:0;top:{shade_from}px;bottom:0;background:linear-gradient(180deg,rgba(20,18,22,0) 0%,rgba(20,18,22,.78) 28%,rgba(20,18,22,.92) 58%,rgba(20,18,22,.95) 100%)"></div>')
-        pos_block = "bottom:96px"
+                 f'<div style="left:0;right:0;bottom:0;height:{1920 - shade_from + BOT - 96}px;background:linear-gradient(180deg,rgba(20,18,22,0) 0%,rgba(20,18,22,.78) 28%,rgba(20,18,22,.92) 58%,rgba(20,18,22,.95) 100%)"></div>')
+        pos_block = f"bottom:{BOT}px"
     ad(id, "full dark", f"""
   <div style="left:0;right:0;top:0;bottom:0;background:#141216"></div>
   {fill}
   {ph}
   {shade}
-  <img src="{LOGO_W}" alt="" style="left:70px;top:64px;height:54px;display:block">
-  <p style="right:70px;top:80px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.45)">{LABEL.get(id, "Авторські шовкові вироби")}</p>
+  <img src="{LOGO_W}" alt="" style="left:70px;top:{TOP}px;height:54px;display:block">
+  <p style="right:70px;top:{TOP + 16}px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.45)">{LABEL.get(id, "Авторські шовкові вироби")}</p>
   <div style="left:70px;right:70px;{pos_block};display:flex;flex-direction:column;align-items:center;text-align:center">
     {block}
   </div>""", note)
@@ -188,9 +195,9 @@ def ivory(id, eyebrow, h, em, visual, body, price_main, price_small, cta, bg="va
     if dark: bg = "radial-gradient(90% 60% at 50% 45%,#2A2622,#141216 80%)"
     ad(id, "dark" if dark else "", f'''
   <div style="left:0;right:0;top:0;bottom:0;background:{bg}"></div>
-  <img src="{LOGO_W if dark else LOGO_K}" alt="" style="left:70px;top:64px;height:54px;display:block">
-  <p style="right:70px;top:80px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;font-size:24px;color:{"rgba(244,242,237,.85)" if dark else "var(--ink-2)"}">Авторські шовкові вироби</p>
-  <div style="left:70px;right:70px;top:80px;bottom:{150 if clean else 96}px;display:flex;flex-direction:column;align-items:center;text-align:center">
+  <img src="{LOGO_W if dark else LOGO_K}" alt="" style="left:70px;top:{TOP}px;height:54px;display:block">
+  <p style="right:70px;top:{TOP + 16}px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;font-size:24px;color:{"rgba(244,242,237,.85)" if dark else "var(--ink-2)"}">Авторські шовкові вироби</p>
+  <div style="left:70px;right:70px;top:{TOP + 16}px;bottom:{(150 if clean else 96) + BOT - 96}px;display:flex;flex-direction:column;align-items:center;text-align:center">
     {'<div style="height:60px"></div>' if (YELLOW or clean) else f'<p class="eyebrow" style="position:static;margin-top:90px">{eyebrow}</p>'}
     <h1 class="h" style="position:static;margin-top:{60 if clean else 16}px;font-size:{hs}px">{h}<br><em{' style="color:#E9D7A6"' if dark else ""}>{em}</em></h1>
     <div style="flex:1;min-height:0;align-self:stretch;margin-top:{36 if clean else 44}px;position:relative">{visual}</div>
@@ -339,5 +346,5 @@ HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO classic</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prata&family=Onest:wght@300;400;500;600&family=Montserrat:wght@300;400;500&display=swap">
 <style>""" + CSS + "</style></head><body>"
-(HERE / ("solo5.html" if YELLOW else "solo4.html")).write_text(HEAD + "".join(ads) + "\n</body></html>")
+(HERE / (("solo5" if YELLOW else "solo4") + ("" if FORMAT == "plain" else "-" + FORMAT) + ".html")).write_text(HEAD + "".join(ads) + "\n</body></html>")
 print(len(ads), "creatives (classic)")

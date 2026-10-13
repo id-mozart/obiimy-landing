@@ -5,9 +5,10 @@ no third-party brands, verbatim quotes, no price next to war-related lines. Outp
 import pathlib, sys, os
 YELLOW = os.environ.get("YELLOW") == "1"   # variant B: product named on a yellow brand plate
 FORMAT = os.environ.get("FORMAT", "plain")   # plain — 1080×1920 to the edges; story — the same with the story UI zones kept free (250 top, 340 bottom); feed — 1080×1350
-H = 1350 if FORMAT == "feed" else 1920
+H = {"feed": 1350, "square": 1080}.get(FORMAT, 1920)
 TOP = 250 if FORMAT == "story" else 64        # the logo line
-BOT = 340 if FORMAT == "story" else (80 if FORMAT == "feed" else 96)   # the text block from the bottom
+BOT = 340 if FORMAT == "story" else (80 if FORMAT in ("feed", "square") else 96)   # the text block from the bottom
+Z = .78 if FORMAT == "square" else 1       # the text block of a square banner is zoomed down to leave room for the photograph
 def sy(v): return round(v * H / 1920)        # a 1920-based vertical measure in the current frame
 
 HERE = pathlib.Path(__file__).parent
@@ -128,7 +129,7 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
     """Plain banner: the photo fills the frame, logo at the top edge, text block at the bottom edge
     (or at the top for back-view frames). If the photo box does not start at 0, the gap takes the photo's edge tone."""
     t, hgt = box
-    if FORMAT == "feed": t, hgt = sy(t), sy(hgt)
+    if FORMAT in ("feed", "square"): t, hgt = sy(t), sy(hgt)
     top_rgb = edge_tone(photo, spot)
     grad = ("linear-gradient(180deg,transparent 0,#000 140px,#000 calc(100% - 300px),transparent 100%)" if t + hgt < H
             else "linear-gradient(180deg,transparent 0,#000 140px)")      # the photo melts into the dark ground where it ends inside the frame
@@ -159,7 +160,7 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
   {shade}
   <img src="{LOGO_W}" alt="" style="left:70px;top:{TOP}px;height:54px;display:block">
   <p style="right:70px;top:{TOP + 16}px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;white-space:nowrap;color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.45)">{LABEL.get(id, "Авторські шовкові вироби")}</p>
-  <div style="left:70px;right:70px;{pos_block};display:flex;flex-direction:column;align-items:center;text-align:center">
+  <div style="left:70px;right:70px;{pos_block};display:flex;flex-direction:column;align-items:center;text-align:center;zoom:{Z}">
     {block}
   </div>""", note)
 
@@ -197,7 +198,7 @@ def ivory(id, eyebrow, h, em, visual, body, price_main, price_small, cta, bg="va
   <div style="left:0;right:0;top:0;bottom:0;background:{bg}"></div>
   <img src="{LOGO_W if dark else LOGO_K}" alt="" style="left:70px;top:{TOP}px;height:54px;display:block">
   <p style="right:70px;top:{TOP + 16}px;font-family:Montserrat,sans-serif;font-size:26px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;font-size:24px;color:{"rgba(244,242,237,.85)" if dark else "var(--ink-2)"}">Авторські шовкові вироби</p>
-  <div style="left:70px;right:70px;top:{TOP + 16}px;bottom:{(150 if clean else 96) + BOT - 96}px;display:flex;flex-direction:column;align-items:center;text-align:center">
+  <div style="left:70px;right:70px;top:{TOP + 16}px;bottom:{(150 if clean else 96) + BOT - 96}px;zoom:{Z};display:flex;flex-direction:column;align-items:center;text-align:center">
     {'<div style="height:60px"></div>' if (YELLOW or clean) else f'<p class="eyebrow" style="position:static;margin-top:90px">{eyebrow}</p>'}
     <h1 class="h" style="position:static;margin-top:{60 if clean else 16}px;font-size:{hs}px">{h}<br><em{' style="color:#E9D7A6"' if dark else ""}>{em}</em></h1>
     <div style="flex:1;min-height:0;align-self:stretch;margin-top:{36 if clean else 44}px;position:relative">{visual}</div>

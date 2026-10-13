@@ -62,7 +62,7 @@ def build(site: pathlib.Path):
             v = hashlib.md5(f.read_bytes()).hexdigest()[:8]
             # the other formats of the same banner, rendered next to the plain one: <out>-story/<file> (story UI zones kept free) and <out>-feed/<file> (1080 × 1350)
             alts = {}
-            for key, suf in (("story", "-story"), ("feed", "-45")):
+            for key, suf in (("story", "-story"), ("feed", "-45"), ("square", "-1x1")):
                 src = f.parent.with_name(f.parent.name + "-" + key) / f.name
                 if not src.exists(): continue
                 vd = d / (f.stem + suf + ".jpg"); vp = d / (f.stem + suf + "-540.webp")
@@ -234,7 +234,7 @@ body.shared #lb .row {{ gap: 22px; }}
 .fmt b {{ font-size: .95rem; margin-right: 8px; white-space: nowrap; }}
 .fmt button {{ font: inherit; font-size: .88rem; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 10px 16px; cursor: pointer; }}
 .fmt button[aria-pressed="true"] {{ background: var(--ink); color: var(--bg); border-color: var(--ink); }}
-.fmt .fn {{ font-size: .85rem; color: var(--ink2); }}
+.fmt .fn {{ font-size: .85rem; color: var(--ink2); }} .fmt .zip {{ margin-left: auto; background: var(--acc); color: #fff; border-color: var(--acc); }} .fmt .zip[disabled] {{ opacity: .6; cursor: progress; }}
 .c.nov img {{ opacity: .3; }} .c.nov::before {{ content: "немає в цьому форматі"; position: absolute; left: 10px; top: 10px; z-index: 1; font-size: .72rem; padding: 4px 8px; border-radius: 999px; background: var(--card); color: var(--ink2); border: 1px solid var(--line); }}
 .c {{ position: relative; }}
 .all {{ display: none; margin: 40px 0 0; text-align: center; }}
@@ -261,7 +261,7 @@ footer {{ margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1
 <button type="button" id="link">Скопіювати посилання з відбором</button>
 <button type="button" id="clear">Очистити</button>
 <textarea id="out" readonly aria-label="Список відмічених банерів"></textarea></div>
-<div class="fmt" role="group" aria-label="Формат банерів"><b>Формат:</b><button type="button" data-fmt="plain" aria-pressed="true">Банер 9:16</button><button type="button" data-fmt="story" aria-pressed="false">Сторіс · безпечна зона</button><button type="button" data-fmt="feed" aria-pressed="false">Стрічка 4:5</button><span class="fn" id="fmtn"></span></div>
+<div class="fmt" role="group" aria-label="Формат банерів"><b>Формат:</b><button type="button" data-fmt="plain" aria-pressed="true">Банер 9:16</button><button type="button" data-fmt="story" aria-pressed="false">Сторіс · безпечна зона</button><button type="button" data-fmt="feed" aria-pressed="false">Стрічка 4:5</button><button type="button" data-fmt="square" aria-pressed="false">Квадрат 1:1</button><span class="fn" id="fmtn"></span><button type="button" id="zipall" class="zip" title="Усі формати всіх показаних банерів одним архівом">Завантажити все (ZIP)</button></div>
 {f'<nav class="toc">{toc_html}</nav>' if toc_html else ""}
 {body_html}
 <p class="all"><a href="creatives">Показати всі банери</a></p>
@@ -288,7 +288,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
   var KEY = 'obiimy-picks-{keep_ver}', picks = new Set(), only = false;     // a new selection starts from the saved list
   var DEF = {defaults}, stored = null;
   try {{ stored = localStorage.getItem(KEY); }} catch (e) {{}}
-  var m = location.hash.match(/sel=([^&]+)/), shared = !!m, mf = location.hash.match(/fmt=(plain|story|feed)/);
+  var m = location.hash.match(/sel=([^&]+)/), shared = !!m, mf = location.hash.match(/fmt=(plain|story|feed|square)/);
   if (shared) {{
     // a link with a selection: show exactly these banners and nothing else; the saved working selection is not touched
     decodeURIComponent(m[1]).split(',').forEach(function (x) {{ if (x) picks.add(x); }});
@@ -342,6 +342,26 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
   document.querySelectorAll('.fmt button').forEach(function (b) {{ b.addEventListener('click', function () {{ applyFmt(b.dataset.fmt); }}); }});
   var f0 = mf ? mf[1] : null; if (!f0) try {{ f0 = localStorage.getItem('obiimy-fmt'); }} catch (e) {{}}
   if (f0 && f0 !== 'plain') applyFmt(f0);
+  // «Завантажити все»: every format of every banner on view, one ZIP, built in the browser
+  var FOLDER = {{ plain: '9x16', story: 'story-9x16', feed: '4x5', square: '1x1' }};
+  function zipAll() {{
+    var btn = document.getElementById('zipall'), note = document.getElementById('fmtn'), items = [];
+    document.querySelectorAll('.c:not(.hide)').forEach(function (c) {{
+      var plain = JSON.parse(c.dataset.plain), alt = c.dataset.alt ? JSON.parse(c.dataset.alt) : {{}};
+      items.push([FOLDER.plain, plain]); Object.keys(alt).forEach(function (k) {{ items.push([FOLDER[k] || k, alt[k]]); }});
+    }});
+    if (!items.length) return Promise.resolve(0);
+    btn.disabled = true; var was = note.textContent;
+    function withLib() {{ return window.JSZip ? Promise.resolve() : new Promise(function (ok, no) {{ var sc = document.createElement('script'); sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); }}); }}
+    return withLib().then(function () {{
+      var zip = new JSZip(), done = 0;
+      return Promise.all(items.map(function (it) {{ return fetch(it[1].f).then(function (r) {{ if (!r.ok) throw new Error(it[1].n); return r.blob(); }}).then(function (b) {{ zip.folder(it[0]).file(it[1].n, b); done++; note.textContent = 'Пакую: ' + done + ' з ' + items.length; }}); }}))
+        .then(function () {{ return zip.generateAsync({{ type: 'blob' }}); }})
+        .then(function (blob) {{ var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'obiimy-creatives-' + items.length + '.zip'; a.click(); setTimeout(function () {{ URL.revokeObjectURL(a.href); }}, 60000); note.textContent = was; btn.disabled = false; return blob.size; }});
+    }}).catch(function (e) {{ note.textContent = 'Не вдалося зібрати архів: ' + (e && e.message || e); btn.disabled = false; throw e; }});
+  }}
+  window.zipAll = zipAll;
+  document.getElementById('zipall').addEventListener('click', function () {{ zipAll(); }});
   document.getElementById('clear').addEventListener('click', function () {{ if (confirm('Зняти всі позначки?')) {{ picks.clear(); paint(); }} }});
   paint();
 

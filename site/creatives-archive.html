@@ -75,7 +75,7 @@ body.shared #lb .row { gap: 22px; }
 .fmt b { font-size: .95rem; margin-right: 8px; white-space: nowrap; }
 .fmt button { font: inherit; font-size: .88rem; border: 1px solid var(--line); background: transparent; color: var(--ink); border-radius: 999px; padding: 10px 16px; cursor: pointer; }
 .fmt button[aria-pressed="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
-.fmt .fn { font-size: .85rem; color: var(--ink2); }
+.fmt .fn { font-size: .85rem; color: var(--ink2); } .fmt .zip { margin-left: auto; background: var(--acc); color: #fff; border-color: var(--acc); } .fmt .zip[disabled] { opacity: .6; cursor: progress; }
 .c.nov img { opacity: .3; } .c.nov::before { content: "немає в цьому форматі"; position: absolute; left: 10px; top: 10px; z-index: 1; font-size: .72rem; padding: 4px 8px; border-radius: 999px; background: var(--card); color: var(--ink2); border: 1px solid var(--line); }
 .c { position: relative; }
 .all { display: none; margin: 40px 0 0; text-align: center; }
@@ -104,7 +104,7 @@ footer { margin-top: 72px; color: var(--ink2); font-size: .85rem; border-top: 1p
 <button type="button" id="link">Скопіювати посилання з відбором</button>
 <button type="button" id="clear">Очистити</button>
 <textarea id="out" readonly aria-label="Список відмічених банерів"></textarea></div>
-<div class="fmt" role="group" aria-label="Формат банерів"><b>Формат:</b><button type="button" data-fmt="plain" aria-pressed="true">Банер 9:16</button><button type="button" data-fmt="story" aria-pressed="false">Сторіс · безпечна зона</button><button type="button" data-fmt="feed" aria-pressed="false">Стрічка 4:5</button><span class="fn" id="fmtn"></span></div>
+<div class="fmt" role="group" aria-label="Формат банерів"><b>Формат:</b><button type="button" data-fmt="plain" aria-pressed="true">Банер 9:16</button><button type="button" data-fmt="story" aria-pressed="false">Сторіс · безпечна зона</button><button type="button" data-fmt="feed" aria-pressed="false">Стрічка 4:5</button><button type="button" data-fmt="square" aria-pressed="false">Квадрат 1:1</button><span class="fn" id="fmtn"></span><button type="button" id="zipall" class="zip" title="Усі формати всіх показаних банерів одним архівом">Завантажити все (ZIP)</button></div>
 <nav class="toc"><a href="#s1">Подарункові · варіант A <span>10</span></a><a href="#s2">Подарункові · варіант B <span>10</span></a><a href="#s3">Оригінальні концепції <span>19</span></a><a href="#s4">Один образ · одне фото · варіант A <span>10</span></a><a href="#s5">Один образ · одне фото · варіант B <span>10</span></a><a href="#s6">Лаконічні · один товар <span>22</span></a><a href="#s7">Приземлені про товар · варіант A <span>18</span></a><a href="#s8">Приземлені про товар · варіант B <span>18</span></a><a href="#s9">Продуктові · варіант A <span>15</span></a><a href="#s10">Продуктові · варіант B <span>15</span></a><a href="#s11">Смуги-історії · варіант A <span>16</span></a><a href="#s12">Смуги-історії · варіант B <span>18</span></a><a href="#s13">Варіант A · тихий преміум <span>3</span></a><a href="#s14">Варіант B · тихий преміум <span>10</span></a><a href="#s15">Варіант A · український преміум <span>8</span></a><a href="#s16">Варіант B · український преміум <span>11</span></a><a href="#s17">Варіант A · повноекранні <span>8</span></a><a href="#s18">Варіант B · повноекранні <span>12</span></a><a href="#s19">Варіант A · товарні <span>8</span></a><a href="#s20">Варіант B · товарні <span>9</span></a><a href="#s21">Обкладинки журналу SOLO <span>7</span></a><a href="#s22">Кольорова хустка <span>3</span></a><a href="#s23">Сім станів <span>8</span></a><a href="#s24">Я є. Я продовжую жити. Я обираю себе. <span>3</span></a><a href="#s25">Маніфести <span>6</span></a><a href="#s26">Слово бренду <span>1</span></a><a href="#s27">Кадр із фільму <span>3</span></a><a href="#s28">Крізь десятиліття <span>3</span></a><a href="#s29">Дві епохи в одному кадрі <span>1</span></a><a href="#s30">Стан буквами з шовку <span>4</span></a><a href="#s31">Задня обкладинка <span>4</span></a><a href="#s32">Маршрут <span>1</span></a><a href="#s33">Продажі <span>14</span></a><a href="#s34">Картки товару <span>4</span></a><a href="#s35">Вхідна ціна <span>1</span></a><a href="#s36">Один принт — три формати <span>3</span></a><a href="#s37">Жовта коробка <span>1</span></a><a href="#s38">Як носити <span>1</span></a><a href="#s39">Каталог і ціни <span>1</span></a><a href="#s40">Вісник SOLO <span>1</span></a><a href="#s41">Серія 1 · бренд <span>10</span></a><a href="#s42">Серія 2 · Париж і Рив’єра <span>7</span></a></nav>
 <section class="grp" id="s1"><div class="gh"><h3>Подарункові · варіант A <span style="font-weight:400;color:var(--ink2)">· 10</span></h3><p>Для того, хто дарує: сертифікат, подарунок за бюджетом, кому що подарувати, підпис вашими словами, жовта коробочка, відправка в день замовлення.</p></div><div class="grid"><figure class="c st" data-f="st" data-id="solo-tri/g01-certificate.jpg" data-plain="{&quot;f&quot;: &quot;creatives/solo-tri/g01-certificate.jpg?v=fd40b079&quot;, &quot;p&quot;: &quot;creatives/solo-tri/g01-certificate-540.webp?v=fd40b079&quot;, &quot;n&quot;: &quot;g01-certificate.jpg&quot;, &quot;w&quot;: 540, &quot;h&quot;: 960}"><a href="creatives/solo-tri/g01-certificate.jpg?v=fd40b079" target="_blank" rel="noopener"><img src="creatives/solo-tri/g01-certificate-540.webp?v=fd40b079" alt="Подарункові · варіант A" loading="lazy" width="540" height="960"></a>
         <figcaption><label class="pick"><input type="checkbox" data-id="solo-tri/g01-certificate.jpg"><span>Залишити</span></label><span class="fid">g01</span><a href="creatives/solo-tri/g01-certificate.jpg?v=fd40b079" download="g01-certificate.jpg">JPG ↓</a></figcaption></figure><figure class="c st" data-f="st" data-id="solo-tri/g02-no-worries.jpg" data-plain="{&quot;f&quot;: &quot;creatives/solo-tri/g02-no-worries.jpg?v=cef7698d&quot;, &quot;p&quot;: &quot;creatives/solo-tri/g02-no-worries-540.webp?v=cef7698d&quot;, &quot;n&quot;: &quot;g02-no-worries.jpg&quot;, &quot;w&quot;: 540, &quot;h&quot;: 960}"><a href="creatives/solo-tri/g02-no-worries.jpg?v=cef7698d" target="_blank" rel="noopener"><img src="creatives/solo-tri/g02-no-worries-540.webp?v=cef7698d" alt="Подарункові · варіант A" loading="lazy" width="540" height="960"></a>
@@ -513,7 +513,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {
   var KEY = 'obiimy-picks-3f260ef4', picks = new Set(), only = false;     // a new selection starts from the saved list
   var DEF = ["final2/obiimy-12-paris-chervonyi-shovk-1080x1920.jpg", "final2/obiimy-13-paris-shal-1080x1920.jpg", "final2/obiimy-20-solo-rivera-1080x1920.jpg", "solo-main/c02-iskra.jpg", "solo-main/c05-zolote.jpg", "solo-main/c06-avantiura.jpg", "solo-main/c10-grey.jpg", "solo-main/c18-look.jpg", "solo-main/c23-look-dark.jpg", "solo-main/p01-quiet-luxury.jpg", "solo-main/p05-character.jpg", "solo-main/p06-noticed.jpg", "solo-main/p07-whole-look.jpg", "solo-main/p11-italian-silk.jpg", "solo-main/p12-wearable-art.jpg", "solo-main/p15-iskra.jpg", "solo-main/u02-london.jpg", "solo-main/u03-made-in-ua.jpg", "solo-main/u05-luxury.jpg", "solo-one/g07-scrunchie-gift.jpg", "solo-one/g08-scarf-gift-iskra.jpg", "solo-orig/o12-contact-iskra.jpg", "solo-tri/t01-decades.jpg", "solo-tri/t05-avantiura-ways.jpg"], stored = null;
   try { stored = localStorage.getItem(KEY); } catch (e) {}
-  var m = location.hash.match(/sel=([^&]+)/), shared = !!m, mf = location.hash.match(/fmt=(plain|story|feed)/);
+  var m = location.hash.match(/sel=([^&]+)/), shared = !!m, mf = location.hash.match(/fmt=(plain|story|feed|square)/);
   if (shared) {
     // a link with a selection: show exactly these banners and nothing else; the saved working selection is not touched
     decodeURIComponent(m[1]).split(',').forEach(function (x) { if (x) picks.add(x); });
@@ -567,6 +567,26 @@ document.querySelectorAll('.bar button').forEach(function (b) {
   document.querySelectorAll('.fmt button').forEach(function (b) { b.addEventListener('click', function () { applyFmt(b.dataset.fmt); }); });
   var f0 = mf ? mf[1] : null; if (!f0) try { f0 = localStorage.getItem('obiimy-fmt'); } catch (e) {}
   if (f0 && f0 !== 'plain') applyFmt(f0);
+  // «Завантажити все»: every format of every banner on view, one ZIP, built in the browser
+  var FOLDER = { plain: '9x16', story: 'story-9x16', feed: '4x5', square: '1x1' };
+  function zipAll() {
+    var btn = document.getElementById('zipall'), note = document.getElementById('fmtn'), items = [];
+    document.querySelectorAll('.c:not(.hide)').forEach(function (c) {
+      var plain = JSON.parse(c.dataset.plain), alt = c.dataset.alt ? JSON.parse(c.dataset.alt) : {};
+      items.push([FOLDER.plain, plain]); Object.keys(alt).forEach(function (k) { items.push([FOLDER[k] || k, alt[k]]); });
+    });
+    if (!items.length) return Promise.resolve(0);
+    btn.disabled = true; var was = note.textContent;
+    function withLib() { return window.JSZip ? Promise.resolve() : new Promise(function (ok, no) { var sc = document.createElement('script'); sc.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'; sc.onload = ok; sc.onerror = no; document.head.appendChild(sc); }); }
+    return withLib().then(function () {
+      var zip = new JSZip(), done = 0;
+      return Promise.all(items.map(function (it) { return fetch(it[1].f).then(function (r) { if (!r.ok) throw new Error(it[1].n); return r.blob(); }).then(function (b) { zip.folder(it[0]).file(it[1].n, b); done++; note.textContent = 'Пакую: ' + done + ' з ' + items.length; }); }))
+        .then(function () { return zip.generateAsync({ type: 'blob' }); })
+        .then(function (blob) { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'obiimy-creatives-' + items.length + '.zip'; a.click(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000); note.textContent = was; btn.disabled = false; return blob.size; });
+    }).catch(function (e) { note.textContent = 'Не вдалося зібрати архів: ' + (e && e.message || e); btn.disabled = false; throw e; });
+  }
+  window.zipAll = zipAll;
+  document.getElementById('zipall').addEventListener('click', function () { zipAll(); });
   document.getElementById('clear').addEventListener('click', function () { if (confirm('Зняти всі позначки?')) { picks.clear(); paint(); } });
   paint();
 

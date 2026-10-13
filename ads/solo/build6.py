@@ -9,7 +9,8 @@ from kit import P, PP, S, CUT, HI, spot_photo, nb, LOGO_W, LOGO_K, GRAIN
 
 YELLOW = os.environ.get("YELLOW") == "1"
 FORMAT = os.environ.get("FORMAT", "plain")   # plain | story (UI zones free) | feed (1080×1350)
-H = 1350 if FORMAT == "feed" else 1920
+H = {"feed": 1350, "square": 1080}.get(FORMAT, 1920)
+K = .7 if FORMAT == "square" else 1          # type scale of the bands and the product row in a square banner
 TOPL = 250 if FORMAT == "story" else 58       # the logo line of the plain header
 BOTB = 340 if FORMAT == "story" else 60       # the product-and-button row from the bottom
 
@@ -40,9 +41,9 @@ FILTERS = {"dim": "filter:grayscale(.62) contrast(1.1) brightness(1.04)", "bw": 
 def band(top, height, b, n=3):
     photo, pos, big, small, look = b[:5]
     extra = b[5] if len(b) > 5 else {}
-    size = extra.get("size", 118 if len(big) <= 6 else 100 if len(big) <= 8 else 84)
+    size = extra.get("size", 118 if len(big) <= 6 else 100 if len(big) <= 8 else 84) * K
     if n == 4: size = min(size, 84)
-    if n == 1 and look not in ("grid",): size = extra.get("size", 130)
+    if n == 1 and look not in ("grid",): size = extra.get("size", 130) * K
     tag_style = "" if small else ' style="margin-top:30px"'
     tag = f'<p class="tag"{tag_style}>{extra["tag"]}</p>' if extra.get("tag") else ""
     if look == "spec":
@@ -107,17 +108,17 @@ def band(top, height, b, n=3):
         pic = f'<img src="{S(photo)}" alt="" style="object-position:{pos};{FILTERS[look]}{more}">'
     return f'''
   <div class="band" style="top:{top}px;height:{height}px">{pic}<div class="veil"{' style="background:' + extra["veil"] + '"' if extra.get("veil") else ""}></div>
-    <div class="txt"><p class="big" style="font-size:{size}px">{big}</p>{f'<p class="small" style="font-size:{36 if n == 4 else 40}px;max-width:{extra.get("cw", 480)}px;margin-top:{extra.get("gap", 26)}px">{nb(small)}</p>' if small else ""}{tag}</div></div>'''
+    <div class="txt" style="width:{int(620 * (K if K < 1 else 1))}px"><p class="big" style="font-size:{size}px">{big}</p>{f'<p class="small" style="font-size:{(36 if n == 4 else 40) * K}px;max-width:{extra.get("cw", 480)}px;margin-top:{extra.get("gap", 26) * K}px">{nb(small)}</p>' if small else ""}{tag}</div></div>'''
 
 def triptych(id, kicker, bands, tagline, product, cta, note="", plain=False, bare=False, logo_col=""):
     """bands: 3 × (photo, object-position, big label, small line, look[, {tag, size}]); product: (cutouts, title, price)."""
     n = len(bands); top, gap = ((TOPL + 118) if plain else 280), 12
     if plain: tagline = ""
-    h = (((H - BOTB - 184) if plain else 1522) - top - (n - 1) * gap) // n
+    h = (((H - BOTB - int(184 * K)) if plain else 1522) - top - (n - 1) * gap) // n
     body = "".join(band(top + k * (h + gap), h, b, n) for k, b in enumerate(bands))
     cuts, title, price = product
     if len(cuts) == 3 and len(cta) > 13: cuts = cuts[:2]
-    th = 150 if bare else 112      # bare: no plate behind the product, larger scarves
+    th = int((150 if bare else 112) * K)      # bare: no plate behind the product, larger scarves
     thumbs = "".join(f'<img src="{CUT(c)}" alt="" style="height:{th}px;width:auto;max-width:{th}px;object-fit:contain;margin-left:{0 if i == 0 else -int(th * .46)}px;filter:drop-shadow(0 8px 10px rgba(0,0,0,.4));transform:rotate({(-6, 5, -3)[i]}deg)">' for i, c in enumerate(cuts))
     plate_bg = "#F2B705" if YELLOW else "rgba(243,234,219,.1)"
     plate_fg = "#141216" if YELLOW else "#F3EADB"
@@ -142,9 +143,9 @@ def triptych(id, kicker, bands, tagline, product, cta, note="", plain=False, bar
   <div style="left:64px;right:64px;bottom:{BOTB if plain else 60}px;display:flex;align-items:center;justify-content:space-between;gap:24px">
     <div style="display:flex;align-items:center;gap:{26 if bare else 20}px;padding:{"0" if bare and not YELLOW else "12px 28px 12px 14px"};border-radius:{6 if YELLOW else 20}px;background:{plate_bg};border:{plate_bd};color:{plate_fg};flex:0 1 auto;min-width:0">
       <div style="display:flex;align-items:center;flex:none">{thumbs}</div>
-      <div style="min-width:0"><p style="font-size:{(54 if (bare and not price) else 29) if len(title) < 30 else 25}px;font-weight:600;line-height:1.1;text-wrap:balance">{title if "<br>" in title else nb(title)}</p>{f"""<p style="font-family:'Playfair Display',serif;font-size:46px;line-height:1.05;margin-top:4px;white-space:nowrap">{price}</p>""" if price else ""}</div>
+      <div style="min-width:0"><p style="font-size:{((54 if (bare and not price) else 29) if len(title) < 30 else 25) * K}px;font-weight:600;line-height:1.1;text-wrap:balance">{title if "<br>" in title else nb(title)}</p>{f"""<p style="font-family:'Playfair Display',serif;font-size:{46 * K}px;line-height:1.05;margin-top:4px;white-space:nowrap">{price}</p>""" if price else ""}</div>
     </div>
-    <div class="cta" style="{"background:#F3EADB;color:#141216;" if YELLOW else ""}{"font-size:36px;padding:30px 56px" if plain else ""}">{cta}</div>
+    <div class="cta" style="{"background:#F3EADB;color:#141216;" if YELLOW else ""}{f"font-size:{36 * K}px;padding:{30 * K}px {56 * K}px" if plain else ""}">{cta}</div>
   </div>''', note)
 
 def grad(pid, a=160): return f"linear-gradient({a}deg,{PP[pid]['c']},{PP[pid]['deep']})"

@@ -632,10 +632,48 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_response(200); self.send_header("Content-Type", "application/pdf"); self.send_header("Content-Length", str(f.stat().st_size)); self.send_header("Cache-Control", "no-cache"); self.end_headers(); return
         return super().do_HEAD()
 
+    CORS = {"Access-Control-Allow-Origin": "*", "Access-Control-Allow-Methods": "POST, OPTIONS", "Access-Control-Allow-Headers": "Content-Type", "Access-Control-Max-Age": "86400"}
+
+    def do_OPTIONS(self):
+        # the KP generator on the site asks this service for a PDF: a cross-origin POST, so the browser asks first
+        if urllib.parse.urlsplit(self.path).path != "/api/kp-pdf": return self.send_error(404, "Not found")
+        self.send_response(204)
+        for k, v in self.CORS.items(): self.send_header(k, v)
+        self.send_header("Content-Length", "0"); self.end_headers()
+
+    def kp_pdf(self, data):
+        """POST /api/kp-pdf with the proposal's state (JSON): kp.html is rendered by Chromium with that state and the A4 PDF comes back.
+        Read-only, so any origin may ask; the page itself is built from src/build-kp.py when missing."""
+        try: state = json.loads(data.decode("utf-8")); assert isinstance(state, dict)
+        except (ValueError, AssertionError): return self.send_json(dict(ok=False, error="Стан пропозиції не розібрати."), 400)
+        html = ROOT / "kp.html"
+        if not html.exists(): subprocess.run([sys.executable, str(ROOT / "src" / "build-kp.py")], cwd=ROOT, capture_output=True, timeout=120)
+        if not html.exists(): return self.send_json(dict(ok=False, error="Немає kp.html — генератор не зібрано."), 500)
+        with tempfile.TemporaryDirectory() as td:
+            st = pathlib.Path(td) / "state.json"; out = pathlib.Path(td) / "kp.pdf"
+            st.write_text(json.dumps(state, ensure_ascii=False))
+            r = subprocess.run([tool("node"), str(ROOT / "review" / "pp" / "kp-pdf.mjs"), str(st), str(out), str(html)], cwd=ROOT, capture_output=True, text=True, timeout=180)
+            if r.returncode or not out.exists():
+                sys.stderr.write(r.stderr[-2000:] + "\n"); return self.send_json(dict(ok=False, error="Chromium не зібрав PDF: " + (r.stderr.strip().splitlines() or ["?"])[-1][:200]), 500)
+            try:        # Chromium embeds the photographs losslessly (20 MB for three pages): re-encode them as JPEG at 200 dpi
+                import fitz
+                d = fitz.open(out); d.rewrite_images(dpi_threshold=201, dpi_target=200, quality=85, lossy=True, lossless=True, set_to_gray=False)
+                small = pathlib.Path(td) / "kp-small.pdf"; d.save(small, garbage=4, deflate=True); d.close(); out = small
+            except Exception as e: sys.stderr.write(f"pdf compression skipped: {e}\n")
+            pdf = out.read_bytes()
+        self.send_response(200); self.send_header("Content-Type", "application/pdf"); self.send_header("Content-Length", str(len(pdf))); self.send_header("Cache-Control", "no-store")
+        for k, v in self.CORS.items(): self.send_header(k, v)
+        self.end_headers(); self.wfile.write(pdf)
+
     def do_POST(self):
+        u = urllib.parse.urlsplit(self.path); q = {k: v[0] for k, v in urllib.parse.parse_qs(u.query).items()}
+        if u.path == "/api/kp-pdf":
+            try: n = int(self.headers.get("Content-Length") or 0)
+            except ValueError: n = -1
+            if n < 0 or n > 80 * 1048576: return self.send_json(dict(ok=False, error="Запит завеликий (понад 80 МБ)."), 413)
+            return self.kp_pdf(self.rfile.read(n))
         if not self.authed(): return
         if not self.local(post=True): return self.send_error(403, "Local use only")
-        u = urllib.parse.urlsplit(self.path); q = {k: v[0] for k, v in urllib.parse.parse_qs(u.query).items()}
         try: n = int(self.headers.get("Content-Length") or 0)
         except ValueError: n = -1
         if n < 0 or n > 80 * 1048576: return self.send_json(dict(ok=False, error="Файл слишком большой (больше 80 МБ)."), 413)

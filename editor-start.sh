@@ -10,5 +10,6 @@ mkdir -p review/lb; ln -sfn /app/data/versions review/deck-versions; ln -sfn /ap
 [ -f data/deck-edits.json ] || printf '{"pages": {}, "hidden": [], "order": []}\n' > data/deck-edits.json
 # the deck is rebuilt with the volume's edits before the editor opens, so the pages and the PDF match what was saved last
 python3 src/build-deck-variants.py || echo "initial build failed — the editor opens with the image's build"
+python3 src/build-kp.py || echo "kp build failed — /api/kp-pdf will try again on demand"
 export DECK_EDITOR_PORT="${PORT:-8770}"
 exec python3 src/deck-editor.py

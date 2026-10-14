@@ -30,7 +30,7 @@
   .btn.line { background: transparent; color: var(--ink); }
   .btn.gold { background: var(--yellow); border-color: var(--yellow); color: var(--ink); }
   .btn.sm { padding: 5px 11px; font-size: .82rem; }
-  .acts { margin-top: 16px; position: sticky; bottom: 0; background: var(--paper); padding: 10px 0 12px; border-top: 1px solid var(--line); box-shadow: 0 -8px 16px var(--paper); } .acts .actsb { display: flex; flex-wrap: wrap; gap: 8px; } .sumline { font-family: Playfair, serif; font-size: 1rem; margin: 0 0 8px; }
+  .acts { margin-top: 16px; position: sticky; bottom: 0; background: var(--paper); padding: 10px 0 12px; border-top: 1px solid var(--line); box-shadow: 0 -8px 16px var(--paper); } .acts .actsb { display: flex; flex-wrap: wrap; gap: 8px; } .sumline { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; margin: 0 0 10px; } .sumline b { font-family: Playfair, serif; font-weight: 400; font-size: 1.5rem; line-height: 1.1; } .sumline span { color: var(--ink3); font-size: .85rem; white-space: nowrap; }
   #toast { position: fixed; right: 22px; top: 14px; z-index: 60; background: var(--ink); color: #F1EFEA; padding: 10px 14px; font-size: .85rem; max-width: 376px; display: flex; gap: 10px; align-items: center; box-shadow: 0 6px 24px rgba(0,0,0,.25); } #toast[hidden] { display: none; } #toast .btn { color: #F1EFEA; border-color: #F1EFEA; }
   .ok { color: #2b7a3d; font-size: .82rem; }
   /* document — the deck's pages: paper #F1EFEA, Playfair, gold italic captions on the tiles */
@@ -148,14 +148,14 @@
     <div class="f"><label for="note">Примітка</label><textarea id="note" placeholder="Що ще важливо для клієнта"></textarea></div>
   </div>
   <div class="sec"><h2>Версії</h2>
-    <p class="hint">Знімок усіх полів і ручних правок. Зберігаються в цьому браузері; «Посилання» біля версії відкриє її на будь-якому пристрої.</p>
+    <p class="hint">Знімок усіх полів і ручних правок. Зберігаються в цьому браузері; «Посилання» біля версії відкриє її на будь-якому пристрої. Експорт та імпорт — службовий файл версій, не PDF.</p>
     <div class="two"><input id="vname" aria-label="Назва версії" placeholder="Назва версії, напр. «DIAME, 100 твіллі»"><button type="button" class="btn line sm" id="vsave">Зберегти версію</button></div>
     <div id="versions"></div><p class="hint" id="vuse"></p>
-    <div class="two" style="margin-top:8px"><button type="button" class="btn line sm" id="vexport">Експорт усіх (файл)</button><button type="button" class="btn line sm" id="vimport">Імпорт із файлу</button><input id="vfile" type="file" accept="application/json" hidden></div>
+    <div class="two" style="margin-top:8px"><button type="button" class="btn line sm" id="vexport">Експорт версій (JSON)</button><button type="button" class="btn line sm" id="vimport">Імпорт версій (JSON)</button><input id="vfile" type="file" accept="application/json" hidden></div>
   </div>
   <p class="err" id="saveerr" hidden>Не вдалося зберегти в браузері — сховище переповнене. Видаліть старі версії або експортуйте їх у файл, інакше правки зникнуть після перезавантаження.</p>
   <div class="spacer"></div>
-  <div class="acts"><div class="sumline" id="sumline" data-pay="" title="Зірочка — є пункти «Порахуємо додатково», вони не входять у суму"></div><div class="actsb"><button type="button" class="btn gold" id="print" title="У вікні друку: «Зберегти як PDF», A4, поля — без, колонтитули — вимкнути">Друк / PDF</button><button type="button" class="btn line" id="share" title="Адреса з усіма даними пропозиції">Посилання</button><button type="button" class="btn line" id="reset">Очистити</button></div></div>
+  <div class="acts"><div class="sumline" id="sumline" data-pay="" title="Зірочка — є пункти «Порахуємо додатково», вони не входять у суму"></div><div class="actsb"><button type="button" class="btn gold" id="pdf" title="Готовий файл A4 — збирається на сервері кілька секунд">Завантажити PDF</button><button type="button" class="btn line" id="print" title="Вікно друку браузера: «Зберегти як PDF», A4, поля — без, колонтитули — вимкнути">Друк</button><button type="button" class="btn line" id="share" title="Адреса з усіма даними пропозиції">Посилання</button><button type="button" class="btn line" id="reset">Очистити</button></div></div>
 </aside>
 <main class="docwrap"><p class="dochint">Текст — правити просто на сторінці · картинку — клацнути, щоб замінити · правлена сторінка більше не оновлюється з форми, доки її не скинути — тож текст сторінок правте в останню чергу</p><div class="doc" id="doc"></div></main>
 <div id="pick" hidden role="dialog" aria-label="Замінити картинку"><div class="box"><div class="head"><h3>Замінити картинку</h3><input id="picksearch" placeholder="Пошук за назвою принта…" aria-label="Пошук"><span class="seg"><button type="button" class="btn line sm on" data-pickg="">Усі</button><button type="button" class="btn line sm" data-pickg="SOLO">SOLO</button><button type="button" class="btn line sm" data-pickg="Сайт">Сайт</button><button type="button" class="btn line sm" data-pickg="Редакційні">Редакційні</button></span><input id="pickfile" type="file" accept="image/*" hidden><button type="button" class="btn line sm" onclick="document.getElementById('pickfile').click()">Завантажити свою…</button><button type="button" class="btn line sm" data-pickclose aria-label="Закрити">Закрити</button></div><div class="grid"></div></div></div>
@@ -173,8 +173,8 @@ var S = load();
 function iso(d) { return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); }
 function fresh() { var st = JSON.parse(JSON.stringify(DEF)); try { st.manager = localStorage.getItem('kp-manager') || ''; } catch (e) {} st.date = iso(new Date()); st.valid = iso(new Date(Date.now() + 14 * 864e5)); return st; }
 function load() {
-  var st = null;
-  try { var h = location.hash.slice(1); if (h) { st = JSON.parse(decodeURIComponent(escape(atob(h)))); history.replaceState(null, '', location.pathname + location.search); } } catch (e) { st = null; }   // a link opens once, then the tab autosaves as usual
+  var st = window.__KP || null;
+  if (!st) try { var h = location.hash.slice(1); if (h) { st = JSON.parse(decodeURIComponent(escape(atob(h)))); history.replaceState(null, '', location.pathname + location.search); } } catch (e) { st = null; }   // a link opens once, then the tab autosaves as usual
   if (!st) try { var l = localStorage.getItem('kp'); if (l) st = JSON.parse(l); } catch (e) {}
   var out = Object.assign(fresh(), st || {}); if (!out.date) out.date = iso(new Date()); if (!out.valid) out.valid = iso(new Date(Date.now() + 14 * 864e5)); return out;
 }
@@ -253,7 +253,7 @@ function renderDoc() {
     + (function () { var free = extra.filter(function (e) { return e[2] === 'pack' || e[2] === 'stick'; }), rest = extra.filter(function (e) { return e[2] !== 'pack' && e[2] !== 'stick'; }), out = '';
         if (free.length === 2) out += '<tr><td colspan="6">Подарункове пакування кожної речі й наліпка з логотипом компанії всередині коробки</td><td class="num">безкоштовно</td></tr>'; else free.forEach(function (e) { out += '<tr><td colspan="6">' + esc(e[0]) + '</td><td class="num">безкоштовно</td></tr>'; });
         rest.forEach(function (e) { out += '<tr><td colspan="6">' + esc(e[0]) + (e[3] ? ' <small>— ' + esc(e[3]) + '</small>' : '') + '</td><td class="num">' + (e[1] ? num(e[1]) : 'безкоштовно') + '</td></tr>'; }); return out; })()
-    + '<tr class="sum"><td colspan="6">До сплати за цим складом</td><td class="num">' + num(pay) + ' грн</td></tr>';
+    + '<tr class="sum"><td colspan="6">До сплати</td><td class="num">' + num(pay) + ' грн</td></tr>';
   var dg = {}, dmix = false; R.forEach(function (x) { if (x.open) return; (dg[x.d] = dg[x.d] || []).push(x.name); }); var dk = Object.keys(dg); dmix = dk.length > 1;
   var dnote = dmix && dg[0] ? 'Без знижки: ' + dg[0].map(function (n) { return n.charAt(0).toLowerCase() + n.slice(1); }).join(', ') + '. ' : '';
   var trs = R.map(function (x) {
@@ -284,10 +284,10 @@ function renderDoc() {
   page('terms', '<p class="eb" style="margin-top:5mm">Умови й персоналізація</p><h2 class="t" style="margin-bottom:2mm">Умови замовлення</h2>'
     + '<p class="eb sec">Безкоштовно в кожному замовленні</p><div class="kv">' + kv1 + '</div><p class="eb sec">Додатково, за запитом</p><div class="kv">' + kv2 + '</div><p class="eb sec">Умови</p><div class="kv">' + kv3 + '</div>'
     + '<div class="last"><b>Наступний крок</b>' + steps + '</div>'
-    + '<p class="why1"><b>Про Obiimy.</b> Авторські принти засновниці Світлани Сніжко та сучасних українських художниць · лише 100% натуральний шовк преміум-класу, італійський шовк і українське виробництво, кутики кожної хустки обробляють вручну · у продажу в INTERTOP і Hram (Україна), Be Brave (Канада), UFD London; про бренд писали LIGA.net та INSIDER UA.</p>'
+    + '<p class="why1"><b>Про Obiimy.</b> Авторські принти засновниці Світлани Сніжко та сучасних українських художниць · лише 100% натуральний шовк преміум-класу, італійський шовк і українське виробництво, кутики кожної хустки обробляють вручну .</p>'
     + '<div class="contacts"><b>Контакти</b><div class="cgrid"><div><small>Менеджер Obiimy</small>' + (mg ? esc(mg) + '<br>' : '') + (hasPh ? '' : nb(PHONE) + '<br>') + 'Telegram @OBIIMY_sales</div><div><small>Пошта й сайт</small>' + esc(MAIL) + '<br>obiimy.world</div><div><small>Шоурум</small>' + esc(SHOWROOM) + '<br>пн–пт 10:00–18:00, сб 11:00–18:00</div></div></div>');
   document.getElementById('doc').innerHTML = pages.join('').replace(/§N§/g, pages.length);
-  var sl = document.getElementById('sumline'); sl.dataset.pay = money(pay); sl.textContent = (qtyPaid ? 'До сплати ' + money(pay) + (tbc.length ? ' *' : '') : 'Додайте позиції') + ' · ' + qty + ' шт. · ' + pages.length + ' стор.';
+  var sl = document.getElementById('sumline'); sl.dataset.pay = money(pay); sl.innerHTML = '<b>' + (qtyPaid ? 'До сплати ' + money(pay) + (tbc.length ? ' *' : '') : 'Додайте позиції') + '</b><span>' + qty + ' шт. · ' + pages.length + ' стор.</span>';
   var sig = dataSig();
   document.querySelectorAll('#doc .pg').forEach(function (pg) {
     var key = pg.dataset.key, saved = S.html && S.html[key], edited = saved && (typeof saved === 'string' ? saved : saved.h);
@@ -396,6 +396,17 @@ document.addEventListener('click', function (e) {
   toast('Позицію «' + rowName(gone) + '» видалено.', 'Повернути', function () { S.rows.splice(Math.min(i, S.rows.length), 0, gone); save(); renderForm(); renderDoc(); });
 });
 document.getElementById('addrow').addEventListener('click', function () { S.rows.push(JSON.parse(JSON.stringify(DEF.rows[0]))); save(); renderForm(); renderDoc(); var q = document.querySelector('[data-i="' + (S.rows.length - 1) + '"][data-f="q"]'); if (q) { q.scrollIntoView({ block: 'center' }); q.focus(); } });
+var PDF_API = (location.hostname === 'localhost' || location.hostname === '127.0.0.1') ? 'http://localhost:8770' : 'https://deck-editor-production.up.railway.app';
+document.getElementById('pdf').addEventListener('click', function () {
+  var over = [].slice.call(document.querySelectorAll('#doc .pg.over')).map(function (p) { return pageTitle(p.dataset.key); });
+  if (over.length && !confirm('Не вміщається на сторінку: ' + over.join(', ') + '. У PDF нижня частина обріжеться. Збирати все одно?')) return;
+  var btn = this, was = btn.textContent; btn.disabled = true; btn.textContent = 'Збираю PDF…';
+  fetch(PDF_API + '/api/kp-pdf', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(S) })
+    .then(function (r) { if (!r.ok) return r.text().then(function (t) { throw new Error(t.slice(0, 200) || r.status); }); return r.blob(); })
+    .then(function (blob) { var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = pdfName() + '.pdf'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(a.href); }, 60000); toast('PDF завантажено: ' + pdfName() + '.pdf'); })
+    .catch(function (e) { toast('Не вдалося зібрати PDF на сервері (' + (e && e.message || e) + '). Відкриваю вікно друку — оберіть «Зберегти як PDF».'); setTimeout(function () { window.print(); }, 1500); })
+    .then(function () { btn.disabled = false; btn.textContent = was; });
+});
 document.getElementById('print').addEventListener('click', function () {
   var over = [].slice.call(document.querySelectorAll('#doc .pg.over')).map(function (p) { return pageTitle(p.dataset.key); });
   if (over.length && !confirm('Не вміщається на сторінку: ' + over.join(', ') + '. У PDF нижня частина обріжеться. Друкувати все одно?')) return;

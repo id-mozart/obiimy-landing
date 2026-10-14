@@ -5,6 +5,7 @@
 !photo/
 !review/pp/package.json
 !review/pp/package-lock.json
+!review/pp/kp-pdf.mjs
 !editor-start.sh
 src/__pycache__/
 photo/user/

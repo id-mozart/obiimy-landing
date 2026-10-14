@@ -7,7 +7,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends chromium nodejs
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 RUN pip install --no-cache-dir pillow segno pymupdf numpy
-COPY review/pp/package.json review/pp/package-lock.json review/pp/
+COPY review/pp/package.json review/pp/package-lock.json review/pp/kp-pdf.mjs review/pp/
 RUN cd review/pp && npm ci --omit=dev && npm cache clean --force
 COPY src ./src
 COPY brand ./brand

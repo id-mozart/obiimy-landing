@@ -318,8 +318,14 @@ CSS_D = """<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family
 .ob-art h2 { font-size: clamp(3.2rem, 4vw, 5rem); line-height: 1.05; }
 .ob-art .ob-hero h1 { font-size: clamp(4.4rem, 7vw, 9rem); line-height: .95; }
 .ob-art .ob-hero.tall { height: clamp(460px, 64vw, 820px); }
-.ob-art .silk { height: clamp(220px, 28vw, 380px); background-size: 110%; background-position: 50% 45%; position: relative; }
-.ob-art .silk .big { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); color:#fff; font-size: clamp(3rem, 6vw, 8rem); font-style: italic; text-shadow: 0 2px 30px rgba(0,0,0,.35); white-space:nowrap; }
+.ob-art .silk { height: clamp(260px, 34vw, 520px); background-size: cover; background-position: 50% 58%; position: relative; }
+.ob-art .silk::after { content:""; position:absolute; inset:0; background: linear-gradient(90deg, rgba(0,0,0,.42), rgba(0,0,0,0) 55%); }
+.ob-art .silk .big { position:absolute; left: max(5vw, calc((100% - 120rem) / 2)); bottom: 4rem; z-index:1; color:#fff; font-size: clamp(3rem, 5vw, 6.4rem); font-style: italic; line-height:1; text-shadow: 0 2px 24px rgba(0,0,0,.3); }
+.ob-art .ob-craft { display:grid; grid-template-columns: repeat(3, 1fr); gap:1.6rem; margin-top:3.6rem; }
+.ob-art .ob-craft .ph { aspect-ratio: 4/5; overflow:hidden; } .ob-art .ob-craft .ph img { width:100%; height:100%; object-fit:cover; display:block; }
+.ob-art .ob-craft h3 { font-family: var(--serif); font-size:2.6rem; margin:1.8rem 0 .6rem; } .ob-art .ob-craft p { color:var(--ink2); font-size:1.5rem; max-width:34rem; }
+.ob-art .ob-craft .n { font-family: var(--serif); font-style: italic; font-size: 2rem; color: var(--ink2); }
+@media (max-width: 749px) { .ob-art .ob-craft { grid-template-columns:1fr; } }
 .ob-art .ob-gal { display:grid; grid-template-columns: repeat(7, 1fr); gap:.8rem; margin-top:3.6rem; }
 .ob-art .ob-g { margin:0; position:relative; } .ob-art .ob-g .ph { aspect-ratio: 3/4.6; overflow:hidden; } .ob-art .ob-g .ph img { width:100%; height:100%; object-fit:cover; display:block; }
 .ob-art .ob-g .sw { height: 5.6rem; background-size: 160%; background-position: 50% 50%; margin-top:.8rem; }
@@ -348,20 +354,15 @@ BODY_D = f"""{CSS}{CSS_D}
     </div>
   </section>
 
-  <div class="silk" style="background-image:url({src('silk-zolote')})"><p class="big">from a painting to silk</p></div>
+  <div class="silk" style="background-image:url({src('founder')})"><p class="big">from a painting to silk</p></div>
 
   <section class="ob-sec">
-    <div class="ob-two art">
-      <div class="ph" style="aspect-ratio:4/5;overflow:hidden">{img("print")}</div>
-      <div>
-        <p class="k">The craft</p>
-        <h2>Three steps, no shortcuts</h2>
-        <div class="ob-steps" style="grid-template-columns:1fr;gap:2.2rem;margin-top:2.8rem">
-          <div><h3>1 · The painting</h3><p>An original artwork by Svitlana Snizhko — not a stock pattern, not a licensed design.</p></div>
-          <div><h3>2 · Italian silk, Ukrainian hands</h3><p>The print is transferred onto premium silk and printed on both sides; seamstresses work on the corners of every scarf by hand.</p></div>
-          <div><h3>3 · The yellow box</h3><p>Gift packaging for every piece — to give, or to keep.</p></div>
-        </div>
-      </div>
+    <p class="k">The craft</p>
+    <h2>Three steps, no shortcuts</h2>
+    <div class="ob-craft">
+      <div><div class="ph">{img("knot", "object-position:50% 62%")}</div><p class="n">I</p><h3>The painting</h3><p>An original artwork by Svitlana Snizhko becomes a print with its own name — not a stock pattern, not a licensed design.</p></div>
+      <div><div class="ph">{img("edge", "object-position:50% 40%")}</div><p class="n">II</p><h3>Italian silk, Ukrainian hands</h3><p>The print goes onto premium silk and is printed on both sides; seamstresses work on the corners of every scarf by hand, so the edge is even all the way round.</p></div>
+      <div><div class="ph">{img("box")}</div><p class="n">III</p><h3>The yellow box</h3><p>Gift packaging for every piece — ready to give, or to keep for yourself.</p></div>
     </div>
   </section>
 

@@ -1,0 +1,157 @@
+"""The «About us» page of shop.obiimy.world (Shopify, Dawn): one self-contained HTML block for the page body — a hero
+photograph to the full page width, the story in short paragraphs, four facts, how a scarf is made, the SOLO prints,
+the showroom and contacts. Pictures are real brand photographs uploaded to the store's Files (see upload_about.py);
+until then the preview uses local paths. Facts: review/SITE-FACTS.md and the client's own About text (English, as on the
+store today). Output: shopify/about-us.html (page body) and shopify/about-preview.html (a standalone preview in Dawn's look).
+Usage: python3 shopify/build_about.py [--cdn urls.json]"""
+import json, pathlib, sys
+ROOT = pathlib.Path(__file__).resolve().parent.parent
+HERE = pathlib.Path(__file__).resolve().parent
+
+# pictures: key -> (local file, alt); the CDN map replaces the src after upload
+PICS = {
+    "hero": ("ads/solo/ref/new/F44A3254_reblum.jpg", "Silk scarf «Avantiura» from the SOLO collection"),
+    "founder": ("photo/solo/tysha-88-2.webp", "Silk scarf «Tysha» worn on the shoulders"),
+    "print": ("ads/solo/src/avantiura-88-1-hi.webp", "The «Avantiura» print on silk"),
+    "edge": ("photo/site/khustka-vidnovlennia-88x88-02.jpg", "Hand-finished edge of a silk scarf"),
+    "box": ("photo/site/set-tvilli-845-ta-khustky-4444-dvost-13-01.jpg", "Obiimy gift box with a scarf and a twilly"),
+    "look1": ("photo/solo/iskra-65-4.webp", "«Iskra» scarf, autumn street"),
+    "look2": ("photo/solo/flirt-tw-1.webp", "«Flirt» twilly in the hair"),
+    "look3": ("photo/solo/zolote-44-2.webp", "«Zolote svitlo» scarf"),
+    "look4": ("photo/solo/krok-tw-2.webp", "«Smilyvyi krok» twilly"),
+    "mask": ("photo/site/mask-vpevnenist-04.jpg", "Silk sleep mask «Vpevnenist»"),
+}
+cdn = {}
+if "--cdn" in sys.argv:
+    cdn = json.loads(pathlib.Path(sys.argv[sys.argv.index("--cdn") + 1]).read_text())
+
+def src(key):
+    return cdn.get(key) or ("../" + PICS[key][0])
+
+def img(key, style="", cls=""):
+    f, alt = PICS[key]
+    return f'<img src="{src(key)}" alt="{alt}" loading="lazy" class="{cls}" style="{style}">'
+
+# Dawn's own variables are used where they exist; everything else is scoped under .ob-about so the theme stays untouched
+CSS = """
+<style>
+.ob-about { --ink:#1b1613; --ink2:#5a5048; --line:rgba(27,22,19,.14); --yellow:#F2B705; --paper:#F6F1E8; color:var(--ink); font-family: var(--font-body-family, Assistant, sans-serif); line-height:1.6; }
+.ob-about * { box-sizing:border-box; }
+.ob-about h2, .ob-about h3 { font-family: var(--font-heading-family, Assistant, sans-serif); font-weight:400; margin:0; line-height:1.15; letter-spacing:-.01em; }
+.ob-about h2 { font-size: clamp(2.6rem, 3.2vw, 3.6rem); }
+.ob-about h3 { font-size: 2rem; }
+.ob-about p { margin:0; font-size:1.6rem; }
+.ob-about .k { font-size:1.2rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ink2); margin-bottom:1.6rem; }
+.ob-hero { position:relative; height: clamp(360px, 52vw, 640px); overflow:hidden; background:#141110; }
+.ob-hero img { width:100%; height:100%; object-fit:cover; object-position:50% 38%; display:block; }
+.ob-hero .t { position:absolute; left:0; right:0; bottom:0; padding: 4rem 5vw 4.4rem; color:#fff; background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.62)); }
+.ob-hero h1 { font-family: var(--font-heading-family, Assistant, sans-serif); font-weight:400; font-size: clamp(3.4rem, 5.4vw, 6.4rem); line-height:1; margin:0 0 1rem; letter-spacing:-.01em; }
+.ob-hero p { max-width:62rem; font-size:1.8rem; color:rgba(255,255,255,.92); }
+.ob-sec { padding: 6.4rem 5vw; }
+.ob-sec.paper { background:var(--paper); }
+.ob-two { display:grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items:center; }
+.ob-two .ph { aspect-ratio: 4/5; overflow:hidden; } .ob-two .ph img { width:100%; height:100%; object-fit:cover; display:block; }
+.ob-lead { font-size: clamp(2rem, 2.4vw, 2.6rem); line-height:1.35; max-width:70rem; }
+.ob-txt p + p { margin-top:1.4rem; }
+.ob-facts { display:grid; grid-template-columns: repeat(4, 1fr); gap:3rem; margin-top:4rem; }
+.ob-facts div { border-top:1px solid var(--ink); padding-top:1.6rem; }
+.ob-facts b { display:block; font-family: var(--font-heading-family, Assistant, sans-serif); font-weight:400; font-size:2.4rem; margin-bottom:.6rem; }
+.ob-facts p { font-size:1.45rem; color:var(--ink2); }
+.ob-steps { display:grid; grid-template-columns: repeat(3, 1fr); gap:3rem; margin-top:3.6rem; }
+.ob-steps .ph { aspect-ratio: 1; overflow:hidden; margin-bottom:1.8rem; } .ob-steps .ph img { width:100%; height:100%; object-fit:cover; display:block; }
+.ob-steps h3 { margin-bottom:.8rem; } .ob-steps p { color:var(--ink2); font-size:1.5rem; }
+.ob-looks { display:grid; grid-template-columns: repeat(4, 1fr); gap:1.2rem; margin-top:3.6rem; }
+.ob-looks .ph { aspect-ratio: 3/4; overflow:hidden; } .ob-looks .ph img { width:100%; height:100%; object-fit:cover; display:block; }
+.ob-quote { font-family: var(--font-heading-family, Assistant, sans-serif); font-size: clamp(2.2rem, 3vw, 3.4rem); line-height:1.25; max-width:80rem; margin: 0 auto; text-align:center; }
+.ob-quote small { display:block; margin-top:2rem; font-size:1.3rem; letter-spacing:.18em; text-transform:uppercase; color:var(--ink2); font-family: var(--font-body-family, Assistant, sans-serif); }
+.ob-contact { display:grid; grid-template-columns: 1.2fr 1fr; gap:5rem; align-items:center; }
+.ob-contact .ph { aspect-ratio: 5/4; overflow:hidden; } .ob-contact .ph img { width:100%; height:100%; object-fit:cover; display:block; }
+.ob-kv { display:grid; grid-template-columns: 14rem 1fr; gap:1.2rem 2rem; font-size:1.6rem; margin-top:2.4rem; }
+.ob-kv span:first-child { color:var(--ink2); }
+.ob-about a { color:inherit; text-decoration:underline; text-underline-offset:.2em; }
+.ob-btn { display:inline-block; margin-top:2.8rem; padding:1.4rem 2.8rem; background:var(--ink); color:#fff !important; text-decoration:none !important; font-size:1.5rem; letter-spacing:.04em; border-radius:999px; }
+.ob-btn.y { background:var(--yellow); color:var(--ink) !important; }
+@media (max-width: 749px) { .ob-two, .ob-contact { grid-template-columns:1fr; gap:2.6rem; } .ob-facts { grid-template-columns:1fr 1fr; gap:2rem; } .ob-steps { grid-template-columns:1fr; } .ob-looks { grid-template-columns:1fr 1fr; } .ob-sec { padding:4rem 5vw; } .ob-kv { grid-template-columns:1fr; gap:.4rem 0; } }
+</style>
+"""
+
+BODY = f"""{CSS}
+<div class="ob-about">
+  <div class="ob-hero">{img("hero")}
+    <div class="t"><h1>Silk hugs, made in Ukraine</h1><p>Obiimy means «hugs» in Ukrainian. We make silk scarves, twillies and accessories with original prints by our founder, artist Svitlana Snizhko — and ship them from Kyiv to the world.</p></div>
+  </div>
+
+  <section class="ob-sec">
+    <div class="ob-two">
+      <div class="ph">{img("founder")}</div>
+      <div class="ob-txt">
+        <p class="k">Who we are</p>
+        <p class="ob-lead">Obiimy is an independent Ukrainian brand of natural silk products with original prints by artist and founder Svitlana Snizhko.</p>
+        <p style="margin-top:2rem">We create things that combine beauty, art and care — and give emotions from the first touch. Obiimy is about love for yourself, nature and people. Each box is a hug that reminds you that you are worthy of beauty.</p>
+        <p>Our brand is not only about beauty, but also about health. Silk is soft and gentle to the skin and does not cause irritation or allergic reactions — that is why it makes the best sleep masks, among other things.</p>
+      </div>
+    </div>
+    <div class="ob-facts">
+      <div><b>100% silk</b><p>Premium natural silk with a delicate shine and soft texture. Scarves are printed on both sides.</p></div>
+      <div><b>Original prints</b><p>Every print starts as a painting by Svitlana Snizhko. No stock patterns, no licensed designs.</p></div>
+      <div><b>Finished by hand</b><p>Seamstresses finish the corners of every scarf by hand, so the edge is even all the way round. Made in Ukraine.</p></div>
+      <div><b>Founded in wartime</b><p>Obiimy was born during the war and takes part in charitable initiatives for the military and those affected.</p></div>
+    </div>
+  </section>
+
+  <section class="ob-sec paper">
+    <p class="k">How a scarf is made</p>
+    <h2>From a painting to your silk</h2>
+    <div class="ob-steps">
+      <div><div class="ph">{img("print")}</div><h3>1 · The print</h3><p>Svitlana paints the artwork; it becomes a print with its own name and story — like «Avantiura», «Tysha» or «Iskra».</p></div>
+      <div><div class="ph">{img("edge")}</div><h3>2 · Silk and hand finishing</h3><p>The print goes onto 100% Italian silk. Seamstresses work on the corners of every scarf by hand, so the density along the edge is the same everywhere.</p></div>
+      <div><div class="ph">{img("box")}</div><h3>3 · The yellow box</h3><p>Each piece comes in Obiimy's gift packaging — ready to give, or to keep for yourself.</p></div>
+    </div>
+  </section>
+
+  <section class="ob-sec">
+    <p class="k">What we make</p>
+    <h2>Silk scarves, twillies and more</h2>
+    <p style="margin-top:1.6rem;max-width:70rem">Scarves in three sizes (44, 65 and 88 cm), narrow twillies for the hair, neck or bag, silk scrunchies and sleep masks, home and care accessories, and jewellery for scarves. Collections like <a href="/collections/all">SOLO — the path to yourself</a> bring seven prints, seven states of a woman on her way to herself.</p>
+    <div class="ob-looks"><div class="ph">{img("look1")}</div><div class="ph">{img("look2")}</div><div class="ph">{img("look3")}</div><div class="ph">{img("look4")}</div></div>
+    <a class="ob-btn y" href="/collections/all">Shop the collection</a>
+  </section>
+
+  <section class="ob-sec paper">
+    <p class="ob-quote">«Obiimy is a combination of fragility, style, originality and extreme tenderness. We create not just accessories, but a way to express your own individuality and feelings. You deserve the best.»<small>Svitlana Snizhko, founder and artist</small></p>
+  </section>
+
+  <section class="ob-sec">
+    <div class="ob-contact">
+      <div class="ph">{img("mask")}</div>
+      <div>
+        <p class="k">Where to find us</p>
+        <h2>Kyiv showroom and worldwide shipping</h2>
+        <p style="margin-top:1.6rem">We sell directly: worldwide through this store, in Ukraine through <a href="https://obiimy.world">obiimy.world</a> and our showroom in Kyiv, and through partner stores. We also make corporate gift sets for companies.</p>
+        <div class="ob-kv">
+          <span>Showroom</span><span>12 Petra Sahaidachnoho St., Kyiv · Mon–Fri 10:00–18:00, Sat 11:00–18:00</span>
+          <span>Shipping</span><span>From Kyiv by FedEx — see <a href="/policies/shipping-policy">Shipping policy</a> and <a href="/policies/refund-policy">Refund policy</a></span>
+          <span>Email</span><span><a href="mailto:sale@obiimy.world">sale@obiimy.world</a></span>
+          <span>Phone</span><span><a href="tel:+380670108525">+38 067 010 85 25</a></span>
+          <span>Responsible person</span><span>Svitlana Snizhko — founder and artist of Obiimy</span>
+        </div>
+        <a class="ob-btn" href="/pages/contact">Contact us</a>
+      </div>
+    </div>
+  </section>
+</div>
+"""
+
+(HERE / "about-us.html").write_text(BODY)
+PREVIEW = f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>About Us — Obiimy (preview)</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600&display=swap">
+<style>html {{ font-size: 62.5%; }} body {{ margin:0; font-family: Assistant, sans-serif; color:#121212; background:#fff; }}
+.hd {{ display:flex; justify-content:center; align-items:center; gap:4rem; padding:2.4rem 5vw; border-bottom:1px solid rgba(0,0,0,.08); font-size:1.5rem; }} .hd img {{ height:3.6rem; }} .hd span {{ color:#555; }}
+.ttl {{ text-align:center; font-size:4rem; font-weight:400; margin:4rem 0 2rem; }}
+.ft {{ padding:4rem 5vw; border-top:1px solid rgba(0,0,0,.08); font-size:1.3rem; color:#777; text-align:center; margin-top:4rem; }}</style></head><body>
+<div class="hd"><img src="../brand/logo-original.png" alt="Obiimy"><span>Home</span><span>Catalog</span><span>About Us</span><span>Contact</span></div>
+<h1 class="ttl">About Us</h1>
+{BODY}
+<div class="ft">© Obiimy · preview of the new About page for shop.obiimy.world</div></body></html>"""
+(HERE / "about-preview.html").write_text(PREVIEW)
+print("about-us.html", len(BODY) // 1024, "KB; preview written")

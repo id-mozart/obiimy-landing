@@ -413,7 +413,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
                 f'Натисніть на картинку, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>')
         a_toc, a_body, a_n = body(lambda i: i not in keep_set)
         nav = ""    # the archive page is built, but not linked for now
-        (site / "creatives.html").write_text(render(f'<h1 class="vh">Відібрані банери колекції SOLO</h1>', toc_html, body_html))
+        (site / "creatives.html").write_text(render(f'<header><a href="./">← Усі лендинги Obiimy</a><a href="home-banners">Банери для головної obiimy.world →</a></header><h1 class="vh">Відібрані банери колекції SOLO</h1>', toc_html, body_html))
         a_lede = (f'<p class="lede"><b>Архів.</b> {a_n} {pl(a_n)} поза відбором. Нічого не видалено: файли можна відкрити й завантажити. '
                   f'Позначте «Залишити», щоб повернути банер до відібраних, і надішліть оновлений список.</p>')
         (site / "creatives-archive.html").write_text(render(f'<header><a href="creatives">← До відібраних</a></header>\n<h1>Архів</h1>\n{a_lede}', a_toc, a_body).replace("<title>Креативи Obiimy</title>", "<title>Архів креативів Obiimy</title>"))
@@ -421,7 +421,40 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
         toc_html, body_html, n = body(lambda i: True)
         (site / "creatives.html").write_text(render(f'<header><a href="./">← Усі лендинги Obiimy</a>{arch_nav}</header>\n<h1>SOLO</h1>\n{lede_main}', toc_html, body_html))
         (site / "creatives-archive.html").unlink(missing_ok=True)
+    build_home(site, render)
     return n_solo + n_old
+
+HOME = [("home-a-iskra", "Один кадр", "Новий кадр на весь банер: «Іскра» на осінній вулиці; лок-ап, плашка і вертикальний логотип — як на поточному банері."),
+        ("home-b-three", "Три принти", "Лок-ап на темному, праворуч три кадри трьох принтів: «Сміливий крок», «Пульс», «Золоте світло»."),
+        ("home-c-seven", "Сім принтів", "Сім хусток колекції в ряд з назвами — сім станів на шляху до себе."),
+        ("home-d-type", "Шовкові літери", "«СОЛО», набране принтом «Іскра»; праворуч — «Флірт» на голові."),
+        ("home-e-eras", "Дві епохи", "Зліва — приглушений кадр у настрої 40-х, справа — 2026 у кольорі; «Жіноча сила крізь десятиліття»."),
+        ("home-f-yellow", "Фірмовий жовтий", "Жовте поле бренду, темний лок-ап; праворуч — бант «Авантюра» у волоссі.")]
+
+def build_home(site, render):
+    """site/home-banners.html — the SOLO banners for the home page of obiimy.world (1920 × 576), from ads/solo/out-home."""
+    src = ROOT / "ads/solo/out-home"
+    if not src.exists(): return
+    out = site / "creatives" / "home"; out.mkdir(parents=True, exist_ok=True)
+    cards = []
+    for id, title, desc in HOME:
+        f = src / f"{id}.jpg"
+        if not f.exists(): continue
+        dst = out / f.name; prev = out / f"{id}-1200.webp"
+        if not (dst.exists() and prev.exists() and dst.stat().st_mtime >= f.stat().st_mtime):
+            im = Image.open(f).convert("RGB"); im.save(dst, "JPEG", quality=88, optimize=True, progressive=True); t = im.copy(); t.thumbnail((1200, 400)); t.save(prev, quality=82)
+        v = hashlib.md5(f.read_bytes()).hexdigest()[:8]
+        cards.append(f'''<figure class="hb"><a href="creatives/home/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/home/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="1200" height="360"></a>
+      <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></figcaption></figure>''')
+    body = f'''<header><a href="./">← Усі лендинги Obiimy</a><a href="creatives">Рекламні креативи →</a></header>
+<h1>Банери для головної</h1>
+<p class="lede"><b>Колекція SOLO на головній obiimy.world.</b> Шість варіантів у форматі поточного банера сайту — 1920 × 576: той самий лок-ап «КОЛЕКЦІЯ / СОЛО / ШЛЯХ ДО СЕБЕ», жовта плашка «Жіноча сила крізь десятиліття» і вертикальний OBIIMY™, але інші кадри й композиції. Фото — зйомка колекції, тексти — за прес-релізом. Натисніть на банер, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>
+<div class="hbs">{"".join(cards)}</div>
+<style>.hbs {{ display: grid; gap: 28px; margin-top: 36px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }} .hb img {{ display: block; width: 100%; height: auto; }}
+.hb figcaption {{ display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 14px 18px; font-size: .92rem; color: var(--ink2); }} .hb b {{ color: var(--ink); font-size: 1.05rem; }} .hb p {{ margin: 4px 0 0; max-width: 60em; line-height: 1.45; }} .hb figcaption a {{ color: var(--acc); font-weight: 600; text-decoration: none; white-space: nowrap; }}
+.picks, .fmt, .toc, .all, #lb {{ display: none !important; }}</style>'''
+    page = render(body, "", "").replace("<title>Креативи Obiimy</title>", "<title>Банери для головної obiimy.world — SOLO</title>")
+    (site / "home-banners.html").write_text(page)
 
 if __name__ == "__main__":
     print(build(ROOT / "site"), "creatives")

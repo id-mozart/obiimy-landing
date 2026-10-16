@@ -221,7 +221,7 @@ ad("home-w-door", f'''
 # X · «Пульс» at the café: a warm street frame to the right, paper panel with the lock-up
 ad("home-x-cafe", f'''
   <div style="inset:0;background:#F0EBE1"></div>
-  <div class="ph" style="left:880px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%);mask-image:linear-gradient(90deg,transparent 0,#000 16%)"><img src="{S2('puls-44-5')}" alt="" style="object-position:50% 45%"></div>
+  <div class="ph" style="left:790px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%);mask-image:linear-gradient(90deg,transparent 0,#000 16%)"><img src="{S2('puls-44-5')}" alt="" style="object-position:62% 45%"></div>
   <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s" style="font-size:140px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy">''', cls="dark", note="Puls at the café")
 
@@ -235,19 +235,19 @@ ad("home-y-knot", f'''
 # round 3, the art director's four: monochrome + yellow, the arch, the diagonal seam, the album print
 ad("home-z1-mono", f'''
   <div style="inset:0;background:#111"></div>
-  <div class="ph" style="left:520px;right:0;top:0;bottom:0"><img src="{S2('tysha-88-2')}" alt="" style="object-position:30% 30%;filter:grayscale(1) contrast(1.1)"></div>
+  <div class="ph" style="left:520px;right:0;top:0;bottom:0"><img src="{S2('tysha-88-2')}" alt="" style="object-position:30% 44%;filter:grayscale(1) contrast(1.1)"></div>
   <div style="left:520px;top:0;bottom:0;width:220px;background:linear-gradient(90deg,#111,rgba(17,17,17,0))"></div>
   <div style="right:0;top:0;bottom:0;width:220px;background:linear-gradient(270deg,rgba(17,17,17,.85),rgba(17,17,17,0))"></div>
   {lock(size=140)}{logo()}''', note="Monochrome + yellow")
 
 ad("home-z2-arch", f'''
   <div style="inset:0;background:#1A1816"></div>
-  <div class="ph" style="left:1080px;top:36px;width:600px;height:600px;border-radius:300px 300px 0 0"><img src="{S2('krok-44-2')}" alt="" style="object-position:50% 36%"></div>
+  <div class="ph" style="left:1080px;top:36px;width:600px;height:600px;border-radius:300px 300px 0 0"><img src="{S2('krok-44-2')}" alt="" style="object-position:50% 40%;transform:scale(1.12);transform-origin:50% 100%"></div>
   {lock(size=140)}{logo()}''', note="The arch")
 
 ad("home-z3-diag", f'''
-  <div class="ph" style="left:640px;right:0;top:0;bottom:0"><img src="{S2('puls-44-4')}" alt="" style="object-position:50% 28%"></div>
-  <div style="left:0;top:0;bottom:0;width:830px;background:#1A1816;clip-path:polygon(0 0,700px 0,830px 100%,0 100%)"></div>
+  <div class="ph" style="left:928px;right:0;top:0;bottom:0"><img src="{S2('puls-44-4')}" alt="" style="object-position:50% 18%"></div>
+  <div style="left:0;top:0;bottom:0;width:990px;background:#1A1816;clip-path:polygon(0 0,860px 0,990px 100%,0 100%)"></div>
   {lock(size=140)}{logo()}''', note="Diagonal seam")
 
 ad("home-z4-album", f'''

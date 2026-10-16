@@ -261,7 +261,7 @@ BODY_C = f"""{CSS}
   </section>
   <section class="ob-sec paper">
     <div class="ob-founder">
-      <div class="ph">{img("svit")}</div>
+      <div class="ph">{img("song", "object-position:50% 30%")}</div>
       <div>
         <p class="k">Beyond the brand</p>
         <h2>Entrepreneur and philanthropist</h2>

@@ -150,6 +150,39 @@ ad("home-n-states", f'''
   <div style="left:1000px;right:190px;top:50%;transform:translateY(-50%)">{states}</div>
   {lock(size=140)}{logo()}''', note="Seven states as words")
 
+# more on the studio close-up (16.10)
+# O · the photo mirrored to the left: the knot in the centre, the lock-up on the left over the shirt
+ad("home-o-reblum-wide", f'''
+  <div class="ph" style="left:0;top:0;bottom:0;width:50%"><img src="{RB}" alt="" style="object-position:0% 40%;transform:scaleX(-1);filter:blur(18px) brightness(.9)"></div>
+  <div class="ph" style="left:50%;right:0;top:0;bottom:0"><img src="{RB}" alt="" style="object-position:0% 40%"></div>
+  <div class="ph" style="left:40%;top:0;bottom:0;width:10%"><img src="{RB}" alt="" style="object-position:0% 40%;transform:scaleX(-1);filter:blur(18px) brightness(.9);-webkit-mask-image:linear-gradient(90deg,#000,transparent);mask-image:linear-gradient(90deg,#000,transparent)"></div>
+  <div style="inset:0;background:linear-gradient(90deg,rgba(12,9,8,.86) 0%,rgba(12,9,8,.6) 30%,rgba(12,9,8,0) 52%)"></div>
+  {lock(size=140)}{logo()}''', note="Reblum wide, mirrored fill")
+
+# P · brand yellow panel on the left, the knot large on the right, the pill becomes a dark one
+ad("home-p-reblum-yellow", f'''
+  <div style="inset:0;background:#F2B705"></div>
+  <div class="ph" style="left:860px;right:0;top:0;bottom:0"><img src="{RB}" alt="" style="object-position:55% 40%"></div>
+  <div style="left:860px;top:0;bottom:0;width:120px;background:linear-gradient(90deg,#F2B705,rgba(242,183,5,0))"></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s" style="font-size:140px">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="background:#141110;color:#F2B705">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_K}" alt="Obiimy">''', cls="dark", note="Reblum on yellow")
+
+# Q · the knot as a tall slice in the middle between two dark fields: lock-up left, seven state words right
+words = "".join(f'<p style="font-size:26px;font-weight:300;letter-spacing:.12em;text-transform:uppercase;padding:9px 0;opacity:{1 if p["id"] == "avantiura" else .55}">{p["name"]}</p>' for p in P)
+ad("home-q-reblum-slice", f'''
+  <div style="inset:0;background:#141110"></div>
+  <div class="ph" style="left:760px;top:0;bottom:0;width:640px"><img src="{RB}" alt="" style="object-position:50% 42%"></div>
+  <div style="left:1440px;top:50%;transform:translateY(-50%)">{words}</div>
+  {lock(size=140)}{logo()}''', note="Reblum slice with states")
+
+# R · light paper, the photo as a soft-edged frame on the right, print name as a caption
+ad("home-r-reblum-paper", f'''
+  <div style="inset:0;background:#F1E8D8"></div>
+  <div class="ph" style="left:1000px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 22%);mask-image:linear-gradient(90deg,transparent 0,#000 22%)"><img src="{RB}" alt="" style="object-position:50% 40%"></div>
+  <p style="left:1080px;bottom:36px;font-size:20px;letter-spacing:.14em;text-transform:uppercase;color:#141110;background:rgba(241,232,216,.85);padding:10px 18px">Хустка «Авантюра» · 88 × 88</p>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s" style="font-size:140px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_K}" alt="Obiimy">''', cls="dark", note="Reblum on paper")
+
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO home banners</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap">

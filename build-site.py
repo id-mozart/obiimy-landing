@@ -165,7 +165,7 @@ def main():
 {b2b_cards}
   </div>
   <h1 style="margin-top:72px">Рекламні креативи</h1>
-  <p class="lede">Колекція SOLO. Шлях до себе — основна серія з 21 сторіс 1080 × 1920 у стилі попередніх кампаній Obiimy, тексти за прес-релізом, плюс альтернативні напрями та 20 сторіс попередніх серій. <a href="creatives" style="color:inherit;font-weight:600">Відкрити галерею →</a> · <a href="home-banners" style="color:inherit;font-weight:600">Банери для головної obiimy.world →</a></p>
+  <p class="lede">Колекція SOLO. Шлях до себе — основна серія з 21 сторіс 1080 × 1920 у стилі попередніх кампаній Obiimy, тексти за прес-релізом, плюс альтернативні напрями та 20 сторіс попередніх серій. <a href="creatives" style="color:inherit;font-weight:600">Відкрити галерею →</a> · <a href="home-preview" style="color:inherit;font-weight:600">Банери для головної obiimy.world — на макеті сайту →</a></p>
   <footer><span>Фото та логотип — obiimy.world.</span><span>Зроблено за допомогою Claude Code.</span></footer>
 </div>
 </body>

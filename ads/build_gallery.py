@@ -436,7 +436,11 @@ HOME = [("home-a-iskra", "Один кадр", "Новий кадр на весь
         ("home-j-split", "Навпіл", "Кадр «Тиша всередині» ліворуч, лок-ап по центру темного поля праворуч."),
         ("home-k-strip", "Один рядок і стрічка", "Лок-ап в один рядок зверху, під ним чотири кадри чотирьох принтів."),
         ("home-m-paper", "Папір і хустки", "Світле поле, дві хустки колекції як предмет — товар на перший план."),
-        ("home-n-states", "Сім станів", "Назви семи принтів і їхні стани на темному шовку «Тиші всередині».")]
+        ("home-n-states", "Сім станів", "Назви семи принтів і їхні стани на темному шовку «Тиші всередині»."),
+        ("home-o-reblum-wide", "Студійний кадр · широкий", "Вузол по центру, ліва частина добудована з того ж кадру дзеркалом і розмиттям, лок-ап на вуалі."),
+        ("home-p-reblum-yellow", "Студійний кадр · жовтий", "Жовте поле бренду зліва, вузол крупно справа, темна плашка."),
+        ("home-q-reblum-slice", "Студійний кадр · сім станів", "Кадр вертикальною смугою між двома темними полями; праворуч — сім станів, «Авантюра» виділена."),
+        ("home-r-reblum-paper", "Студійний кадр · папір", "Світле поле, кадр з м’яким краєм праворуч, підпис із назвою хустки.")]
 
 def build_home(site, render):
     """site/home-banners.html — the SOLO banners for the home page of obiimy.world (1920 × 576), from ads/solo/out-home."""
@@ -455,6 +459,7 @@ def build_home(site, render):
       <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></figcaption></figure>''')
     body = f'''<header><a href="./">← Усі лендинги Obiimy</a><a href="creatives">Рекламні креативи →</a></header>
 <h1>Банери для головної</h1>
+<p class="lede"><a href="home-preview" style="color:var(--acc);font-weight:600">Подивитися на макеті головної obiimy.world (слайдер) →</a></p>
 <p class="lede"><b>Колекція SOLO на головній obiimy.world.</b> Шість варіантів у форматі поточного банера сайту — 1920 × 576: той самий лок-ап «КОЛЕКЦІЯ / СОЛО / ШЛЯХ ДО СЕБЕ», жовта плашка «Жіноча сила крізь десятиліття» і вертикальний OBIIMY™, але інші кадри й композиції. Фото — зйомка колекції, тексти — за прес-релізом. Натисніть на банер, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>
 <div class="hbs">{"".join(cards)}</div>
 <style>.hbs {{ display: grid; gap: 28px; margin-top: 36px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }} .hb img {{ display: block; width: 100%; height: auto; }}
@@ -462,6 +467,63 @@ def build_home(site, render):
 .picks, .fmt, .toc, .all, #lb {{ display: none !important; }}</style>'''
     page = render(body, "", "").replace("<title>Креативи Obiimy</title>", "<title>Банери для головної obiimy.world — SOLO</title>")
     (site / "home-banners.html").write_text(page)
+    build_home_mock(site, out, [(id, title) for id, title, _ in HOME if (src / f"{id}.jpg").exists()])
+
+def build_home_mock(site, out, items):
+    """site/home-preview.html — the banners inside a mock of the obiimy.world home page: the site's header, the slider with
+    arrows and dots, the category circles under it. Keys ←/→ and the dots switch the variant; «?b=<id>» opens one."""
+    cuts = [("SALE", "yellow"), ("«Соло: шлях до себе»", "krok-44-1"), ("«Поклик душі»", "puls-44-1"), ("«Пробудження»", "zolote-44-1"), ("«Дика стихія»", "tysha-88-1"), ("«Співоча душа»", "flirt-65-1"), ("Подарункові набори", "box"), ("Хустки", "iskra-65-1"), ("Хустки 2D", "avantiura-88-1")]
+    def circle(label, k):
+        if k == "yellow": inner = '<span class="cc" style="background:#F2B705"></span>'
+        elif k == "box": inner = '<span class="cc" style="background:#F2B705 url(photo/box-gold-480.webp) center/cover"></span>'
+        else: inner = f'<span class="cc" style="background:#fff url(ads-src/{k}-cut.webp) center/82% no-repeat"></span>'
+        return f'<div class="cat">{inner}<p>{html.escape(label)}</p></div>'
+    (site / "ads-src").mkdir(exist_ok=True)
+    for _, k in cuts:
+        f = ROOT / "ads/solo/src" / f"{k}-cut.webp"
+        if f.exists(): shutil.copy(f, site / "ads-src" / f.name)
+    slides = "".join(f'<div class="sl" data-id="{id}"><img src="creatives/home/{id}.jpg" alt="{html.escape(t)}" loading="lazy"></div>' for id, t in items)
+    dots = "".join(f'<button type="button" data-i="{i}" aria-label="{html.escape(t)}"></button>' for i, (id, t) in enumerate(items))
+    opts = "".join(f'<option value="{i}">{html.escape(t)}</option>' for i, (id, t) in enumerate(items))
+    page = f'''<!DOCTYPE html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Банери SOLO на головній obiimy.world — превю</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap">
+<style>
+* {{ box-sizing: border-box; }} body {{ margin: 0; background: #fff; color: #222; font-family: Montserrat, Arial, sans-serif; font-size: 13px; }}
+.top {{ background: #fff; text-align: center; padding: 7px 0; color: #5B4A9E; font-weight: 600; font-size: 12px; }}
+.bar {{ background: #B9A3DC; color: #fff; font-size: 11px; }} .bar .in {{ max-width: 1240px; margin: 0 auto; padding: 7px 20px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }}
+.hd {{ max-width: 1240px; margin: 0 auto; padding: 18px 20px; display: flex; align-items: center; gap: 36px; }} .hd img {{ height: 42px; }} .hd .srch {{ flex: 1; border: 1px solid #d9d9d9; border-radius: 999px; padding: 9px 16px; color: #999; }} .hd b {{ font-weight: 600; }}
+.nav {{ border-top: 1px solid #eee; border-bottom: 1px solid #eee; }} .nav .in {{ max-width: 1240px; margin: 0 auto; padding: 12px 20px; display: flex; justify-content: space-between; gap: 10px; font-size: 14px; }}
+.hero {{ max-width: 1536px; margin: 0 auto; position: relative; aspect-ratio: 1920 / 576; overflow: hidden; background: #141110; }}
+.sl {{ position: absolute; inset: 0; opacity: 0; transition: opacity .35s; }} .sl.on {{ opacity: 1; }} .sl img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
+.ar {{ position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: 0; background: rgba(255,255,255,.18); color: #fff; font-size: 26px; cursor: pointer; border-radius: 50%; z-index: 2; }} .ar:hover {{ background: rgba(255,255,255,.32); }} .ar.l {{ left: 14px; }} .ar.r {{ right: 14px; }}
+.dots {{ position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 8px; z-index: 2; }} .dots button {{ width: 10px; height: 10px; border-radius: 50%; border: 0; background: rgba(255,255,255,.55); cursor: pointer; padding: 0; }} .dots button.on {{ background: #fff; }}
+.cats {{ max-width: 1150px; margin: 30px auto 60px; border: 1px solid #eee; border-radius: 10px; padding: 22px 24px 26px; }} .cats h3 {{ margin: 0 0 18px; text-align: center; font-size: 16px; font-weight: 700; }}
+.catrow {{ display: flex; justify-content: space-between; gap: 10px; }} .cat {{ text-align: center; width: 110px; }} .cc {{ display: block; width: 96px; height: 96px; margin: 0 auto 12px; border-radius: 50%; border: 3px solid #E8558F; background-color: #fff; }} .cat p {{ margin: 0; font-size: 12px; line-height: 1.3; }}
+.ctl {{ max-width: 1240px; margin: 14px auto 0; padding: 0 20px; display: flex; gap: 12px; align-items: center; font-size: 13px; color: #555; }} .ctl select {{ font: inherit; padding: 6px 10px; }} .ctl a {{ color: #5B4A9E; }}
+@media (max-width: 900px) {{ .nav, .bar, .hd .srch {{ display: none; }} .hd {{ justify-content: center; }} .catrow {{ overflow-x: auto; }} }}
+</style></head><body>
+<div class="top">Відправка день у день — при замовленні до 16:00.</div>
+<div class="bar"><div class="in"><span>Каталог</span><span>Оплата і доставка</span><span>Обмін та повернення</span><span>Про нас</span><span>Рекомендації по догляду</span><span>Контактна інформація</span><span>Договір публічної оферти</span><span>Відгуки</span></div></div>
+<div class="hd"><img src="brand/logo-original.png" alt="Obiimy"><div class="srch">пошук товарів</div><span>✳ Замовлення: <b>+38 067 010 85 25</b></span><b>🧺 Мій кошик</b></div>
+<div class="nav"><div class="in"><span>SALE</span><span>ХІТ</span><span>Колекції</span><span>Подарункові набори</span><span>Хустки</span><span>Хустки 2D</span><span>Хустки паше</span><span>Твіллі</span><span>Резинки</span><span>Маски для сну</span><span>Прикраси</span><span>Obiimy HOME</span><span>Сертифікати</span></div></div>
+<div class="hero" id="hero">{slides}<button type="button" class="ar l" id="prev" aria-label="Попередній">‹</button><button type="button" class="ar r" id="next" aria-label="Наступний">›</button><div class="dots" id="dots">{dots}</div></div>
+<div class="ctl"><span>Варіант:</span><select id="pick">{opts}</select><a id="dl" href="#" download>JPG 1920 × 576 ↓</a><a href="home-banners">Усі банери списком →</a></div>
+<div class="cats"><h3>Категорії</h3><div class="catrow">{"".join(circle(l, k) for l, k in cuts)}</div></div>
+<script>
+(function () {{
+  var sl = [].slice.call(document.querySelectorAll('.sl')), dots = [].slice.call(document.querySelectorAll('#dots button')), pick = document.getElementById('pick'), dl = document.getElementById('dl'), cur = 0;
+  var q = new URLSearchParams(location.search).get('b'); sl.forEach(function (s, i) {{ if (s.dataset.id === q) cur = i; }});
+  function show(i) {{ cur = (i + sl.length) % sl.length; sl.forEach(function (s, k) {{ s.classList.toggle('on', k === cur); }}); dots.forEach(function (d, k) {{ d.classList.toggle('on', k === cur); }}); pick.value = cur; var im = sl[cur].querySelector('img'); dl.href = im.src; dl.setAttribute('download', sl[cur].dataset.id + '.jpg'); history.replaceState(null, '', '?b=' + sl[cur].dataset.id); }}
+  dots.forEach(function (d) {{ d.addEventListener('click', function () {{ show(Number(d.dataset.i)); }}); }});
+  pick.addEventListener('change', function () {{ show(Number(pick.value)); }});
+  document.getElementById('prev').addEventListener('click', function () {{ show(cur - 1); }}); document.getElementById('next').addEventListener('click', function () {{ show(cur + 1); }});
+  document.addEventListener('keydown', function (e) {{ if (e.key === 'ArrowLeft') show(cur - 1); if (e.key === 'ArrowRight') show(cur + 1); }});
+  show(cur);
+}})();
+</script></body></html>'''
+    (site / "home-preview.html").write_text(page)
 
 if __name__ == "__main__":
     print(build(ROOT / "site"), "creatives")

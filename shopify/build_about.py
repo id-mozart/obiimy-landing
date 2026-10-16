@@ -25,6 +25,10 @@ PICS = {
     "song": ("shopify/svitlana/p3-4.jpeg", "Silk scarf from the «Singing Soul» collection"),
     "knot": ("ads/solo/ref/new/F44A3254_reblum.jpg", "The knot of a silk scarf"),
     "yacht": ("photo/solo/avantiura-88-3.webp", "«Avantiura» scarf"),
+    "silk-iskra": ("ads/solo/src/iskra-65-1-hi.webp", "«Iskra» silk"), "silk-flirt": ("ads/solo/src/flirt-65-1-hi.webp", "«Flirt» silk"), "silk-puls": ("ads/solo/src/puls-44-1-hi.webp", "«Puls» silk"),
+    "silk-zolote": ("ads/solo/src/zolote-44-1-hi.webp", "«Zolote svitlo» silk"), "silk-avantiura": ("ads/solo/src/avantiura-88-1-hi.webp", "«Avantiura» silk"), "silk-tysha": ("ads/solo/src/tysha-88-1-hi.webp", "«Tysha» silk"), "silk-krok": ("ads/solo/src/krok-44-1-hi.webp", "«Smilyvyi krok» silk"),
+    "w-iskra": ("photo/solo/iskra-65-3.webp", "«Iskra»"), "w-flirt": ("photo/solo/flirt-65-4.webp", "«Flirt»"), "w-puls": ("photo/solo/puls-44-5.webp", "«Puls»"), "w-zolote": ("photo/solo/zolote-44-4.webp", "«Zolote svitlo»"),
+    "w-avantiura": ("photo/solo/avantiura-88-4.webp", "«Avantiura»"), "w-tysha": ("photo/solo/tysha-88-4.webp", "«Tysha vseredyni»"), "w-krok": ("photo/solo/krok-44-4.webp", "«Smilyvyi krok»"),
 }
 cdn = {}
 if "--cdn" in sys.argv:
@@ -302,6 +306,117 @@ BODY_C = f"""{CSS}
 </div>
 """
 (HERE / "about-us-c.html").write_text(BODY_C)
+
+# D · the artist: from a painting to silk — big frames, silk to the full width, the seven prints as a gallery of states, little text
+STATES = [("iskra", "Iskra", "The courage to be seen"), ("flirt", "Flirt", "Flirt is, above all, a state"), ("puls", "Puls", "An inner rhythm"), ("zolote", "Zolote svitlo", "A moment of clarity"),
+          ("avantiura", "Avantiura", "Beyond the familiar"), ("tysha", "Tysha vseredyni", "Hearing yourself"), ("krok", "Smilyvyi krok", "Trust in yourself")]
+gallery = "".join(f'''<figure class="ob-g"><div class="ph">{img("w-" + k)}</div><div class="sw" style="background-image:url({src("silk-" + k)})"></div><figcaption><b>{n}</b><span>{st}</span></figcaption></figure>''' for k, n, st in STATES)
+CSS_D = """<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
+<style>
+.ob-art { --serif: 'Cormorant Garamond', Georgia, serif; }
+.ob-art h1, .ob-art h2, .ob-art .ob-quote, .ob-art .ob-lead, .ob-art .big { font-family: var(--serif) !important; font-weight: 400; letter-spacing: 0; }
+.ob-art h2 { font-size: clamp(3.2rem, 4vw, 5rem); line-height: 1.05; }
+.ob-art .ob-hero h1 { font-size: clamp(4.4rem, 7vw, 9rem); line-height: .95; }
+.ob-art .ob-hero.tall { height: clamp(460px, 64vw, 820px); }
+.ob-art .silk { height: clamp(220px, 28vw, 380px); background-size: 110%; background-position: 50% 45%; position: relative; }
+.ob-art .silk .big { position:absolute; left:50%; top:50%; transform:translate(-50%,-50%); color:#fff; font-size: clamp(3rem, 6vw, 8rem); font-style: italic; text-shadow: 0 2px 30px rgba(0,0,0,.35); white-space:nowrap; }
+.ob-art .ob-gal { display:grid; grid-template-columns: repeat(7, 1fr); gap:.8rem; margin-top:3.6rem; }
+.ob-art .ob-g { margin:0; position:relative; } .ob-art .ob-g .ph { aspect-ratio: 3/4.6; overflow:hidden; } .ob-art .ob-g .ph img { width:100%; height:100%; object-fit:cover; display:block; }
+.ob-art .ob-g .sw { height: 5.6rem; background-size: 160%; background-position: 50% 50%; margin-top:.8rem; }
+.ob-art .ob-g figcaption { margin-top:1rem; } .ob-art .ob-g b { display:block; font-family: var(--serif); font-weight:400; font-size:2rem; line-height:1.1; } .ob-art .ob-g span { display:block; font-size:1.25rem; color:var(--ink2); margin-top:.3rem; line-height:1.35; }
+.ob-art .ob-dip { display:grid; grid-template-columns: 1fr 1fr; gap:1.2rem; } .ob-art .ob-dip .ph { aspect-ratio: 4/5; overflow:hidden; } .ob-art .ob-dip .ph img { width:100%; height:100%; object-fit:cover; display:block; }
+.ob-art .ob-cap { font-family: var(--serif); font-style: italic; font-size: 1.8rem; color: var(--ink2); margin-top: 1.2rem; }
+.ob-art .ob-lead { font-size: clamp(2.4rem, 3vw, 3.4rem); line-height:1.3; }
+.ob-art .ob-two.art { align-items: start; grid-template-columns: 1fr 1.1fr; }
+@media (max-width: 749px) { .ob-art .ob-gal { grid-template-columns: repeat(2, 1fr); } .ob-art .ob-dip { grid-template-columns: 1fr; } }
+</style>
+"""
+BODY_D = f"""{CSS}{CSS_D}
+<div class="ob-about ob-art">
+  <div class="ob-hero tall">{img("hero", "object-position:50% 34%")}
+    <div class="t center"><h1>Painted. Then woven in silk.</h1><p>Obiimy — Ukrainian silk with prints that begin as paintings by artist and founder Svitlana Snizhko.</p></div>
+  </div>
+
+  <section class="ob-sec">
+    <div class="ob-two art">
+      <div>
+        <p class="k">The idea</p>
+        <p class="ob-lead">Obiimy means «hugs». A scarf is not an accessory here — it is a painting you can wear, and a small act of freedom.</p>
+      </div>
+      <div class="ob-txt"><p style="margin-top:4rem">Every print starts on canvas. Svitlana paints; the painting becomes a print with its own name and its own state — «Iskra», «Tysha», «Avantiura». The print goes onto 100% natural Italian silk, and the corners of every scarf are finished by hand in Ukraine, so the edge is even all the way round. Each piece comes in a yellow box: a hug that reminds you that you are worthy of beauty.</p>
+      <p>Obiimy was founded during the war and takes part in charitable initiatives for the military and those affected. Part of the profit from the «Singing Soul» collection goes to saving the European roller, a rare bird in Rivne region.</p></div>
+    </div>
+  </section>
+
+  <div class="silk" style="background-image:url({src('silk-zolote')})"><p class="big">from a painting to silk</p></div>
+
+  <section class="ob-sec">
+    <div class="ob-two art">
+      <div class="ph" style="aspect-ratio:4/5;overflow:hidden">{img("print")}</div>
+      <div>
+        <p class="k">The craft</p>
+        <h2>Three steps, no shortcuts</h2>
+        <div class="ob-steps" style="grid-template-columns:1fr;gap:2.2rem;margin-top:2.8rem">
+          <div><h3>1 · The painting</h3><p>An original artwork by Svitlana Snizhko — not a stock pattern, not a licensed design.</p></div>
+          <div><h3>2 · Italian silk, Ukrainian hands</h3><p>The print is transferred onto premium silk and printed on both sides; seamstresses work on the corners of every scarf by hand.</p></div>
+          <div><h3>3 · The yellow box</h3><p>Gift packaging for every piece — to give, or to keep.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="ob-sec paper">
+    <p class="k">SOLO · the path to yourself</p>
+    <h2>Seven prints, seven states</h2>
+    <p style="margin-top:1.4rem;max-width:64rem">The collection is inspired by magazine covers of the 1940s–50s: a woman's strength across the decades. Each print is a state on the way to herself.</p>
+    <div class="ob-gal">{gallery}</div>
+    <a class="ob-btn y" href="/collections/all">Shop the collection</a>
+  </section>
+
+  <section class="ob-sec">
+    <div class="ob-founder">
+      <div class="ph">{img("svit")}</div>
+      <div>
+        <p class="k">The artist</p>
+        <h2>Svitlana Snizhko</h2>
+        <p class="role">Artist, entrepreneur, philanthropist</p>
+        <p class="ob-lead" style="font-size:2.2rem">«My paintings became the first Obiimy collections. I wanted silk to carry Ukrainian identity into the world — and to give back.»</p>
+        <ul>
+          <li>Over 15 years in business; built Obiimy from scratch into an international brand</li>
+          <li>Patron of the Olos Foundation since 2019; «Philanthropist of the Year 2024»</li>
+          <li>Restoration of the Trypillia museum in Lehedzyne and of the mosaics of Saint Sophia in Kyiv; scholarships, books, music education for children</li>
+          <li>Superhumans Center, Repower NGO; the «Singing Soul» bird-saving project</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="ob-sec" style="padding-top:0">
+    <div class="ob-dip"><div class="ph">{img("song", "object-position:50% 30%")}</div><div class="ph">{img("knot")}</div></div>
+    <p class="ob-cap">«Singing Soul» and «Avantiura» — two collections, two states.</p>
+  </section>
+
+  <section class="ob-sec paper">
+    <div class="ob-contact">
+      <div class="ph">{img("box")}</div>
+      <div>
+        <p class="k">Where to find us</p>
+        <h2>Kyiv showroom, worldwide shipping</h2>
+        <div class="ob-kv">
+          <span>Showroom</span><span>12 Petra Sahaidachnoho St., Kyiv · Mon–Fri 10:00–18:00, Sat 11:00–18:00</span>
+          <span>Shipping</span><span>From Kyiv by FedEx — see <a href="/policies/shipping-policy">Shipping policy</a> and <a href="/policies/refund-policy">Refund policy</a></span>
+          <span>Email</span><span><a href="mailto:sale@obiimy.world">sale@obiimy.world</a></span>
+          <span>Phone</span><span><a href="tel:+380670108525">+38 067 010 85 25</a></span>
+          <span>In Ukraine</span><span><a href="https://obiimy.world">obiimy.world</a>, partner stores, corporate gift sets</span>
+          <span>Responsible person</span><span>Svitlana Snizhko — founder and artist of Obiimy</span>
+        </div>
+        <a class="ob-btn" href="/pages/contact">Contact us</a>
+      </div>
+    </div>
+  </section>
+</div>
+"""
+(HERE / "about-us-d.html").write_text(BODY_D)
 PREVIEW = f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>About Us — Obiimy (preview)</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600&display=swap">
 <style>html {{ font-size: 62.5%; }} body {{ margin:0; font-family: Assistant, sans-serif; color:#121212; background:#fff; }}
@@ -311,9 +426,9 @@ PREVIEW = f"""<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta n
 .ttl {{ text-align:center; font-size:4rem; font-weight:400; margin:4rem 0 2rem; }}
 .ft {{ padding:4rem 5vw; border-top:1px solid rgba(0,0,0,.08); font-size:1.3rem; color:#777; text-align:center; margin-top:4rem; }}</style></head><body>
 <div class="hd"><img src="../brand/logo-original.png" alt="Obiimy"><span>Home</span><span>Catalog</span><span>About Us</span><span>Contact</span></div>
-<div class="sw"><b style="align-self:center;margin-right:1rem">Variant:</b><button type="button" data-v="a" aria-pressed="true">A · Story + founder</button><button type="button" data-v="b" aria-pressed="false">B · Editorial</button><button type="button" data-v="c" aria-pressed="false">C · A letter from Svitlana</button></div>
+<div class="sw"><b style="align-self:center;margin-right:1rem">Variant:</b><button type="button" data-v="a" aria-pressed="true">A · Story + founder</button><button type="button" data-v="b" aria-pressed="false">B · Editorial</button><button type="button" data-v="c" aria-pressed="false">C · A letter from Svitlana</button><button type="button" data-v="d" aria-pressed="false">D · The artist</button></div>
 <h1 class="ttl">About Us</h1>
-<div class="v on" id="v-a">{BODY}</div><div class="v" id="v-b">{BODY_B}</div><div class="v" id="v-c">{BODY_C}</div>
+<div class="v on" id="v-a">{BODY}</div><div class="v" id="v-b">{BODY_B}</div><div class="v" id="v-c">{BODY_C}</div><div class="v" id="v-d">{BODY_D}</div>
 <div class="ft">© Obiimy · preview of the new About page for shop.obiimy.world</div>
 <script>document.querySelectorAll('.sw button').forEach(function (b) {{ b.addEventListener('click', function () {{ document.querySelectorAll('.sw button').forEach(function (x) {{ x.setAttribute('aria-pressed', x === b); }}); document.querySelectorAll('.v').forEach(function (v) {{ v.classList.toggle('on', v.id === 'v-' + b.dataset.v); }}); history.replaceState(null, '', '?v=' + b.dataset.v); window.scrollTo(0, 0); }}); }}); var q = new URLSearchParams(location.search).get('v'); if (q) document.querySelector('.sw [data-v=' + q + ']').click();</script>
 </body></html>"""

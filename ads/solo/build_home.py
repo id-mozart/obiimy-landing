@@ -210,6 +210,53 @@ ad("home-v-strips", f'''
   <div style="left:800px;top:0;bottom:0;width:140px;background:linear-gradient(90deg,#141110,rgba(20,17,16,0))"></div>
   {lock(size=140)}{logo()}''', note="Seven prints as strips")
 
+# round 3 (16.10): three compositions on other frames — a dark portrait, a warm street, a classic knot
+# W · «Золоте світло» at the door: dark frame to the edge, the lock-up on the left, the scarf at the throat lit
+ad("home-w-door", f'''
+  <div style="inset:0;background:#1A1816"></div>
+  <div class="ph" style="left:700px;right:0;top:0;bottom:0"><img src="{S2('zolote-44-3')}" alt="" style="object-position:50% 30%"></div>
+  <div style="left:700px;top:0;bottom:0;width:160px;background:linear-gradient(90deg,#1A1816,rgba(26,24,22,0))"></div>
+  {lock(size=140)}{logo()}''', note="Zolote at the door")
+
+# X · «Пульс» at the café: a warm street frame to the right, paper panel with the lock-up
+ad("home-x-cafe", f'''
+  <div style="inset:0;background:#F0EBE1"></div>
+  <div class="ph" style="left:880px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%);mask-image:linear-gradient(90deg,transparent 0,#000 16%)"><img src="{S2('puls-44-5')}" alt="" style="object-position:50% 45%"></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s" style="font-size:140px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_K}" alt="Obiimy">''', cls="dark", note="Puls at the café")
+
+# Y · «Сміливий крок» classic knot: the frame centred, two dark fields, the lock-up left and the state right
+ad("home-y-knot", f'''
+  <div style="inset:0;background:#141110"></div>
+  <div class="ph" style="left:700px;top:0;bottom:0;width:640px"><img src="{S2('krok-44-2')}" alt="" style="object-position:50% 30%"></div>
+  <div style="left:1400px;top:50%;transform:translateY(-50%);width:280px;color:#F3EADB"><p style="font-size:22px;letter-spacing:.14em;text-transform:uppercase;opacity:.7">Хустка</p><p style="font-size:44px;font-weight:300;letter-spacing:.02em;line-height:1.05;margin-top:10px">Сміливий крок</p><p style="font-size:22px;line-height:1.3;margin-top:16px;opacity:.85">{PP["krok"]["short"]}</p></div>
+  {lock(size=140)}{logo()}''', note="Krok knot, print card")
+
+# round 3, the art director's four: monochrome + yellow, the arch, the diagonal seam, the album print
+ad("home-z1-mono", f'''
+  <div style="inset:0;background:#111"></div>
+  <div class="ph" style="left:520px;right:0;top:0;bottom:0"><img src="{S2('tysha-88-2')}" alt="" style="object-position:30% 30%;filter:grayscale(1) contrast(1.1)"></div>
+  <div style="left:520px;top:0;bottom:0;width:220px;background:linear-gradient(90deg,#111,rgba(17,17,17,0))"></div>
+  <div style="right:0;top:0;bottom:0;width:220px;background:linear-gradient(270deg,rgba(17,17,17,.85),rgba(17,17,17,0))"></div>
+  {lock(size=140)}{logo()}''', note="Monochrome + yellow")
+
+ad("home-z2-arch", f'''
+  <div style="inset:0;background:#1A1816"></div>
+  <div class="ph" style="left:1080px;top:36px;width:600px;height:600px;border-radius:300px 300px 0 0"><img src="{S2('krok-44-2')}" alt="" style="object-position:50% 36%"></div>
+  {lock(size=140)}{logo()}''', note="The arch")
+
+ad("home-z3-diag", f'''
+  <div class="ph" style="left:640px;right:0;top:0;bottom:0"><img src="{S2('puls-44-4')}" alt="" style="object-position:50% 28%"></div>
+  <div style="left:0;top:0;bottom:0;width:830px;background:#1A1816;clip-path:polygon(0 0,700px 0,830px 100%,0 100%)"></div>
+  {lock(size=140)}{logo()}''', note="Diagonal seam")
+
+ad("home-z4-album", f'''
+  <div style="inset:0;background:#F0EBE1"></div>
+  <div style="left:960px;top:60px;width:700px;height:456px;background:#fff;padding:8px;box-shadow:0 8px 24px rgba(0,0,0,.12)"><div class="ph" style="position:relative;width:100%;height:100%"><img src="{S2('iskra-65-4')}" alt="" style="object-position:50% 30%"></div></div>
+  <p style="left:960px;top:536px;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:#6B655C">Хустка «Іскра»</p>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s" style="font-size:140px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_K}" alt="Obiimy">''', cls="dark", note="Album print")
+
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO home banners</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap">

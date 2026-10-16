@@ -425,45 +425,74 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
     return n_solo + n_old
 
 HOME = [
-        ("home-h-reblum-dark", "Студійний кадр · темний", "Той самий кадр панеллю праворуч на темному полі."),
-        ("home-r-reblum-paper", "Студійний кадр · папір", "Світле поле, кадр з м’яким краєм праворуч, підпис із назвою хустки."),
-        ("home-f-yellow", "Фірмовий жовтий", "Жовте поле бренду, темний лок-ап; праворуч — бант «Авантюра» у волоссі."),
-        ("home-u-diptych", "Диптих", "Портрет і вузол однієї зйомки «Тиші всередині», між ними темна смуга з лок-апом."),
-        ("home-g-reblum-light", "Студійний кадр · світлий", "Новий крупний план «Авантюри» на шиї; штора кадру продовжена ліворуч м’яким розмиттям, лок-ап темний."),
-        ("home-j-split", "Навпіл", "Кадр «Тиша всередині» ліворуч, лок-ап по центру темного поля праворуч."),
-        ("home-b-three", "Три принти", "Лок-ап на темному, праворуч три кадри трьох принтів: «Сміливий крок», «Пульс», «Золоте світло»."),
-        ("home-o-reblum-wide", "Студійний кадр · широкий", "Вузол по центру, ліва частина добудована з того ж кадру дзеркалом і розмиттям, лок-ап на вуалі."),
-        ("home-p-reblum-yellow", "Студійний кадр · жовтий", "Жовте поле бренду зліва, вузол крупно справа, темна плашка."),
-        ("home-q-reblum-slice", "Студійний кадр · сім станів", "Кадр вертикальною смугою між двома темними полями; праворуч — сім станів, «Авантюра» виділена."),
-        ("home-c-seven", "Сім принтів", "Сім хусток колекції в ряд з назвами — сім станів на шляху до себе."),
-        ("home-m-paper", "Папір і хустки", "Світле поле, дві хустки колекції як предмет — товар на перший план.")]
+        ("home-h-reblum-dark", "Студійний кадр · темний", "Той самий кадр панеллю праворуч на темному полі.", "ok"),
+        ("home-r-reblum-paper", "Студійний кадр · папір", "Світле поле, кадр з м’яким краєм праворуч, підпис із назвою хустки.", "ok"),
+        ("home-f-yellow", "Фірмовий жовтий", "Жовте поле бренду, темний лок-ап; праворуч — бант «Авантюра» у волоссі.", "ok"),
+        ("home-u-diptych", "Диптих", "Портрет і вузол однієї зйомки «Тиші всередині», між ними темна смуга з лок-апом.", "ok"),
+        ("home-w-door", "Біля дверей", "«Золоте світло» на темному кадрі на весь банер, хустка біля шиї освітлена; лок-ап на вуалі.", "new"),
+        ("home-x-cafe", "Кафе", "«Пульс» у теплому вуличному кадрі праворуч, папір і темний лок-ап ліворуч.", "new"),
+        ("home-y-knot", "Класичний вузол", "«Сміливий крок» у центрі між двома темними полями; ліворуч лок-ап, праворуч картка принта зі станом.", "new"),
+        ("home-z1-mono", "Монохром + жовтий", "«Тиша всередині» в кабріолеті чорно-білим; жовта плашка — єдина кольорова пляма банера.", "new"),
+        ("home-z2-arch", "Арка", "Темне поле, кадр «Сміливого кроку» в масці-арці — перегук із круглими категоріями під слайдером.", "new"),
+        ("home-z3-diag", "Діагональний стик", "«Пульс» праворуч, темна панель із косим краєм — динаміка без вітру.", "new"),
+        ("home-z4-album", "Відбиток в альбомі", "Папір, фото «Іскри» в білій рамці з тінню і підписом — редакційна подача.", "new"),
+        ("home-g-reblum-light", "Студійний кадр · світлий", "Новий крупний план «Авантюри» на шиї; штора кадру продовжена ліворуч м’яким розмиттям, лок-ап темний.", "res"),
+        ("home-j-split", "Навпіл", "Кадр «Тиша всередині» ліворуч, лок-ап по центру темного поля праворуч.", "res"),
+        ("home-b-three", "Три принти", "Лок-ап на темному, праворуч три кадри трьох принтів: «Сміливий крок», «Пульс», «Золоте світло».", "res"),
+        ("home-o-reblum-wide", "Студійний кадр · широкий", "Вузол по центру, ліва частина добудована з того ж кадру дзеркалом і розмиттям, лок-ап на вуалі.", "res"),
+        ("home-p-reblum-yellow", "Студійний кадр · жовтий", "Жовте поле бренду зліва, вузол крупно справа, темна плашка.", "res"),
+        ("home-q-reblum-slice", "Студійний кадр · сім станів", "Кадр вертикальною смугою між двома темними полями; праворуч — сім станів, «Авантюра» виділена.", "res"),
+        ("home-c-seven", "Сім принтів", "Сім хусток колекції в ряд з назвами — сім станів на шляху до себе.", "res"),
+        ("home-m-paper", "Папір і хустки", "Світле поле, дві хустки колекції як предмет — товар на перший план.", "res")]
+TIERS = [('ok', 'Рекомендовані · прийняті арт-директором'), ('new', 'Новий раунд · на оцінку'), ('res', 'Запасні · для другого-третього слайда')]
 
 def build_home(site, render):
-    """site/home-banners.html — the SOLO banners for the home page of obiimy.world (1920 × 576), from ads/solo/out-home."""
+    """site/home-banners.html — the SOLO banners for the home page of obiimy.world (1920 × 576), from ads/solo/out-home:
+    grouped by tier (accepted / new round / reserve), every card with a phone crop (the slider on a 390 px screen shows the
+    central 1 : 1 part), JPG per banner and a ZIP of all."""
     src = ROOT / "ads/solo/out-home"
     if not src.exists(): return
     out = site / "creatives" / "home"; out.mkdir(parents=True, exist_ok=True)
-    cards = []
-    for id, title, desc in HOME:
+    cards = {k: [] for k, _ in TIERS}; files = []
+    for id, title, desc, tier in HOME:
         f = src / f"{id}.jpg"
         if not f.exists(): continue
-        dst = out / f.name; prev = out / f"{id}-1200.webp"
-        if not (dst.exists() and prev.exists() and dst.stat().st_mtime >= f.stat().st_mtime):
-            im = Image.open(f).convert("RGB"); im.save(dst, "JPEG", quality=88, optimize=True, progressive=True); t = im.copy(); t.thumbnail((1200, 400)); t.save(prev, quality=82)
-        v = hashlib.md5(f.read_bytes()).hexdigest()[:8]
-        cards.append(f'''<figure class="hb"><a href="creatives/home/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/home/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="1200" height="360"></a>
-      <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></figcaption></figure>''')
+        dst = out / f.name; prev = out / f"{id}-1200.webp"; ph = out / f"{id}-phone.webp"
+        if not (dst.exists() and prev.exists() and ph.exists() and dst.stat().st_mtime >= f.stat().st_mtime):
+            im = Image.open(f).convert("RGB"); im.save(dst, "JPEG", quality=88, optimize=True, progressive=True)
+            t = im.copy(); t.thumbnail((1200, 400)); t.save(prev, quality=82)
+            # the phone: the slider keeps the banner's height and crops the sides — a 1.3 : 1 window from the centre-left (the lock-up side)
+            w, h = im.size; cw = int(h * 1.3); x0 = max(0, min(w - cw, int(w * .02)))
+            im.crop((x0, 0, x0 + cw, h)).resize((520, 400)).save(ph, quality=82)
+        v = hashlib.md5(f.read_bytes()).hexdigest()[:8]; files.append(f"creatives/home/{f.name}?v={v}")
+        cards[tier].append(f'''<figure class="hb"><div class="hbv"><a href="creatives/home/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/home/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="1200" height="360"></a><div class="hbp" title="Як обріже слайдер на телефоні (ліва частина з лок-апом)"><img src="creatives/home/{ph.name}?v={v}" alt="" loading="lazy" width="520" height="400"><span>телефон</span></div></div>
+      <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><div class="hba"><a href="home-preview?b={id}">На макеті →</a><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></div></figcaption></figure>''')
+    secs = "".join(f'<section class="hbt {k}"><h2>{t} <span>· {len(cards[k])}</span></h2><div class="hbs">{"".join(cards[k])}</div></section>' for k, t in TIERS if cards[k])
     body = f'''<header><a href="./">← Усі лендинги Obiimy</a><a href="creatives">Рекламні креативи →</a></header>
 <h1>Банери для головної</h1>
-<p class="lede"><a href="home-preview" style="color:var(--acc);font-weight:600">Подивитися на макеті головної obiimy.world (слайдер) →</a></p>
-<p class="lede"><b>Колекція SOLO на головній obiimy.world.</b> Шість варіантів у форматі поточного банера сайту — 1920 × 576: той самий лок-ап «КОЛЕКЦІЯ / СОЛО / ШЛЯХ ДО СЕБЕ», жовта плашка «Жіноча сила крізь десятиліття» і вертикальний OBIIMY™, але інші кадри й композиції. Фото — зйомка колекції, тексти — за прес-релізом. Натисніть на банер, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>
-<div class="hbs">{"".join(cards)}</div>
-<style>.hbs {{ display: grid; gap: 28px; margin-top: 36px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }} .hb img {{ display: block; width: 100%; height: auto; }}
-.hb figcaption {{ display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 14px 18px; font-size: .92rem; color: var(--ink2); }} .hb b {{ color: var(--ink); font-size: 1.05rem; }} .hb p {{ margin: 4px 0 0; max-width: 60em; line-height: 1.45; }} .hb figcaption a {{ color: var(--acc); font-weight: 600; text-decoration: none; white-space: nowrap; }}
-.picks, .fmt, .toc, .all, #lb {{ display: none !important; }}</style>'''
+<p class="lede"><b>Колекція SOLO на головній obiimy.world.</b> Формат поточного банера сайту — 1920 × 576: лок-ап «КОЛЕКЦІЯ / СОЛО / ШЛЯХ ДО СЕБЕ», жовта плашка «Жіноча сила крізь десятиліття», вертикальний OBIIMY™. Фото — зйомки колекції й студійний кадр клієнта, тексти — за прес-релізом. Поруч із кожним — як його обріже слайдер на телефоні.</p>
+<p class="lede hbl"><a href="home-preview">Подивитися на макеті головної (слайдер) →</a><button type="button" id="hbzip">Завантажити всі (ZIP)</button><span id="hbn"></span></p>
+{secs}
+<style>.hbl {{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:14px; }} .hbl a {{ color:var(--acc); font-weight:600; }} .hbl button {{ font:inherit; font-size:.88rem; border:0; background:var(--acc); color:#fff; border-radius:999px; padding:10px 16px; cursor:pointer; }} .hbl button[disabled] {{ opacity:.6; }} #hbn {{ font-size:.85rem; color:var(--ink2); }}
+.hbt {{ margin-top: 48px; }} .hbt h2 {{ margin: 0 0 18px; font-size: 1.5rem; }} .hbt h2 span {{ color: var(--ink2); font-weight: 400; }} .hbt.ok h2::before {{ content: "✓ "; color: #2b7a3d; }}
+.hbs {{ display: grid; gap: 28px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }} .hbt.ok .hb {{ border-color: #2b7a3d; }}
+.hbv {{ display: grid; grid-template-columns: 1fr 160px; gap: 10px; align-items: start; background: var(--bg); padding: 10px; }} .hbv > a img {{ display: block; width: 100%; height: auto; }}
+.hbp {{ position: relative; }} .hbp img {{ display: block; width: 100%; height: auto; border-radius: 14px; border: 3px solid var(--ink); }} .hbp span {{ position: absolute; left: 0; right: 0; bottom: -18px; text-align: center; font-size: .72rem; color: var(--ink2); }}
+.hb figcaption {{ display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 22px 18px 14px; font-size: .92rem; color: var(--ink2); }} .hb b {{ color: var(--ink); font-size: 1.05rem; }} .hb p {{ margin: 4px 0 0; max-width: 60em; line-height: 1.45; }} .hba {{ display: flex; gap: 16px; }} .hba a {{ color: var(--acc); font-weight: 600; text-decoration: none; white-space: nowrap; }}
+@media (max-width: 700px) {{ .hbv {{ grid-template-columns: 1fr; }} .hbp {{ max-width: 200px; }} .hb figcaption {{ flex-direction: column; align-items: flex-start; }} }}
+.picks, .fmt, .toc, .all, #lb {{ display: none !important; }}</style>
+<script>
+document.getElementById('hbzip').addEventListener('click', function () {{
+  var btn = this, n = document.getElementById('hbn'), items = {json.dumps(files)}; btn.disabled = true;
+  (window.JSZip ? Promise.resolve() : new Promise(function (ok, no) {{ var s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); }}))
+  .then(function () {{ var zip = new JSZip(), done = 0; return Promise.all(items.map(function (u) {{ return fetch(u).then(function (r) {{ return r.blob(); }}).then(function (b) {{ zip.file(u.split('/').pop().split('?')[0], b); n.textContent = 'Пакую: ' + (++done) + ' з ' + items.length; }}); }})).then(function () {{ return zip.generateAsync({{ type: 'blob' }}); }}); }})
+  .then(function (blob) {{ var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'obiimy-home-banners.zip'; a.click(); n.textContent = ''; btn.disabled = false; }})
+  .catch(function (e) {{ n.textContent = 'Не вдалося: ' + e; btn.disabled = false; }});
+}});
+</script>'''
     page = render(body, "", "").replace("<title>Креативи Obiimy</title>", "<title>Банери для головної obiimy.world — SOLO</title>")
     (site / "home-banners.html").write_text(page)
-    build_home_mock(site, out, [(id, title) for id, title, _ in HOME if (src / f"{id}.jpg").exists()])
+    build_home_mock(site, out, [(id, title) for id, title, _, _ in HOME if (src / f"{id}.jpg").exists()])
 
 def build_home_mock(site, out, items):
     """site/home-preview.html — the banners inside a mock of the obiimy.world home page: the site's header, the slider with

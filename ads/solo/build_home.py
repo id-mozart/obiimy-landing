@@ -261,6 +261,34 @@ ad("home-z4-album", f'''
   <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Album print")
 
+# round 4 (16.10): four with a different move — a twilly story, the empty seat, a split-tone portrait, the Riviera with the sea on the right
+# V1 · twilly: the bag frame to the right, the lock-up left, the twilly as the hero of the frame
+ad("home-v1-twilly", f'''
+  <div style="inset:0;background:#1A1816"></div>
+  <div class="ph" style="left:780px;right:0;top:0;bottom:0"><img src="{S2('iskra-tw-3')}" alt="" style="object-position:50% 48%"></div>
+  <div style="left:780px;top:0;bottom:0;width:200px;background:linear-gradient(90deg,#1A1816,rgba(26,24,22,0))"></div><div class="scrim-d"></div>
+  {lock()}{logo()}''', note="Twilly on the bag")
+
+# V2 · the empty seat: the car interior with the twilly on the bag — no model, a quiet still life; lock-up on a dark panel
+ad("home-v2-seat", f'''
+  <div style="inset:0;background:#1A1816"></div>
+  <div class="ph" style="left:720px;right:0;top:0;bottom:0"><img src="{S2('tysha-tw-2')}" alt="" style="object-position:40% 55%"></div>
+  <div style="left:720px;top:0;bottom:0;width:220px;background:linear-gradient(90deg,#1A1816,rgba(26,24,22,0))"></div><div class="scrim-d"></div>
+  {lock()}{logo()}''', note="The empty seat")
+
+# V3 · Riviera: the terrace frame to the right, the sea in the far right under the logo; paper panel
+ad("home-v3-riviera", f'''
+  <div style="inset:0;background:#F0EBE1"></div>
+  <div class="ph" style="left:760px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%);mask-image:linear-gradient(90deg,transparent 0,#000 14%)"><img src="{S2('zolote-tw-2')}" alt="" style="object-position:40% 72%"></div>
+  <div class="scrim-l"></div><div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Riviera")
+
+# V4 · the look in two tones: the «Флірт» frame, the left half warmed and darkened under the lock-up, the right half as shot
+ad("home-v4-tone", f'''
+  <div class="ph" style="inset:0"><img src="{S2('flirt-65-3')}" alt="" style="object-position:70% 22%"></div>
+  <div style="left:0;top:0;bottom:0;width:980px;background:rgba(26,24,22,.86);-webkit-mask-image:linear-gradient(90deg,#000 70%,transparent);mask-image:linear-gradient(90deg,#000 70%,transparent)"></div>
+  <div class="scrim-d"></div>{lock()}{logo()}''', note="Two tones")
+
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO home banners</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap">

@@ -436,6 +436,10 @@ HOME = [
         ("home-x-cafe", "Кафе", "«Пульс» у теплому вуличному кадрі праворуч, папір і темний лок-ап ліворуч.", "ok"),
         ("home-z2-arch", "Арка", "Темне поле, кадр «Сміливого кроку» в масці-арці — перегук із круглими категоріями під слайдером.", "ok"),
         ("home-z3-diag", "Діагональний стик", "«Пульс» праворуч, темна панель із косим краєм — динаміка без вітру.", "ok"),
+        ("home-v1-twilly", "Твіллі на сумці", "«Іскра» на ручці сумки — герой кадру твіллі, а не обличчя; темна панель із лок-апом.", "new"),
+        ("home-v2-seat", "Порожнє сидіння", "Салон кабріолета з твіллі на сумці — тихий натюрморт без моделі.", "new"),
+        ("home-v3-riviera", "Рив’єра", "Тераса над морем, твіллі «Золоте світло» на сумці; папір і темний лок-ап ліворуч.", "new"),
+        ("home-v4-tone", "Два тони", "Один кадр «Флірту»: ліва половина затемнена під лок-ап, права — як знято.", "new"),
         ("home-g-reblum-light", "Студійний кадр · світлий", "Новий крупний план «Авантюри» на шиї; штора кадру продовжена ліворуч м’яким розмиттям, лок-ап темний.", "res"),
         ("home-j-split", "Навпіл", "Кадр «Тиша всередині» ліворуч, лок-ап по центру темного поля праворуч.", "res"),
         ("home-b-three", "Три принти", "Лок-ап на темному, праворуч три кадри трьох принтів: «Сміливий крок», «Пульс», «Золоте світло».", "res"),
@@ -520,9 +524,9 @@ def build_home_mock(site, out, items):
 .bar {{ background: #B9A3DC; color: #fff; font-size: 11px; }} .bar .in {{ max-width: 1240px; margin: 0 auto; padding: 7px 20px; display: flex; justify-content: center; gap: 14px; flex-wrap: wrap; }}
 .hd {{ max-width: 1240px; margin: 0 auto; padding: 18px 20px; display: flex; align-items: center; gap: 36px; }} .hd img {{ height: 42px; }} .hd .srch {{ flex: 1; border: 1px solid #d9d9d9; border-radius: 999px; padding: 9px 16px; color: #999; }} .hd b {{ font-weight: 600; }}
 .nav {{ border-top: 1px solid #eee; border-bottom: 1px solid #eee; }} .nav .in {{ max-width: 1240px; margin: 0 auto; padding: 12px 20px; display: flex; justify-content: space-between; gap: 10px; font-size: 14px; }}
-.hero {{ max-width: 1536px; margin: 0 auto; position: relative; aspect-ratio: 1920 / 576; overflow: hidden; background: #141110; }}
+.herow {{ max-width: 1536px; margin: 0 auto; position: relative; padding: 0 56px; }} .hero {{ position: relative; aspect-ratio: 1920 / 576; overflow: hidden; background: #141110; }}
 .sl {{ position: absolute; inset: 0; opacity: 0; transition: opacity .35s; }} .sl.on {{ opacity: 1; }} .sl img {{ width: 100%; height: 100%; object-fit: cover; display: block; }}
-.ar {{ position: absolute; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; border: 0; background: rgba(255,255,255,.18); color: #fff; font-size: 26px; cursor: pointer; border-radius: 50%; z-index: 2; }} .ar:hover {{ background: rgba(255,255,255,.32); }} .ar.l {{ left: 14px; }} .ar.r {{ right: 14px; }}
+.ar {{ position: absolute; top: 50%; transform: translateY(-50%); width: 40px; height: 40px; border: 1px solid #ddd; background: #fff; color: #333; font-size: 24px; line-height: 1; cursor: pointer; border-radius: 50%; z-index: 2; }} .ar:hover {{ background: #f3f3f3; }} .ar.l {{ left: 4px; }} .ar.r {{ right: 4px; }}
 .dots {{ position: absolute; left: 0; right: 0; bottom: 12px; display: flex; justify-content: center; gap: 8px; z-index: 2; }} .dots button {{ width: 10px; height: 10px; border-radius: 50%; border: 0; background: rgba(255,255,255,.55); cursor: pointer; padding: 0; }} .dots button.on {{ background: #fff; }}
 .cats {{ max-width: 1150px; margin: 30px auto 60px; border: 1px solid #eee; border-radius: 10px; padding: 22px 24px 26px; }} .cats h3 {{ margin: 0 0 18px; text-align: center; font-size: 16px; font-weight: 700; }}
 .catrow {{ display: flex; justify-content: space-between; gap: 10px; }} .cat {{ text-align: center; width: 110px; }} .cc {{ display: block; width: 96px; height: 96px; margin: 0 auto 12px; border-radius: 50%; border: 3px solid #E8558F; background-color: #fff; }} .cat p {{ margin: 0; font-size: 12px; line-height: 1.3; }}
@@ -533,7 +537,7 @@ def build_home_mock(site, out, items):
 <div class="bar"><div class="in"><span>Каталог</span><span>Оплата і доставка</span><span>Обмін та повернення</span><span>Про нас</span><span>Рекомендації по догляду</span><span>Контактна інформація</span><span>Договір публічної оферти</span><span>Відгуки</span></div></div>
 <div class="hd"><img src="brand/logo-original.png" alt="Obiimy"><div class="srch">пошук товарів</div><span>✳ Замовлення: <b>+38 067 010 85 25</b></span><b>🧺 Мій кошик</b></div>
 <div class="nav"><div class="in"><span>SALE</span><span>ХІТ</span><span>Колекції</span><span>Подарункові набори</span><span>Хустки</span><span>Хустки 2D</span><span>Хустки паше</span><span>Твіллі</span><span>Резинки</span><span>Маски для сну</span><span>Прикраси</span><span>Obiimy HOME</span><span>Сертифікати</span></div></div>
-<div class="hero" id="hero">{slides}<button type="button" class="ar l" id="prev" aria-label="Попередній">‹</button><button type="button" class="ar r" id="next" aria-label="Наступний">›</button><div class="dots" id="dots">{dots}</div></div>
+<div class="herow"><div class="hero" id="hero">{slides}<div class="dots" id="dots">{dots}</div></div><button type="button" class="ar l" id="prev" aria-label="Попередній">‹</button><button type="button" class="ar r" id="next" aria-label="Наступний">›</button></div>
 <div class="ctl"><span>Варіант:</span><select id="pick">{opts}</select><a id="dl" href="#" download>JPG 1920 × 576 ↓</a><a href="home-banners">Усі банери списком →</a></div>
 <div class="cats"><h3>Категорії</h3><div class="catrow">{"".join(circle(l, k) for l, k in cuts)}</div></div>
 <script>

@@ -61,10 +61,10 @@ ad("home-b-three", f'''
   {lock()}{logo()}''', note="Three prints")
 
 # C · the seven scarves of the collection in a row on dark
-cuts = "".join(f'<div style="display:grid;justify-items:center;gap:14px"><img src="{CUT(p["flat"])}" alt="" style="height:230px;width:auto;max-width:165px;object-fit:contain;filter:drop-shadow(0 22px 26px rgba(0,0,0,.5));transform:rotate({(-7,5,-4,6,-5,4,-6)[i]}deg)"><p style="font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:#E9D7A6;white-space:nowrap">{p["name"]}</p></div>' for i, p in enumerate(P))
+cuts = "".join(f'<div style="display:grid;justify-items:center;gap:14px"><img src="{CUT(p["flat"])}" alt="" style="height:230px;width:auto;max-width:165px;object-fit:contain;filter:drop-shadow(0 22px 26px rgba(0,0,0,.5));transform:rotate({(-7,5,-4,6,-5,4,-6)[i]}deg)"><p style="font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:#E9D7A6;text-align:center;line-height:1.2;max-width:150px">{p["name"]}</p></div>' for i, p in enumerate(P))
 ad("home-c-seven", f'''
   <div style="inset:0;background:radial-gradient(80% 90% at 70% 50%,#2A2320,#141110 75%)"></div>
-  <div style="left:640px;right:150px;top:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:4px">{cuts}</div>
+  <div style="left:620px;right:190px;top:0;bottom:0;display:flex;align-items:center;justify-content:space-between;gap:4px">{cuts}</div>
   {lock()}{logo()}''', note="Seven prints, seven states")
 
 # D · the word «СОЛО» filled with silk, one square frame on the right
@@ -140,8 +140,8 @@ ad("home-k-strip", f'''
 # M · paper and the flat scarf: product first
 ad("home-m-paper", f'''
   <div style="inset:0;background:#F1E8D8"></div>
-  <img src="{CUT('avantiura-88-1')}" alt="" style="left:1120px;top:50%;transform:translateY(-50%) rotate(-8deg);height:520px;width:auto;filter:drop-shadow(0 30px 40px rgba(60,30,10,.35))">
-  <img src="{CUT('iskra-65-1')}" alt="" style="left:1420px;top:50%;transform:translateY(-44%) rotate(7deg);height:440px;width:auto;filter:drop-shadow(0 30px 40px rgba(60,30,10,.3))">
+  <img src="{CUT('avantiura-88-1')}" alt="" style="left:940px;top:50%;transform:translateY(-50%) rotate(-8deg);height:500px;width:auto;filter:drop-shadow(0 30px 40px rgba(60,30,10,.35))">
+  <img src="{CUT('iskra-65-1')}" alt="" style="left:1220px;top:50%;transform:translateY(-44%) rotate(7deg);height:420px;width:auto;filter:drop-shadow(0 30px 40px rgba(60,30,10,.3))">
   <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Paper and scarves")
 
@@ -288,6 +288,49 @@ ad("home-v4-tone", f'''
   <div class="ph" style="inset:0"><img src="{S2('flirt-65-3')}" alt="" style="object-position:70% 22%"></div>
   <div style="left:0;top:0;bottom:0;width:980px;background:rgba(26,24,22,.86);-webkit-mask-image:linear-gradient(90deg,#000 70%,transparent);mask-image:linear-gradient(90deg,#000 70%,transparent)"></div>
   <div class="scrim-d"></div>{lock()}{logo()}''', note="Two tones")
+
+# round 5 (16.10): more on the studio close-up — six different moves
+# S1 · the knot centred, mirrored symmetry: the same frame on both sides, the lock-up on a dark centre strip
+ad("home-s1-mirror", f'''
+  <div class="ph" style="left:0;top:0;bottom:0;width:640px"><img src="{RB}" alt="" style="object-position:60% 40%;transform:scaleX(-1)"></div>
+  <div style="left:640px;top:0;bottom:0;width:640px;background:#141110"></div>
+  <div class="ph" style="left:1280px;top:0;bottom:0;right:0"><img src="{RB}" alt="" style="object-position:60% 40%"></div>
+  <div class="lock" style="left:700px;right:760px;transform:translate(0,-50%)"><p class="k">Колекція</p><p class="s" style="font-size:130px">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="font-size:22px;padding:16px 26px">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_W}" alt="Obiimy" style="right:auto;left:980px;transform:translate(calc(50% - 80px),-50%) rotate(90deg)"><span class="tm" style="right:auto;left:1193px">™</span>''', note="Studio: mirror")
+
+# S2 · red field: the print's own red (#B3121B) as the panel, white lock-up, the knot to the right
+ad("home-s2-red", f'''
+  <div style="inset:0;background:#B3121B"></div>
+  <div class="ph" style="left:1040px;right:0;top:0;bottom:0"><img src="{RB}" alt="" style="object-position:50% 36%"></div>
+  <div style="left:1040px;top:0;bottom:0;width:140px;background:linear-gradient(90deg,#B3121B,rgba(179,18,27,0))"></div><div class="scrim-d"></div>
+  <div class="lock"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="background:#141110;color:#F2B705">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>{logo()}''', note="Studio: red field")
+
+# S3 · the hand and the knot only: a tight crop of the fingers at the knot across the right two thirds, dark gradient left
+ad("home-s3-hand", f'''
+  <div class="ph" style="inset:0"><img src="{RB}" alt="" style="object-position:38% 30%;transform:scale(1.35);transform-origin:38% 30%"></div>
+  <div style="inset:0;background:linear-gradient(90deg,rgba(12,9,8,.86) 0%,rgba(12,9,8,.6) 32%,rgba(12,9,8,0) 56%)"></div><div class="scrim-d"></div>
+  {lock()}{logo()}''', note="Studio: the hand")
+
+# S4 · the frame in a tall rounded window on paper, the lock-up left, a print caption
+ad("home-s4-window", f'''
+  <div style="inset:0;background:#F0EBE1"></div>
+  <div class="ph" style="left:1060px;top:40px;width:560px;height:496px;border-radius:280px"><img src="{RB}" alt="" style="object-position:50% 40%"></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p><p class="cap">Хустка «Авантюра» · 88 × 88</p></div>
+  <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Studio: window on paper")
+
+# S5 · the knot as a vertical strip between two dark fields, a wide quiet composition with air
+ad("home-s5-strip", f'''
+  <div style="inset:0;background:#1A1816"></div>
+  <div class="ph" style="left:820px;top:0;bottom:0;width:520px"><img src="{RB}" alt="" style="object-position:50% 40%"></div>
+  <div style="left:1420px;top:50%;transform:translateY(-50%);width:260px;color:#F3EADB"><p style="font-size:18px;letter-spacing:.18em;text-transform:uppercase;opacity:.7">Хустка</p><p style="font-size:40px;font-weight:300;letter-spacing:.02em;line-height:1.05;margin-top:10px">Авантюра</p><p style="font-size:22px;line-height:1.3;margin-top:16px;opacity:.85">{PP["avantiura"]["short"]}</p></div>
+  {lock()}{logo()}''', note="Studio: strip with card")
+
+# S6 · light: the frame to the full width, the curtain side warmed, the lock-up dark on the light part
+ad("home-s6-light", f'''
+  <div class="ph" style="inset:0"><img src="{RB}" alt="" style="object-position:100% 40%;transform:scaleX(-1)"></div>
+  <div style="inset:0;background:linear-gradient(90deg,rgba(240,235,225,.94) 0%,rgba(240,235,225,.8) 36%,rgba(240,235,225,0) 58%)"></div><div class="scrim-l"></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Studio: light mirrored")
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO home banners</title>

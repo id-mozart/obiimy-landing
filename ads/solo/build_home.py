@@ -92,6 +92,29 @@ ad("home-f-yellow", f'''
     <p class="pill" style="background:#141110;color:#F2B705">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy">''', cls="dark", note="Brand yellow")
 
+# G · the new close-up of «Авантюра» (studio, 16.10): a light banner — the curtain of the frame is continued to the left as a mirrored blur
+RB = "src/reblum-avantiura-2k.webp"
+ad("home-g-reblum-light", f'''
+  <div class="ph" style="inset:0"><img src="{RB}" alt="" style="object-position:100% 38%;transform:scaleX(-1);filter:blur(28px) brightness(1.04) saturate(.8)"></div>
+  <div style="inset:0;background:linear-gradient(90deg,rgba(236,228,218,.92) 0%,rgba(236,228,218,.7) 42%,rgba(236,228,218,0) 62%)"></div>
+  <div class="ph" style="left:1000px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%);mask-image:linear-gradient(90deg,transparent 0,#000 18%)"><img src="{RB}" alt="" style="object-position:50% 40%"></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s" style="font-size:140px">Соло</p><p class="t">Шлях до себе</p>
+    <p class="pill">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_K}" alt="Obiimy">''', cls="dark", note="Reblum close-up, light")
+
+# H · the same frame as a panel on dark
+ad("home-h-reblum-dark", f'''
+  <div style="inset:0;background:#141110"></div>
+  <div class="ph" style="left:1060px;right:0;top:0;bottom:0"><img src="{RB}" alt="" style="object-position:50% 42%"></div>
+  <div style="left:1060px;top:0;bottom:0;width:180px;background:linear-gradient(90deg,#141110,rgba(20,17,16,0))"></div>
+  {lock(size=140)}{logo()}''', note="Reblum close-up, dark")
+
+# I · the scarf knot to the edge: a horizontal band of the frame, the lock-up over a soft dark veil
+ad("home-i-reblum-macro", f'''
+  <div class="ph" style="inset:0"><img src="{RB}" alt="" style="width:150%;margin-left:-5%;object-position:50% 29%"></div>
+  <div class="veil" style="background:linear-gradient(90deg,rgba(12,9,8,.78) 0%,rgba(12,9,8,.5) 32%,rgba(12,9,8,0) 56%)"></div>
+  {lock(size=140)}{logo()}''', note="Reblum macro")
+
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO home banners</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap">

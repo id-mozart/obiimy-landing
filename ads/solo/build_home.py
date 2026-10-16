@@ -29,7 +29,7 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 .logo { right: 0; top: 50%; height: 64px; width: auto; transform: translate(calc(50% - 80px), -50%) rotate(90deg); transform-origin: center; }
 .tm { right: 73px; top: calc(50% + 164px); font-size: 14px; font-weight: 500; line-height: 1; color: #fff; }
 .logo-k { filter: invert(1) brightness(.1); }
-.dark .lock, .dark .more { color: #141110; } .dark .more { color: #3A3530; } .dark .more::before { border-color: #141110; } .dark .tm { color: #141110; }
+.dark .lock { color: #141110; } .dark .more { color: #3A3530; } .dark .more::before { border-color: #141110; } .dark .tm { color: #141110; }
 .scrim-d { right: 0; top: 0; bottom: 0; width: 200px; background: linear-gradient(270deg, rgba(20,17,16,.7), rgba(20,17,16,0)); }
 .scrim-l { right: 0; top: 0; bottom: 0; width: 220px; background: linear-gradient(270deg, rgba(240,235,225,.88), rgba(240,235,225,0)); }
 .veil { inset: 0; background: linear-gradient(90deg, rgba(12,9,8,.82) 0%, rgba(12,9,8,.55) 34%, rgba(12,9,8,0) 62%); }
@@ -92,7 +92,7 @@ ad("home-f-yellow", f'''
   <div style="inset:0;background:#F2B705"></div>
   <div class="ph" style="left:1080px;top:0;bottom:0;right:0"><img src="{S2('avantiura-88-5')}" alt="" style="object-position:55% 12%"></div>
   <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p>
-    <p class="pill" style="background:transparent;border:1.5px solid #141110;color:#141110">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+    <p class="pill" style="background:transparent;border:2px solid #141110;color:#141110">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Brand yellow")
 
 # G · the new close-up of «Авантюра» (studio, 16.10): a light banner — the curtain of the frame is continued to the left as a mirrored blur
@@ -203,8 +203,8 @@ ad("home-u-diptych", f'''
   <div class="ph" style="left:0;top:0;bottom:0;width:640px"><img src="{S2('tysha-88-2')}" alt="" style="object-position:62% 30%"></div>
   <div style="left:640px;top:0;bottom:0;width:640px;background:#141110"></div>
   <div class="ph" style="left:1280px;top:0;bottom:0;right:0"><img src="{S2('tysha-88-3')}" alt="" style="object-position:50% 55%"></div>
-  <div class="lock" style="left:700px;right:760px;transform:translate(0,-50%)"><p class="k">Колекція</p><p class="s" style="font-size:130px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
-  <img class="logo" src="{LOGO_W}" alt="Obiimy" style="right:auto;left:1050px;transform:translate(calc(50% - 80px),-50%) rotate(90deg)"><span class="tm" style="right:auto;left:1131px">™</span>''', note="Diptych of one woman")
+  <div class="lock" style="left:700px;right:760px;transform:translate(0,-50%)"><p class="k">Колекція</p><p class="s" style="font-size:130px">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="font-size:22px;padding:16px 26px">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_W}" alt="Obiimy" style="right:auto;left:980px;transform:translate(calc(50% - 80px),-50%) rotate(90deg)"><span class="tm" style="right:auto;left:1193px">™</span>''', note="Diptych of one woman")
 
 # V · seven prints as seven vertical strips of real silk on the right, the lock-up on dark on the left
 strips = "".join(f'<div style="flex:1;background:url({HI(p)}) {(37 * i) % 100}% 50%/{520}px;"></div>' for i, p in enumerate(P))
@@ -218,7 +218,7 @@ ad("home-v-strips", f'''
 # W · «Золоте світло» at the door: dark frame to the edge, the lock-up on the left, the scarf at the throat lit
 ad("home-w-door", f'''
   <div style="inset:0;background:#1A1816"></div>
-  <div class="ph" style="left:700px;right:0;top:0;bottom:0"><img src="{S2('zolote-44-3')}" alt="" style="object-position:62% 18%"></div>
+  <div class="ph" style="left:700px;right:0;top:0;bottom:0"><img src="{S2('zolote-44-3')}" alt="" style="object-position:78% 18%"></div>
   <div style="left:700px;top:0;bottom:0;width:260px;background:linear-gradient(90deg,#1A1816,rgba(26,24,22,0))"></div>
   {lock()}{logo()}''', note="Zolote at the door")
 
@@ -250,7 +250,7 @@ ad("home-z2-arch", f'''
   {lock()}{logo()}''', note="The arch")
 
 ad("home-z3-diag", f'''
-  <div class="ph" style="left:1000px;right:0;top:0;bottom:0"><img src="{S2('puls-44-4')}" alt="" style="object-position:50% 0%"></div>
+  <div class="ph" style="left:1000px;right:0;top:0;bottom:0"><img src="{S2('puls-44-4')}" alt="" style="object-position:54% 0%"></div>
   <div style="left:0;top:0;bottom:0;width:1060px;background:#1A1816;clip-path:polygon(0 0,930px 0,1060px 100%,0 100%)"></div><div class="scrim-d" style="width:180px;opacity:.85"></div>
   {lock()}{logo()}''', note="Diagonal seam")
 

@@ -44,10 +44,10 @@ CSS = """
 .ob-about .k { font-size:1.2rem; letter-spacing:.2em; text-transform:uppercase; color:var(--ink2); margin-bottom:1.6rem; }
 .ob-hero { position:relative; height: clamp(360px, 52vw, 640px); overflow:hidden; background:#141110; }
 .ob-hero img { width:100%; height:100%; object-fit:cover; object-position:50% 38%; display:block; }
-.ob-hero .t { position:absolute; left:0; right:0; bottom:0; padding: 4rem 5vw 4.4rem; color:#fff; background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.62)); }
+.ob-hero .t { position:absolute; left:0; right:0; bottom:0; padding: 4rem max(5vw, calc((100% - 120rem) / 2)) 4.4rem; color:#fff; background:linear-gradient(180deg, rgba(0,0,0,0), rgba(0,0,0,.62)); }
 .ob-hero h1 { font-family: var(--font-heading-family, Assistant, sans-serif); font-weight:400; font-size: clamp(3.4rem, 5.4vw, 6.4rem); line-height:1; margin:0 0 1rem; letter-spacing:-.01em; }
 .ob-hero p { max-width:62rem; font-size:1.8rem; color:rgba(255,255,255,.92); }
-.ob-sec { padding: 6.4rem 5vw; }
+.ob-sec { padding: 6.4rem 5vw; } .ob-sec > * { max-width: 120rem; margin-left:auto; margin-right:auto; }
 .ob-sec.paper { background:var(--paper); }
 .ob-two { display:grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items:center; }
 .ob-two .ph { aspect-ratio: 4/5; overflow:hidden; } .ob-two .ph img { width:100%; height:100%; object-fit:cover; display:block; }

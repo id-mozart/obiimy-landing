@@ -18,12 +18,12 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 .ad p { margin: 0; }
 .ad::after { content: ""; position: absolute; inset: 0; z-index: 90; pointer-events: none; opacity: .18; mix-blend-mode: soft-light; background-image: GRAIN; }
 .ph { overflow: hidden; } .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
-.lock { left: 72px; top: 50%; transform: translateY(-50%); text-transform: uppercase; line-height: 1; }
+.lock { left: 80px; top: 50%; transform: translateY(-50%); text-transform: uppercase; line-height: 1; }
 .lock .k { font-size: 44px; font-weight: 400; letter-spacing: .06em; }
-.lock .s { font-size: 150px; font-weight: 300; letter-spacing: .02em; margin-top: 10px; }
-.lock .t { font-size: 44px; font-weight: 400; letter-spacing: .06em; margin-top: 14px; }
-.pill { display: inline-block; margin-top: 34px; font-size: 24px; font-weight: 500; letter-spacing: .01em; text-transform: none; padding: 16px 32px; border-radius: 999px; background: #F2B705; color: #141110; }
-.more { display: block; margin-top: 28px; font-size: 22px; font-weight: 400; text-transform: none; letter-spacing: .02em; opacity: .95; }
+.ad .lock .s { font-size: 150px; font-weight: 300; letter-spacing: .02em; margin-top: 12px; }
+.ad .lock .t { font-size: 44px; font-weight: 400; letter-spacing: .06em; margin-top: 18px; }
+.ad .pill { display: inline-block; margin-top: 56px; font-size: 25px; font-weight: 500; letter-spacing: .01em; text-transform: none; padding: 18px 36px; border-radius: 999px; background: #F2B705; color: #141110; line-height: 1; }
+.ad .more { display: block; margin-top: 34px; font-size: 21px; font-weight: 400; text-transform: none; letter-spacing: .04em; opacity: .85; }
 .more::before { content: "⌄  "; }
 .logo { right: 44px; top: 50%; transform: translateY(-50%) rotate(90deg); transform-origin: center; height: 48px; width: auto; }
 .logo-k { filter: invert(1) brightness(.1); }
@@ -114,6 +114,41 @@ ad("home-i-reblum-macro", f'''
   <div class="ph" style="inset:0"><img src="{RB}" alt="" style="width:150%;margin-left:-5%;object-position:50% 29%"></div>
   <div class="veil" style="background:linear-gradient(90deg,rgba(12,9,8,.78) 0%,rgba(12,9,8,.5) 32%,rgba(12,9,8,0) 56%)"></div>
   {lock(size=140)}{logo()}''', note="Reblum macro")
+
+# J · split in two: the frame on the left, the lock-up centred on dark on the right
+ad("home-j-split", f'''
+  <div class="ph" style="left:0;top:0;bottom:0;width:50%"><img src="{S2('tysha-88-2')}" alt="" style="object-position:50% 40%"></div>
+  <div style="left:50%;right:0;top:0;bottom:0;background:#141110"></div>
+  <div style="left:46%;top:0;bottom:0;width:8%;background:linear-gradient(90deg,rgba(20,17,16,0),#141110)"></div>
+  <div class="lock" style="left:50%;right:200px;transform:translate(0,-50%);text-align:center;padding-left:60px"><p class="k">Колекція</p><p class="s" style="font-size:150px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  {logo()}''', note="Split, centred")
+
+# K · the lock-up in one line above a strip of four frames
+strip = [("iskra-65-4", "50% 12%"), ("flirt-tw-1", "50% 30%"), ("zolote-44-2", "50% 32%"), ("krok-44-3", "50% 20%")]
+scells = "".join(f'<div class="ph" style="position:relative;flex:1;min-width:0"><img src="{S2(n)}" alt="" style="object-position:{p}"></div>' for n, p in strip)
+ad("home-k-strip", f'''
+  <div style="inset:0;background:#141110"></div>
+  <div style="left:80px;right:160px;top:40px;height:110px;display:flex;align-items:center;gap:34px;text-transform:uppercase;white-space:nowrap">
+    <p style="font-size:34px;font-weight:400;letter-spacing:.08em">Колекція</p><p style="font-size:96px;font-weight:300;letter-spacing:.02em;line-height:.9">Соло</p><p style="font-size:34px;font-weight:400;letter-spacing:.08em">Шлях до себе</p>
+    <p class="pill" style="margin:0 0 0 auto;font-size:22px;padding:14px 28px;align-self:center">Жіноча сила крізь десятиліття</p></div>
+  <div style="left:80px;right:160px;top:180px;bottom:0;display:flex;gap:6px">{scells}</div>
+  {logo()}''', note="One-line lock-up, strip of four")
+
+# M · paper and the flat scarf: product first
+ad("home-m-paper", f'''
+  <div style="inset:0;background:#F1E8D8"></div>
+  <img src="{CUT('avantiura-88-1')}" alt="" style="left:1120px;top:50%;transform:translateY(-50%) rotate(-8deg);height:520px;width:auto;filter:drop-shadow(0 30px 40px rgba(60,30,10,.35))">
+  <img src="{CUT('iskra-65-1')}" alt="" style="left:1420px;top:50%;transform:translateY(-44%) rotate(7deg);height:440px;width:auto;filter:drop-shadow(0 30px 40px rgba(60,30,10,.3))">
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s" style="font-size:140px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_K}" alt="Obiimy">''', cls="dark", note="Paper and scarves")
+
+# N · seven states as words on dark silk
+states = "".join(f'<p style="font-size:28px;font-weight:300;letter-spacing:.1em;text-transform:uppercase;padding:13px 0;border-bottom:1px solid rgba(243,234,219,.22);display:flex;justify-content:space-between;align-items:baseline;gap:40px"><span>{p["name"]}</span><span style="opacity:.75;font-size:21px;letter-spacing:.02em;text-transform:none;white-space:nowrap">{p["short"]}</span></p>' for p in P)
+ad("home-n-states", f'''
+  <div style="inset:0;background:url({HI(PP['tysha'])}) center/140%"></div>
+  <div style="inset:0;background:rgba(14,12,11,.82)"></div>
+  <div style="left:1000px;right:190px;top:50%;transform:translateY(-50%)">{states}</div>
+  {lock(size=140)}{logo()}''', note="Seven states as words")
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO home banners</title>

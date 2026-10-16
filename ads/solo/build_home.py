@@ -86,17 +86,16 @@ ad("home-e-eras", f'''
 # F · brand yellow with the scarf-and-twilly pair
 ad("home-f-yellow", f'''
   <div style="inset:0;background:#F2B705"></div>
-  <div class="ph" style="left:1040px;top:0;bottom:0;right:0"><img src="{S2('avantiura-88-5')}" alt="" style="object-position:62% 12%"></div>
-  <div style="left:1040px;top:0;bottom:0;width:160px;background:linear-gradient(90deg,#F2B705,rgba(242,183,5,0))"></div>
+  <div class="ph" style="left:1080px;top:0;bottom:0;right:0"><img src="{S2('avantiura-88-5')}" alt="" style="object-position:40% 12%"></div>
   <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s" style="font-size:140px">Соло</p><p class="t">Шлях до себе</p>
-    <p class="pill" style="background:#141110;color:#F2B705">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p></div>
-  <img class="logo" src="{LOGO_K}" alt="Obiimy">''', cls="dark", note="Brand yellow")
+    <p class="pill" style="background:#1A1816;color:#F2B705">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_K}" alt="Obiimy" style="right:44px">''', cls="dark", note="Brand yellow")
 
 # G · the new close-up of «Авантюра» (studio, 16.10): a light banner — the curtain of the frame is continued to the left as a mirrored blur
 RB = "src/reblum-avantiura-2k.webp"
 ad("home-g-reblum-light", f'''
-  <div class="ph" style="inset:0"><img src="{RB}" alt="" style="object-position:100% 38%;transform:scaleX(-1);filter:blur(28px) brightness(1.04) saturate(.8)"></div>
-  <div style="inset:0;background:linear-gradient(90deg,rgba(236,228,218,.92) 0%,rgba(236,228,218,.7) 42%,rgba(236,228,218,0) 62%)"></div>
+  <div class="ph" style="inset:0"><img src="{RB}" alt="" style="object-position:100% 38%;transform:scaleX(-1);filter:blur(56px) brightness(1.06) saturate(.5)"></div>
+  <div style="inset:0;background:linear-gradient(90deg,rgba(239,234,226,.96) 0%,rgba(239,234,226,.82) 48%,rgba(239,234,226,.1) 66%)"></div>
   <div class="ph" style="left:1000px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%);mask-image:linear-gradient(90deg,transparent 0,#000 18%)"><img src="{RB}" alt="" style="object-position:50% 40%"></div>
   <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s" style="font-size:140px">Соло</p><p class="t">Шлях до себе</p>
     <p class="pill">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p></div>
@@ -105,8 +104,8 @@ ad("home-g-reblum-light", f'''
 # H · the same frame as a panel on dark
 ad("home-h-reblum-dark", f'''
   <div style="inset:0;background:#141110"></div>
-  <div class="ph" style="left:1060px;right:0;top:0;bottom:0"><img src="{RB}" alt="" style="object-position:50% 42%"></div>
-  <div style="left:1060px;top:0;bottom:0;width:180px;background:linear-gradient(90deg,#141110,rgba(20,17,16,0))"></div>
+  <div class="ph" style="left:1040px;right:0;top:0;bottom:0"><img src="{RB}" alt="" style="object-position:50% 36%"></div>
+  <div style="left:1040px;top:0;bottom:0;width:120px;background:linear-gradient(90deg,#1A1816,rgba(26,24,22,0))"></div>
   {lock(size=140)}{logo()}''', note="Reblum close-up, dark")
 
 # I · the scarf knot to the edge: a horizontal band of the frame, the lock-up over a soft dark veil
@@ -120,7 +119,7 @@ ad("home-j-split", f'''
   <div class="ph" style="left:0;top:0;bottom:0;width:50%"><img src="{S2('tysha-88-2')}" alt="" style="object-position:50% 40%"></div>
   <div style="left:50%;right:0;top:0;bottom:0;background:#141110"></div>
   <div style="left:46%;top:0;bottom:0;width:8%;background:linear-gradient(90deg,rgba(20,17,16,0),#141110)"></div>
-  <div class="lock" style="left:50%;right:200px;transform:translate(0,-50%);text-align:center;padding-left:60px"><p class="k">Колекція</p><p class="s" style="font-size:150px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <div class="lock" style="left:1060px;right:200px;transform:translate(0,-50%)"><p class="k">Колекція</p><p class="s" style="font-size:150px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
   {logo()}''', note="Split, centred")
 
 # K · the lock-up in one line above a strip of four frames
@@ -177,11 +176,39 @@ ad("home-q-reblum-slice", f'''
 
 # R · light paper, the photo as a soft-edged frame on the right, print name as a caption
 ad("home-r-reblum-paper", f'''
-  <div style="inset:0;background:#F1E8D8"></div>
+  <div style="inset:0;background:#F0EBE1"></div>
   <div class="ph" style="left:1000px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 22%);mask-image:linear-gradient(90deg,transparent 0,#000 22%)"><img src="{RB}" alt="" style="object-position:50% 40%"></div>
-  <p style="left:1080px;bottom:36px;font-size:20px;letter-spacing:.14em;text-transform:uppercase;color:#141110;background:rgba(241,232,216,.85);padding:10px 18px">Хустка «Авантюра» · 88 × 88</p>
-  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s" style="font-size:140px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s" style="font-size:140px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more" style="color:#141110">Дізнатися першою</p><p style="margin-top:22px;font-size:14px;letter-spacing:.18em;text-transform:uppercase;color:#6B655C">Хустка «Авантюра»</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy">''', cls="dark", note="Reblum on paper")
+
+# S · wind: the scarf in motion to the edge, text over a gradient only (as the reference)
+ad("home-s-wind", f'''
+  <div class="ph" style="inset:0"><img src="{S2('avantiura-88-3')}" alt="" style="object-position:70% 18%"></div>
+  <div style="inset:0;background:linear-gradient(90deg,rgba(12,9,8,.72) 0%,rgba(12,9,8,.45) 24%,rgba(12,9,8,0) 40%)"></div>
+  {lock(size=140)}{logo()}''', note="Wind: scarf in motion")
+
+# T · silk as the background: the folds of one print to the full frame, no person
+ad("home-t-silk", f'''
+  <div style="inset:0;background:url({HI(PP['zolote'])}) 50% 45%/125%"></div>
+  <div style="inset:0;background:linear-gradient(90deg,rgba(12,9,8,.7) 0%,rgba(12,9,8,.4) 30%,rgba(12,9,8,.08) 55%)"></div>
+  <div class="lock"><p class="k">Колекція</p><p class="s" style="font-size:140px">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="background:#1A1816;color:#F2B705">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  {logo()}''', note="Silk folds as the background")
+
+# U · diptych of one woman: portrait left, the knot right, the lock-up on a dark strip between
+ad("home-u-diptych", f'''
+  <div class="ph" style="left:0;top:0;bottom:0;width:640px"><img src="{S2('tysha-88-2')}" alt="" style="object-position:62% 30%"></div>
+  <div style="left:640px;top:0;bottom:0;width:640px;background:#141110"></div>
+  <div class="ph" style="left:1280px;top:0;bottom:0;right:0"><img src="{S2('tysha-88-3')}" alt="" style="object-position:50% 55%"></div>
+  <div class="lock" style="left:690px;right:760px;transform:translate(0,-50%)"><p class="k">Колекція</p><p class="s" style="font-size:130px">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="font-size:22px;padding:16px 28px">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_W}" alt="Obiimy" style="right:auto;left:1150px">''', note="Diptych of one woman")
+
+# V · seven prints as seven vertical strips of real silk on the right, the lock-up on dark on the left
+strips = "".join(f'<div style="flex:1;background:url({HI(p)}) {(37 * i) % 100}% 50%/{520}px;"></div>' for i, p in enumerate(P))
+ad("home-v-strips", f'''
+  <div style="inset:0;background:#141110"></div>
+  <div style="left:800px;right:0;top:0;bottom:0;display:flex">{strips}</div>
+  <div style="left:800px;top:0;bottom:0;width:140px;background:linear-gradient(90deg,#141110,rgba(20,17,16,0))"></div>
+  {lock(size=140)}{logo()}''', note="Seven prints as strips")
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO home banners</title>

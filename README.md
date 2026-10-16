@@ -207,6 +207,10 @@ python3 src/deck-editor.py
 
 `/kp` (`src/build-kp.py` → `kp.html`) — у стилі деки: локальні шрифти Playfair/Tenor, папір `#F1EFEA`, обкладинка-мозаїка з жовтою смугою, фото речей «в носінні» з золотими підписами, таблиця на лінійках. Усі сторінки — A4 (`height: 297mm; overflow: hidden`). Правка на місці: кожна сторінка `contenteditable` — текст правиться прямо в документі; клік по картинці відкриває вибір (своя з диска до 4 МБ → data URL, або з бібліотеки `LIBRARY` — усі фото SOLO, сайту й редакційні, ~400). Ручна сторінка зберігається в `S.html[key]` (ключі `cover`, `photos`, `table`, `terms`) у localStorage і в посиланні «Посилання»; така сторінка більше не перебудовується з форми, доки не натиснути «Правлено вручну · скинути». Ввід у документі не йде в обробник форми (`onInput` ігнорує `#doc`).
 
+## Shopify: «About us» (16.10.2026)
+
+`shopify/build_about.py` збирає тіло сторінки (hero на всю ширину, «Who we are», чотири факти, «From a painting to your silk», «Silk scarves, twillies and more», цитата, шоурум і контакти; тексти — англійський «About us» клієнта + SITE-FACTS, фото — зйомки бренду) і локальне превю `shopify/about-preview.html` (копія на сайті — `site/about-preview.html`). `shopify/publish_about.py`: бекап у `shopify/backup/`, фото в Files магазину через staged uploads (мапа `shopify/about-cdn.json`), `pageUpdate`. У темі Dawn додано `sections/main-page-wide.liquid` і `templates/page.about.json` (без вузької колонки); сторінка `about-us` переведена на `templateSuffix: about`. Опубліковано 16.10.2026.
+
 ## Генератор КП — PDF із сервера, правки клієнта (14.10.2026)
 
 - «Завантажити PDF» у панелі: стан пропозиції POST-ом на сервіс редактора `deck-editor` (`/api/kp-pdf`, CORS відкритий, лише читання) → `review/pp/kp-pdf.mjs` відкриває `kp.html` у Chromium зі станом у `window.__KP` і друкує A4; PyMuPDF перекодовує фото в JPEG 200 dpi (20 МБ → ~1,5 МБ). `editor-start.sh` збирає `kp.html` під час старту; локально кнопка йде на `localhost:8770`. Якщо сервер не відповів — відкривається вікно друку браузера («Друк»).

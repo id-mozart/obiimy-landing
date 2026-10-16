@@ -6,6 +6,7 @@ import os, pathlib, sys
 HERE = pathlib.Path(__file__).parent
 sys.path.insert(0, str(HERE))
 from kit import P, PP, S, CUT, HI, spot_photo, nb, LOGO_W, LOGO_K, GRAIN
+from PIL import Image as _Im
 
 YELLOW = os.environ.get("YELLOW") == "1"
 FORMAT = os.environ.get("FORMAT", "plain")   # plain | story (UI zones free) | feed (1080×1350)
@@ -98,13 +99,21 @@ def band(top, height, b, n=3):
     <div style="position:absolute;left:64px;top:44px"><p class="big" style="font-size:{size}px;line-height:1.05">{big}</p>{f'<p class="small" style="margin-top:30px">{nb(small)}</p>' if small else ""}</div>
     <div style="position:absolute;left:40px;right:40px;top:{extra.get("gtop", 250)}px;bottom:40px;display:grid;grid-template-columns:repeat({cols},1fr);align-content:center;gap:40px 10px">{cells}</div></div>'''
     fit = extra.get("fit")      # the photo takes only the right part of the band: more of the figure and the scarf fits in
+    wide = extra.get("wide")
     fade = "-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 30%);mask-image:linear-gradient(90deg,transparent 0,#000 30%)"
+    foc = extra.get("focus")    # where the scarf is in the frame (0 — top, 1 — bottom): in the short formats the band is cropped around it
+    if FORMAT != "plain" and foc is not None and look != "spot" and not str(photo).startswith("url("):
+        if FORMAT == "square": fit, wide = 58, None          # a narrower photo shows more of the figure in a 250 px band
+        wd = 1080 * ((fit or wide or 100) / 100)
+        iw, ih = _Im.open(HERE / S(photo)).size; hd = max(wd * ih / iw, height)
+        posy = min(1, max(0, (foc * hd - height / 2) / (hd - height))) * 100 if hd > height + 1 else 50
+        pos = f"{pos.split()[0]} {posy:.0f}%"
     if look == "spot":
         pic = spot_photo(photo, pos, style=f"position:absolute;top:0;bottom:0;right:0;width:{fit}%;{fade}" if fit else "position:absolute;inset:0")
     elif photo.startswith("url("):
         pic = f'<div style="position:absolute;inset:0;background:{photo} {pos}"></div>'
     else:
-        more = (";transform:scaleX(-1)" if extra.get("flip") else "") + (";width:%d%%" % extra["wide"] if extra.get("wide") else "") + (f";width:{fit}%;margin-left:auto;{fade}" if fit else "") + (f";margin-left:{extra['dx']}px;{fade}" if extra.get("dx") else "")
+        more = (";transform:scaleX(-1)" if extra.get("flip") else "") + (";width:%d%%" % wide if wide else "") + (f";width:{fit}%;margin-left:auto;{fade}" if fit else "") + (f";margin-left:{extra['dx']}px;{fade}" if extra.get("dx") and wide else "")
         pic = f'<img src="{S(photo)}" alt="" style="object-position:{pos};{FILTERS[look]}{more}">'
     return f'''
   <div class="band" style="top:{top}px;height:{height}px">{pic}<div class="veil"{' style="background:' + extra["veil"] + '"' if extra.get("veil") else ""}></div>
@@ -154,9 +163,9 @@ SCARVES = (["zolote-44-1", "iskra-65-1", "puls-44-1"], "Шовкові хуст�
 
 # ================================================================= STORIES in bands
 triptych("t01-decades", "Жіноча сила крізь десятиліття", [
-    ("zolote-44-2", "50% 20%", "1940-ві", "Сила — у\u00a0бездоганній<br>елегантності.", "dim", {"fit": 68, "cw": 520}),
-    ("iskra-65-4", "50% 12%", "1950-ті", "Правила починають руйнуватися. Колір, форма, сміливість.", "sepia", {"fit": 68}),
-    ("puls-44-4", "50% 3%", "2026", "Свобода — самій обирати, якою бути.", "raw", {"fit": 68}),
+    ("zolote-44-2", "50% 20%", "1940-ві", "Сила — у\u00a0бездоганній<br>елегантності.", "dim", {"fit": 68, "cw": 520, "focus": .45}),
+    ("iskra-65-4", "50% 12%", "1950-ті", "Правила починають руйнуватися. Колір, форма, сміливість.", "sepia", {"fit": 68, "focus": .55}),
+    ("puls-44-4", "50% 3%", "2026", "Свобода — самій обирати, якою бути.", "raw", {"fit": 68, "focus": .48}),
 ], "", (SCARVES[0], "Нова<br>колекція", ""), "Обрати", "Decades", plain=True, bare=True)
 
 triptych("t03-three-states", "Три стани", [
@@ -172,9 +181,9 @@ triptych("t04-flirt-three-ways", "Один принт — три образи", 
 ], "«Флірт»: хустка й твіллі одного принту.", (["flirt-65-1", "flirt-tw-5"], "Хустка й твіллі «Флірт»", "від 1 600 грн"), "Обрати «Флірт»", "Flirt three ways")
 
 triptych("t05-avantiura-ways", "Одна хустка — три способи", [
-    ("avantiura-88-5", "50% 0%", "У волоссі", "Бант, який помічають.", "raw", {"size": 96, "fit": 70}),
-    ("avantiura-88-4", "50% 6%", "На шиї", "Класика, що не виходить<br>з моди.", "raw", {"size": 96, "wide": 125, "dx": 120}),
-    ("avantiura-88-2", "45% 76%", "Поясом", "Акцент на талії.", "raw", {"size": 96, "wide": 112}),
+    ("avantiura-88-5", "50% 0%", "У волоссі", "Бант, який помічають.", "raw", {"size": 96, "fit": 70, "focus": .48}),
+    ("avantiura-88-4", "50% 6%", "На шиї", "Класика, що не виходить<br>з моди.", "raw", {"size": 96, "wide": 125, "dx": 120, "focus": .40}),
+    ("avantiura-88-2", "45% 76%", "Поясом", "Акцент на талії.", "raw", {"size": 96, "wide": 112, "focus": .67}),
 ], "", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Купити", "Avantiura three ways", plain=True, logo_col="#F2B705")
 
 triptych("t06-formats", "Оберіть свій формат", [

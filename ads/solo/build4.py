@@ -8,7 +8,8 @@ FORMAT = os.environ.get("FORMAT", "plain")   # plain — 1080×1920 to the edges
 H = {"feed": 1350, "square": 1080}.get(FORMAT, 1920)
 TOP = 250 if FORMAT == "story" else 64        # the logo line
 BOT = 340 if FORMAT == "story" else (80 if FORMAT in ("feed", "square") else 96)   # the text block from the bottom
-Z = .78 if FORMAT == "square" else 1       # the text block of a square banner is zoomed down to leave room for the photograph
+Z = {"square": .74, "feed": .86}.get(FORMAT, 1)   # the text block of a short banner is zoomed down to leave room for the photograph
+FOCUS = {"p05-character": .50, "p06-noticed": .50, "p11-italian-silk": .38, "p12-wearable-art": .45, "u02-london": .45, "u05-luxury": .60}   # where the scarf is in the frame (0 — top, 1 — bottom)
 def sy(v): return round(v * H / 1920)        # a 1920-based vertical measure in the current frame
 
 HERE = pathlib.Path(__file__).parent
@@ -130,6 +131,8 @@ def full(id, photo, pos, h, em, body, price_main, price_small, cta, spot=False, 
     (or at the top for back-view frames). If the photo box does not start at 0, the gap takes the photo's edge tone."""
     t, hgt = box
     if FORMAT in ("feed", "square"): t, hgt = sy(t), sy(hgt)
+    if FORMAT in ("feed", "square") and id in FOCUS and not top_text:     # the frame is enlarged and slid so the scarf sits in the upper part, above the text block
+        hgt = round(H * 1.3); t = min(0, max(H - hgt, round(H * .36) - round(FOCUS[id] * hgt)))
     top_rgb = edge_tone(photo, spot)
     grad = ("linear-gradient(180deg,transparent 0,#000 140px,#000 calc(100% - 300px),transparent 100%)" if t + hgt < H
             else "linear-gradient(180deg,transparent 0,#000 140px)")      # the photo melts into the dark ground where it ends inside the frame

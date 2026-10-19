@@ -83,6 +83,7 @@ def main():
         shutil.copytree(ROOT / d, SITE / d)
     for pdf in list(ROOT.glob("lookbook-obiimy-2026*.pdf")) + list(ROOT.glob("obiimy-podarunky-*.pdf")):
         shutil.copy(pdf, SITE / pdf.name)
+    shutil.copy(ROOT / "src" / "cms.js", SITE / "cms.js")      # the content editor of the corporate landing («?edit»)
     for slug, fname, title, desc in VERSIONS:
         (SITE / f"{slug}.html").write_text(wrap(relink((ROOT / fname).read_text(), slug)))
         pp = ROOT / f"p-{slug}.html"

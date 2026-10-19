@@ -22,9 +22,49 @@ async function proxied(req, res) {
 // corporate.obiimy.world: the corporate-gifts landing at the root (the hub stays on the Railway host); every other path is shared
 const CORP = { host: /^corporate\./i, page: '/b2b-team-main' };
 
-http.createServer(async (req, res) => {
+// Content edits made on the landing itself (cms.js, «?edit») are kept by the editor service as /pub/corp.json and applied here
+// to every element the generator marked with data-cms / data-cms-img, so the page is served already edited (no flicker, SEO
+// sees the edited text). The JSON is cached briefly; «?raw» serves the generator's page untouched (the editor reads originals there).
+const LOCAL = /(^|\.)(localhost|127\.0\.0\.1|\[::1\])(:|$)/;
+function corpUrl(host) { return process.env.CORP_CONTENT_URL || (LOCAL.test(host || '') ? 'http://127.0.0.1:8770/pub/corp.json' : 'https://deck-editor-production.up.railway.app/pub/corp.json'); }
+const corpCache = {};
+async function corpContent(host) {
+  const url = corpUrl(host), c = corpCache[url];
+  if (c && Date.now() - c.at < 15000) return c.data;
+  const ctl = new AbortController(); const t = setTimeout(() => ctl.abort(), 4000);
+  try {
+    const r = await fetch(url, { signal: ctl.signal, headers: { 'User-Agent': 'obiimy-site' } });
+    const data = r.ok ? await r.json() : null;
+    corpCache[url] = { at: Date.now(), data }; return data;
+  } catch (e) { corpCache[url] = { at: Date.now(), data: c ? c.data : null }; return c ? c.data : null; } finally { clearTimeout(t); }
+}
+function esc(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+function applyCorp(html, data) {
+  if (!data) return html;
+  for (const [key, v] of Object.entries(data.text || {})) {
+    if (!v || typeof v.html !== 'string') continue;
+    html = html.replace(new RegExp('(<(h1|h2|h3|p|li|figcaption|small|td|th|dt|dd|label|a|button)\\b[^>]*\\bdata-cms="' + esc(key) + '"[^>]*>)[\\s\\S]*?(</\\2>)'), (m, open, tag, close) => open + v.html + close);
+  }
+  for (const [key, v] of Object.entries(data.img || {})) {
+    if (!v || typeof v.src !== 'string' || /["'<>]/.test(v.src)) continue;
+    html = html.replace(new RegExp('<img\\b[^>]*\\bdata-cms-img="' + esc(key) + '"[^>]*>'), m => m.replace(/\s(srcset|sizes)="[^"]*"/g, '').replace(/\ssrc="[^"]*"/, ' src="' + v.src + '"'));
+  }
+  return html;
+}
+async function corpPage(req, res, u) {
+  const file = path.join(SITE, 'b2b-team-main.html');
+  let html; try { html = fs.readFileSync(file, 'utf8'); } catch (e) { return false; }
+  if (!u.searchParams.has('raw')) html = applyCorp(html, await corpContent(req.headers.host));
+  res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8', 'Cache-Control': 'no-cache' });
+  res.end(req.method === 'HEAD' ? undefined : html); return true;
+}
+module.exports = { applyCorp };
+
+const server = http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://x');
   if (CORP.host.test(req.headers.host || '') && (u.pathname === '/' || u.pathname === '/index.html')) req.url = CORP.page + u.search;
+  if ((req.url.split('?')[0] === CORP.page || req.url.split('?')[0] === CORP.page + '.html') && (req.method === 'GET' || req.method === 'HEAD') && await corpPage(req, res, u)) return;
   if (u.pathname === PDF && (req.method === 'GET' || req.method === 'HEAD') && await proxied(req, res)) return;
   return handler(req, res, { public: SITE, cleanUrls: true, directoryListing: false });
-}).listen(PORT, () => console.log(`obiimy site on :${PORT}` + (PUB ? ` · deck PDF from ${PUB}` : '')));
+});
+if (require.main === module) server.listen(PORT, () => console.log(`obiimy site on :${PORT}` + (PUB ? ` · deck PDF from ${PUB}` : '')));

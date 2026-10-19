@@ -678,10 +678,40 @@ def main():
                 og="photo/solo/zolote-44-5.webp", nav=[("Подарунки", "tiers"), ("Ваш логотип", "logo"), ("Як носити", "ways"), ("Асортимент", "range"), ("SOLO", "solo"), ("Умови", "terms")],
                 cta="Запит", sticky="Подарунки для команди · від 1 600 грн", others=False, body=body)
 
+CMS_BLOCK = re.compile(r"<(h1|h2|h3|p|li|figcaption|td|th|dt|dd|label|div|section|ul|ol|table|form)[\s>]")
+
+def cms_mark(html):
+    """Content editing on the live page: every text element inside <main> gets data-cms="<section>-<tag>-<n>", every picture
+    data-cms-img="<section>-img-<n>". The keys follow the generator's structure, so an edit made on the site (cms.js → the editor
+    service → server.js) lands on the same element after a rebuild as long as the section keeps its order. Only leaf elements are
+    marked (nothing inside an already marked one), links only when they are buttons."""
+    a, z = html.index("<main"), html.index("</main>")
+    body = html[a:z]; out = []; pos = 0; sec = "page"; counts = {}; marked_until = -1
+    tag_re = re.compile(r"<(section|h1|h2|h3|p|li|figcaption|small|td|th|dt|dd|label|a|button|img)(\s[^>]*)?>", re.S)
+    for m in tag_re.finditer(body):
+        if m.start() < marked_until: continue
+        tag, attrs = m.group(1), m.group(2) or ""
+        if tag == "section":
+            idm = re.search(r'\bid="([^"]+)"', attrs) or re.search(r'aria-label="([^"]+)"', attrs)
+            sec = (idm.group(1).lower() if idm else sec + "-x"); sec = re.sub(r"[^a-z0-9-]+", "-", sec); continue
+        if tag == "img":
+            n = counts[sec, "img"] = counts.get((sec, "img"), 0) + 1
+            out.append(body[pos:m.start()]); out.append(f'<img data-cms-img="{sec}-img-{n}"{attrs}>'); pos = m.end(); continue
+        if "data-cms" in attrs or tag == "a" and "btn" not in attrs: continue
+        close = body.find(f"</{tag}>", m.end())
+        if close < 0: continue
+        inner = body[m.end():close]
+        if CMS_BLOCK.search(inner) or not re.sub(r"<[^>]+>|&nbsp;|\s", "", inner): continue
+        n = counts[sec, tag] = counts.get((sec, tag), 0) + 1
+        out.append(body[pos:m.start()]); out.append(f'<{tag} data-cms="{sec}-{tag}-{n}"{attrs}>'); pos = m.end(); marked_until = close
+    out.append(body[pos:])
+    loader = '<script>if (/[?&]edit(=|&|$)/.test(location.search)) { var s = document.createElement("script"); s.src = "cms.js?v=1"; document.head.appendChild(s); }</script>\n'
+    return html[:a] + "".join(out) + loader + html[z:]
+
 def build():
     b2b.CSS += team.CSS + shop.CSS + CSS
     p = main()
-    html = snap_type(typo(team.bind(b2b.shell(p, p["body"]))))
+    html = cms_mark(snap_type(typo(team.bind(b2b.shell(p, p["body"])))))
     (b2b.OUT / f"{p['slug']}.html").write_text(html)
     print(p["slug"], len(html) // 1024, "KB")
 

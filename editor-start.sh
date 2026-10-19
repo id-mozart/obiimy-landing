@@ -3,7 +3,7 @@
 # at the paths the editor and the builders know (photo/user, img/edit, review/deck-versions, review/lb/thumbs).
 set -e
 cd /app
-for d in user edit versions thumbs published; do mkdir -p "data/$d"; done
+for d in user edit versions thumbs published corp; do mkdir -p "data/$d"; done
 [ -e photo/user ] && [ ! -L photo/user ] && rm -rf photo/user; ln -sfn /app/data/user photo/user
 [ -e img/edit ] && [ ! -L img/edit ] && rm -rf img/edit; ln -sfn /app/data/edit img/edit
 mkdir -p review/lb; ln -sfn /app/data/versions review/deck-versions; ln -sfn /app/data/thumbs review/lb/thumbs

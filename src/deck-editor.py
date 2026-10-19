@@ -19,7 +19,10 @@ PORT = int(os.environ.get("DECK_EDITOR_PORT") or 8770)
 BIND = os.environ.get("DECK_EDITOR_BIND") or "127.0.0.1"                 # 0.0.0.0 on Railway, with a password
 PASSWORD = os.environ.get("DECK_EDITOR_PASSWORD") or ""                 # set → HTTP Basic auth on every request but /pub/*
 PUBLIC = os.environ.get("DECK_EDITOR_PUBLIC") == "1"                   # Railway without a password (the owner's call, 09.10): any host, writes only from the editor's own origin
-PUBLISHED = ROOT / "data" / "published"                                 # the PDF «Опубликовать» copies here on Railway (src/deck-publish-prod.py)
+PUBLISHED = ROOT / "data" / "published"
+CORP_DIR = ROOT / "data" / "corp"                                          # content edits of the corporate landing (cms.js on the site): corp.json + uploads + history
+CORP_PASSWORD = os.environ.get("CORP_EDIT_PASSWORD") or ""                 # set → «Опублікувати» on the landing needs this key (X-Corp-Key); empty → open, as the deck editor
+CORP_ORIGINS = ("https://corporate.obiimy.world", "https://obiimy-landing-production.up.railway.app", "http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:8765", "http://127.0.0.1:8765")                                 # the PDF «Опубликовать» copies here on Railway (src/deck-publish-prod.py)
 EDITS = pathlib.Path(os.environ.get("DECK_EDITS") or ROOT / "src" / "deck-edits.json")
 PAGES = pathlib.Path(os.environ.get("DECK_EDITOR_PAGES") or ROOT / "review" / "deck-editor-pages.json")
 CSS = ROOT / "review" / "deck-editor.css"
@@ -537,6 +540,68 @@ def api_version_rename(body):
 
 # ---------- http ----------
 
+# ─── content edits of the corporate landing ─────────────────────────────────────────────────────────────────────────────────
+import html.parser as _hp
+CORP_TAGS = {"b", "i", "em", "strong", "br", "u", "s", "small", "sup", "sub", "span", "a"}
+CORP_ATTRS = {"a": {"href", "target", "rel"}, "span": {"class"}}
+
+class _Sanitize(_hp.HTMLParser):
+    """Edited HTML from the page keeps only inline formatting: other tags are dropped (their text stays), every on* attribute and
+    javascript: link goes."""
+    def __init__(self): super().__init__(convert_charrefs=False); self.out = []
+    def handle_starttag(self, tag, attrs):
+        if tag not in CORP_TAGS: return
+        ok = []
+        for k, v in attrs:
+            if k not in CORP_ATTRS.get(tag, set()) or v is None: continue
+            if k == "href" and not re.match(r"^(https?:|mailto:|tel:|#|/)", v.strip(), re.I): continue
+            ok.append(f' {k}="{v.replace(chr(34), "&quot;")}"')
+        self.out.append(f"<{tag}{''.join(ok)}>" if tag != "br" else "<br>")
+    def handle_startendtag(self, tag, attrs): self.handle_starttag(tag, attrs)
+    def handle_endtag(self, tag):
+        if tag in CORP_TAGS and tag != "br": self.out.append(f"</{tag}>")
+    def handle_data(self, d): self.out.append(d.replace("<", "&lt;"))
+    def handle_entityref(self, n): self.out.append(f"&{n};")
+    def handle_charref(self, n): self.out.append(f"&#{n};")
+
+def corp_clean(h):
+    p = _Sanitize(); p.feed(str(h)); p.close(); return "".join(p.out)[:20000]
+
+KEY_RE = re.compile(r"^[a-z0-9-]{1,80}$")
+
+def api_corp_save(body):
+    """POST /api/corp: the full set of overrides {text: {key: {html}}, img: {key: {src}}}; written atomically, the previous file kept in history/."""
+    text = body.get("text") or {}; img = body.get("img") or {}
+    if not isinstance(text, dict) or not isinstance(img, dict): raise Problem("Очікую text і img як словники.")
+    out = {"text": {}, "img": {}, "saved": time.strftime("%Y-%m-%dT%H:%M:%S")}
+    for k, v in text.items():
+        if KEY_RE.match(str(k)) and isinstance(v, dict) and isinstance(v.get("html"), str): out["text"][k] = {"html": corp_clean(v["html"])}
+    for k, v in img.items():
+        src = (v or {}).get("src") if isinstance(v, dict) else None
+        if KEY_RE.match(str(k)) and isinstance(src, str) and re.match(r"^(https?://[^\s\"'<>]+|/pub/corp/[a-z0-9._-]+)$", src): out["img"][k] = {"src": src}
+    CORP_DIR.mkdir(parents=True, exist_ok=True); (CORP_DIR / "history").mkdir(exist_ok=True)
+    f = CORP_DIR / "corp.json"
+    if f.exists(): shutil.copy(f, CORP_DIR / "history" / f"corp-{time.strftime('%Y%m%d-%H%M%S')}.json")
+    write_atomic(f, json.dumps(out, ensure_ascii=False, indent=1).encode("utf-8"))
+    return dict(ok=True, text=len(out["text"]), img=len(out["img"]), saved=out["saved"])
+
+def api_corp_upload(name, data, base):
+    """POST /api/corp-upload?name=…: a picture for the landing → data/corp/<latin-name>.jpg|png (≤ 2000 px), served as /pub/corp/<file>."""
+    if not data: raise Problem("Файл порожній.")
+    try: im = Image.open(io.BytesIO(data)); im.load()
+    except Exception: raise Problem("Це не відкривається як картинка. Підходять JPEG, PNG і WebP.")
+    im = ImageOps.exif_transpose(im); im.thumbnail((2000, 2000))
+    buf = io.BytesIO()
+    if has_alpha(im): im.convert("RGBA").save(buf, "PNG", optimize=True); ext = ".png"
+    else: im.convert("RGB").save(buf, "JPEG", quality=88, optimize=True, progressive=True); ext = ".jpg"
+    data = buf.getvalue()
+    stem = "".join(TRANSLIT.get(ch, ch) for ch in pathlib.PurePath(str(name).replace("\\", "/")).stem.lower())
+    stem = re.sub(r"[^a-z0-9]+", "-", stem).strip("-")[:50] or "foto"
+    CORP_DIR.mkdir(parents=True, exist_ok=True)
+    out = CORP_DIR / f"{stem}-{time.strftime('%Y%m%d-%H%M%S')}{ext}"
+    write_atomic(out, data)
+    return dict(ok=True, src=f"{base}/pub/corp/{out.name}", w=im.width, h=im.height)
+
 class Handler(SimpleHTTPRequestHandler):
     server_version = "DeckEditor/1"
     extensions_map = dict(SimpleHTTPRequestHandler.extensions_map, **{".webp": "image/webp", ".woff2": "font/woff2", ".woff": "font/woff", ".svg": "image/svg+xml",
@@ -598,7 +663,29 @@ class Handler(SimpleHTTPRequestHandler):
             sys.stderr.write(f"{type(e).__name__}: {e}\n")
             self.send_json(dict(ok=False, error=f"Внутренняя ошибка редактора: {type(e).__name__}: {e}"), 500)
 
+    def corp_cors(self):
+        o = self.headers.get("Origin") or ""
+        if o in CORP_ORIGINS: self.send_header("Access-Control-Allow-Origin", o); self.send_header("Vary", "Origin")
+
+    def corp_pub(self, u):
+        """/pub/corp.json and /pub/corp/<file>: public, read-only — the site server and the landing read them from any origin."""
+        if u.path == "/pub/corp.json":
+            f = CORP_DIR / "corp.json"; data = f.read_bytes() if f.is_file() else b'{"text": {}, "img": {}}'
+            self.send_response(200); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "no-cache"); self.send_header("Access-Control-Allow-Origin", "*"); self.end_headers()
+            if self.command != "HEAD": self.wfile.write(data)
+            return True
+        if u.path.startswith("/pub/corp/"):
+            name = u.path[len("/pub/corp/"):]
+            f = CORP_DIR / name if re.match(r"^[a-z0-9._-]+$", name) else None
+            if not f or not f.is_file(): self.send_error(404, "No such file"); return True
+            ctype = {".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp"}.get(f.suffix, "application/octet-stream")
+            self.send_bytes(f.read_bytes(), ctype, cache="public, max-age=31536000, immutable"); return True
+        return False
+
     def do_GET(self):
+        u0 = urllib.parse.urlsplit(self.path)
+        if u0.path == "/pub/corp.json" or u0.path.startswith("/pub/corp/"): self.corp_pub(u0); return
         if not self.authed(): return
         if not self.local(): return self.send_error(403, "Local use only")
         u = urllib.parse.urlsplit(self.path); q = {k: v[0] for k, v in urllib.parse.parse_qs(u.query).items()}
@@ -624,6 +711,8 @@ class Handler(SimpleHTTPRequestHandler):
         return super().do_GET()
 
     def do_HEAD(self):
+        u0 = urllib.parse.urlsplit(self.path)
+        if u0.path == "/pub/corp.json" or u0.path.startswith("/pub/corp/"): self.corp_pub(u0); return
         if not self.authed(): return
         if not self.local(): return self.send_error(403, "Local use only")
         if urllib.parse.urlsplit(self.path).path == "/pub/deck.pdf":
@@ -636,7 +725,12 @@ class Handler(SimpleHTTPRequestHandler):
 
     def do_OPTIONS(self):
         # the KP generator on the site asks this service for a PDF: a cross-origin POST, so the browser asks first
-        if urllib.parse.urlsplit(self.path).path != "/api/kp-pdf": return self.send_error(404, "Not found")
+        p = urllib.parse.urlsplit(self.path).path
+        if p in ("/api/corp", "/api/corp-upload"):
+            self.send_response(204); self.corp_cors()
+            self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS"); self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Corp-Key"); self.send_header("Access-Control-Max-Age", "86400")
+            self.send_header("Content-Length", "0"); self.end_headers(); return
+        if p != "/api/kp-pdf": return self.send_error(404, "Not found")
         self.send_response(204)
         for k, v in self.CORS.items(): self.send_header(k, v)
         self.send_header("Content-Length", "0"); self.end_headers()
@@ -672,6 +766,7 @@ class Handler(SimpleHTTPRequestHandler):
             except ValueError: n = -1
             if n < 0 or n > 80 * 1048576: return self.send_json(dict(ok=False, error="Запит завеликий (понад 80 МБ)."), 413)
             return self.kp_pdf(self.rfile.read(n))
+        if u.path in ("/api/corp", "/api/corp-upload"): return self.corp_post(u, q)
         if not self.authed(): return
         if not self.local(post=True): return self.send_error(403, "Local use only")
         try: n = int(self.headers.get("Content-Length") or 0)
@@ -685,6 +780,33 @@ class Handler(SimpleHTTPRequestHandler):
         try: body = json.loads(data.decode("utf-8")); assert isinstance(body, dict)
         except (ValueError, AssertionError): return self.send_json(dict(ok=False, error="Запрос не разобрать."), 400)
         return self.api(lambda: routes[u.path](body))
+
+    def corp_post(self, u, q):
+        """Writes from the landing (cms.js on corporate.obiimy.world or the Railway host): the origin must be one of ours and, when
+        CORP_EDIT_PASSWORD is set, the X-Corp-Key header must match."""
+        def reply(obj, status=200):
+            data = json.dumps(obj, ensure_ascii=False).encode("utf-8")
+            self.send_response(status); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "no-store"); self.corp_cors(); self.end_headers(); self.wfile.write(data)
+        origin = self.headers.get("Origin") or ""
+        if origin and origin not in CORP_ORIGINS: return reply(dict(ok=False, error="Чужий сайт."), 403)
+        if CORP_PASSWORD:
+            import hmac
+            if not hmac.compare_digest(self.headers.get("X-Corp-Key") or "", CORP_PASSWORD): return reply(dict(ok=False, error="Невірний пароль редагування."), 401)
+        try: n = int(self.headers.get("Content-Length") or 0)
+        except ValueError: n = -1
+        if n < 0 or n > 40 * 1048576: return reply(dict(ok=False, error="Завеликий запит (понад 40 МБ)."), 413)
+        data = self.rfile.read(n)
+        try:
+            if u.path == "/api/corp-upload":
+                base = ("https://" if self.headers.get("X-Forwarded-Proto") == "https" else "http://") + (self.headers.get("Host") or f"127.0.0.1:{PORT}")
+                return reply(api_corp_upload(q.get("name") or "foto", data, base))
+            body = json.loads(data.decode("utf-8")); assert isinstance(body, dict)
+            return reply(api_corp_save(body))
+        except (ValueError, AssertionError): return reply(dict(ok=False, error="Запит не розібрати."), 400)
+        except Problem as e: return reply(dict(ok=False, error=str(e)), e.status)
+        except Exception as e:
+            sys.stderr.write(f"{type(e).__name__}: {e}\n"); return reply(dict(ok=False, error=f"Помилка редактора: {type(e).__name__}"), 500)
 
     def do_DELETE(self):
         if not self.authed(): return

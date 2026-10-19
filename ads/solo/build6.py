@@ -104,6 +104,7 @@ def band(top, height, b, n=3):
     foc = extra.get("focus")    # where the scarf is in the frame (0 — top, 1 — bottom): in the short formats the band is cropped around it
     if FORMAT != "plain" and foc is not None and look != "spot" and not str(photo).startswith("url("):
         if FORMAT == "square": fit, wide = 58, None          # a narrower photo shows more of the figure in a 250 px band
+        foc = extra.get("sfocus", foc); wide = wide if FORMAT == "square" else extra.get("swide", wide)    # the short formats may want their own point and width
         wd = 1080 * ((fit or wide or 100) / 100)
         iw, ih = _Im.open(HERE / S(photo)).size; hd = max(wd * ih / iw, height)
         posy = min(1, max(0, (foc * hd - height / 2) / (hd - height))) * 100 if hd > height + 1 else 50
@@ -182,7 +183,7 @@ triptych("t04-flirt-three-ways", "Один принт — три образи", 
 
 triptych("t05-avantiura-ways", "Одна хустка — три способи", [
     ("avantiura-88-5", "50% 0%", "У волоссі", "Бант, який помічають.", "raw", {"size": 96, "fit": 70, "focus": .48}),
-    ("avantiura-88-4", "50% 6%", "На шиї", "Класика, що не виходить<br>з моди.", "raw", {"size": 96, "wide": 125, "dx": 120, "focus": .40}),
+    ("avantiura-88-4", "50% 6%", "На шиї", "Класика, що не виходить<br>з моди.", "raw", {"size": 96, "wide": 125, "dx": 120, "focus": .40, "sfocus": .31, "swide": 100}),
     ("avantiura-88-2", "45% 76%", "Поясом", "Акцент на талії.", "raw", {"size": 96, "wide": 112, "focus": .67}),
 ], "", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Купити", "Avantiura three ways", plain=True, logo_col="#F2B705")
 

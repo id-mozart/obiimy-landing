@@ -22,7 +22,7 @@ SOLO, qr_svg, team = main.SOLO, main.qr_svg, main.team
 ARGS, RANGE, RANGE_MORE, ASK, STEPS, TERMS, EXAMPLE, INTRO = main.ARGS, main.RANGE, main.RANGE_MORE, main.ASK, main.STEPS, main.TERMS, main.EXAMPLE, main.INTRO
 COVER_CAP = "Корпоративні подарунки 2026 · український бренд шовкових хусток і аксесуарів"
 COVER_H1 = "Подарунки<br>для команди —<br><i>шовк, який носять</i>"                      # the cold-buyer test: the headline must name the material
-COVER_PRICE = "Чотири варіанти подарунка — від 1 600 до 3 600 грн на людину"           # «чотири подарунки на людину» read as four gifts each
+COVER_PRICE = "Чотири варіанти подарунка — від 1 600 до 4 080 грн на людину"           # «чотири подарунки на людину» read as four gifts each
 PHONE, PHONE_HREF, MAIL, SHOWROOM = team.PHONE, team.PHONE_HREF, team.MAIL, team.SHOWROOM
 TG = "https://t.me/OBIIMY_sales"
 COVER_LINE = (f'<p class="folio"><span>Пакування й наліпка з вашим логотипом — у ціні</span>'
@@ -97,7 +97,7 @@ def rh(section): return f'<p class="rh"><span>{section}</span><span>Obiimy · П
 page(f"""{pic("photo/solo/zolote-44-2.webp", 297, 210, "50% 24%", "bg", hi=True)}<img src="brand/logo-white.png" class="logo" alt="Obiimy">
 <div class="fr-t"><p class="cap">{COVER_CAP}</p>
 <h1 class="h54">{COVER_H1}</h1>
-<div class="chip">{cut("zolote-44-1", 13)}<div><span>Чотири варіанти подарунка · на людину</span><em>від 1 600 до 3 600 грн</em></div></div></div>
+<div class="chip">{cut("zolote-44-1", 13)}<div><span>Чотири варіанти подарунка · на людину</span><em>від 1 600 до 4 080 грн</em></div></div></div>
 {COVER_LINE}""", "frame", folio=False)
 
 # ── 2 · who we are: the «Про нас» text of obiimy.world, word for word (the client, 07.10); the «Іскра» photo on the left half ─────
@@ -157,8 +157,8 @@ page(f"""<div class="panel"><h2 class="h28">Аксесуари</h2>
 
 # ── 6 · gift sets: three columns, one open box per set (the shop's own cut-outs on the paper), the words and the price under it ──
 SETS3 = [  # name, inside, price line, box cut-out, width mm — 07.10: from the dearest down; the scarf-and-twilly box in «Впевненість»
-    ("Твіллі + хустка", "Стрічка й маленька хустка в одному принті, у довгій коробці. Разом або окремо — на шиї, у волоссі, на сумці.", "від 3 200 грн", "box-sctw-spokusa", 84),
-    ("Маска + резинка", "Подарунок про відпочинок, а не про роботу. Підходить і тим, хто хустки не носить.", "від 3 100 грн", "box-maskscr-litnie-pole", 72),
+    ("Твіллі + хустка", "Стрічка й маленька хустка в одному принті, у довгій коробці. Разом або окремо — на шиї, у волоссі, на сумці.", "від 3 100 грн", "box-sctw-spokusa", 84),
+    ("Маска + резинка", "Подарунок про відпочинок, а не про роботу. Підходить і тим, хто хустки не носить.", "від 3 280 грн", "box-maskscr-litnie-pole", 72),
     ("Твіллі + резинка", "Дві речі в одному принті, у святковій коробці. Найпростіший набір для всієї команди.", "від 2 200 грн", "box-twscr-smilyvist", 82),
 ]
 cols = "".join(f'<div class="scol"><figure>{cut(c, w, fix=True)}</figure><h3 class="h28">{n}</h3><p>{d}</p><span class="from">{pz}</span></div>' for n, d, pz, c, w in SETS3)
@@ -222,7 +222,7 @@ SETS = [
          tag=""),
     dict(cap="03 · Для відпочинку", h="Маска й резинка —", hi="набір про відпочинок",
          lead="Шовкова маска для сну й резинка в одному принті, у фірмовому пакуванні Obiimy. Підходить і тим, хто не носить хустки.",
-         p=3100, frm=False, note="На вирізці — набір «Літнє поле» в коробці. Набором — на 300 грн менше, ніж окремо: маска — 2 700, резинка — 700 грн.",
+         p=3280, frm=False, note="На вирізці — набір «Літнє поле» в коробці. Набором — на 120 грн менше, ніж окремо: маска — 2 700, резинка — 700 грн.",
          photo=("photo/site/mask-vpevnenist-04.jpg", "50% 30%", 1.0), phcap="На фото — маска для сну «Впевненість».",
          extra=("cut:men-mask", "", 1.0, "Чоловікам — маска окремо", "2 700 грн. На фото — маска «Синій»."),
          cuts=["maskscr-litnie-pole"], cutcls="one", ccap="Набір «Літнє поле»: маска й резинка в коробці",
@@ -230,10 +230,10 @@ SETS = [
          tag=""),
     dict(cap="04 · Ключовим людям", h="Хустка й твіллі —", hi="пара в одній коробці",
          lead="Хустка 44 × 44 і твіллі в одному принті: носять разом або окремо. Для керівників, ключових людей, до річниці в компанії.",
-         p=3200, frm=True, note="На вирізці — набір «Натхнення» у святковій коробці Obiimy. Односторонній друк — 3 200 грн, двосторонній — 3 600 грн.",
+         p=3100, frm=True, note="На вирізці — набір «Натхнення» у святковій коробці Obiimy. Односторонній друк — 3 100 грн, двосторонній — 4 080 грн.",
          photo=("photo/site/set-tvilli-845-ta-khustky-4444-natkhne-04.jpg", "50% 25%", 1.0), phcap="На фото — набір «Натхнення».",
          cuts=["set-natkhnennia-box"], cutcls="box", ccap="Набір «Натхнення» у святковій коробці Obiimy",
-         kv=[("Принти", "11 — по 3 200 грн і 7 з двостороннім друком — по 3 600 грн"), ("Майстер-клас", "Від засновниці Світлани Сніжко — за бажанням; формат, дату й вартість узгодимо окремо")],
+         kv=[("Принти", "11 — по 3 100 грн і 12 з двостороннім друком — по 4 080 грн"), ("Майстер-клас", "Від засновниці Світлани Сніжко — за бажанням; формат, дату й вартість узгодимо окремо")],
          tag="Коли подарунок має сказати більше, ніж річ."),
 ]
 for i, S in enumerate(SETS):
@@ -276,7 +276,7 @@ cells = "".join(range_cell(*r) for r in RANGE + RANGE_MORE)
 page(f"""{rh("Асортимент")}<div class="sheet">
 <div class="hd"><h2 class="h28">Усе, з чого можна <i>зібрати подарунок</i></h2><p>Роздрібні ціни obiimy.world. Будь-яку річ можна додати в коробку або зробити окремим подарунком. «Усім» — речі для тих, хто не носить аксесуари.</p></div>
 <div class="range">{cells}</div>
-<p class="end">Також: сертифікат Obiimy на 1 000–4 000 грн — електронний або фізичний, на будь-який товар, діє 3 місяці · набори резинок — від 1 250 грн.</p></div>""", "paper")
+<p class="end">Також: сертифікат Obiimy на 1 000–4 000 грн — електронний або фізичний, на будь-який товар, діє 3 місяці · набори резинок — від 1 800 грн.</p></div>""", "paper")
 
 # ── 12 · SOLO (dark frame) ───────────────────────────────────────────────────────────────────────────
 page(f"""{pic("photo/solo/tysha-88-2.webp", 297, 210, "0% 30%", "bg", hi=True, zoom=1.05)}

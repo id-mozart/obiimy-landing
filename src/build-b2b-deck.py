@@ -19,9 +19,9 @@ money = deck.money
 MOSAIC = [("photo/solo/iskra-65-4.webp", "50% 34%"), ("photo/solo/flirt-tw-1.webp", "50% 30%"), ("photo/site/maska-dlia-snu-ta-rezynka-vpevnenist-03.jpg", "50% 45%"), ("photo/solo/zolote-44-2.webp", "50% 30%"),
           ("photo/site/mask-shchyri-pochuttia-04.jpg", "0% 60%"), ("photo/solo/tysha-88-4.webp", "50% 32%"), ("photo/solo/krok-44-2.webp", "50% 30%"), ("photo/solo/flirt-65-4.webp", "50% 32%")]   # the cover (cvz9); crops for the strips above and below the band
 MORE = [("Сертифікат", "Номінали 1 000, 1 500, 2 000, 2 500 і 4 000 грн; діє три місяці.", 1000, "img/cert-card.png"),
-        ("Маска, закладка й резинка", "Три речі в одному принті, у коробці.", 3600, "img/cut/sleep-pidnesennia.webp"),
+        ("Маска, закладка й резинка", "Три речі в одному принті, у коробці.", 4080, "img/cut/sleep-pidnesennia.webp"),
         ("Хустка й кільце", "Хустка 65 × 65 і кільце — збираємо на замовлення.", 3650, "img/cut/duo-kava-ring.webp"),
-        ("Три твіллі", "Три принти на вибір в одній коробці.", 4800, "img/cut/three-twilly-2.webp")]   # deck p. 7 (src/build-deck-variants.py MORE)
+        ("Три твіллі", "Три принти на вибір в одній коробці.", 4650, "img/cut/three-twilly-2.webp")]   # deck p. 7 (src/build-deck-variants.py MORE)
 ST7 = dict(deck.ST7)
 SZ6 = "(max-width: 640px) 50vw, (max-width: 1100px) 33vw, 22vw"
 

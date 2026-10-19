@@ -431,7 +431,7 @@ def newyear():
         ("До 1 000 грн", "Маленький знак уваги", [("Резинка для волосся у коробочці", 700)], "photo/scrunchie.jpg", "Резинка у фірмовій коробочці"),
         ("До 2 000 грн", "Подарунок кожному в команді", [("Твіллі 84 × 5", 1600), ("Хустка паше 44 × 44", 1600)], "photo/paris-bag.jpg", "Твіллі на ручці сумки"),
         ("До 3 500 грн", "Для ключових людей", [("Набір «Пристрасть»: твіллі + резинка", 2200), ("Маска для сну", 2700), ("Хустка 65 × 65", 3200), ("Набір «Натхнення»: твіллі + хустка", 3200)], "photo/box-red.jpg", "Набір у жовтій коробці"),
-        ("До 5 000 грн", "Для партнерів і VIP-клієнтів", [("Набір для сну «Піднесення»", 3600), ("Шаль 88 × 88", 4400), ("Набір із трьох твіллі", 4800)], "photo/paris-dots.jpg", "Шаль 88 × 88 на плечах"),
+        ("До 5 000 грн", "Для партнерів і VIP-клієнтів", [("Набір для сну «Піднесення»", 4080), ("Шаль 88 × 88", 4400), ("Набір із трьох твіллі", 4650)], "photo/paris-dots.jpg", "Шаль 88 × 88 на плечах"),
     ]
     tier_html = "".join(f'''
       <div class="card photo">{img(ph, alt, sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">{t}</p><h3>{sub}</h3><div>{"".join(f'<div class="price-row"><span>{n}</span><span class="num">{price(p)}</span></div>' for n, p in items)}</div></div></div>''' for t, sub, items, ph, alt in tiers)
@@ -643,7 +643,7 @@ def wholesale():
         ("Твіллі 84 × 5", "Імпульсний подарунок: на сумку, у волосся, на зап’ястя.", "1 600 грн", "img/twilly-zolote.webp"),
         ("Маски для сну", "Шовк, авторський принт, фірмова коробка. Категорія «догляд», не лише «аксесуар».", "2 700 грн", "img/mask-vpevnenist.webp"),
         ("Резинки", "Вхідна ціна в бренд і товар біля каси у фірмовій коробочці.", "700 грн", "img/scrunchie-energiia.webp"),
-        ("Подарункові набори", "Твіллі + резинка, твіллі + хустка, набір для сну, три твіллі — у жовтій коробці.", "2 200 – 4 800 грн", "img/set-natkhnennia.webp"),
+        ("Подарункові набори", "Твіллі + резинка, твіллі + хустка, набір для сну, три твіллі — у жовтій коробці.", "2 200 – 4 650 грн", "img/set-natkhnennia.webp"),
     ]
     cats_html = "".join(f'<div class="card">{img(ph, t, sizes="(max-width: 640px) 100vw, 33vw")}<h3>{t}</h3><p>{d}</p><div class="price-row"><span>Роздріб</span><span class="num">{pr}</span></div></div>' for t, d, pr, ph in cats)
     body = hero("Для магазинів, бутиків і корнерів", "Obiimy на вашій полиці",
@@ -754,7 +754,7 @@ def calendar():
       <div class="card"><p class="eyebrow">До 1 000 грн</p><h3>Резинка</h3><p>У фірмовій коробочці. Для днів народження та welcome-box.</p><div class="price-row"><span>Роздріб</span><span class="num">700 грн</span></div></div>
       <div class="card"><p class="eyebrow">До 2 000 грн</p><h3>Твіллі або паше</h3><p>Універсальний подарунок для команди на 8 березня і до свят.</p><div class="price-row"><span>Роздріб</span><span class="num">1 600 грн</span></div></div>
       <div class="card"><p class="eyebrow">До 3 500 грн</p><h3>Набір або хустка 65</h3><p>Для ключових людей і клієнтів: набір «Пристрасть», маска для сну, набір «Натхнення», хустка 65 × 65.</p><div class="price-row"><span>Роздріб</span><span class="num">2 200 – 3 200 грн</span></div></div>
-      <div class="card"><p class="eyebrow">До 5 000 грн</p><h3>Шаль 88 або три твіллі</h3><p>Партнерам і VIP: набір для сну, шаль 88 × 88, три твіллі в одній коробці.</p><div class="price-row"><span>Роздріб</span><span class="num">3 600 – 4 800 грн</span></div></div>
+      <div class="card"><p class="eyebrow">До 5 000 грн</p><h3>Шаль 88 або три твіллі</h3><p>Партнерам і VIP: набір для сну, шаль 88 × 88, три твіллі в одній коробці.</p><div class="price-row"><span>Роздріб</span><span class="num">4 080 – 4 650 грн</span></div></div>
     </div>
     <p class="note">Умови річної програми залежать від загальної кількості подарунків — надішліть запит, і ми порахуємо.</p>
     <p style="margin-top:16px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px"><a class="btn btn-gold" href="#request">Скласти план на рік</a><a href="b2b-atelier" style="font-weight:600;padding:12px 0">Зібрати перший подарунок у 3D-конструкторі →</a></p>

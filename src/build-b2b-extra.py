@@ -58,7 +58,7 @@ def certificates():
       <div class="card photo">{img("img/sets/scr3.webp", "Набір шовкових резинок у коробці", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">1 000 і 1 500 грн</p><h3>Резинки або обруч</h3><p>Шовкова резинка чи обруч для вмивання — 700 грн; набір резинок Zero waste (3 шт.) — 1 250 грн.</p></div></div>
       <div class="card photo">{img("photo/paris-bun.jpg", "Твіллі у волоссі", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">2 000 грн</p><h3>Твіллі або паше</h3><p>Твіллі 84 × 5 чи хустка 44 × 44 — 1 600 грн; набір резинок Zero waste (5 шт.) — 2 000 грн.</p></div></div>
       <div class="card photo">{img("img/sets/twscr-makiv.webp", "Твіллі й резинка у святковій коробці", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">2 500 грн</p><h3>Твіллі й резинка</h3><p>Подарунковий набір у коробці — 2 200 грн.</p></div></div>
-      <div class="card photo">{img("img/sets/tw44-vpevnenist.webp", "Твіллі й хустка у жовтій коробці", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">4 000 грн</p><h3>Набір або маска</h3><p>Твіллі й хустка 44 — 3 200–3 600, маска й резинка — 3 100, хустка 65 — 3 200.</p></div></div>
+      <div class="card photo">{img("img/sets/tw44-vpevnenist.webp", "Твіллі й хустка у жовтій коробці", sizes="(max-width: 640px) 50vw, 25vw")}<div class="in"><p class="eyebrow">4 000 грн</p><h3>Набір або маска</h3><p>Твіллі й хустка 44 — 3 100–4 080, маска й резинка — 3 280, хустка 65 — 3 200.</p></div></div>
     </div>
   </div></section>
 

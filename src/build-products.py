@@ -90,7 +90,7 @@ PRODUCTS.update({
         "tex": "prystrast", "back": None, "backname": None, "double": False,
         "photos": ["img/mask-vpevnenist.webp", "img/set-mask.webp", "photo/turban-bath.jpg"], "contain": True,
         "sizes": [("Один розмір", 2700, None)], "default": 0, "sale": {},
-        "specs": [("100%", "Італійський шовк, авторський принт", "2 700 грн"), ("Коробка", "Фірмова жовта, індивідуальне пакування", "готовий подарунок"), ("Гумка", "М’яка, не тисне на скроні", "ручне прання до 30 °C"), ("Набір", "Набір для сну «Піднесення»", "3 600 грн")],
+        "specs": [("100%", "Італійський шовк, авторський принт", "2 700 грн"), ("Коробка", "Фірмова жовта, індивідуальне пакування", "готовий подарунок"), ("Гумка", "М’яка, не тисне на скроні", "ручне прання до 30 °C"), ("Набір", "Набір для сну «Піднесення»", "4 080 грн")],
         "wear": [("Маска «Впевненість»", "img/mask-vpevnenist.webp"), ("Ритуал перед сном", "photo/turban-bath.jpg"), ("Інший принт · «Свобода»", "img/mask-svoboda.webp")],
         "url": "https://obiimy.world/maska-dlia-snu-z-naturalnoho-shovku-vpevnenist/", "sku": "M-11", "story_img": "photo/turban-bath.jpg",
     },

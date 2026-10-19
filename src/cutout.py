@@ -95,9 +95,9 @@ GRAB = [  # src, name, params — everything shot on a white backdrop with a sha
     ("img/sets/twscr-makiv.webp", "twscr-makiv", {}),
     # the shop's gift sets as photographed for obiimy.world (category «Подарункові набори», 06.10): whole boxes for page-3 variants L–N;
     # the flood cut kept the baked shadow as a ragged rim, GrabCut + dehalo (below) gives a clean edge
-    ("photo/site/set-tvilli-845-ta-khustky-4444-litnii-vinoch-01.jpg", "box-sctw-vinochok", {}),
-    ("photo/site/set-tvilli-845-ta-khustky-4444-spokusa-02.jpg", "box-sctw-spokusa", {}),
-    ("photo/site/set-tvilli-845-ta-khustky-4444-svoboda-02.jpg", "box-sctw-svoboda", {}),
+    ("photo/site/set-tvilli-845-ta-khustky-4444-litnii-vinoch-01.jpg", "box-sctw-vinochok", dict(strong=10, weak=4, scale=1200)),
+    ("photo/site/set-tvilli-845-ta-khustky-4444-spokusa-02.jpg", "box-sctw-spokusa", dict(strong=10, weak=4, scale=1200)),
+    ("photo/site/set-tvilli-845-ta-khustky-4444-svoboda-02.jpg", "box-sctw-svoboda", dict(strong=10, weak=4, scale=1200)),
     ("photo/site/tvilli-ta-rezynka-litnie-pole-01.jpg", "box-twscr-litnie-pole", dict(edge_neutral=True)),
     ("photo/site/tvilli-ta-rezynka-smilyvist-01.jpg", "box-twscr-smilyvist", dict(edge_neutral=True)),
     ("photo/site/set-maska-rezynka-10-01.jpg", "box-maskscr-litnie-pole", dict(edge_neutral=True)),
@@ -227,7 +227,7 @@ if __name__ == "__main__":
         d = cut_grab(src, name, **kw); im = Image.open(d)
         al = np.asarray(im.split()[-1]); print(f"{name:24} {im.size} opaque {round((al > 128).mean() * 100)}% (grabcut)")
     wipe_warm("box-gold", (560, 250, 800, 430))
-    print("halo px removed:", {n: dehalo(n, **kw) for n, kw in (("mask-litnie-pole", dict(erode=1)), ("scrunchie-pole", {}), *((n, dict(erode=1)) for _s, n, _k in GRAB if n.startswith("box-")))})
+    print("halo px removed:", {n: dehalo(n, **kw) for n, kw in (("mask-litnie-pole", dict(erode=1)), ("scrunchie-pole", {}), *((n, dict(erode=1, chroma_max=10) if n.startswith("box-sctw") else dict(erode=1)) for _s, n, _k in GRAB if n.startswith("box-")))})
     Image.open(ROOT / "src" / "ad-p3" / "ring-clean.png").convert("RGBA").save(OUT / "ring-n.webp", "WEBP", quality=92, method=6)   # the ring retouched by the art director (baked white shadow removed), source photo/site/ring-n-styl-01.jpg
     hole("scrunchie-pole")
     rotated("set-natkhnennia-box")

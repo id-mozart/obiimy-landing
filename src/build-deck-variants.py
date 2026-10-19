@@ -101,14 +101,14 @@ def col_c(i, G):
 PAGES.append(f'''<section class="pg paper v3c">{rh("варіант C — полиця")}<div class="sheet">
 <div class="hd"><h2 class="h28">{H2}</h2><p>{NOTE}</p></div>
 <div class="g4">{"".join(col_c(i, G) for i, G in enumerate(GIFTS))}</div>
-<p class="t8 end">На вирізках: твіллі «Сміливий крок»; хустка «Грація» 44 × 44 і кільце «Н стиль»; набір «Літнє поле»; хустка й твіллі «Золоте світло» (двосторонній друк, 3 600 грн). {MIX}</p></div>{FOLIO}</section>''')
+<p class="t8 end">На вирізках: твіллі «Сміливий крок»; хустка «Грація» 44 × 44 і кільце «Н стиль»; набір «Літнє поле»; хустка й твіллі «Золоте світло» (двосторонній друк, 4 080 грн). {MIX}</p></div>{FOLIO}</section>''')
 
 # D · one photograph for half the page and four more sets — 07.10: the client wants this page to show that there are many other
 # sets beyond the three on page 6 (no overlap with them), without the people counts; prices and the count of sets from SITE-FACTS
 MORE = [("Сертифікат", "Номінали 1 000, 1 500, 2 000, 2 500 і 4 000 грн; діє три місяці.", 1000, True, "img/cert-card.png"),   # 07.10: sets only, from the cheapest up, every name on one line
-        ("Маска, закладка й резинка", "Три речі в одному принті, у коробці.", 3600, True, "sleep-pidnesennia"),
+        ("Маска, закладка й резинка", "Три речі в одному принті, у коробці.", 4080, True, "sleep-pidnesennia"),
         ("Хустка й кільце", "Хустка 65 × 65 і кільце — збираємо на замовлення.", 3650, True, "duo-kava-ring"),   # the medium scarf (3 200) with the ring (450), a SOLO print
-        ("Три твіллі", "Три принти на вибір в одній коробці.", 4800, True, "three-twilly-2")]
+        ("Три твіллі", "Три принти на вибір в одній коробці.", 4650, True, "three-twilly-2")]
 def row_m(n, d, p, frm, c):
     th = pic(c, 20, 20, "50% 45%", "th", once=False) if "/" in c else cut(c, 20, "th")
     return f'<div class="rw rw2">{th}<h3 class="h13">{n}</h3><p class="pr h28">{"<small>від</small> " if frm else ""}{money(p)} <small>грн</small></p><span class="t8 d">{d}</span></div>'
@@ -158,7 +158,7 @@ def row_g(i, G):
     return f'<div class="mr"><p class="cap">0{i + 1} · {lb}</p><h3 class="h13">{n}</h3><p class="pr h28">{money(p)}{"–" + money(hi) if hi else ""} <small>грн</small></p><p class="t8 bud">{bud}</p></div>'
 PAGES.append(f"""<section class="pg k2">{"".join(ob(*o, warm=True) for o in G_OBJ)}{"".join(f'<b class="tag" style="left:{x}mm;top:{y}mm">{t}</b>' for t, x, y in G_TAG)}
 <div class="tt"><p class="cap">Чотири подарунки · сторінка 3 · варіант G — жовта коробка</p><h2 class="h40">Що в коробці —<br><i>і скільки це коштує</i></h2>
-<p class="t8">{NOTE2} Ціна «від — до»: вища — з двостороннім друком; бюджети команди — у гривнях. На вирізках: твіллі «Тиша всередині»; хустка «Грація» й кільце «Н стиль»; набір «Літнє поле»; хустка й твіллі «Золоте світло» (двосторонній друк, 3 600 грн).</p></div>
+<p class="t8">{NOTE2} Ціна «від — до»: вища — з двостороннім друком; бюджети команди — у гривнях. На вирізках: твіллі «Тиша всередині»; хустка «Грація» й кільце «Н стиль»; набір «Літнє поле»; хустка й твіллі «Золоте світло» (двосторонній друк, 4 080 грн).</p></div>
 <div class="menu">{"".join(row_g(i, G) for i, G in enumerate(GIFTS))}</div>{FOLIO}</section>""")
 # H · steps: four studio frames stand on one line and rise with the price
 H_X = [16.5, 84, 151.5, 219]; H_H = [67, 87, 107, 127]; H_B = 187
@@ -200,7 +200,7 @@ PAGES.append(f"""<section class="pg paper x1"><img class="bg" src="img/p3/lux-k1
 PAGES.append(f"""<section class="pg x2"><img class="bg" src="img/p3/lux-k2.jpg" alt=""><p class="rh"><span>Чотири подарунки</span><span>Сторінка 3 · варіант J — чотири відділення</span></p>
 <h2 class="h40 x2t">Що в коробці — <i>і скільки це коштує</i></h2><div class="tray"></div>
 {"".join(cell_x(i, G, "h40") for i, G in enumerate(GIFTS))}
-<p class="t8 fine">На вирізках: твіллі «Флірт»; хустка «Пульс» 44 × 44 і кільце «Н стиль» — з двостороннім друком, 2 850 грн; набір «Літнє поле»; хустка й твіллі «Золоте світло» — 3 600 грн.<br>{FINE}</p>{FOLIO}</section>""")
+<p class="t8 fine">На вирізках: твіллі «Флірт»; хустка «Пульс» 44 × 44 і кільце «Н стиль» — з двостороннім друком, 2 850 грн; набір «Літнє поле»; хустка й твіллі «Золоте світло» — 4 080 грн.<br>{FINE}</p>{FOLIO}</section>""")
 # K · a yellow podium of four steps: the gifts stand on the steps, the real box on the top one
 PAGES.append(f"""<section class="pg paper x3"><img class="bg" src="img/p3/lux-k3.jpg" alt="">
 <div class="ttl"><p class="cap">Чотири подарунки · сторінка 3 · варіант K — подіум</p><h2 class="h40">Що в коробці —<br><i>і скільки це коштує</i></h2></div>
@@ -213,8 +213,8 @@ NAMES += ["vI", "vJ", "vK"]
 SETS_L = [  # label, name, what is inside (SITE-FACTS), price, ceiling or None, prints, what is on the photo, cut-out
     ("Усій команді", "Твіллі й резинка", "Шовкова твіллі 84 × 5 і резинка в одному принті, коробка-книжка.", 2200, None, "8 принтів; довга твіллі 140 × 5 — 2 700 грн", "набір «Літнє поле»", "box-twscr-litnie-pole"),
     ("Для відпочинку", "Маска для сну й резинка", "Маска для сну й резинка в одному принті, у коробці Obiimy.", 3100, None, "8 принтів; «Серцебиття» — у двох кольорах", "набір «Літнє поле»", "box-maskscr-litnie-pole"),
-    ("Ключовим людям", "Хустка й твіллі", "Хустка 44 × 44 і твіллі 84 × 5 в одному принті, святкова коробка.", 3200, 3600, "18 принтів: 11 — 3 200 грн, 7 із двостороннім друком — 3 600 грн", "набір «Спокуса»", "box-sctw-spokusa"),
-    ("Тим, хто читає", "Маска, закладка й резинка", "Маска для сну, закладка для книги й резинка — колекція «Співоча душа».", 3600, None, "принти «Піднесення», «Мелодія двох»", "набір «Піднесення»", "box-maskbm-pidnesennia"),
+    ("Ключовим людям", "Хустка й твіллі", "Хустка 44 × 44 і твіллі 84 × 5 в одному принті, святкова коробка.", 3100, 4080, "23 принти: 11 — 3 100 грн, 12 із двостороннім друком — 4 080 грн", "набір «Спокуса»", "box-sctw-spokusa"),
+    ("Тим, хто читає", "Маска, закладка й резинка", "Маска для сну, закладка для книги й резинка — колекція «Співоча душа».", 4080, None, "принти «Піднесення», «Мелодія двох»", "набір «Піднесення»", "box-maskbm-pidnesennia"),
 ]
 NOTE_L = "Чотири набори, які вже є на obiimy.world: коробка, один принт на всі речі. Базові роздрібні ціни на людину, жовтень 2026; наліпка з вашим логотипом — безкоштовно. Окремо: твіллі — 1 600 грн, хустка 44 × 44 і кільце — від 2 050 грн; тим, хто не носить аксесуари, — сертифікат на 1 000–4 000 грн."
 def rng_l(p, hi): return f"{money(p)}–{money(hi)}" if hi else money(p)
@@ -244,7 +244,7 @@ def row_n(i, S):
 S3 = SETS_L[2]
 PAGES.append(sets_page("npage", "N — одна коробка", "sets-n.jpg",
     f'<div class="lhd"><h2 class="h28">Готові набори — <i>з каталогу</i></h2><p>{NOTE_L}</p></div>'
-    f'<div class="nhero"><p class="cap">03 · {S3[0]} · на фото — {S3[6]}</p><h3 class="h13">{S3[1]}</h3><p class="h28 pr">{rng_l(S3[3], S3[4])} <small>грн</small></p><p class="t8">Хустка 44 × 44 і твіллі 84 × 5 в одному принті, коробка. 18 принтів: 11 — 3 200 грн, 7 двосторонніх — 3 600 грн.</p><p class="t8 bd">20 / 50 / 100 людей — 64 000–72 000 / 160 000–180 000 / 320 000–360 000 грн</p></div>'
+    f'<div class="nhero"><p class="cap">03 · {S3[0]} · на фото — {S3[6]}</p><h3 class="h13">{S3[1]}</h3><p class="h28 pr">{rng_l(S3[3], S3[4])} <small>грн</small></p><p class="t8">Хустка 44 × 44 і твіллі 84 × 5 в одному принті, коробка. 23 принти: 11 — 3 100 грн, 12 двосторонніх — 4 080 грн.</p><p class="t8 bd">20 / 50 / 100 людей — 64 000–72 000 / 160 000–180 000 / 320 000–360 000 грн</p></div>'
     f'<div class="nlist">{"".join(row_n(i, S) for i, S in enumerate(SETS_L) if i != 2)}</div>'))
 NAMES += ["vL", "vM", "vN"]
 
@@ -257,7 +257,7 @@ COVERS = []
 # B · another frame of the same shoot: a portrait with the scarf on the wrist
 COVERS.append(f'''<section class="pg frame cv cvb">{pic("photo/solo/krok-44-3.webp", 297, 210, "50% 58%", "bg", hi=True, once=False)}<img src="brand/logo-white.png" class="logo" alt="Obiimy">{vtag("варіант B — портрет")}
 <div class="fr-t"><p class="cap">{CAP}</p><h1 class="h54">{H1}</h1>
-<div class="chip">{cut("krok-44-1", 13)}<div><span>Чотири варіанти подарунка · на людину</span><em>від 1 600 до 3 600 грн</em></div></div></div>{LINE}</section>''')
+<div class="chip">{cut("krok-44-1", 13)}<div><span>Чотири варіанти подарунка · на людину</span><em>від 1 600 до 4 080 грн</em></div></div></div>{LINE}</section>''')
 # C · paper and a photograph: the title on paper, the portrait takes the right half
 COVERS.append(f'''<section class="pg cv cvc"><figure class="cph">{pic("photo/solo/puls-44-4.webp", 148.5, 210, "52% 50%", hi=True, once=False)}</figure>{vtag("варіант C — папір і портрет")}
 <img src="brand/logo-ink.png" class="logo" alt="Obiimy">
@@ -268,7 +268,7 @@ TRI = [("photo/solo/avantiura-88-5.webp", "62% 50%"), ("photo/solo/puls-44-4.web
 COVERS.append(f'''<section class="pg cv cvd"><div class="tri">{"".join(pic(f, 97, 129, ps, hi=True, once=False) for f, ps in TRI)}</div>{vtag("варіант D — три портрети")}
 <img src="brand/logo-ink.png" class="logo" alt="Obiimy">
 <div class="cvt"><p class="cap">{CAP}</p><h1 class="h54">{H1W}</h1></div>
-<p class="h13 cvp">Чотири варіанти подарунка<br>від 1 600 до 3 600 грн на людину</p>{LINE}</section>''')
+<p class="h13 cvp">Чотири варіанти подарунка<br>від 1 600 до 4 080 грн на людину</p>{LINE}</section>''')
 def cve_ob(c, mm, x, y, r):
     iw, ih = Image.open(OUT / "img" / "cut" / f"{c}.webp").size; w = mm * min(1, iw / ih)          # mm is the long side
     f, pad, h = deck.cutsh(c, w, layers=((3.0, 4.0, 0.18),), tint=(0, 0, 0))
@@ -282,7 +282,7 @@ COVERS.append(f'''<section class="pg cv cve">{"".join(cve_ob(*o) for o in OBJ)}{
 # F · a wide scene by the sea, the scarf worn as a belt
 COVERS.append(f'''<section class="pg frame cv cvf">{pic("photo/solo/avantiura-88-2.webp", 297, 210, "50% 30%", "bg", hi=True, once=False)}<img src="brand/logo-white.png" class="logo" alt="Obiimy">{vtag("варіант F — сцена")}
 <div class="fr-t"><p class="cap">{CAP}</p><h1 class="h54">{H1}</h1>
-<div class="chip">{cut("avantiura-88-1", 13)}<div><span>Чотири варіанти подарунка · на людину</span><em>від 1 600 до 3 600 грн</em></div></div></div>{LINE}</section>''')
+<div class="chip">{cut("avantiura-88-1", 13)}<div><span>Чотири варіанти подарунка · на людину</span><em>від 1 600 до 4 080 грн</em></div></div></div>{LINE}</section>''')
 
 # G, H, I · object-led covers of the luxury-catalogue art director (plates: src/build-cover-plates.py → img/p3/cover-*.jpg)
 CONTACTS = f'<a href="https://obiimy.world/">obiimy.world</a> · <a href="{deck.PHONE_HREF}">{deck.PHONE}</a> · <a href="{deck.TG}">Telegram @OBIIMY_sales</a>'
@@ -292,8 +292,8 @@ COVERS.append(f"""<section class="pg lx lx1"><img class="plate" src="img/p3/cove
 <p class="cap who">{WHO}</p>
 <div class="lxt"><p class="cap">Корпоративні подарунки · 2026 · обкладинка, варіант G</p>
 <h1 class="h54">Подарунки<br>для команди —<br><i>шовк,<br>який носять</i></h1>
-<p class="price">Чотири варіанти подарунка —<br>від 1 600 до 3 600 грн на людину</p><p class="pack">{PACK}</p></div>
-<p class="credit">На обкладинці — набір «Ніжність»: хустка й твіллі,<br>варіант за 3 600 грн.</p>
+<p class="price">Чотири варіанти подарунка —<br>від 1 600 до 4 080 грн на людину</p><p class="pack">{PACK}</p></div>
+<p class="credit">На обкладинці — набір «Ніжність»: хустка й твіллі,<br>варіант за 4 080 грн.</p>
 <p class="folio"><span>{CONTACTS}</span></p></section>""")
 COVERS.append(f"""<section class="pg lx lx2"><img class="plate" src="img/p3/cover-2.jpg" alt=""><img src="brand/logo-ink.png" class="lxlogo" alt="Obiimy">
 <p class="cap who">{WHO}</p><div class="rule"></div>
@@ -307,7 +307,7 @@ COVERS.append(f"""<section class="pg lx lx3"><img class="sun" src="img/p3/cover-
 <p class="cap who">Український бренд<br>шовкових хусток і аксесуарів</p>
 <div class="lxt"><p class="cap">Корпоративні подарунки · 2026 · варіант I</p>
 <h1 class="h40">Подарунки<br>для команди —<br><i>шовк,<br>який носять</i></h1>
-<p class="price">Чотири варіанти подарунка —<br>від 1 600 до 3 600 грн на людину</p><p class="pack">{PACK}</p></div>
+<p class="price">Чотири варіанти подарунка —<br>від 1 600 до 4 080 грн на людину</p><p class="pack">{PACK}</p></div>
 <p class="credit">На обкладинці — набір «Літнє поле»: маска для сну й резинка.</p>
 <p class="folio"><span><a href="https://obiimy.world/">obiimy.world</a></span><span><a href="{deck.PHONE_HREF}">{deck.PHONE}</a> · <a href="{deck.TG}">Telegram @OBIIMY_sales</a></span></p></section>""")
 
@@ -316,12 +316,12 @@ COVERS.append(f"""<section class="pg ed ed1"><img class="plate" src="img/p3/cove
 <div class="ed1-col"><img src="brand/logo-ink.png" class="ed-logo" alt="Obiimy"><p class="cap ed-who">Український бренд шовкових<br>хусток і аксесуарів</p>
 <div class="ed1-b"><p class="cap">Корпоративні подарунки · 2026 · варіант J</p>
 <h1 class="ed-h50">Подарунки<br>для команди —<br><i>шовк, який<br>носять</i></h1>
-<p class="ed-price">Чотири варіанти подарунка —<br>від 1 600 до 3 600 грн на людину</p><p class="ed-pack">{PACK}</p></div></div>
-<p class="folio"><span>У коробці — хустка й твіллі «Золоте світло», 3 600 грн</span><span>{CONTACTS}</span></p></section>""")
+<p class="ed-price">Чотири варіанти подарунка —<br>від 1 600 до 4 080 грн на людину</p><p class="ed-pack">{PACK}</p></div></div>
+<p class="folio"><span>У коробці — хустка й твіллі «Золоте світло», 4 080 грн</span><span>{CONTACTS}</span></p></section>""")
 COVERS.append(f"""<section class="pg ed ed2"><img class="plate" src="img/p3/cover-5.jpg" alt="">
 <img src="brand/logo-ink.png" class="ed-logo" alt="Obiimy"><p class="cap ed-who">Український бренд шовкових хусток<br>і аксесуарів</p>
 <div class="ed2-t"><p class="cap">Корпоративні подарунки · 2026 · варіант K</p><h1>Шовкові подарунки<br><i>для команди</i></h1></div>
-<div class="ed2-p"><p class="ed-price">Чотири варіанти подарунка —<br>від 1 600 до 3 600 грн на людину</p><p class="ed-pack">{PACK}</p></div>
+<div class="ed2-p"><p class="ed-price">Чотири варіанти подарунка —<br>від 1 600 до 4 080 грн на людину</p><p class="ed-pack">{PACK}</p></div>
 <p class="folio"><span>У коробці — хустка й твіллі «Золоте світло»</span><span>{CONTACTS}</span></p></section>""")
 COVERS.append(f"""<section class="pg ed ed3"><img class="plate" src="img/p3/cover-6.jpg" alt="">
 <div class="ed3-m"><img src="brand/logo-ink.png" class="ed-logo" alt="Obiimy"><p class="cap ed-who">Український бренд<br>шовкових хусток<br>і аксесуарів</p>
@@ -337,7 +337,7 @@ COVERS.append(f"""<section class="pg lx nv1"><img class="plate" src="img/p3/cove
 <p class="cap who">Український бренд<br>шовкових хусток і аксесуарів</p>
 <div class="lxt"><p class="cap">Корпоративні подарунки · 2026 · варіант M</p>
 <h1 class="h40">Подарунки<br>для команди —<br><i>шовк,<br>який носять</i></h1>
-<p class="price">Чотири варіанти подарунка —<br>від 1 600 до 3 600 грн на людину</p><p class="pack">{PACK}</p>
+<p class="price">Чотири варіанти подарунка —<br>від 1 600 до 4 080 грн на людину</p><p class="pack">{PACK}</p>
 <p class="t8 cred">На обкладинці — хустка «Золоте світло» 44 × 44;<br>у подарунку з кільцем — 2 850 грн.</p></div>
 <p class="folio">{CONT2}</p></section>""")
 COVERS.append(f"""<section class="pg lx nv2"><img class="plate" src="img/p3/cover-8.jpg" alt=""><img src="brand/logo-ink.png" class="lxlogo" alt="Obiimy">
@@ -350,12 +350,12 @@ COVERS.append(f"""<section class="pg lx nv3"><img class="plate" src="img/p3/cove
 <p class="cap who">Український бренд<br>шовкових хусток і аксесуарів</p>
 <div class="lxt"><p class="cap">Корпоративні подарунки · 2026 · варіант O</p>
 <h1 class="h54">Обійми<br>для вашої<br>команди</h1><p class="sub">шовкові подарунки, які носять</p>
-<p class="price">Чотири варіанти подарунка —<br>від 1 600 до 3 600 грн на людину</p><p class="pack">{PACK}</p></div>
+<p class="price">Чотири варіанти подарунка —<br>від 1 600 до 4 080 грн на людину</p><p class="pack">{PACK}</p></div>
 <p class="credit">На фото — хустка «Мелодія двох» 44 × 44</p>
 <p class="folio">{CONT2}</p></section>""")
 
 # P–U · covers on the brand's own editorial photographs from the product galleries of obiimy.world (05.10, plates: build-cover-plates.py)
-H4 = H1; PR2 = "Чотири варіанти подарунка —<br>від 1 600 до 3 600 грн на людину"
+H4 = H1; PR2 = "Чотири варіанти подарунка —<br>від 1 600 до 4 080 грн на людину"
 def cover_n(k, n, letter, big, cred, extra=""):
     return (f'''<section class="pg lx nw nw{k}"><img class="plate" src="img/p3/cover-{n}.jpg" alt=""><img src="brand/logo-ink.png" class="lxlogo" alt="Obiimy">
 <p class="cap who">Український бренд<br>шовкових хусток і аксесуарів</p>{extra}

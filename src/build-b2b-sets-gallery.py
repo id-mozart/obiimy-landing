@@ -21,20 +21,20 @@ PHONE, PHONE_HREF, MAIL, TG, SHOWROOM, SAMPLE, BAR = team.PHONE, team.PHONE_HREF
 # k, name, base price, note, what is inside, packaging (only where the facts say so), for whom (our advice), occasions for the filter,
 # prints on the site (text for the comparison), prints with photos [(slug, name, photo, price)]
 FAM = [
-    dict(k="tw44", n="Твіллі та хустка 44 × 44", p=3200, note="двосторонні принти й новинка «Золоте світло» — 3 600 грн", inside=["Твіллі 84 × 5", "Хустка 44 × 44"], box="", who="Ключовим людям · до річниці", occ=["bday", "key"],
-         site="18 принтів, з них 6 двосторонніх", prints=[("vpevnenist", "Впевненість", "img/sets/tw44-vpevnenist.webp", 3200), ("zolote", "Золоте світло, новинка", "img/sets/tw44-zolote.webp", 3600), ("hratsiia", "Грація", "img/sets/tw44-hratsiia.webp", 3200), ("natkhnennia", "Натхнення", "img/sets/tw44-natkhnennia.webp", 3200),
-                 ("balans", "Баланс", "img/sets/tw44-balans.webp", 3200), ("vyr", "Вир почуттів", "img/sets/tw44-vyr.webp", 3200), ("dotyk", "Сміливий дотик", "img/sets/tw44-smilyvyi-dotyk.webp", 3200), ("probudzhennia", "Пробудження, двосторонній", "img/sets/tw44-probudzhennia.webp", 3600), ("nizhnist", "Ніжність, двосторонній", "img/sets/tw44-nizhnist.webp", 3600)]),
-    dict(k="twscr", n="Твіллі та резинка", p=2200, note="довга твіллі 140 × 5 — 2 700 грн", inside=["Твіллі 84 × 5", "Шовкова резинка"], box="святкова коробка", who="Хто носить аксесуари · до дня народження", occ=["bday"],
-         site="10 принтів, з них 2 — з твіллі 140 × 5", prints=[("makiv", "Маків цвіт", "img/sets/twscr-makiv.webp", 2200), ("prystrast", "Пристрасть", "img/sets/twscr-prystrast.webp", 2200), ("litnie", "Літнє поле", "img/sets/twscr-litnie-pole.webp", 2200), ("enerhiia", "Енергія", "img/sets/twscr-enerhiia.webp", 2200), ("smilyvist", "Сміливість", "img/sets/twscr-smilyvist.webp", 2200), ("vinochok", "Літній віночок, 140 × 5", "img/sets/twscr-vinochok140.webp", 2700)]),
-    dict(k="maskscr", n="Маска для сну та резинка", p=3100, note="", inside=["Маска для сну", "Шовкова резинка"], box="", who="Про відпочинок · підтримка, відпустка", occ=["bday", "rest"],
-         site="8 принтів", prints=[("litnie", "Літнє поле", "img/sets/maskscr-litnie-pole.webp", 3100), ("enerhiia", "Енергія", "img/sets/maskscr-enerhiia.webp", 3100), ("sertse", "Серцебиття", "img/sets/maskscr-sertsebyttia.webp", 3100)]),
-    dict(k="song", n="Маска, закладка й резинка", p=3600, note="колекція «Співоча душа»", inside=["Маска для сну", "Закладка для книги", "Шовкова резинка"], box="", who="Подарунок із сенсом · частина коштів — на гнізда для сиворакші", occ=["key", "rest"],
-         site="2 принти", prints=[("pidnesennia", "Піднесення", "img/sets/sleep-pidnesennia.webp", 3600), ("melodiia", "Мелодія двох", "img/sets/sleep-melodiia.webp", 3600)]),
-    dict(k="three", n="Три твіллі на вибір", p=4800, note="принти можна обрати різні", inside=["Три твіллі 84 × 5"], box="святкове пакування", who="Керівникам · до вагомої нагоди", occ=["key"],
-         site="три принти на вибір із каталогу твіллі", prints=[("three", "Три принти на вибір", "img/sets/three-twilly.webp", 4800)]),
+    dict(k="tw44", n="Твіллі та хустка 44 × 44", p=3100, note="двосторонні принти й колекція SOLO — 4 080 грн", inside=["Твіллі 84 × 5", "Хустка 44 × 44"], box="", who="Ключовим людям · до річниці", occ=["bday", "key"],
+         site="23 принти, з них 12 двосторонніх", prints=[("vpevnenist", "Впевненість", "img/sets/tw44-vpevnenist.webp", 3100), ("zolote", "Золоте світло, новинка", "img/sets/tw44-zolote.webp", 4080), ("hratsiia", "Грація", "img/sets/tw44-hratsiia.webp", 3100), ("natkhnennia", "Натхнення", "img/sets/tw44-natkhnennia.webp", 3100),
+                 ("balans", "Баланс", "img/sets/tw44-balans.webp", 3100), ("vyr", "Вир почуттів", "img/sets/tw44-vyr.webp", 3100), ("dotyk", "Сміливий дотик", "img/sets/tw44-smilyvyi-dotyk.webp", 3100), ("probudzhennia", "Пробудження, двосторонній", "img/sets/tw44-probudzhennia.webp", 4080), ("nizhnist", "Ніжність, двосторонній", "img/sets/tw44-nizhnist.webp", 4080)]),
+    dict(k="twscr", n="Твіллі та резинка", p=2200, note="довга твіллі 140 × 5 — 2 800 грн", inside=["Твіллі 84 × 5", "Шовкова резинка"], box="святкова коробка", who="Хто носить аксесуари · до дня народження", occ=["bday"],
+         site="10 принтів, з них 2 — з твіллі 140 × 5", prints=[("makiv", "Маків цвіт", "img/sets/twscr-makiv.webp", 2200), ("prystrast", "Пристрасть", "img/sets/twscr-prystrast.webp", 2200), ("litnie", "Літнє поле", "img/sets/twscr-litnie-pole.webp", 2200), ("enerhiia", "Енергія", "img/sets/twscr-enerhiia.webp", 2200), ("smilyvist", "Сміливість", "img/sets/twscr-smilyvist.webp", 2200), ("vinochok", "Літній віночок, 140 × 5", "img/sets/twscr-vinochok140.webp", 2800)]),
+    dict(k="maskscr", n="Маска для сну та резинка", p=3280, note="", inside=["Маска для сну", "Шовкова резинка"], box="", who="Про відпочинок · підтримка, відпустка", occ=["bday", "rest"],
+         site="8 принтів", prints=[("litnie", "Літнє поле", "img/sets/maskscr-litnie-pole.webp", 3280), ("enerhiia", "Енергія", "img/sets/maskscr-enerhiia.webp", 3280), ("sertse", "Серцебиття", "img/sets/maskscr-sertsebyttia.webp", 3280)]),
+    dict(k="song", n="Маска, закладка й резинка", p=4080, note="колекція «Співоча душа»", inside=["Маска для сну", "Закладка для книги", "Шовкова резинка"], box="", who="Подарунок із сенсом · частина коштів — на гнізда для сиворакші", occ=["key", "rest"],
+         site="2 принти", prints=[("pidnesennia", "Піднесення", "img/sets/sleep-pidnesennia.webp", 4080), ("melodiia", "Мелодія двох", "img/sets/sleep-melodiia.webp", 4080)]),
+    dict(k="three", n="Три твіллі на вибір", p=4650, note="принти можна обрати різні", inside=["Три твіллі 84 × 5"], box="святкове пакування", who="Керівникам · до вагомої нагоди", occ=["key"],
+         site="три принти на вибір із каталогу твіллі", prints=[("three", "Три принти на вибір", "img/sets/three-twilly.webp", 4650)]),
     dict(k="masks2", n="Дві маски «Серцебиття»", p=4200, note="червона та чорна", inside=["Дві маски для сну"], box="", who="Для двох · до вагомої нагоди", occ=["all", "rest"],
          site="червона й чорна", prints=[("sertse", "Серцебиття", "img/sets/masks-sertsebyttia.webp", 4200)]),
-    dict(k="scrset", n="Три резинки", p=1800, note="zero waste: 3 шт. — 1 250 грн, 5 шт. — 2 000 грн", inside=["Три шовкові резинки"], box="", who="Невеликий знак уваги", occ=["bday"],
+    dict(k="scrset", n="Три резинки", p=1800, note="zero waste: 3 шт. — 1 980 грн, 5 шт. — 2 420 грн", inside=["Три шовкові резинки"], box="", who="Невеликий знак уваги", occ=["bday"],
          site="варіанти: 3 шт., zero waste 3 і 5 шт.", prints=[("scr3", "Три резинки", "img/sets/scr3.webp", 1800), ("zero5", "Zero waste, 5 шт.", "img/sets/scr5-zero.webp", 2000)]),
     dict(k="pil", n="Наволочка 50 × 70", p=4200, note="з принтом — 5 700 грн", inside=["Шовкова наволочка"], box="", who="Для дому · підходить усім", occ=["all", "key", "rest"],
          site="3 однотонні, 2 з принтом", prints=[("tuman", "Туман", "img/sets/pillow-tuman.webp", 4200), ("khmara", "Хмара", "img/sets/pillow-khmara.webp", 4200), ("kapuchyno", "Капучино", "img/sets/pillow-kapuchyno.webp", 4200), ("enerhiia", "Енергія, з принтом", "img/sets/pillow-enerhiia.webp", 5700), ("shchyri", "Щирі почуття, з принтом", "img/sets/pillow-shchyri.webp", 5700)]),
@@ -158,7 +158,7 @@ def gallery():
     for f in FAM:
         for slug, n, _ph, pp in f["prints"]:
             C[vkey(f, slug)] = dict(n=vname(f, n), p=pp, all=f["k"] in NEUTRAL)
-    ready = {"+".join(sorted(ks)): dict(key=vkey(fams[fk], fams[fk]["prints"][0][0]), n=fams[fk]["n"], p=fams[fk]["p"], ph=fams[fk]["prints"][0][2], box=fams[fk]["box"] or ("у готовому наборі — хустка з одностороннім друком; двосторонній — 3 600 грн" if fk == "tw44" else "")) for ks, fk in READY}
+    ready = {"+".join(sorted(ks)): dict(key=vkey(fams[fk], fams[fk]["prints"][0][0]), n=fams[fk]["n"], p=fams[fk]["p"], ph=fams[fk]["prints"][0][2], box=fams[fk]["box"] or ("у готовому наборі — хустка з одностороннім друком; двосторонній — 4 080 грн" if fk == "tw44" else "")) for ks, fk in READY}
     js = shop.LIST_JS.replace("__C__", J(C)).replace("__STICKY__", "Набори Obiimy · від 1 800 грн").replace("__TAG__", "undefined") + """
     // the print switcher: photo, price and the list key follow the chosen print
     [].forEach.call(document.querySelectorAll('.sw .more-sw'), function (b) {
@@ -209,7 +209,7 @@ def gallery():
     document.getElementById('b-add').addEventListener('click', function () { var ks = this.dataset.keys ? this.dataset.keys.split(',') : []; if (!ks.length) return; ks.forEach(function (k) { if (!n(k)) set(k, dflt(k)); }); toList(); });
     rbox.querySelector('button').addEventListener('click', function () { var k = this.dataset.key; if (!n(k)) set(k, dflt(k)); toList(); });
     """.replace("__READY__", J(ready))
-    quad = "".join(f'<a href="#fam-{k}">{img(ph, a, sizes="(max-width: 640px) 50vw, 22vw")}<span>{a} · <b>{price(pr)}</b></span></a>' for k, ph, a, pr in [("twscr", "img/sets/twscr-makiv.webp", "Твіллі та резинка", 2200), ("maskscr", "img/sets/maskscr-litnie-pole.webp", "Маска та резинка", 3100), ("three", "img/sets/three-twilly.webp", "Три твіллі", 4800), ("song", "img/sets/sleep-pidnesennia.webp", "Маска, закладка й резинка", 3600)])
+    quad = "".join(f'<a href="#fam-{k}">{img(ph, a, sizes="(max-width: 640px) 50vw, 22vw")}<span>{a} · <b>{price(pr)}</b></span></a>' for k, ph, a, pr in [("twscr", "img/sets/twscr-makiv.webp", "Твіллі та резинка", 2200), ("maskscr", "img/sets/maskscr-litnie-pole.webp", "Маска та резинка", 3280), ("three", "img/sets/three-twilly.webp", "Три твіллі", 4650), ("song", "img/sets/sleep-pidnesennia.webp", "Маска, закладка й резинка", 4080)])
     body = f'''
   <section class="hero h1-xs" style="padding-bottom:clamp(12px,2vw,28px)"><div class="wrap" style="align-items:center">
     <div>

@@ -38,7 +38,7 @@ SHELVES = [   # every shelf holds only what its heading says (audit 07.10)
      [("Хустка 44 × 44", "1 600 грн", "photo/site/khustka-potsilunok-sontsia-44x44-02.jpg", "50% 0%", "photo"), ("Твіллі", "1 600 грн", "photo/solo/krok-tw-2.webp", "50% 30%", "photo"),
       ("Твіллі + резинка в коробці", "від 2 200 грн", "img/cut/box-twscr-smilyvist.webp", "", "cut"), ("Маска для сну", "від 2 700 грн", "photo/site/mask-vpevnenist-04.jpg", "50% 0%", "photo")]),
     ("Від 3 000 грн", "Ключовим людям — у коробці", "Набори в святковій коробці та великі хустки 65 × 65 і 88 × 88. Підберемо набір із наявних речей; власний принт — за запитом.",
-     [("Маска + резинка", "від 3 100 грн", "img/cut/box-maskscr-litnie-pole.webp", "", "cut"), ("Твіллі + хустка", "від 3 200 грн", "img/cut/box-sctw-spokusa.webp", "", "cut"),
+     [("Маска + резинка", "від 3 280 грн", "img/cut/box-maskscr-litnie-pole.webp", "", "cut"), ("Твіллі + хустка", "від 3 100 грн", "img/cut/box-sctw-spokusa.webp", "", "cut"),
       ("Велика хустка", "від 3 200 грн", "photo/solo/avantiura-88-3.webp", "50% 20%", "photo"), ("Сертифікат", "4 000 грн", "img/cert-card.png", "50% 40%", "photo", 1.15)]),
 ]
 def budget_hero():
@@ -98,7 +98,7 @@ def ways_strip():
   </section>'''
 def three():
     C = [("Усім · 1 600 на людину", "Твіллі або паше", "Жінкам — твіллі, чоловікам — хустка-паше: за ту саму ціну, в одному принті або кожному свій. Найлегший у виборі подарунок.", "1 600 грн", tile("photo/solo/flirt-tw-1.webp", "50% 20%", "Твіллі", sz="(max-width: 900px) 100vw, 33vw")),
-         ("Усій команді або ключовим · 2 200–3 600", "Набір у коробці", "Твіллі з хусткою, твіллі з резинкою або маска для сну з резинкою — в одному принті, у святковій коробці.", "від 2 200 грн", f'<figure class="dq-cut ds-cut"><div>{img("img/cut/box-sctw-spokusa.webp", "Набір: твіллі й хустка в коробці", sizes="(max-width: 900px) 100vw, 33vw")}</div></figure>'),
+         ("Усій команді або ключовим · 2 200–4 080", "Набір у коробці", "Твіллі з хусткою, твіллі з резинкою або маска для сну з резинкою — в одному принті, у святковій коробці.", "від 2 200 грн", f'<figure class="dq-cut ds-cut"><div>{img("img/cut/box-sctw-spokusa.webp", "Набір: твіллі й хустка в коробці", sizes="(max-width: 900px) 100vw, 33vw")}</div></figure>'),
          ("На вибір людини · від 1 000", "Сертифікат", "Номінали 1 000, 1 500, 2 000, 2 500 і 4 000 грн; діє три місяці, на будь-який товар.", "від 1 000 грн", f'<figure class="dk-w6 dk-cert"><div>{img("img/cert-card.png", "Подарунковий сертифікат Obiimy", sizes="(max-width: 900px) 100vw, 33vw")}</div></figure>')]
     cards = "".join(f'<div class="ds-card">{ph}<p class="eyebrow">{k}</p><h3>{n}</h3><p>{d}</p><p class="dk-from">{p}</p></div>' for k, n, d, p, ph in C)
     return f'<section class="ds-three" id="three"><div class="wrap"><h2>Три способи <i>подарувати</i></h2><div class="ds-cards">{cards}</div></div></section>'

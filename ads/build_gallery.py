@@ -481,14 +481,16 @@ def build_home(site, render):
             im.crop((x0, 0, x0 + cw, h)).resize((520, 400)).save(ph, quality=82)
         v = hashlib.md5(f.read_bytes()).hexdigest()[:8]; files.append(f"creatives/home/{f.name}?v={v}")
         cards[tier].append(f'''<figure class="hb"><div class="hbv"><a href="creatives/home/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/home/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="1200" height="360"></a><div class="hbp" title="Як обріже слайдер на телефоні (ліва частина з лок-апом)"><img src="creatives/home/{ph.name}?v={v}" alt="" loading="lazy" width="520" height="400"><span>телефон</span></div></div>
-      <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><div class="hba"><a href="home-preview?b={id}">На макеті →</a><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></div></figcaption></figure>''')
+      <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><div class="hba"><label class="hbc"><input type="checkbox" data-id="{id}"> Показувати</label><a href="home-preview?b={id}">На макеті →</a><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></div></figcaption></figure>''')
     secs = "".join(f'<section class="hbt {k}"><h2>{t} <span>· {len(cards[k])}</span></h2><div class="hbs">{"".join(cards[k])}</div></section>' for k, t in TIERS if cards[k])
     body = f'''<header><a href="./">← Усі лендинги Obiimy</a><a href="creatives">Рекламні креативи →</a></header>
 <h1>Банери для головної</h1>
 <p class="lede"><b>Колекція SOLO на головній obiimy.world.</b> Формат поточного банера сайту — 1920 × 576: лок-ап «КОЛЕКЦІЯ / СОЛО / ШЛЯХ ДО СЕБЕ», жовта плашка «Жіноча сила крізь десятиліття», вертикальний OBIIMY™. Фото — зйомки колекції й студійний кадр клієнта, тексти — за прес-релізом. Поруч із кожним — як його обріже слайдер на телефоні.</p>
-<p class="lede hbl"><a href="home-preview">Подивитися на макеті головної (слайдер) →</a><button type="button" id="hbzip">Завантажити всі (ZIP)</button><span id="hbn"></span></p>
+<p class="lede hbl"><a href="home-preview" id="hbgo">Вибрані на макеті головної (слайдер) →</a><button type="button" id="hbcopy">Копіювати посилання з вибором</button><button type="button" id="hbzip">Завантажити всі (ZIP)</button><span id="hbn"></span></p>
+<p class="lede hbsel"><span id="hbcount"></span> · Галочка «Показувати» на картці — банер потрапляє в ротацію на макеті. Вибір зберігається у вашому браузері; щоб передати його іншому — «Копіювати посилання з вибором».</p>
 {secs}
 <style>.hbl {{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:14px; }} .hbl a {{ color:var(--acc); font-weight:600; }} .hbl button {{ font:inherit; font-size:.88rem; border:0; background:var(--acc); color:#fff; border-radius:999px; padding:10px 16px; cursor:pointer; }} .hbl button[disabled] {{ opacity:.6; }} #hbn {{ font-size:.85rem; color:var(--ink2); }}
+.hbsel {{ font-size:.9rem; color:var(--ink2); margin-top:8px; }} #hbcount {{ color:var(--ink); font-weight:600; }} .hbc {{ display:flex; align-items:center; gap:8px; font-weight:600; color:var(--ink); cursor:pointer; white-space:nowrap; }} .hbc input {{ width:18px; height:18px; accent-color:#2b7a3d; cursor:pointer; margin:0; }} .hb.sel {{ box-shadow: 0 0 0 2px #2b7a3d inset; }}
 .hbt {{ margin-top: 48px; }} .hbt h2 {{ margin: 0 0 18px; font-size: 1.5rem; }} .hbt h2 span {{ color: var(--ink2); font-weight: 400; }} .hbt.ok h2::before {{ content: "✓ "; color: #2b7a3d; }}
 .hbs {{ display: grid; gap: 28px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }} .hbt.ok .hb {{ border-color: #2b7a3d; }}
 .hbv {{ display: grid; grid-template-columns: 1fr 160px; gap: 10px; align-items: start; background: var(--bg); padding: 10px; }} .hbv > a img {{ display: block; width: 100%; height: auto; }}
@@ -497,6 +499,27 @@ def build_home(site, render):
 @media (max-width: 700px) {{ .hbv {{ grid-template-columns: 1fr; }} .hbp {{ max-width: 200px; }} .hb figcaption {{ flex-direction: column; align-items: flex-start; }} }}
 .picks, .fmt, .toc, .all, #lb {{ display: none !important; }}</style>
 <script>
+(function () {{
+  var KEY = 'obiimy-home-sel', OK = {json.dumps([id for id, _, _, tier in HOME if tier == "ok"])};
+  var boxes = [].slice.call(document.querySelectorAll('.hbc input')), count = document.getElementById('hbcount'), go = document.getElementById('hbgo'), copy = document.getElementById('hbcopy');
+  var stored = null; try {{ stored = JSON.parse(localStorage.getItem(KEY)); }} catch (e) {{}}
+  var q = new URLSearchParams(location.search).get('sel');
+  var sel = q !== null ? q.split(',').filter(Boolean) : (Array.isArray(stored) ? stored : OK);
+  function sync(save) {{
+    sel = boxes.filter(function (b) {{ return b.checked; }}).map(function (b) {{ return b.dataset.id; }});
+    boxes.forEach(function (b) {{ b.closest('.hb').classList.toggle('sel', b.checked); }});
+    if (save) {{ try {{ localStorage.setItem(KEY, JSON.stringify(sel)); }} catch (e) {{}} }}
+    count.textContent = 'Вибрано для ротації: ' + sel.length + ' з ' + boxes.length;
+    go.href = 'home-preview?sel=' + sel.join(',');
+  }}
+  boxes.forEach(function (b) {{ b.checked = sel.indexOf(b.dataset.id) >= 0; b.addEventListener('change', function () {{ sync(true); }}); }});
+  sync(q !== null);
+  copy.addEventListener('click', function () {{
+    var url = location.origin + location.pathname.replace(/\/[^\/]*$/, '/') + 'home-preview?sel=' + sel.join(',');
+    (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.reject()).then(function () {{ copy.textContent = 'Скопійовано ✓'; }}, function () {{ prompt('Посилання з вибором:', url); }});
+    setTimeout(function () {{ copy.textContent = 'Копіювати посилання з вибором'; }}, 2500);
+  }});
+}})();
 document.getElementById('hbzip').addEventListener('click', function () {{
   var btn = this, n = document.getElementById('hbn'), items = {json.dumps(files)}; btn.disabled = true;
   (window.JSZip ? Promise.resolve() : new Promise(function (ok, no) {{ var s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); }}))
@@ -549,13 +572,23 @@ def build_home_mock(site, out, items):
 <div class="hd"><img src="brand/logo-original.png" alt="Obiimy"><div class="srch">пошук товарів</div><span>✳ Замовлення: <b>+38 067 010 85 25</b></span><b>🧺 Мій кошик</b></div>
 <div class="nav"><div class="in"><span>SALE</span><span>ХІТ</span><span>Колекції</span><span>Подарункові набори</span><span>Хустки</span><span>Хустки 2D</span><span>Хустки паше</span><span>Твіллі</span><span>Резинки</span><span>Маски для сну</span><span>Прикраси</span><span>Obiimy HOME</span><span>Сертифікати</span></div></div>
 <div class="herow"><div class="hero" id="hero">{slides}<div class="dots" id="dots">{dots}</div></div><button type="button" class="ar l" id="prev" aria-label="Попередній">‹</button><button type="button" class="ar r" id="next" aria-label="Наступний">›</button></div>
-<div class="ctl"><span>Варіант:</span><select id="pick">{opts}</select><a id="dl" href="#" download>JPG 1920 × 576 ↓</a><a href="home-banners">Усі банери списком →</a></div>
+<div class="ctl"><span>Варіант:</span><select id="pick">{opts}</select><a id="dl" href="#" download>JPG 1920 × 576 ↓</a><a href="home-banners">Усі банери списком →</a><span id="selnote"></span></div>
 <div class="cats"><h3>Категорії</h3><div class="catrow">{"".join(circle(l, k) for l, k in cuts)}</div></div>
 <script>
 (function () {{
   var sl = [].slice.call(document.querySelectorAll('.sl')), dots = [].slice.call(document.querySelectorAll('#dots button')), pick = document.getElementById('pick'), dl = document.getElementById('dl'), cur = 0;
-  var q = new URLSearchParams(location.search).get('b'); sl.forEach(function (s, i) {{ if (s.dataset.id === q) cur = i; }});
-  function show(i) {{ cur = (i + sl.length) % sl.length; sl.forEach(function (s, k) {{ s.classList.toggle('on', k === cur); }}); dots.forEach(function (d, k) {{ d.classList.toggle('on', k === cur); }}); pick.value = cur; var im = sl[cur].querySelector('img'); dl.href = im.src; dl.setAttribute('download', sl[cur].dataset.id + '.jpg'); history.replaceState(null, '', '?b=' + sl[cur].dataset.id); }}
+  var P = new URLSearchParams(location.search), q = P.get('b'), selq = P.get('sel'), stored = null, total = sl.length;
+  try {{ stored = JSON.parse(localStorage.getItem('obiimy-home-sel')); }} catch (e) {{}}
+  var sel = P.has('all') ? null : (selq !== null ? selq.split(',').filter(Boolean) : (Array.isArray(stored) ? stored : null));
+  if (sel) {{
+    var keep = [], kd = [], ko = [], opts = [].slice.call(pick.options);
+    sl.forEach(function (s, i) {{ if (sel.indexOf(s.dataset.id) >= 0 || s.dataset.id === q) {{ keep.push(s); kd.push(dots[i]); ko.push(opts[i]); }} else {{ s.remove(); dots[i].remove(); opts[i].remove(); }} }});
+    sl = keep; dots = kd; dots.forEach(function (d, i) {{ d.dataset.i = i; }}); ko.forEach(function (o, i) {{ o.value = i; }});
+    var note = document.getElementById('selnote'); if (note) note.innerHTML = 'У ротації ' + sl.length + ' з ' + total + ' · <a href="home-preview?all">показати всі</a> · <a href="home-banners?sel=' + sel.join(',') + '">змінити вибір</a>';
+  }}
+  if (!sl.length) {{ document.getElementById('hero').insertAdjacentHTML('beforeend', '<p style="position:absolute;inset:0;margin:0;display:grid;place-items:center;color:#fff">Нічого не вибрано — <a href="home-banners" style="color:#F2B705;margin-left:6px">відмітьте банери</a></p>'); return; }}
+  sl.forEach(function (s, i) {{ if (s.dataset.id === q) cur = i; }});
+  function show(i) {{ cur = (i + sl.length) % sl.length; sl.forEach(function (s, k) {{ s.classList.toggle('on', k === cur); }}); dots.forEach(function (d, k) {{ d.classList.toggle('on', k === cur); }}); pick.value = cur; var im = sl[cur].querySelector('img'); dl.href = im.src; dl.setAttribute('download', sl[cur].dataset.id + '.jpg'); P.set('b', sl[cur].dataset.id); history.replaceState(null, '', '?' + P.toString()); }}
   dots.forEach(function (d) {{ d.addEventListener('click', function () {{ show(Number(d.dataset.i)); }}); }});
   pick.addEventListener('change', function () {{ show(Number(pick.value)); }});
   document.getElementById('prev').addEventListener('click', function () {{ show(cur - 1); }}); document.getElementById('next').addEventListener('click', function () {{ show(cur + 1); }});

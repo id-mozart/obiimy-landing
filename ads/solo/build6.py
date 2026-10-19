@@ -114,7 +114,8 @@ def band(top, height, b, n=3):
     elif photo.startswith("url("):
         pic = f'<div style="position:absolute;inset:0;background:{photo} {pos}"></div>'
     else:
-        more = (";transform:scaleX(-1)" if extra.get("flip") else "") + (";width:%d%%" % wide if wide else "") + (f";width:{fit}%;margin-left:auto;{fade}" if fit else "") + (f";margin-left:{extra['dx']}px;{fade}" if extra.get("dx") and wide else "")
+        shift = f";transform:translateX({extra['sx']}px)" if FORMAT == "story" and extra.get("sx") and not extra.get("flip") else ""   # story: the figure moved right, away from the caption
+        more = shift + (";transform:scaleX(-1)" if extra.get("flip") else "") + (";width:%d%%" % wide if wide else "") + (f";width:{fit}%;margin-left:auto;{fade}" if fit else "") + (f";margin-left:{extra['dx']}px;{fade}" if extra.get("dx") and wide else "")
         pic = f'<img src="{S(photo)}" alt="" style="object-position:{pos};{FILTERS[look]}{more}">'
     return f'''
   <div class="band" style="top:{top}px;height:{height}px">{pic}<div class="veil"{' style="background:' + extra["veil"] + '"' if extra.get("veil") else ""}></div>
@@ -182,9 +183,9 @@ triptych("t04-flirt-three-ways", "Один принт — три образи", 
 ], "«Флірт»: хустка й твіллі одного принту.", (["flirt-65-1", "flirt-tw-5"], "Хустка й твіллі «Флірт»", "від 1 600 грн"), "Обрати «Флірт»", "Flirt three ways")
 
 triptych("t05-avantiura-ways", "Одна хустка — три способи", [
-    ("avantiura-88-5", "50% 0%", "У волоссі", "Бант, який помічають.", "raw", {"size": 96, "fit": 70, "focus": .48}),
-    ("avantiura-88-4", "50% 6%", "На шиї", "Класика, що не виходить<br>з моди.", "raw", {"size": 96, "wide": 125, "dx": 120, "focus": .40, "sfocus": .31, "swide": 100}),
-    ("avantiura-88-2", "45% 76%", "Поясом", "Акцент на талії.", "raw", {"size": 96, "wide": 112, "focus": .67}),
+    ("avantiura-88-5", "50% 0%", "У волоссі", "Бант, який помічають.", "raw", {"size": 96, "fit": 70, "focus": .48, "sx": 70}),
+    ("avantiura-88-4", "50% 6%", "На шиї", "Класика, що не виходить<br>з моди.", "raw", {"size": 96, "wide": 125, "dx": 120, "focus": .40, "sfocus": .31, "swide": 100, "sx": 80}),
+    ("avantiura-88-2", "45% 76%", "Поясом", "Акцент на талії.", "raw", {"size": 96, "wide": 112, "focus": .67, "sx": 60}),
 ], "", (["avantiura-88-1"], "Шовкова хустка «Авантюра»", "6 600 грн"), "Купити", "Avantiura three ways", plain=True, logo_col="#F2B705")
 
 triptych("t06-formats", "Оберіть свій формат", [

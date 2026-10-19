@@ -332,6 +332,54 @@ ad("home-s6-light", f'''
   <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Studio: light mirrored")
 
+# round 6 (19.10): six on frames the banners had not used yet
+# N1 · the pair: dark field with the lock-up, two portrait panels — the white suit with «Іскра» and the black blazer with «Авантюра»
+ad("home-n1-pair", f'''
+  <div style="inset:0;background:#141110"></div>
+  <div class="ph" style="left:820px;top:0;bottom:0;width:470px"><img src="{S2('iskra-65-2')}" alt="" style="object-position:50% 18%"></div>
+  <div class="ph" style="left:1302px;top:0;bottom:0;width:470px"><img src="{S2('avantiura-tw-1')}" alt="" style="object-position:50% 14%"></div>
+  <div style="left:820px;top:0;bottom:0;width:120px;background:linear-gradient(90deg,#141110,rgba(20,17,16,0))"></div>
+  {lock()}{logo()}''', note="Pair: white and black")
+
+# N2 · the white suit on the morning street: full bleed, light veil on the left, the dark lock-up
+ad("home-n2-white", f'''
+  <div class="ph" style="inset:0"><img src="{S2('iskra-65-2')}" alt="" style="object-position:62% 31%"></div>
+  <div style="inset:0;background:linear-gradient(90deg,rgba(240,235,225,.94) 0%,rgba(240,235,225,.8) 34%,rgba(240,235,225,0) 60%)"></div><div class="scrim-l"></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="White suit, light")
+
+# N3 · seven twillies fanned on the dark field: the collection as an object
+def _twcut(p):
+    tw = p["tw"]
+    return tw if (HERE / f"src/{tw}-cut.webp").exists() else tw[:-1] + "1"
+fan = "".join(f'<img src="{CUT(_twcut(p))}" alt="" style="left:{640 + i * 100}px;top:50%;height:560px;width:auto;transform:translateY(-50%) rotate({-22 + i * 7}deg);transform-origin:50% 85%;filter:drop-shadow(0 24px 30px rgba(0,0,0,.55))">' for i, p in enumerate(P))
+ad("home-n3-fan", f'''
+  <div style="inset:0;background:radial-gradient(70% 90% at 72% 50%,#2A2320,#141110 75%)"></div>
+  {fan}
+  <div style="left:1680px;top:0;bottom:0;width:240px;background:linear-gradient(270deg,rgba(20,17,16,.85),rgba(20,17,16,0))"></div>
+  {lock()}{logo()}''', note="Seven twillies fanned")
+
+# N4 · from the back: the red twilly in the hair on the Paris street, warm veil, white lock-up
+ad("home-n4-back", f'''
+  <div class="ph" style="inset:0"><img src="{S2('avantiura-tw-3')}" alt="" style="object-position:58% 22%"></div>
+  <div class="veil"></div><div class="scrim-d"></div>
+  {lock()}{logo()}''', note="Back, twilly in the hair")
+
+# N5 · the still life: the blue bag and the polka-dot scarf on the café table, paper panel with the lock-up
+ad("home-n5-table", f'''
+  <div style="inset:0;background:#F0EBE1"></div>
+  <div class="ph" style="left:860px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%);mask-image:linear-gradient(90deg,transparent 0,#000 18%)"><img src="{S2('iskra-65-3')}" alt="" style="object-position:0% 58%;transform:scale(1.1);transform-origin:0% 60%"></div>
+  <div class="scrim-l"></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p><p class="cap">Хустка «Іскра» · 65 × 65</p></div>
+  <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Still life on the table")
+
+# N6 · evening street: «Пульс» twilly on the white shirt, the dark Paris street behind, the figure right
+ad("home-n6-evening", f'''
+  <div style="inset:0;background:#1A1816"></div>
+  <div class="ph" style="left:720px;right:0;top:0;bottom:0"><img src="{S2('puls-tw-3')}" alt="" style="object-position:50% 10%"></div>
+  <div style="left:720px;top:0;bottom:0;width:260px;background:linear-gradient(90deg,#1A1816,rgba(26,24,22,0))"></div><div class="scrim-d"></div>
+  {lock()}{logo()}''', note="Evening street")
+
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO home banners</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap">

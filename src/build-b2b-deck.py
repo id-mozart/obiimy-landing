@@ -47,7 +47,29 @@ def hero():
     </div></div>
   </section>'''
 
-CHIPS_JS = """
+REVEAL_JS = """
+  // content comes in as you scroll: sections' blocks and tiles rise and fade (staggered within a row), lazy pictures fade in as
+  // they load; the hero's text and mosaic animate on load. Without IntersectionObserver or with reduced motion nothing is hidden.
+  (function () {
+    var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var sel = 'main section:not(.hero) > .wrap > *, .dk-w6g > .dk-w6, .dk-scols > .dk-scol, .dk-rows > .dk-rw, .dk-strip > .dk-t7, .dk-s3 > *, .dk-faq2 > *, .dk-ab > *, .dk-pair > *, .dk-nest > *';
+    var els = [].slice.call(document.querySelectorAll(sel)).filter(function (el) { return !el.closest('.rv') || el.parentNode.closest('.rv') === null; });
+    if (reduce || !('IntersectionObserver' in window)) return;
+    var groups = new Map();
+    els.forEach(function (el) {
+      if (el.closest('form')) return;
+      var g = groups.get(el.parentNode) || []; g.push(el); groups.set(el.parentNode, g);
+      el.classList.add('rv'); el.style.transitionDelay = Math.min(g.length - 1, 7) * 80 + 'ms';
+    });
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -10% 0px', threshold: 0.06 });
+    document.querySelectorAll('.rv').forEach(function (el) { io.observe(el); });
+    document.querySelectorAll('main img[loading="lazy"]').forEach(function (im) {
+      if (im.complete) return; im.classList.add('ld'); im.addEventListener('load', function () { im.classList.remove('ld'); }, { once: true });
+    });
+    document.documentElement.classList.add('rv-on');
+  })();
+"""
+CHIPS_JS = REVEAL_JS + """
   var chips = document.querySelector('.dk-chips'), req = document.getElementById('request');
   if (chips && req && 'IntersectionObserver' in window) {
     new IntersectionObserver(function (es) { chips.classList.toggle('off', es[0].isIntersecting); }, { rootMargin: '-120px 0px 0px 0px' }).observe(req);
@@ -163,6 +185,19 @@ def page():
 
 CSS = """
   /* b2b-deck: the deck's pages as sections */
+  /* scroll reveal (classes come from REVEAL_JS, so without JS nothing is hidden) */
+  .rv { opacity: 0; transform: translateY(26px); transition: opacity .75s cubic-bezier(.2,.7,.2,1), transform .75s cubic-bezier(.2,.7,.2,1); }
+  .rv.in { opacity: 1; transform: none; }
+  figure.rv img, .dk-w6.rv img { transform: scale(1.06); transition: transform 1.3s cubic-bezier(.2,.7,.2,1), opacity .6s; } figure.rv.in img, .dk-w6.rv.in img { transform: none; }
+  main img.ld { opacity: 0; } main img { transition: opacity .6s ease; }
+  .rv-on .dk-band-t > *, .rv-on .dk-band .cta { animation: dkUp .9s cubic-bezier(.2,.7,.2,1) both; }
+  .rv-on .dk-band-t > :nth-child(2) { animation-delay: .12s; } .rv-on .dk-band-t > :nth-child(3) { animation-delay: .24s; } .rv-on .dk-band .cta { animation-delay: .36s; }
+  .rv-on .dk-band-art figure { animation: dkIn 1s cubic-bezier(.2,.7,.2,1) both; animation-delay: .45s; } .rv-on .dk-band-art figure:nth-child(2) { animation-delay: .6s; } .rv-on .dk-band-art figure:nth-child(3) { animation-delay: .75s; }
+  .rv-on .dk-mosaic img { animation: dkFade 1.1s ease both; } .rv-on .dk-mosaic img:nth-child(2) { animation-delay: .1s; } .rv-on .dk-mosaic img:nth-child(3) { animation-delay: .2s; } .rv-on .dk-mosaic img:nth-child(4) { animation-delay: .3s; } .rv-on .dk-mosaic img:nth-child(n+5) { animation-delay: .4s; }
+  @keyframes dkUp { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+  @keyframes dkIn { from { opacity: 0; transform: translateY(14px) scale(.96); } to { opacity: 1; transform: none; } }
+  @keyframes dkFade { from { opacity: 0; transform: scale(1.04); } to { opacity: 1; transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; } main img.ld { opacity: 1; } }
   .hero.dk-cover { padding: 0; position: relative; }
   .dk-mosaic { display: grid; grid-template-columns: repeat(4, 1fr); max-height: calc(100vh - 112px); overflow: hidden; } .dk-mosaic img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; }
   .dk-band { position: absolute; left: 0; right: 0; top: 50%; transform: translateY(-50%); background: #FDD31A; color: #141414; padding: clamp(18px, 2.4vw, 28px) 0; box-shadow: 0 10px 40px rgba(0,0,0,.25); } .dk-band .wrap { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 32px; }
@@ -226,7 +261,7 @@ CSS = """
 def build():
     b2b.CSS += team.CSS + shop.CSS + main.CSS + CSS
     p = page()
-    html = main.snap_type(typo(team.bind(b2b.shell(p, p["body"]))))
+    html = b2b.cms_mark(main.snap_type(typo(team.bind(b2b.shell(p, p["body"])))), p["slug"])
     (b2b.OUT / f"{p['slug']}.html").write_text(html)
     print(p["slug"], len(html) // 1024, "KB")
 

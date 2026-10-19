@@ -568,22 +568,25 @@ def corp_clean(h):
     p = _Sanitize(); p.feed(str(h)); p.close(); return "".join(p.out)[:20000]
 
 KEY_RE = re.compile(r"^[a-z0-9-]{1,80}$")
+CORP_PAGES = ("b2b-deck", "b2b-team-main")                               # the pages that take edits; each keeps its own file data/corp/pages/<slug>.json
+def corp_page(name): return name if name in CORP_PAGES else "b2b-deck"
 
 def api_corp_save(body):
     """POST /api/corp: the full set of overrides {text: {key: {html}}, img: {key: {src}}}; written atomically, the previous file kept in history/."""
     text = body.get("text") or {}; img = body.get("img") or {}
     if not isinstance(text, dict) or not isinstance(img, dict): raise Problem("Очікую text і img як словники.")
-    out = {"text": {}, "img": {}, "saved": time.strftime("%Y-%m-%dT%H:%M:%S")}
+    page = corp_page(str(body.get("page") or ""))
+    out = {"page": page, "text": {}, "img": {}, "saved": time.strftime("%Y-%m-%dT%H:%M:%S")}
     for k, v in text.items():
         if KEY_RE.match(str(k)) and isinstance(v, dict) and isinstance(v.get("html"), str): out["text"][k] = {"html": corp_clean(v["html"])}
     for k, v in img.items():
         src = (v or {}).get("src") if isinstance(v, dict) else None
         if KEY_RE.match(str(k)) and isinstance(src, str) and re.match(r"^(https?://[^\s\"'<>]+|/pub/corp/[a-z0-9._-]+)$", src): out["img"][k] = {"src": src}
-    CORP_DIR.mkdir(parents=True, exist_ok=True); (CORP_DIR / "history").mkdir(exist_ok=True)
-    f = CORP_DIR / "corp.json"
-    if f.exists(): shutil.copy(f, CORP_DIR / "history" / f"corp-{time.strftime('%Y%m%d-%H%M%S')}.json")
+    (CORP_DIR / "pages").mkdir(parents=True, exist_ok=True); (CORP_DIR / "history").mkdir(exist_ok=True)
+    f = CORP_DIR / "pages" / f"{page}.json"
+    if f.exists(): shutil.copy(f, CORP_DIR / "history" / f"{page}-{time.strftime('%Y%m%d-%H%M%S')}.json")
     write_atomic(f, json.dumps(out, ensure_ascii=False, indent=1).encode("utf-8"))
-    return dict(ok=True, text=len(out["text"]), img=len(out["img"]), saved=out["saved"])
+    return dict(ok=True, page=page, text=len(out["text"]), img=len(out["img"]), saved=out["saved"])
 
 def api_corp_upload(name, data, base):
     """POST /api/corp-upload?name=…: a picture for the landing → data/corp/<latin-name>.jpg|png (≤ 2000 px), served as /pub/corp/<file>."""
@@ -670,7 +673,8 @@ class Handler(SimpleHTTPRequestHandler):
     def corp_pub(self, u):
         """/pub/corp.json and /pub/corp/<file>: public, read-only — the site server and the landing read them from any origin."""
         if u.path == "/pub/corp.json":
-            f = CORP_DIR / "corp.json"; data = f.read_bytes() if f.is_file() else b'{"text": {}, "img": {}}'
+            page = corp_page({k: v[0] for k, v in urllib.parse.parse_qs(u.query).items()}.get("page", ""))
+            f = CORP_DIR / "pages" / f"{page}.json"; data = f.read_bytes() if f.is_file() else b'{"text": {}, "img": {}}'
             self.send_response(200); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
             self.send_header("Cache-Control", "no-cache"); self.send_header("Access-Control-Allow-Origin", "*"); self.end_headers()
             if self.command != "HEAD": self.wfile.write(data)

@@ -7,6 +7,7 @@
   var LOCAL = /^(localhost|127\.0\.0\.1|\[::1\])$/.test(location.hostname);
   var API = LOCAL ? 'http://127.0.0.1:8770' : 'https://deck-editor-production.up.railway.app';
   var KEY_STORE = 'obiimy-corp-key';
+  var PAGE = (document.querySelector('main[data-cms-page]') || {}).dataset ? document.querySelector('main[data-cms-page]').dataset.cmsPage : 'b2b-deck';
   var orig = { text: {}, img: {} }, selected = null, busy = false;
 
   var css = document.createElement('style');
@@ -133,7 +134,7 @@
   }
   pubBtn.addEventListener('click', function () {
     if (busy) return;
-    var body = { text: {}, img: {} };
+    var body = { page: PAGE, text: {}, img: {} };
     texts().forEach(function (el) { if (textChanged(el)) body.text[el.dataset.cms] = { html: clean(el) }; });
     imgs().forEach(function (el) { if (imgChanged(el)) body.img[el.dataset.cmsImg] = { src: abs(el.getAttribute('src')) }; });
     var n = Object.keys(body.text).length + Object.keys(body.img).length;

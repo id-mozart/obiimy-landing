@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Generate B2B / corporate landing pages (b2b-<name>.html) reusing the visual skins of the consumer landings."""
-import pathlib, sys
+import pathlib, re, sys
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
 from imgs import img, typo
 
@@ -21,7 +21,8 @@ TG = "https://t.me/OBIIMY_sales"
 SHOWROOM = "Київ, вул. Петра Сагайдачного, 12"
 SITE_URL = "https://obiimy-landing-production.up.railway.app"
 CORP_URL = "https://corporate.obiimy.world"      # the corporate-gifts landing lives at the root of this subdomain (server.js)
-def page_url(slug): return CORP_URL + "/" if slug == "b2b-team-main" else f"{SITE_URL}/{slug}"
+CORP_SLUG = "b2b-deck"                                     # the page corporate.obiimy.world serves at its root (server.js)
+def page_url(slug): return CORP_URL + "/" if slug == CORP_SLUG else f"{SITE_URL}/{slug}"
 SAMPLE_URL = "https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/"
 
 CSS = """
@@ -802,3 +803,35 @@ def build_all(pages):
 
 if __name__ == "__main__":
     build_all(PAGES)
+
+CMS_BLOCK = re.compile(r"<(h1|h2|h3|p|li|figcaption|td|th|dt|dd|label|div|section|ul|ol|table|form)[\s>]")
+
+def cms_mark(html, slug):
+    """Content editing on the live page: every text element inside <main> gets data-cms="<section>-<tag>-<n>", every picture
+    data-cms-img="<section>-img-<n>". The keys follow the generator's structure, so an edit made on the site (cms.js → the editor
+    service → server.js) lands on the same element after a rebuild as long as the section keeps its order. Only leaf elements are
+    marked (nothing inside an already marked one), links only when they are buttons."""
+    a, z = html.index("<main"), html.index("</main>")
+    body = html[a:z]; out = []; pos = 0; sec = "page"; counts = {}; marked_until = -1
+    tag_re = re.compile(r"<(section|h1|h2|h3|p|li|figcaption|small|td|th|dt|dd|label|a|button|img)(\s[^>]*)?>", re.S)
+    for m in tag_re.finditer(body):
+        if m.start() < marked_until: continue
+        tag, attrs = m.group(1), m.group(2) or ""
+        if tag == "section":
+            idm = re.search(r'\bid="([^"]+)"', attrs) or re.search(r'aria-label="([^"]+)"', attrs)
+            sec = (idm.group(1).lower() if idm else sec + "-x"); sec = re.sub(r"[^a-z0-9-]+", "-", sec); continue
+        if tag == "img":
+            n = counts[sec, "img"] = counts.get((sec, "img"), 0) + 1
+            out.append(body[pos:m.start()]); out.append(f'<img data-cms-img="{sec}-img-{n}"{attrs}>'); pos = m.end(); continue
+        if "data-cms" in attrs or tag == "a" and "btn" not in attrs: continue
+        close = body.find(f"</{tag}>", m.end())
+        if close < 0: continue
+        inner = body[m.end():close]
+        if CMS_BLOCK.search(inner) or not re.sub(r"<[^>]+>|&nbsp;|\s", "", inner): continue
+        n = counts[sec, tag] = counts.get((sec, tag), 0) + 1
+        out.append(body[pos:m.start()]); out.append(f'<{tag} data-cms="{sec}-{tag}-{n}"{attrs}>'); pos = m.end(); marked_until = close
+    out.append(body[pos:])
+    loader = '<script>if (/[?&]edit(=|&|$)/.test(location.search)) { var s = document.createElement("script"); s.src = "cms.js?v=1"; document.head.appendChild(s); }</script>\n'
+    out[0] = out[0].replace("<main", f'<main data-cms-page="{slug}"', 1)
+    return html[:a] + "".join(out) + loader + html[z:]
+

@@ -20,6 +20,8 @@ MAIL = "sale@obiimy.world"
 TG = "https://t.me/OBIIMY_sales"
 SHOWROOM = "Київ, вул. Петра Сагайдачного, 12"
 SITE_URL = "https://obiimy-landing-production.up.railway.app"
+CORP_URL = "https://corporate.obiimy.world"      # the corporate-gifts landing lives at the root of this subdomain (server.js)
+def page_url(slug): return CORP_URL + "/" if slug == "b2b-team-main" else f"{SITE_URL}/{slug}"
 SAMPLE_URL = "https://obiimy.world/khustka-tvilli-shovkova-zolote-svitlo-84x5/"
 
 CSS = """
@@ -360,12 +362,12 @@ def shell(page, body):
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{page["title"]}</title>
 <meta name="description" content="{page["desc"]}">
-<link rel="canonical" href="{SITE_URL}/{page["slug"]}">
+<link rel="canonical" href="{page_url(page["slug"])}">
 <meta property="og:type" content="website">
 <meta property="og:title" content="{page["title"]}">
 <meta property="og:description" content="{page["desc"]}">
 <meta property="og:image" content="{SITE_URL}/{og_crop(page["og"], page["slug"])}">
-<meta property="og:url" content="{SITE_URL}/{page["slug"]}">
+<meta property="og:url" content="{page_url(page["slug"])}">
 <meta property="og:locale" content="{L["locale"]}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">

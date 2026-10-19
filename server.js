@@ -19,8 +19,12 @@ async function proxied(req, res) {
   } catch (e) { return false; } finally { clearTimeout(t); }
 }
 
+// corporate.obiimy.world: the corporate-gifts landing at the root (the hub stays on the Railway host); every other path is shared
+const CORP = { host: /^corporate\./i, page: '/b2b-team-main' };
+
 http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://x');
+  if (CORP.host.test(req.headers.host || '') && (u.pathname === '/' || u.pathname === '/index.html')) req.url = CORP.page + u.search;
   if (u.pathname === PDF && (req.method === 'GET' || req.method === 'HEAD') && await proxied(req, res)) return;
   return handler(req, res, { public: SITE, cleanUrls: true, directoryListing: false });
 }).listen(PORT, () => console.log(`obiimy site on :${PORT}` + (PUB ? ` · deck PDF from ${PUB}` : '')));

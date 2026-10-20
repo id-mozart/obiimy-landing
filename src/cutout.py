@@ -194,6 +194,14 @@ def duo(scarf, ring, name, k=0.09):
     out.alpha_composite(r, pos); out.save(OUT / f"{name}.webp", "WEBP", quality=90, method=6)
 
 
+# the three flat scarves nested on the deck landing's hero and «Хустки» panel: re-cut from the 3000 px originals with a margin
+# (the banner cut-outs were cropped to the scarf's bounding box, which read as «cropped» on the page)
+NEST_FLATS = [("ads/solo/src/avantiura-88-1-hi.webp", "avantiura-88-1"), ("ads/solo/src/iskra-65-1-hi.webp", "iskra-65-1"), ("ads/solo/src/zolote-44-1-hi.webp", "zolote-44-1")]
+def nest_flats():
+    for src, name in NEST_FLATS:
+        d = cut(src, name, light=232, sat=14, erode=1, feather=1.2, pad=0.05); im = Image.open(d)
+        al = np.asarray(im.split()[-1]); print(f"{name:24} {im.size} opaque {round((al > 128).mean() * 100)}% (flat, margin)")
+
 # SOLO cut-outs made earlier for the banners
 for f in sorted((ROOT / "ads" / "solo" / "src").glob("*-cut.webp")):
     dst = OUT / f.name.replace("-cut.webp", ".webp")
@@ -231,6 +239,7 @@ if __name__ == "__main__":
     Image.open(ROOT / "src" / "ad-p3" / "ring-clean.png").convert("RGBA").save(OUT / "ring-n.webp", "WEBP", quality=92, method=6)   # the ring retouched by the art director (baked white shadow removed), source photo/site/ring-n-styl-01.jpg
     hole("scrunchie-pole")
     rotated("set-natkhnennia-box")
+    nest_flats()
     duo("hratsiia-flat", "ring-n", "duo-hratsiia-ring")
     pair("zolote-44-1", "zolote-tw-3", "pair-zolote")
     detail("photo/site/ring-n-styl-02.jpg", "ring-in-use", 0.50, 0.50, 0.44)       # a wide detail: the ring is small against the scarf it holds

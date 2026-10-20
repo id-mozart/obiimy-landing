@@ -220,7 +220,7 @@ function peopleWord(n) { var a = n % 10, b = n % 100; return a === 1 && b !== 11
 function giftWord(n) { var a = n % 10, b = n % 100; return a === 1 && b !== 11 ? 'подарунок' : (a >= 2 && a <= 4 && (b < 12 || b > 14) ? 'подарунки' : 'подарунків'); }
 function exVal(id) { var e = EXTRAS.filter(function (x) { return x[0] === id; })[0]; var v = S.ex[id]; if (v == null) v = e ? e[2] : ''; v = String(v).trim(); if (!v) return null; var m = v.match(/^(\d[\d\s ]*)\s*(?:грн\.?)?\s*[—–,:-]?\s*(.*)$/), n = m ? Number(m[1].replace(/\D/g, '')) : (/безкошт/i.test(v) ? 0 : null); return { v: v, n: n, note: m ? m[2].trim() : (n === 0 ? v.replace(/^\s*безкоштовно\.?\s*[—–,:-]?\s*/i, '').trim() : '') }; }
 function renderDoc() {
-  var logo = '<img class="logo" src="brand/logo-ink.png" alt="Obiimy">', pages = [];
+  var logo = '<img class="logo" src="brand/logo-ink.svg" alt="Obiimy">', pages = [];
   var nb = function (s) { return esc(s).replace(/ /g, ' '); };
   function foot(n) { return '<div class="foot"><span>Obiimy · ' + nb(SHOWROOM) + '</span><span class="pn">' + n + ' / §N§</span><span>' + nb(PHONE) + ' · ' + esc(MAIL) + '</span></div>'; }
   function page(key, inner) { pages.push('<section class="pg" data-key="' + key + '">' + logo + inner + foot(pages.length + 1) + '</section>'); }
@@ -240,7 +240,7 @@ function renderDoc() {
   var art = lay === 'mosaic' ? '<div class="cv-m">' + MOS12.map(function (m, i) { return '<img src="' + pic('m' + i, m[0]) + '" data-pic="m' + i + '" style="object-position:' + (S.pics && S.pics['m' + i] ? '50% 30%' : m[1]) + '" alt="">'; }).join('') + '</div>'
     : '<div class="cv-ph"><img src="' + pic('cover', cv.f) + '" data-pic="cover" style="object-position:' + (own ? '50% 30%' : cv.pos) + '" alt=""></div>';
   pages.push('<section class="pg cover ' + lay + '" data-key="cover">' + art
-    + '<div class="cv-band"><div class="cv-top"><img src="brand/logo-ink.png" alt="Obiimy">' + (cap ? '<p class="cv-kicker">' + cap + '</p>' : '') + '</div><div class="cv-main">'
+    + '<div class="cv-band"><div class="cv-top"><img src="brand/logo-ink.svg" alt="Obiimy">' + (cap ? '<p class="cv-kicker">' + cap + '</p>' : '') + '</div><div class="cv-main">'
     + '<h1' + (S.title.length > 26 ? ' style="font-size:24pt"' : '') + '>' + esc(S.title) + '</h1>' + (S.client ? '<p class="cv-client"' + (S.client.length > 20 ? ' style="font-size:22pt"' : '') + '>для ' + esc(S.client) + '</p>' : '')
     + (S.sub || people ? '<p class="cv-sub">' + esc(S.sub) + (S.sub && people ? ' · ' : '') + (people ? people + ' ' + peopleWord(people) : '') + '</p>' : '') + '</div>'
     + '<div class="cv-meta"><div class="d"><small>Пропозиція від</small>' + fmtDate(S.date || iso(new Date())) + '</div>' + (S.contact ? '<div class="w"><small>Контактна особа</small>' + esc(S.contact).replace(/-/g, '‑') + '</div>' : '') + (S.manager ? '<div class="w"><small>Менеджер Obiimy</small>' + esc(S.manager).replace(/(\+?\d[\d ]+\d)/g, function (m) { return m.replace(/ /g, ' '); }) + '</div>' : '')

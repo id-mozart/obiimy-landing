@@ -580,7 +580,6 @@ def build_home_mock(site, out, items):
 <div class="hd"><img src="brand/logo-original.png" alt="Obiimy"><div class="srch">пошук товарів</div><span>✳ Замовлення: <b>+38 067 010 85 25</b></span><b>🧺 Мій кошик</b></div>
 <div class="nav"><div class="in"><span>SALE</span><span>ХІТ</span><span>Колекції</span><span>Подарункові набори</span><span>Хустки</span><span>Хустки 2D</span><span>Хустки паше</span><span>Твіллі</span><span>Резинки</span><span>Маски для сну</span><span>Прикраси</span><span>Obiimy HOME</span><span>Сертифікати</span></div></div>
 <div class="herow"><div class="hero" id="hero">{slides}<div class="dots" id="dots">{dots}</div></div><button type="button" class="ar l" id="prev" aria-label="Попередній">‹</button><button type="button" class="ar r" id="next" aria-label="Наступний">›</button></div>
-<div class="ctl"><span>Варіант:</span><select id="pick">{opts}</select><a id="dl" href="#" download>JPG 1920 × 576 ↓</a><a href="home-banners">Усі банери списком →</a><span id="selnote"></span></div>
 <div class="cats"><h3>Категорії</h3><div class="catrow">{"".join(circle(l, k) for l, k in cuts)}</div></div>
 <script>
 (function () {{
@@ -589,16 +588,16 @@ def build_home_mock(site, out, items):
   try {{ stored = JSON.parse(localStorage.getItem('obiimy-home-sel')); }} catch (e) {{}}
   var sel = P.has('all') ? null : (selq !== null ? selq.split(',').filter(Boolean) : (Array.isArray(stored) ? stored : null));
   if (sel) {{
-    var keep = [], kd = [], ko = [], opts = [].slice.call(pick.options);
-    sl.forEach(function (s, i) {{ if (sel.indexOf(s.dataset.id) >= 0 || s.dataset.id === q) {{ keep.push(s); kd.push(dots[i]); ko.push(opts[i]); }} else {{ s.remove(); dots[i].remove(); opts[i].remove(); }} }});
+    var keep = [], kd = [], ko = [], opts = pick ? [].slice.call(pick.options) : [];
+    sl.forEach(function (s, i) {{ if (sel.indexOf(s.dataset.id) >= 0 || s.dataset.id === q) {{ keep.push(s); kd.push(dots[i]); if (opts[i]) ko.push(opts[i]); }} else {{ s.remove(); dots[i].remove(); if (opts[i]) opts[i].remove(); }} }});
     sl = keep; dots = kd; dots.forEach(function (d, i) {{ d.dataset.i = i; }}); ko.forEach(function (o, i) {{ o.value = i; }});
     var note = document.getElementById('selnote'); if (note) note.innerHTML = 'У ротації ' + sl.length + ' з ' + total + ' · <a href="home-preview?all">показати всі</a> · <a href="home-banners?sel=' + sel.join(',') + '">змінити вибір</a>';
   }}
   if (!sl.length) {{ document.getElementById('hero').insertAdjacentHTML('beforeend', '<p style="position:absolute;inset:0;margin:0;display:grid;place-items:center;color:#fff">Нічого не вибрано — <a href="home-banners" style="color:#F2B705;margin-left:6px">відмітьте банери</a></p>'); return; }}
   sl.forEach(function (s, i) {{ if (s.dataset.id === q) cur = i; }});
-  function show(i) {{ cur = (i + sl.length) % sl.length; sl.forEach(function (s, k) {{ s.classList.toggle('on', k === cur); }}); dots.forEach(function (d, k) {{ d.classList.toggle('on', k === cur); }}); pick.value = cur; var im = sl[cur].querySelector('img'); dl.href = im.src; dl.setAttribute('download', sl[cur].dataset.id + '.jpg'); P.set('b', sl[cur].dataset.id); history.replaceState(null, '', '?' + P.toString()); }}
+  function show(i) {{ cur = (i + sl.length) % sl.length; sl.forEach(function (s, k) {{ s.classList.toggle('on', k === cur); }}); dots.forEach(function (d, k) {{ d.classList.toggle('on', k === cur); }}); if (pick) pick.value = cur; if (dl) {{ var im = sl[cur].querySelector('img'); dl.href = im.src; dl.setAttribute('download', sl[cur].dataset.id + '.jpg'); }} P.set('b', sl[cur].dataset.id); history.replaceState(null, '', '?' + P.toString()); }}
   dots.forEach(function (d) {{ d.addEventListener('click', function () {{ show(Number(d.dataset.i)); }}); }});
-  pick.addEventListener('change', function () {{ show(Number(pick.value)); }});
+  if (pick) pick.addEventListener('change', function () {{ show(Number(pick.value)); }});
   document.getElementById('prev').addEventListener('click', function () {{ show(cur - 1); }}); document.getElementById('next').addEventListener('click', function () {{ show(cur + 1); }});
   document.addEventListener('keydown', function (e) {{ if (e.key === 'ArrowLeft') show(cur - 1); if (e.key === 'ArrowRight') show(cur + 1); }});
   show(cur);

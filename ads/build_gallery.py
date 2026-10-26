@@ -43,7 +43,7 @@ def build(site: pathlib.Path):
     keep_file = ROOT / "ads" / "keep.txt"
     keep = [l.strip() for l in keep_file.read_text().splitlines() if l.strip() and not l.startswith("#")] if keep_file.exists() else []
     keep_set = set(keep)
-    HOME = {"out4": "solo-main", "out5": "solo-yellow", "out6": "solo-tri", "out7": "solo-tri-y", "out8": "solo-one", "out9": "solo-orig"}
+    HOME = {"out4": "solo-main", "out5": "solo-yellow", "out6": "solo-tri", "out7": "solo-tri-y", "out8": "solo-one", "out9": "solo-orig", "out-sets": "sets"}
     def add(title, desc, files, series):
         cards = []
         for f in files:
@@ -86,6 +86,8 @@ def build(site: pathlib.Path):
     gifts = ([f for f in tri if f.name[0] == "g"] + sorted((ROOT / "ads/solo/out8").glob("g*.jpg")) + pick(tri, gift_names)
              + pick(classic, ["p09", "u06"]))
     gifts_y = [f for f in tri_y if f.name[0] == "g"] + pick(tri_y, gift_names) + pick(yellow, ["p09", "u06"])
+    sets = sorted((ROOT / "ads/solo/out-sets").glob("*.jpg"))
+    add("Подарункові набори · серія 26.10", "Двадцять два банери про готові набори obiimy.world: жовта коробка, твіллі + хустка, три твіллі, набір для сну, «Співоча душа», маски «Серцебиття», резинки zero waste, подарунок за бюджетом, «який набір обрати» і «як носять подарунок». Фото — зйомки наборів магазину, ціни — роздрібні на 19.10; кожен є в чотирьох форматах.", sets, "sets")
     add("Подарункові · варіант A", "Для того, хто дарує: сертифікат, подарунок за бюджетом, кому що подарувати, підпис вашими словами, жовта коробочка, відправка в день замовлення.", gifts, "solo-gift")
     add("Подарункові · варіант B", "Те саме з жовтою плашкою товару.", gifts_y, "solo-gift-y")
     orig = sorted((ROOT / "ads/solo/out9").glob("*.jpg"))
@@ -409,6 +411,12 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
     arch_nav = '<a href="https://obiimy.world/solo-shliakh-do-sebe/" target="_blank" rel="noopener">Колекція на obiimy.world ↗</a>'
     if n_keep:
         body_html, n = flat(lambda i: i in keep_set); toc_html = ""
+        # the newest series sits above the selection on the main page (not in the archive) until the client has sorted it
+        NEW = "sets/"
+        for g in groups:
+            if g["cards"] and g["cards"][0][0].startswith(NEW):
+                body_html = f'<section class="grp" id="new"><div class="gh"><h3>{g["title"]} <span style="font-weight:400;color:var(--ink2)">· {len(g["cards"])}</span></h3><p>{g["desc"]}</p></div><div class="grid">{"".join(c for _, c in g["cards"])}</div></section>\n<h2>Відібрані банери SOLO</h2>\n' + body_html
+        keep_set = keep_set | {i for g in groups for i, _ in g["cards"] if i.startswith(NEW)}      # keeps them out of the archive
         lede = (f'<p class="lede"><b>Шлях до себе.</b> Відібрано для подальшої роботи — {n} {pl(n)} 1080 × 1920. Решта не видалена: вона лежить в архіві. '
                 f'Натисніть на картинку, щоб відкрити в повному розмірі, або «JPG ↓», щоб завантажити.</p>')
         a_toc, a_body, a_n = body(lambda i: i not in keep_set)

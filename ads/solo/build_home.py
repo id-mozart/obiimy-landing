@@ -36,7 +36,11 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 """.replace("GRAIN", GRAIN)
 
 ads = []
+import re as _re
 def ad(id, body, cls="", note=""):
+    # 27.10, the client: no print caption under the lock-up, and no OBIIMY™ on the banner — the site's header already carries the logo
+    body = _re.sub(r'<p class="cap">.*?</p>', "", body, flags=_re.S)
+    body = _re.sub(r'<img class="logo[^>]*>(<span class="tm"[^>]*>™</span>)?', "", body)
     ads.append(f'\n<!-- {note} -->\n<section class="ad {cls}" id="{id}">{body}\n</section>')
 
 def lock(dark=False, pill=True, more=True, size=150):
@@ -44,7 +48,7 @@ def lock(dark=False, pill=True, more=True, size=150):
             + ('<p class="pill">Жіноча сила крізь десятиліття</p>' if pill else "") + ('<p class="more">Дізнатися першою</p>' if more else "") + '</div>')
 
 def logo(dark=False):
-    return f'<img class="logo{" logo-k" if dark else ""}" src="{LOGO_W}" alt="Obiimy"><span class="tm">™</span>'
+    return ""      # the logo is no longer placed on the banners (27.10)
 
 # A · one new frame to the edge: the polka-dot «Іскра» in the autumn street
 ad("home-a-iskra", f'''
@@ -257,7 +261,7 @@ ad("home-z3-diag", f'''
 ad("home-z4-album", f'''
   <div style="inset:0;background:#F0EBE1"></div>
   <div style="left:960px;top:54px;width:700px;height:462px;background:#fff;padding:14px;box-shadow:0 12px 32px rgba(60,40,20,.18)"><div class="ph" style="position:relative;width:100%;height:100%"><img src="{S2('iskra-65-4')}" alt="" style="object-position:50% 22%"></div></div>
-  <p style="left:960px;top:536px;font-size:15px;letter-spacing:.16em;text-transform:uppercase;color:#6B655C">Хустка «Іскра»</p>
+  
   <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Album print")
 

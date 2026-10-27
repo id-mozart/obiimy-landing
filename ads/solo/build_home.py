@@ -23,13 +23,13 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 .ad .lock .s { font-size: 150px; font-weight: 300; letter-spacing: 0; margin-top: 14px; margin-left: -8px; }
 .ad .lock .t { font-size: 44px; font-weight: 400; letter-spacing: .04em; margin-top: 6px; }
 .ad .pill { display: inline-block; margin-top: 40px; font-size: 24px; font-weight: 500; letter-spacing: .01em; text-transform: none; padding: 18px 30px; border-radius: 999px; background: #F2B705; color: #141110; line-height: 1; }
-.ad .more { display: flex; align-items: center; gap: 12px; margin-top: 28px; font-size: 23px; font-weight: 400; text-transform: none; letter-spacing: .02em; }
-.ad .more::before { content: ""; width: 9px; height: 9px; border-right: 1.5px solid #F2B705; border-bottom: 1.5px solid #F2B705; transform: rotate(45deg) translateY(-3px); flex: none; }
+.ad .more { display: flex; width: max-content; align-items: center; gap: 14px; margin-top: 20px; font-size: 24px; font-weight: 500; text-transform: none; letter-spacing: .02em; padding: 15px 28px 15px 30px; border: 1.5px solid rgba(243,234,219,.85); border-radius: 999px; color: #F3EADB; }
+.ad .more::after { content: "→"; font-family: Montserrat, sans-serif; font-weight: 400; font-size: 26px; line-height: 1; transform: translateY(-1px); }
 .ad .lock .cap { margin-top: 28px; font-size: 15px; letter-spacing: .16em; text-transform: uppercase; color: #6B655C; }
 .logo { right: 0; top: 50%; height: 64px; width: auto; transform: translate(calc(50% - 80px), -50%) rotate(90deg); transform-origin: center; }
 .tm { right: 73px; top: calc(50% + 164px); font-size: 14px; font-weight: 500; line-height: 1; color: #fff; }
 .logo-k { filter: invert(1) brightness(.1); }
-.dark .lock { color: #141110; } .dark .more { color: #3A3530; } .dark .more::before { border-color: #141110; } .dark .tm { color: #141110; }
+.dark .lock { color: #141110; } .dark .more { color: #141110; border-color: rgba(20,17,16,.7); } .dark .tm { color: #141110; }
 .scrim-d { right: 0; top: 0; bottom: 0; width: 200px; background: linear-gradient(270deg, rgba(20,17,16,.7), rgba(20,17,16,0)); }
 .scrim-l { right: 0; top: 0; bottom: 0; width: 220px; background: linear-gradient(270deg, rgba(240,235,225,.88), rgba(240,235,225,0)); }
 .veil { inset: 0; background: linear-gradient(90deg, rgba(12,9,8,.82) 0%, rgba(12,9,8,.55) 34%, rgba(12,9,8,0) 62%); }
@@ -45,7 +45,7 @@ def ad(id, body, cls="", note=""):
 
 def lock(dark=False, pill=True, more=True, size=150):
     return (f'<div class="lock"><p class="k">Колекція</p><p class="s" style="font-size:{size}px">Соло</p><p class="t">Шлях до себе</p>'
-            + ('<p class="pill">Жіноча сила крізь десятиліття</p>' if pill else "") + ('<p class="more">Дізнатися першою</p>' if more else "") + '</div>')
+            + ('<p class="pill">Жіноча сила крізь десятиліття</p>' if pill else "") + ('<p class="more">Дивитися колекцію</p>' if more else "") + '</div>')
 
 def logo(dark=False):
     return ""      # the logo is no longer placed on the banners (27.10)
@@ -96,7 +96,7 @@ ad("home-f-yellow", f'''
   <div style="inset:0;background:#F2B705"></div>
   <div class="ph" style="left:1080px;top:0;bottom:0;right:0"><img src="{S2('avantiura-88-5')}" alt="" style="object-position:55% 12%"></div>
   <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p>
-    <p class="pill" style="background:transparent;border:2px solid #141110;color:#141110">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+    <p class="pill" style="background:transparent;border:2px solid #141110;color:#141110">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Brand yellow")
 
 # G · the new close-up of «Авантюра» (studio, 16.10): a light banner — the curtain of the frame is continued to the left as a mirrored blur
@@ -106,7 +106,7 @@ ad("home-g-reblum-light", f'''
   <div style="inset:0;background:linear-gradient(90deg,rgba(239,234,226,.96) 0%,rgba(239,234,226,.82) 48%,rgba(239,234,226,.1) 66%)"></div>
   <div class="ph" style="left:1000px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%);mask-image:linear-gradient(90deg,transparent 0,#000 18%)"><img src="{RB}" alt="" style="object-position:50% 40%"></div>
   <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p>
-    <p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+    <p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Reblum close-up, light")
 
 # H · the same frame as a panel on dark
@@ -127,7 +127,7 @@ ad("home-j-split", f'''
   <div class="ph" style="left:0;top:0;bottom:0;width:50%"><img src="{S2('tysha-88-2')}" alt="" style="object-position:50% 40%"></div>
   <div style="left:50%;right:0;top:0;bottom:0;background:#141110"></div>
   <div style="left:46%;top:0;bottom:0;width:8%;background:linear-gradient(90deg,rgba(20,17,16,0),#141110)"></div>
-  <div class="lock" style="left:1060px;right:200px;transform:translate(0,-50%)"><p class="k">Колекція</p><p class="s" style="font-size:150px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <div class="lock" style="left:1060px;right:200px;transform:translate(0,-50%)"><p class="k">Колекція</p><p class="s" style="font-size:150px">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   {logo()}''', note="Split, centred")
 
 # K · the lock-up in one line above a strip of four frames
@@ -146,7 +146,7 @@ ad("home-m-paper", f'''
   <div style="inset:0;background:#F1E8D8"></div>
   <img src="{CUT('avantiura-88-1')}" alt="" style="left:940px;top:50%;transform:translateY(-50%) rotate(-8deg);height:500px;width:auto;filter:drop-shadow(0 30px 40px rgba(60,30,10,.35))">
   <img src="{CUT('iskra-65-1')}" alt="" style="left:1220px;top:50%;transform:translateY(-44%) rotate(7deg);height:420px;width:auto;filter:drop-shadow(0 30px 40px rgba(60,30,10,.3))">
-  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Paper and scarves")
 
 # N · seven states as words on dark silk
@@ -171,7 +171,7 @@ ad("home-p-reblum-yellow", f'''
   <div style="inset:0;background:#F2B705"></div>
   <div class="ph" style="left:860px;right:0;top:0;bottom:0"><img src="{RB}" alt="" style="object-position:55% 40%"></div>
   <div style="left:860px;top:0;bottom:0;width:120px;background:linear-gradient(90deg,#F2B705,rgba(242,183,5,0))"></div>
-  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="background:#141110;color:#F2B705">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="background:#141110;color:#F2B705">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Reblum on yellow")
 
 # Q · the knot as a tall slice in the middle between two dark fields: lock-up left, seven state words right
@@ -186,7 +186,7 @@ ad("home-q-reblum-slice", f'''
 ad("home-r-reblum-paper", f'''
   <div style="inset:0;background:#F0EBE1"></div>
   <div class="ph" style="left:1000px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 22%);mask-image:linear-gradient(90deg,transparent 0,#000 22%)"><img src="{RB}" alt="" style="object-position:50% 40%"></div>
-  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p><p class="cap">Хустка «Авантюра»</p></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p><p class="cap">Хустка «Авантюра»</p></div>
   <div class="scrim-l"></div><img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Reblum on paper")
 
 # S · wind: the scarf in motion to the edge, text over a gradient only (as the reference)
@@ -199,7 +199,7 @@ ad("home-s-wind", f'''
 ad("home-t-silk", f'''
   <div style="inset:0;background:url({HI(PP['zolote'])}) 50% 45%/125%"></div>
   <div style="inset:0;background:linear-gradient(90deg,rgba(12,9,8,.7) 0%,rgba(12,9,8,.4) 30%,rgba(12,9,8,.08) 55%)"></div>
-  <div class="lock"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="background:#1A1816;color:#F2B705">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <div class="lock"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="background:#1A1816;color:#F2B705">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   {logo()}''', note="Silk folds as the background")
 
 # U · diptych of one woman: portrait left, the knot right, the lock-up on a dark strip between
@@ -207,7 +207,7 @@ ad("home-u-diptych", f'''
   <div class="ph" style="left:0;top:0;bottom:0;width:640px"><img src="{S2('tysha-88-2')}" alt="" style="object-position:62% 30%"></div>
   <div style="left:640px;top:0;bottom:0;width:640px;background:#141110"></div>
   <div class="ph" style="left:1280px;top:0;bottom:0;right:0"><img src="{S2('tysha-88-3')}" alt="" style="object-position:50% 55%"></div>
-  <div class="lock" style="left:700px;right:760px;transform:translate(0,-50%)"><p class="k">Колекція</p><p class="s" style="font-size:130px">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="font-size:22px;padding:16px 26px">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <div class="lock" style="left:700px;right:760px;transform:translate(0,-50%)"><p class="k">Колекція</p><p class="s" style="font-size:130px">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="font-size:22px;padding:16px 26px">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   <img class="logo" src="{LOGO_W}" alt="Obiimy" style="right:auto;left:980px;transform:translate(calc(50% - 80px),-50%) rotate(90deg)"><span class="tm" style="right:auto;left:1193px">™</span>''', note="Diptych of one woman")
 
 # V · seven prints as seven vertical strips of real silk on the right, the lock-up on dark on the left
@@ -230,7 +230,7 @@ ad("home-w-door", f'''
 ad("home-x-cafe", f'''
   <div style="inset:0;background:#F0EBE1"></div>
   <div class="ph" style="left:790px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 16%);mask-image:linear-gradient(90deg,transparent 0,#000 16%)"><img src="{S2('puls-44-5')}" alt="" style="object-position:62% 45%"></div>
-  <div class="scrim-l"></div><div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <div class="scrim-l"></div><div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Puls at the café")
 
 # Y · «Сміливий крок» classic knot: the frame centred, two dark fields, the lock-up left and the state right
@@ -262,7 +262,7 @@ ad("home-z4-album", f'''
   <div style="inset:0;background:#F0EBE1"></div>
   <div style="left:960px;top:54px;width:700px;height:462px;background:#fff;padding:14px;box-shadow:0 12px 32px rgba(60,40,20,.18)"><div class="ph" style="position:relative;width:100%;height:100%"><img src="{S2('iskra-65-4')}" alt="" style="object-position:50% 22%"></div></div>
   
-  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Album print")
 
 # round 4 (16.10): four with a different move — a twilly story, the empty seat, a split-tone portrait, the Riviera with the sea on the right
@@ -284,7 +284,7 @@ ad("home-v2-seat", f'''
 ad("home-v3-riviera", f'''
   <div style="inset:0;background:#F0EBE1"></div>
   <div class="ph" style="left:760px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 14%);mask-image:linear-gradient(90deg,transparent 0,#000 14%)"><img src="{S2('zolote-tw-2')}" alt="" style="object-position:40% 72%"></div>
-  <div class="scrim-l"></div><div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <div class="scrim-l"></div><div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Riviera")
 
 # V4 · the look in two tones: the «Флірт» frame, the left half warmed and darkened under the lock-up, the right half as shot
@@ -299,7 +299,7 @@ ad("home-s1-mirror", f'''
   <div class="ph" style="left:0;top:0;bottom:0;width:640px"><img src="{RB}" alt="" style="object-position:60% 40%;transform:scaleX(-1)"></div>
   <div style="left:640px;top:0;bottom:0;width:640px;background:#141110"></div>
   <div class="ph" style="left:1280px;top:0;bottom:0;right:0"><img src="{RB}" alt="" style="object-position:60% 40%"></div>
-  <div class="lock" style="left:700px;right:760px;transform:translate(0,-50%)"><p class="k">Колекція</p><p class="s" style="font-size:130px">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="font-size:22px;padding:16px 26px">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <div class="lock" style="left:700px;right:760px;transform:translate(0,-50%)"><p class="k">Колекція</p><p class="s" style="font-size:130px">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="font-size:22px;padding:16px 26px">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   <img class="logo" src="{LOGO_W}" alt="Obiimy" style="right:auto;left:980px;transform:translate(calc(50% - 80px),-50%) rotate(90deg)"><span class="tm" style="right:auto;left:1193px">™</span>''', note="Studio: mirror")
 
 # S2 · red field: the print's own red (#B3121B) as the panel, white lock-up, the knot to the right
@@ -307,7 +307,7 @@ ad("home-s2-red", f'''
   <div style="inset:0;background:#B3121B"></div>
   <div class="ph" style="left:1040px;right:0;top:0;bottom:0"><img src="{RB}" alt="" style="object-position:50% 36%"></div>
   <div style="left:1040px;top:0;bottom:0;width:140px;background:linear-gradient(90deg,#B3121B,rgba(179,18,27,0))"></div><div class="scrim-d"></div>
-  <div class="lock"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="background:#141110;color:#F2B705">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>{logo()}''', note="Studio: red field")
+  <div class="lock"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill" style="background:#141110;color:#F2B705">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>{logo()}''', note="Studio: red field")
 
 # S3 · the hand and the knot only: a tight crop of the fingers at the knot across the right two thirds, dark gradient left
 ad("home-s3-hand", f'''
@@ -319,7 +319,7 @@ ad("home-s3-hand", f'''
 ad("home-s4-window", f'''
   <div style="inset:0;background:#F0EBE1"></div>
   <div class="ph" style="left:1060px;top:40px;width:560px;height:496px;border-radius:280px"><img src="{RB}" alt="" style="object-position:50% 40%"></div>
-  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p><p class="cap">Хустка «Авантюра» · 88 × 88</p></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p><p class="cap">Хустка «Авантюра» · 88 × 88</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Studio: window on paper")
 
 # S5 · the knot as a vertical strip between two dark fields, a wide quiet composition with air
@@ -333,7 +333,7 @@ ad("home-s5-strip", f'''
 ad("home-s6-light", f'''
   <div class="ph" style="inset:0"><img src="{RB}" alt="" style="object-position:100% 40%;transform:scaleX(-1)"></div>
   <div style="inset:0;background:linear-gradient(90deg,rgba(240,235,225,.94) 0%,rgba(240,235,225,.8) 36%,rgba(240,235,225,0) 58%)"></div><div class="scrim-l"></div>
-  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Studio: light mirrored")
 
 # round 6 (19.10): six on frames the banners had not used yet
@@ -349,7 +349,7 @@ ad("home-n1-pair", f'''
 ad("home-n2-white", f'''
   <div class="ph" style="inset:0"><img src="{S2('iskra-65-2')}" alt="" style="object-position:62% 31%"></div>
   <div style="inset:0;background:linear-gradient(90deg,rgba(240,235,225,.94) 0%,rgba(240,235,225,.8) 34%,rgba(240,235,225,0) 60%)"></div><div class="scrim-l"></div>
-  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="White suit, light")
 
 # N3 · seven twillies fanned on the dark field: the collection as an object
@@ -374,7 +374,7 @@ ad("home-n5-table", f'''
   <div style="inset:0;background:#F0EBE1"></div>
   <div class="ph" style="left:860px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 18%);mask-image:linear-gradient(90deg,transparent 0,#000 18%)"><img src="{S2('iskra-65-3')}" alt="" style="object-position:0% 58%;transform:scale(1.1);transform-origin:0% 60%"></div>
   <div class="scrim-l"></div>
-  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дізнатися першою</p><p class="cap">Хустка «Іскра» · 65 × 65</p></div>
+  <div class="lock" style="color:#141110"><p class="k">Колекція</p><p class="s">Соло</p><p class="t">Шлях до себе</p><p class="pill">Жіноча сила крізь десятиліття</p><p class="more">Дивитися колекцію</p><p class="cap">Хустка «Іскра» · 65 × 65</p></div>
   <img class="logo" src="{LOGO_K}" alt="Obiimy"><span class="tm">™</span>''', cls="dark", note="Still life on the table")
 
 # N6 · evening street: «Пульс» twilly on the white shirt, the dark Paris street behind, the figure right

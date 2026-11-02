@@ -605,6 +605,23 @@ def api_corp_upload(name, data, base):
     write_atomic(out, data)
     return dict(ok=True, src=f"{base}/pub/corp/{out.name}", w=im.width, h=im.height)
 
+# ─── early-access registrations of the KRAЇNA EDEM × OBIIMY landing ─────────────────────────────────────────────────────────
+EDEM_DIR = ROOT / "data" / "edem"
+def api_edem_register(body, ip=""):
+    """POST /api/edem from the landing: one JSON line per registration on the volume (data/edem/registrations.jsonl)."""
+    name = str(body.get("name") or "").strip()[:120]; phone = str(body.get("phone") or "").strip()[:60]
+    if len(name) < 2 or len(phone) < 5: raise Problem("Потрібні ім’я та телефон.")
+    rec = {"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "name": name, "phone": phone, "email": str(body.get("email") or "").strip()[:120],
+           "interest": str(body.get("interest") or "").strip()[:80], "note": str(body.get("note") or "").strip()[:1000], "page": str(body.get("page") or "")[:200], "ip": ip}
+    EDEM_DIR.mkdir(parents=True, exist_ok=True)
+    with open(EDEM_DIR / "registrations.jsonl", "a", encoding="utf-8") as f: f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    return dict(ok=True)
+
+def api_edem_list():
+    f = EDEM_DIR / "registrations.jsonl"
+    rows = [json.loads(l) for l in f.read_text(encoding="utf-8").splitlines() if l.strip()] if f.exists() else []
+    return dict(ok=True, count=len(rows), rows=rows)
+
 class Handler(SimpleHTTPRequestHandler):
     server_version = "DeckEditor/1"
     extensions_map = dict(SimpleHTTPRequestHandler.extensions_map, **{".webp": "image/webp", ".woff2": "font/woff2", ".woff": "font/woff", ".svg": "image/svg+xml",
@@ -698,6 +715,10 @@ class Handler(SimpleHTTPRequestHandler):
             if not f.is_file(): return self.send_error(404, "Not published yet")
             return self.send_bytes(f.read_bytes(), "application/pdf", cache="no-cache")
         if u.path in ("/", "/index.html"): return self.send_bytes(UI.read_bytes(), "text/html; charset=utf-8")
+        if u.path == "/api/edem-list":
+            import hmac
+            if not CORP_PASSWORD or not hmac.compare_digest(q.get("key") or "", CORP_PASSWORD): return self.send_json(dict(ok=False, error="Потрібен ключ."), 401)
+            return self.api(api_edem_list)
         if u.path == "/api/pages": return self.api(api_pages)
         if u.path == "/api/library": return self.api(api_library)
         if u.path == "/api/versions": return self.api(api_versions)
@@ -730,7 +751,7 @@ class Handler(SimpleHTTPRequestHandler):
     def do_OPTIONS(self):
         # the KP generator on the site asks this service for a PDF: a cross-origin POST, so the browser asks first
         p = urllib.parse.urlsplit(self.path).path
-        if p in ("/api/corp", "/api/corp-upload"):
+        if p in ("/api/corp", "/api/corp-upload", "/api/edem"):
             self.send_response(204); self.corp_cors()
             self.send_header("Access-Control-Allow-Methods", "POST, OPTIONS"); self.send_header("Access-Control-Allow-Headers", "Content-Type, X-Corp-Key"); self.send_header("Access-Control-Max-Age", "86400")
             self.send_header("Content-Length", "0"); self.end_headers(); return
@@ -771,6 +792,7 @@ class Handler(SimpleHTTPRequestHandler):
             if n < 0 or n > 80 * 1048576: return self.send_json(dict(ok=False, error="Запит завеликий (понад 80 МБ)."), 413)
             return self.kp_pdf(self.rfile.read(n))
         if u.path in ("/api/corp", "/api/corp-upload"): return self.corp_post(u, q)
+        if u.path == "/api/edem": return self.edem_post()
         if not self.authed(): return
         if not self.local(post=True): return self.send_error(403, "Local use only")
         try: n = int(self.headers.get("Content-Length") or 0)
@@ -811,6 +833,25 @@ class Handler(SimpleHTTPRequestHandler):
         except Problem as e: return reply(dict(ok=False, error=str(e)), e.status)
         except Exception as e:
             sys.stderr.write(f"{type(e).__name__}: {e}\n"); return reply(dict(ok=False, error=f"Помилка редактора: {type(e).__name__}"), 500)
+
+    def edem_post(self):
+        """A registration from the landing: our origins only, no password (it is a public form), 16 KB max."""
+        def reply(obj, status=200):
+            data = json.dumps(obj, ensure_ascii=False).encode("utf-8")
+            self.send_response(status); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "no-store"); self.corp_cors(); self.end_headers(); self.wfile.write(data)
+        origin = self.headers.get("Origin") or ""
+        if origin and origin not in CORP_ORIGINS: return reply(dict(ok=False, error="Чужий сайт."), 403)
+        try: n = int(self.headers.get("Content-Length") or 0)
+        except ValueError: n = -1
+        if n < 0 or n > 16384: return reply(dict(ok=False, error="Завеликий запит."), 413)
+        try:
+            body = json.loads(self.rfile.read(n).decode("utf-8")); assert isinstance(body, dict)
+            return reply(api_edem_register(body, self.headers.get("X-Forwarded-For") or self.client_address[0]))
+        except (ValueError, AssertionError): return reply(dict(ok=False, error="Запит не розібрати."), 400)
+        except Problem as e: return reply(dict(ok=False, error=str(e)), e.status)
+        except Exception as e:
+            sys.stderr.write(f"{type(e).__name__}: {e}\n"); return reply(dict(ok=False, error="Помилка сервера."), 500)
 
     def do_DELETE(self):
         if not self.authed(): return

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KRAЇNA EDEM × OBIIMY — Trypillia: The Art of Origins</title>
+<meta name="description" content="Спільний мистецький проєкт KRAЇNA EDEM та OBIIMY: шовкова хустка 88 × 88, натхненна трипільською культурою. Лімітований випуск — зареєструйтесь, щоб дізнатися про ціну та старт продажів першими.">
+<meta name="robots" content="noindex"><link rel="canonical" href="https://obiimy-landing-production.up.railway.app/edem">
+<meta property="og:type" content="website"><meta property="og:title" content="KRAЇNA EDEM × OBIIMY — Trypillia: The Art of Origins"><meta property="og:image" content="https://obiimy-landing-production.up.railway.app/photo/edem/art-1600-1200.webp"><meta property="og:url" content="https://obiimy-landing-production.up.railway.app/edem-zoom"><meta property="og:locale" content="uk_UA">
+<link rel="icon" href="brand/favicon.ico">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root { --bg: #1C1410; --paper: #F3E9D8; --cream: #FBF4E7; --ink: #2A2017; --ink2: #5A4B3C; --gold: #7F6020; --gold2: #E2C27A; --rule: #C9A95A; --line: rgba(42,32,23,.16); --acc: #3B2A1C; --fb: rgba(42,32,23,.3); --fbg: #fff; --fink: #2A2017; }
+* { box-sizing: border-box; } html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: Montserrat, Arial, sans-serif; font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+img { max-width: 100%; display: block; } p { margin: 0; } a { color: inherit; } figure { margin: 0; }
+h1, h2, h3 { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; line-height: 1.04; text-wrap: balance; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; } section[id] { scroll-margin-top: 20px; }
+.eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
+.btn-main { background: #3B2A1C; color: var(--cream); } .btn-main:hover { background: #2A1D13; } .btn-line { border-color: #3B2A1C; color: #3B2A1C; } .btn-line.light { border-color: rgba(251,244,231,.7); color: var(--cream); }
+/* the journey: a 420vh track, a sticky stage, the artwork scales and the captions pass */
+.journey { position: relative; height: 420vh; background: var(--bg); color: var(--cream); }
+.stage { position: sticky; top: 0; height: 100vh; overflow: hidden; }
+.stage .art { position: absolute; left: 62%; top: 50%; width: min(92vmin, 900px); height: min(92vmin, 900px); transform: translate(-50%, -50%) scale(1); transform-origin: 50% 50%; will-change: transform; }
+.stage .art img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 40px 80px rgba(0,0,0,.7)); }
+.stage .veil { position: absolute; inset: 0; background: radial-gradient(70% 70% at 60% 50%, transparent 40%, rgba(28,20,16,.55) 100%); pointer-events: none; }
+.stage .scrim { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(90deg, rgba(28,20,16,.92) 0%, rgba(28,20,16,.78) 30%, rgba(28,20,16,.2) 52%, transparent 65%), linear-gradient(0deg, rgba(28,20,16,.9) 0%, rgba(28,20,16,.5) 28%, transparent 55%); z-index: 2; }
+.stage .top { position: absolute; left: 24px; right: 24px; top: 28px; display: flex; justify-content: space-between; font-size: 11px; letter-spacing: .24em; text-transform: uppercase; color: rgba(243,233,216,.75); z-index: 3; }
+.stage .cap { position: absolute; left: 0; right: 0; bottom: 0; padding: 0 24px 48px; z-index: 3; }
+.stage .cap .in { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 560px); }
+.stage .c { grid-area: 1 / 1; opacity: 0; visibility: hidden; transform: translateY(14px); transition: opacity .35s, transform .35s, visibility 0s .35s; pointer-events: none; }
+.stage .c.on { opacity: 1; visibility: visible; transform: none; transition: opacity .45s .1s, transform .45s .1s, visibility 0s; pointer-events: auto; }
+.stage .c .eyebrow { color: var(--gold2); }
+.stage .c h1, .stage .c h2 { font-size: clamp(38px, 5.2vw, 78px); color: var(--cream); margin-top: 12px; } .stage .c h1 i { font-style: italic; color: var(--gold2); }
+.stage .c p.t { font-family: 'Cormorant Garamond', serif; font-size: clamp(20px, 2vw, 26px); font-weight: 300; color: rgba(243,233,216,.82); margin-top: 14px; max-width: 30em; }
+.stage .c .cta { margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap; }
+.stage .dots { position: absolute; right: 28px; top: 50%; transform: translateY(-50%); display: grid; gap: 14px; z-index: 3; } .stage .dots i { width: 6px; height: 6px; border-radius: 50%; background: rgba(243,233,216,.3); display: block; } .stage .dots i.on { background: var(--gold2); }
+.stage .hintsc { position: absolute; left: 50%; bottom: 20px; transform: translateX(-50%); font-size: 10px; letter-spacing: .3em; text-transform: uppercase; color: rgba(243,233,216,.5); z-index: 3; }
+/* after the journey */
+section.s { padding: clamp(60px, 8vw, 120px) 0; } section.s.alt { background: var(--cream); }
+.head { max-width: 760px; margin-bottom: clamp(30px, 4vw, 54px); } .head h2 { font-size: clamp(34px, 4.2vw, 60px); color: #3B2A1C; margin-top: 14px; } .head .lead { font-family: 'Cormorant Garamond', serif; font-size: clamp(21px, 2vw, 27px); color: var(--ink2); margin-top: 16px; }
+.sym4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px; } .sym4 .pic { height: 240px; display: flex; align-items: center; justify-content: center; } .sym4 .pic img { max-height: 100%; width: auto; filter: drop-shadow(0 18px 24px rgba(58,42,28,.2)); } .sym4 .pic.lg img { transform: scale(1.3); }
+.sym4 h3 { font-size: 28px; margin-top: 22px; padding-top: 16px; border-top: 1px solid var(--rule); color: #3B2A1C; } .sym4 p { margin-top: 10px; font-size: 15px; color: var(--ink2); }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(28px, 4vw, 64px); align-items: start; }
+.spec div { display: flex; justify-content: space-between; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 15px; } .spec span { color: var(--ink2); } .spec b { font-weight: 600; color: #3B2A1C; text-align: right; }
+.zoom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; } .zoom img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 2px; }
+.text p + p { margin-top: 1.1em; } .text { color: var(--ink2); }
+.brands { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; } .brands article { border-top: 1px solid var(--rule); padding-top: 26px; } .brands h3 { font-size: 30px; letter-spacing: .05em; color: #3B2A1C; } .brands p { margin-top: 14px; color: var(--ink2); }
+.brands ul { margin: 16px 0 0; padding: 0; list-style: none; } .brands li { padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; }
+.reg { background: #3B2A1C; color: var(--cream); padding: clamp(60px, 8vw, 120px) 0; } .reg .wrap { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
+.reg .eyebrow { color: var(--gold2); } .reg h2 { font-size: clamp(34px, 4vw, 56px); margin-top: 14px; } .reg .lead { font-family: 'Cormorant Garamond', serif; font-size: clamp(20px, 2vw, 26px); color: rgba(251,244,231,.82); margin-top: 18px; }
+.steps { margin-top: 30px; counter-reset: st; } .steps div { position: relative; padding: 16px 0 16px 60px; border-top: 1px solid rgba(251,244,231,.18); } .steps div::before { counter-increment: st; content: "0" counter(st); position: absolute; left: 0; top: 14px; font-family: 'Cormorant Garamond', serif; font-size: 32px; color: var(--gold2); } .steps h3 { font-size: 24px; color: var(--cream); } .steps p { margin-top: 4px; font-size: 15px; color: rgba(251,244,231,.75); }
+.reg .contacts { margin-top: 28px; font-size: 15px; color: rgba(251,244,231,.75); } .reg .contacts a { color: var(--cream); }
+.reg form.f, .reg .done { background: var(--cream); color: var(--ink); padding: 32px 30px; border-radius: 2px; } .reg form.f label, .reg form.f legend { color: var(--ink2); } .reg .done h3 { color: #3B2A1C; }
+footer { padding: 34px 0 44px; font-size: 13px; color: var(--ink2); } footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 30px; } footer a { text-decoration: none; }
+@media (max-width: 980px) { .sym4 { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; } .two, .brands, .reg .wrap { grid-template-columns: 1fr; } .stage .dots { display: none; } .stage .art { left: 50%; width: 92vmin; height: 92vmin; top: 40%; } .stage .scrim { background: linear-gradient(0deg, rgba(28,20,16,.95) 0%, rgba(28,20,16,.7) 40%, transparent 70%); } }
+@media (max-width: 600px) { .sym4 { grid-template-columns: 1fr; } .stage .cap { padding-bottom: 36px; } .stage .cap .cta .btn { flex: 1 1 100%; justify-content: center; } .stage .c h1, .stage .c h2 { font-size: 36px; } .stage .c p.t { font-size: 18px; } .stage .top { font-size: 9px; } }
+
+form.f { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 16px; }
+form.f label { display: grid; gap: 7px; font-size: 13px; font-weight: 600; letter-spacing: .04em; }
+form.f label.full, form.f fieldset { grid-column: 1 / -1; }
+form.f input { font: inherit; font-size: 16px; padding: 13px 14px; border: 1px solid var(--fb); border-radius: 2px; background: var(--fbg); color: var(--fink); width: 100%; }
+form.f input:focus { outline: 2px solid var(--acc); outline-offset: 1px; border-color: transparent; }
+form.f fieldset { border: 0; margin: 0; padding: 0; } form.f legend { font-size: 13px; font-weight: 600; letter-spacing: .04em; padding: 0; margin-bottom: 10px; }
+form.f .radios { display: flex; flex-direction: column; gap: 6px; }
+form.f .radios label { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 15px; letter-spacing: 0; padding: 6px 0; cursor: pointer; }
+form.f .radios input { width: 17px; height: 17px; padding: 0; margin: 0; accent-color: var(--acc); }
+form.f .actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 14px 20px; align-items: center; margin-top: 6px; }
+form.f .hint { font-size: 13px; opacity: .75; }
+form.f .err { color: #C0392B; font-size: 13px; display: none; } form.f label.bad .err { display: block; } form.f label.bad input { border-color: #C0392B; }
+.done h3 { font-size: 34px; } .done p { margin-top: 14px; opacity: .85; } .done .row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+.btn { display: inline-flex; align-items: center; gap: 12px; padding: 17px 30px; border-radius: 2px; font-weight: 500; font-size: 13px; letter-spacing: .12em; text-transform: uppercase; text-decoration: none; border: 1px solid transparent; cursor: pointer; font-family: Montserrat, Arial, sans-serif; transition: background .2s, color .2s; }
+.rv { opacity: 0; transform: translateY(22px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); } .rv.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .rv { opacity: 1; transform: none; transition: none; } * { animation: none !important; } }
+@media (max-width: 600px) { form.f { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<main id="top">
+<div class="journey" id="journey">
+  <div class="stage">
+    <div class="art" id="art"><img src="photo/edem/art-2400-800.webp" srcset="photo/edem/art-2400-480.webp 480w, photo/edem/art-2400-800.webp 800w, photo/edem/art-2400-1200.webp 1200w, photo/edem/art-2400.webp 2400w" sizes="100vmin" width="2400" height="2400" alt="Принт хустки «Trypillia — The Art of Origins»" fetchpriority="high"></div>
+    <div class="veil"></div><div class="scrim"></div>
+    <div class="top"><span>Kraїna Edem × Obiimy</span><span>88 × 88 · шовк · обмежений наклад</span></div>
+    <div class="dots" id="dots"><i class="on"></i><i></i><i></i><i></i></div>
+    <div class="cap"><div class="in"><div class="c on" data-i="0"><p class="eyebrow">Спільний мистецький проєкт · лімітований випуск</p><h1>Trypillia —<br><i>The Art of Origins</i></h1><p class="t">Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами — спільна робота KRAЇNA EDEM та OBIIMY.</p><div class="cta"><a class="btn btn-main" style="background:var(--gold2);color:#2A2017" href="#register">Отримати ранній доступ</a><a class="btn btn-line light" href="#symbols">Пропустити</a></div></div><div class="c" data-i="1"><p class="eyebrow">Пам’ять землі</p><h2>Символи, що пережили тисячоліття</h2><p class="t">Образи, які залишили нам давні покоління, і культурний код, який продовжує жити, навіть коли змінюються епохи.</p></div><div class="c" data-i="2"><p class="eyebrow">Трипільська пластика</p><h2>Фігурка, підвіски, шнури</h2><p class="t">Жіноча фігурка повторюється чотири рази; круглі й ромбовидні підвіски на плетених синіх шнурах оточують центр.</p></div><div class="c" data-i="3"><p class="eyebrow">Медальйон</p><h2>Спіраль у колі</h2><p class="t">У спіралях трипільського орнаменту дослідники вбачають плин часу, відродження та циклічність життя.</p></div></div></div>
+    <p class="hintsc" id="hintsc">Гортайте</p>
+  </div>
+</div>
+
+<section class="s alt" id="symbols"><div class="wrap">
+  <div class="head rv"><p class="eyebrow">Символи хустки</p><h2>Кожна деталь має значення</h2><p class="lead">Давні орнаментальні мотиви й символічні образи — переосмислені мовою сучасного дизайну, у золоті й глибокому синьому.</p></div>
+  <div class="sym4"><figure class="rv"><div class="pic"><img src="photo/edem/figure-800.webp" srcset="photo/edem/figure-480.webp 480w, photo/edem/figure-800.webp 800w, photo/edem/figure.webp 850w" sizes="300px" width="850" height="1200" alt="Золота жіноча фігурка зі спіралями — трипільська пластика в принті" loading="lazy" decoding="async"></div><h3>Пластика</h3><p>Жіноча фігурка зі спіральним орнаментом — образ трипільської пластики, який чотири рази повторюється на полотні хустки.</p></figure><figure class="rv"><div class="pic"><img src="photo/edem/mandala-800.webp" srcset="photo/edem/mandala-480.webp 480w, photo/edem/mandala-800.webp 800w, photo/edem/mandala.webp 935w" sizes="300px" width="935" height="935" alt="Центральний медальйон принту: спіраль у золоті й синьому" loading="lazy" decoding="async"></div><h3>Медальйон</h3><p>Центр композиції — спіраль у колі. У спіралях трипільського орнаменту дослідники вбачають плин часу, відродження та циклічність життя.</p></figure><figure class="rv"><div class="pic lg"><img src="photo/edem/pendant-round-800.webp" srcset="photo/edem/pendant-round-480.webp 480w, photo/edem/pendant-round-800.webp 800w, photo/edem/pendant-round.webp 873w" sizes="300px" width="873" height="1200" alt="Кругла золота підвіска з двома спіралями" loading="lazy" decoding="async"></div><h3>Підвіски</h3><p>Круглі золоті підвіски на плетених синіх шнурах оточують медальйон — вісім, по дві з кожного боку.</p></figure><figure class="rv"><div class="pic"><img src="photo/edem/pendant-diamond-800.webp" srcset="photo/edem/pendant-diamond-480.webp 480w, photo/edem/pendant-diamond-800.webp 800w, photo/edem/pendant-diamond.webp 933w" sizes="300px" width="933" height="1200" alt="Ромбовидна золота підвіска з орнаментом" loading="lazy" decoding="async"></div><h3>Ромби</h3><p>Чотири ромбовидні підвіски тримають композицію по діагоналях і замикають її в раму.</p></figure></div>
+</div></section>
+
+<section class="s" id="story"><div class="wrap"><div class="two">
+  <div class="rv"><p class="eyebrow">Історія, що живе в нас</p><h2 style="font-size:clamp(34px,4.2vw,60px);color:#3B2A1C;margin-top:14px">Наше коріння сягає глибини тисячоліть</h2><div class="text" style="margin-top:22px"><p>Задовго до сучасних кордонів і держав на землях нинішньої України розвивалися давні культури, які залишили по собі унікальну мистецьку спадщину. Особливе місце серед них посідає трипільська культура — одна з найяскравіших археологічних культур давньої Європи, що існувала впродовж VI–IV тисячоліть до нашої ери.</p><p>Сьогодні ці стародавні знаки набувають нового звучання. Ми не можемо повернути час, але можемо зберегти пам’ять про тих, хто жив до нас, — відкрити для себе їхнє мистецтво й відчути зв’язок із землею, її історією та культурними витоками.</p></div></div>
+  <div class="rv"><p class="eyebrow">Хустка</p><div class="spec" style="margin-top:14px"><div><span>Розмір</span><b>88 × 88 см</b></div><div><span>Матеріал</span><b>100% натуральний шовк</b></div><div><span>Принт</span><b>Авторський, спільний для двох брендів</b></div><div><span>Підпис</span><b>OBIIMY × Edem на полотні</b></div><div><span>Наклад</span><b>Обмежений</b></div><div><span>Виготовлено</span><b>в Україні</b></div></div><div class="zoom" style="margin-top:16px"><img src="photo/edem/art-center-800.webp" srcset="photo/edem/art-center-480.webp 480w, photo/edem/art-center-800.webp 800w, photo/edem/art-center-1200.webp 1200w, photo/edem/art-center.webp 1600w" sizes="16vw" width="1600" height="1600" alt="Центральний медальйон крупно" loading="lazy" decoding="async"><img src="photo/edem/art-pendants-800.webp" srcset="photo/edem/art-pendants-480.webp 480w, photo/edem/art-pendants-800.webp 800w, photo/edem/art-pendants-1200.webp 1200w, photo/edem/art-pendants.webp 1400w" sizes="16vw" width="1400" height="1400" alt="Гроно підвісок на шнурах" loading="lazy" decoding="async"><img src="photo/edem/art-sign-800.webp" srcset="photo/edem/art-sign-480.webp 480w, photo/edem/art-sign-800.webp 800w, photo/edem/art-sign-1200.webp 1200w, photo/edem/art-sign.webp 1400w" sizes="16vw" width="1400" height="1400" alt="Підпис OBIIMY × Edem на полотні" loading="lazy" decoding="async"></div><p style="margin-top:16px;font-size:14px;color:var(--ink2)">Ціну й дату старту повідомимо зареєстрованим першими.</p></div>
+</div></div></section>
+
+<section class="s alt" id="brands"><div class="wrap">
+  <div class="head rv"><p class="eyebrow">Партнери</p><h2>Два бренди. Одна філософія. Спільне мистецтво.</h2></div>
+  <div class="brands"><article class="rv"><p class="eyebrow">Партнер</p><h3 style="margin-top:10px">KRAЇNA EDEM</h3><p>Збереження й популяризація української культурної спадщини вже багато років є невід’ємною частиною філософії KRAЇNA EDEM — через культурні ініціативи, мистецькі проєкти та простори, присвячені творчості.</p><ul><li>Park3020 — парк сучасної української скульптури, де мистецтво взаємодіє з природою</li><li>Підтримка українських митців і популяризація сучасного мистецтва</li></ul></article>
+  <article class="rv"><p class="eyebrow">Бренд</p><h3 style="margin-top:10px">OBIIMY</h3><p>Український бренд шовкових хусток і аксесуарів з авторськими принтами. Засновниця й художниця — Світлана Сніжко: перші колекції виросли з її картин.</p><ul><li>100% натуральний шовк, ручна обробка краю</li><li>Авторські принти, виготовлено в Україні</li><li>Шоурум: Київ, вул. Петра Сагайдачного, 12</li></ul></article></div>
+</div></section>
+
+<section class="reg" id="register"><div class="wrap">
+  <div class="rv"><p class="eyebrow">Як придбати</p><h2>Ранній доступ до випуску</h2><p class="lead">Ціну й дату старту підтверджуємо з партнером. Щойно вони відомі — зареєстровані дізнаються першими й отримують персональне посилання на оплату.</p>
+    <div class="steps"><div><h3>Реєстрація</h3><p>Залиште ім’я, телефон і позначте, що вас цікавить.</p></div><div><h3>Персональне посилання</h3><p>Коли продажі відкриються, надішлемо вам посилання на оплату.</p></div><div><h3>Підтвердження й доставка</h3><p>Після оплати — підтвердження замовлення та відправлення хустки.</p></div></div>
+    <div class="contacts">Питання: <a href="tel:+380670108525">+38 067 010 85 25</a> · <a href="mailto:sale@obiimy.world">sale@obiimy.world</a> · <a href="https://t.me/OBIIMY_sales" target="_blank" rel="noopener">Telegram</a></div></div>
+  <div class="rv">
+  <form class="f" id="reg" novalidate>
+    <label><span>Ім’я *</span><input name="name" type="text" autocomplete="name" required aria-describedby="err-name"><span class="err" id="err-name" role="alert">Вкажіть ім’я</span></label>
+    <label><span>Телефон *</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required aria-describedby="err-phone"><span class="err" id="err-phone" role="alert">Вкажіть телефон, щонайменше 9 цифр</span></label>
+    <label class="full"><span>Email <small style="font-weight:400">(необов’язково)</small></span><input name="email" type="email" autocomplete="email"></label>
+    <fieldset><legend>Що вас цікавить</legend><div class="radios">
+      <label><input type="radio" name="interest" value="Планую придбати на старті"> Планую придбати на старті</label>
+      <label><input type="radio" name="interest" value="Хочу дізнатися ціну"> Хочу дізнатися ціну</label>
+      <label><input type="radio" name="interest" value="Розглядаю як подарунок"> Розглядаю як подарунок</label>
+    </div></fieldset>
+    <div class="actions"><button class="btn btn-main" type="submit">Забронювати ранній доступ</button><span class="hint">Без розсилок — лише повідомлення про цей запуск.<br>* обов’язкові поля</span></div>
+  </form>
+  <div class="done" id="reg-done" hidden>
+    <h3 id="done-h">Дякуємо — ви в списку раннього доступу</h3>
+    <p id="done-p">Ви першими дізнаєтеся про ціну та відкриття продажів. Якщо є запитання — напишіть нам у Telegram.</p>
+    <div class="row"><a class="btn btn-main" id="reg-tg" href="https://t.me/OBIIMY_sales" target="_blank" rel="noopener">Написати в Telegram</a><a class="btn btn-line" href="#top">На початок</a></div>
+  </div></div>
+</div></section>
+</main>
+<footer><div class="wrap"><span>KRAЇNA EDEM × OBIIMY · Trypillia — The Art of Origins · 2026</span><span><a href="tel:+380670108525">+38 067 010 85 25</a> · <a href="mailto:sale@obiimy.world">sale@obiimy.world</a> · <a href="https://obiimy.world/" target="_blank" rel="noopener">obiimy.world</a></span></div></footer>
+<script>
+(function () {
+  var API = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? 'http://127.0.0.1:8770' : 'https://deck-editor-production.up.railway.app';
+  var f = document.getElementById('reg'), done = document.getElementById('reg-done'), tg = document.getElementById('reg-tg');
+  function valid(n, v) { return n === 'phone' ? v.replace(/\D/g, '').length >= 9 : v.length > 1; }
+  f.addEventListener('submit', function (e) {
+    e.preventDefault(); var bad = null;
+    ['name', 'phone'].forEach(function (n) { var el = f.elements[n], lab = el.closest('label'), ok = valid(n, el.value.trim()); lab.classList.toggle('bad', !ok); el.setAttribute('aria-invalid', ok ? 'false' : 'true'); if (!ok && !bad) bad = el; });
+    if (bad) { bad.focus(); return; }
+    var data = { name: f.elements.name.value.trim(), phone: f.elements.phone.value.trim(), email: f.elements.email.value.trim(), interest: (f.querySelector('input[name=interest]:checked') || {}).value || '', note: '', page: location.href };
+    var btn = f.querySelector('button'); btn.disabled = true; btn.textContent = 'Надсилаємо…';
+    var text = 'Ранній доступ · Trypillia — The Art of Origins\nІм’я: ' + data.name + '\nТелефон: ' + data.phone + (data.email ? '\nEmail: ' + data.email : '') + (data.interest ? '\nІнтерес: ' + data.interest : '');
+    tg.href = 'https://t.me/OBIIMY_sales?text=' + encodeURIComponent(text);
+    function finish(ok) { if (!ok) { document.getElementById('done-h').textContent = 'Заявку не надіслано'; document.getElementById('done-p').textContent = 'Не вдалося надіслати заявку автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.'; } f.hidden = true; done.hidden = false; var h = document.getElementById('done-h'); h.setAttribute('tabindex', '-1'); h.focus(); }
+    fetch(API + '/api/edem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(function (r) { return r.json(); }).then(function (j) { if (!j.ok) throw new Error('x'); finish(true); }).catch(function () { finish(false); });
+  });
+  ['name', 'phone'].forEach(function (n) { f.elements[n].addEventListener('input', function () { this.closest('label').classList.remove('bad'); this.removeAttribute('aria-invalid'); }); });
+  if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px', threshold: .05 });
+    document.querySelectorAll('.rv').forEach(function (el, i) { el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); });
+  } else { document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('in'); }); }
+  
+  // the journey: progress 0..1 over the 420vh track → the artwork scales from 1 to 3.4 towards the medallion, captions switch by quarter
+  var J = document.getElementById('journey'), A = document.getElementById('art'), caps = [].slice.call(document.querySelectorAll('.stage .c')), dots = [].slice.call(document.querySelectorAll('#dots i')), hint = document.getElementById('hintsc');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches, cur = 0;
+  function tick() {
+    var r = J.getBoundingClientRect(), total = J.offsetHeight - window.innerHeight, p = Math.min(1, Math.max(0, -r.top / total));
+    var s = reduce ? 1 : 1 + p * 2.4, ty = reduce ? 0 : p * -6;          // the medallion is at the centre, so a plain scale zooms into it
+    A.style.transform = 'translate(-50%, calc(-50% + ' + ty + '%)) scale(' + s + ')';
+    var i = Math.min(3, Math.floor(p * 4 + 0.0001));
+    if (i !== cur) { cur = i; caps.forEach(function (c, k) { c.classList.toggle('on', k === i); }); dots.forEach(function (d, k) { d.classList.toggle('on', k === i); }); }
+    hint.style.opacity = p > .05 ? 0 : 1;
+  }
+  window.addEventListener('scroll', tick, { passive: true }); window.addEventListener('resize', tick); tick();
+})();
+</script><nav class="vbar" aria-label="Варіанти дизайну"><span>Варіант</span><a href="edem">Класика</a><a href="edem-gold">Золото</a><a href="edem-museum">Музей</a><a href="edem-zoom" class=on>Занурення</a></nav>
+<style>.vbar { position: fixed; right: 16px; bottom: 16px; z-index: 50; display: flex; gap: 2px; align-items: center; padding: 6px 8px 6px 12px; border-radius: 999px; background: rgba(42,32,23,.88); color: #F3E9D8; font: 500 12px/1 Montserrat, Arial, sans-serif; backdrop-filter: blur(8px); box-shadow: 0 10px 30px rgba(0,0,0,.25); }
+.vbar span { opacity: .6; margin-right: 8px; letter-spacing: .08em; text-transform: uppercase; font-size: 10px; }
+.vbar a { color: inherit; text-decoration: none; padding: 8px 12px; border-radius: 999px; } .vbar a:hover { background: rgba(255,255,255,.1); } .vbar a.on { background: #E2C27A; color: #2A2017; }
+@media (max-width: 600px) { .vbar { right: 10px; bottom: 10px; left: 10px; justify-content: center; } .vbar span { display: none; } }</style>
+</body>
+</html>

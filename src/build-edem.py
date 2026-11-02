@@ -162,6 +162,16 @@ footer a { text-decoration: none; }
 }
 """
 
+VARIANTS = [("edem", "Класика"), ("edem-gold", "Золото"), ("edem-museum", "Музей"), ("edem-zoom", "Занурення")]
+def variants_bar(current):
+    """A small fixed strip to switch between the design variants of the collaboration landing (client review, 02.11)."""
+    links = "".join(f'<a href="{slug}"{" class=on" if slug == current else ""}>{name}</a>' for slug, name in VARIANTS)
+    return f'''<nav class="vbar" aria-label="Варіанти дизайну"><span>Варіант</span>{links}</nav>
+<style>.vbar {{ position: fixed; right: 16px; bottom: 16px; z-index: 50; display: flex; gap: 2px; align-items: center; padding: 6px 8px 6px 12px; border-radius: 999px; background: rgba(42,32,23,.88); color: #F3E9D8; font: 500 12px/1 Montserrat, Arial, sans-serif; backdrop-filter: blur(8px); box-shadow: 0 10px 30px rgba(0,0,0,.25); }}
+.vbar span {{ opacity: .6; margin-right: 8px; letter-spacing: .08em; text-transform: uppercase; font-size: 10px; }}
+.vbar a {{ color: inherit; text-decoration: none; padding: 8px 12px; border-radius: 999px; }} .vbar a:hover {{ background: rgba(255,255,255,.1); }} .vbar a.on {{ background: #E2C27A; color: #2A2017; }}
+@media (max-width: 600px) {{ .vbar {{ right: 10px; bottom: 10px; left: 10px; justify-content: center; }} .vbar span {{ display: none; }} }}</style>'''
+
 def main():
     scarf = img("photo/edem/scarf.webp", "Хустка KRAЇNA EDEM × OBIIMY «Trypillia — The Art of Origins», 88 × 88", sizes="(max-width: 980px) 90vw, 46vw", lazy=False, eager_priority=True)
     body = f'''
@@ -325,7 +335,7 @@ def main():
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
 <style>{CSS}</style>'''
-    html = head + typo(body)
+    html = head + typo(body) + variants_bar("edem")
     (ROOT / "edem.html").write_text(html)
     print("edem", len(html) // 1024, "KB")
 

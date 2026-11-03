@@ -116,7 +116,7 @@ GOLD_CSS = """
 :root { --bg: #1C1410; --bg2: #26190F; --cream: #F3E9D8; --cream2: rgba(243,233,216,.7); --gold: #D9B86A; --gold2: #B48A3A; --line: rgba(217,184,106,.28); --acc: #D9B86A; --fb: rgba(42,32,23,.3); --fbg: #FBF4E7; --fink: #2A2017; }
 * { box-sizing: border-box; } html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--bg); color: var(--cream); font-family: Montserrat, Arial, sans-serif; font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-img { max-width: 100%; display: block; } p { margin: 0; } a { color: inherit; } figure { margin: 0; }
+img { max-width: 100%; height: auto; display: block; } p { margin: 0; } a { color: inherit; } figure { margin: 0; }
 h1, h2, h3 { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; line-height: 1.02; text-wrap: balance; }
 .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; }
 section[id] { scroll-margin-top: 20px; }
@@ -130,7 +130,7 @@ section[id] { scroll-margin-top: 20px; }
 .hero .disc { position: absolute; left: 50%; top: 50%; width: min(140vh, 1500px); height: min(140vh, 1500px); transform: translate(-50%, -50%); opacity: .14; filter: saturate(.5) sepia(.6); animation: spin 140s linear infinite; pointer-events: none; }
 .hero .disc img { width: 100%; height: 100%; object-fit: contain; }
 @keyframes spin { to { transform: translate(-50%, -50%) rotate(360deg); } }
-.hero .in { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: clamp(28px, 5vw, 80px); align-items: center; width: 100%; max-width: 1240px; padding: 0 24px; }
+.hero .in { position: relative; display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(28px, 5vw, 80px); align-items: center; width: 100%; max-width: 1240px; padding: 0 24px; }
 .hero .top { position: absolute; left: 24px; right: 24px; top: 34px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; letter-spacing: .22em; text-transform: uppercase; color: var(--cream2); }
 .hero h1 { font-size: clamp(50px, 7vw, 108px); color: var(--cream); } .hero h1 i { font-style: italic; color: var(--gold); }
 .hero .lead { font-family: 'Cormorant Garamond', Georgia, serif; font-size: clamp(22px, 2.2vw, 30px); font-weight: 300; line-height: 1.35; color: var(--cream2); max-width: 28em; margin-top: 26px; }
@@ -215,21 +215,8 @@ def gold():
   <blockquote>{MANIFESTO}</blockquote>
 </div></section>
 
-<section class="s" id="story"><div class="wrap">
-  <div class="cols">
-    <p class="chap rv">I</p>
-    <div class="rv"><h2 style="font-size:clamp(38px,4.8vw,68px)">Історія, що живе в нас</h2><div class="text" style="margin-top:26px">{"".join(f"<p>{t}</p>" for t in STORY)}</div></div>
-    <figure class="fig rv">{img("photo/edem/art-corner.webp", "Фрагмент принту: трипільська фігурка й плетені шнури на кутку хустки", sizes="(max-width: 980px) 92vw, 40vw")}<figcaption>Фрагмент принту · кут хустки</figcaption></figure>
-  </div>
-</div></section>
-
-<section class="s" id="symbols" style="background:var(--bg2)"><div class="wrap">
-  <div class="head"><p class="chap rv">II</p><div class="rv"><h2>Кожна деталь має значення</h2><p class="sub">Давні орнаментальні мотиви й символічні образи — переосмислені мовою сучасного дизайну, у золоті й глибокому синьому.</p></div></div>
-  <div class="sym4">{"".join(f'<figure class="rv"><div class="pic{" lg" if k == "pendant-round" else ""}">{sym_img(k, a)}</div><h3><span class="n">0{i + 1}</span>{t}</h3><p>{d}</p></figure>' for i, (k, t, d, a) in enumerate(SYMBOLS))}</div>
-</div></section>
-
-<section class="s" id="scarf"><div class="wrap">
-  <div class="head"><p class="chap rv">III</p><div class="rv"><h2>Мистецьке полотно, яке можна носити</h2><p class="sub">Хустка тут — більше, ніж аксесуар: мистецьке полотно, що поєднує сучасний дизайн із пам’яттю про давні культури.</p></div></div>
+<section class="s" id="scarf" style="background:var(--bg2)"><div class="wrap">
+  <div class="head"><p class="chap rv">I</p><div class="rv"><h2>Мистецьке полотно, яке можна носити</h2><p class="sub">Хустка тут — більше, ніж аксесуар: мистецьке полотно, що поєднує сучасний дизайн із пам’яттю про давні культури.</p></div></div>
   <div class="scarf">
     <div class="rv"><div class="full">{img("photo/edem/art-1600.webp", "Принт хустки «Trypillia — The Art of Origins» повністю", sizes="(max-width: 980px) 92vw, 58vw")}</div>
       <div class="zoom"><figure>{img("photo/edem/art-pendants.webp", "Гроно підвісок на плетених шнурах — фрагмент принту", sizes="28vw")}<figcaption>Підвіски на шнурах</figcaption></figure><figure>{img("photo/edem/art-sign.webp", "Підпис OBIIMY × Edem на полотні хустки", sizes="28vw")}<figcaption>Підпис двох брендів</figcaption></figure></div></div>
@@ -237,7 +224,20 @@ def gold():
   </div>
 </div></section>
 
-<section class="s" id="brands" style="background:var(--bg2)"><div class="wrap">
+<section class="s" id="story"><div class="wrap">
+  <div class="cols">
+    <p class="chap rv">II</p>
+    <div class="rv"><h2 style="font-size:clamp(38px,4.8vw,68px)">Історія, що живе в нас</h2><div class="text" style="margin-top:26px">{"".join(f"<p>{t}</p>" for t in STORY)}</div></div>
+    <figure class="fig rv">{img("photo/edem/art-corner.webp", "Фрагмент принту: трипільська фігурка й плетені шнури на кутку хустки", sizes="(max-width: 980px) 92vw, 40vw")}<figcaption>Фрагмент принту · кут хустки</figcaption></figure>
+  </div>
+</div></section>
+
+<section class="s" id="symbols" style="background:var(--bg2)"><div class="wrap">
+  <div class="head"><p class="chap rv">III</p><div class="rv"><h2>Кожна деталь має значення</h2><p class="sub">Давні орнаментальні мотиви й символічні образи — переосмислені мовою сучасного дизайну, у золоті й глибокому синьому.</p></div></div>
+  <div class="sym4">{"".join(f'<figure class="rv"><div class="pic{" lg" if k == "pendant-round" else ""}">{sym_img(k, a)}</div><h3><span class="n">0{i + 1}</span>{t}</h3><p>{d}</p></figure>' for i, (k, t, d, a) in enumerate(SYMBOLS))}</div>
+</div></section>
+
+<section class="s" id="brands"><div class="wrap">
   <div class="head"><p class="chap rv">IV</p><div class="rv"><h2>Два бренди. Одна філософія.</h2><p class="sub">Культурна спадщина — не лише історія минулого, а жива частина нашої ідентичності.</p></div></div>
   <div class="brands">
     <article class="rv"><p class="eyebrow">Партнер</p><h3 style="margin-top:12px">KRAЇNA EDEM</h3><p>{EDEM_P}</p><ul>{"".join(f"<li>{x}</li>" for x in EDEM_L)}</ul></article>
@@ -261,7 +261,7 @@ MUSEUM_CSS = """
 * { box-sizing: border-box; } html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: Montserrat, Arial, sans-serif; font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
 body::before { content: ""; position: fixed; inset: 0; pointer-events: none; opacity: .5; mix-blend-mode: multiply; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='240' height='240'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .08 0'/></filter><rect width='240' height='240' filter='url(%23n)'/></svg>"); z-index: 1; }
-img { max-width: 100%; display: block; } p { margin: 0; } a { color: inherit; } figure { margin: 0; }
+img { max-width: 100%; height: auto; display: block; } p { margin: 0; } a { color: inherit; } figure { margin: 0; }
 h1, h2, h3 { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; line-height: 1.04; text-wrap: balance; }
 .layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); max-width: 1320px; margin: 0 auto; padding: 0 24px; gap: 48px; position: relative; z-index: 2; }
 .index { position: sticky; top: 0; align-self: start; height: 100vh; padding: 36px 0; display: flex; flex-direction: column; gap: 10px; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; }
@@ -273,7 +273,7 @@ h1, h2, h3 { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-
 .cap { font-size: 12px; color: var(--ink2); letter-spacing: .04em; line-height: 1.5; margin-top: 10px; }
 .btn-main { background: var(--ink); color: var(--paper); } .btn-main:hover { background: #40342A; } .btn-line { border-color: var(--ink); color: var(--ink); }
 section { padding: clamp(60px, 8vw, 110px) 0; border-bottom: 1px solid var(--line); scroll-margin-top: 10px; }
-.hero { padding-top: 44px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: end; }
+.hero { padding-top: 44px; display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 48px; align-items: end; }
 .hero h1 { font-size: clamp(48px, 6vw, 96px); } .hero h1 i { font-style: italic; color: var(--gold); }
 .hero .lead { font-family: 'Cormorant Garamond', serif; font-size: clamp(22px, 2vw, 28px); color: var(--ink2); margin-top: 22px; max-width: 26em; }
 .hero .cta { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 32px; }
@@ -301,7 +301,7 @@ footer { padding: 30px 0 40px; font-size: 12px; color: var(--ink2); display: fle
 """
 
 def museum():
-    idx = [("hero", "I", "Випуск"), ("manifest", "II", "Маніфест"), ("story", "III", "Історія"), ("symbols", "IV", "Символи"), ("scarf", "V", "Хустка"), ("brands", "VI", "Партнери"), ("register", "VII", "Як придбати")]
+    idx = [("hero", "I", "Випуск"), ("manifest", "II", "Маніфест"), ("scarf", "III", "Хустка"), ("story", "IV", "Історія"), ("symbols", "V", "Символи"), ("brands", "VI", "Партнери"), ("register", "VII", "Як придбати")]
     body = f'''
 <div class="layout" id="top">
 <aside class="index"><a class="brand" href="#top" style="border:0;display:block">Kraїna Edem × Obiimy<small>Каталог випуску · 2026</small></a>{"".join(f'<a href="#{h}"><b>{n}</b>{t}</a>' for h, n, t in idx)}<div class="exh">{img("photo/edem/figure.webp", "Трипільська фігурка — елемент принту", sizes="110px")}<p>Експонат · пластика</p></div><a class="btn btn-main" href="#register">Ранній доступ</a></aside>
@@ -314,17 +314,17 @@ def museum():
   <figure>{img("photo/edem/art-1600.webp", "Принт хустки «Trypillia — The Art of Origins» повністю", sizes="(max-width: 980px) 92vw, 44vw", lazy=False, eager_priority=True)}<div class="dim"><span>0</span><i></i><span>88 см</span></div><p class="cap">Хустка 88 × 88 см · 100% натуральний шовк · обмежений наклад · підпис OBIIMY × Edem на полотні</p></figure>
 </section>
 <section class="mani" id="manifest"><p class="plate rv">II · Маніфест</p><blockquote class="rv" style="margin-top:22px">{MANIFESTO}</blockquote></section>
-<section id="story"><p class="plate rv">III · Історія, що живе в нас</p><div class="two" style="margin-top:14px">
-  <div class="rv"><h2>Наше коріння сягає глибини тисячоліть</h2><div class="text" style="margin-top:22px">{"".join(f"<p>{t}</p>" for t in STORY)}</div></div>
-  <figure class="rv">{img("photo/edem/art-corner.webp", "Фрагмент принту: трипільська фігурка й плетені шнури на кутку хустки", sizes="(max-width: 980px) 92vw, 40vw")}<p class="cap">Fig. 01 · Фрагмент принту, кут хустки: фігурка, плетені шнури, рамка</p></figure></div></section>
-<section id="symbols"><p class="plate rv">IV · Символи хустки</p><h2 class="rv">Кожна деталь має значення</h2>
-  <div class="plates">{"".join(f'<figure class="rv"><div class="pic{" lg" if k == "pendant-round" else ""}">{sym_img(k, a, "200px")}</div><div><p class="plate">Fig. 0{i + 2}</p><h3>{t}</h3><p>{d}</p></div></figure>' for i, (k, t, d, a) in enumerate(SYMBOLS))}</div></section>
-<section id="scarf"><p class="plate rv">V · Хустка</p><h2 class="rv">Мистецьке полотно, яке можна носити</h2>
+<section id="scarf"><p class="plate rv">III · Хустка</p><h2 class="rv">Мистецьке полотно, яке можна носити</h2>
   <div class="full rv" style="margin-top:30px">{img("photo/edem/art-1600.webp", "Принт хустки повністю", sizes="(max-width: 980px) 92vw, 70vw")}</div>
   <div class="zoom rv">{img("photo/edem/art-center.webp", "Центральний медальйон крупно", sizes="24vw")}{img("photo/edem/art-pendants.webp", "Гроно підвісок на шнурах", sizes="24vw")}{img("photo/edem/art-sign.webp", "Підпис OBIIMY × Edem на полотні", sizes="24vw")}</div>
-  <p class="cap rv">Fig. 06–08 · Медальйон · підвіски на шнурах · підпис двох брендів на полотні</p>
+  <p class="cap rv">Fig. 01–03 · Медальйон · підвіски на шнурах · підпис двох брендів на полотні</p>
   <div class="spec rv">{spec_rows()}</div>
   <p class="cap rv" style="margin-top:18px">Ціну й дату старту повідомимо зареєстрованим першими.</p></section>
+<section id="story"><p class="plate rv">IV · Історія, що живе в нас</p><div class="two" style="margin-top:14px">
+  <div class="rv"><h2>Наше коріння сягає глибини тисячоліть</h2><div class="text" style="margin-top:22px">{"".join(f"<p>{t}</p>" for t in STORY)}</div></div>
+  <figure class="rv">{img("photo/edem/art-corner.webp", "Фрагмент принту: трипільська фігурка й плетені шнури на кутку хустки", sizes="(max-width: 980px) 92vw, 40vw")}<p class="cap">Fig. 04 · Фрагмент принту, кут хустки: фігурка, плетені шнури, рамка</p></figure></div></section>
+<section id="symbols"><p class="plate rv">V · Символи хустки</p><h2 class="rv">Кожна деталь має значення</h2>
+  <div class="plates">{"".join(f'<figure class="rv"><div class="pic{" lg" if k == "pendant-round" else ""}">{sym_img(k, a, "200px")}</div><div><p class="plate">Fig. 0{i + 5}</p><h3>{t}</h3><p>{d}</p></div></figure>' for i, (k, t, d, a) in enumerate(SYMBOLS))}</div></section>
 <section id="brands"><p class="plate rv">VI · Партнери</p><h2 class="rv">Два бренди. Одна філософія. Спільне мистецтво.</h2>
   <div class="brands"><article class="rv"><p class="plate">Партнер</p><h3 style="margin-top:10px">KRAЇNA EDEM</h3><p>{EDEM_P}</p><ul>{"".join(f"<li>{x}</li>" for x in EDEM_L)}</ul></article>
   <article class="rv"><p class="plate">Бренд</p><h3 style="margin-top:10px">OBIIMY</h3><p>{OB_P}</p><ul>{"".join(f"<li>{x}</li>" for x in OB_L)}</ul></article></div></section>
@@ -342,7 +342,7 @@ ZOOM_CSS = """
 :root { --bg: #1C1410; --paper: #F3E9D8; --cream: #FBF4E7; --ink: #2A2017; --ink2: #5A4B3C; --gold: #7F6020; --gold2: #E2C27A; --rule: #C9A95A; --line: rgba(42,32,23,.16); --acc: #3B2A1C; --fb: rgba(42,32,23,.3); --fbg: #fff; --fink: #2A2017; }
 * { box-sizing: border-box; } html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: Montserrat, Arial, sans-serif; font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-img { max-width: 100%; display: block; } p { margin: 0; } a { color: inherit; } figure { margin: 0; }
+img { max-width: 100%; height: auto; display: block; } p { margin: 0; } a { color: inherit; } figure { margin: 0; }
 h1, h2, h3 { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; line-height: 1.04; text-wrap: balance; }
 .wrap { max-width: 1240px; margin: 0 auto; padding: 0 24px; } section[id] { scroll-margin-top: 20px; }
 .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: var(--gold); }
@@ -374,6 +374,9 @@ section.s { padding: clamp(60px, 8vw, 120px) 0; } section.s.alt { background: va
 .spec div { display: flex; justify-content: space-between; gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--line); font-size: 15px; } .spec span { color: var(--ink2); } .spec b { font-weight: 600; color: #3B2A1C; text-align: right; }
 .zoom { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; } .zoom img { width: 100%; height: auto; aspect-ratio: 1; object-fit: cover; border-radius: 2px; }
 .text p + p { margin-top: 1.1em; } .text { color: var(--ink2); }
+.scarf2 { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, .8fr); gap: clamp(28px, 4vw, 64px); align-items: start; } .scarf2 > div:last-child { position: sticky; top: 90px; }
+.full img { width: 100%; height: auto; border-radius: 2px; box-shadow: 0 50px 90px -40px rgba(58,42,28,.45); } .note { margin-top: 18px; padding: 14px 16px; border-left: 2px solid var(--gold2); background: var(--cream); font-size: 14px; color: var(--ink2); }
+.figc { margin-top: 12px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink2); } .fig img { width: 100%; height: auto; border-radius: 2px; }
 .brands { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; } .brands article { border-top: 1px solid var(--rule); padding-top: 26px; } .brands h3 { font-size: 30px; letter-spacing: .05em; color: #3B2A1C; } .brands p { margin-top: 14px; color: var(--ink2); }
 .brands ul { margin: 16px 0 0; padding: 0; list-style: none; } .brands li { padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; }
 .reg { background: #3B2A1C; color: var(--cream); padding: clamp(60px, 8vw, 120px) 0; } .reg .wrap { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(32px, 5vw, 80px); align-items: start; }
@@ -382,7 +385,7 @@ section.s { padding: clamp(60px, 8vw, 120px) 0; } section.s.alt { background: va
 .reg .contacts { margin-top: 28px; font-size: 15px; color: rgba(251,244,231,.75); } .reg .contacts a { color: var(--cream); }
 .reg form.f, .reg .done { background: var(--cream); color: var(--ink); padding: 32px 30px; border-radius: 2px; } .reg form.f label, .reg form.f legend { color: var(--ink2); } .reg .done h3 { color: #3B2A1C; }
 footer { padding: 34px 0 44px; font-size: 13px; color: var(--ink2); } footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px 30px; } footer a { text-decoration: none; }
-@media (max-width: 980px) { .sym4 { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; } .two, .brands, .reg .wrap { grid-template-columns: 1fr; } .stage .dots { display: none; } .stage .art { left: 50%; width: 92vmin; height: 92vmin; top: 40%; } .stage .scrim { background: linear-gradient(0deg, rgba(28,20,16,.95) 0%, rgba(28,20,16,.7) 40%, transparent 70%); } }
+@media (max-width: 980px) { .sym4 { grid-template-columns: repeat(2, 1fr); gap: 28px 20px; } .two, .brands, .reg .wrap, .scarf2 { grid-template-columns: 1fr; } .scarf2 > div:last-child { position: static; } .stage .dots { display: none; } .stage .art { left: 50%; width: 92vmin; height: 92vmin; top: 40%; } .stage .scrim { background: linear-gradient(0deg, rgba(28,20,16,.95) 0%, rgba(28,20,16,.7) 40%, transparent 70%); } }
 @media (max-width: 600px) { .sym4 { grid-template-columns: 1fr; } .stage .cap { padding-bottom: 36px; } .stage .cap .cta .btn { flex: 1 1 100%; justify-content: center; } .stage .c h1, .stage .c h2 { font-size: 36px; } .stage .c p.t { font-size: 18px; } .stage .top { font-size: 9px; } }
 """
 
@@ -405,6 +408,15 @@ def zoom():
   </div>
 </div>
 
+<section class="s" id="scarf"><div class="wrap">
+  <div class="head rv"><p class="eyebrow">Хустка · 88 × 88 см</p><h2>Мистецьке полотно, яке можна носити</h2><p class="lead">Хустка тут — більше, ніж аксесуар: мистецьке полотно, що поєднує сучасний дизайн із пам’яттю про давні культури.</p></div>
+  <div class="scarf2">
+    <div class="rv"><div class="full">{img("photo/edem/art-1600.webp", "Принт хустки «Trypillia — The Art of Origins» повністю", sizes="(max-width: 980px) 92vw, 58vw")}</div>
+      <div class="zoom" style="margin-top:14px">{img("photo/edem/art-center.webp", "Центральний медальйон крупно", sizes="19vw")}{img("photo/edem/art-pendants.webp", "Гроно підвісок на шнурах", sizes="19vw")}{img("photo/edem/art-sign.webp", "Підпис OBIIMY × Edem на полотні", sizes="19vw")}</div></div>
+    <div class="rv"><div class="spec">{spec_rows()}</div><p class="note">Ціну й дату старту повідомимо зареєстрованим першими.</p><p style="margin-top:26px"><a class="btn btn-main" href="#register">Отримати ранній доступ</a></p></div>
+  </div>
+</div></section>
+
 <section class="s alt" id="symbols"><div class="wrap">
   <div class="head rv"><p class="eyebrow">Символи хустки</p><h2>Кожна деталь має значення</h2><p class="lead">Давні орнаментальні мотиви й символічні образи — переосмислені мовою сучасного дизайну, у золоті й глибокому синьому.</p></div>
   <div class="sym4">{"".join(f'<figure class="rv"><div class="pic{" lg" if k == "pendant-round" else ""}">{sym_img(k, a)}</div><h3>{t}</h3><p>{d}</p></figure>' for k, t, d, a in SYMBOLS)}</div>
@@ -412,7 +424,7 @@ def zoom():
 
 <section class="s" id="story"><div class="wrap"><div class="two">
   <div class="rv"><p class="eyebrow">Історія, що живе в нас</p><h2 style="font-size:clamp(34px,4.2vw,60px);color:#3B2A1C;margin-top:14px">Наше коріння сягає глибини тисячоліть</h2><div class="text" style="margin-top:22px">{"".join(f"<p>{t}</p>" for t in STORY)}</div></div>
-  <div class="rv"><p class="eyebrow">Хустка</p><div class="spec" style="margin-top:14px">{spec_rows()}</div><div class="zoom" style="margin-top:16px">{img("photo/edem/art-center.webp", "Центральний медальйон крупно", sizes="16vw")}{img("photo/edem/art-pendants.webp", "Гроно підвісок на шнурах", sizes="16vw")}{img("photo/edem/art-sign.webp", "Підпис OBIIMY × Edem на полотні", sizes="16vw")}</div><p style="margin-top:16px;font-size:14px;color:var(--ink2)">Ціну й дату старту повідомимо зареєстрованим першими.</p></div>
+  <figure class="fig rv">{img("photo/edem/art-corner.webp", "Фрагмент принту: трипільська фігурка й плетені шнури на кутку хустки", sizes="(max-width: 980px) 92vw, 46vw")}<p class="figc">Фрагмент принту · кут хустки</p></figure>
 </div></div></section>
 
 <section class="s alt" id="brands"><div class="wrap">

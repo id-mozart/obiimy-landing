@@ -22,7 +22,7 @@ CSS = """
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: Montserrat, Arial, sans-serif; font-size: 17px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
-img { max-width: 100%; display: block; }
+img { max-width: 100%; height: auto; display: block; }
 a { color: inherit; }
 p { margin: 0; }
 h1, h2, h3 { margin: 0; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 500; line-height: 1.05; letter-spacing: -.005em; text-wrap: balance; }
@@ -44,7 +44,7 @@ section[id], .reg { scroll-margin-top: 72px; }
 .top .btn { padding: 11px 18px; font-size: 12px; white-space: nowrap; }
 /* hero */
 .hero { position: relative; overflow: hidden; padding: clamp(48px, 7vw, 110px) 0 clamp(56px, 7vw, 100px); }
-.hero .wrap { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
+.hero .wrap { display: grid; grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: clamp(32px, 5vw, 80px); align-items: center; }
 .hero h1 { font-size: clamp(44px, 6.2vw, 92px); color: var(--navy); margin: 18px 0 22px; }
 .hero h1 i { font-style: italic; font-weight: 400; color: #B48A3A; }
 .hero .lead { max-width: 30em; }
@@ -177,7 +177,7 @@ def main():
     body = f'''
 <header class="top"><div class="wrap">
   <a class="brand" href="#top">Kraїna Edem<span>×</span>Obiimy</a>
-  <nav><a href="#story">Історія</a><a href="#symbols">Символи</a><a href="#scarf">Хустка</a><a href="#brands">Партнери</a><a href="#register">Як придбати</a></nav>
+  <nav><a href="#scarf">Хустка</a><a href="#story">Історія</a><a href="#symbols">Символи</a><a href="#brands">Партнери</a><a href="#register">Як придбати</a></nav>
   <a class="btn btn-gold" href="#register">Ранній доступ</a>
 </div></header>
 <main id="top">
@@ -200,29 +200,8 @@ def main():
   <div class="sym rv">{img("photo/edem/pendant-diamond.webp", "Золота підвіска з трипільським орнаментом — елемент принту", sizes="280px")}</div>
 </div></section>
 
-<section class="s" id="story"><div class="wrap">
-  <div class="head rv"><p class="eyebrow">Історія, що живе в нас</p><h2>Наше коріння сягає глибини тисячоліть</h2></div>
-  <div class="cols">
-    <div class="text rv">
-      <p class="first">Задовго до сучасних кордонів і держав на землях нинішньої України розвивалися давні культури, які залишили по собі унікальну мистецьку спадщину. Особливе місце серед них посідає трипільська культура — одна з найяскравіших археологічних культур давньої Європи, що існувала впродовж VI–IV тисячоліть до нашої ери.</p>
-      <p>Сьогодні ці стародавні знаки набувають нового звучання. Ми не можемо повернути час, але можемо зберегти пам’ять про тих, хто жив до нас, — відкрити для себе їхнє мистецтво й відчути зв’язок із землею, її історією та культурними витоками.</p>
-    </div>
-    <figure class="fig rv">{img("photo/edem/art-corner.webp", "Фрагмент принту: трипільська фігурка й плетені шнури на кутку хустки", sizes="(max-width: 980px) 92vw, 46vw")}<figcaption>Фрагмент принту · кут хустки</figcaption></figure>
-  </div>
-</div></section>
-
-<section class="s alt" id="symbols"><div class="wrap">
-  <div class="head rv"><p class="eyebrow">Символи хустки</p><h2>Кожна деталь має значення</h2><p class="lead">Давні орнаментальні мотиви й символічні образи стали основою нової естетичної історії — переосмислені мовою сучасного дизайну, у золоті й глибокому синьому.</p></div>
-  <div class="sym4">
-    <figure class="rv"><div class="pic">{img("photo/edem/figure.webp", "Золота жіноча фігурка зі спіралями — трипільська пластика в принті", sizes="300px")}</div><h3>Пластика</h3><p>Жіноча фігурка зі спіральним орнаментом — образ трипільської пластики, який чотири рази повторюється на полотні хустки.</p></figure>
-    <figure class="rv"><div class="pic">{img("photo/edem/mandala.webp", "Центральний медальйон принту: спіраль у золоті й синьому", sizes="300px")}</div><h3>Медальйон</h3><p>Центр композиції — спіраль у колі. У спіралях трипільського орнаменту дослідники вбачають плин часу, відродження та циклічність життя.</p></figure>
-    <figure class="rv"><div class="pic lg">{img("photo/edem/pendant-round.webp", "Кругла золота підвіска з двома спіралями", sizes="300px")}</div><h3>Підвіски</h3><p>Круглі золоті підвіски на плетених синіх шнурах оточують медальйон — вісім, по дві з кожного боку.</p></figure>
-    <figure class="rv"><div class="pic">{img("photo/edem/pendant-diamond.webp", "Ромбовидна золота підвіска з орнаментом", sizes="300px")}</div><h3>Ромби</h3><p>Чотири ромбовидні підвіски тримають композицію по діагоналях і замикають її в раму.</p></figure>
-  </div>
-</div></section>
-
 <section class="s" id="scarf"><div class="wrap">
-  <div class="head rv"><p class="eyebrow">Хустка</p><h2>Мистецьке полотно, яке можна носити</h2><p class="lead">Хустка тут — більше, ніж аксесуар: мистецьке полотно, що поєднує сучасний дизайн із пам’яттю про давні культури.</p></div>
+  <div class="head rv"><p class="eyebrow">Хустка · 88 × 88 см</p><h2>Мистецьке полотно, яке можна носити</h2><p class="lead">Хустка тут — більше, ніж аксесуар: мистецьке полотно, що поєднує сучасний дизайн із пам’яттю про давні культури.</p></div>
   <div class="scarf">
     <div class="rv">
       <div class="full">{img("photo/edem/art-1600.webp", "Принт хустки «Trypillia — The Art of Origins» повністю", sizes="(max-width: 980px) 92vw, 58vw")}</div>
@@ -243,6 +222,27 @@ def main():
       <div class="note">Ціну й дату старту повідомимо зареєстрованим першими.</div>
       <p style="margin-top:26px"><a class="btn btn-gold" href="#register">Отримати ранній доступ</a></p>
     </div>
+  </div>
+</div></section>
+
+<section class="s" id="story"><div class="wrap">
+  <div class="head rv"><p class="eyebrow">Історія, що живе в нас</p><h2>Наше коріння сягає глибини тисячоліть</h2></div>
+  <div class="cols">
+    <div class="text rv">
+      <p class="first">Задовго до сучасних кордонів і держав на землях нинішньої України розвивалися давні культури, які залишили по собі унікальну мистецьку спадщину. Особливе місце серед них посідає трипільська культура — одна з найяскравіших археологічних культур давньої Європи, що існувала впродовж VI–IV тисячоліть до нашої ери.</p>
+      <p>Сьогодні ці стародавні знаки набувають нового звучання. Ми не можемо повернути час, але можемо зберегти пам’ять про тих, хто жив до нас, — відкрити для себе їхнє мистецтво й відчути зв’язок із землею, її історією та культурними витоками.</p>
+    </div>
+    <figure class="fig rv">{img("photo/edem/art-corner.webp", "Фрагмент принту: трипільська фігурка й плетені шнури на кутку хустки", sizes="(max-width: 980px) 92vw, 46vw")}<figcaption>Фрагмент принту · кут хустки</figcaption></figure>
+  </div>
+</div></section>
+
+<section class="s alt" id="symbols"><div class="wrap">
+  <div class="head rv"><p class="eyebrow">Символи хустки</p><h2>Кожна деталь має значення</h2><p class="lead">Давні орнаментальні мотиви й символічні образи стали основою нової естетичної історії — переосмислені мовою сучасного дизайну, у золоті й глибокому синьому.</p></div>
+  <div class="sym4">
+    <figure class="rv"><div class="pic">{img("photo/edem/figure.webp", "Золота жіноча фігурка зі спіралями — трипільська пластика в принті", sizes="300px")}</div><h3>Пластика</h3><p>Жіноча фігурка зі спіральним орнаментом — образ трипільської пластики, який чотири рази повторюється на полотні хустки.</p></figure>
+    <figure class="rv"><div class="pic">{img("photo/edem/mandala.webp", "Центральний медальйон принту: спіраль у золоті й синьому", sizes="300px")}</div><h3>Медальйон</h3><p>Центр композиції — спіраль у колі. У спіралях трипільського орнаменту дослідники вбачають плин часу, відродження та циклічність життя.</p></figure>
+    <figure class="rv"><div class="pic lg">{img("photo/edem/pendant-round.webp", "Кругла золота підвіска з двома спіралями", sizes="300px")}</div><h3>Підвіски</h3><p>Круглі золоті підвіски на плетених синіх шнурах оточують медальйон — вісім, по дві з кожного боку.</p></figure>
+    <figure class="rv"><div class="pic">{img("photo/edem/pendant-diamond.webp", "Ромбовидна золота підвіска з орнаментом", sizes="300px")}</div><h3>Ромби</h3><p>Чотири ромбовидні підвіски тримають композицію по діагоналях і замикають її в раму.</p></figure>
   </div>
 </div></section>
 

@@ -43,7 +43,7 @@ section[id] { scroll-margin-top: 20px; }
 .l-mandala { left: 50%; top: 50%; width: min(130vh, 1300px); margin-left: calc(min(130vh, 1300px) / -2 + 20vw); margin-top: calc(min(130vh, 1300px) / -2); opacity: .16; filter: sepia(.5) saturate(.6); }
 .l-mandala img { animation: turn 160s linear infinite; }
 @keyframes turn { to { transform: rotate(360deg); } }
-.l-card { left: 71%; top: 50%; width: min(38vw, 560px); margin-left: calc(min(38vw, 560px) / -2); margin-top: calc(min(40vw, 580px) / -2 - 2vh); pointer-events: auto; }
+.l-card { left: 71%; top: 50%; width: min(38vw, 560px); margin-left: calc(min(38vw, 560px) / -2); margin-top: calc(min(38vw, 560px) / -2 - 2vh); pointer-events: auto; }
 .card { position: relative; transform-style: preserve-3d; transition: transform .12s linear; will-change: transform; animation: hover 7s ease-in-out infinite; }
 .card img { width: 100%; height: auto; filter: drop-shadow(0 60px 80px rgba(0,0,0,.65)); transform: translateZ(1px); }
 .card .sheen { position: absolute; inset: 4% 8%; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.28) 48%, transparent 60%); mix-blend-mode: screen; pointer-events: none; transform: translateX(var(--sx, -60%)); transition: transform .12s linear; }
@@ -155,7 +155,7 @@ LIGHT = [  # the same page on warm paper: palette, shadows and the few hard-code
      ":root { --bg: #F7F1E6; --bg2: #FBF7F0; --cream: #2A2017; --cream2: rgba(42,32,23,.68); --gold: #B48A3A; --gold2: #D9B86A; --line: rgba(42,32,23,.14); --acc: #B48A3A; --fb: rgba(42,32,23,.25); --fbg: #FFFFFF; --fink: #2A2017; }"),
     (".btn-line { border-color: rgba(243,233,216,.6); color: var(--cream); } .btn-line:hover { border-color: var(--cream); }", ".btn-line { border-color: #2A2017; color: #2A2017; } .btn-line:hover { background: rgba(42,32,23,.06); }"),
     ("rgba(180,138,58,.18), transparent 65%)", "rgba(217,184,106,.38), transparent 65%)"),
-    ("background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.28) 48%, transparent 60%)", "background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.5) 48%, transparent 60%)"),
+    ("background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.28) 48%, transparent 60%)", "background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.12) 48%, transparent 56%)"),
     ("opacity: .16; filter: sepia(.5) saturate(.6);", "opacity: .14; filter: sepia(.4) saturate(.7);"),
     ("padding: 12px; background: #15100C; }", "padding: 12px; background: #fff; }"),
     ("z-index: 3; background: #15100C; }", "z-index: 3; background: #fff; }"),
@@ -164,6 +164,13 @@ LIGHT = [  # the same page on warm paper: palette, shadows and the few hard-code
     (".reg { background: var(--cream); color: #2A2017;", ".reg { background: #EFE5D3; color: #2A2017;"),
     ("box-shadow: 0 0 6px rgba(217,184,106,.8); }", "box-shadow: 0 0 6px rgba(180,138,58,.9); }"),
     (".mani .w { display: inline-block; opacity: .12;", ".mani .w { display: inline-block; opacity: .14;"),
+    (".l-card { left: 71%; top: 50%; width: min(38vw, 560px); margin-left: calc(min(38vw, 560px) / -2); margin-top: calc(min(38vw, 560px) / -2 - 2vh);", ".l-card { left: 69%; top: 50%; width: min(48vw, 720px); margin-left: calc(min(48vw, 720px) / -2); margin-top: calc(min(48vw, 720px) / -2 - 2vh);"),
+    (".hero .copy > * { max-width: 40%; }", ".hero .copy > * { max-width: 37%; }"),
+    (".card img { width: 100%; height: auto; filter: drop-shadow(0 60px 80px rgba(0,0,0,.65));", ".card img { width: 100%; height: auto; filter: drop-shadow(0 40px 50px rgba(58,42,28,.42)) drop-shadow(0 4px 10px rgba(58,42,28,.2));"),
+    (".l-fig { left: 48%; top: 58%;", ".l-fig { left: 45%; top: 62%;"),
+    (".hero h1 { font-size: clamp(50px, 7.2vw, 112px);", ".hero h1 { font-size: clamp(46px, 6.3vw, 96px);"),
+    (".hero .lead { margin-top: 24px; max-width: 24em; }", ".hero .lead { margin-top: 22px; max-width: 17em; }"),
+    (".l-pd { left: 50%; top: 12%;", ".l-pd { left: 43%; top: 10%;"),
 ]
 def light_css():
     c = CSS

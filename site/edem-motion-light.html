@@ -33,20 +33,20 @@ section[id] { scroll-margin-top: 20px; }
 .l-mandala { left: 50%; top: 50%; width: min(130vh, 1300px); margin-left: calc(min(130vh, 1300px) / -2 + 20vw); margin-top: calc(min(130vh, 1300px) / -2); opacity: .14; filter: sepia(.4) saturate(.7); }
 .l-mandala img { animation: turn 160s linear infinite; }
 @keyframes turn { to { transform: rotate(360deg); } }
-.l-card { left: 71%; top: 50%; width: min(38vw, 560px); margin-left: calc(min(38vw, 560px) / -2); margin-top: calc(min(40vw, 580px) / -2 - 2vh); pointer-events: auto; }
+.l-card { left: 69%; top: 50%; width: min(48vw, 720px); margin-left: calc(min(48vw, 720px) / -2); margin-top: calc(min(48vw, 720px) / -2 - 2vh); pointer-events: auto; }
 .card { position: relative; transform-style: preserve-3d; transition: transform .12s linear; will-change: transform; animation: hover 7s ease-in-out infinite; }
-.card img { width: 100%; height: auto; filter: drop-shadow(0 60px 80px rgba(58,42,28,.3)); transform: translateZ(1px); }
-.card .sheen { position: absolute; inset: 4% 8%; background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.5) 48%, transparent 60%); mix-blend-mode: screen; pointer-events: none; transform: translateX(var(--sx, -60%)); transition: transform .12s linear; }
+.card img { width: 100%; height: auto; filter: drop-shadow(0 40px 50px rgba(58,42,28,.42)) drop-shadow(0 4px 10px rgba(58,42,28,.2)); transform: translateZ(1px); }
+.card .sheen { position: absolute; inset: 4% 8%; background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.12) 48%, transparent 56%); mix-blend-mode: screen; pointer-events: none; transform: translateX(var(--sx, -60%)); transition: transform .12s linear; }
 @keyframes hover { 0%, 100% { translate: 0 0; } 50% { translate: 0 -14px; } }
-.l-fig { left: 48%; top: 58%; width: clamp(110px, 12vw, 200px); } .l-fig img { filter: drop-shadow(0 30px 30px rgba(58,42,28,.3)); animation: drift 9s ease-in-out infinite; }
+.l-fig { left: 45%; top: 62%; width: clamp(110px, 12vw, 200px); } .l-fig img { filter: drop-shadow(0 30px 30px rgba(58,42,28,.3)); animation: drift 9s ease-in-out infinite; }
 .l-pr { left: 89%; top: 14%; width: clamp(80px, 8vw, 130px); } .l-pr img { filter: drop-shadow(0 24px 24px rgba(58,42,28,.3)); animation: drift 7s ease-in-out -2s infinite; }
-.l-pd { left: 50%; top: 12%; width: clamp(70px, 7vw, 120px); } .l-pd img { filter: drop-shadow(0 24px 24px rgba(58,42,28,.3)); animation: drift 8s ease-in-out -4s infinite; }
+.l-pd { left: 43%; top: 10%; width: clamp(70px, 7vw, 120px); } .l-pd img { filter: drop-shadow(0 24px 24px rgba(58,42,28,.3)); animation: drift 8s ease-in-out -4s infinite; }
 .l-pr2 { left: 93%; top: 68%; width: clamp(54px, 5vw, 86px); opacity: .85; } .l-pr2 img { filter: drop-shadow(0 18px 20px rgba(58,42,28,.3)) blur(.6px); animation: drift 11s ease-in-out -6s infinite; }
 @keyframes drift { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-22px) rotate(3deg); } }
 .hero .copy { position: relative; z-index: 4; max-width: 1240px; width: 100%; margin: 0 auto; padding: 0 24px; }
-.hero .copy > * { max-width: 40%; }
-.hero h1 { font-size: clamp(50px, 7.2vw, 112px); line-height: .98; margin-top: 18px; } .hero h1 i { font-style: italic; color: var(--gold); }
-.hero .lead { margin-top: 24px; max-width: 24em; } .hero .cta { margin-top: 34px; }
+.hero .copy > * { max-width: 37%; }
+.hero h1 { font-size: clamp(46px, 6.3vw, 96px); line-height: .98; margin-top: 18px; } .hero h1 i { font-style: italic; color: var(--gold); }
+.hero .lead { margin-top: 22px; max-width: 17em; } .hero .cta { margin-top: 34px; }
 .hero .facts { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--cream2); } .hero .facts b { color: var(--gold); }
 .scrollhint { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); font-size: 10px; letter-spacing: .3em; text-transform: uppercase; color: var(--cream2); z-index: 5; display: flex; flex-direction: column; align-items: center; gap: 8px; } .scrollhint i { width: 1px; height: 36px; background: linear-gradient(180deg, var(--gold), transparent); animation: pulse 2s ease-in-out infinite; }
 @keyframes pulse { 0%, 100% { opacity: .3; } 50% { opacity: 1; } }

@@ -177,10 +177,10 @@ form.f .err { color: #C0392B; font-size: 13px; display: none; } form.f label.bad
   }
   window.addEventListener('scroll', tick, { passive: true }); window.addEventListener('resize', tick); tick();
 })();
-</script><nav class="vbar" aria-label="Варіанти дизайну"><span>Варіант</span><a href="edem">Класика</a><a href="edem-gold">Золото</a><a href="edem-museum">Музей</a><a href="edem-zoom" class=on>Занурення</a><a href="edem-canvas">Полотно</a><a href="edem-spread">Розворот</a><a href="edem-silk">Шовк</a><a href="edem-motion">Рух</a><a href="edem-motion-light">Рух світлий</a></nav>
+</script><nav class="vbar" aria-label="Варіанти дизайну"><span>Варіант</span><a href="edem">Класика</a><a href="edem-gold">Золото</a><a href="edem-museum">Музей</a><a href="edem-zoom" class=on>Занурення</a><a href="edem-canvas">Полотно</a><a href="edem-spread">Розворот</a><a href="edem-silk">Шовк</a><a href="edem-motion">Рух</a><a href="edem-motion-light">Рух світлий</a><a href="edem-shop">Вітрина</a><a href="edem-book">Книга</a></nav>
 <style>.vbar { position: fixed; right: 16px; bottom: 16px; z-index: 50; display: flex; gap: 2px; align-items: center; padding: 6px 8px 6px 12px; border-radius: 999px; background: rgba(42,32,23,.88); color: #F3E9D8; font: 500 12px/1 Montserrat, Arial, sans-serif; backdrop-filter: blur(8px); box-shadow: 0 10px 30px rgba(0,0,0,.25); }
 .vbar span { opacity: .6; margin-right: 8px; letter-spacing: .08em; text-transform: uppercase; font-size: 10px; }
 .vbar a { color: inherit; text-decoration: none; padding: 8px 12px; border-radius: 999px; } .vbar a:hover { background: rgba(255,255,255,.1); } .vbar a.on { background: #E2C27A; color: #2A2017; }
-@media (max-width: 600px) { .vbar { right: 10px; bottom: 10px; left: 10px; justify-content: center; flex-wrap: wrap; gap: 0; border-radius: 16px; } .vbar a { padding: 7px 9px; font-size: 11px; } .vbar span { display: none; } }</style>
+@media (max-width: 600px) { .vbar { right: 10px; bottom: 10px; left: 10px; justify-content: flex-start; flex-wrap: nowrap; overflow-x: auto; gap: 0; border-radius: 16px; scrollbar-width: none; } .vbar::-webkit-scrollbar { display: none; } .vbar a { padding: 7px 9px; font-size: 11px; white-space: nowrap; } .vbar span { display: none; } }</style>
 </body>
 </html>

@@ -150,7 +150,28 @@ JS = """
   });
 """
 
-def main():
+LIGHT = [  # the same page on warm paper: palette, shadows and the few hard-coded dark surfaces swapped
+    (":root { --bg: #16100C; --bg2: #1F1610; --cream: #F3E9D8; --cream2: rgba(243,233,216,.72); --gold: #D9B86A; --gold2: #B48A3A; --line: rgba(217,184,106,.22); --acc: #D9B86A; --fb: rgba(42,32,23,.3); --fbg: #FBF4E7; --fink: #2A2017; }",
+     ":root { --bg: #F7F1E6; --bg2: #FBF7F0; --cream: #2A2017; --cream2: rgba(42,32,23,.68); --gold: #B48A3A; --gold2: #D9B86A; --line: rgba(42,32,23,.14); --acc: #B48A3A; --fb: rgba(42,32,23,.25); --fbg: #FFFFFF; --fink: #2A2017; }"),
+    (".btn-line { border-color: rgba(243,233,216,.6); color: var(--cream); } .btn-line:hover { border-color: var(--cream); }", ".btn-line { border-color: #2A2017; color: #2A2017; } .btn-line:hover { background: rgba(42,32,23,.06); }"),
+    ("rgba(180,138,58,.18), transparent 65%)", "rgba(217,184,106,.38), transparent 65%)"),
+    ("background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.28) 48%, transparent 60%)", "background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.5) 48%, transparent 60%)"),
+    ("opacity: .16; filter: sepia(.5) saturate(.6);", "opacity: .14; filter: sepia(.4) saturate(.7);"),
+    ("padding: 12px; background: #15100C; }", "padding: 12px; background: #fff; }"),
+    ("z-index: 3; background: #15100C; }", "z-index: 3; background: #fff; }"),
+    ("background: linear-gradient(160deg, #2A1D13, #1A120D);", "background: linear-gradient(160deg, #FFFFFF, #F4ECDF);"),
+    ("rgba(217,184,106,.16), transparent 55%)", "rgba(217,184,106,.3), transparent 55%)"),
+    (".reg { background: var(--cream); color: #2A2017;", ".reg { background: #EFE5D3; color: #2A2017;"),
+    ("box-shadow: 0 0 6px rgba(217,184,106,.8); }", "box-shadow: 0 0 6px rgba(180,138,58,.9); }"),
+    (".mani .w { display: inline-block; opacity: .12;", ".mani .w { display: inline-block; opacity: .14;"),
+]
+def light_css():
+    c = CSS
+    for a, b in LIGHT:
+        assert c.count(a) == 1, a[:60]; c = c.replace(a, b)
+    return c.replace("rgba(0,0,0,.8)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.75)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.7)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.65)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.6)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.4)", "rgba(58,42,28,.15)")
+
+def main(light=False):
     rnd = random.Random(7)
     dust = "".join(f'<i style="left:{rnd.uniform(0, 100):.1f}%;animation-duration:{rnd.uniform(9, 22):.1f}s;animation-delay:-{rnd.uniform(0, 22):.1f}s;width:{rnd.choice([2, 2, 3, 4])}px;height:{rnd.choice([2, 2, 3, 4])}px"></i>' for _ in range(42))
     body = f'''
@@ -215,7 +236,7 @@ def main():
 </div></section>
 <footer><span>Kraїna Edem × Obiimy · Trypillia — The Art of Origins · 2026</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a></span></footer>
 </main>'''
-    write("edem-motion", CSS + FORM_CSS, body, JS)
+    write("edem-motion-light" if light else "edem-motion", (light_css() if light else CSS) + FORM_CSS, body, JS)
 
 if __name__ == "__main__":
-    main()
+    main(); main(light=True)

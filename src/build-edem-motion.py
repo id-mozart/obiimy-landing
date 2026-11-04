@@ -168,7 +168,7 @@ LIGHT = [  # the same page on warm paper: palette, shadows and the few hard-code
     (".hero .copy > * { max-width: 40%; }", ".hero .copy > * { max-width: 37%; }"),
     (".card img { width: 100%; height: auto; filter: drop-shadow(0 60px 80px rgba(0,0,0,.65));", ".card img { width: 100%; height: auto; filter: drop-shadow(0 40px 50px rgba(58,42,28,.42)) drop-shadow(0 4px 10px rgba(58,42,28,.2));"),
     (".l-fig { left: 48%; top: 58%;", ".l-fig { left: 45%; top: 62%;"),
-    (".hero h1 { font-size: clamp(50px, 7.2vw, 112px);", ".hero h1 { font-size: clamp(46px, 6.3vw, 96px);"),
+    (".hero h1 { font-size: clamp(50px, 7.2vw, 112px);", ".hero h1 { font-size: clamp(38px, 5vw, 76px);"),
     (".hero .lead { margin-top: 24px; max-width: 24em; }", ".hero .lead { margin-top: 22px; max-width: 17em; }"),
     (".l-pd { left: 50%; top: 12%;", ".l-pd { left: 43%; top: 10%;"),
 ]
@@ -244,6 +244,8 @@ def main(light=False):
 <footer><span>Kraїna Edem × Obiimy · Trypillia — The Art of Origins · 2026</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a></span></footer>
 </main>'''
     write("edem-motion-light" if light else "edem-motion", (light_css() if light else CSS) + FORM_CSS, body, JS)
+    if light:  # the light version is shown to the partner on its own: no variants bar (client, 04.11)
+        p = ROOT / "edem-motion-light.html"; h = p.read_text(); i = h.index('<nav class="vbar"'); j = h.index("</style>", i) + len("</style>"); p.write_text(h[:i] + h[j:])
 
 if __name__ == "__main__":
     main(); main(light=True)

@@ -38,8 +38,8 @@ section[id] { scroll-margin-top: 20px; }
 .hero .top { position: absolute; left: 24px; right: 24px; top: 30px; display: flex; justify-content: space-between; font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--cream2); z-index: 5; }
 .dust { position: absolute; inset: 0; pointer-events: none; z-index: 1; } .dust i { position: absolute; bottom: -10px; width: 3px; height: 3px; border-radius: 50%; background: var(--gold); opacity: 0; animation: rise linear infinite; box-shadow: 0 0 6px rgba(217,184,106,.8); }
 @keyframes rise { 0% { transform: translateY(0) translateX(0); opacity: 0; } 10% { opacity: .9; } 90% { opacity: .5; } 100% { transform: translateY(-110vh) translateX(40px); opacity: 0; } }
-.scene { position: absolute; inset: 0; perspective: 1400px; transform-style: preserve-3d; z-index: 2; pointer-events: none; }
-.layer { position: absolute; will-change: transform; transform-style: preserve-3d; }
+.scene { position: absolute; inset: 0; perspective: 1400px; transform-style: flat; z-index: 2; pointer-events: none; }   /* flat: the tilted card must never cut through the medallion plane */
+.layer { position: absolute; will-change: transform; transform-style: flat; } .l-card { perspective: 1400px; }
 .l-mandala { left: 50%; top: 50%; width: min(130vh, 1300px); margin-left: calc(min(130vh, 1300px) / -2 + 20vw); margin-top: calc(min(130vh, 1300px) / -2); opacity: .16; filter: sepia(.5) saturate(.6); }
 .l-mandala img { animation: turn 160s linear infinite; }
 @keyframes turn { to { transform: rotate(360deg); } }
@@ -188,9 +188,9 @@ def main(light=False):
   <div class="dust" aria-hidden="true">{dust}</div>
   <div class="scene" aria-hidden="true">
     <div class="layer l-mandala" data-depth=".12">{img("photo/edem/mandala.webp", "", sizes="1300px")}</div>
-    <div class="layer l-fig" data-depth=".55">{img("photo/edem/figure.webp", "", sizes="200px", lazy=False)}</div>
     <div class="layer l-pr2" data-depth=".4">{img("photo/edem/pendant-round.webp", "", sizes="90px", lazy=False)}</div>
     <div class="layer l-card" data-depth=".25"><div class="card" id="card">{img("photo/edem/scarf.webp", "Хустка KRAЇNA EDEM × OBIIMY «Trypillia — The Art of Origins», 88 × 88", sizes="(max-width: 980px) 78vw, 44vw", lazy=False, eager_priority=True)}<i class="sheen"></i></div></div>
+    <div class="layer l-fig" data-depth=".55">{img("photo/edem/figure.webp", "", sizes="200px", lazy=False)}</div>
     <div class="layer l-pr" data-depth=".8">{img("photo/edem/pendant-round.webp", "", sizes="130px", lazy=False)}</div>
     <div class="layer l-pd" data-depth="1">{img("photo/edem/pendant-diamond.webp", "", sizes="120px", lazy=False)}</div>
   </div>

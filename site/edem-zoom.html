@@ -64,7 +64,10 @@ form.f { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 16px; }
 form.f label { display: grid; gap: 7px; font-size: 13px; font-weight: 600; letter-spacing: .04em; }
 form.f label.full, form.f fieldset { grid-column: 1 / -1; }
 form.f input { font: inherit; font-size: 16px; padding: 13px 14px; border: 1px solid var(--fb); border-radius: 2px; background: var(--fbg); color: var(--fink); width: 100%; }
-form.f input:focus { outline: 2px solid var(--acc); outline-offset: 1px; border-color: transparent; }
+form.f select, form.f textarea { font: inherit; font-size: 16px; padding: 13px 14px; border: 1px solid var(--fb); border-radius: 2px; background: var(--fbg); color: var(--fink); width: 100%; }
+form.f textarea { min-height: 88px; resize: vertical; } form.f select { appearance: none; -webkit-appearance: none; background-image: linear-gradient(45deg, transparent 50%, currentColor 50%), linear-gradient(135deg, currentColor 50%, transparent 50%); background-position: calc(100% - 20px) 50%, calc(100% - 15px) 50%; background-size: 5px 5px; background-repeat: no-repeat; padding-right: 36px; }
+form.f input:focus, form.f select:focus, form.f textarea:focus { outline: 2px solid var(--acc); outline-offset: 1px; border-color: transparent; }
+form.f .total { grid-column: 1 / -1; display: flex; justify-content: space-between; align-items: baseline; gap: 16px; padding: 16px 0 4px; border-top: 1px solid var(--fb); font-size: 14px; } form.f .total b { font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 600; font-size: 30px; letter-spacing: .01em; }
 form.f fieldset { border: 0; margin: 0; padding: 0; } form.f legend { font-size: 13px; font-weight: 600; letter-spacing: .04em; padding: 0; margin-bottom: 10px; }
 form.f .radios { display: flex; flex-direction: column; gap: 6px; }
 form.f .radios label { display: inline-flex; align-items: center; gap: 10px; font-weight: 500; font-size: 15px; letter-spacing: 0; padding: 6px 0; cursor: pointer; }
@@ -147,18 +150,21 @@ form.f .err { color: #C0392B; font-size: 13px; display: none; } form.f label.bad
   var API = /^(localhost|127\.0\.0\.1)$/.test(location.hostname) ? 'http://127.0.0.1:8770' : 'https://deck-editor-production.up.railway.app';
   var f = document.getElementById('reg'), done = document.getElementById('reg-done'), tg = document.getElementById('reg-tg');
   function valid(n, v) { return n === 'phone' ? v.replace(/\D/g, '').length >= 9 : v.length > 1; }
+  var req = [].filter.call(f.elements, function (el) { return el.required && el.name; });
+  function label(el) { var l = el.closest('label'), s = l && l.querySelector('span'); return (s ? s.textContent : el.closest('fieldset') ? el.closest('fieldset').querySelector('legend').textContent : el.name).replace(/\s*\*.*$/, '').replace(/\(.*\)/, '').trim(); }
   f.addEventListener('submit', function (e) {
     e.preventDefault(); var bad = null;
-    ['name', 'phone'].forEach(function (n) { var el = f.elements[n], lab = el.closest('label'), ok = valid(n, el.value.trim()); lab.classList.toggle('bad', !ok); el.setAttribute('aria-invalid', ok ? 'false' : 'true'); if (!ok && !bad) bad = el; });
+    req.forEach(function (el) { var lab = el.closest('label'), ok = valid(el.name, el.value.trim()); lab.classList.toggle('bad', !ok); el.setAttribute('aria-invalid', ok ? 'false' : 'true'); if (!ok && !bad) bad = el; });
     if (bad) { bad.focus(); return; }
-    var data = { name: f.elements.name.value.trim(), phone: f.elements.phone.value.trim(), email: f.elements.email.value.trim(), interest: (f.querySelector('input[name=interest]:checked') || {}).value || '', note: '', page: location.href };
-    var btn = f.querySelector('button'); btn.disabled = true; btn.textContent = 'Надсилаємо…';
-    var text = 'Ранній доступ · Trypillia — The Art of Origins\nІм’я: ' + data.name + '\nТелефон: ' + data.phone + (data.email ? '\nEmail: ' + data.email : '') + (data.interest ? '\nІнтерес: ' + data.interest : '');
-    tg.href = 'https://t.me/OBIIMY_sales?text=' + encodeURIComponent(text);
-    function finish(ok) { if (!ok) { document.getElementById('done-h').textContent = 'Заявку не надіслано'; document.getElementById('done-p').textContent = 'Не вдалося надіслати заявку автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.'; } f.hidden = true; done.hidden = false; var h = document.getElementById('done-h'); h.setAttribute('tabindex', '-1'); h.focus(); }
+    var data = { page: location.href, kind: f.getAttribute('data-kind') || 'register' }, lines = [f.getAttribute('data-title') || 'Ранній доступ · Trypillia — The Art of Origins'];
+    [].forEach.call(f.elements, function (el) { if (!el.name || el.type === 'submit' || ((el.type === 'radio' || el.type === 'checkbox') && !el.checked)) return; data[el.name] = el.value.trim(); if (data[el.name]) lines.push(label(el) + ': ' + data[el.name]); });
+    if (f.getAttribute('data-total')) { data.total = f.getAttribute('data-total'); lines.push('Разом: ' + data.total); }
+    var btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Надсилаємо…';
+    tg.href = 'https://t.me/OBIIMY_sales?text=' + encodeURIComponent(lines.join('\n'));
+    function finish(ok) { if (!ok) { var o = f.getAttribute('data-kind') === 'order'; document.getElementById('done-h').textContent = (o ? 'Замовлення' : 'Заявку') + ' не надіслано'; document.getElementById('done-p').textContent = 'Не вдалося надіслати ' + (o ? 'замовлення' : 'заявку') + ' автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.'; } f.hidden = true; done.hidden = false; var h = document.getElementById('done-h'); h.setAttribute('tabindex', '-1'); h.focus(); }
     fetch(API + '/api/edem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(function (r) { return r.json(); }).then(function (j) { if (!j.ok) throw new Error('x'); finish(true); }).catch(function () { finish(false); });
   });
-  ['name', 'phone'].forEach(function (n) { f.elements[n].addEventListener('input', function () { this.closest('label').classList.remove('bad'); this.removeAttribute('aria-invalid'); }); });
+  req.forEach(function (el) { el.addEventListener('input', function () { this.closest('label').classList.remove('bad'); this.removeAttribute('aria-invalid'); }); });
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px', threshold: .05 });
     document.querySelectorAll('.rv').forEach(function (el, i) { el.style.transitionDelay = (i % 4) * 70 + 'ms'; io.observe(el); });

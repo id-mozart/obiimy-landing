@@ -17,6 +17,9 @@ MANIFESTO, STORY, SYMBOLS, SPEC, EDEM_P, EDEM_L, OB_P, OB_L, STEPS = V.MANIFESTO
 PHONE, PHONE_HREF, MAIL, TG = V.PHONE, V.PHONE_HREF, V.MAIL, V.TG
 form_html, FORM_CSS, write, spec_rows = V.form_html, V.FORM_CSS, V.write, V.spec_rows
 
+PRICE = 4800                                     # the client's retail price, set in chat on 04.11.2026 (review/SITE-FACTS.md)
+PRICE_T = f"{PRICE:,}".replace(",", "\u202f") + "\u00a0грн"   # «4 800 грн»
+EDEM_URL = "https://edem.obiimy.world/"         # the sale page lives on its own subdomain (server.js serves edem-motion-light at its root)
 LEAD = "Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами — спільна робота KRAЇNA EDEM та OBIIMY."
 SCARF_LEAD = "Хустка тут — більше, ніж аксесуар: мистецьке полотно, що поєднує сучасний дизайн із пам’яттю про давні культури."
 
@@ -55,7 +58,7 @@ section[id] { scroll-margin-top: 20px; }
 .l-pr2 { left: 93%; top: 68%; width: clamp(54px, 5vw, 86px); opacity: .85; } .l-pr2 img { filter: drop-shadow(0 18px 20px rgba(0,0,0,.7)) blur(.6px); animation: drift 11s ease-in-out -6s infinite; }
 @keyframes drift { 0%, 100% { transform: translateY(0) rotate(-3deg); } 50% { transform: translateY(-22px) rotate(3deg); } }
 .hero .copy { position: relative; z-index: 4; max-width: 1240px; width: 100%; margin: 0 auto; padding: 0 24px; }
-.hero .copy > * { max-width: 40%; }
+.hero .copy > * { max-width: 40%; } .hero .copy .cta { max-width: 44%; } .hero .cta .btn { padding: 15px 22px; }
 .hero h1 { font-size: clamp(50px, 7.2vw, 112px); line-height: .98; margin-top: 18px; } .hero h1 i { font-style: italic; color: var(--gold); }
 .hero .lead { margin-top: 24px; max-width: 24em; } .hero .cta { margin-top: 34px; }
 .hero .facts { margin-top: 36px; display: flex; flex-wrap: wrap; gap: 8px 24px; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--cream2); } .hero .facts b { color: var(--gold); }
@@ -159,6 +162,8 @@ JS = """
     c.addEventListener('pointermove', function (e) { var r = c.getBoundingClientRect(); var x = (e.clientX - r.left) / r.width, y = (e.clientY - r.top) / r.height; c.style.setProperty('--ry', ((x - .5) * 16) + 'deg'); c.style.setProperty('--rx', ((.5 - y) * 14) + 'deg'); c.style.setProperty('--mx', (x * 100) + '%'); c.style.setProperty('--my', (y * 100) + '%'); });
     c.addEventListener('pointerleave', function () { c.style.setProperty('--ry', '0deg'); c.style.setProperty('--rx', '0deg'); });
   });
+  var qty = document.getElementById('qty');
+  if (qty) qty.addEventListener('change', function () { var n = Number(qty.value) || 1, t = String(PRICE * n).replace(/\\B(?=(\\d{3})+$)/g, '\\u202f') + '\\u00a0грн'; document.getElementById('qty-t').textContent = n; document.getElementById('total-t').textContent = t; f.setAttribute('data-total', t); });
 """
 
 LIGHT = [  # the same page on warm paper: palette, shadows and the few hard-coded dark surfaces swapped
@@ -179,6 +184,7 @@ LIGHT = [  # the same page on warm paper: palette, shadows and the few hard-code
     (".hero .copy > * { max-width: 40%; }", ".hero .copy > * { max-width: 37%; }"),
     (".card img { width: 100%; height: auto; filter: drop-shadow(0 60px 80px rgba(0,0,0,.65));", ".card img { width: 100%; height: auto; filter: drop-shadow(0 40px 50px rgba(58,42,28,.42)) drop-shadow(0 4px 10px rgba(58,42,28,.2));"),
     (".l-fig { left: 48%; top: 58%;", ".l-fig { left: 45%; top: 62%;"),
+    (".reg .btn-main { background: #2A2017; color: var(--cream); }", ".reg .btn-main { background: #2A2017; color: #F7F1E6; }"),
     (".hero h1 { font-size: clamp(50px, 7.2vw, 112px);", ".hero h1 { font-size: clamp(38px, 5vw, 76px);"),
     (".hero .lead { margin-top: 24px; max-width: 24em; }", ".hero .lead { margin-top: 22px; max-width: 17em; }"),
     (".l-pd { left: 50%; top: 12%;", ".l-pd { left: 43%; top: 10%;"),
@@ -188,6 +194,30 @@ def light_css():
     for a, b in LIGHT:
         assert c.count(a) == 1, a[:60]; c = c.replace(a, b)
     return c.replace("rgba(0,0,0,.8)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.75)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.7)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.65)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.6)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.4)", "rgba(58,42,28,.15)")
+
+ORDER_STEPS = [("Замовлення", "Ім’я, телефон, місто й відділення або поштомат Нової пошти."),
+               ("Підтвердження й оплата", "Менеджер зв’яжеться, підтвердить замовлення й надішле персональне посилання на оплату карткою."),
+               ("Доставка", "Після оплати — підтвердження й відправлення хустки Новою поштою.")]
+
+def order_form():
+    qty = "".join(f'<option value="{n}">{n}</option>' for n in range(1, 6))
+    return f'''
+  <form class="f" id="reg" novalidate data-kind="order" data-title="Замовлення · Trypillia — The Art of Origins" data-total="{PRICE_T}">
+    <label><span>Ім’я *</span><input name="name" type="text" autocomplete="name" required aria-describedby="err-name"><span class="err" id="err-name" role="alert">Вкажіть ім’я</span></label>
+    <label><span>Телефон *</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required aria-describedby="err-phone"><span class="err" id="err-phone" role="alert">Вкажіть телефон, щонайменше 9 цифр</span></label>
+    <label class="full"><span>Email <small style="font-weight:400">(необов’язково)</small></span><input name="email" type="email" autocomplete="email"></label>
+    <label><span>Місто *</span><input name="city" type="text" autocomplete="address-level2" required aria-describedby="err-city"><span class="err" id="err-city" role="alert">Вкажіть місто</span></label>
+    <label><span>Відділення Нової пошти *</span><input name="branch" type="text" placeholder="№ відділення або поштомат" required aria-describedby="err-branch"><span class="err" id="err-branch" role="alert">Вкажіть відділення чи поштомат</span></label>
+    <label><span>Кількість</span><select name="qty" id="qty">{qty}</select></label>
+    <label><span>Коментар <small style="font-weight:400">(необов’язково)</small></span><input name="comment" type="text" maxlength="300"></label>
+    <div class="total"><span>Хустка 88 × 88 см, 100% шовк · <span id="qty-t">1</span> шт.</span><b id="total-t">{PRICE_T}</b></div>
+    <div class="actions"><button class="btn btn-main" type="submit">Замовити за {PRICE_T}</button><span class="hint">Оплата карткою — за посиланням після підтвердження менеджером.<br>* обов’язкові поля</span></div>
+  </form>
+  <div class="done" id="reg-done" hidden>
+    <h3 id="done-h">Дякуємо — замовлення прийнято</h3>
+    <p id="done-p">Менеджер зв’яжеться з вами найближчим часом, підтвердить замовлення й надішле посилання на оплату. Якщо зручніше — напишіть нам у Telegram.</p>
+    <div class="row"><a class="btn btn-main" id="reg-tg" href="{TG}" target="_blank" rel="noopener">Написати в Telegram</a><a class="btn btn-line" href="#top">На початок</a></div>
+  </div>'''
 
 def main(light=False):
     rnd = random.Random(7)
@@ -209,8 +239,8 @@ def main(light=False):
     <p class="eyebrow">Спільний мистецький проєкт</p>
     <h1>Trypillia —<br><i>The Art of Origins</i></h1>
     <p class="lead">{LEAD}</p>
-    <div class="cta"><a class="btn btn-main" href="#register">Отримати ранній доступ</a><a class="btn btn-line" href="#scarf">Роздивитися хустку</a></div>
-    <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Обмежений наклад</span><span>Підпис OBIIMY × Edem</span></div>
+    <div class="cta"><a class="btn btn-main" href="#order">Замовити — {PRICE_T}</a><a class="btn btn-line" href="#scarf">Роздивитися хустку</a></div>
+    <div class="facts"><span><b>{PRICE_T.rsplit(chr(160), 1)[0]}</b> грн</span><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Обмежений наклад</span><span>Підпис OBIIMY × Edem</span></div>
   </div>
   <p class="scrollhint">Гортайте<i></i></p>
 </section>
@@ -221,7 +251,7 @@ def main(light=False):
   <div class="head rv"><p class="eyebrow">Хустка · 88 × 88 см</p><h2>Мистецьке полотно, яке можна носити</h2><p class="lead">{SCARF_LEAD}</p></div>
   <div class="scarf">
     <div class="rv"><div class="lenswrap" id="lenswrap">{img("photo/edem/art-1600.webp", "Принт хустки «Trypillia — The Art of Origins» повністю", sizes="(max-width: 980px) 92vw, 58vw")}<div class="lens" id="lens" aria-hidden="true">{img("photo/edem/art-2400.webp", "", sizes="2000px")}</div></div><p class="hintlens">Наведіть курсор — лупа покаже деталі принту</p></div>
-    <div class="rv"><div class="spec">{spec_rows()}</div><p class="note">Ціну й дату старту повідомимо зареєстрованим першими.</p><p style="margin-top:26px"><a class="btn btn-main" href="#register">Отримати ранній доступ</a></p></div>
+    <div class="rv"><div class="spec">{spec_rows()}</div><p class="note"><b>{PRICE_T}</b> · лімітований випуск. Доставка Новою поштою по Україні.</p><p style="margin-top:26px"><a class="btn btn-main" href="#order">Замовити хустку</a></p></div>
   </div>
 </div></section>
 
@@ -229,7 +259,7 @@ def main(light=False):
   <div class="rv"><div class="vid"><video id="film-v" playsinline muted loop preload="metadata" poster="photo/edem/video-poster.jpg" aria-label="Відео: хустка Trypillia — The Art of Origins"><source src="photo/edem/edem-video.mp4" type="video/mp4"></video><button class="snd" id="film-snd" type="button" aria-pressed="false">Увімкнути звук</button></div></div>
   <div class="rv"><p class="eyebrow">Відео</p><h2>Хустка наживо</h2><p class="lead">Шовк у русі: «Trypillia — The Art of Origins» на пленері — у руках, на плечах, у світлі дня.</p>
     <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Підпис OBIIMY × Edem</span></div>
-    <p style="margin-top:30px"><a class="btn btn-main" href="#register">Отримати ранній доступ</a></p></div>
+    <p style="margin-top:30px"><a class="btn btn-main" href="#order">Замовити — {PRICE_T}</a></p></div>
 </div></div></section>
 
 <section class="s" id="story">
@@ -253,15 +283,16 @@ def main(light=False):
   </div>
 </div></section>
 
-<section class="reg" id="register"><div class="px bg" data-speed="-50" aria-hidden="true">{img("photo/edem/mandala.webp", "", sizes="520px")}</div><div class="wrap">
-  <div class="rv"><p class="eyebrow">Як придбати</p><h2>Ранній доступ до випуску</h2><p class="lead">Ціну й дату старту підтверджуємо з партнером. Щойно вони відомі — зареєстровані дізнаються першими й отримують персональне посилання на оплату.</p>
-    <div class="steps">{"".join(f"<div><i>0{i + 1}</i><div><h3>{t}</h3><p>{d}</p></div></div>" for i, (t, d) in enumerate(STEPS))}</div>
+<section class="reg" id="order"><div class="px bg" data-speed="-50" aria-hidden="true">{img("photo/edem/mandala.webp", "", sizes="520px")}</div><div class="wrap">
+  <div class="rv"><p class="eyebrow">Замовлення</p><h2>Замовити хустку</h2><p class="lead">Хустка «Trypillia — The Art of Origins» — {PRICE_T}. Залиште контакти й відділення Нової пошти: ми підтвердимо замовлення, надішлемо посилання на оплату карткою й відправимо хустку після оплати.</p>
+    <div class="steps">{"".join(f"<div><i>0{i + 1}</i><div><h3>{t}</h3><p>{d}</p></div></div>" for i, (t, d) in enumerate(ORDER_STEPS))}</div>
     <div class="contacts">Питання: <a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}" target="_blank" rel="noopener">Telegram</a></div></div>
-  <div class="rv panel">{form_html()}</div>
+  <div class="rv panel">{order_form()}</div>
 </div></section>
 <footer><span>Kraїna Edem × Obiimy · Trypillia — The Art of Origins · 2026</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a></span></footer>
 </main>'''
-    write("edem-motion-light" if light else "edem-motion", (light_css() if light else CSS) + FORM_CSS, body, JS)
+    write("edem-motion-light" if light else "edem-motion", (light_css() if light else CSS) + FORM_CSS, body, JS.replace("PRICE *", f"{PRICE} *"),
+          url=EDEM_URL, index=light, desc=f"Шовкова хустка KRAЇNA EDEM × OBIIMY «Trypillia — The Art of Origins», 88 × 88 см, за трипільськими мотивами — лімітований випуск, {PRICE_T}. Замовлення онлайн, доставка Новою поштою.")
     if light:  # the light version is shown to the partner on its own: no variants bar (client, 04.11)
         p = ROOT / "edem-motion-light.html"; h = p.read_text(); i = h.index('<nav class="vbar"'); j = h.index("</style>", i) + len("</style>"); p.write_text(h[:i] + h[j:])
 

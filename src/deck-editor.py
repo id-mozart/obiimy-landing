@@ -22,7 +22,7 @@ PUBLIC = os.environ.get("DECK_EDITOR_PUBLIC") == "1"                   # Railway
 PUBLISHED = ROOT / "data" / "published"
 CORP_DIR = ROOT / "data" / "corp"                                          # content edits of the corporate landing (cms.js on the site): corp.json + uploads + history
 CORP_PASSWORD = os.environ.get("CORP_EDIT_PASSWORD") or ""                 # set → «Опублікувати» on the landing needs this key (X-Corp-Key); empty → open, as the deck editor
-CORP_ORIGINS = ("https://corporate.obiimy.world", "https://obiimy-landing-production.up.railway.app", "http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:8765", "http://127.0.0.1:8765")                                 # the PDF «Опубликовать» copies here on Railway (src/deck-publish-prod.py)
+CORP_ORIGINS = ("https://corporate.obiimy.world", "https://edem.obiimy.world", "https://obiimy-landing-production.up.railway.app", "http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:8765", "http://127.0.0.1:8765")                                 # the PDF «Опубликовать» copies here on Railway (src/deck-publish-prod.py)
 EDITS = pathlib.Path(os.environ.get("DECK_EDITS") or ROOT / "src" / "deck-edits.json")
 PAGES = pathlib.Path(os.environ.get("DECK_EDITOR_PAGES") or ROOT / "review" / "deck-editor-pages.json")
 CSS = ROOT / "review" / "deck-editor.css"
@@ -608,11 +608,16 @@ def api_corp_upload(name, data, base):
 # ─── early-access registrations of the KRAЇNA EDEM × OBIIMY landing ─────────────────────────────────────────────────────────
 EDEM_DIR = ROOT / "data" / "edem"
 def api_edem_register(body, ip=""):
-    """POST /api/edem from the landing: one JSON line per registration on the volume (data/edem/registrations.jsonl)."""
-    name = str(body.get("name") or "").strip()[:120]; phone = str(body.get("phone") or "").strip()[:60]
+    """POST /api/edem from the landing: one JSON line per registration or order on the volume (data/edem/registrations.jsonl).
+    An order (kind=order, from edem.obiimy.world since 04.11.2026) also carries city, branch (Nova Poshta), qty, comment and total."""
+    t = lambda k, n: str(body.get(k) or "").strip()[:n]
+    name, phone = t("name", 120), t("phone", 60)
     if len(name) < 2 or len(phone) < 5: raise Problem("Потрібні ім’я та телефон.")
-    rec = {"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "name": name, "phone": phone, "email": str(body.get("email") or "").strip()[:120],
-           "interest": str(body.get("interest") or "").strip()[:80], "note": str(body.get("note") or "").strip()[:1000], "page": str(body.get("page") or "")[:200], "ip": ip}
+    kind = "order" if body.get("kind") == "order" else "register"
+    if kind == "order" and (len(t("city", 80)) < 2 or len(t("branch", 120)) < 1): raise Problem("Потрібні місто й відділення Нової пошти.")
+    rec = {"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "kind": kind, "name": name, "phone": phone, "email": t("email", 120),
+           "interest": t("interest", 80), "note": t("note", 1000), "page": t("page", 200), "ip": ip}
+    if kind == "order": rec.update(city=t("city", 80), branch=t("branch", 120), qty=t("qty", 3), comment=t("comment", 300), total=t("total", 30))
     EDEM_DIR.mkdir(parents=True, exist_ok=True)
     with open(EDEM_DIR / "registrations.jsonl", "a", encoding="utf-8") as f: f.write(json.dumps(rec, ensure_ascii=False) + "\n")
     return dict(ok=True)

@@ -19,9 +19,12 @@ async function proxied(req, res) {
   } catch (e) { return false; } finally { clearTimeout(t); }
 }
 
-// corporate.obiimy.world: the corporate-gifts landing at the root (the hub stays on the Railway host); every other path is shared
+// Subdomains that show one landing at their root (the hub stays on the Railway host) and serve nothing else but that page's assets:
+// corporate.obiimy.world — the corporate-gifts landing; edem.obiimy.world — the KRAЇNA EDEM × OBIIMY sale page (04.11.2026).
 const CORP = { host: /^corporate\./i, page: '/b2b-deck', pages: { '/b2b-deck': 'b2b-deck', '/b2b-team-main': 'b2b-team-main' },
   allow: /^\/(photo|img|brand|tex|thumbs|cms\.js|favicon|obiimy-podarunky-dlia-komandy\.pdf|lookbook-obiimy-2026)/ };   // what the corporate host serves besides its page
+const EDEM = { host: /^edem\./i, page: '/edem-motion-light', pages: {}, allow: /^\/(photo\/edem\/|brand\/|favicon)/ };
+const HOSTS = [CORP, EDEM];
 
 // Content edits made on the landing itself (cms.js, «?edit») are kept by the editor service as /pub/corp.json and applied here
 // to every element the generator marked with data-cms / data-cms-img, so the page is served already edited (no flicker, SEO
@@ -63,9 +66,10 @@ module.exports = { applyCorp };
 
 const server = http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://x');
-  if (CORP.host.test(req.headers.host || '')) {       // the corporate host: its page at the root, its assets and PDFs, nothing else
-    if (u.pathname === '/' || u.pathname === '/index.html' || u.pathname === CORP.page || u.pathname === CORP.page + '.html') req.url = CORP.page + u.search;
-    else if (!CORP.allow.test(u.pathname)) { res.writeHead(302, { Location: '/' }); return res.end(); }
+  const own = HOSTS.find(h => h.host.test(req.headers.host || ''));
+  if (own) {       // a landing's own host: its page at the root, its assets, nothing else
+    if (u.pathname === '/' || u.pathname === '/index.html' || u.pathname === own.page || u.pathname === own.page + '.html') req.url = own.page + u.search;
+    else if (!own.allow.test(u.pathname)) { res.writeHead(302, { Location: '/' }); return res.end(); }
   }
   const slug = CORP.pages[req.url.split('?')[0].replace(/\.html$/, '')];
   if (slug && (req.method === 'GET' || req.method === 'HEAD') && await corpPage(req, res, u, slug)) return;

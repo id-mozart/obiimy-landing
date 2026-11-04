@@ -162,7 +162,7 @@ footer a { text-decoration: none; }
 }
 """
 
-VARIANTS = [("edem", "Класика"), ("edem-gold", "Золото"), ("edem-museum", "Музей"), ("edem-zoom", "Занурення"), ("edem-canvas", "Полотно"), ("edem-spread", "Розворот"), ("edem-silk", "Шовк")]
+VARIANTS = [("edem", "Класика"), ("edem-gold", "Золото"), ("edem-museum", "Музей"), ("edem-zoom", "Занурення"), ("edem-canvas", "Полотно"), ("edem-spread", "Розворот"), ("edem-silk", "Шовк"), ("edem-motion", "Рух")]
 def variants_bar(current):
     """A small fixed strip to switch between the design variants of the collaboration landing (client review, 02.11)."""
     links = "".join(f'<a href="{slug}"{" class=on" if slug == current else ""}>{name}</a>' for slug, name in VARIANTS)

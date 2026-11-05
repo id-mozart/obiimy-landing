@@ -30,10 +30,10 @@ body { margin: 0; background: #666; font-family: 'Onest', 'Helvetica Neue', Aria
 .logo { left: 50%; transform: translateX(-50%); height: 54px; }
 .logo img { display: block; height: 54px; width: auto; }
 .eyebrow { font-size: 30px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--ink-2); left: 80px; right: 80px; text-align: center; }
-.h { font-family: 'Prata', serif; font-size: 100px; line-height: 1.04; text-align: center; left: 70px; right: 70px; letter-spacing: -0.01em; text-wrap: balance; }
+.h { font-family: 'Montserrat', sans-serif; font-weight: 300; font-size: 88px; line-height: 1.08; text-align: center; left: 70px; right: 70px; letter-spacing: -0.01em; text-wrap: balance; }
 .h em { font-style: normal; color: var(--ink-3); }
 .body { font-size: 36px; line-height: 1.45; font-weight: 300; color: var(--ink-2); left: 120px; right: 120px; text-align: center; text-wrap: pretty; }
-.price { font-family: 'Prata', serif; font-size: 46px; text-align: center; left: 80px; right: 80px; }
+.price { font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 46px; text-align: center; left: 80px; right: 80px; }
 .price small { max-width: 840px; margin-left: auto; margin-right: auto; font-family: 'Onest'; font-size: 28px; letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); display: block; margin-top: 8px; font-weight: 500; }
 .cta { left: 50%; transform: translateX(-50%); background: var(--ink); color: var(--ivory); font-size: 32px; font-weight: 600; letter-spacing: .03em; padding: 28px 60px; border-radius: 999px; white-space: nowrap; }
 .full > .photo { position: absolute; left: 0; right: 0; top: 200px; height: 1720px; }
@@ -106,7 +106,7 @@ def product_card(id, price_main, price_small):
         bd = "none" if YELLOW else "1.5px solid rgba(244,242,237,.3)"
         return f"""<div style="display:flex;align-items:center;gap:28px;margin-top:30px;padding:14px 38px 14px 16px;border-radius:{6 if YELLOW else 22}px;background:{bg};border:{bd};text-align:left">
       {img}<div><p style="font-size:36px;line-height:1.2;font-weight:600;color:{c1}">{title}</p>
-      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:40px;margin-top:10px"><p style="font-family:Prata,serif;font-size:50px;line-height:1;color:{c1}">{price_main}</p>{f'<p style="font-size:36px;font-weight:600;color:{"#141216" if YELLOW else "#F2B705"};white-space:nowrap">Обрати&nbsp;→</p>' if id in INLINE else ""}</div></div></div>"""
+      <div style="display:flex;align-items:baseline;justify-content:space-between;gap:40px;margin-top:10px"><p style="font-family:Montserrat,sans-serif;font-weight:400;font-size:50px;line-height:1;color:{c1}">{price_main}</p>{f'<p style="font-size:36px;font-weight:600;color:{"#141216" if YELLOW else "#F2B705"};white-space:nowrap">Обрати&nbsp;→</p>' if id in INLINE else ""}</div></div></div>"""
     cuts, kind, name = PROD[id]
     imgs = "".join(f'<img src="{CUT(c)}" alt="" style="height:200px;width:auto;max-width:{220 if len(cuts) == 1 else 140}px;object-fit:contain;margin-left:{0 if k == 0 else -40}px;filter:drop-shadow(0 12px 14px rgba(0,0,0,.4));transform:rotate({(-6, 5, -3)[k]}deg)">' for k, c in enumerate(cuts))
     if YELLOW:
@@ -114,7 +114,7 @@ def product_card(id, price_main, price_small):
     else:
         bg, bd, c1, c2, c3 = "rgba(244,242,237,.1)", "1.5px solid rgba(244,242,237,.3)", "#E9D7A6", "#fff", "#fff"
     big = not kind      # only the name and the price: both a step larger
-    price = f'<p style="font-family:Prata,serif;font-size:{70 if big else 58}px;line-height:1;color:{c3};margin-top:{14 if big else 10}px">{price_main}</p>' if price_main else ""
+    price = f'<p style="font-family:Montserrat,sans-serif;font-weight:400;font-size:{70 if big else 58}px;line-height:1;color:{c3};margin-top:{14 if big else 10}px">{price_main}</p>' if price_main else ""
     return f"""<div style="display:flex;align-items:center;gap:32px;margin-top:28px;padding:18px 40px 18px 20px;border-radius:{6 if YELLOW else 22}px;background:{bg};border:{bd};text-align:left;box-shadow:{"0 20px 40px -20px rgba(0,0,0,.6)" if YELLOW else "none"}">
       <div style="display:flex;align-items:center;flex:none">{imgs}</div>
       <div>{f'<p style="font-size:30px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;color:{c1}">{kind}</p>' if kind else ""}
@@ -205,7 +205,7 @@ def ivory(id, eyebrow, h, em, visual, body, price_main, price_small, cta, bg="va
     {'<div style="height:60px"></div>' if (YELLOW or clean) else f'<p class="eyebrow" style="position:static;margin-top:90px">{eyebrow}</p>'}
     <h1 class="h" style="position:static;margin-top:{60 if clean else 16}px;font-size:{hs}px">{h}<br><em{' style="color:#E9D7A6"' if dark else ""}>{em}</em></h1>
     <div style="flex:1;min-height:0;align-self:stretch;margin-top:{36 if clean else 44}px;position:relative">{visual}</div>
-    {f"""<p style="position:static;margin-top:44px;max-width:860px;font-family:Prata,serif;font-size:50px;line-height:1.2;color:{"#F4F2ED" if dark else "var(--ink)"};text-wrap:balance">{nb(quote)}</p>""" if clean else f'<p class="body" style="position:static;margin-top:40px;max-width:880px">{nb(body)}</p>'}
+    {f"""<p style="position:static;margin-top:44px;max-width:860px;font-family:Montserrat,sans-serif;font-weight:400;font-size:50px;line-height:1.2;color:{"#F4F2ED" if dark else "var(--ink)"};text-wrap:balance">{nb(quote)}</p>""" if clean else f'<p class="body" style="position:static;margin-top:40px;max-width:880px">{nb(body)}</p>'}
     {"" if clean else yellow_plate(id) if YELLOW else f'<p class="price" style="position:static;margin-top:18px">{price_main}' + (f"<small>{price_small}</small>" if price_small else "") + '</p>'}
     <div class="cta" style="position:static;transform:none;margin-top:{40 if clean else 26}px">{cta}</div>
   </div>''', note)
@@ -232,7 +232,7 @@ def yellow_plate(id):
     name, detail, price = PLATE[id]
     return f"""<div style="margin-top:26px;align-self:stretch;background:#F2B705;border-radius:6px;padding:24px 40px;box-shadow:0 20px 40px -24px rgba(90,60,0,.55);display:flex;align-items:center;justify-content:space-between;gap:30px;text-align:left">
       <div><p style="font-size:38px;line-height:1.15;font-weight:700">{name}</p><p style="font-size:30px;margin-top:6px;font-weight:500">{detail}</p></div>
-      <p style="font-family:Prata,serif;font-size:60px;line-height:1;flex:none;white-space:nowrap">{price}</p></div>"""
+      <p style="font-family:Montserrat,sans-serif;font-weight:400;font-size:60px;line-height:1;flex:none;white-space:nowrap">{price}</p></div>"""
 
 V = lambda inner: f'<div style="position:absolute;inset:0;display:grid;place-items:center">{inner}</div>'
 FRAME = lambda name, pos="50% 50%": f'<div class="frame" style="position:absolute;inset:0 20px"><img src="{S2(name)}" alt="" style="object-position:{pos}"></div>'
@@ -264,7 +264,7 @@ ivory("c23-look-dark", "Шовкова хустка + твіллі", "Хустк
 cert = f"""<div style="position:absolute;inset:0 20px;background:url(src/{PP['zolote']['flat']}-hi.webp) center/170%"></div>
   <div style="position:absolute;left:150px;right:150px;top:110px;bottom:110px;background:#fff;box-shadow:0 30px 60px -24px rgba(0,0,0,.5);display:grid;place-items:center;text-align:center">
     <div><p style="font-size:26px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)">Номінали, грн</p>
-    <p style="font-family:Prata,serif;font-size:64px;line-height:1.12;margin-top:14px">1 000 · 1 500<br>2 000 · 2 500<br>4 000</p>
+    <p style="font-family:Montserrat,sans-serif;font-weight:400;font-size:64px;line-height:1.12;margin-top:14px">1 000 · 1 500<br>2 000 · 2 500<br>4 000</p>
     <p style="margin-top:18px;font-size:26px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)">на будь-який товар</p></div></div>"""
 ivory("c19-certificate", "Подарунковий сертифікат Obiimy", "Нехай обере", "сама.", cert,
       "Електронний або фізичний. Діє 3 місяці.", "від 1 000 грн", "подарунковий сертифікат Obiimy", "Подарувати сертифікат", bg="var(--stone)", note="Certificate")
@@ -314,11 +314,11 @@ process = (f'<div style="position:absolute;inset:0;display:flex;align-items:cent
            + '</div>')
 ivory("u09-from-painting", "Шовкова хустка «Авантюра»", "Від принту художниці", "до вашого образу.", process,
       "Авторський принт, натуральний шовк, ручна обробка краю.", "6 600 грн", "хустка «Авантюра»", "Обрати хустку", bg="var(--stone)", note="From painting to scarf", hs=88)
-logos = "".join(f'<p style="font-family:Prata,serif;font-size:50px;line-height:1.3">{n}</p>' for n in ["UFD London", "Be Brave · Канада", "INTERTOP", "Hram"])
+logos = "".join(f'<p style="font-family:Montserrat,sans-serif;font-weight:400;font-size:50px;line-height:1.3">{n}</p>' for n in ["UFD London", "Be Brave · Канада", "INTERTOP", "Hram"])
 trust = (f'<div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:30px">'
          f'<div style="display:grid;place-items:center"><img class="cut" src="{CUT("krok-44-1")}" alt="" style="width:100%;max-width:440px;transform:rotate(-5deg)"></div>'
          f'<div style="text-align:left"><p style="font-size:28px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-3)">Продається в</p>{logos}'
-         f'<p style="font-size:28px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-3);margin-top:30px">Про нас писали</p><p style="font-family:Prata,serif;font-size:44px;line-height:1.3">LIGA.net<br>INSIDER\u00a0UA</p></div></div>')
+         f'<p style="font-size:28px;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:var(--ink-3);margin-top:30px">Про нас писали</p><p style="font-family:Montserrat,sans-serif;font-weight:400;font-size:44px;line-height:1.3">LIGA.net<br>INSIDER\u00a0UA</p></div></div>')
 ivory("u10-trust", "Український бренд шовку", "Про нас пишуть.", "Нас носять.", trust,
       "Obiimy — український бренд шовкових хусток, твіллі й аксесуарів з авторськими принтами.", "2 400 грн", "хустка «Сміливий крок»", "Обрати хустку", note="Press and retail")
 ivory("u11-slow", "Шовкова хустка «Золоте світло»", "Одна хустка з України", "замість десяти випадкових.",

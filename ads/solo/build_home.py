@@ -387,8 +387,8 @@ ad("home-n6-evening", f'''
 
 # ── round 5 (05.11), the client: «справа — как на корпоративной презентации»: the seven portraits of the SOLO strip
 # (photo/solo, the same frames, eye lines and crops as corporate.obiimy.world) with the print names in gold italic under them.
-STRIP7 = [("iskra-65-4", "50% 0%", 1.12), ("flirt-65-2", "50% 50%", 1.0), ("puls-44-3", "50% 50%", 1.0), ("zolote-44-3", "53% 60%", 1.1),
-          ("avantiura-tw-1", "50% 0%", 1.07), ("tysha-88-3", "50% 50%", 1.0), ("krok-44-4", "56% 60%", 1.1)]
+STRIP7 = [("iskra-65-4", "50% 16%", 1.0), ("flirt-65-2", "50% 40%", 1.0), ("puls-44-3", "50% 40%", 1.0), ("zolote-44-3", "53% 44%", 1.0),
+          ("avantiura-tw-1", "50% 18%", 1.0), ("tysha-88-3", "50% 44%", 1.0), ("krok-44-4", "56% 46%", 1.0)]   # 05.11: air above the heads, no zoom
 STATES7 = {"iskra": "Сміливість бути помітною", "flirt": "Невимушена жіночність", "puls": "Внутрішня опора",
            "zolote": "Моменти ясності", "avantiura": "За межі звичного", "tysha": "Чути себе серед шуму", "krok": "Довіра до себе"}   # the states in a few words (press release)
 def tiles7(left, right, top, bottom, gap=10, names=True, states=False, dark=True, name_size=22, overlay=False):

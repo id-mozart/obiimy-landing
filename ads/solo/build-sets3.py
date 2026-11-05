@@ -35,19 +35,19 @@ body { margin: 0; background: #555; font-family: 'Onest', Arial, sans-serif; -we
 .ph { overflow: hidden; } .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .fit img { object-fit: contain; }
 .mult img { mix-blend-mode: multiply; }   /* a white packshot on the white field: its edges vanish */
-.big { font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic; line-height: .95; letter-spacing: -.01em; text-wrap: balance; }
+.big { font-family: 'Montserrat', sans-serif; font-weight: 300; font-style: normal; line-height: 1.08; letter-spacing: 0; text-wrap: balance; }   /* 05.11: the brand's light grotesque instead of the heavy italic */
 .small { font-family: 'EB Garamond', 'Cormorant Garamond', serif; font-weight: 500; line-height: 1.16; text-wrap: pretty; }
-.kicker { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: .14em; color: #E0B040; white-space: nowrap; }
+.kicker { font-family: 'Montserrat', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: .18em; color: #E0B040; white-space: nowrap; }
 .hdr { font-family: Montserrat, sans-serif; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
 .cta { font-family: 'Onest'; font-weight: 600; border-radius: 999px; background: #F2B705; color: #141216; white-space: nowrap; flex: none; }
 .plate { display: flex; align-items: center; border-radius: 20px; flex: 0 1 auto; min-width: 0; }
 .plate .nm { font-weight: 600; line-height: 1.1; text-wrap: balance; }
-.plate .pr { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1; margin-top: 8px; }
+.plate .pr { font-family: 'Montserrat', sans-serif; font-weight: 400; line-height: 1; margin-top: 8px; }
 .ink { color: #1B1613; } .ink .kicker { color: #8A6A12; }
 .card { background: #fff; box-shadow: 0 30px 60px -20px rgba(20,12,6,.5), 0 4px 10px rgba(20,12,6,.16); }
 .card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .cap { font-size: CAPpx; line-height: 1.2; }
-.cap b { font-family: 'Playfair Display', serif; font-weight: 700; color: #F2B705; white-space: nowrap; }
+.cap b { font-family: 'Montserrat', sans-serif; font-weight: 500; color: #F2B705; white-space: nowrap; }
 """.replace("GRAIN", GRAIN).replace("HPX", str(H)).replace("CAP", str(int(24 * K)))
 
 ads = []
@@ -148,9 +148,15 @@ simple("p14-sleep-10", "set-maska-rezynka-10-01", "50% 50%", "Набір для 
 simple("p15-svoboda-box", "set-tvilli-845-ta-khustky-4444-svoboda-02", "50% 50%", "Твіллі + хустка «Свобода»", ("Твіллі 84 × 5 + хустка 44 × 44", "3 100 грн"), "the yellow box, whole", fit=True, zoom=1.15)
 simple("p16-pidnesennia", "set-maska-zakladka-rezynka-pidnesennia-01", "50% 50%", "Набір «Піднесення»", ("Маска, закладка для книги, резинка", "4 080 грн"), "white packshot", white=True, zoom=1.1)
 
+
+def _lighter(html, k=0.95):
+    """Montserrat Light runs wider than the italic serif it replaced: every headline keeps its layout at a smaller size."""
+    import re
+    return re.sub(r'(class="big"[^>]*?font-size:)(\d+)px', lambda m: m.group(1) + str(int(int(m.group(2)) * k)) + "px", html)
+
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · gift sets, series 3</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=EB+Garamond:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Oswald:wght@500&family=Montserrat:wght@300;400;500&family=Onest:wght@400;600&display=swap">
 <style>""" + CSS + "</style></head><body>"
-(HERE / ("sets3" + ("" if FORMAT == "plain" else "-" + FORMAT) + ".html")).write_text(HEAD + "".join(ads) + "\n</body></html>")
+(HERE / ("sets3" + ("" if FORMAT == "plain" else "-" + FORMAT) + ".html")).write_text(HEAD + _lighter("".join(ads)) + "\n</body></html>")
 print(len(ads), "gift-set banners (series 3)", FORMAT)

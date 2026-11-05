@@ -35,19 +35,19 @@ body { margin: 0; background: #555; font-family: 'Onest', Arial, sans-serif; -we
 .ph { overflow: hidden; } .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .fit img { object-fit: contain; }
 .mult img { mix-blend-mode: multiply; }   /* a white packshot on the white field: its edges vanish */
-.big { font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic; line-height: .95; letter-spacing: -.01em; text-wrap: balance; }
+.big { font-family: 'Montserrat', sans-serif; font-weight: 300; font-style: normal; line-height: 1.08; letter-spacing: 0; text-wrap: balance; }   /* 05.11: the brand's light grotesque instead of the heavy italic */
 .small { font-family: 'EB Garamond', 'Cormorant Garamond', serif; font-weight: 500; line-height: 1.16; text-wrap: pretty; }
-.kicker { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: .14em; color: #E0B040; white-space: nowrap; }
+.kicker { font-family: 'Montserrat', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: .18em; color: #E0B040; white-space: nowrap; }
 .hdr { font-family: Montserrat, sans-serif; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
 .cta { font-family: 'Onest'; font-weight: 600; border-radius: 999px; background: #F2B705; color: #141216; white-space: nowrap; flex: none; }
 .plate { display: flex; align-items: center; border-radius: 20px; flex: 0 1 auto; min-width: 0; }
 .plate .nm { font-weight: 600; line-height: 1.1; text-wrap: balance; }
-.plate .pr { font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1; margin-top: 8px; }
+.plate .pr { font-family: 'Montserrat', sans-serif; font-weight: 400; line-height: 1; margin-top: 8px; }
 .ink { color: #1B1613; } .ink .kicker { color: #8A6A12; }
 .card { background: #fff; box-shadow: 0 30px 60px -20px rgba(20,12,6,.5), 0 4px 10px rgba(20,12,6,.16); }
 .card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .cap { font-size: CAPpx; line-height: 1.2; }
-.cap b { font-family: 'Playfair Display', serif; font-weight: 700; color: #F2B705; white-space: nowrap; }
+.cap b { font-family: 'Montserrat', sans-serif; font-weight: 500; color: #F2B705; white-space: nowrap; }
 """.replace("GRAIN", GRAIN).replace("HPX", str(H)).replace("CAP", str(int(24 * K)))
 
 ads = []
@@ -100,7 +100,7 @@ def row_light(title, price, cta="Обрати набір"):
     """The editorial product row: a hairline across, the set's name in small capitals, the price in the serif, the button."""
     return f'''
   <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:{int(24 * K)}px;padding-top:{int(26 * K)}px;border-top:1.5px solid rgba(27,22,19,.22);z-index:6;color:#1B1613">
-    <div style="min-width:0"><p class="hdr" style="font-size:{int(20 * K)}px;letter-spacing:.16em;white-space:normal;line-height:1.3">{nb(title)}</p><p style="font-family:'Playfair Display',serif;font-weight:700;font-size:{int(54 * K)}px;line-height:1;margin-top:{int(10 * K)}px">{price}</p></div>
+    <div style="min-width:0"><p class="hdr" style="font-size:{int(20 * K)}px;letter-spacing:.16em;white-space:normal;line-height:1.3">{nb(title)}</p><p style="font-family:'Montserrat',sans-serif;font-weight:400;font-size:{int(50 * K)}px;line-height:1;margin-top:{int(10 * K)}px">{price}</p></div>
     <div class="cta" style="font-size:{int(40 * K)}px;padding:{int(32 * K)}px {int(58 * K)}px">{cta}</div>
   </div>'''
 
@@ -170,9 +170,15 @@ whole("w26-makiv-03", "set-makovyi-tsvit-03", "Твіллі + резинка «�
 whole("w27-three-07", "set-3-shovkovykh-tvilli-07", "Набір із трьох твіллі", THREE, "three twillies unfolded")
 whole("w28-sleep-26", "set-maska-rezynka-26-02", "Набір для сну «Свобода»", SLEEP, "the sleep box", layout="bottom")
 
+
+def _lighter(html, k=0.95):
+    """Montserrat Light runs wider than the italic serif it replaced: every headline keeps its layout at a smaller size."""
+    import re
+    return re.sub(r'(class="big"[^>]*?font-size:)(\d+)px', lambda m: m.group(1) + str(int(int(m.group(2)) * k)) + "px", html)
+
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · gift sets, series 4</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=EB+Garamond:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Oswald:wght@500&family=Montserrat:wght@300;400;500&family=Onest:wght@400;600&display=swap">
 <style>""" + CSS + "</style></head><body>"
-(HERE / ("sets4" + ("" if FORMAT == "plain" else "-" + FORMAT) + ".html")).write_text(HEAD + "".join(ads) + "\n</body></html>")
+(HERE / ("sets4" + ("" if FORMAT == "plain" else "-" + FORMAT) + ".html")).write_text(HEAD + _lighter("".join(ads)) + "\n</body></html>")
 print(len(ads), "gift-set banners (series 4)", FORMAT)

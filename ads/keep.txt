@@ -1,10 +1,11 @@
 # Банери, відібрані для подальшої роботи (29.09.2026, другий відбір — 28). Решта — в архіві (site/creatives-archive.html).
-# 05.11.2026 — відбір клієнта з галереї (посилання #sel=): набори з серій «цілий набір», «просто фото», «композиції» + 10 SOLO
+# 05.11.2026 — відбір клієнта з галереї (посилання #sel=, друга редакція: + w15-makiv): набори з серій «цілий набір», «просто фото», «композиції» + 10 SOLO
 sets4/w02-smilyvist.jpg
 sets4/w04-sleep-28.jpg
 sets4/w08-melodiia.jpg
 sets4/w12-three-13.jpg
 sets4/w13-spokusa.jpg
+sets4/w15-makiv.jpg
 sets4/w16-pidnesennia.jpg
 sets4/w19-sun-sleep.jpg
 sets4/w21-black-heart.jpg

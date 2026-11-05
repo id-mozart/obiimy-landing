@@ -26,9 +26,9 @@ body { margin: 0; background: #555; font-family: 'Onest', Arial, sans-serif; -we
 .band img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .band .veil { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(12,9,8,.9) 0%, rgba(12,9,8,.66) 42%, rgba(12,9,8,0) 76%); }
 .band .txt { position: absolute; left: 64px; top: 50%; transform: translateY(-50%); width: 620px; }
-.big { font-family: 'Playfair Display', serif; font-weight: 900; font-style: italic; line-height: .95; letter-spacing: -.01em; text-wrap: balance; }
+.big { font-family: 'Montserrat', sans-serif; font-weight: 300; font-style: normal; line-height: 1.08; letter-spacing: 0; text-wrap: balance; }   /* 05.11: the brand's light grotesque instead of the heavy italic */
 .small { font-family: 'EB Garamond', 'Cormorant Garamond', serif; font-weight: 500; font-size: 40px; line-height: 1.14; margin-top: 26px; text-wrap: pretty; text-shadow: 0 1px 10px rgba(0,0,0,.55); }
-.kicker { font-family: 'Oswald', sans-serif; text-transform: uppercase; letter-spacing: .14em; font-size: 28px; color: #E0B040; white-space: nowrap; }
+.kicker { font-family: 'Montserrat', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: .18em; font-size: 28px; color: #E0B040; white-space: nowrap; }
 .tag { display: inline-block; margin-top: 16px; font-family: 'Onest'; font-weight: 600; font-size: 28px; letter-spacing: .04em; padding: 10px 20px; border-radius: 999px; background: rgba(243,234,219,.16); border: 1.5px solid rgba(243,234,219,.4); }
 .cta { font-family: 'Onest'; font-weight: 600; font-size: 30px; padding: 24px 38px; border-radius: 999px; background: #F2B705; color: #141216; white-space: nowrap; flex: none; }
 """.replace("GRAIN", GRAIN).replace("HPX", str(H))
@@ -453,9 +453,15 @@ triptych("g06-twilly-gift", "Твіллі в подарунок", [
     (["iskra-tw-4", "krok-tw-5", "zolote-tw-3"], DARK, "У\u00a0подарунок", "Сім принтів, одна ціна.", "cut", {"tag": "1 600 грн", "frac": .78, "size": 70}),
 ], "Твіллі в подарунок — підпишемо вашими словами.", (["iskra-tw-4"], "Шовкова твіллі SOLO", "1 600 грн"), "Подарувати", "Twilly as a gift")
 
+
+def _lighter(html, k=.84):
+    """Montserrat Light runs wider than the italic serif it replaced: every headline keeps its layout at a smaller size."""
+    import re
+    return re.sub(r'(class="big"[^>]*?font-size:)(\d+)px', lambda m: m.group(1) + str(int(int(m.group(2)) * k)) + "px", html)
+
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO triptych</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=EB+Garamond:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Oswald:wght@500&family=Montserrat:wght@300;400;500&family=Onest:wght@400;600&display=swap">
 <style>""" + CSS + "</style></head><body>"
-(HERE / (("solo7" if YELLOW else "solo6") + ("" if FORMAT == "plain" else "-" + FORMAT) + ".html")).write_text(HEAD + "".join(ads) + "\n</body></html>")
+(HERE / (("solo7" if YELLOW else "solo6") + ("" if FORMAT == "plain" else "-" + FORMAT) + ".html")).write_text(HEAD + _lighter("".join(ads)) + "\n</body></html>")
 print(len(ads), "triptych banners", "(yellow)" if YELLOW else "")

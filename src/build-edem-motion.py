@@ -210,7 +210,7 @@ FORM_UK = dict(title="Замовлення · Trypillia — The Art of Origins",
 FORM_EN = dict(title="Order · Trypillia — The Art of Origins", sending="Sending…", total_label="Total", fail_h="The order was not sent",
                fail_p="We could not send the order automatically. Tap “Write on Telegram” — the text is ready.",
                name="Name *", e_name="Please enter your name", phone="Phone *", e_phone="Please enter a phone number with at least 9 digits", email="Email", opt="(optional)",
-               city="City *", e_city="Please enter your city", branch="Nova Poshta branch or delivery address *", ph_branch="Branch no. or address", e_branch="Please enter a branch or an address",
+               city="City *", e_city="Please enter your city", branch="Nova Poshta branch / address *", ph_branch="Branch no. or address", e_branch="Please enter a branch or an address",
                qty="Quantity", comment="Comment", line="Scarf 88 × 88 cm, 100% silk ·", pcs="pc.", submit="Order for", hint="Card payment — via a link once our manager confirms the order.<br>* required fields",
                done_h="Thank you — your order has been received", done_p="Our manager will contact you shortly, confirm the order and send a payment link. If you prefer, write to us on Telegram.",
                tg="Write on Telegram", top="Back to top")

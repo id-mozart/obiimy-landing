@@ -384,9 +384,65 @@ ad("home-n6-evening", f'''
   <div style="left:720px;top:0;bottom:0;width:260px;background:linear-gradient(90deg,#1A1816,rgba(26,24,22,0))"></div><div class="scrim-d"></div>
   {lock()}{logo()}''', note="Evening street")
 
+
+# ── round 5 (05.11), the client: «справа — как на корпоративной презентации»: the seven portraits of the SOLO strip
+# (photo/solo, the same frames, eye lines and crops as corporate.obiimy.world) with the print names in gold italic under them.
+STRIP7 = [("iskra-65-4", "50% 0%", 1.12), ("flirt-65-2", "50% 50%", 1.0), ("puls-44-3", "50% 50%", 1.0), ("zolote-44-3", "53% 60%", 1.1),
+          ("avantiura-tw-1", "50% 0%", 1.07), ("tysha-88-3", "50% 50%", 1.0), ("krok-44-4", "56% 60%", 1.1)]
+STATES7 = {"iskra": "Сміливість бути помітною", "flirt": "Невимушена жіночність", "puls": "Внутрішня опора",
+           "zolote": "Моменти ясності", "avantiura": "За межі звичного", "tysha": "Чути себе серед шуму", "krok": "Довіра до себе"}   # the states in a few words (press release)
+def tiles7(left, right, top, bottom, gap=10, names=True, states=False, dark=True, name_size=22, overlay=False):
+    """Seven portrait tiles between `left` and `right`, from `top` to `bottom`; the caption under each (or over its foot when overlay)."""
+    n = 7; w = (right - left - gap * (n - 1)) // n
+    cap_h = (int(name_size * 1.5) + (18 if states else 0) + 10) if (names and not overlay) else 0
+    h = bottom - top - cap_h
+    gold, grey = ("#E7D9A6", "#C9C6C0") if dark else ("#8A6A12", "#5A5048")
+    out = ""
+    for i, ((f, pos, z), p) in enumerate(zip(STRIP7, P)):
+        x = left + i * (w + gap)
+        zoom = f"transform:scale({z});transform-origin:{pos};" if z != 1 else ""
+        cap = ""
+        if names:
+            st = f'<span style="display:block;font-family:Montserrat,sans-serif;font-size:13px;line-height:1.25;color:{grey};margin-top:3px">{STATES7[p["id"]]}</span>' if states else ""
+            if overlay:
+                cap = f'<div style="position:absolute;left:0;right:0;bottom:0;padding:70px 10px 14px;background:linear-gradient(180deg,rgba(12,9,8,0),rgba(12,9,8,.85));color:{gold};font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:{name_size}px;line-height:1.1;text-align:center">{p["name"]}</div>'
+            else:
+                cap = f'<div style="position:absolute;left:0;width:{w}px;top:{h + 10}px;color:{gold};font-family:\'Cormorant Garamond\',serif;font-style:italic;font-size:{name_size}px;line-height:1.1">{p["name"]}{st}</div>'
+        out += f'<div style="position:absolute;left:{x}px;top:{top}px;width:{w}px;height:{bottom - top}px"><div class="ph" style="position:relative;width:{w}px;height:{h}px"><img src="../../photo/solo/{f}.webp" alt="" style="object-position:{pos};{zoom}"></div>{cap}</div>'
+    return out
+
+# T1 · dark, the lock-up on the left, seven portraits with names and states — the corporate strip as it is
+ad("home-t1-seven-faces", f"""
+  <div style="inset:0;background:#141110"></div>
+  {tiles7(660, 1840, 44, 532, names=True, states=True)}
+  {lock()}{logo()}""", note="Seven portraits with names and states (corporate strip)")
+
+# T2 · the portraits to the top and bottom edges, the names over their feet
+ad("home-t2-seven-edge", f"""
+  <div style="inset:0;background:#141110"></div>
+  {tiles7(680, 1920, 0, 576, gap=6, names=True, overlay=True, name_size=24)}
+  <div style="left:680px;top:0;bottom:0;width:120px;background:linear-gradient(90deg,#141110,rgba(20,17,16,0))"></div>
+  {lock()}{logo()}""", note="Seven portraits to the edges, names over the feet")
+
+# T3 · light paper, the dark lock-up, the names in old gold
+ad("home-t3-seven-paper", f"""
+  <div style="inset:0;background:#F0EBE1"></div>
+  {tiles7(660, 1840, 44, 532, names=True, states=True, dark=False)}
+  {lock(dark=True)}{logo(dark=True)}""", "dark", note="Seven portraits on paper")
+
+# T4 · the lock-up in one line on top, the seven portraits across the whole width under it
+ad("home-t4-seven-wide", f"""
+  <div style="inset:0;background:#141110"></div>
+  <div style="left:80px;right:80px;top:34px;height:96px;display:flex;align-items:center;gap:30px;text-transform:uppercase;white-space:nowrap">
+    <p style="font-size:30px;font-weight:400;letter-spacing:.08em">Колекція</p><p style="font-size:84px;font-weight:300;letter-spacing:.02em;line-height:.9">Соло</p><p style="font-size:30px;font-weight:400;letter-spacing:.08em">Шлях до себе</p>
+    <p style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:30px;text-transform:none;color:#E7D9A6;margin-left:30px">Сім принтів — сім станів</p>
+    <p class="pill" style="margin:0 0 0 auto;font-size:22px;padding:14px 28px;align-self:center">Жіноча сила крізь десятиліття</p></div>
+  {tiles7(80, 1840, 150, 556, gap=12, names=True, name_size=24)}
+  {logo()}""", note="One-line lock-up, seven portraits across")
+
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · SOLO home banners</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Cormorant+Garamond:ital,wght@1,400;1,500&display=swap">
 <style>""" + CSS + "</style></head><body>"
 (HERE / "home.html").write_text(HEAD + "".join(ads) + "\n</body></html>")
 print(len(ads), "home banners")

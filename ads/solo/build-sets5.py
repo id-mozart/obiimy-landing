@@ -118,22 +118,22 @@ def hero_whole(id, photo, kicker, big, small, product, note="", size=104, pos="5
     <p class="small" style="font-size:{int(40 * K)}px;margin-top:{int(22 * K)}px;max-width:{int(900 * K)}px;color:#E6DBC8">{nb(small)}</p>
   </div>
   {plate(*product)}"""
-    else:   # short frames: a light version — the blurred copy at its own brightness, the sharp picture whole on the left, ink words
-        zh = Y1 - Y0 + int(20 * K); ph_h = zh; ph_w = min(int(1080 * .52), int(ph_h * ar)); ph_h = int(ph_w / ar)
-        px = 40; py = Y0 - int(10 * K) + (zh - ph_h) // 2
-        tx = px + ph_w + int(36 * K)
+    else:   # short frames (05.11, the client: «как в сторис, только картинки меньше»): the same dark hero, the set whole and smaller
+        text_h = int(300 * K)
+        zy = TOPL + int(90 * K); zh = Y1 - text_h - zy
+        ph_w = min(1080 - 128, int(zh * ar)); ph_h = int(ph_w / ar)
+        px = (1080 - ph_w) // 2; py = zy + (zh - ph_h) // 2
         body = f"""
-  <div class="ph" style="inset:-60px"><img src="{PH}{photo}.jpg" alt="" style="object-position:{pos};filter:blur(50px) brightness(.97);transform:scale(1.15)"></div>
-  <div style="inset:0;background:linear-gradient(90deg,rgba(243,234,219,0) 45%,rgba(243,234,219,.55) 75%,rgba(243,234,219,.7) 100%);z-index:1"></div>
+  <div class="ph" style="inset:-60px"><img src="{PH}{photo}.jpg" alt="" style="object-position:{pos};filter:blur(46px) brightness(.45) saturate(1.1);transform:scale(1.15)"></div>
+  <div style="inset:0;background:linear-gradient(180deg,rgba(12,9,8,.5) 0,rgba(12,9,8,.15) 30%,rgba(12,9,8,.15) {int((py + ph_h) / H * 100)}%,rgba(12,9,8,.92) {int((py + ph_h) / H * 100) + 8}%,rgba(12,9,8,1) 100%);z-index:1"></div>
   <div class="ph" style="left:{px}px;top:{py}px;width:{ph_w}px;height:{ph_h}px;{FEATHER}z-index:2"><img src="{PH}{photo}.jpg" alt="" style="object-position:{pos}"></div>
-  <div style="inset:0;background:#F2EADC;mix-blend-mode:multiply;z-index:3"></div>
-  {header(dark=False)}
-  <div class="ink" style="left:{tx}px;right:56px;top:{Y0 + int(30 * K)}px;z-index:5">
+  {header()}
+  <div style="left:64px;right:64px;bottom:{H - Y1 + int(10 * K)}px;z-index:5">
     <p class="kicker" style="font-size:{int(24 * K)}px">{kicker}</p>
-    <p class="big" style="font-size:{int(size * .6 * K)}px;margin-top:{int(14 * K)}px">{nbh(big)}</p>
-    <p class="small" style="font-size:{int(32 * K)}px;margin-top:{int(16 * K)}px;color:#4B423B">{nb(small)}</p>
+    <p class="big" style="font-size:{int(size * .9 * K)}px;margin-top:{int(12 * K)}px">{nbh(big)}</p>
+    <p class="small" style="font-size:{int(36 * K)}px;margin-top:{int(16 * K)}px;max-width:{int(900 * K)}px;color:#E6DBC8">{nb(small)}</p>
   </div>
-  {plate(*product, dark=False)}"""
+  {plate(*product)}"""
     ad(id, body, note)
 
 TW_KH = ("Твіллі 84 × 5 + хустка 44 × 44", "3 100 грн")

@@ -81,12 +81,13 @@ SCRIPT = """
     e.preventDefault(); var bad = null;
     req.forEach(function (el) { var lab = el.closest('label'), ok = valid(el.name, el.value.trim()); lab.classList.toggle('bad', !ok); el.setAttribute('aria-invalid', ok ? 'false' : 'true'); if (!ok && !bad) bad = el; });
     if (bad) { bad.focus(); return; }
-    var data = { page: location.href, kind: f.getAttribute('data-kind') || 'register' }, lines = [f.getAttribute('data-title') || 'Ранній доступ · Trypillia — The Art of Origins'];
+    var S = function (k, d) { return f.getAttribute('data-' + k) || d; };
+    var data = { page: location.href, kind: S('kind', 'register') }, lines = [S('title', 'Ранній доступ · Trypillia — The Art of Origins')];
     [].forEach.call(f.elements, function (el) { if (!el.name || el.type === 'submit' || ((el.type === 'radio' || el.type === 'checkbox') && !el.checked)) return; data[el.name] = el.value.trim(); if (data[el.name]) lines.push(label(el) + ': ' + data[el.name]); });
-    if (f.getAttribute('data-total')) { data.total = f.getAttribute('data-total'); lines.push('Разом: ' + data.total); }
-    var btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Надсилаємо…';
+    if (f.getAttribute('data-total')) { data.total = f.getAttribute('data-total'); lines.push(S('total-label', 'Разом') + ': ' + data.total); }
+    var btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = S('sending', 'Надсилаємо…');
     tg.href = 'TG?text=' + encodeURIComponent(lines.join('\\n'));
-    function finish(ok) { if (!ok) { var o = f.getAttribute('data-kind') === 'order'; document.getElementById('done-h').textContent = (o ? 'Замовлення' : 'Заявку') + ' не надіслано'; document.getElementById('done-p').textContent = 'Не вдалося надіслати ' + (o ? 'замовлення' : 'заявку') + ' автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.'; } f.hidden = true; done.hidden = false; var h = document.getElementById('done-h'); h.setAttribute('tabindex', '-1'); h.focus(); }
+    function finish(ok) { if (!ok) { var o = data.kind === 'order'; document.getElementById('done-h').textContent = S('fail-h', (o ? 'Замовлення' : 'Заявку') + ' не надіслано'); document.getElementById('done-p').textContent = S('fail-p', 'Не вдалося надіслати ' + (o ? 'замовлення' : 'заявку') + ' автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.'); } f.hidden = true; done.hidden = false; var h = document.getElementById('done-h'); h.setAttribute('tabindex', '-1'); h.focus(); }
     fetch(API + '/api/edem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(function (r) { return r.json(); }).then(function (j) { if (!j.ok) throw new Error('x'); finish(true); }).catch(function () { finish(false); });
   });
   req.forEach(function (el) { el.addEventListener('input', function () { this.closest('label').classList.remove('bad'); this.removeAttribute('aria-invalid'); }); });
@@ -99,13 +100,14 @@ SCRIPT = """
 </script>""".replace("API_LOCAL", API_LOCAL).replace("API_PROD", API_PROD).replace("TG?text", TG + "?text")
 
 DESC = "Спільний мистецький проєкт KRAЇNA EDEM та OBIIMY: шовкова хустка 88 × 88, натхненна трипільською культурою. Лімітований випуск — зареєструйтесь, щоб дізнатися про ціну та старт продажів першими."
-def head(slug, css, title_extra="", url=None, index=False, desc=DESC):
-    return f'''<meta charset="utf-8">
+def head(slug, css, title_extra="", url=None, index=False, desc=DESC, lang="uk", extra=""):
+    return f'''<html lang="{lang}">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KRAЇNA EDEM × OBIIMY — Trypillia: The Art of Origins{title_extra}</title>
 <meta name="description" content="{desc}">
 {"" if index else '<meta name="robots" content="noindex">'}<link rel="canonical" href="{url or SITE_URL + "/edem"}">
-<meta property="og:type" content="website"><meta property="og:title" content="KRAЇNA EDEM × OBIIMY — Trypillia: The Art of Origins"><meta property="og:image" content="{SITE_URL}/photo/edem/art-1600-1200.webp"><meta property="og:url" content="{url or SITE_URL + "/" + slug}"><meta property="og:locale" content="uk_UA">
+<meta property="og:type" content="website"><meta property="og:title" content="KRAЇNA EDEM × OBIIMY — Trypillia: The Art of Origins"><meta property="og:image" content="{SITE_URL}/photo/edem/art-1600-1200.webp"><meta property="og:url" content="{url or SITE_URL + "/" + slug}"><meta property="og:locale" content="{"en_US" if lang == "en" else "uk_UA"}">{extra}
 <link rel="icon" href="brand/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">

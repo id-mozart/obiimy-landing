@@ -8,7 +8,7 @@
   story   — the figure spins in 3D with the scroll progress of the section, pendants swing on cords and kick when hovered;
   symbols — four 3D cards that tilt on hover with the element popping out towards the viewer.
 Reduced motion: everything is static. Touch: no pointer parallax, idle drift only. Output: edem-motion.html (HIDDEN; in the variants bar)."""
-import importlib.util, pathlib, random, sys
+import importlib.util, pathlib, random, re, sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 from imgs import img
@@ -39,7 +39,8 @@ section[id] { scroll-margin-top: 20px; }
 /* ── hero: the scene ───────────────────────────────────────────────────────────────────────────── */
 .hero { position: relative; min-height: 100vh; overflow: hidden; display: grid; align-items: center; padding: 100px 0 80px; background: radial-gradient(70% 60% at 68% 45%, rgba(180,138,58,.18), transparent 65%), var(--bg); }
 .hero .top { position: absolute; left: 0; right: 0; top: 26px; max-width: 1240px; margin: 0 auto; padding: 0 24px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--cream2); z-index: 5; }
-.logos { display: flex; align-items: center; gap: 22px; } .logos img { height: 30px; width: auto; display: block; } .logos img.edem { height: 82px; margin-top: -8px; } .logos .x { font-family: 'Cormorant Garamond', serif; font-size: 24px; opacity: .55; letter-spacing: 0; } .logos b { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 21px; letter-spacing: .14em; text-transform: uppercase; color: var(--cream); line-height: 1; }
+.logos { display: flex; align-items: center; gap: 22px; } .logos img { height: 30px; width: auto; display: block; } .logos img.edem { height: 82px; margin-top: -8px; } .hero .top .right { display: flex; align-items: center; gap: 18px; } .hero .top .lang { color: inherit; text-decoration: none; border: 1px solid currentColor; padding: 6px 9px; border-radius: 2px; font-size: 10px; letter-spacing: .2em; opacity: .75; transition: opacity .2s; } .hero .top .lang:hover { opacity: 1; }
+.logos .x { font-family: 'Cormorant Garamond', serif; font-size: 24px; opacity: .55; letter-spacing: 0; } .logos b { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 21px; letter-spacing: .14em; text-transform: uppercase; color: var(--cream); line-height: 1; }
 .dust { position: absolute; inset: 0; pointer-events: none; z-index: 1; } .dust i { position: absolute; bottom: -10px; width: 3px; height: 3px; border-radius: 50%; background: var(--gold); opacity: 0; animation: rise linear infinite; box-shadow: 0 0 6px rgba(217,184,106,.8); }
 @keyframes rise { 0% { transform: translateY(0) translateX(0); opacity: 0; } 10% { opacity: .9; } 90% { opacity: .5; } 100% { transform: translateY(-110vh) translateX(40px); opacity: 0; } }
 .scene { position: absolute; inset: 0; perspective: 1400px; transform-style: flat; z-index: 2; pointer-events: none; }   /* flat: the tilted card must never cut through the medallion plane */
@@ -108,7 +109,7 @@ section.s { padding: clamp(80px, 10vw, 150px) 0; position: relative; overflow: h
 footer { padding: 34px 24px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--cream2); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--line); } footer a { text-decoration: none; }
 @media (max-width: 980px) { .hero { padding: 90px 0 60px; } .hero .copy > * { max-width: none; } .l-card { position: relative; left: auto; top: auto; margin: 0 auto 30px; width: min(78vw, 420px); } .scene { position: relative; inset: auto; height: auto; pointer-events: none; } .l-mandala { display: none; } .l-fig, .l-pr, .l-pd, .l-pr2 { position: absolute; } .l-fig { left: 2%; top: 10%; } .l-pr { left: 84%; top: 4%; } .l-pd { left: 6%; top: 70%; } .l-pr2 { left: 88%; top: 60%; }
   .scarf, .story, .brands, .reg .wrap, .film { grid-template-columns: 1fr; } .film .vid { width: min(100%, 360px); } .cards { grid-template-columns: repeat(2, 1fr); } .hangs { display: none; } .spin { height: 320px; } .lenswrap { cursor: default; } .hintlens { display: none; } }
-@media (max-width: 600px) { body { font-size: 16px; } .cards { grid-template-columns: 1fr; } .cta .btn { flex: 1 1 100%; justify-content: center; } .hero .top { font-size: 9px; letter-spacing: .16em; } .hero .top > span { display: none; } .logos { gap: 14px; } .logos img { height: 24px; } .logos img.edem { height: 58px; margin-top: -4px; } }
+@media (max-width: 600px) { body { font-size: 16px; } .cards { grid-template-columns: 1fr; } .cta .btn { flex: 1 1 100%; justify-content: center; } .hero .top { font-size: 9px; letter-spacing: .16em; } .hero .top .right > span { display: none; } .logos { gap: 14px; } .logos img { height: 24px; } .logos img.edem { height: 58px; margin-top: -4px; } }
 @media (hover: none) { .lens, .hintlens { display: none; } .lenswrap { cursor: default; } }
 @media (prefers-reduced-motion: reduce) { .card, .layer img, .dust i, .hang, .l-mandala img, .mani .bg img, .reg .bg img, .scrollhint i { animation: none !important; } .mani .w { opacity: 1; transform: none; } }
 """
@@ -154,7 +155,7 @@ JS = """
   // the film: plays (muted) while in view, pauses out of view; the button toggles the sound
   var fv = document.getElementById('film-v'), fs = document.getElementById('film-snd');
   if (fv) { var fio = 'IntersectionObserver' in window ? new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { var p = fv.play(); if (p && p.catch) p.catch(function () {}); } else fv.pause(); }); }, { threshold: .35 }) : null; if (fio) fio.observe(fv); else fv.play();
-    fs.addEventListener('click', function () { fv.muted = !fv.muted; fs.classList.toggle('on', !fv.muted); fs.setAttribute('aria-pressed', fv.muted ? 'false' : 'true'); fs.textContent = fv.muted ? 'Увімкнути звук' : 'Вимкнути звук'; if (fv.paused) fv.play(); }); }
+    fs.addEventListener('click', function () { fv.muted = !fv.muted; fs.classList.toggle('on', !fv.muted); fs.setAttribute('aria-pressed', fv.muted ? 'false' : 'true'); fs.textContent = fs.getAttribute(fv.muted ? 'data-on' : 'data-off'); if (fv.paused) fv.play(); }); }
   // pendants kick when hovered
   [].slice.call(document.querySelectorAll('.hang')).forEach(function (h) { h.addEventListener('pointerenter', function () { h.classList.remove('kick'); void h.offsetWidth; h.classList.add('kick'); }); h.addEventListener('animationend', function (e) { if (e.animationName === 'kick') h.classList.remove('kick'); }); });
   // 3D cards
@@ -163,7 +164,7 @@ JS = """
     c.addEventListener('pointerleave', function () { c.style.setProperty('--ry', '0deg'); c.style.setProperty('--rx', '0deg'); });
   });
   var qty = document.getElementById('qty');
-  if (qty) qty.addEventListener('change', function () { var n = Number(qty.value) || 1, t = String(PRICE * n).replace(/\\B(?=(\\d{3})+$)/g, '\\u202f') + '\\u00a0грн'; document.getElementById('qty-t').textContent = n; document.getElementById('total-t').textContent = t; f.setAttribute('data-total', t); });
+  if (qty) qty.addEventListener('change', function () { var n = Number(qty.value) || 1, en = qty.getAttribute('data-fmt') === 'en', t = en ? String(PRICE * n).replace(/\\B(?=(\\d{3})+$)/g, ',') + ' UAH' : String(PRICE * n).replace(/\\B(?=(\\d{3})+$)/g, '\\u202f') + '\\u00a0грн'; document.getElementById('qty-t').textContent = n; document.getElementById('total-t').textContent = t; f.setAttribute('data-total', t); });
 """
 
 LIGHT = [  # the same page on warm paper: palette, shadows and the few hard-coded dark surfaces swapped
@@ -199,33 +200,116 @@ ORDER_STEPS = [("Замовлення", "Ім’я, телефон, місто �
                ("Підтвердження й оплата", "Менеджер зв’яжеться, підтвердить замовлення й надішле персональне посилання на оплату карткою."),
                ("Доставка", "Після оплати — підтвердження й відправлення хустки Новою поштою.")]
 
-def order_form():
+FORM_UK = dict(title="Замовлення · Trypillia — The Art of Origins", sending="Надсилаємо…", total_label="Разом", fail_h="Замовлення не надіслано",
+               fail_p="Не вдалося надіслати замовлення автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.",
+               name="Ім’я *", e_name="Вкажіть ім’я", phone="Телефон *", e_phone="Вкажіть телефон, щонайменше 9 цифр", email="Email", opt="(необов’язково)",
+               city="Місто *", e_city="Вкажіть місто", branch="Відділення Нової пошти *", ph_branch="№ відділення або поштомат", e_branch="Вкажіть відділення чи поштомат",
+               qty="Кількість", comment="Коментар", line="Хустка 88 × 88 см, 100% шовк ·", pcs="шт.", submit="Замовити за", hint="Оплата карткою — за посиланням після підтвердження менеджером.<br>* обов’язкові поля",
+               done_h="Дякуємо — замовлення прийнято", done_p="Менеджер зв’яжеться з вами найближчим часом, підтвердить замовлення й надішле посилання на оплату. Якщо зручніше — напишіть нам у Telegram.",
+               tg="Написати в Telegram", top="На початок")
+FORM_EN = dict(title="Order · Trypillia — The Art of Origins", sending="Sending…", total_label="Total", fail_h="The order was not sent",
+               fail_p="We could not send the order automatically. Tap “Write on Telegram” — the text is ready.",
+               name="Name *", e_name="Please enter your name", phone="Phone *", e_phone="Please enter a phone number with at least 9 digits", email="Email", opt="(optional)",
+               city="City *", e_city="Please enter your city", branch="Nova Poshta branch or delivery address *", ph_branch="Branch no. or address", e_branch="Please enter a branch or an address",
+               qty="Quantity", comment="Comment", line="Scarf 88 × 88 cm, 100% silk ·", pcs="pc.", submit="Order for", hint="Card payment — via a link once our manager confirms the order.<br>* required fields",
+               done_h="Thank you — your order has been received", done_p="Our manager will contact you shortly, confirm the order and send a payment link. If you prefer, write to us on Telegram.",
+               tg="Write on Telegram", top="Back to top")
+PRICE_EN = f"{PRICE:,} UAH"                      # «8,500 UAH»
+
+def order_form(lang="uk"):
+    L, P = (FORM_EN, PRICE_EN) if lang == "en" else (FORM_UK, PRICE_T)
     qty = "".join(f'<option value="{n}">{n}</option>' for n in range(1, 6))
     return f'''
-  <form class="f" id="reg" novalidate data-kind="order" data-title="Замовлення · Trypillia — The Art of Origins" data-total="{PRICE_T}">
-    <label><span>Ім’я *</span><input name="name" type="text" autocomplete="name" required aria-describedby="err-name"><span class="err" id="err-name" role="alert">Вкажіть ім’я</span></label>
-    <label><span>Телефон *</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required aria-describedby="err-phone"><span class="err" id="err-phone" role="alert">Вкажіть телефон, щонайменше 9 цифр</span></label>
-    <label class="full"><span>Email <small style="font-weight:400">(необов’язково)</small></span><input name="email" type="email" autocomplete="email"></label>
-    <label><span>Місто *</span><input name="city" type="text" autocomplete="address-level2" required aria-describedby="err-city"><span class="err" id="err-city" role="alert">Вкажіть місто</span></label>
-    <label><span>Відділення Нової пошти *</span><input name="branch" type="text" placeholder="№ відділення або поштомат" required aria-describedby="err-branch"><span class="err" id="err-branch" role="alert">Вкажіть відділення чи поштомат</span></label>
-    <label><span>Кількість</span><select name="qty" id="qty">{qty}</select></label>
-    <label><span>Коментар <small style="font-weight:400">(необов’язково)</small></span><input name="comment" type="text" maxlength="300"></label>
-    <div class="total"><span>Хустка 88 × 88 см, 100% шовк · <span id="qty-t">1</span> шт.</span><b id="total-t">{PRICE_T}</b></div>
-    <div class="actions"><button class="btn btn-main" type="submit">Замовити за {PRICE_T}</button><span class="hint">Оплата карткою — за посиланням після підтвердження менеджером.<br>* обов’язкові поля</span></div>
+  <form class="f" id="reg" novalidate data-kind="order" data-title="{L["title"]}" data-total="{P}" data-sending="{L["sending"]}" data-total-label="{L["total_label"]}" data-fail-h="{L["fail_h"]}" data-fail-p="{L["fail_p"]}">
+    <label><span>{L["name"]}</span><input name="name" type="text" autocomplete="name" required aria-describedby="err-name"><span class="err" id="err-name" role="alert">{L["e_name"]}</span></label>
+    <label><span>{L["phone"]}</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required aria-describedby="err-phone"><span class="err" id="err-phone" role="alert">{L["e_phone"]}</span></label>
+    <label class="full"><span>{L["email"]} <small style="font-weight:400">{L["opt"]}</small></span><input name="email" type="email" autocomplete="email"></label>
+    <label><span>{L["city"]}</span><input name="city" type="text" autocomplete="address-level2" required aria-describedby="err-city"><span class="err" id="err-city" role="alert">{L["e_city"]}</span></label>
+    <label><span>{L["branch"]}</span><input name="branch" type="text" placeholder="{L["ph_branch"]}" required aria-describedby="err-branch"><span class="err" id="err-branch" role="alert">{L["e_branch"]}</span></label>
+    <label><span>{L["qty"]}</span><select name="qty" id="qty" data-fmt="{lang}">{qty}</select></label>
+    <label><span>{L["comment"]} <small style="font-weight:400">{L["opt"]}</small></span><input name="comment" type="text" maxlength="300"></label>
+    <div class="total"><span>{L["line"]} <span id="qty-t">1</span> {L["pcs"]}</span><b id="total-t">{P}</b></div>
+    <div class="actions"><button class="btn btn-main" type="submit">{L["submit"]} {P}</button><span class="hint">{L["hint"]}</span></div>
   </form>
   <div class="done" id="reg-done" hidden>
-    <h3 id="done-h">Дякуємо — замовлення прийнято</h3>
-    <p id="done-p">Менеджер зв’яжеться з вами найближчим часом, підтвердить замовлення й надішле посилання на оплату. Якщо зручніше — напишіть нам у Telegram.</p>
-    <div class="row"><a class="btn btn-main" id="reg-tg" href="{TG}" target="_blank" rel="noopener">Написати в Telegram</a><a class="btn btn-line" href="#top">На початок</a></div>
+    <h3 id="done-h">{L["done_h"]}</h3>
+    <p id="done-p">{L["done_p"]}</p>
+    <div class="row"><a class="btn btn-main" id="reg-tg" href="{TG}" target="_blank" rel="noopener">{L["tg"]}</a><a class="btn btn-line" href="#top">{L["top"]}</a></div>
   </div>'''
 
-def main(light=False):
+# The English page (edem.obiimy.world/en, client 05.11.2026): the Ukrainian body with every phrase replaced; each pair must match, and no Cyrillic may remain
+EN = [
+ ("Лімітований випуск · 2026", "Limited edition · 2026"),
+ ("Спільний мистецький проєкт", "A joint art project"),
+ ("Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами — спільна робота KRAЇNA EDEM та OBIIMY.", "The art of being closer. A silk scarf inspired by Trypillian motifs — a collaboration between KRAЇNA EDEM and OBIIMY."),
+ ('alt="Хустка KRAЇNA EDEM × OBIIMY «Trypillia — The Art of Origins», 88 × 88"', 'alt="The KRAЇNA EDEM × OBIIMY scarf “Trypillia — The Art of Origins”, 88 × 88"'),
+ ("Роздивитися хустку", "See the scarf"), ("Гортайте<i>", "Scroll<i>"),
+ ("<b>100%</b> шовк", "<b>100%</b> silk"), ("<b>88 × 88</b> см", "<b>88 × 88</b> cm"), ("Обмежений наклад", "Limited run"), ("Підпис OBIIMY × Edem", "Signed OBIIMY × Edem"),
+ ("Є речі, які неможливо виміряти часом. <b>Пам’ять землі.</b> Символи, що пережили тисячоліття. Образи, які залишили нам давні покоління. І культурний код, який продовжує жити, навіть коли змінюються епохи.",
+  "Some things cannot be measured in time. <b>The memory of the land.</b> Symbols that have outlived millennia. Images left to us by distant generations. And a cultural code that lives on, even as the eras change."),
+ ("Хустка · 88 × 88 см", "The scarf · 88 × 88 cm"), ("Мистецьке полотно, яке можна носити", "An artwork you can wear"),
+ ("Хустка тут — більше, ніж аксесуар: мистецьке полотно, що поєднує сучасний дизайн із пам’яттю про давні культури.", "More than an accessory: an art canvas that joins contemporary design with the memory of ancient cultures."),
+ ('alt="Принт хустки «Trypillia — The Art of Origins» повністю"', 'alt="The full print of the “Trypillia — The Art of Origins” scarf"'),
+ ("Наведіть курсор — лупа покаже деталі принту", "Move the cursor over the print — the loupe shows the details"),
+ ("<span>Розмір</span><b>88 × 88 см</b>", "<span>Size</span><b>88 × 88 cm</b>"), ("<span>Матеріал</span><b>100% натуральний шовк</b>", "<span>Material</span><b>100% natural silk</b>"),
+ ("<span>Принт</span><b>Авторський, спільний для двох брендів</b>", "<span>Print</span><b>Original, created jointly by the two brands</b>"), ("<span>Підпис</span><b>OBIIMY × Edem на полотні</b>", "<span>Signature</span><b>OBIIMY × Edem on the canvas</b>"),
+ ("<span>Наклад</span><b>Обмежений</b>", "<span>Edition</span><b>Limited</b>"), ("<span>Виготовлено</span><b>в Україні</b>", "<span>Made</span><b>in Ukraine</b>"),
+ ("· лімітований випуск. Доставка Новою поштою по Україні.", "· limited edition. Delivery by Nova Poshta across Ukraine, worldwide shipping at the carrier’s rates."),
+ (">Замовити хустку</a>", ">Order the scarf</a>"),
+ ('aria-label="Відео: хустка Trypillia — The Art of Origins"', 'aria-label="Video: the Trypillia — The Art of Origins scarf"'),
+ ('data-on="Увімкнути звук" data-off="Вимкнути звук">Увімкнути звук<', 'data-on="Sound on" data-off="Sound off">Sound on<'),
+ ("<p class=\"eyebrow\">Відео</p><h2>Хустка наживо</h2>", "<p class=\"eyebrow\">Film</p><h2>The scarf in motion</h2>"),
+ ("Шовк у русі: «Trypillia — The Art of Origins» на пленері — у руках, на плечах, у світлі дня.", "Silk in motion: “Trypillia — The Art of Origins” outdoors — in the hands, on the shoulders, in daylight."),
+ ("Історія, що живе в нас", "A history that lives in us"), ("Наше коріння сягає глибини тисячоліть", "Our roots reach back millennia"),
+ ("Задовго до сучасних кордонів і держав на землях нинішньої України розвивалися давні культури, які залишили по собі унікальну мистецьку спадщину. Особливе місце серед них посідає трипільська культура — одна з найяскравіших археологічних культур давньої Європи, що існувала впродовж VI–IV тисячоліть до нашої ери.",
+  "Long before today’s borders and states, ancient cultures flourished on the lands of present-day Ukraine and left behind a unique artistic heritage. A special place among them belongs to the Trypillian culture — one of the most striking archaeological cultures of ancient Europe, which existed through the 6th–4th millennia BCE."),
+ ("Сьогодні ці стародавні знаки набувають нового звучання. Ми не можемо повернути час, але можемо зберегти пам’ять про тих, хто жив до нас, — відкрити для себе їхнє мистецтво й відчути зв’язок із землею, її історією та культурними витоками.",
+  "Today these ancient signs take on a new resonance. We cannot turn back time, but we can keep the memory of those who lived before us — discover their art and feel a bond with the land, its history and its cultural origins."),
+ ('alt="Трипільська фігурка — елемент принту"', 'alt="A Trypillian figurine — an element of the print"'),
+ ("Символи хустки", "The symbols of the scarf"), ("Кожна деталь має значення", "Every detail has meaning"),
+ ("Давні орнаментальні мотиви й символічні образи — переосмислені мовою сучасного дизайну, у золоті й глибокому синьому.", "Ancient ornamental motifs and symbolic images, reinterpreted in the language of contemporary design — in gold and deep blue."),
+ ("Пластика</h3><p>Жіноча фігурка зі спіральним орнаментом — образ трипільської пластики, який чотири рази повторюється на полотні хустки.", "The figurine</h3><p>A female figurine with a spiral ornament — an image of Trypillian clay sculpture, repeated four times across the canvas of the scarf."),
+ ('alt="Золота жіноча фігурка зі спіралями — трипільська пластика в принті"', 'alt="A golden female figurine with spirals — Trypillian sculpture in the print"'),
+ ("Медальйон</h3><p>Центр композиції — спіраль у колі. У спіралях трипільського орнаменту дослідники вбачають плин часу, відродження та циклічність життя.", "The medallion</h3><p>At the centre of the composition is a spiral within a circle. In the spirals of Trypillian ornament, researchers see the flow of time, rebirth and the cycle of life."),
+ ('alt="Центральний медальйон принту: спіраль у золоті й синьому"', 'alt="The central medallion of the print: a spiral in gold and blue"'),
+ ("Підвіски</h3><p>Круглі золоті підвіски на плетених синіх шнурах оточують медальйон — вісім, по дві з кожного боку.", "The pendants</h3><p>Round golden pendants on braided blue cords surround the medallion — eight of them, two on each side."),
+ ('alt="Кругла золота підвіска з двома спіралями"', 'alt="A round golden pendant with two spirals"'),
+ ("Ромби</h3><p>Чотири ромбовидні підвіски тримають композицію по діагоналях і замикають її в раму.", "The diamonds</h3><p>Four diamond-shaped pendants hold the composition along the diagonals and close it into a frame."),
+ ('alt="Ромбовидна золота підвіска з орнаментом"', 'alt="A diamond-shaped golden pendant with ornament"'),
+ ("<p class=\"eyebrow\">Партнери</p><h2>Два бренди. Одна філософія. Спільне мистецтво.</h2>", "<p class=\"eyebrow\">Partners</p><h2>Two brands. One philosophy. Shared art.</h2>"),
+ ("<p class=\"eyebrow\">Партнер</p>", "<p class=\"eyebrow\">Partner</p>"), ("<p class=\"eyebrow\">Бренд</p>", "<p class=\"eyebrow\">Brand</p>"),
+ ("Збереження й популяризація української культурної спадщини вже багато років є невід’ємною частиною філософії KRAЇNA EDEM — через культурні ініціативи, мистецькі проєкти та простори, присвячені творчості.",
+  "For many years, preserving and promoting Ukrainian cultural heritage has been an integral part of the KRAЇNA EDEM philosophy — through cultural initiatives, art projects and spaces devoted to creativity."),
+ ("Park3020 — парк сучасної української скульптури, де мистецтво взаємодіє з природою", "Park3020 — a park of contemporary Ukrainian sculpture, where art interacts with nature"),
+ ("Підтримка українських митців і популяризація сучасного мистецтва", "Support for Ukrainian artists and the promotion of contemporary art"),
+ ("Український бренд шовкових хусток і аксесуарів з авторськими принтами. Засновниця й художниця — Світлана Сніжко: перші колекції виросли з її картин.", "A Ukrainian brand of silk scarves and accessories with original prints. Its founder and artist is Svitlana Snizhko: the first collections grew out of her paintings."),
+ ("100% натуральний шовк, ручна обробка краю", "100% natural silk, hand-finished edges"), ("Авторські принти, виготовлено в Україні", "Original prints, made in Ukraine"),
+ ("Шоурум: Київ, вул. Петра Сагайдачного, 12", "Showroom: Kyiv, 12 Petra Sahaidachnoho St."),
+ ("<p class=\"eyebrow\">Замовлення</p><h2>Замовити хустку</h2>", "<p class=\"eyebrow\">Order</p><h2>Order the scarf</h2>"),
+ ("Залиште контакти й відділення Нової пошти: ми підтвердимо замовлення, надішлемо посилання на оплату карткою й відправимо хустку після оплати.", "Leave your contacts and delivery details: we will confirm the order, send you a link to pay by card and ship the scarf once it is paid."),
+ ("Хустка «Trypillia — The Art of Origins» —", "The “Trypillia — The Art of Origins” scarf —"),
+ ("Питання: <a", "Questions: <a"),
+]
+ORDER_STEPS_EN = [("Order", "Your name, phone, city and a Nova Poshta branch or a delivery address."),
+                  ("Confirmation and payment", "Our manager will get in touch, confirm the order and send you a personal link to pay by card."),
+                  ("Delivery", "Once paid — confirmation and shipping: by Nova Poshta across Ukraine, worldwide at the carrier’s rates.")]
+
+def english(body):
+    for a, b in EN:
+        assert a in body, a[:70]; body = body.replace(a, b)
+    body = body.replace(f"<b>{PRICE_T}</b>", f"<b>{PRICE_EN}</b>").replace(f"— {PRICE_T}", f"— {PRICE_EN}").replace(f"<b>{PRICE_T.rsplit(chr(160), 1)[0]}</b> грн", f"<b>{PRICE_EN.split()[0]}</b> UAH")
+    body = body.replace("Замовити — " + PRICE_EN, "Order — " + PRICE_EN)
+    left = re.findall(r"[А-Яа-яЄєІіҐґ]+|(?<![Kk][Rr][Aa])[Її]", body)
+    assert not left, left[:20]
+    return body
+
+def main(light=False, lang="uk"):
     rnd = random.Random(7)
     dust = "".join(f'<i style="left:{rnd.uniform(0, 100):.1f}%;animation-duration:{rnd.uniform(9, 22):.1f}s;animation-delay:-{rnd.uniform(0, 22):.1f}s;width:{rnd.choice([2, 2, 3, 4])}px;height:{rnd.choice([2, 2, 3, 4])}px"></i>' for _ in range(42))
     body = f'''
 <main id="top">
 <section class="hero" id="hero">
-  <div class="top"><div class="logos"><img src="brand/{"logo-ink" if light else "logo-white"}.svg" alt="OBIIMY" width="1200" height="255"><span class="x">×</span><img class="edem" src="brand/{"edem-mark" if light else "edem-mark-white"}.png" alt="Kraїna Edem" width="340" height="338"></div><span>Лімітований випуск · 2026</span></div>
+  <div class="top"><div class="logos"><img src="brand/{"logo-ink" if light else "logo-white"}.svg" alt="OBIIMY" width="1200" height="255"><span class="x">×</span><img class="edem" src="brand/{"edem-mark" if light else "edem-mark-white"}.png" alt="Kraїna Edem" width="340" height="338"></div><div class="right"><span>Лімітований випуск · 2026</span>{'<a class="lang" href="edem-motion-light" hreflang="uk" lang="uk">UA</a>' if lang == "en" else '<a class="lang" href="edem-motion-light-en" hreflang="en" lang="en">EN</a>'}</div></div>
   <div class="dust" aria-hidden="true">{dust}</div>
   <div class="scene" aria-hidden="true">
     <div class="layer l-mandala" data-depth=".12">{img("photo/edem/mandala.webp", "", sizes="1300px")}</div>
@@ -256,7 +340,7 @@ def main(light=False):
 </div></section>
 
 <section class="s" id="film"><div class="wrap"><div class="film">
-  <div class="rv"><div class="vid"><video id="film-v" playsinline muted loop preload="metadata" poster="photo/edem/video-poster.jpg" aria-label="Відео: хустка Trypillia — The Art of Origins"><source src="photo/edem/edem-video.mp4" type="video/mp4"></video><button class="snd" id="film-snd" type="button" aria-pressed="false">Увімкнути звук</button></div></div>
+  <div class="rv"><div class="vid"><video id="film-v" playsinline muted loop preload="metadata" poster="photo/edem/video-poster.jpg" aria-label="Відео: хустка Trypillia — The Art of Origins"><source src="photo/edem/edem-video.mp4" type="video/mp4"></video><button class="snd" id="film-snd" type="button" aria-pressed="false" data-on="Увімкнути звук" data-off="Вимкнути звук">Увімкнути звук</button></div></div>
   <div class="rv"><p class="eyebrow">Відео</p><h2>Хустка наживо</h2><p class="lead">Шовк у русі: «Trypillia — The Art of Origins» на пленері — у руках, на плечах, у світлі дня.</p>
     <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Підпис OBIIMY × Edem</span></div>
     <p style="margin-top:30px"><a class="btn btn-main" href="#order">Замовити — {PRICE_T}</a></p></div>
@@ -285,16 +369,23 @@ def main(light=False):
 
 <section class="reg" id="order"><div class="px bg" data-speed="-50" aria-hidden="true">{img("photo/edem/mandala.webp", "", sizes="520px")}</div><div class="wrap">
   <div class="rv"><p class="eyebrow">Замовлення</p><h2>Замовити хустку</h2><p class="lead">Хустка «Trypillia — The Art of Origins» — {PRICE_T}. Залиште контакти й відділення Нової пошти: ми підтвердимо замовлення, надішлемо посилання на оплату карткою й відправимо хустку після оплати.</p>
-    <div class="steps">{"".join(f"<div><i>0{i + 1}</i><div><h3>{t}</h3><p>{d}</p></div></div>" for i, (t, d) in enumerate(ORDER_STEPS))}</div>
+    <div class="steps">{"".join(f"<div><i>0{i + 1}</i><div><h3>{t}</h3><p>{d}</p></div></div>" for i, (t, d) in enumerate(ORDER_STEPS_EN if lang == "en" else ORDER_STEPS))}</div>
     <div class="contacts">Питання: <a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}" target="_blank" rel="noopener">Telegram</a></div></div>
-  <div class="rv panel">{order_form()}</div>
+  <div class="rv panel">{order_form(lang)}</div>
 </div></section>
 <footer><span>Kraїna Edem × Obiimy · Trypillia — The Art of Origins · 2026</span><span><a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a></span></footer>
 </main>'''
-    write("edem-motion-light" if light else "edem-motion", (light_css() if light else CSS) + FORM_CSS, body, JS.replace("PRICE *", f"{PRICE} *"),
-          url=EDEM_URL, index=light, desc=f"Шовкова хустка KRAЇNA EDEM × OBIIMY «Trypillia — The Art of Origins», 88 × 88 см, за трипільськими мотивами — лімітований випуск, {PRICE_T}. Замовлення онлайн, доставка Новою поштою.")
-    if light:  # the light version is shown to the partner on its own: no variants bar (client, 04.11)
-        p = ROOT / "edem-motion-light.html"; h = p.read_text(); i = h.index('<nav class="vbar"'); j = h.index("</style>", i) + len("</style>"); p.write_text(h[:i] + h[j:])
+    alts = f'\n<link rel="alternate" hreflang="uk" href="{EDEM_URL}"><link rel="alternate" hreflang="en" href="{EDEM_URL}en"><link rel="alternate" hreflang="x-default" href="{EDEM_URL}">'
+    if lang == "en":
+        slug = "edem-motion-light-en"
+        write(slug, light_css() + FORM_CSS, english(body), JS.replace("PRICE *", f"{PRICE} *"), url=EDEM_URL + "en", index=True, lang="en", extra=alts,
+              desc=f"A silk scarf by KRAЇNA EDEM × OBIIMY, “Trypillia — The Art of Origins”: 88 × 88 cm, inspired by Trypillian motifs — a limited edition, {PRICE_EN}. Order online; delivery by Nova Poshta across Ukraine and worldwide.")
+    else:
+        slug = "edem-motion-light" if light else "edem-motion"
+        write(slug, (light_css() if light else CSS) + FORM_CSS, body, JS.replace("PRICE *", f"{PRICE} *"), url=EDEM_URL, index=light, extra=alts if light else "",
+              desc=f"Шовкова хустка KRAЇNA EDEM × OBIIMY «Trypillia — The Art of Origins», 88 × 88 см, за трипільськими мотивами — лімітований випуск, {PRICE_T}. Замовлення онлайн, доставка Новою поштою.")
+    if light:  # the light versions are shown to the partner on their own: no variants bar (client, 04.11)
+        p = ROOT / f"{slug}.html"; h = p.read_text(); i = h.index('<nav class="vbar"'); j = h.index("</style>", i) + len("</style>"); p.write_text(h[:i] + h[j:])
 
 if __name__ == "__main__":
-    main(); main(light=True)
+    main(); main(light=True); main(light=True, lang="en")

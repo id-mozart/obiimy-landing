@@ -1,3 +1,4 @@
+<html lang="uk">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>KRAЇNA EDEM × OBIIMY — Trypillia: The Art of Origins</title>
@@ -141,12 +142,13 @@ form.f .err { color: #C0392B; font-size: 13px; display: none; } form.f label.bad
     e.preventDefault(); var bad = null;
     req.forEach(function (el) { var lab = el.closest('label'), ok = valid(el.name, el.value.trim()); lab.classList.toggle('bad', !ok); el.setAttribute('aria-invalid', ok ? 'false' : 'true'); if (!ok && !bad) bad = el; });
     if (bad) { bad.focus(); return; }
-    var data = { page: location.href, kind: f.getAttribute('data-kind') || 'register' }, lines = [f.getAttribute('data-title') || 'Ранній доступ · Trypillia — The Art of Origins'];
+    var S = function (k, d) { return f.getAttribute('data-' + k) || d; };
+    var data = { page: location.href, kind: S('kind', 'register') }, lines = [S('title', 'Ранній доступ · Trypillia — The Art of Origins')];
     [].forEach.call(f.elements, function (el) { if (!el.name || el.type === 'submit' || ((el.type === 'radio' || el.type === 'checkbox') && !el.checked)) return; data[el.name] = el.value.trim(); if (data[el.name]) lines.push(label(el) + ': ' + data[el.name]); });
-    if (f.getAttribute('data-total')) { data.total = f.getAttribute('data-total'); lines.push('Разом: ' + data.total); }
-    var btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = 'Надсилаємо…';
+    if (f.getAttribute('data-total')) { data.total = f.getAttribute('data-total'); lines.push(S('total-label', 'Разом') + ': ' + data.total); }
+    var btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = S('sending', 'Надсилаємо…');
     tg.href = 'https://t.me/OBIIMY_sales?text=' + encodeURIComponent(lines.join('\n'));
-    function finish(ok) { if (!ok) { var o = f.getAttribute('data-kind') === 'order'; document.getElementById('done-h').textContent = (o ? 'Замовлення' : 'Заявку') + ' не надіслано'; document.getElementById('done-p').textContent = 'Не вдалося надіслати ' + (o ? 'замовлення' : 'заявку') + ' автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.'; } f.hidden = true; done.hidden = false; var h = document.getElementById('done-h'); h.setAttribute('tabindex', '-1'); h.focus(); }
+    function finish(ok) { if (!ok) { var o = data.kind === 'order'; document.getElementById('done-h').textContent = S('fail-h', (o ? 'Замовлення' : 'Заявку') + ' не надіслано'); document.getElementById('done-p').textContent = S('fail-p', 'Не вдалося надіслати ' + (o ? 'замовлення' : 'заявку') + ' автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.'); } f.hidden = true; done.hidden = false; var h = document.getElementById('done-h'); h.setAttribute('tabindex', '-1'); h.focus(); }
     fetch(API + '/api/edem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(function (r) { return r.json(); }).then(function (j) { if (!j.ok) throw new Error('x'); finish(true); }).catch(function () { finish(false); });
   });
   req.forEach(function (el) { el.addEventListener('input', function () { this.closest('label').classList.remove('bad'); this.removeAttribute('aria-invalid'); }); });

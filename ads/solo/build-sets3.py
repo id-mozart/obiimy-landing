@@ -104,8 +104,9 @@ def simple(id, photo, pos, big, product, note="", white=False, zoom=1.0, ar=1.0,
         body = f"""
   <div style="inset:0;background:{WHITE}"></div>
   {header(dark=False)}
-  <div class="ink" style="left:64px;right:64px;top:{Y0}px"><p class="kicker" style="font-size:{int(24 * K)}px">{kicker}</p><p class="big" style="font-size:{size}px;margin-top:{int(10 * K)}px">{nbh(big)}</p></div>
+  <div class="ink" style="left:64px;right:64px;top:{Y0}px;z-index:5"><p class="kicker" style="font-size:{int(24 * K)}px">{kicker}</p><p class="big" style="font-size:{size}px;margin-top:{int(10 * K)}px">{nbh(big)}</p></div>
   <div class="ph mult" style="left:{px}px;top:{top}px;width:{ph_w}px;height:{ph_h}px"><img src="{PH}{photo}.jpg" alt="" style="object-position:{pos};transform:scale({zoom})"></div>
+  <div style="inset:0;background:#F2EADC;mix-blend-mode:multiply;z-index:2"></div>
   {plate(*product, dark=False)}"""
     else:
         band = BOTB + ROW + int(150 * K)
@@ -138,7 +139,7 @@ simple("p05-three-twilly-13", "set-3-shovkovykh-tvilli-13", "50% 50%", "Набі
 simple("p06-melodiia", "set-maska-zakladka-rezynka-melodiia-01", "50% 50%", "Набір «Мелодія двох»", ("Маска, закладка для книги, резинка", "4 080 грн"), "white packshot", white=True, zoom=1.1)
 simple("p07-hearts", "set-masok-dlia-snu-sertsebyttia-chervo-01", "50% 50%", "Набір масок «Серцебиття»", ("Дві маски для сну: червона та чорна", "4 200 грн"), "white packshot, portrait", white=True, ar=1250 / 1500)
 simple("p08-sun-sleep", "set-ta-rezynka-litnie-pole-04", "50% 50%", "Набір для сну «Літнє поле»", ("Маска для сну + резинка", "3 280 грн"), "sunlit flat-lay, bleed")
-simple("p09-nizhnist", "set-tvilli-845-ta-khustky-4444-nizhnis-01", "50% 50%", "Твіллі + хустка «Ніжність»", ("Твіллі 84 × 5 + хустка 44 × 44", "3 100 грн"), "the blue box, whole", fit=True, zoom=1.15)
+simple("p09-nizhnist", "set-tvilli-845-ta-khustky-4444-nizhnis-01", "50% 50%", "Твіллі + хустка «Ніжність»", ("Твіллі + хустка 44 × 44, двосторонній друк", "4 080 грн"), "the blue box, whole", fit=True, zoom=1.15)
 simple("p10-three-twilly-03", "set-3-shovkovykh-tvilli-03", "50% 50%", "Набір із трьох твіллі", ("Три твіллі 84 × 5, принти на вибір", "4 650 грн"), "three twillies in the box, whole", fit=True, zoom=1.15)
 simple("p11-makiv", "tvilli-ta-rezynka-makovyi-tsvit-01", "50% 50%", "Твіллі + резинка «Маків цвіт»", ("Твіллі + резинка, у коробці", "2 200 грн"), "white packshot", white=True, zoom=1.08)
 simple("p12-sun-svoboda", "maska-dlia-snu-ta-rezynka-svoboda-03", "50% 50%", "Набір для сну «Свобода»", ("Маска для сну + резинка", "3 280 грн"), "sunlit, bleed")

@@ -297,7 +297,7 @@ split("n12-kravatka", "set-prystrast-02", "50% 12%", INK, True, "set-prystrast-0
 
 mosaic("n13-all-sets", [("set-smilyvist-01", "50% 50%", "Твіллі + резинка", "2 200 грн"),
                         ("set-tvilli-845-ta-khustky-4444-natkhne-01", "50% 50%", "Твіллі + хустка 44 × 44", "3 100 грн"),
-                        ("set-tvilli-845-ta-khustky-4444-nizhnis-01", "50% 50%", "Твіллі + хустка «Ніжність»", "3 100 грн"),
+                        ("set-tvilli-845-ta-khustky-4444-nizhnis-01", "50% 50%", "Твіллі + хустка «Ніжність», 2D", "4 080 грн"),
                         ("set-maska-rezynka-10-01", "50% 50%", "Набір для сну", "3 280 грн"),
                         ("set-masok-dlia-snu-sertsebyttia-chervo-01", "50% 50%", "Маски «Серцебиття»", "4 200 грн"),
                         ("set-maska-zakladka-rezynka-melodiia-01", "50% 50%", "Маска, закладка, резинка", "4 080 грн"),

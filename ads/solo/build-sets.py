@@ -53,7 +53,8 @@ def header(dark=True):
 def plate(title, price, cut=None, dark=True, cta="Обрати набір"):
     """The product row at the bottom: a cut-out, the set's name, the retail price; the yellow button to the right."""
     th = int(120 * K)
-    thumb = f'<img src="{CUT}{cut}.webp" alt="" style="height:{th}px;width:auto;max-width:{int(th * 1.3)}px;object-fit:contain;flex:none;filter:drop-shadow(0 8px 12px rgba(0,0,0,.4))">' if cut else ""
+    cut = None      # 05.11: no cut-out thumbnails — the client found the cut-outs rough; the row keeps the name and the price
+    thumb = ""
     bg, bd, fg = ("rgba(243,234,219,.1)", "1.5px solid rgba(243,234,219,.3)", "#F3EADB") if dark else ("rgba(27,22,19,.06)", "1.5px solid rgba(27,22,19,.18)", "#1B1613")
     return f'''
   <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:{int(24 * K)}px">

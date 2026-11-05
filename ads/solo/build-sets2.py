@@ -36,7 +36,7 @@ body { margin: 0; background: #555; font-family: 'Onest', Arial, sans-serif; -we
 .ph { overflow: hidden; } .ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .fit img { object-fit: contain; }
 .mult img { mix-blend-mode: multiply; }   /* a white packshot on the white field: its edges vanish */
-.big { font-family: 'Montserrat', sans-serif; font-weight: 400; font-style: normal; line-height: 1.08; letter-spacing: 0; text-wrap: balance; }   /* 05.11: the brand's light grotesque instead of the heavy italic */
+.big { font-family: 'Montserrat', sans-serif; font-weight: 500; font-style: normal; line-height: 1.08; letter-spacing: 0; text-wrap: balance; }   /* 05.11: the brand's light grotesque instead of the heavy italic */
 .small { font-family: 'EB Garamond', 'Cormorant Garamond', serif; font-weight: 500; line-height: 1.16; text-wrap: pretty; }
 .kicker { font-family: 'Montserrat', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: .18em; color: #E0B040; white-space: nowrap; }
 .hdr { font-family: Montserrat, sans-serif; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; }
@@ -525,7 +525,7 @@ stack2("m12-box-then-hair", "set-smilyvist-01", "50% 50%", "set-smilyvist-02", "
        ("Твіллі + резинка «Сміливість»", "2 200 грн"), "packshot above, worn below, a yellow band between")
 
 
-def _lighter(html, k=.92):
+def _lighter(html, k=1.0):
     """Montserrat Light runs wider than the italic serif it replaced: every headline keeps its layout at a smaller size."""
     import re
     return re.sub(r'(class="big"[^>]*?font-size:)(\d+)px', lambda m: m.group(1) + str(int(int(m.group(2)) * k)) + "px", html)

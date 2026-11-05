@@ -26,7 +26,7 @@ body { margin: 0; background: #555; font-family: 'Onest', Arial, sans-serif; -we
 .band img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .band .veil { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(12,9,8,.9) 0%, rgba(12,9,8,.66) 42%, rgba(12,9,8,0) 76%); }
 .band .txt { position: absolute; left: 64px; top: 50%; transform: translateY(-50%); width: 620px; }
-.big { font-family: 'Montserrat', sans-serif; font-weight: 400; font-style: normal; line-height: 1.08; letter-spacing: 0; text-wrap: balance; }   /* 05.11: the brand's light grotesque instead of the heavy italic */
+.big { font-family: 'Montserrat', sans-serif; font-weight: 500; font-style: normal; line-height: 1.08; letter-spacing: 0; text-wrap: balance; }   /* 05.11: the brand's light grotesque instead of the heavy italic */
 .small { font-family: 'EB Garamond', 'Cormorant Garamond', serif; font-weight: 500; font-size: 40px; line-height: 1.14; margin-top: 26px; text-wrap: pretty; text-shadow: 0 1px 10px rgba(0,0,0,.55); }
 .kicker { font-family: 'Montserrat', sans-serif; font-weight: 500; text-transform: uppercase; letter-spacing: .18em; font-size: 28px; color: #E0B040; white-space: nowrap; }
 .tag { display: inline-block; margin-top: 16px; font-family: 'Onest'; font-weight: 600; font-size: 28px; letter-spacing: .04em; padding: 10px 20px; border-radius: 999px; background: rgba(243,234,219,.16); border: 1.5px solid rgba(243,234,219,.4); }
@@ -454,7 +454,7 @@ triptych("g06-twilly-gift", "Твіллі в подарунок", [
 ], "Твіллі в подарунок — підпишемо вашими словами.", (["iskra-tw-4"], "Шовкова твіллі SOLO", "1 600 грн"), "Подарувати", "Twilly as a gift")
 
 
-def _lighter(html, k=.92):
+def _lighter(html, k=1.0):
     """Montserrat Light runs wider than the italic serif it replaced: every headline keeps its layout at a smaller size."""
     import re
     return re.sub(r'(class="big"[^>]*?font-size:)(\d+)px', lambda m: m.group(1) + str(int(int(m.group(2)) * k)) + "px", html)

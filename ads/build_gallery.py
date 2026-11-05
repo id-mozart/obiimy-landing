@@ -43,7 +43,7 @@ def build(site: pathlib.Path):
     keep_file = ROOT / "ads" / "keep.txt"
     keep = [l.strip() for l in keep_file.read_text().splitlines() if l.strip() and not l.startswith("#")] if keep_file.exists() else []
     keep_set = set(keep)
-    HOME = {"out4": "solo-main", "out5": "solo-yellow", "out6": "solo-tri", "out7": "solo-tri-y", "out8": "solo-one", "out9": "solo-orig", "out-sets": "sets", "out-sets2": "sets2", "out-sets3": "sets3", "out-sets4": "sets4"}
+    HOME = {"out4": "solo-main", "out5": "solo-yellow", "out6": "solo-tri", "out7": "solo-tri-y", "out8": "solo-one", "out9": "solo-orig", "out-sets": "sets", "out-sets2": "sets2", "out-sets3": "sets3", "out-sets4": "sets4", "out-sets5": "sets5"}
     def add(title, desc, files, series):
         cards = []
         for f in files:
@@ -86,6 +86,8 @@ def build(site: pathlib.Path):
     gifts = ([f for f in tri if f.name[0] == "g"] + sorted((ROOT / "ads/solo/out8").glob("g*.jpg")) + pick(tri, gift_names)
              + pick(classic, ["p09", "u06"]))
     gifts_y = [f for f in tri_y if f.name[0] == "g"] + pick(tri_y, gift_names) + pick(yellow, ["p09", "u06"])
+    sets5 = sorted((ROOT / "ads/solo/out-sets5").glob("*.jpg"))
+    add("Подарункові набори · темний hero, набір цілком (05.11)", "Шістнадцять банерів у манері серії 26.10 — фото до країв, темна вуаль, великий заголовок, — але набір видно цілком: кадр заповнює розмита й затемнена копія того самого фото, а різкий знімок лежить поверх на всю ширину з розтушованими краями.", sets5, "sets5")
     sets4 = sorted((ROOT / "ads/solo/out-sets4").glob("*.jpg"))
     add("Подарункові набори · цілий набір (05.11)", "Двадцять вісім банерів, де набір видно цілком: одне фото з obiimy.world якнайбільше, поле банера пофарбоване в колір країв самого фото, краї знімка розтушовані — жодного прямокутника з тінню; логотип, один рядок назви й плашка з ціною.", sets4, "sets4")
     sets3 = sorted((ROOT / "ads/solo/out-sets3").glob("*.jpg"))
@@ -418,7 +420,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
     if n_keep:
         body_html, n = flat(lambda i: i in keep_set); toc_html = ""
         # the newest series sits above the selection on the main page (not in the archive) until the client has sorted it
-        NEW = ("sets4/", "sets3/", "sets2/")      # the 26.10 series (cut-outs, veils, cards with shadows) is in the archive since 05.11
+        NEW = ("sets5/", "sets4/", "sets3/", "sets2/")      # the 26.10 series (cut-outs, veils, cards with shadows) is in the archive since 05.11
         new_html = ""
         for g in groups:
             if g["cards"] and g["cards"][0][0].startswith(NEW):

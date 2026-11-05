@@ -16,7 +16,7 @@ def nbh(text):
 FORMAT = os.environ.get("FORMAT", "plain")   # plain | story | feed | square
 H = {"feed": 1350, "square": 1080}.get(FORMAT, 1920)
 K = .72 if FORMAT == "square" else (.86 if FORMAT == "feed" else 1)
-SHORT = FORMAT != "plain"                     # less room for words below the picture
+SHORT = FORMAT in ("feed", "square")          # the short frames; a story is as tall as the banner, only its safe zones differ
 TOPL = 250 if FORMAT == "story" else 58
 BOTB = 340 if FORMAT == "story" else 60
 ROW = int(170 * K)                            # the product row

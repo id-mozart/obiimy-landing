@@ -67,7 +67,7 @@ def plate(title, price, cta="Обрати набір", dark=True, ink_cta=False)
   <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:{int(24 * K)}px;z-index:6">
     <div class="plate" style="padding:{int(14 * K)}px {int(28 * K)}px;background:{bg};border:{bd};color:{fg}">
       <div style="min-width:0"><p class="nm" style="font-size:{int(27 * K)}px">{nb(title)}</p><p class="pr" style="font-size:{int(44 * K)}px">{price}</p></div></div>
-    <div class="cta" style="font-size:{int(32 * K)}px;padding:{int(26 * K)}px {int(44 * K)}px;{"background:#141110;color:#F3EADB" if ink_cta else ""}">{cta}</div>
+    <div class="cta" style="font-size:{int(40 * K)}px;padding:{int(32 * K)}px {int(58 * K)}px;{"background:#141110;color:#F3EADB" if ink_cta else ""}">{cta}</div>
   </div>'''
 
 def words(kicker, big, small, size, ink=False, width=None):
@@ -150,7 +150,7 @@ def fan(id, cards, kicker, big, foot, cta, note="", bg=INK, dark=True):
     body += f'''
   <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:6">
     <p class="small" style="font-size:{int(34 * K)}px;color:{"#CFC4B2" if dark else "#4B423B"}">{nb(foot)}</p>
-    <div class="cta" style="font-size:{int(32 * K)}px;padding:{int(26 * K)}px {int(44 * K)}px">{cta}</div></div>'''
+    <div class="cta" style="font-size:{int(40 * K)}px;padding:{int(32 * K)}px {int(58 * K)}px">{cta}</div></div>'''
     ad(id, body, note)
 
 def split(id, life, life_pos, side_bg, dark_side, piece_photo, piece_pos, kicker, big, small, product, note="", size=84, piece_w=440, piece_rot=-5):
@@ -188,7 +188,7 @@ def mosaic(id, cells, kicker, big, foot, cta, note=""):
     body += f'''
   <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:6">
     <p class="small ink" style="font-size:{int(34 * K)}px;color:#4B423B">{nb(foot)}</p>
-    <div class="cta" style="font-size:{int(32 * K)}px;padding:{int(26 * K)}px {int(44 * K)}px">{cta}</div></div>'''
+    <div class="cta" style="font-size:{int(40 * K)}px;padding:{int(32 * K)}px {int(58 * K)}px">{cta}</div></div>'''
     ad(id, body, note)
 
 def strip3(id, photos, kicker, big, small, product, note="", size=84):
@@ -390,7 +390,7 @@ def pair(id, cols, kicker, big, foot, cta, note=""):
     body += f"""
   <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:6">
     <p class="small" style="font-size:{int(34 * K)}px;color:#CFC4B2">{nb(foot)}</p>
-    <div class="cta" style="font-size:{int(32 * K)}px;padding:{int(26 * K)}px {int(44 * K)}px">{cta}</div></div>"""
+    <div class="cta" style="font-size:{int(40 * K)}px;padding:{int(32 * K)}px {int(58 * K)}px">{cta}</div></div>"""
     ad(id, body, note)
 
 def steps(id, items, kicker, big, foot, cta, note=""):
@@ -411,7 +411,7 @@ def steps(id, items, kicker, big, foot, cta, note=""):
     body += f"""
   <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:6">
     <p class="small ink" style="font-size:{int(34 * K)}px;color:#4B423B">{nb(foot)}</p>
-    <div class="cta" style="font-size:{int(32 * K)}px;padding:{int(26 * K)}px {int(44 * K)}px">{cta}</div></div>"""
+    <div class="cta" style="font-size:{int(40 * K)}px;padding:{int(32 * K)}px {int(58 * K)}px">{cta}</div></div>"""
     ad(id, body, note)
 
 def tag(id, photo, pos, price, kicker, big, small, product, note=""):
@@ -456,7 +456,7 @@ def occasions(id, cards, kicker, big, foot, cta, note=""):
     body += f"""
   <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:6">
     <p class="small ink" style="font-size:{int(34 * K)}px;color:#4B423B">{nb(foot)}</p>
-    <div class="cta" style="font-size:{int(32 * K)}px;padding:{int(26 * K)}px {int(44 * K)}px">{cta}</div></div>"""
+    <div class="cta" style="font-size:{int(40 * K)}px;padding:{int(32 * K)}px {int(58 * K)}px">{cta}</div></div>"""
     ad(id, body, note)
 
 def stack2(id, pack, pack_pos, life, life_pos, kicker, big, product, note=""):

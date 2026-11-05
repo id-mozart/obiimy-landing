@@ -60,7 +60,7 @@ def plate(title, price, cut=None, dark=True, cta="Обрати набір"):
   <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:{int(24 * K)}px">
     <div class="plate" style="gap:{int(20 * K)}px;padding:{int(12 * K)}px {int(28 * K)}px {int(12 * K)}px {int(14 * K) if cut else int(28 * K)}px;background:{bg};border:{bd};color:{fg}">{thumb}
       <div style="min-width:0"><p class="nm" style="font-size:{int(27 * K)}px">{nb(title)}</p><p class="pr" style="font-size:{int(44 * K)}px">{price}</p></div></div>
-    <div class="cta" style="font-size:{int(32 * K)}px;padding:{int(26 * K)}px {int(44 * K)}px">{cta}</div>
+    <div class="cta" style="font-size:{int(40 * K)}px;padding:{int(32 * K)}px {int(58 * K)}px">{cta}</div>
   </div>'''
 
 def hero(id, photo, pos, kicker, big, small, product, note="", size=112, focus=None, dark_top=True):
@@ -121,7 +121,7 @@ def grid(id, kicker, big, tiles, cta, note=""):
   {cells}
   <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:24px">
     <p class="small" style="font-size:{int(34 * K)}px;color:#CFC4B2">{nb("Усі набори — у фірмовій коробці Obiimy.")}</p>
-    <div class="cta" style="font-size:{int(32 * K)}px;padding:{int(26 * K)}px {int(44 * K)}px">{cta}</div></div>'''
+    <div class="cta" style="font-size:{int(40 * K)}px;padding:{int(32 * K)}px {int(58 * K)}px">{cta}</div></div>'''
     ad(id, body, note)
 
 def ladder(id, kicker, big, bands, cta, note=""):
@@ -144,7 +144,7 @@ def ladder(id, kicker, big, bands, cta, note=""):
   {out}
   <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:24px">
     <p class="small" style="font-size:{int(34 * K)}px;color:#CFC4B2">{nb("Роздрібні ціни obiimy.world.")}</p>
-    <div class="cta" style="font-size:{int(32 * K)}px;padding:{int(26 * K)}px {int(44 * K)}px">{cta}</div></div>'''
+    <div class="cta" style="font-size:{int(40 * K)}px;padding:{int(32 * K)}px {int(58 * K)}px">{cta}</div></div>'''
     ad(id, body, note)
 
 # ─── the twelve ────────────────────────────────────────────────────────────────────────────────────────────────────────────

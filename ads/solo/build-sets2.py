@@ -318,6 +318,212 @@ row("n16-no-size", [("mask-litnie-pole-01", "50% 50%", "Маска для сну
     "Коли не знаєте розмір", "Подарунки без розміру.", "Кожна річ — у фірмовій коробці; набори з двох речей — від 2 200 грн.",
     ("Подарунки без розміру — від", "1 600 грн", "Обрати подарунок"), "four no-size gifts in a row")
 
+
+# ─── twelve more (05.11, «еще вариантов») ─────────────────────────────────────────────────────────────────────────────
+
+def label(id, photo, pos, kicker, big, small, product, note="", size=84, share=.68, bg=PAPER):
+    """A photograph to three edges and a paper label laid over its lower edge — the words on the label, the product row under it."""
+    if SHORT: share, size = share - .14, int(size * .86)     # short frames: a shallower photo, the label needs its lines
+    yph = int(H * share)
+    ly = yph - int(90 * K)
+    body = f"""
+  <div style="inset:0;background:{bg}"></div>
+  <div class="ph" style="left:0;right:0;top:0;height:{yph}px"><img src="{PH}{photo}.jpg" alt="" style="object-position:{pos}"></div>
+  <div style="left:0;right:0;top:0;height:{int(240 * K)}px;background:linear-gradient(180deg,rgba(12,9,8,.42),rgba(12,9,8,0))"></div>
+  {header()}
+  <div class="ink card" style="left:64px;right:64px;top:{ly}px;max-height:{Y1 - ly}px;overflow:hidden;padding:{int(40 * K)}px {int(44 * K)}px;background:{bg};z-index:4;box-shadow:0 30px 60px -24px rgba(20,12,6,.45)">{words(kicker, big, small, size, ink=True)}</div>
+  {ink_band()}
+  {plate(*product)}"""
+    ad(id, body, note)
+
+def circle(id, photo, pos, bg, dark, kicker, big, small, product, note="", size=92, zoom=1.0):
+    """A big round crop of the lifestyle frame on a colour field, the words beside it below."""
+    d = min(int(820 * K), Y1 - Y0 - int(300 * K)) if not SHORT else min(int(560 * K), Y1 - Y0 - int(40 * K))
+    cx = 1080 - 64 - d if SHORT else (1080 - d) // 2
+    cy = Y0 + (int(10 * K) if SHORT else 0)
+    tc = "" if dark else "ink"
+    if SHORT:
+        text = f'<div class="{tc}" style="left:64px;width:{cx - 64 - int(30 * K)}px;top:{Y0 + int(40 * K)}px;bottom:{H - Y1}px">{words(kicker, big, small, size, ink=not dark)}</div>'
+    else:
+        text = f'<div class="{tc}" style="left:64px;right:64px;top:{cy + d + int(44 * K)}px;bottom:{H - Y1}px">{words(kicker, big, small, size, ink=not dark)}</div>'
+    body = f"""
+  <div style="inset:0;background:{bg}"></div>
+  {header(dark)}
+  <div class="ph" style="left:{cx}px;top:{cy}px;width:{d}px;height:{d}px;border-radius:50%;box-shadow:0 40px 80px -30px rgba(20,12,6,.5)"><img src="{PH}{photo}.jpg" alt="" style="object-position:{pos};transform:scale({zoom})"></div>
+  {text}
+  {plate(*product, dark=dark, ink_cta=bg == YEL)}"""
+    ad(id, body, note)
+
+def polaroids(id, shots, kicker, big, product, note="", bg=PAPER):
+    """Four frames pinned at slight angles, two by two, each with a caption on the white margin — four ways to wear one gift."""
+    head_h = int((230 if SHORT else 190) * K); gap = int(26 * K)
+    gy = Y0 + head_h; gh = Y1 - gy
+    cw = (1080 - 128 - gap) // 2; frame = int(16 * K); capf = int(60 * K)
+    ch = min((gh - gap) // 2, cw + capf)
+    body = f"""
+  <div style="inset:0;background:{bg}"></div>
+  {header(dark=False)}
+  <div class="ink" style="left:64px;right:64px;top:{Y0}px"><p class="kicker" style="font-size:{int(26 * K)}px">{kicker}</p><p class="big" style="font-size:{int((66 if SHORT else 84) * K)}px;margin-top:{int(14 * K)}px">{nbh(big)}</p></div>"""
+    for i, (photo, pos, cap) in enumerate(shots):
+        x = 64 + (i % 2) * (cw + gap); y = gy + (gh - 2 * ch - gap) // 2 + (i // 2) * (ch + gap)
+        rot = (-3, 2.5, 2, -2.5)[i % 4]
+        body += f"""
+  <div class="card" style="left:{x}px;top:{y}px;width:{cw}px;height:{ch}px;padding:{frame}px {frame}px {capf}px;transform:rotate({rot}deg)"><img src="{PH}{photo}.jpg" alt="" style="object-position:{pos}">
+    <p class="ink" style="position:absolute;left:{frame}px;right:{frame}px;bottom:{int(14 * K)}px;font-family:'Playfair Display',serif;font-style:italic;font-size:{int(26 * K)}px;line-height:1.1;text-align:center">{nb(cap)}</p></div>"""
+    body += ink_band() + plate(*product)
+    ad(id, body, note)
+
+def pair(id, cols, kicker, big, foot, cta, note=""):
+    """Two columns, two gifts: a photograph each, a title, the set and its price under it — bright or quiet, the choice is hers."""
+    head_h = int(280 * K); gap = int(20 * K)
+    gy = Y0 + head_h; cap_h = int(150 * K)
+    cw = (1080 - 128 - gap) // 2; ph_h = Y1 - gy - cap_h
+    body = f"""
+  <div style="inset:0;background:{INK}"></div>
+  {header()}
+  <div style="left:64px;right:64px;top:{Y0}px"><p class="kicker" style="font-size:{int(26 * K)}px">{kicker}</p><p class="big" style="font-size:{int(92 * K)}px;margin-top:{int(14 * K)}px">{nbh(big)}</p></div>"""
+    for i, (photo, pos, title, name, price) in enumerate(cols):
+        x = 64 + i * (cw + gap)
+        body += f"""
+  <div class="ph" style="left:{x}px;top:{gy}px;width:{cw}px;height:{ph_h}px;border-radius:4px"><img src="{PH}{photo}.jpg" alt="" style="object-position:{pos}"></div>
+  <div style="left:{x}px;top:{gy + ph_h + int(18 * K)}px;width:{cw}px"><p class="big" style="font-size:{int(40 * K)}px;color:{YEL}">{nbh(title)}</p><p class="cap" style="margin-top:{int(8 * K)}px;color:{CREAM}">{nb(name)} · <b>{price}</b></p></div>"""
+    body += f"""
+  <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:6">
+    <p class="small" style="font-size:{int(34 * K)}px;color:#CFC4B2">{nb(foot)}</p>
+    <div class="cta" style="font-size:{int(32 * K)}px;padding:{int(26 * K)}px {int(44 * K)}px">{cta}</div></div>"""
+    ad(id, body, note)
+
+def steps(id, items, kicker, big, foot, cta, note=""):
+    """How a gift is ordered, in three numbered frames — a photograph, a number, a line — on paper."""
+    head_h = int(300 * K); gap = int(18 * K); n = len(items)
+    gy = Y0 + head_h + int(40 * K); cw = (1080 - 128 - gap * (n - 1)) // n
+    cap_h = int(170 * K); ph_h = Y1 - gy - cap_h
+    body = f"""
+  <div style="inset:0;background:{PAPER}"></div>
+  {header(dark=False)}
+  <div class="ink" style="left:64px;right:64px;top:{Y0}px"><p class="kicker" style="font-size:{int(26 * K)}px">{kicker}</p><p class="big" style="font-size:{int(88 * K)}px;margin-top:{int(14 * K)}px">{nbh(big)}</p></div>"""
+    for i, (photo, pos, line) in enumerate(items):
+        x = 64 + i * (cw + gap)
+        body += f"""
+  <div class="ph" style="left:{x}px;top:{gy}px;width:{cw}px;height:{ph_h}px;border-radius:4px"><img src="{PH}{photo}.jpg" alt="" style="object-position:{pos}"></div>
+  <p class="big ink" style="left:{x - int(6 * K)}px;top:{gy - int(30 * K)}px;font-size:{int(72 * K)}px;color:{YEL};text-shadow:0 2px 0 rgba(27,22,19,.25)">0{i + 1}</p>
+  <p class="ink" style="left:{x}px;top:{gy + ph_h + int(16 * K)}px;width:{cw}px;font-size:{int(26 * K)}px;line-height:1.25;font-weight:600">{nb(line)}</p>"""
+    body += f"""
+  <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:6">
+    <p class="small ink" style="font-size:{int(34 * K)}px;color:#4B423B">{nb(foot)}</p>
+    <div class="cta" style="font-size:{int(32 * K)}px;padding:{int(26 * K)}px {int(44 * K)}px">{cta}</div></div>"""
+    ad(id, body, note)
+
+def tag(id, photo, pos, price, kicker, big, small, product, note=""):
+    """A gift tag: a white rounded card with a hole and a string, the packshot and the price on it, hanging on the yellow field."""
+    tw = int(820 * K) if not SHORT else int(540 * K); th = int(tw * 1.3)
+    tx = 1080 - 64 - tw if SHORT else (1080 - tw) // 2
+    ty = Y0 + (int(10 * K) if SHORT else int(100 * K))
+    ph = int(tw * .72)
+    body = f"""
+  <div style="inset:0;background:{YEL}"></div>
+  {header(dark=False)}
+  <div style="left:{tx + tw // 2 - 2}px;top:{Y0 - int(60 * K)}px;width:3px;height:{ty - Y0 + int(60 * K) + int(28 * K)}px;background:#1B1613;z-index:3"></div>
+  <div class="card" style="left:{tx}px;top:{ty}px;width:{tw}px;height:{th}px;border-radius:{int(22 * K)}px;transform:rotate(-3deg);transform-origin:50% 0;padding:{int(60 * K)}px {int(28 * K)}px {int(24 * K)}px;z-index:4">
+    <div style="position:absolute;left:50%;top:{int(22 * K)}px;width:{int(26 * K)}px;height:{int(26 * K)}px;margin-left:-{int(13 * K)}px;border-radius:50%;background:{YEL};box-shadow:inset 0 2px 4px rgba(0,0,0,.25)"></div>
+    <div class="ph mult" style="position:static;width:100%;height:{ph}px"><img src="{PH}{photo}.jpg" alt="" style="object-position:{pos}"></div>
+    <p class="big ink" style="position:static;font-size:{int(96 * K)}px;line-height:1;margin-top:{int(16 * K)}px;text-align:center">{price}</p>
+  </div>"""
+    if SHORT:
+        body += f'<div class="ink" style="left:64px;width:{tx - 64 - int(30 * K)}px;top:{Y0 + int(40 * K)}px;bottom:{H - Y1}px">{words(kicker, big, small, 84, ink=True)}</div>'
+    else:
+        body += f'<div class="ink" style="left:64px;right:64px;top:{ty + th + int(60 * K)}px;bottom:{H - Y1}px">{words(kicker, big, small, 84, ink=True)}</div>'
+    body += plate(*product, dark=False, ink_cta=True)
+    ad(id, body, note)
+
+def occasions(id, cards, kicker, big, foot, cta, note=""):
+    """Three packshot cards at slight angles, each under an occasion — a birthday, an anniversary, no reason at all."""
+    head_h = int(230 * K); gap = int(22 * K); n = len(cards)
+    cw = (1080 - 128 - gap * (n - 1)) // n
+    lab_h = int(70 * K); cap_h = int(96 * K)
+    ch = min(int(cw * 1.4), Y1 - Y0 - head_h - lab_h - cap_h)
+    gy = Y0 + head_h + (Y1 - Y0 - head_h - lab_h - ch - cap_h) // 2
+    body = f"""
+  <div style="inset:0;background:{PAPER}"></div>
+  {header(dark=False)}
+  <div class="ink" style="left:64px;right:64px;top:{Y0}px"><p class="kicker" style="font-size:{int(26 * K)}px">{kicker}</p><p class="big" style="font-size:{int(92 * K)}px;margin-top:{int(14 * K)}px">{nbh(big)}</p></div>"""
+    for i, (photo, pos, occasion, name, price) in enumerate(cards):
+        x = 64 + i * (cw + gap); rot = (-4, 3, -2)[i % 3]
+        body += f"""
+  <p class="big ink" style="left:{x}px;top:{gy}px;width:{cw}px;font-size:{int(34 * K)}px;font-weight:700">{nbh(occasion)}</p>
+  <div class="card" style="left:{x}px;top:{gy + lab_h}px;width:{cw}px;height:{ch}px;padding:{int(10 * K)}px;transform:rotate({rot}deg)"><img src="{PH}{photo}.jpg" alt="" style="object-position:{pos}"></div>
+  <div class="ink" style="left:{x}px;top:{gy + lab_h + ch + int(22 * K)}px;width:{cw}px"><p class="cap" style="color:#1B1613">{nb(name)}<br><b style="color:#8A6A12">{price}</b></p></div>"""
+    body += f"""
+  <div style="left:64px;right:64px;bottom:{BOTB}px;display:flex;align-items:center;justify-content:space-between;gap:24px;z-index:6">
+    <p class="small ink" style="font-size:{int(34 * K)}px;color:#4B423B">{nb(foot)}</p>
+    <div class="cta" style="font-size:{int(32 * K)}px;padding:{int(26 * K)}px {int(44 * K)}px">{cta}</div></div>"""
+    ad(id, body, note)
+
+def stack2(id, pack, pack_pos, life, life_pos, kicker, big, product, note=""):
+    """First in the box, then in the hair: the white packshot on white above, the lifestyle frame below, a yellow band between."""
+    band_h = int(190 * K); mid = Y0 + (Y1 - Y0) // 2
+    top_h = mid - band_h // 2 - Y0 + int(10 * K)
+    body = f"""
+  <div style="inset:0;background:{WHITE}"></div>
+  {header(dark=False)}
+  <div class="ph mult" style="left:0;right:0;top:{Y0 - int(20 * K)}px;height:{top_h}px;z-index:2"><img src="{PH}{pack}.jpg" alt="" style="object-position:{pack_pos};transform:scale(1.1)"></div>
+  <div class="ph" style="left:0;right:0;top:{mid + band_h // 2}px;height:{Y1 - mid - band_h // 2 + int(36 * K)}px"><img src="{PH}{life}.jpg" alt="" style="object-position:{life_pos}"></div>
+  <div class="ink" style="left:0;right:0;top:{mid - band_h // 2}px;height:{band_h}px;background:{YEL};display:flex;flex-direction:column;justify-content:center;padding:0 64px;z-index:3;box-shadow:0 20px 40px -20px rgba(20,12,6,.4)"><p class="kicker" style="font-size:{int(24 * K)}px;color:#1B1613">{kicker}</p><p class="big" style="font-size:{int(66 * K)}px;margin-top:{int(8 * K)}px">{nbh(big)}</p></div>
+  {ink_band()}
+  {plate(*product)}"""
+    ad(id, body, note)
+
+label("m01-sun-sleep", "set-ta-rezynka-litnie-pole-04", "50% 50%", "Набір для сну", "Сон у шовку.",
+      "Маска для сну й резинка «Літнє поле» у фірмовій коробці — для тієї, хто любить висипатися.",
+      ("Набір для сну «Літнє поле»", "3 280 грн"), "the sunlit sleep set with a paper label", size=96)
+
+label("m02-sun-svoboda", "maska-dlia-snu-ta-rezynka-svoboda-03", "50% 50%", "Набір для сну", "Подарунок про відпочинок.",
+      "Шовкова маска для сну й резинка в одному принті — набір «Свобода».",
+      ("Набір для сну «Свобода»", "3 280 грн"), "the blue sleep set in sunlight", size=84)
+
+label("m03-sun-vpevnenist", "maska-dlia-snu-ta-rezynka-vpevnenist-03", "50% 50%", "Набір для сну", "Для тієї, хто не любить прокидатися рано.",
+      "Маска для сну «Впевненість» і резинка в тон — у коробці, готові до вручення.",
+      ("Набір для сну «Впевненість»", "3 280 грн"), "the red sleep set in sunlight", size=76, bg="#F4ECDD")
+
+circle("m04-circle-yellow", "set-tvilli-845-ta-khustky-4444-natkhne-04", "42% 22%", YEL, False, "Подарункові набори", "Подарунок, який носять щодня.",
+       "Хустка 44 × 44 на плечі, твіллі у волоссі — набір «Натхнення» в одному принті.",
+       ("Набір «Натхнення» · твіллі + хустка", "3 100 грн"), "a round crop on yellow", zoom=1.15)
+
+circle("m05-circle-ink", "set-makovyi-tsvit-02", "50% 38%", INK, True, "Подарункові набори", "Замість квітів.",
+       "Твіллі «Маків цвіт» бантом на зап’ясті й резинка в тон — подарунок, який не зів’яне.",
+       ("Твіллі + резинка «Маків цвіт»", "2 200 грн"), "the tulip in a round crop on ink", size=104, zoom=1.2)
+
+polaroids("m06-four-ways", [("set-tvilli-845-ta-khustky-4444-natkhne-02", "50% 12%", "хустка на кінці хвоста"),
+                            ("set-tvilli-845-ta-khustky-4444-hratsii-02", "50% 16%", "твіллі в косі"),
+                            ("set-tvilli-845-ta-khustky-4444-smilyvy-02", "50% 22%", "вузол на потилиці"),
+                            ("set-tvilli-845-ta-khustky-4444-probudz-02", "50% 14%", "хустка на спині")],
+          "Подарункові набори", "Чотири способи носити один подарунок.", ("Твіллі + хустка 44 × 44 — від", "3 100 грн"), "four polaroids")
+
+pair("m07-bright-quiet", [("set-smilyvist-02", "60% 20%", "Яскраве", "Твіллі + резинка «Сміливість»", "2 200 грн"),
+                          ("tvilli-ta-rezynka-zakhoplennia-02", "50% 50%", "Стримане", "Твіллі + резинка «Захоплення»", "2 200 грн")],
+     "Подарункові набори", "Яскраве чи стримане?", "Один набір — вісім принтів на вибір.", "Обрати принт", "bright or quiet, two columns")
+
+steps("m08-how", [("set-tvilli-845-ta-khustky-4444-nizhnis-01", "50% 50%", "Обираєте набір і принт на obiimy.world"),
+                  ("../box-green", "50% 50%", "Пакуємо у фірмову жовту коробку"),
+                  ("set-3-shovkovykh-tvilli-08", "50% 40%", "Замовили до 16:00 — відправимо Новою поштою сьогодні")],
+      "Як це працює", "Три кроки до подарунка.", "Безкоштовна доставка від 5 000 грн.", "Обрати набір", "three steps")
+
+tag("m09-tag", "set-maska-rezynka-34-01", "50% 50%", "3 280 грн", "Набір для сну", "Ціна — на бірці.",
+    "Маска для сну «Серцебиття» й резинка — у фірмовій коробці, готові до вручення.",
+    ("Набір для сну «Серцебиття»", "3 280 грн"), "a gift tag on yellow")
+
+occasions("m10-occasions", [("set-smilyvist-01", "50% 50%", "День народження", "Твіллі + резинка", "2 200 грн"),
+                            ("set-tvilli-845-ta-khustky-4444-natkhne-01", "50% 50%", "Річниця", "Твіллі + хустка 44 × 44", "3 100 грн"),
+                            ("set-maska-rezynka-10-01", "50% 50%", "Просто так", "Набір для сну", "3 280 грн")],
+          "Подарункові набори", "Привід знайдеться.", "Усі набори — у фірмовій жовтій коробці.", "Обрати набір", "three occasions")
+
+label("m11-three-close", "set-3-shovkovykh-tvilli-10", "50% 50%", "Подарункові набори", "Три твіллі зблизька.",
+      "Кінці трьох твіллі 84 × 5 — три принти в одній коробці. Принти можна обрати різні.",
+      ("Набір із трьох твіллі", "4 650 грн"), "the three twillies close up", size=92, share=.66, bg=CREAM)
+
+stack2("m12-box-then-hair", "set-smilyvist-01", "50% 50%", "set-smilyvist-02", "60% 20%", "Подарункові набори", "Спершу в коробці. Потім у волоссі.",
+       ("Твіллі + резинка «Сміливість»", "2 200 грн"), "packshot above, worn below, a yellow band between")
+
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · gift sets, series 2</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700;1,900&family=EB+Garamond:wght@500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500;1,600&family=Oswald:wght@500&family=Montserrat:wght@300;400;500&family=Onest:wght@400;600&display=swap">

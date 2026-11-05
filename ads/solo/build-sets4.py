@@ -111,13 +111,9 @@ def whole(id, photo, big, product, note="", layout="top", kicker="Подарун
     """The set whole. The frame is the photo's border colour; the photo sits at its largest size with feathered edges; the words take
     the strip above (layout «top») or below (layout «bottom») the picture; in short frames they move to the left of it."""
     fill = border_color(photo); w, h = dims(photo); ar = w / h
-    size = int((52 if SHORT else 64) * K)
-    txt_h = int(150 * K)
-    if SHORT:
-        col = int(380 * K)
-        zx, zy, zw, zh = 64 + col, Y0 - int(30 * K), 1080 - 64 - col, Y1 - Y0 + int(30 * K)
-        text = f'<div class="ink" style="left:64px;width:{col - int(24 * K)}px;top:{Y0 + int(20 * K)}px;z-index:5"><p class="kicker" style="font-size:{int(22 * K)}px">{kicker}</p><p class="big" style="font-size:{size}px;margin-top:{int(10 * K)}px">{nbh(big)}</p></div>'
-    elif layout == "top":
+    size = int((58 if SHORT else 64) * K)
+    txt_h = int((120 if SHORT else 150) * K)
+    if layout == "top" or SHORT:    # 05.11: short frames too — the words in a strip above, the picture at full width under them
         zx, zy, zw, zh = 0, Y0 + txt_h, 1080, Y1 - Y0 - txt_h
         text = f'<div class="ink" style="left:64px;right:64px;top:{Y0}px;z-index:5"><p class="kicker" style="font-size:{int(24 * K)}px">{kicker}</p><p class="big" style="font-size:{size}px;margin-top:{int(10 * K)}px">{nbh(big)}</p></div>'
     else:

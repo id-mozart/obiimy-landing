@@ -104,7 +104,7 @@ def hero_whole(id, photo, kicker, big, small, product, note="", size=104, pos="5
     (a square photo loses a few percent at the sides, not half), the ink field with the veil, the headline and the row below it.
     Short frames: a blurred, darkened copy of the photo fills the frame, the sharp picture lies whole on the left, the words on the right."""
     w, h = dims(photo); ar = w / h
-    if not SHORT:
+    if not SHORT:     # feed and square take the side layout — the hero crop would hide half the set there
         text_h = int(360 * K)
         yph = min(int(H * .6), Y1 - text_h - int(20 * K))
         body = f"""
@@ -119,7 +119,7 @@ def hero_whole(id, photo, kicker, big, small, product, note="", size=104, pos="5
   </div>
   {plate(*product)}"""
     else:   # short frames: a light version — the blurred copy at its own brightness, the sharp picture whole on the left, ink words
-        zh = Y1 - Y0 + int(20 * K); ph_h = zh; ph_w = min(int(1080 * .58), int(ph_h * ar)); ph_h = int(ph_w / ar)
+        zh = Y1 - Y0 + int(20 * K); ph_h = zh; ph_w = min(int(1080 * .52), int(ph_h * ar)); ph_h = int(ph_w / ar)
         px = 40; py = Y0 - int(10 * K) + (zh - ph_h) // 2
         tx = px + ph_w + int(36 * K)
         body = f"""
@@ -130,8 +130,8 @@ def hero_whole(id, photo, kicker, big, small, product, note="", size=104, pos="5
   {header(dark=False)}
   <div class="ink" style="left:{tx}px;right:56px;top:{Y0 + int(30 * K)}px;z-index:5">
     <p class="kicker" style="font-size:{int(24 * K)}px">{kicker}</p>
-    <p class="big" style="font-size:{int(size * .78 * K)}px;margin-top:{int(14 * K)}px">{nbh(big)}</p>
-    <p class="small" style="font-size:{int(36 * K)}px;margin-top:{int(18 * K)}px;color:#4B423B">{nb(small)}</p>
+    <p class="big" style="font-size:{int(size * .6 * K)}px;margin-top:{int(14 * K)}px">{nbh(big)}</p>
+    <p class="small" style="font-size:{int(32 * K)}px;margin-top:{int(16 * K)}px;color:#4B423B">{nb(small)}</p>
   </div>
   {plate(*product, dark=False)}"""
     ad(id, body, note)

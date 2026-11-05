@@ -30,7 +30,7 @@ body { margin: 0; background: #666; font-family: 'Onest', 'Helvetica Neue', Aria
 .logo { left: 50%; transform: translateX(-50%); height: 54px; }
 .logo img { display: block; height: 54px; width: auto; }
 .eyebrow { font-size: 30px; letter-spacing: .16em; text-transform: uppercase; font-weight: 600; color: var(--ink-2); left: 80px; right: 80px; text-align: center; }
-.h { font-family: 'Montserrat', sans-serif; font-weight: 300; font-size: 88px; line-height: 1.08; text-align: center; left: 70px; right: 70px; letter-spacing: -0.01em; text-wrap: balance; }
+.h { font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 96px; line-height: 1.08; text-align: center; left: 70px; right: 70px; letter-spacing: -0.01em; text-wrap: balance; }
 .h em { font-style: normal; color: var(--ink-3); }
 .body { font-size: 36px; line-height: 1.45; font-weight: 300; color: var(--ink-2); left: 120px; right: 120px; text-align: center; text-wrap: pretty; }
 .price { font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 46px; text-align: center; left: 80px; right: 80px; }

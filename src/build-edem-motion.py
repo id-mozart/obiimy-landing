@@ -17,7 +17,7 @@ MANIFESTO, STORY, SYMBOLS, SPEC, EDEM_P, EDEM_L, OB_P, OB_L, STEPS = V.MANIFESTO
 PHONE, PHONE_HREF, MAIL, TG = V.PHONE, V.PHONE_HREF, V.MAIL, V.TG
 form_html, FORM_CSS, write, spec_rows = V.form_html, V.FORM_CSS, V.write, V.spec_rows
 
-PRICE = 8500                                     # the client's retail price, set in chat on 04.11.2026 (review/SITE-FACTS.md; 4 800 named first, corrected to 8 500 the same day)
+PRICE = 1                                        # TEMPORARY (06.11.2026): 1 грн for a live payment test — put back 8500 after. The client's retail price, set in chat on 04.11.2026 (review/SITE-FACTS.md; 4 800 named first, corrected to 8 500 the same day)
 PRICE_T = f"{PRICE:,}".replace(",", "\u202f") + "\u00a0грн"   # «4 800 грн»
 EDEM_URL = "https://edem.obiimy.world/"         # the sale page lives on its own subdomain (server.js serves edem-motion-light at its root)
 LEAD = "Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами — спільна робота KRAЇNA EDEM та OBIIMY."

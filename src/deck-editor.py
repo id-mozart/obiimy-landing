@@ -643,7 +643,7 @@ def api_edem_register(body, ip="", origin="", base=""):
             # the reference rides in the returnUrl too: a cancelled payment comes back without a body
             out["pay"] = wfp_purchase(rec, f"{origin}/pay/return?lang={lang}&ref={ref}", f"{base}/api/wfp"); out["url"] = WFP_PAY_URL; rec["pay"] = "wayforpay"
     EDEM_DIR.mkdir(parents=True, exist_ok=True)
-    with open(EDEM_DIR / "registrations.jsonl", "a", encoding="utf-8") as f: f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    with open(EDEM_DIR / ("orders.jsonl" if kind == "order" else "registrations.jsonl"), "a", encoding="utf-8") as f: f.write(json.dumps(rec, ensure_ascii=False) + "\n")   # orders apart from the early-access registrations (06.11)
     return out
 
 def _jsonl(name):
@@ -700,13 +700,65 @@ def api_edem_status(ref):
     st = (p or {}).get("status") or ""
     return dict(ok=True, ref=ref, status="paid" if st == "Approved" else "declined" if st in ("Declined", "Expired") else "refunded" if st.startswith("Refund") or st == "Voided" else "pending" if p else "new")
 
-def api_edem_list():
-    rows = _jsonl("registrations.jsonl"); pays = _jsonl("payments.jsonl")
+def edem_rows():
+    """Registrations and orders together (orders written before 06.11 sit in registrations.jsonl with kind=order), each order
+    with its latest WayForPay result under `payment`."""
+    rows = _jsonl("registrations.jsonl") + _jsonl("orders.jsonl"); pays = _jsonl("payments.jsonl")
     last = {}
     for p in pays: last[p["ref"]] = p
     for r in rows:
         if r.get("ref"): r["payment"] = last.get(r["ref"])
+    return rows, pays
+
+def api_edem_list():
+    rows, pays = edem_rows()
     return dict(ok=True, count=len(rows), rows=rows, payments=len(pays))
+
+PAY_WORDS = {"Approved": ("Оплачено", "#1f7a3a"), "Declined": ("Відхилено", "#b3261e"), "Expired": ("Прострочено", "#b3261e"), "Pending": ("В обробці", "#8a6a12"),
+             "InProcessing": ("В обробці", "#8a6a12"), "inProcessing": ("В обробці", "#8a6a12"), "WaitingAuthComplete": ("Очікує підтвердження", "#8a6a12"),
+             "Refunded": ("Повернено", "#555"), "Voided": ("Скасовано", "#555"), "RefundInProcessing": ("Повернення…", "#555")}
+
+def edem_orders_page(csv=False):
+    """GET /edem-orders?key=… — the orders of the Trypillia scarf as a page for the manager (newest first, the payment state from
+    WayForPay beside each) or, with &csv=1, the same as a CSV for a spreadsheet."""
+    import html as _h, csv as _csv, io as _io
+    rows, _ = edem_rows()
+    orders = sorted([r for r in rows if r.get("kind") == "order"], key=lambda r: r.get("at", ""), reverse=True)
+    cols = [("at", "Час"), ("ref", "№"), ("name", "Ім’я"), ("phone", "Телефон"), ("email", "Email"), ("city", "Місто"), ("branch", "Відділення НП"), ("qty", "К-сть"), ("amount", "Сума, грн"),
+            ("pay_status", "Оплата"), ("pay_card", "Картка"), ("pay_at", "Час оплати"), ("comment", "Коментар"), ("lang", "Мова"), ("page", "Сторінка")]
+    def cell(r, k):
+        p = r.get("payment") or {}
+        if k == "pay_status": return PAY_WORDS.get(p.get("status"), (p.get("status") or ("без оплати" if r.get("pay") != "wayforpay" else "не оплачено"), "#777"))[0]
+        if k == "pay_card": return p.get("cardPan") or ""
+        if k == "pay_at": return p.get("at") or ""
+        if k == "amount": return r.get("amount") if r.get("amount") is not None else r.get("total", "")
+        return r.get(k, "")
+    if csv:
+        buf = _io.StringIO(); w = _csv.writer(buf); w.writerow([t for _, t in cols])
+        for r in orders: w.writerow([cell(r, k) for k, _ in cols])
+        return ("\ufeff" + buf.getvalue()).encode("utf-8"), "text/csv; charset=utf-8"
+    paid = sum(1 for r in orders if (r.get("payment") or {}).get("status") == "Approved")
+    trs = ""
+    for r in orders:
+        p = r.get("payment") or {}; st, color = PAY_WORDS.get(p.get("status"), (None, "#777"))
+        tds = ""
+        for k, _ in cols:
+            v = _h.escape(str(cell(r, k)))
+            if k == "pay_status": v = f'<b style="color:{color}">{v}</b>'
+            if k == "phone": v = f'<a href="tel:{_h.escape(str(r.get("phone", "")))}">{v}</a>'
+            if k == "page": v = v.replace("https://", "").split("?")[0][:40]
+            tds += f"<td>{v}</td>"
+        trs += f'<tr class="{"ok" if st == "Оплачено" else ""}">{tds}</tr>'
+    page = f"""<!DOCTYPE html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex">
+<title>Замовлення · Trypillia — The Art of Origins</title>
+<style>body{{margin:0;padding:24px;font:14px/1.4 -apple-system,Segoe UI,Roboto,sans-serif;color:#1b1613;background:#f7f1e6}} h1{{font-size:22px;margin:0 0 6px}} p{{margin:0 0 16px;color:#5a5048}}
+table{{border-collapse:collapse;width:100%;background:#fff;font-size:13px}} th,td{{padding:8px 10px;border-bottom:1px solid #e6dfd2;text-align:left;vertical-align:top;white-space:nowrap}} th{{background:#efe7d8;position:sticky;top:0}} td:nth-child(13){{white-space:normal;min-width:180px}}
+tr.ok td{{background:#f3faf4}} a{{color:#7b1f24}} .tools a{{margin-right:16px;font-weight:600}}</style></head><body>
+<h1>Замовлення хустки «Trypillia — The Art of Origins»</h1>
+<p>Усього {len(orders)} · оплачено {paid} · стан оплати — з WayForPay (оновлюється, коли приходить сповіщення після оплати). <span class="tools"><a href="?key=KEY&amp;csv=1">Завантажити CSV</a><a href="javascript:location.reload()">Оновити</a></span></p>
+<table><thead><tr>{"".join(f"<th>{t}</th>" for _, t in cols)}</tr></thead><tbody>{trs or '<tr><td colspan="15">Замовлень ще немає.</td></tr>'}</tbody></table>
+</body></html>"""
+    return page.encode("utf-8"), "text/html; charset=utf-8"
 
 class Handler(SimpleHTTPRequestHandler):
     server_version = "DeckEditor/1"
@@ -806,6 +858,14 @@ class Handler(SimpleHTTPRequestHandler):
             if not CORP_PASSWORD or not hmac.compare_digest(q.get("key") or "", CORP_PASSWORD): return self.send_json(dict(ok=False, error="Потрібен ключ."), 401)
             return self.api(api_edem_list)
         if u.path == "/api/wfp": return self.send_json(dict(ok=True, configured=bool(WFP_ACCOUNT and WFP_SECRET), account=WFP_ACCOUNT[:3] + "…" if WFP_ACCOUNT else "", domain=WFP_DOMAIN))   # a health check: is WayForPay set up here?
+        if u.path == "/edem-orders":
+            import hmac
+            if not CORP_PASSWORD or not hmac.compare_digest(q.get("key") or "", CORP_PASSWORD): return self.send_json(dict(ok=False, error="Потрібен ключ."), 401)
+            data, ctype = edem_orders_page(csv=q.get("csv") == "1")
+            if ctype.startswith("text/html"): data = data.replace(b"?key=KEY", ("?key=" + urllib.parse.quote(q.get("key") or "")).encode("utf-8"))
+            self.send_response(200); self.send_header("Content-Type", ctype); self.send_header("Content-Length", str(len(data))); self.send_header("Cache-Control", "no-store")
+            if ctype.startswith("text/csv"): self.send_header("Content-Disposition", 'attachment; filename="edem-orders.csv"')
+            self.end_headers(); return self.wfile.write(data)
         if u.path == "/api/edem-status":
             try: data = json.dumps(api_edem_status(q.get("ref") or ""), ensure_ascii=False).encode("utf-8"); status = 200
             except Problem as e: data = json.dumps(dict(ok=False, error=str(e)), ensure_ascii=False).encode("utf-8"); status = e.status

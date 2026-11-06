@@ -523,7 +523,7 @@ def build_home(site, render):
             hcards.append(f'''<figure class="hb hsf"><a href="creatives/home/horoshop/{j.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/home/horoshop/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy"></a>
       <figcaption><div><b>{html.escape(title)}</b><p>{size}</p></div><div class="hba"><a href="creatives/home/horoshop/{j.name}?v={v}" download="{j.name}">JPG ↓</a>{f'<a href="creatives/home/horoshop/{wp.name}?v={v}" download="{wp.name}">WebP ↓</a>' if wp.exists() else ""}</div></figcaption></figure>''')
     hs_html = f'''<section class="hbt hs" id="horoshop"><h2>Формати Хорошоп <span>· {len(hcards)}</span></h2>
-<p class="lede">Обраний банер «Сім портретів · папір» (home-t3): поле під лок-апом темне, сім портретів на папері. Розміри — за ТЗ клієнта для Horoshop (06.11.2026): головна Desktop LINE 1 і верх внутрішніх сторінок 10:3, Mobile LINE 1 — 5:2, LINE 2–3 — 5:3; у високих форматах темна смуга з лок-апом згори, портрети під нею. JPG і WebP (рекомендований Хорошопом) у точному розмірі.</p>
+<p class="lede">Обраний банер «Студійний кадр · темний» (home-h-reblum-dark): лок-ап на темному полі, студійний кадр «Авантюри» праворуч, темне поле плавно переходить у фото без різкої межі. Розміри — за ТЗ клієнта для Horoshop (06.11.2026): головна Desktop LINE 1 і верх внутрішніх сторінок 10:3, Mobile LINE 1 — 5:2 (лок-ап на п’яту більший), LINE 2–3 — 5:3. JPG і WebP (рекомендований Хорошопом) у точному розмірі.</p>
 <div class="hbs">{"".join(hcards)}</div></section>''' if hcards else ""
     body = f'''<header><a href="./">← Усі лендинги Obiimy</a><a href="creatives">Рекламні креативи →</a></header>
 <h1>Банери для головної</h1>

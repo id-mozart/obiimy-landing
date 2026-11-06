@@ -1,5 +1,5 @@
-"""Horoshop formats of the chosen home banner (06.11.2026). The client picked «Сім портретів · папір» (home-t3) and asked for
-the left part — the field under the lock-up — to be dark; the seven portraits stay on paper. Sizes from the client's spec
+"""Horoshop formats of the chosen home banner (06.11.2026): «Студійний кадр · темний» (home-h-reblum-dark) — the lock-up on
+ink, the studio close-up of «Авантюра» to the right, and the ink melting into the picture without a hard edge. Sizes from the client's spec
 (Google Doc «Розміри банерів для інтернет-магазину Хорошоп»): Desktop LINE 1 3840 × 1152 (10:3), Desktop/Mobile LINE 2–3
 1440 × 864 (5:3), Mobile LINE 1 3840 × 1536 (5:2), inner pages top 2880 × 864 (10:3, the desktop art scaled).
 Wide frames are drawn at 1920 px and rendered at DPR 2; the 5:3 frame is drawn at its own size.
@@ -18,33 +18,33 @@ ads = []
 def ad(id, w, h, body, note=""):
     ads.append(f'\n<!-- {note} -->\n<section class="ad" id="{id}" style="width:{w}px;height:{h}px">{body}\n</section>')
 
-# Desktop LINE 1 (and the inner-page top, scaled): the t3 strip, the lock-up's field dark, the portraits on paper
+RB = "src/reblum-avantiura-2k.webp"      # the studio close-up of «Авантюра» (home-h-reblum-dark)
+def photo(left, feather, pos):
+    """The frame from `left` to the right edge, feathered into the ink over `feather` px (mask) with a dark veil over the
+    same zone on top — no hard edge between the field and the picture (the client, 06.11)."""
+    return (f'<div class="ph" style="left:{left}px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 {feather}px);mask-image:linear-gradient(90deg,transparent 0,#000 {feather}px)"><img src="{RB}" alt="" style="object-position:{pos}"></div>'
+            f'<div style="left:{left}px;top:0;bottom:0;width:{int(feather * 1.5)}px;background:linear-gradient(90deg,{INK} 0,rgba(20,17,16,.6) 40%,rgba(20,17,16,0) 100%)"></div><div class="scrim-d"></div>')
+def lock_scaled(k):
+    inner = lock().replace('<div class="lock">', '<div class="lock" style="position:absolute">')
+    return f'<div style="left:0;top:0;bottom:0;width:900px;transform:scale({k});transform-origin:0 50%">{inner}</div>'
+
+# Desktop LINE 1 (and the inner-page top, scaled): the lock-up on ink, the close-up to the right edge, a soft blend between
 ad("hs-desktop-line1", 1920, 576, f"""
-  <div style="inset:0;background:{PAPER}"></div>
-  <div style="left:0;top:0;bottom:0;width:630px;background:{INK}"></div>
-  {tiles7(690, 1840, 44, 532, names=True, states=True, dark=False)}
+  <div style="inset:0;background:{INK}"></div>
+  {photo(680, 540, "40% 36%")}
   {lock()}""", note="Desktop LINE 1 · 3840 × 1152 at DPR 2")
 
-def band(h, kick=40, solo=150, pill=34, pad=80):
-    """A horizontal lock-up for the stacked frames: «Колекція · Шлях до себе» over «Соло», the yellow pill at the right."""
-    return (f'<div style="position:absolute;left:{pad}px;top:0;height:{h}px;display:flex;flex-direction:column;justify-content:center;text-transform:uppercase;line-height:1">'
-            f'<p style="font-size:{kick}px;font-weight:400;letter-spacing:.06em">Колекція · Шлях до себе</p>'
-            f'<p style="font-size:{solo}px;font-weight:300;letter-spacing:0;margin:{int(solo*.08)}px 0 0 -{int(solo*.05)}px">Соло</p></div>'
-            f'<p class="pill" style="position:absolute;right:{pad}px;top:50%;margin:0;transform:translateY(-50%);font-size:{pill}px;padding:{int(pill*.75)}px {int(pill*1.3)}px">Жіноча сила крізь десятиліття</p>')
-
-def band_wrap(h, inner): return f'<div style="left:0;right:0;top:0;height:{h}px;background:{INK}">{inner}</div>'
-
-# Mobile LINE 1 · 5:2: the dark band with the lock-up on top, the seven portraits with names on paper under it
+# Mobile LINE 1 · 5:2: the same, the lock-up a fifth larger for the small screen
 ad("hs-mobile-line1", 1920, 768, f"""
-  <div style="inset:0;background:{PAPER}"></div>
-  {band_wrap(330, band(330, kick=40, solo=160, pill=34))}
-  {tiles7(80, 1840, 362, 742, gap=12, names=True, dark=False, name_size=26)}""", note="Mobile LINE 1 · 3840 × 1536 at DPR 2")
+  <div style="inset:0;background:{INK}"></div>
+  {photo(740, 560, "40% 38%")}
+  {lock_scaled(1.2)}""", note="Mobile LINE 1 · 3840 × 1536 at DPR 2")
 
 # LINE 2 / LINE 3 (desktop and mobile) · 5:3 at its own size
 ad("hs-line2", 1440, 864, f"""
-  <div style="inset:0;background:{PAPER}"></div>
-  {band_wrap(330, band(330, kick=32, solo=130, pill=26, pad=64))}
-  {tiles7(64, 1376, 366, 830, gap=12, names=True, dark=False, name_size=24)}""", note="LINE 2 / LINE 3 · 1440 × 864")
+  <div style="inset:0;background:{INK}"></div>
+  {photo(500, 500, "42% 40%")}
+  {lock()}""", note="LINE 2 / LINE 3 · 1440 × 864")
 
 if "finish" in sys.argv:
     from PIL import Image

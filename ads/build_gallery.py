@@ -508,11 +508,12 @@ def build_home(site, render):
     # 06.11: the chosen banner (t3, the lock-up's field dark) in the Horoshop sizes from the client's spec — out-horoshop/final
     HS = [("solo-desktop-line1-3840x1152", "Головна · Desktop · LINE 1", "3840 × 1152 (10:3)"), ("solo-mobile-line1-3840x1536", "Головна · Mobile · LINE 1", "3840 × 1536 (5:2)"),
           ("solo-line2-line3-1440x864", "Головна · LINE 2 / LINE 3 (desktop і mobile)", "1440 × 864 (5:3)"), ("solo-inner-top-2880x864", "Внутрішні сторінки · верхній банер", "2880 × 864 (10:3)")]
-    hsrc = ROOT / "ads/solo/out-horoshop/final"; hout = out / "horoshop"; hcards = []
+    HSL = [("", "Українська"), ("-ru", "Русская версия"), ("-en", "English version")]
+    hsrc = ROOT / "ads/solo/out-horoshop/final"; hout = out / "horoshop"; hcards = []; hgroups = {sfx: [] for sfx, _ in HSL}
     if hsrc.exists():
         hout.mkdir(exist_ok=True)
-        for id, title, size in HS:
-            j, wp = hsrc / f"{id}.jpg", hsrc / f"{id}.webp"
+        for (sfx, _), (id0, title, size) in [(l, h) for l in HSL for h in HS]:
+            id = id0 + sfx; j, wp = hsrc / f"{id}.jpg", hsrc / f"{id}.webp"
             if not j.exists(): continue
             for f in (j, wp):
                 if f.exists() and not ((hout / f.name).exists() and (hout / f.name).stat().st_mtime >= f.stat().st_mtime): shutil.copy2(f, hout / f.name)
@@ -522,9 +523,11 @@ def build_home(site, render):
             v = hashlib.md5(j.read_bytes()).hexdigest()[:8]
             hcards.append(f'''<figure class="hb hsf"><a href="creatives/home/horoshop/{j.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/home/horoshop/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy"></a>
       <figcaption><div><b>{html.escape(title)}</b><p>{size}</p></div><div class="hba"><a href="creatives/home/horoshop/{j.name}?v={v}" download="{j.name}">JPG ↓</a>{f'<a href="creatives/home/horoshop/{wp.name}?v={v}" download="{wp.name}">WebP ↓</a>' if wp.exists() else ""}</div></figcaption></figure>''')
+            hgroups[sfx].append(hcards[-1])
+        hcards_html = "".join(f'<h3 class="hsl">{t}</h3><div class="hbs">{"".join(hgroups[sfx])}</div>' for sfx, t in HSL if hgroups[sfx])
     hs_html = f'''<section class="hbt hs" id="horoshop"><h2>Формати Хорошоп <span>· {len(hcards)}</span></h2>
-<p class="lede">Обраний банер «Студійний кадр · темний» (home-h-reblum-dark): лок-ап на темному полі, студійний кадр «Авантюри» праворуч, темне поле плавно переходить у фото без різкої межі. Розміри — за ТЗ клієнта для Horoshop (06.11.2026): головна Desktop LINE 1 і верх внутрішніх сторінок 10:3, Mobile LINE 1 — 5:2 (лок-ап на п’яту більший), LINE 2–3 — 5:3. JPG і WebP (рекомендований Хорошопом) у точному розмірі.</p>
-<div class="hbs">{"".join(hcards)}</div></section>''' if hcards else ""
+<p class="lede">Обраний банер «Студійний кадр · темний» (home-h-reblum-dark): лок-ап на темному полі, студійний кадр «Авантюри» праворуч, темне поле плавно переходить у фото без різкої межі. Розміри — за ТЗ клієнта для Horoshop (06.11.2026): головна Desktop LINE 1 і верх внутрішніх сторінок 10:3, Mobile LINE 1 — 5:2 (лок-ап на п’яту більший), LINE 2–3 — 5:3. Три мови — тексти з відповідних версій obiimy.world. JPG і WebP (рекомендований Хорошопом) у точному розмірі.</p>
+{hcards_html}</section>''' if hcards else ""
     body = f'''<header><a href="./">← Усі лендинги Obiimy</a><a href="creatives">Рекламні креативи →</a></header>
 <h1>Банери для головної</h1>
 <p class="lede"><b>Колекція SOLO на головній obiimy.world.</b> Формат поточного банера сайту — 1920 × 576: лок-ап «КОЛЕКЦІЯ / СОЛО / ШЛЯХ ДО СЕБЕ», жовта плашка «Жіноча сила крізь десятиліття»; логотип на банер не ставимо — він уже в шапці сайту (27.10). Фото — зйомки колекції й студійний кадр клієнта, тексти — за прес-релізом. Поруч із кожним — як його обріже слайдер на телефоні.</p>
@@ -534,7 +537,7 @@ def build_home(site, render):
 {secs}
 <style>.hbl {{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:14px; }} .hbl a {{ color:var(--acc); font-weight:600; }} .hbl button {{ font:inherit; font-size:.88rem; border:0; background:var(--acc); color:#fff; border-radius:999px; padding:10px 16px; cursor:pointer; }} .hbl button[disabled] {{ opacity:.6; }} #hbn {{ font-size:.85rem; color:var(--ink2); }}
 .hbsel {{ font-size:.9rem; color:var(--ink2); margin-top:8px; }} #hbcount {{ color:var(--ink); font-weight:600; }} .hbc {{ display:flex; align-items:center; gap:8px; font-weight:600; color:var(--ink); cursor:pointer; white-space:nowrap; }} .hbc input {{ width:18px; height:18px; accent-color:#2b7a3d; cursor:pointer; margin:0; }} .hb.sel {{ box-shadow: 0 0 0 2px #2b7a3d inset; }}
-.hbt {{ margin-top: 48px; }} .hsf > a img {{ display:block; width:100%; height:auto; }} .hbt.hs .lede {{ margin: -6px 0 18px; }} .hbt h2 {{ margin: 0 0 18px; font-size: 1.5rem; }} .hbt h2 span {{ color: var(--ink2); font-weight: 400; }} .hbt.ok h2::before {{ content: "✓ "; color: #2b7a3d; }}
+.hbt {{ margin-top: 48px; }} .hsf > a img {{ display:block; width:100%; height:auto; }} .hbt.hs .lede {{ margin: -6px 0 18px; }} .hsl {{ margin: 36px 0 14px; font-size: 1.25rem; }} .hbt h2 {{ margin: 0 0 18px; font-size: 1.5rem; }} .hbt h2 span {{ color: var(--ink2); font-weight: 400; }} .hbt.ok h2::before {{ content: "✓ "; color: #2b7a3d; }}
 .hbs {{ display: grid; gap: 28px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }} .hbt.ok .hb {{ border-color: #2b7a3d; }}
 .hbv {{ display: grid; grid-template-columns: 1fr 160px; gap: 10px; align-items: start; background: var(--bg); padding: 10px; }} .hbv > a img {{ display: block; width: 100%; height: auto; }}
 .hbp {{ position: relative; }} .hbp img {{ display: block; width: 100%; height: auto; border-radius: 14px; border: 3px solid var(--ink); }} .hbp span {{ position: absolute; left: 0; right: 0; bottom: -18px; text-align: center; font-size: .72rem; color: var(--ink2); }}
@@ -577,11 +580,11 @@ document.getElementById('hbzip').addEventListener('click', function () {{
         hfiles = [f"creatives/home/horoshop/{n}" for n in sorted(x.name for x in hout.iterdir() if x.suffix in (".jpg", ".webp") and "-1200" not in x.name)]
         solo = f'''<header><a href="home-banners">← Усі банери для головної</a></header>
 <h1>Банер головної · формати Хорошоп</h1>
-<p class="lede"><b>«Студійний кадр · темний» — обраний банер колекції SOLO</b> у чотирьох розмірах за ТЗ Horoshop. Кожен — JPG і WebP у точному розмірі; «Завантажити всі» збирає ZIP.</p>
+<p class="lede"><b>«Студійний кадр · темний» — обраний банер колекції SOLO</b> у чотирьох розмірах за ТЗ Horoshop, українською, російською та англійською (тексти — з відповідних версій obiimy.world). Кожен — JPG і WebP у точному розмірі; «Завантажити всі» збирає ZIP.</p>
 <p class="lede hbl"><button type="button" id="hbzip">Завантажити всі (ZIP)</button><span id="hbn"></span></p>
-<section class="hbt hs"><div class="hbs">{"".join(hcards)}</div></section>
+<section class="hbt hs">{hcards_html}</section>
 <style>.hbl {{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:14px; }} .hbl button {{ font:inherit; font-size:.88rem; border:0; background:var(--acc); color:#fff; border-radius:999px; padding:10px 16px; cursor:pointer; }} .hbl button[disabled] {{ opacity:.6; }} #hbn {{ font-size:.85rem; color:var(--ink2); }}
-.hbt {{ margin-top: 32px; }} .hbs {{ display: grid; gap: 28px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }} .hsf > a img {{ display:block; width:100%; height:auto; }}
+.hbt {{ margin-top: 32px; }} .hbs {{ display: grid; gap: 28px; }} .hsl {{ margin: 36px 0 14px; font-size: 1.25rem; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }} .hsf > a img {{ display:block; width:100%; height:auto; }}
 .hb figcaption {{ display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 18px 18px 14px; font-size: .92rem; color: var(--ink2); }} .hb b {{ color: var(--ink); font-size: 1.05rem; }} .hb p {{ margin: 4px 0 0; }} .hba {{ display: flex; gap: 16px; }} .hba a {{ color: var(--acc); font-weight: 600; text-decoration: none; white-space: nowrap; }}
 .picks, .fmt, .toc, .all, #lb {{ display: none !important; }}</style>
 <script>

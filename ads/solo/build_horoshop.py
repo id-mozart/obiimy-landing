@@ -39,17 +39,17 @@ for lang in T:
     # Desktop LINE 1 (and the inner-page top, scaled): the lock-up on ink, the close-up to the right edge, a soft blend between
     ad(f"hs-desktop-line1{sfx}", 1920, 576, f"""
   <div style="inset:0;background:{INK}"></div>
-  {photo(640, 360, "40% 36%")}
+  {photo(640, 480, "40% 36%")}
   {lock_l(lang)}""", note=f"Desktop LINE 1 · 3840 × 1152 at DPR 2 · {lang}")
     # Mobile LINE 1 · 5:2: the same, the lock-up a fifth larger for the small screen
     ad(f"hs-mobile-line1{sfx}", 1920, 768, f"""
   <div style="inset:0;background:{INK}"></div>
-  {photo(700, 380, "40% 38%")}
+  {photo(700, 500, "40% 38%")}
   {lock_l(lang, 1.2)}""", note=f"Mobile LINE 1 · 3840 × 1536 at DPR 2 · {lang}")
     # LINE 2 / LINE 3 (desktop and mobile) · 5:3 at its own size
     ad(f"hs-line2{sfx}", 1440, 864, f"""
   <div style="inset:0;background:{INK}"></div>
-  {photo(470, 340, "42% 40%")}
+  {photo(470, 440, "42% 40%")}
   {lock_l(lang)}""", note=f"LINE 2 / LINE 3 · 1440 × 864 · {lang}")
 
 if "finish" in sys.argv:

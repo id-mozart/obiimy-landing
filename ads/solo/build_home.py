@@ -112,8 +112,8 @@ ad("home-g-reblum-light", f'''
 # H · the same frame as a panel on dark
 ad("home-h-reblum-dark", f'''
   <div style="inset:0;background:#141110"></div>
-  <div class="ph" style="left:640px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 360px);mask-image:linear-gradient(90deg,transparent 0,#000 360px)"><img src="{RB}" alt="" style="object-position:40% 36%"></div>
-  <div style="left:640px;top:0;bottom:0;width:324px;background:linear-gradient(90deg,#141110 0,rgba(20,17,16,.15) 40%,rgba(20,17,16,0) 100%)"></div>
+  <div class="ph" style="left:640px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 480px);mask-image:linear-gradient(90deg,transparent 0,#000 480px)"><img src="{RB}" alt="" style="object-position:40% 36%"></div>
+  <div style="left:640px;top:0;bottom:0;width:432px;background:linear-gradient(90deg,#141110 0,rgba(20,17,16,.15) 40%,rgba(20,17,16,0) 100%)"></div>
   {lock()}{logo()}''', note="Reblum close-up, dark")
 
 # I · the scarf knot to the edge: a horizontal band of the frame, the lock-up over a soft dark veil

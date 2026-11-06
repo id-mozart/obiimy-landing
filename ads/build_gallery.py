@@ -573,6 +573,27 @@ document.getElementById('hbzip').addEventListener('click', function () {{
 </script>'''
     page = render(body, "", "").replace("<title>Креативи Obiimy</title>", "<title>Банери для головної obiimy.world — SOLO</title>")
     (site / "home-banners.html").write_text(page)
+    if hcards:   # 06.11: a standalone page with only the chosen banner in the Horoshop sizes — the link to hand to the content manager
+        hfiles = [f"creatives/home/horoshop/{n}" for n in sorted(x.name for x in hout.iterdir() if x.suffix in (".jpg", ".webp") and "-1200" not in x.name)]
+        solo = f'''<header><a href="home-banners">← Усі банери для головної</a></header>
+<h1>Банер головної · формати Хорошоп</h1>
+<p class="lede"><b>«Студійний кадр · темний» — обраний банер колекції SOLO</b> у чотирьох розмірах за ТЗ Horoshop. Кожен — JPG і WebP у точному розмірі; «Завантажити всі» збирає ZIP.</p>
+<p class="lede hbl"><button type="button" id="hbzip">Завантажити всі (ZIP)</button><span id="hbn"></span></p>
+<section class="hbt hs"><div class="hbs">{"".join(hcards)}</div></section>
+<style>.hbl {{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:14px; }} .hbl button {{ font:inherit; font-size:.88rem; border:0; background:var(--acc); color:#fff; border-radius:999px; padding:10px 16px; cursor:pointer; }} .hbl button[disabled] {{ opacity:.6; }} #hbn {{ font-size:.85rem; color:var(--ink2); }}
+.hbt {{ margin-top: 32px; }} .hbs {{ display: grid; gap: 28px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }} .hsf > a img {{ display:block; width:100%; height:auto; }}
+.hb figcaption {{ display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 18px 18px 14px; font-size: .92rem; color: var(--ink2); }} .hb b {{ color: var(--ink); font-size: 1.05rem; }} .hb p {{ margin: 4px 0 0; }} .hba {{ display: flex; gap: 16px; }} .hba a {{ color: var(--acc); font-weight: 600; text-decoration: none; white-space: nowrap; }}
+.picks, .fmt, .toc, .all, #lb {{ display: none !important; }}</style>
+<script>
+document.getElementById('hbzip').addEventListener('click', function () {{
+  var btn = this, n = document.getElementById('hbn'), items = {json.dumps(hfiles)}; btn.disabled = true;
+  (window.JSZip ? Promise.resolve() : new Promise(function (ok, no) {{ var s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); }}))
+  .then(function () {{ var zip = new JSZip(), done = 0; return Promise.all(items.map(function (u) {{ return fetch(u).then(function (r) {{ return r.blob(); }}).then(function (b) {{ zip.file(u.split('/').pop(), b); n.textContent = 'Пакую: ' + (++done) + ' з ' + items.length; }}); }})).then(function () {{ return zip.generateAsync({{ type: 'blob' }}); }}); }})
+  .then(function (blob) {{ var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'obiimy-solo-horoshop.zip'; a.click(); n.textContent = ''; btn.disabled = false; }})
+  .catch(function (e) {{ n.textContent = 'Не вдалося: ' + e; btn.disabled = false; }});
+}});
+</script>'''
+        (site / "home-horoshop.html").write_text(render(solo, "", "").replace("<title>Креативи Obiimy</title>", "<title>Банер головної · формати Хорошоп — SOLO</title>"))
     build_home_mock(site, out, [(id, title) for id, title, _, _ in HOME if (src / f"{id}.jpg").exists()])
 
 def build_home_mock(site, out, items):

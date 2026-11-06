@@ -23,6 +23,18 @@ PUBLISHED = ROOT / "data" / "published"
 CORP_DIR = ROOT / "data" / "corp"                                          # content edits of the corporate landing (cms.js on the site): corp.json + uploads + history
 CORP_PASSWORD = os.environ.get("CORP_EDIT_PASSWORD") or ""                 # set → «Опублікувати» on the landing needs this key (X-Corp-Key); empty → open, as the deck editor
 CORP_ORIGINS = ("https://corporate.obiimy.world", "https://edem.obiimy.world", "https://obiimy-landing-production.up.railway.app", "http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:8765", "http://127.0.0.1:8765")                                 # the PDF «Опубликовать» copies here on Railway (src/deck-publish-prod.py)
+# WayForPay for the KRAЇNA EDEM × OBIIMY sale page (the client's merchant account obiimy_world, access given 06.11.2026): the
+# landing's order becomes a signed Purchase form that the browser posts to secure.wayforpay.com; the result comes back to
+# /api/wfp (serviceUrl) and the visitor returns to the page through the site's /pay/return. Nothing in the merchant cabinet is
+# touched — the shop on obiimy.world keeps using the same account; the key lives only in the environment
+# (locally ~/.config/obiimy/wayforpay.env, on Railway the variables of the deck-editor service). Unset → orders are stored
+# as before and the manager sends a payment link by hand.
+WFP_ACCOUNT = os.environ.get("WFP_MERCHANT_ACCOUNT") or ""
+WFP_SECRET = os.environ.get("WFP_SECRET_KEY") or ""
+WFP_DOMAIN = os.environ.get("WFP_DOMAIN") or "obiimy.world"
+WFP_PAY_URL = "https://secure.wayforpay.com/pay"
+EDEM_PRICE = int(os.environ.get("EDEM_PRICE") or 8500)                     # the retail price of the scarf, грн (review/SITE-FACTS.md, the client 04.11.2026); the server prices the order, never the browser
+EDEM_PRODUCT = "Хустка KRAЇNA EDEM × OBIIMY «Trypillia — The Art of Origins», 88 × 88 см"
 EDITS = pathlib.Path(os.environ.get("DECK_EDITS") or ROOT / "src" / "deck-edits.json")
 PAGES = pathlib.Path(os.environ.get("DECK_EDITOR_PAGES") or ROOT / "review" / "deck-editor-pages.json")
 CSS = ROOT / "review" / "deck-editor.css"
@@ -607,9 +619,11 @@ def api_corp_upload(name, data, base):
 
 # ─── early-access registrations of the KRAЇNA EDEM × OBIIMY landing ─────────────────────────────────────────────────────────
 EDEM_DIR = ROOT / "data" / "edem"
-def api_edem_register(body, ip=""):
+def api_edem_register(body, ip="", origin="", base=""):
     """POST /api/edem from the landing: one JSON line per registration or order on the volume (data/edem/registrations.jsonl).
-    An order (kind=order, from edem.obiimy.world since 04.11.2026) also carries city, branch (Nova Poshta), qty, comment and total."""
+    An order (kind=order, from edem.obiimy.world since 04.11.2026) also carries city, branch (Nova Poshta), qty, comment and total;
+    since 06.11.2026 it gets a reference (EDEM-date-time-xxxx), the server's own amount, and — when WayForPay is configured —
+    the signed Purchase fields the browser posts to secure.wayforpay.com (returnUrl on the landing's own origin, serviceUrl here)."""
     t = lambda k, n: str(body.get(k) or "").strip()[:n]
     name, phone = t("name", 120), t("phone", 60)
     if len(name) < 2 or len(phone) < 5: raise Problem("Потрібні ім’я та телефон.")
@@ -617,15 +631,82 @@ def api_edem_register(body, ip=""):
     if kind == "order" and (len(t("city", 80)) < 2 or len(t("branch", 120)) < 1): raise Problem("Потрібні місто й відділення Нової пошти.")
     rec = {"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "kind": kind, "name": name, "phone": phone, "email": t("email", 120),
            "interest": t("interest", 80), "note": t("note", 1000), "page": t("page", 200), "ip": ip}
-    if kind == "order": rec.update(city=t("city", 80), branch=t("branch", 120), qty=t("qty", 3), comment=t("comment", 300), total=t("total", 30))
+    out = dict(ok=True)
+    if kind == "order":
+        try: qty = min(5, max(1, int(t("qty", 3) or 1)))
+        except ValueError: qty = 1
+        ref = f"EDEM-{time.strftime('%Y%m%d-%H%M%S')}-{os.urandom(2).hex()}"
+        lang = "en" if t("lang", 2) == "en" or "-en" in t("page", 200).split("?")[0][-12:] else "uk"
+        rec.update(city=t("city", 80), branch=t("branch", 120), qty=str(qty), comment=t("comment", 300), total=t("total", 30), ref=ref, amount=qty * EDEM_PRICE, lang=lang)
+        out["ref"] = ref
+        if WFP_ACCOUNT and WFP_SECRET and origin in CORP_ORIGINS and base:
+            # the reference rides in the returnUrl too: a cancelled payment comes back without a body
+            out["pay"] = wfp_purchase(rec, f"{origin}/pay/return?lang={lang}&ref={ref}", f"{base}/api/wfp"); out["url"] = WFP_PAY_URL; rec["pay"] = "wayforpay"
     EDEM_DIR.mkdir(parents=True, exist_ok=True)
     with open(EDEM_DIR / "registrations.jsonl", "a", encoding="utf-8") as f: f.write(json.dumps(rec, ensure_ascii=False) + "\n")
-    return dict(ok=True)
+    return out
+
+def _jsonl(name):
+    f = EDEM_DIR / name
+    return [json.loads(l) for l in f.read_text(encoding="utf-8").splitlines() if l.strip()] if f.exists() else []
+
+def wfp_sign(parts):
+    """WayForPay's merchantSignature: HMAC-MD5 (hex) with the secret key over the values joined with «;» (UTF-8)."""
+    import hmac
+    return hmac.new(WFP_SECRET.encode("utf-8"), ";".join(str(x) for x in parts).encode("utf-8"), hashlib.md5).hexdigest()
+
+def wfp_purchase(rec, return_url, service_url):
+    """The fields of the Purchase form for one order (https://wiki.wayforpay.com/en/view/852102): one product line, the
+    quantity from the order, amount = qty × price in UAH; the signature covers account, domain, reference, date, amount,
+    currency and the product arrays, in that order."""
+    qty = int(rec["qty"]); amount = qty * EDEM_PRICE; date = int(time.time())
+    fields = {"merchantAccount": WFP_ACCOUNT, "merchantDomainName": WFP_DOMAIN, "merchantAuthType": "SimpleSignature", "merchantTransactionSecureType": "AUTO",
+              "orderReference": rec["ref"], "orderDate": date, "amount": amount, "currency": "UAH",
+              "productName[]": EDEM_PRODUCT, "productCount[]": qty, "productPrice[]": EDEM_PRICE,
+              "clientFirstName": rec["name"], "clientPhone": rec["phone"], "clientEmail": rec.get("email") or "", "clientCity": rec.get("city") or "",
+              "language": "EN" if rec.get("lang") == "en" else "UA", "returnUrl": return_url, "serviceUrl": service_url, "orderTimeout": 49000}
+    fields["merchantSignature"] = wfp_sign([WFP_ACCOUNT, WFP_DOMAIN, rec["ref"], date, amount, "UAH", EDEM_PRODUCT, qty, EDEM_PRICE])
+    return {k: v for k, v in fields.items() if v != ""}
+
+def api_wfp_callback(body):
+    """POST /api/wfp from WayForPay (serviceUrl) after a payment attempt: the signature is checked over
+    merchantAccount;orderReference;amount;currency;authCode;cardPan;transactionStatus;reasonCode, the result is appended to
+    data/edem/payments.jsonl, and the required acknowledgement {orderReference, status: accept, time, signature} goes back —
+    otherwise WayForPay keeps retrying for four days."""
+    import hmac
+    if not WFP_SECRET: raise Problem("WayForPay не налаштовано.", 503)
+    g = lambda k: "" if body.get(k) is None else str(body.get(k))
+    expect = wfp_sign([g(k) for k in ("merchantAccount", "orderReference", "amount", "currency", "authCode", "cardPan", "transactionStatus", "reasonCode")])
+    if not hmac.compare_digest(expect, g("merchantSignature")): raise Problem("Невірний підпис.", 403)
+    if g("merchantAccount") != WFP_ACCOUNT: raise Problem("Чужий акаунт.", 403)
+    rec = {"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "ref": g("orderReference")[:60], "status": g("transactionStatus")[:40], "amount": g("amount")[:20], "currency": g("currency")[:8],
+           "cardPan": g("cardPan")[:24], "cardType": g("cardType")[:20], "paymentSystem": g("paymentSystem")[:30], "reasonCode": g("reasonCode")[:10], "reason": g("reason")[:120],
+           "fee": g("fee")[:20], "processingDate": g("processingDate")[:20], "email": g("email")[:120], "phone": g("phone")[:40]}
+    EDEM_DIR.mkdir(parents=True, exist_ok=True)
+    with open(EDEM_DIR / "payments.jsonl", "a", encoding="utf-8") as f: f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    sys.stderr.write(f"{time.strftime('%H:%M:%S')}  wayforpay {rec['ref']} {rec['status']} {rec['amount']} {rec['currency']}\n")
+    now = int(time.time())
+    return {"orderReference": rec["ref"], "status": "accept", "time": now, "signature": wfp_sign([rec["ref"], "accept", now])}
+
+def edem_payment(ref):
+    """The latest WayForPay result of an order, or None."""
+    rows = [r for r in _jsonl("payments.jsonl") if r.get("ref") == ref]
+    return rows[-1] if rows else None
+
+def api_edem_status(ref):
+    """GET /api/edem-status?ref=… for the page the visitor returns to: only the payment state, no personal data."""
+    if not re.match(r"^EDEM-[0-9]{8}-[0-9]{6}-[0-9a-f]{4}$", ref or ""): raise Problem("Невідоме замовлення.", 404)
+    p = edem_payment(ref)
+    st = (p or {}).get("status") or ""
+    return dict(ok=True, ref=ref, status="paid" if st == "Approved" else "declined" if st in ("Declined", "Expired") else "refunded" if st.startswith("Refund") or st == "Voided" else "pending" if p else "new")
 
 def api_edem_list():
-    f = EDEM_DIR / "registrations.jsonl"
-    rows = [json.loads(l) for l in f.read_text(encoding="utf-8").splitlines() if l.strip()] if f.exists() else []
-    return dict(ok=True, count=len(rows), rows=rows)
+    rows = _jsonl("registrations.jsonl"); pays = _jsonl("payments.jsonl")
+    last = {}
+    for p in pays: last[p["ref"]] = p
+    for r in rows:
+        if r.get("ref"): r["payment"] = last.get(r["ref"])
+    return dict(ok=True, count=len(rows), rows=rows, payments=len(pays))
 
 class Handler(SimpleHTTPRequestHandler):
     server_version = "DeckEditor/1"
@@ -724,6 +805,12 @@ class Handler(SimpleHTTPRequestHandler):
             import hmac
             if not CORP_PASSWORD or not hmac.compare_digest(q.get("key") or "", CORP_PASSWORD): return self.send_json(dict(ok=False, error="Потрібен ключ."), 401)
             return self.api(api_edem_list)
+        if u.path == "/api/wfp": return self.send_json(dict(ok=True, configured=bool(WFP_ACCOUNT and WFP_SECRET), account=WFP_ACCOUNT[:3] + "…" if WFP_ACCOUNT else "", domain=WFP_DOMAIN))   # a health check: is WayForPay set up here?
+        if u.path == "/api/edem-status":
+            try: data = json.dumps(api_edem_status(q.get("ref") or ""), ensure_ascii=False).encode("utf-8"); status = 200
+            except Problem as e: data = json.dumps(dict(ok=False, error=str(e)), ensure_ascii=False).encode("utf-8"); status = e.status
+            self.send_response(status); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "no-store"); self.corp_cors(); self.end_headers(); return self.wfile.write(data)
         if u.path == "/api/pages": return self.api(api_pages)
         if u.path == "/api/library": return self.api(api_library)
         if u.path == "/api/versions": return self.api(api_versions)
@@ -798,6 +885,7 @@ class Handler(SimpleHTTPRequestHandler):
             return self.kp_pdf(self.rfile.read(n))
         if u.path in ("/api/corp", "/api/corp-upload"): return self.corp_post(u, q)
         if u.path == "/api/edem": return self.edem_post()
+        if u.path == "/api/wfp": return self.wfp_post()
         if not self.authed(): return
         if not self.local(post=True): return self.send_error(403, "Local use only")
         try: n = int(self.headers.get("Content-Length") or 0)
@@ -852,11 +940,29 @@ class Handler(SimpleHTTPRequestHandler):
         if n < 0 or n > 16384: return reply(dict(ok=False, error="Завеликий запит."), 413)
         try:
             body = json.loads(self.rfile.read(n).decode("utf-8")); assert isinstance(body, dict)
-            return reply(api_edem_register(body, self.headers.get("X-Forwarded-For") or self.client_address[0]))
+            base = ("https://" if self.headers.get("X-Forwarded-Proto") == "https" else "http://") + (self.headers.get("Host") or f"127.0.0.1:{PORT}")
+            return reply(api_edem_register(body, self.headers.get("X-Forwarded-For") or self.client_address[0], origin, base))
         except (ValueError, AssertionError): return reply(dict(ok=False, error="Запит не розібрати."), 400)
         except Problem as e: return reply(dict(ok=False, error=str(e)), e.status)
         except Exception as e:
             sys.stderr.write(f"{type(e).__name__}: {e}\n"); return reply(dict(ok=False, error="Помилка сервера."), 500)
+
+    def wfp_post(self):
+        """The payment result from WayForPay's servers (JSON, no browser origin): checked by signature, acknowledged as the
+        service expects; any problem is answered with its status so the service retries later."""
+        try: n = int(self.headers.get("Content-Length") or 0)
+        except ValueError: n = -1
+        if n < 0 or n > 65536: return self.send_json(dict(ok=False, error="Завеликий запит."), 413)
+        raw = self.rfile.read(n)
+        try:
+            try: body = json.loads(raw.decode("utf-8"))
+            except ValueError: body = json.loads(urllib.parse.unquote_plus(raw.decode("utf-8")).split("=", 1)[-1])   # some gateways post the JSON as a form field
+            assert isinstance(body, dict)
+            return self.send_json(api_wfp_callback(body))
+        except (ValueError, AssertionError): return self.send_json(dict(ok=False, error="Запит не розібрати."), 400)
+        except Problem as e: return self.send_json(dict(ok=False, error=str(e)), e.status)
+        except Exception as e:
+            sys.stderr.write(f"{type(e).__name__}: {e}\n"); return self.send_json(dict(ok=False, error="Помилка сервера."), 500)
 
     def do_DELETE(self):
         if not self.authed(): return

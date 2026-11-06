@@ -180,11 +180,13 @@ form.f .err { color: #C0392B; font-size: 13px; display: none; } form.f label.bad
 </div></section>
 
 <section class="reg" id="order"><div class="px bg" data-speed="-50" aria-hidden="true"><img src="photo/edem/mandala-800.webp" srcset="photo/edem/mandala-480.webp 480w, photo/edem/mandala-800.webp 800w, photo/edem/mandala.webp 935w" sizes="520px" width="935" height="935" alt="" loading="lazy" decoding="async"></div><div class="wrap">
-  <div class="rv"><p class="eyebrow">Замовлення</p><h2>Замовити хустку</h2><p class="lead">Хустка «Trypillia — The Art of Origins» — 8 500 грн. Залиште контакти й відділення Нової пошти: ми підтвердимо замовлення, надішлемо посилання на оплату карткою й відправимо хустку після оплати.</p>
-    <div class="steps"><div><i>01</i><div><h3>Замовлення</h3><p>Ім’я, телефон, місто й відділення або поштомат Нової пошти.</p></div></div><div><i>02</i><div><h3>Підтвердження й оплата</h3><p>Менеджер зв’яжеться, підтвердить замовлення й надішле персональне посилання на оплату карткою.</p></div></div><div><i>03</i><div><h3>Доставка</h3><p>Після оплати — підтвердження й відправлення хустки Новою поштою.</p></div></div></div>
+  <div class="rv"><p class="eyebrow">Замовлення</p><h2>Замовити хустку</h2><p class="lead">Хустка «Trypillia — The Art of Origins» — 8 500 грн. Залиште контакти й відділення Нової пошти, оплатіть карткою — і ми відправимо хустку.</p>
+    <div class="steps"><div><i>01</i><div><h3>Замовлення</h3><p>Ім’я, телефон, місто й відділення або поштомат Нової пошти.</p></div></div><div><i>02</i><div><h3>Оплата карткою</h3><p>Після кнопки «Замовити й оплатити» — захищена сторінка оплати WayForPay.</p></div></div><div><i>03</i><div><h3>Доставка</h3><p>Після оплати менеджер підтвердить замовлення й відправить хустку Новою поштою.</p></div></div></div>
     <div class="contacts">Питання: <a href="tel:+380670108525">+38 067 010 85 25</a> · <a href="mailto:sale@obiimy.world">sale@obiimy.world</a> · <a href="https://t.me/OBIIMY_sales" target="_blank" rel="noopener">Telegram</a></div></div>
   <div class="rv panel">
-  <form class="f" id="reg" novalidate data-kind="order" data-title="Замовлення · Trypillia — The Art of Origins" data-total="8 500 грн" data-sending="Надсилаємо…" data-total-label="Разом" data-fail-h="Замовлення не надіслано" data-fail-p="Не вдалося надіслати замовлення автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.">
+  <form class="f" id="reg" novalidate data-kind="order" data-title="Замовлення · Trypillia — The Art of Origins" data-total="8 500 грн" data-sending="Надсилаємо…" data-paying="Переходимо до оплати…" data-total-label="Разом" data-fail-h="Замовлення не надіслано" data-fail-p="Не вдалося надіслати замовлення автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено."
+        data-paid-h="Оплату отримано — дякуємо!" data-paid-p="Замовлення {ref} оплачено. Менеджер зв’яжеться з вами й відправить хустку Новою поштою. Якщо є запитання — напишіть нам у Telegram." data-pending-h="Оплата обробляється" data-pending-p="Замовлення {ref} прийнято, банк ще підтверджує платіж. Щойно оплата пройде, менеджер зв’яжеться з вами. Якщо є запитання — напишіть нам у Telegram." data-declined-h="Оплата не пройшла" data-declined-p="Замовлення {ref} збережено, але банк не підтвердив платіж. Спробуйте ще раз або напишіть нам у Telegram — надішлемо посилання на оплату." data-cancel-h="Оплату не завершено" data-cancel-p="Замовлення {ref} збережено, але оплату не виконано. Спробуйте ще раз або напишіть нам у Telegram — надішлемо посилання на оплату." data-retry="Спробувати ще раз">
+    <input type="hidden" name="lang" value="uk">
     <label><span>Ім’я *</span><input name="name" type="text" autocomplete="name" required aria-describedby="err-name"><span class="err" id="err-name" role="alert">Вкажіть ім’я</span></label>
     <label><span>Телефон *</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required aria-describedby="err-phone"><span class="err" id="err-phone" role="alert">Вкажіть телефон, щонайменше 9 цифр</span></label>
     <label class="full"><span>Email <small style="font-weight:400">(необов’язково)</small></span><input name="email" type="email" autocomplete="email"></label>
@@ -193,12 +195,12 @@ form.f .err { color: #C0392B; font-size: 13px; display: none; } form.f label.bad
     <label><span>Кількість</span><select name="qty" id="qty" data-fmt="uk"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
     <label><span>Коментар <small style="font-weight:400">(необов’язково)</small></span><input name="comment" type="text" maxlength="300"></label>
     <div class="total"><span>Хустка 88 × 88 см, 100% шовк · <span id="qty-t">1</span> шт.</span><b id="total-t">8 500 грн</b></div>
-    <div class="actions"><button class="btn btn-main" type="submit">Замовити за 8 500 грн</button><span class="hint">Оплата карткою — за посиланням після підтвердження менеджером.<br>* обов’язкові поля</span></div>
+    <div class="actions"><button class="btn btn-main" type="submit">Замовити й оплатити — 8 500 грн</button><span class="hint">Оплата карткою на захищеній сторінці WayForPay.<br>* обов’язкові поля</span></div>
   </form>
   <div class="done" id="reg-done" hidden>
     <h3 id="done-h">Дякуємо — замовлення прийнято</h3>
     <p id="done-p">Менеджер зв’яжеться з вами найближчим часом, підтвердить замовлення й надішле посилання на оплату. Якщо зручніше — напишіть нам у Telegram.</p>
-    <div class="row"><a class="btn btn-main" id="reg-tg" href="https://t.me/OBIIMY_sales" target="_blank" rel="noopener">Написати в Telegram</a><a class="btn btn-line" href="#top">На початок</a></div>
+    <div class="row"><a class="btn btn-main" id="reg-tg" href="https://t.me/OBIIMY_sales" target="_blank" rel="noopener">Написати в Telegram</a><a class="btn btn-line" id="reg-top" href="#top">На початок</a></div>
   </div></div>
 </div></section>
 <footer><span>Kraїna Edem × Obiimy · Trypillia — The Art of Origins · 2026</span><span><a href="tel:+380670108525">+38 067 010 85 25</a> · <a href="mailto:sale@obiimy.world">sale@obiimy.world</a></span></footer>
@@ -221,8 +223,26 @@ form.f .err { color: #C0392B; font-size: 13px; display: none; } form.f label.bad
     var btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = S('sending', 'Надсилаємо…');
     tg.href = 'https://t.me/OBIIMY_sales?text=' + encodeURIComponent(lines.join('\n'));
     function finish(ok) { if (!ok) { var o = data.kind === 'order'; document.getElementById('done-h').textContent = S('fail-h', (o ? 'Замовлення' : 'Заявку') + ' не надіслано'); document.getElementById('done-p').textContent = S('fail-p', 'Не вдалося надіслати ' + (o ? 'замовлення' : 'заявку') + ' автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.'); } f.hidden = true; done.hidden = false; var h = document.getElementById('done-h'); h.setAttribute('tabindex', '-1'); h.focus(); }
-    fetch(API + '/api/edem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(function (r) { return r.json(); }).then(function (j) { if (!j.ok) throw new Error('x'); finish(true); }).catch(function () { finish(false); });
+    fetch(API + '/api/edem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j.ok) throw new Error('x');
+      if (j.pay && j.url) {   // WayForPay is on: the signed Purchase fields go to the payment page as a plain form POST (the visitor comes back to ?order=…&pay=…)
+        var pf = document.createElement('form'); pf.method = 'POST'; pf.action = j.url; pf.acceptCharset = 'utf-8'; pf.hidden = true;
+        Object.keys(j.pay).forEach(function (k) { var i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = j.pay[k]; pf.appendChild(i); });
+        document.body.appendChild(pf); btn.textContent = S('paying', 'Переходимо до оплати…'); pf.submit(); return;
+      }
+      finish(true);
+    }).catch(function () { finish(false); });
   });
+  // back from the payment page: the state of the order instead of the form (the status is confirmed with the server when it can be)
+  var qs = new URLSearchParams(location.search), ref = qs.get('order'), pay = qs.get('pay');
+  if (ref && pay && /^EDEM-[\d-]+-[0-9a-f]{4}$/.test(ref)) {
+    var S2 = function (k, d) { return f.getAttribute('data-' + k) || d; }, top = document.getElementById('reg-top'), topText = top ? top.textContent : '';
+    function show(st) { st = st === 'paid' ? 'paid' : st === 'pending' ? 'pending' : st === 'cancel' ? 'cancel' : 'declined'; var again = st === 'declined' || st === 'cancel'; document.getElementById('done-h').textContent = S2(st + '-h', st); document.getElementById('done-p').textContent = S2(st + '-p', '').replace('{ref}', ref); if (top) { top.textContent = again ? S2('retry', 'Спробувати ще раз') : topText; top.href = again ? location.pathname + '#order' : '#top'; } }
+    show(pay); f.hidden = true; done.hidden = false;
+    try { history.replaceState(null, '', location.pathname + '#order'); } catch (e) {}
+    fetch(API + '/api/edem-status?ref=' + encodeURIComponent(ref)).then(function (r) { return r.json(); }).then(function (j) { if (j.ok && j.status && j.status !== 'new') show(j.status === 'refunded' ? 'declined' : j.status); else if (j.ok && j.status === 'new' && pay === 'pending') show('cancel'); }).catch(function () {});
+    var go = function () { var o = document.getElementById('order'); if (o) o.scrollIntoView(); }; go(); setTimeout(go, 300); window.addEventListener('load', function () { setTimeout(go, 500); });
+  }
   req.forEach(function (el) { el.addEventListener('input', function () { this.closest('label').classList.remove('bad'); this.removeAttribute('aria-invalid'); }); });
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px', threshold: .05 });

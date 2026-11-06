@@ -196,23 +196,32 @@ def light_css():
         assert c.count(a) == 1, a[:60]; c = c.replace(a, b)
     return c.replace("rgba(0,0,0,.8)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.75)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.7)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.65)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.6)", "rgba(58,42,28,.3)").replace("rgba(0,0,0,.4)", "rgba(58,42,28,.15)")
 
+# 06.11.2026: the client's WayForPay account is connected — the order goes straight to the card payment page (see deck-editor.py)
 ORDER_STEPS = [("Замовлення", "Ім’я, телефон, місто й відділення або поштомат Нової пошти."),
-               ("Підтвердження й оплата", "Менеджер зв’яжеться, підтвердить замовлення й надішле персональне посилання на оплату карткою."),
-               ("Доставка", "Після оплати — підтвердження й відправлення хустки Новою поштою.")]
+               ("Оплата карткою", "Після кнопки «Замовити й оплатити» — захищена сторінка оплати WayForPay."),
+               ("Доставка", "Після оплати менеджер підтвердить замовлення й відправить хустку Новою поштою.")]
 
 FORM_UK = dict(title="Замовлення · Trypillia — The Art of Origins", sending="Надсилаємо…", total_label="Разом", fail_h="Замовлення не надіслано",
                fail_p="Не вдалося надіслати замовлення автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.",
                name="Ім’я *", e_name="Вкажіть ім’я", phone="Телефон *", e_phone="Вкажіть телефон, щонайменше 9 цифр", email="Email", opt="(необов’язково)",
                city="Місто *", e_city="Вкажіть місто", branch="Відділення Нової пошти *", ph_branch="№ відділення або поштомат", e_branch="Вкажіть відділення чи поштомат",
-               qty="Кількість", comment="Коментар", line="Хустка 88 × 88 см, 100% шовк ·", pcs="шт.", submit="Замовити за", hint="Оплата карткою — за посиланням після підтвердження менеджером.<br>* обов’язкові поля",
+               qty="Кількість", comment="Коментар", line="Хустка 88 × 88 см, 100% шовк ·", pcs="шт.", submit="Замовити й оплатити —", hint="Оплата карткою на захищеній сторінці WayForPay.<br>* обов’язкові поля", paying="Переходимо до оплати…",
                done_h="Дякуємо — замовлення прийнято", done_p="Менеджер зв’яжеться з вами найближчим часом, підтвердить замовлення й надішле посилання на оплату. Якщо зручніше — напишіть нам у Telegram.",
+               paid_h="Оплату отримано — дякуємо!", paid_p="Замовлення {ref} оплачено. Менеджер зв’яжеться з вами й відправить хустку Новою поштою. Якщо є запитання — напишіть нам у Telegram.",
+               pending_h="Оплата обробляється", pending_p="Замовлення {ref} прийнято, банк ще підтверджує платіж. Щойно оплата пройде, менеджер зв’яжеться з вами. Якщо є запитання — напишіть нам у Telegram.",
+               declined_h="Оплата не пройшла", declined_p="Замовлення {ref} збережено, але банк не підтвердив платіж. Спробуйте ще раз або напишіть нам у Telegram — надішлемо посилання на оплату.", retry="Спробувати ще раз",
+               cancel_h="Оплату не завершено", cancel_p="Замовлення {ref} збережено, але оплату не виконано. Спробуйте ще раз або напишіть нам у Telegram — надішлемо посилання на оплату.",
                tg="Написати в Telegram", top="На початок")
 FORM_EN = dict(title="Order · Trypillia — The Art of Origins", sending="Sending…", total_label="Total", fail_h="The order was not sent",
                fail_p="We could not send the order automatically. Tap “Write on Telegram” — the text is ready.",
                name="Name *", e_name="Please enter your name", phone="Phone *", e_phone="Please enter a phone number with at least 9 digits", email="Email", opt="(optional)",
                city="City *", e_city="Please enter your city", branch="Nova Poshta branch / address *", ph_branch="Branch no. or address", e_branch="Please enter a branch or an address",
-               qty="Quantity", comment="Comment", line="Scarf 88 × 88 cm, 100% silk ·", pcs="pc.", submit="Order for", hint="Card payment — via a link once our manager confirms the order.<br>* required fields",
+               qty="Quantity", comment="Comment", line="Scarf 88 × 88 cm, 100% silk ·", pcs="pc.", submit="Order and pay —", hint="Card payment on the secure WayForPay page.<br>* required fields", paying="Taking you to the payment page…",
                done_h="Thank you — your order has been received", done_p="Our manager will contact you shortly, confirm the order and send a payment link. If you prefer, write to us on Telegram.",
+               paid_h="Payment received — thank you!", paid_p="Order {ref} is paid. Our manager will contact you and ship the scarf by Nova Poshta. If you have any questions, write to us on Telegram.",
+               pending_h="Payment is being processed", pending_p="Order {ref} has been received and the bank is still confirming the payment. As soon as it goes through, our manager will contact you. Questions — write to us on Telegram.",
+               declined_h="The payment did not go through", declined_p="Order {ref} is saved, but the bank did not confirm the payment. Try again or write to us on Telegram — we will send you a payment link.", retry="Try again",
+               cancel_h="The payment was not completed", cancel_p="Order {ref} is saved, but the payment was not made. Try again or write to us on Telegram — we will send you a payment link.",
                tg="Write on Telegram", top="Back to top")
 PRICE_EN = f"{PRICE:,} UAH"                      # «8,500 UAH»
 
@@ -220,7 +229,9 @@ def order_form(lang="uk"):
     L, P = (FORM_EN, PRICE_EN) if lang == "en" else (FORM_UK, PRICE_T)
     qty = "".join(f'<option value="{n}">{n}</option>' for n in range(1, 6))
     return f'''
-  <form class="f" id="reg" novalidate data-kind="order" data-title="{L["title"]}" data-total="{P}" data-sending="{L["sending"]}" data-total-label="{L["total_label"]}" data-fail-h="{L["fail_h"]}" data-fail-p="{L["fail_p"]}">
+  <form class="f" id="reg" novalidate data-kind="order" data-title="{L["title"]}" data-total="{P}" data-sending="{L["sending"]}" data-paying="{L["paying"]}" data-total-label="{L["total_label"]}" data-fail-h="{L["fail_h"]}" data-fail-p="{L["fail_p"]}"
+        data-paid-h="{L["paid_h"]}" data-paid-p="{L["paid_p"]}" data-pending-h="{L["pending_h"]}" data-pending-p="{L["pending_p"]}" data-declined-h="{L["declined_h"]}" data-declined-p="{L["declined_p"]}" data-cancel-h="{L["cancel_h"]}" data-cancel-p="{L["cancel_p"]}" data-retry="{L["retry"]}">
+    <input type="hidden" name="lang" value="{lang}">
     <label><span>{L["name"]}</span><input name="name" type="text" autocomplete="name" required aria-describedby="err-name"><span class="err" id="err-name" role="alert">{L["e_name"]}</span></label>
     <label><span>{L["phone"]}</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required aria-describedby="err-phone"><span class="err" id="err-phone" role="alert">{L["e_phone"]}</span></label>
     <label class="full"><span>{L["email"]} <small style="font-weight:400">{L["opt"]}</small></span><input name="email" type="email" autocomplete="email"></label>
@@ -234,7 +245,7 @@ def order_form(lang="uk"):
   <div class="done" id="reg-done" hidden>
     <h3 id="done-h">{L["done_h"]}</h3>
     <p id="done-p">{L["done_p"]}</p>
-    <div class="row"><a class="btn btn-main" id="reg-tg" href="{TG}" target="_blank" rel="noopener">{L["tg"]}</a><a class="btn btn-line" href="#top">{L["top"]}</a></div>
+    <div class="row"><a class="btn btn-main" id="reg-tg" href="{TG}" target="_blank" rel="noopener">{L["tg"]}</a><a class="btn btn-line" id="reg-top" href="#top">{L["top"]}</a></div>
   </div>'''
 
 # The English page (edem.obiimy.world/en, client 05.11.2026): the Ukrainian body with every phrase replaced; each pair must match, and no Cyrillic may remain
@@ -286,12 +297,12 @@ EN = [
  ("100% натуральний шовк, ручна обробка краю", "100% natural silk, hand-finished edges"), ("Авторські принти, виготовлено в Україні", "Original prints, made in Ukraine"),
  ("Шоурум: Київ, вул. Петра Сагайдачного, 12", "Showroom: Kyiv, 12 Petra Sahaidachnoho St."),
  ("<p class=\"eyebrow\">Замовлення</p><h2>Замовити хустку</h2>", "<p class=\"eyebrow\">Order</p><h2>Order the scarf</h2>"),
- ("Залиште контакти й відділення Нової пошти: ми підтвердимо замовлення, надішлемо посилання на оплату карткою й відправимо хустку після оплати.", "Leave your contacts and delivery details: we will confirm the order, send you a link to pay by card and ship the scarf once it is paid."),
+ ("Залиште контакти й відділення Нової пошти, оплатіть карткою — і ми відправимо хустку.", "Leave your contacts and delivery details, pay by card — and we will ship the scarf."),
  ("Хустка «Trypillia — The Art of Origins» —", "The “Trypillia — The Art of Origins” scarf —"),
  ("Питання: <a", "Questions: <a"),
 ]
 ORDER_STEPS_EN = [("Order", "Your name, phone, city and a Nova Poshta branch or a delivery address."),
-                  ("Confirmation and payment", "Our manager will get in touch, confirm the order and send you a personal link to pay by card."),
+                  ("Card payment", "After “Order and pay” — the secure WayForPay payment page."),
                   ("Delivery", "Once paid — confirmation and shipping: by Nova Poshta across Ukraine, worldwide at the carrier’s rates.")]
 
 def english(body):
@@ -368,7 +379,7 @@ def main(light=False, lang="uk"):
 </div></section>
 
 <section class="reg" id="order"><div class="px bg" data-speed="-50" aria-hidden="true">{img("photo/edem/mandala.webp", "", sizes="520px")}</div><div class="wrap">
-  <div class="rv"><p class="eyebrow">Замовлення</p><h2>Замовити хустку</h2><p class="lead">Хустка «Trypillia — The Art of Origins» — {PRICE_T}. Залиште контакти й відділення Нової пошти: ми підтвердимо замовлення, надішлемо посилання на оплату карткою й відправимо хустку після оплати.</p>
+  <div class="rv"><p class="eyebrow">Замовлення</p><h2>Замовити хустку</h2><p class="lead">Хустка «Trypillia — The Art of Origins» — {PRICE_T}. Залиште контакти й відділення Нової пошти, оплатіть карткою — і ми відправимо хустку.</p>
     <div class="steps">{"".join(f"<div><i>0{i + 1}</i><div><h3>{t}</h3><p>{d}</p></div></div>" for i, (t, d) in enumerate(ORDER_STEPS_EN if lang == "en" else ORDER_STEPS))}</div>
     <div class="contacts">Питання: <a href="{PHONE_HREF}">{PHONE}</a> · <a href="mailto:{MAIL}">{MAIL}</a> · <a href="{TG}" target="_blank" rel="noopener">Telegram</a></div></div>
   <div class="rv panel">{order_form(lang)}</div>

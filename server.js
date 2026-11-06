@@ -65,9 +65,24 @@ async function corpPage(req, res, u, slug) {
 }
 module.exports = { applyCorp };
 
+// The visitor comes back from WayForPay's payment page to /pay/return (the returnUrl of every Edem order, 06.11.2026): the
+// gateway posts the result as a form, the site reads the reference and the status and sends the browser on to the sale page,
+// which shows the order's state (and confirms it with the editor service). ?lang=en returns to the English page.
+function payReturn(req, res, u, own) {
+  let raw = ''; const done = () => {
+    const b = new URLSearchParams(raw), ref = String(b.get('orderReference') || u.searchParams.get('orderReference') || u.searchParams.get('ref') || '').replace(/[^A-Za-z0-9-]/g, '').slice(0, 40);
+    const st = String(b.get('transactionStatus') || u.searchParams.get('transactionStatus') || '').toLowerCase();
+    const pay = st === 'approved' ? 'paid' : (st === 'declined' || st === 'expired') ? 'declined' : st ? 'pending' : 'cancel';   // no status at all = the visitor cancelled on the payment page
+    const en = u.searchParams.get('lang') === 'en', page = own ? (en ? '/en' : '/') : (en ? '/edem-motion-light-en' : '/edem-motion-light');
+    res.writeHead(303, { Location: page + (ref ? '?order=' + ref + '&pay=' + pay : '') + '#order', 'Cache-Control': 'no-store' }); res.end();
+  };
+  if (req.method === 'POST') { req.on('data', c => { if (raw.length < 65536) raw += c; }); req.on('end', done); } else done();
+}
+
 const server = http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://x');
   const own = HOSTS.find(h => h.host.test(req.headers.host || ''));
+  if (u.pathname === '/pay/return') return payReturn(req, res, u, own && own === EDEM ? own : null);
   if (own) {       // a landing's own host: its page at the root, its assets, nothing else
     const bare = u.pathname.replace(/\.html$/, ''), canon = own.canon && own.canon[bare], alias = own.alias && own.alias[bare];
     if (canon) { res.writeHead(301, { Location: canon + u.search }); return res.end(); }

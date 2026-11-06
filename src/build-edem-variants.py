@@ -88,8 +88,26 @@ SCRIPT = """
     var btn = f.querySelector('button[type=submit]'); btn.disabled = true; btn.textContent = S('sending', 'Надсилаємо…');
     tg.href = 'TG?text=' + encodeURIComponent(lines.join('\\n'));
     function finish(ok) { if (!ok) { var o = data.kind === 'order'; document.getElementById('done-h').textContent = S('fail-h', (o ? 'Замовлення' : 'Заявку') + ' не надіслано'); document.getElementById('done-p').textContent = S('fail-p', 'Не вдалося надіслати ' + (o ? 'замовлення' : 'заявку') + ' автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.'); } f.hidden = true; done.hidden = false; var h = document.getElementById('done-h'); h.setAttribute('tabindex', '-1'); h.focus(); }
-    fetch(API + '/api/edem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(function (r) { return r.json(); }).then(function (j) { if (!j.ok) throw new Error('x'); finish(true); }).catch(function () { finish(false); });
+    fetch(API + '/api/edem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(function (r) { return r.json(); }).then(function (j) {
+      if (!j.ok) throw new Error('x');
+      if (j.pay && j.url) {   // WayForPay is on: the signed Purchase fields go to the payment page as a plain form POST (the visitor comes back to ?order=…&pay=…)
+        var pf = document.createElement('form'); pf.method = 'POST'; pf.action = j.url; pf.acceptCharset = 'utf-8'; pf.hidden = true;
+        Object.keys(j.pay).forEach(function (k) { var i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = j.pay[k]; pf.appendChild(i); });
+        document.body.appendChild(pf); btn.textContent = S('paying', 'Переходимо до оплати…'); pf.submit(); return;
+      }
+      finish(true);
+    }).catch(function () { finish(false); });
   });
+  // back from the payment page: the state of the order instead of the form (the status is confirmed with the server when it can be)
+  var qs = new URLSearchParams(location.search), ref = qs.get('order'), pay = qs.get('pay');
+  if (ref && pay && /^EDEM-[\d-]+-[0-9a-f]{4}$/.test(ref)) {
+    var S2 = function (k, d) { return f.getAttribute('data-' + k) || d; }, top = document.getElementById('reg-top'), topText = top ? top.textContent : '';
+    function show(st) { st = st === 'paid' ? 'paid' : st === 'pending' ? 'pending' : st === 'cancel' ? 'cancel' : 'declined'; var again = st === 'declined' || st === 'cancel'; document.getElementById('done-h').textContent = S2(st + '-h', st); document.getElementById('done-p').textContent = S2(st + '-p', '').replace('{ref}', ref); if (top) { top.textContent = again ? S2('retry', 'Спробувати ще раз') : topText; top.href = again ? location.pathname + '#order' : '#top'; } }
+    show(pay); f.hidden = true; done.hidden = false;
+    try { history.replaceState(null, '', location.pathname + '#order'); } catch (e) {}
+    fetch(API + '/api/edem-status?ref=' + encodeURIComponent(ref)).then(function (r) { return r.json(); }).then(function (j) { if (j.ok && j.status && j.status !== 'new') show(j.status === 'refunded' ? 'declined' : j.status); else if (j.ok && j.status === 'new' && pay === 'pending') show('cancel'); }).catch(function () {});
+    var go = function () { var o = document.getElementById('order'); if (o) o.scrollIntoView(); }; go(); setTimeout(go, 300); window.addEventListener('load', function () { setTimeout(go, 500); });
+  }
   req.forEach(function (el) { el.addEventListener('input', function () { this.closest('label').classList.remove('bad'); this.removeAttribute('aria-invalid'); }); });
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     var io = new IntersectionObserver(function (es) { es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } }); }, { rootMargin: '0px 0px -8% 0px', threshold: .05 });

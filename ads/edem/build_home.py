@@ -44,7 +44,7 @@ def ad(id, body, cls="", note=""):
 def lock(size=168, pill=True, more=True, sub=64):
     return (f'<div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:{size}px">Trypillia</p>'
             f'<p class="t" style="font-size:{sub}px">The Art of Origins</p>'
-            + ('<p class="pill">Шовкова хустка 88 × 88 см · лімітований випуск</p>' if pill else "") + ('<p class="more">Замовити хустку</p>' if more else "") + '</div>')
+            + ('<p class="pill">Шовк · 88 × 88 см · лімітований випуск</p>' if pill else "") + ('<p class="more">Замовити хустку</p>' if more else "") + '</div>')
 
 def feathered(img, left, feather, pos, veil=INK, w=None):
     """The picture from `left` to the right edge, melting into the field over `feather` px (as the chosen SOLO banner)."""
@@ -55,20 +55,20 @@ def feathered(img, left, feather, pos, veil=INK, w=None):
 # A · the print itself to the right edge, melting into the ink — the medallion and the figures in the window
 ad("home-e-canvas-dark", f'''
   <div style="inset:0;background:{INK}"></div>
-  <div style="left:640px;right:0;top:0;bottom:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 320px);mask-image:linear-gradient(90deg,transparent 0,#000 320px)"><img src="{E('art-2400.webp')}" alt="" style="position:absolute;left:10px;top:-462px;width:1500px;height:1500px"></div>
+  <div style="left:640px;right:0;top:0;bottom:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 320px);mask-image:linear-gradient(90deg,transparent 0,#000 320px)"><img src="{E('art-2400.webp')}" alt="" style="position:absolute;left:10px;top:-482px;width:1500px;height:1500px"></div>
   <div style="left:640px;top:0;bottom:0;width:290px;background:linear-gradient(90deg,{INK} 0,rgba(22,16,12,.15) 40%,rgba(22,16,12,0) 100%)"></div>
   {lock()}''', note="The print on ink, feathered")
 
 # B · the same on the print's own cream — the picture simply continues into the field, no mask needed
 ad("home-e-canvas-light", f'''
   <img src="{E('art-2400.webp')}" alt="" style="left:860px;top:-262px;width:1100px;height:1100px">
-  <div style="left:900px;top:0;bottom:0;width:240px;background:linear-gradient(90deg,{PAPER} 0,{PAPER} 25%,rgba(245,234,215,0))"></div>
+  <div style="left:880px;top:0;bottom:0;width:140px;background:linear-gradient(90deg,{PAPER} 0,{PAPER} 30%,rgba(245,234,215,0))"></div>
   {lock()}''', cls="light", note="The print on its own cream")
 
 # C · the medallion alone on ink, a warm glow behind it, the pendants beside
 ad("home-e-medallion-dark", f'''
-  <div class="glow" style="left:860px;top:-160px;width:900px;height:900px"></div>
-  <div class="cut" style="left:1000px;top:53px;width:470px"><img src="{E('mandala.webp')}" alt=""></div>
+  <div class="glow" style="left:965px;top:-160px;width:900px;height:900px"></div>
+  <div class="cut" style="left:1105px;top:53px;width:470px"><img src="{E('mandala.webp')}" alt=""></div>
   {lock()}''', note="The medallion on ink")
 
 # D · the scarf as a thing: the draped square on cream, a soft shadow under it
@@ -79,13 +79,13 @@ ad("home-e-scarf-light", f'''
 # E · the corner of the print close up — the Trypillian figure among the cords, the border and the corner ornament — melting into the ink
 ad("home-e-figure-dark", f'''
   <div style="inset:0;background:{INK}"></div>
-  {feathered(E("art-corner.webp"), 880, 320, "50% 28%")}
+  {feathered(E("art-corner.webp"), 820, 460, "50% 28%")}
   {lock()}''', note="The corner of the print on ink")
 
 # F · the print full-bleed: a horizontal band through the medallion, the lock-up on a cream veil at the left
 ad("home-e-strip", f'''
   <img src="{E('art-2400.webp')}" alt="" style="left:700px;top:-412px;width:1400px;height:1400px">
-  <div style="inset:0;background:linear-gradient(90deg,{PAPER} 0%,{PAPER} 40%,rgba(245,234,215,.85) 48%,rgba(245,234,215,0) 60%)"></div>
+  <div style="inset:0;background:linear-gradient(90deg,{PAPER} 0%,{PAPER} 42%,rgba(245,234,215,0) 52%)"></div>
   {lock()}''', cls="light", note="The print full width, cream veil")
 
 HEAD = """<!DOCTYPE html>

@@ -241,7 +241,8 @@ form.f .err { color: #C0392B; font-size: 13px; display: none; } form.f label.bad
     show(pay); f.hidden = true; done.hidden = false;
     try { history.replaceState(null, '', location.pathname + '#order'); } catch (e) {}
     fetch(API + '/api/edem-status?ref=' + encodeURIComponent(ref)).then(function (r) { return r.json(); }).then(function (j) { if (j.ok && j.status && j.status !== 'new') show(j.status === 'refunded' ? 'declined' : j.status); else if (j.ok && j.status === 'new' && pay === 'pending') show('cancel'); }).catch(function () {});
-    var go = function () { var o = document.getElementById('order'); if (o) o.scrollIntoView(); }; go(); setTimeout(go, 300); window.addEventListener('load', function () { setTimeout(go, 500); });
+    var go = function () { var o = document.getElementById('order'); if (o) o.scrollIntoView({ behavior: 'instant', block: 'start' }); };   // instant: the page scrolls smoothly, and a smooth jump gets cancelled while images still shift the layout
+    go(); setTimeout(go, 300); window.addEventListener('load', function () { go(); setTimeout(go, 700); });
   }
   req.forEach(function (el) { el.addEventListener('input', function () { this.closest('label').classList.remove('bad'); this.removeAttribute('aria-invalid'); }); });
   if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {

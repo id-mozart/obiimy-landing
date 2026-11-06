@@ -17,7 +17,7 @@ MANIFESTO, STORY, SYMBOLS, SPEC, EDEM_P, EDEM_L, OB_P, OB_L, STEPS = V.MANIFESTO
 PHONE, PHONE_HREF, MAIL, TG = V.PHONE, V.PHONE_HREF, V.MAIL, V.TG
 form_html, FORM_CSS, write, spec_rows = V.form_html, V.FORM_CSS, V.write, V.spec_rows
 
-PRICE = 8500                                     # the client's retail price, set in chat on 04.11.2026 (review/SITE-FACTS.md; 4 800 named first, corrected to 8 500 the same day)
+PRICE = 8500                                     # the client's retail price, set in chat on 04.11.2026; shown only in the order section since 06.11 («цену оставим только в конце») (review/SITE-FACTS.md; 4 800 named first, corrected to 8 500 the same day)
 PRICE_T = f"{PRICE:,}".replace(",", "\u202f") + "\u00a0грн"   # «4 800 грн»
 EDEM_URL = "https://edem.obiimy.world/"         # the sale page lives on its own subdomain (server.js serves edem-motion-light at its root)
 LEAD = "Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами — спільна робота KRAЇNA EDEM та OBIIMY."
@@ -265,7 +265,7 @@ EN = [
  ("<span>Розмір</span><b>88 × 88 см</b>", "<span>Size</span><b>88 × 88 cm</b>"), ("<span>Матеріал</span><b>100% натуральний шовк</b>", "<span>Material</span><b>100% natural silk</b>"),
  ("<span>Принт</span><b>Авторський, спільний для двох брендів</b>", "<span>Print</span><b>Original, created jointly by the two brands</b>"), ("<span>Підпис</span><b>OBIIMY × Edem на полотні</b>", "<span>Signature</span><b>OBIIMY × Edem on the canvas</b>"),
  ("<span>Наклад</span><b>Обмежений</b>", "<span>Edition</span><b>Limited</b>"), ("<span>Виготовлено</span><b>в Україні</b>", "<span>Made</span><b>in Ukraine</b>"),
- ("· лімітований випуск. Доставка Новою поштою по Україні.", "· limited edition. Delivery by Nova Poshta across Ukraine, worldwide shipping at the carrier’s rates."),
+ ("Лімітований випуск. Доставка Новою поштою по Україні.", "Limited edition. Delivery by Nova Poshta across Ukraine, worldwide shipping at the carrier’s rates."),
  (">Замовити хустку</a>", ">Order the scarf</a>"),
  ('aria-label="Відео: хустка Trypillia — The Art of Origins"', 'aria-label="Video: the Trypillia — The Art of Origins scarf"'),
  ('data-on="Увімкнути звук" data-off="Вимкнути звук">Увімкнути звук<', 'data-on="Sound on" data-off="Sound off">Sound on<'),
@@ -309,7 +309,6 @@ def english(body):
     for a, b in EN:
         assert a in body, a[:70]; body = body.replace(a, b)
     body = body.replace(f"<b>{PRICE_T}</b>", f"<b>{PRICE_EN}</b>").replace(f"— {PRICE_T}", f"— {PRICE_EN}").replace(f"<b>{PRICE_T.rsplit(chr(160), 1)[0]}</b> грн", f"<b>{PRICE_EN.split()[0]}</b> UAH")
-    body = body.replace("Замовити — " + PRICE_EN, "Order — " + PRICE_EN)
     left = re.findall(r"[А-Яа-яЄєІіҐґ]+|(?<![Kk][Rr][Aa])[Її]", body)
     assert not left, left[:20]
     return body
@@ -334,8 +333,8 @@ def main(light=False, lang="uk"):
     <p class="eyebrow">Спільний мистецький проєкт</p>
     <h1>Trypillia —<br><i>The Art of Origins</i></h1>
     <p class="lead">{LEAD}</p>
-    <div class="cta"><a class="btn btn-main" href="#order">Замовити — {PRICE_T}</a><a class="btn btn-line" href="#scarf">Роздивитися хустку</a></div>
-    <div class="facts"><span><b>{PRICE_T.rsplit(chr(160), 1)[0]}</b> грн</span><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Обмежений наклад</span><span>Підпис OBIIMY × Edem</span></div>
+    <div class="cta"><a class="btn btn-main" href="#order">Замовити хустку</a><a class="btn btn-line" href="#scarf">Роздивитися хустку</a></div>
+    <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Обмежений наклад</span><span>Підпис OBIIMY × Edem</span></div>
   </div>
   <p class="scrollhint">Гортайте<i></i></p>
 </section>
@@ -346,7 +345,7 @@ def main(light=False, lang="uk"):
   <div class="head rv"><p class="eyebrow">Хустка · 88 × 88 см</p><h2>Мистецьке полотно, яке можна носити</h2><p class="lead">{SCARF_LEAD}</p></div>
   <div class="scarf">
     <div class="rv"><div class="lenswrap" id="lenswrap">{img("photo/edem/art-1600.webp", "Принт хустки «Trypillia — The Art of Origins» повністю", sizes="(max-width: 980px) 92vw, 58vw")}<div class="lens" id="lens" aria-hidden="true">{img("photo/edem/art-2400.webp", "", sizes="2000px")}</div></div><p class="hintlens">Наведіть курсор — лупа покаже деталі принту</p></div>
-    <div class="rv"><div class="spec">{spec_rows()}</div><p class="note"><b>{PRICE_T}</b> · лімітований випуск. Доставка Новою поштою по Україні.</p><p style="margin-top:26px"><a class="btn btn-main" href="#order">Замовити хустку</a></p></div>
+    <div class="rv"><div class="spec">{spec_rows()}</div><p class="note">Лімітований випуск. Доставка Новою поштою по Україні.</p><p style="margin-top:26px"><a class="btn btn-main" href="#order">Замовити хустку</a></p></div>
   </div>
 </div></section>
 
@@ -354,7 +353,7 @@ def main(light=False, lang="uk"):
   <div class="rv"><div class="vid"><video id="film-v" playsinline muted loop preload="metadata" poster="photo/edem/video-poster.jpg" aria-label="Відео: хустка Trypillia — The Art of Origins"><source src="photo/edem/edem-video.mp4" type="video/mp4"></video><button class="snd" id="film-snd" type="button" aria-pressed="false" data-on="Увімкнути звук" data-off="Вимкнути звук">Увімкнути звук</button></div></div>
   <div class="rv"><p class="eyebrow">Відео</p><h2>Хустка наживо</h2><p class="lead">Шовк у русі: «Trypillia — The Art of Origins» на пленері — у руках, на плечах, у світлі дня.</p>
     <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Підпис OBIIMY × Edem</span></div>
-    <p style="margin-top:30px"><a class="btn btn-main" href="#order">Замовити — {PRICE_T}</a></p></div>
+    <p style="margin-top:30px"><a class="btn btn-main" href="#order">Замовити хустку</a></p></div>
 </div></div></section>
 
 <section class="s" id="story">

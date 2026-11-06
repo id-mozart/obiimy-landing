@@ -483,6 +483,33 @@ HOME = [
         ("home-m-paper", "Папір і хустки", "Світле поле, дві хустки колекції як предмет — товар на перший план.", "res")]
 TIERS = [('ok', 'Рекомендовані · прийняті арт-директором'), ('new', 'Новий раунд · на оцінку'), ('res', 'Запасні · для другого-третього слайда')]
 
+EDEM_HOME = [   # 06.11.2026 — banners for the home page about the KRAЇNA EDEM × OBIIMY collaboration (ads/edem/build_home.py → ads/edem/out-home)
+    ("home-e-canvas-dark", "Полотно · темний", "Лок-ап на темному полі, принт хустки праворуч, поле плавно переходить у картину — як обраний банер SOLO."),
+    ("home-e-canvas-light", "Полотно · кремовий", "Поле кольору самого принту: картина просто продовжується в банер, без масок і меж."),
+    ("home-e-medallion-dark", "Медальйон · темний", "Центральний медальйон принту з золотим сяйвом і двома підвісками на темному полі."),
+    ("home-e-scarf-light", "Хустка · кремовий", "Сама хустка — складене шовкове полотно з тінню на кремовому полі."),
+    ("home-e-figure-dark", "Фігурка · темний", "Золота трипільська фігурка з підвісками на темному полі — символи колаборації."),
+    ("home-e-strip", "Принт на всю ширину", "Принт на всю ширину банера, лок-ап на кремовій вуалі зліва."),
+]
+
+def edem_cards(site, out):
+    """The Edem banners as cards (JPG, a 1200 preview, the phone crop) — the same card as the SOLO ones, without the slider controls."""
+    src = ROOT / "ads/edem/out-home"; cards = []; files = []
+    if not src.exists(): return cards, files
+    for id, title, desc in EDEM_HOME:
+        f = src / f"{id}.jpg"
+        if not f.exists(): continue
+        dst = out / f.name; prev = out / f"{id}-1200.webp"; ph = out / f"{id}-phone.webp"
+        if not (dst.exists() and prev.exists() and ph.exists() and dst.stat().st_mtime >= f.stat().st_mtime):
+            im = Image.open(f).convert("RGB"); im.save(dst, "JPEG", quality=88, optimize=True, progressive=True)
+            t = im.copy(); t.thumbnail((1200, 400)); t.save(prev, quality=82)
+            w, h = im.size; cw = int(h * 1.3); x0 = max(0, min(w - cw, int(w * .02)))
+            im.crop((x0, 0, x0 + cw, h)).resize((520, 400)).save(ph, quality=82)
+        v = hashlib.md5(f.read_bytes()).hexdigest()[:8]; files.append(f"creatives/home/{f.name}?v={v}")
+        cards.append(f'''<figure class="hb"><div class="hbv"><a href="creatives/home/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/home/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="1200" height="360"></a><div class="hbp" title="Як обріже слайдер на телефоні (ліва частина з лок-апом)"><img src="creatives/home/{ph.name}?v={v}" alt="" loading="lazy" width="520" height="400"><span>телефон</span></div></div>
+      <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><div class="hba"><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></div></figcaption></figure>''')
+    return cards, files
+
 def build_home(site, render):
     """site/home-banners.html — the SOLO banners for the home page of obiimy.world (1920 × 576), from ads/solo/out-home:
     grouped by tier (accepted / new round / reserve), every card with a phone crop (the slider on a 390 px screen shows the
@@ -528,11 +555,39 @@ def build_home(site, render):
     hs_html = f'''<section class="hbt hs" id="horoshop"><h2>Формати Хорошоп <span>· {len(hcards)}</span></h2>
 <p class="lede">Обраний банер «Студійний кадр · темний» (home-h-reblum-dark): лок-ап на темному полі, студійний кадр «Авантюри» праворуч, темне поле плавно переходить у фото без різкої межі. Розміри — за ТЗ клієнта для Horoshop (06.11.2026): головна Desktop LINE 1 і верх внутрішніх сторінок 10:3, Mobile LINE 1 — 5:2 (лок-ап на п’яту більший), LINE 2–3 — 5:3. Три мови — тексти з відповідних версій obiimy.world. JPG і WebP (рекомендований Хорошопом) у точному розмірі.</p>
 {hcards_html}</section>''' if hcards else ""
+    ecards, efiles = edem_cards(site, out)
+    e_lede = "Колаборація <b>KRAЇNA EDEM × OBIIMY</b> — хустка «Trypillia — The Art of Origins», 88 × 88 см, шовк, лімітований випуск (прес-реліз і дека клієнта). Лок-ап: партнери, «Trypillia» в Cormorant, курсивний підзаголовок, золота плашка з фактами, кнопка «Замовити хустку» → edem.obiimy.world. Ціни на банерах немає (06.11: ціна — лише в секції замовлення). Арт — принт хустки та його елементи з матеріалів клієнта; палітра сторінки продажу (чорнило, крем, золото)."
+    es_html = f'''<section class="hbt" id="edem"><h2>KRAЇNA EDEM × OBIIMY · Trypillia <span>· {len(ecards)}</span></h2>
+<p class="lede">{e_lede} Окрема сторінка — <a href="home-edem">/home-edem</a>.</p>
+<div class="hbs">{"".join(ecards)}</div></section>''' if ecards else ""
+    if ecards:
+        epage = f'''<header><a href="home-banners">← Усі банери для головної</a></header>
+<h1>Банери головної · KRAЇNA EDEM × OBIIMY</h1>
+<p class="lede">{e_lede} Формат — 1920 × 576, як поточний банер сайту; поруч із кожним — як його обріже слайдер на телефоні. Після вибору зберемо обраний у розмірах Хорошоп і трьома мовами, як для SOLO.</p>
+<p class="lede hbl"><button type="button" id="hbzip">Завантажити всі (ZIP)</button><span id="hbn"></span></p>
+<section class="hbt"><div class="hbs">{"".join(ecards)}</div></section>
+<style>.hbl {{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:14px; }} .hbl button {{ font:inherit; font-size:.88rem; border:0; background:var(--acc); color:#fff; border-radius:999px; padding:10px 16px; cursor:pointer; }} .hbl button[disabled] {{ opacity:.6; }} #hbn {{ font-size:.85rem; color:var(--ink2); }}
+.hbt {{ margin-top: 32px; }} .hbs {{ display: grid; gap: 28px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }}
+.hbv {{ display: grid; grid-template-columns: 1fr 180px; gap: 14px; align-items: start; padding: 14px 14px 0; }} .hbv > a img {{ display:block; width:100%; height:auto; }} .hbp {{ position: relative; }} .hbp img {{ display:block; width:100%; height:auto; border-radius: 4px; }} .hbp span {{ position:absolute; left:8px; bottom:8px; font-size:.72rem; background:rgba(0,0,0,.55); color:#fff; padding:3px 7px; border-radius:999px; }}
+.hb figcaption {{ display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 18px 18px 14px; font-size: .92rem; color: var(--ink2); }} .hb b {{ color: var(--ink); font-size: 1.05rem; }} .hb p {{ margin: 4px 0 0; max-width: 60em; line-height: 1.45; }} .hba {{ display: flex; gap: 16px; }} .hba a {{ color: var(--acc); font-weight: 600; text-decoration: none; white-space: nowrap; }}
+@media (max-width: 700px) {{ .hbv {{ grid-template-columns: 1fr; }} .hbp {{ max-width: 200px; }} .hb figcaption {{ flex-direction: column; align-items: flex-start; }} }}
+.picks, .fmt, .toc, .all, #lb {{ display: none !important; }}</style>
+<script>
+document.getElementById('hbzip').addEventListener('click', function () {{
+  var btn = this, n = document.getElementById('hbn'), items = {json.dumps(efiles)}; btn.disabled = true;
+  (window.JSZip ? Promise.resolve() : new Promise(function (ok, no) {{ var s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); }}))
+  .then(function () {{ var zip = new JSZip(), done = 0; return Promise.all(items.map(function (u) {{ return fetch(u).then(function (r) {{ return r.blob(); }}).then(function (b) {{ zip.file(u.split('/').pop().split('?')[0], b); n.textContent = 'Пакую: ' + (++done) + ' з ' + items.length; }}); }})).then(function () {{ return zip.generateAsync({{ type: 'blob' }}); }}); }})
+  .then(function (blob) {{ var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'obiimy-edem-home-banners.zip'; a.click(); n.textContent = ''; btn.disabled = false; }})
+  .catch(function (e) {{ n.textContent = 'Не вдалося: ' + e; btn.disabled = false; }});
+}});
+</script>'''
+        (site / "home-edem.html").write_text(render(epage, "", "").replace("<title>Креативи Obiimy</title>", "<title>Банери головної · KRAЇNA EDEM × OBIIMY</title>"))
     body = f'''<header><a href="./">← Усі лендинги Obiimy</a><a href="creatives">Рекламні креативи →</a></header>
 <h1>Банери для головної</h1>
 <p class="lede"><b>Колекція SOLO на головній obiimy.world.</b> Формат поточного банера сайту — 1920 × 576: лок-ап «КОЛЕКЦІЯ / СОЛО / ШЛЯХ ДО СЕБЕ», жовта плашка «Жіноча сила крізь десятиліття»; логотип на банер не ставимо — він уже в шапці сайту (27.10). Фото — зйомки колекції й студійний кадр клієнта, тексти — за прес-релізом. Поруч із кожним — як його обріже слайдер на телефоні.</p>
 <p class="lede hbl"><a href="home-preview" id="hbgo">Вибрані на макеті головної (слайдер) →</a><button type="button" id="hbcopy">Копіювати посилання з вибором</button><button type="button" id="hbzip">Завантажити всі (ZIP)</button><span id="hbn"></span></p>
 <p class="lede hbsel"><span id="hbcount"></span> · Галочка «Показувати» на картці — банер потрапляє в ротацію на макеті. Вибір зберігається у вашому браузері; щоб передати його іншому — «Копіювати посилання з вибором».</p>
+{es_html}
 {hs_html}
 {secs}
 <style>.hbl {{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:14px; }} .hbl a {{ color:var(--acc); font-weight:600; }} .hbl button {{ font:inherit; font-size:.88rem; border:0; background:var(--acc); color:#fff; border-radius:999px; padding:10px 16px; cursor:pointer; }} .hbl button[disabled] {{ opacity:.6; }} #hbn {{ font-size:.85rem; color:var(--ink2); }}

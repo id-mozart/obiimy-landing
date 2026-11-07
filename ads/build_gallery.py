@@ -514,7 +514,7 @@ def edem_cards(site, out):
             t = im.copy(); t.thumbnail((1200, 400)); t.save(prev, quality=82)
         v = hashlib.md5(f.read_bytes()).hexdigest()[:8]; files.append(f"creatives/home/{f.name}?v={v}")
         cards.append(f'''<figure class="hb e"><div class="hbv"><a href="creatives/home/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/home/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="1200" height="360"></a></div>
-      <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><div class="hba"><a href="home-preview?sel={id}">На макеті головної →</a><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></div></figcaption></figure>''')
+      <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><div class="hba"><a href="home-preview?sel={",".join(i for i, _, _ in EDEM_HOME)}&amp;b={id}">На макеті головної →</a><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></div></figcaption></figure>''')
     return cards, files
 
 def build_home(site, render):
@@ -701,6 +701,7 @@ def build_home_mock(site, out, items):
 <div class="hd"><img src="brand/logo-original.png" alt="Obiimy"><div class="srch">пошук товарів</div><span>✳ Замовлення: <b>+38 067 010 85 25</b></span><b>🧺 Мій кошик</b></div>
 <div class="nav"><div class="in"><span>SALE</span><span>ХІТ</span><span>Колекції</span><span>Подарункові набори</span><span>Хустки</span><span>Хустки 2D</span><span>Хустки паше</span><span>Твіллі</span><span>Резинки</span><span>Маски для сну</span><span>Прикраси</span><span>Obiimy HOME</span><span>Сертифікати</span></div></div>
 <div class="herow"><div class="hero" id="hero">{slides}<div class="dots" id="dots">{dots}</div></div><button type="button" class="ar l" id="prev" aria-label="Попередній">‹</button><button type="button" class="ar r" id="next" aria-label="Наступний">›</button></div>
+<div class="ctl"><label>Варіант: <select id="pick">{opts}</select></label><span id="selnote">У ротації {len(items)} · <a href="home-preview?all">показати всі</a></span><a id="dl" href="#" download>Завантажити JPG ↓</a><a href="home-edem">Банери Edem</a><a href="home-banners">Банери SOLO</a></div>
 <div class="cats"><h3>Категорії</h3><div class="catrow">{"".join(circle(l, k) for l, k in cuts)}</div></div>
 <script>
 (function () {{

@@ -141,9 +141,9 @@ hero("home-e-hero-right", card="left:1140px;top:-120px;width:840px", fig="left:1
 # panel, round 7: a shorter melt on the tree frame (the pendants and the border of the print stay), the sky frame a moment earlier (the sun behind
 # the silk) with a dark vignette from the top, the portrait replaced by the frame at the sculpture (1:09) where the scarf lies across the body
 for id, img, left, feather, pos, extra, note in [
-        ("home-e-video-tree", "frame-tree.jpg", 1000, 300, "50% 9%", "", "Video frame: the scarf open, in the tree"),
-        ("home-e-video-sky", "frame-sky.jpg", 1100, 420, "50% 32%", '<div style="left:1100px;right:0;top:0;height:260px;background:linear-gradient(180deg,rgba(22,16,12,.55),rgba(22,16,12,0))"></div>', "Video frame: the scarf flying against the sun"),
-        ("home-e-video-portrait", "frame-sculpture.jpg", 1250, 380, "50% 30%", "", "Video frame: the scarf across the body, at the sculpture")]:   # a narrower window: the face and the scarf down to the waist
+        ("home-e-video-tree", "frame-tree.jpg", 1000, 300, "50% 7%", "", "Video frame: the scarf open, in the tree"),
+        ("home-e-video-sky", "frame-sky.jpg", 1100, 420, "50% 32%", '<div style="left:1100px;right:0;top:0;height:260px;background:linear-gradient(180deg,rgba(22,16,12,.55),rgba(22,16,12,0))"></div><div style="left:1100px;right:0;bottom:0;height:120px;background:linear-gradient(0deg,rgba(22,16,12,.6),rgba(22,16,12,0))"></div>', "Video frame: the scarf flying against the sun"),
+        ("home-e-video-portrait", "frame-sculpture.jpg", 1130, 380, "50% 34%", "", "Video frame: the scarf across the body, at the sculpture")]:   # a narrower window: the face and the scarf down to the waist
     ad(id, f'''
   <div style="inset:0;background:{INK}"></div>
   {feathered(E("video/" + img), left, feather, pos)}{extra}

@@ -128,7 +128,7 @@ hero("home-e-hero-light", card="left:1112px;top:64px;width:446px", fig="left:102
 # H · the scarf a size up: the card 720 wide, the full height of the banner, a hair over the top and bottom edges
 hero("home-e-hero-big", card="left:1070px;top:-60px;width:720px", fig="left:1030px;top:332px;width:118px", mandala="left:860px;top:-200px;width:1000px;opacity:.08", note="The header, the scarf larger")
 # H2 · the same a touch smaller, so the scarf stays clear of the top and bottom edges («чуточку поменьше хустка, чтобы в края не влипало», 07.11)
-hero("home-e-hero-mid", card="left:1120px;top:-22px;width:636px", fig="left:1066px;top:330px;width:112px", mandala="left:880px;top:-170px;width:940px;opacity:.08", note="The header, the scarf large but clear of the edges")
+hero("home-e-hero-mid", card="left:1120px;top:-22px;width:636px", fig="left:1066px;top:330px;width:112px", mandala="left:880px;top:-170px;width:940px;opacity:.12", note="The header, the scarf large but clear of the edges")
 # I · the scarf over the edges: the card 920 wide, the medallion of the print in the middle of the field, the corners cut by the frame
 hero("home-e-hero-bleed", card="left:980px;top:-160px;width:920px", fig="left:958px;top:326px;width:118px", mandala="left:820px;top:-260px;width:1100px", note="The header, the scarf over the edges")
 # J · the scarf tilted as a card in perspective: 820 wide, a stronger turn, so it keeps the height but reads as a thing in space
@@ -138,12 +138,15 @@ hero("home-e-hero-right", card="left:1140px;top:-120px;width:840px", fig="left:1
 
 # V · frames from the client's video (photo/edem/video, 720 × 1280 stills from edem-video.mp4, 07.11 «пару вариантов из кадров из видео»):
 #     the photo from x = 960 to the right edge melting into the ink over 420 px, the lock-up at the left — the technique of the chosen SOLO banner
-for id, img, left, pos, note in [("home-e-video-tree", "frame-tree.jpg", 960, "50% 9%", "Video frame: the scarf open, in the tree"),
-                                 ("home-e-video-sky", "frame-sky.jpg", 1100, "50% 32%", "Video frame: the scarf flying against the sun"),   # a narrower window keeps the scarf and the raised arms together
-                                 ("home-e-video-portrait", "frame-portrait.jpg", 1100, "50% 43%", "Video frame: the scarf on the shoulders")]:
+# panel, round 7: a shorter melt on the tree frame (the pendants and the border of the print stay), the sky frame a moment earlier (the sun behind
+# the silk) with a dark vignette from the top, the portrait replaced by the frame at the sculpture (1:09) where the scarf lies across the body
+for id, img, left, feather, pos, extra, note in [
+        ("home-e-video-tree", "frame-tree.jpg", 1000, 300, "50% 9%", "", "Video frame: the scarf open, in the tree"),
+        ("home-e-video-sky", "frame-sky.jpg", 1100, 420, "50% 32%", '<div style="left:1100px;right:0;top:0;height:260px;background:linear-gradient(180deg,rgba(22,16,12,.55),rgba(22,16,12,0))"></div>', "Video frame: the scarf flying against the sun"),
+        ("home-e-video-portrait", "frame-sculpture.jpg", 1250, 380, "50% 30%", "", "Video frame: the scarf across the body, at the sculpture")]:   # a narrower window: the face and the scarf down to the waist
     ad(id, f'''
   <div style="inset:0;background:{INK}"></div>
-  {feathered(E("video/" + img), left, 420, pos)}
+  {feathered(E("video/" + img), left, feather, pos)}{extra}
   {lock()}''', note=note)
 
 HEAD = """<!DOCTYPE html>

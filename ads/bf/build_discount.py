@@ -341,6 +341,252 @@ sash("bfd-24-sash", "kolo-3.webp", "50% 10%", "Стрічка на п’ятни
 vertical("bfd-25-vertical-left", "makiv-1.webp", "55% 15%", "Хустка «Маків цвіт» з «Поклику душі» — на білому жакеті. Чорна п’ятниця на шовк із авторськими принтами.", "The white jacket, the number in the left column", side="left")
 band("bfd-26-band-freedom", LB + "lb56-58-R.webp", "50% 0%", "Хустка «Свобода» з «Поклику душі» — через плече, під ременем. Знижки на всі принти чотирьох колекцій.", "The blue-and-yellow Freedom scarf under the yellow poster top")
 
+
+# ─── the third batch (client: «еще», again) ───────────────────────────────────────────────────────────────────────────
+
+def do40ink(size): return do40(size, color=INK).replace(f"color:{INK}", f"color:{INK}")
+
+def frame(id, img, pos, small, note="", zoom=1.0):
+    """A yellow passe-partout: the photograph inset on the yellow field, the number in the margin under it."""
+    m = 40
+    if SQ:
+        pw = 500
+        body = f"""
+  <div style="inset:0;background:{YEL}"></div>
+  <div class="ph" style="left:{m}px;top:{Y0}px;width:{pw}px;height:{Y1 - Y0}px"><img src="{PR}{img}" alt="" style="object-position:{pos};transform:scale({zoom})"></div>
+  {header(False)}
+  <div class="ink" style="left:{m + pw + 50}px;right:64px;top:{Y0 + int(40 * K)}px;z-index:4">{kick("Чорна п’ятниця", INK)}<div style="margin-top:{int(10 * K)}px">{do40(150, INK)}</div><p class="small" style="font-size:{int(30 * K)}px;margin-top:{int(16 * K)}px;color:#4B3F10">{nb(small)}</p></div>
+  <div style="left:64px;right:64px;bottom:{BOTB}px;height:{BAR}px;display:flex;align-items:center;justify-content:flex-end;z-index:6"><span class="pill" style="background:{INK};color:{YEL};font-size:{int(30 * K)}px;padding:{int(18 * K)}px {int(34 * K)}px">obiimy.world</span></div>"""
+    else:
+        text_h = int(420 * K); ph_h = Y1 - Y0 - text_h
+        body = f"""
+  <div style="inset:0;background:{YEL}"></div>
+  <div class="ph" style="left:{m}px;right:{m}px;top:{Y0}px;height:{ph_h}px"><img src="{PR}{img}" alt="" style="object-position:{pos};transform:scale({zoom})"></div>
+  {header(False)}
+  <div class="ink" style="left:64px;right:64px;top:{Y0 + ph_h + int(44 * K)}px;z-index:4">{kick("Чорна п’ятниця", INK)}<div style="margin-top:{int(6 * K)}px">{do40(210, INK)}</div><p class="small" style="font-size:{int(34 * K)}px;margin-top:{int(12 * K)}px;color:#4B3F10;max-width:900px">{nb(small)}</p></div>
+  <div style="left:64px;right:64px;bottom:{BOTB}px;height:{BAR}px;display:flex;align-items:center;justify-content:space-between;z-index:6"><span class="pill" style="background:{INK};color:{YEL};font-size:{int(32 * K)}px;padding:{int(20 * K)}px {int(36 * K)}px">{nb(CATS)}</span><span class="hdr" style="font-size:{int(26 * K)}px;color:{INK};letter-spacing:.1em;text-transform:none">obiimy.world</span></div>"""
+    ad(id, body, note)
+
+def diag(id, img, pos, small, note="", zoom=1.0, origin="50% 50%"):
+    """The photograph, and a yellow triangle cut across the lower right with the range inside."""
+    cut = "polygon(0 100%, 100% 44%, 100% 100%)" if not SQ else "polygon(0 100%, 100% 36%, 100% 100%)"
+    body = f"""
+  <div style="inset:0;background:{INK}"></div>
+  <div class="ph" style="inset:0"><img src="{PR}{img}" alt="" style="object-position:{pos};transform:scale({zoom});transform-origin:{origin}"></div>
+  <div style="left:0;right:0;top:0;height:{int(260 * K)}px;background:linear-gradient(180deg,rgba(12,9,8,.5),rgba(12,9,8,0))"></div>
+  <div style="inset:0;background:{YEL};clip-path:{cut};z-index:3"></div>
+  {header()}
+  <div class="ink" style="right:64px;bottom:{H - Y1 + int(10 * K)}px;width:{int(880 * K)}px;text-align:right;z-index:4">{kick("Чорна п’ятниця", INK)}<div style="margin-top:{int(8 * K)}px">{rng(150 if not SQ else 110, INK)}</div><p class="small" style="font-size:{int(32 * K)}px;margin-top:{int(14 * K)}px;color:#4B3F10;margin-left:auto;max-width:{int(560 * K)}px">{nb(small)}</p></div>
+  <div style="left:64px;right:64px;bottom:{BOTB}px;height:{BAR}px;display:flex;align-items:center;justify-content:space-between;z-index:6"><span class="pill" style="background:{INK};color:{YEL};font-size:{int(30 * K)}px;padding:{int(18 * K)}px {int(34 * K)}px">{nb(CATS)}</span><span class="hdr" style="font-size:{int(26 * K)}px;color:{INK};letter-spacing:.1em;text-transform:none">obiimy.world</span></div>"""
+    ad(id, body, note)
+
+def circle(id, img, pos, small, note="", zoom=1.0):
+    """The photograph in a big round porthole on the black field, the number under it."""
+    if SQ:
+        d = min(560, Y1 - Y0 + 20); cx, cy = 40, (H - d) // 2
+        body = f"""
+  <div style="inset:0;background:{INK}"></div>
+  <div class="ph" style="left:{cx}px;top:{cy}px;width:{d}px;height:{d}px;border-radius:50%"><img src="{PR}{img}" alt="" style="object-position:{pos};transform:scale({zoom})"></div>
+  {header()}
+  <div class="light" style="left:{cx + d + 40}px;right:64px;top:{Y0 + int(60 * K)}px;z-index:4">{kick("Чорна п’ятниця", YEL)}<div style="margin-top:{int(10 * K)}px">{do40(150)}</div><p class="small" style="font-size:{int(30 * K)}px;margin-top:{int(16 * K)}px">{nb(small)}</p></div>
+  {bar(label=CATS)}"""
+    else:
+        d = min(820, Y1 - Y0 - int(440 * K)); cx = (1080 - d) // 2; cy = Y0 - int(10 * K)
+        body = f"""
+  <div style="inset:0;background:{INK}"></div>
+  <div class="ph" style="left:{cx}px;top:{cy}px;width:{d}px;height:{d}px;border-radius:50%"><img src="{PR}{img}" alt="" style="object-position:{pos};transform:scale({zoom})"></div>
+  {header()}
+  <div class="light" style="left:64px;right:64px;top:{cy + d + int(60 * K)}px;bottom:{H - Y1}px;z-index:4;text-align:center">{kick("Чорна п’ятниця", YEL)}<div style="margin-top:{int(6 * K)}px">{do40(220)}</div><p class="small" style="font-size:{int(34 * K)}px;margin-top:{int(12 * K)}px">{nb(small)}</p></div>
+  {bar(label=CATS)}"""
+    ad(id, body, note)
+
+def arch(id, img, pos, small, note="", zoom=1.0):
+    """The photograph as an arch on the yellow field, the number in ink under it."""
+    if SQ:
+        aw = 460; ah = Y1 - Y0 + 10; ax = 50
+        body = f"""
+  <div style="inset:0;background:{YEL}"></div>
+  <div class="ph" style="left:{ax}px;top:{Y0 - 10}px;width:{aw}px;height:{ah}px;border-radius:{aw // 2}px {aw // 2}px 0 0"><img src="{PR}{img}" alt="" style="object-position:{pos};transform:scale({zoom})"></div>
+  {header(False)}
+  <div class="ink" style="left:{ax + aw + 50}px;right:64px;top:{Y0 + int(60 * K)}px;z-index:4">{kick("Чорна п’ятниця", INK)}<div style="margin-top:{int(10 * K)}px">{do40(150, INK)}</div><p class="small" style="font-size:{int(30 * K)}px;margin-top:{int(16 * K)}px;color:#4B3F10">{nb(small)}</p></div>
+  <div style="left:64px;right:64px;bottom:{BOTB}px;height:{BAR}px;display:flex;align-items:center;justify-content:flex-end;z-index:6"><span class="pill" style="background:{INK};color:{YEL};font-size:{int(30 * K)}px;padding:{int(18 * K)}px {int(34 * K)}px">obiimy.world</span></div>"""
+    else:
+        aw = 780; ah = Y1 - Y0 - int(420 * K); ax = (1080 - aw) // 2
+        body = f"""
+  <div style="inset:0;background:{YEL}"></div>
+  <div class="ph" style="left:{ax}px;top:{Y0 + int(10 * K)}px;width:{aw}px;height:{ah}px;border-radius:{aw // 2}px {aw // 2}px 0 0"><img src="{PR}{img}" alt="" style="object-position:{pos};transform:scale({zoom})"></div>
+  {header(False)}
+  <div class="ink" style="left:64px;right:64px;top:{Y0 + ah + int(50 * K)}px;z-index:4;text-align:center">{kick("Чорна п’ятниця", INK)}<div style="margin-top:{int(6 * K)}px">{do40(210, INK)}</div><p class="small" style="font-size:{int(34 * K)}px;margin-top:{int(12 * K)}px;color:#4B3F10">{nb(small)}</p></div>
+  <div style="left:64px;right:64px;bottom:{BOTB}px;height:{BAR}px;display:flex;align-items:center;justify-content:space-between;z-index:6"><span class="pill" style="background:{INK};color:{YEL};font-size:{int(32 * K)}px;padding:{int(20 * K)}px {int(36 * K)}px">{nb(CATS)}</span><span class="hdr" style="font-size:{int(26 * K)}px;color:{INK};letter-spacing:.1em;text-transform:none">obiimy.world</span></div>"""
+    ad(id, body, note)
+
+def ticket(id, img, pos, big, small, note="", zoom=1.0, origin="50% 50%", veil=.4):
+    """A tear-off coupon — yellow, with notches and a perforation — lying at the bottom of the full-height photograph."""
+    cw, ch = (952, int(300 * K)) if not SQ else (470, int(260 * K))
+    coupon = (f'<div style="width:{cw}px;height:{ch}px;background:{YEL};border-radius:{int(24 * K)}px;position:relative;box-shadow:0 30px 60px -20px rgba(0,0,0,.7);overflow:hidden;color:{INK}">'
+              f'<div style="position:absolute;left:0;top:0;bottom:0;width:{int(cw * .66)}px;display:flex;flex-direction:column;justify-content:center;padding-left:{int(44 * K)}px">{kick("Чорна п’ятниця", INK, 22)}<div style="margin-top:{int(4 * K)}px">{do40(140 if not SQ else 104, INK)}</div></div>'
+              f'<div style="position:absolute;left:{int(cw * .66)}px;top:{int(18 * K)}px;bottom:{int(18 * K)}px;border-left:{max(2, int(3 * K))}px dashed rgba(20,17,16,.45)"></div>'
+              f'<div style="position:absolute;left:{int(cw * .66)}px;right:0;top:0;bottom:0;display:flex;align-items:center;justify-content:center"><span class="kicker" style="font-size:{int(22 * K)}px;letter-spacing:.2em;writing-mode:vertical-rl;transform:rotate(180deg);color:#4B3F10">obiimy.world</span></div>'
+              f'<div style="position:absolute;left:{int(cw * .66) - int(16 * K)}px;top:{-int(16 * K)}px;width:{int(32 * K)}px;height:{int(32 * K)}px;border-radius:50%;background:{INK}"></div>'
+              f'<div style="position:absolute;left:{int(cw * .66) - int(16 * K)}px;bottom:{-int(16 * K)}px;width:{int(32 * K)}px;height:{int(32 * K)}px;border-radius:50%;background:{INK}"></div></div>')
+    if SQ:
+        full(id, img, pos, big, small, note, dark=True, size=68, root=True, zoom=zoom, label=CATS, origin=origin)
+        ads[-1] = ads[-1].replace("\n</section>", f'\n  <div style="left:{1080 - 64 - cw}px;top:{H - BOTB - BAR - ch - int(30 * K)}px;z-index:7">{coupon}</div>\n</section>'); return
+    body = f"""
+  <div style="inset:0;background:{INK}"></div>
+  <div class="ph" style="inset:0"><img src="{PR}{img}" alt="" style="object-position:{pos};transform:scale({zoom});transform-origin:{origin}"></div>
+  <div style="left:0;right:0;top:0;height:{int(280 * K)}px;background:linear-gradient(180deg,rgba(12,9,8,{veil}),rgba(12,9,8,0))"></div>
+  <div style="left:0;right:0;bottom:0;height:{int(H * .5)}px;background:linear-gradient(0deg,rgba(20,17,16,1) 0,rgba(20,17,16,.9) 30%,rgba(20,17,16,0) 100%)"></div>
+  {header()}
+  <div class="light" style="left:64px;right:64px;bottom:{H - Y1 + ch + int(24 * K)}px;z-index:4">{words(big, small, 72, True)}</div>
+  <div style="left:64px;bottom:{H - Y1}px;z-index:7;transform:rotate(-2deg);transform-origin:0 100%">{coupon}</div>
+  {bar(label=CATS)}"""
+    ad(id, body, note)
+
+def polaroid(id, img, pos, small, note="", zoom=1.0, tilt=-4):
+    """An instant-photo card on the black field, the number written in its white margin."""
+    if SQ:
+        cw = 520; ph = cw - 60; ch = ph + int(200 * K); cx, cy = 50, (H - ch) // 2
+        tx = cx + cw + 50
+    else:
+        cw = 820; ph = cw - 60; ch = ph + int(240 * K); cx, cy = (1080 - cw) // 2, Y0 + int(30 * K); tx = None
+    card = (f'<div class="card" style="left:{cx}px;top:{cy}px;width:{cw}px;height:{ch}px;transform:rotate({tilt}deg);z-index:3;background:#fff">'
+            f'<div class="ph" style="position:absolute;left:30px;top:30px;width:{ph}px;height:{ph}px"><img src="{PR}{img}" alt="" style="object-position:{pos};transform:scale({zoom})"></div>'
+            f'<div style="position:absolute;left:30px;right:30px;top:{30 + ph}px;bottom:0;display:flex;align-items:center;justify-content:space-between;color:{INK}">{do40(130 if not SQ else 96, INK)}<span class="kicker" style="font-size:{int(20 * K)}px;letter-spacing:.2em;color:#6b6258">Чорна п’ятниця</span></div></div>')
+    if SQ:
+        body = f"""
+  <div style="inset:0;background:{INK}"></div>{card}
+  {header()}
+  <div class="light" style="left:{tx}px;right:64px;top:{Y0 + int(60 * K)}px;z-index:4"><p class="big" style="font-size:{int(60 * K)}px">Знімок на пам’ять. Ціни — ні.</p><p class="small" style="font-size:{int(30 * K)}px;margin-top:{int(16 * K)}px">{nb(small)}</p></div>
+  {bar(label=CATS)}"""
+    else:
+        body = f"""
+  <div style="inset:0;background:{INK}"></div>{card}
+  {header()}
+  <div class="light" style="left:64px;right:64px;top:{cy + ch + int(70 * K)}px;bottom:{H - Y1}px;z-index:4"><p class="big" style="font-size:{int(76 * K)}px">Знімок на пам’ять. Ціни — ні.</p><p class="small" style="font-size:{int(34 * K)}px;margin-top:{int(16 * K)}px">{nb(small)}</p></div>
+  {bar(label=CATS)}"""
+    ad(id, body, note)
+
+def bars(id, img, pos, small, note="", zoom=1.0, split=.56):
+    """The photograph on top; under it three yellow bars growing from −20 to −40 % — the steps as a chart."""
+    rowsh = "".join(f'<div style="position:relative;height:{int(76 * K)}px;margin-top:{int(14 * K) if i else 0}px;width:{(58, 79, 100)[i]}%;background:{YEL};opacity:{(.55, .78, 1)[i]};border-radius:{int(6 * K)}px;display:flex;align-items:center;justify-content:flex-end;padding-right:{int(28 * K)}px"><span style="{BIGF}font-size:{int(54 * K)}px;font-weight:400;color:{INK}">−{n}<span style="font-size:.6em;letter-spacing:0"> %</span></span></div>' for i, n in enumerate((20, 30, 40)))
+    if SQ:
+        full(id, img, pos, "Три кроки Чорної п’ятниці.", small, note, dark=True, size=60, root=True, zoom=zoom, label=CATS)
+        ads[-1] = ads[-1].replace('<p class="small"', f'<div style="margin-top:{int(24 * K)}px;margin-bottom:{int(8 * K)}px">{rowsh}</div><p class="small"', 1); return
+    yph = int(H * split)
+    body = f"""
+  <div style="inset:0;background:{INK}"></div>
+  <div class="ph" style="left:0;right:0;top:0;height:{yph + int(60 * K)}px"><img src="{PR}{img}" alt="" style="object-position:{pos};transform:scale({zoom})"></div>
+  <div style="left:0;right:0;top:{yph - int(260 * K)}px;height:{int(322 * K)}px;background:{melt(True, bottom=True)}"></div>
+  <div style="left:0;right:0;top:0;height:{int(220 * K)}px;background:linear-gradient(180deg,rgba(12,9,8,.45),rgba(12,9,8,0))"></div>
+  {header()}
+  <div class="light" style="left:64px;right:64px;top:{yph + int(10 * K)}px;bottom:{H - Y1}px;z-index:4">{kick("Чорна п’ятниця · три рівні знижок", YEL)}<div style="margin-top:{int(24 * K)}px">{rowsh}</div><p class="small" style="font-size:{int(34 * K)}px;margin-top:{int(30 * K)}px;max-width:900px">{nb(small)}</p></div>
+  {bar(label=CATS)}"""
+    ad(id, body, note)
+
+def typeonly(id, note=""):
+    """No photograph at all: the yellow field, the range, the four categories — the loudest and the plainest."""
+    cats = "".join(f'<p class="small" style="font-size:{int((66 if not SQ else 44) * K)}px;color:{INK};line-height:1.25">{c}</p>' for c in ("Хустки", "Твіллі", "Маски для сну", "Подарункові набори"))
+    body = f"""
+  <div style="inset:0;background:{YEL}"></div>
+  {header(False)}
+  <div class="ink" style="left:64px;right:64px;top:{Y0 + int(60 * K)}px;z-index:4">{kick("Чорна п’ятниця · знижки на шовк", INK)}
+    <p style="{BIGF}font-size:{int((330 if not SQ else 200) * K)}px;color:{INK};margin-top:{int(16 * K)}px;line-height:.9">−20…<br>−40<span style="font-size:.5em;letter-spacing:0"> %</span></p>
+    <div style="margin-top:{int(50 * K)}px;border-top:{max(2, int(3 * K))}px solid {INK};padding-top:{int(30 * K)}px">{cats}</div>
+    <p class="small" style="font-size:{int(30 * K)}px;margin-top:{int(30 * K)}px;color:#4B3F10">{nb("На шовк із авторськими принтами чотирьох колекцій.")}</p></div>
+  <div style="left:64px;right:64px;bottom:{BOTB}px;height:{BAR}px;display:flex;align-items:center;justify-content:space-between;z-index:6"><span class="pill" style="background:{INK};color:{YEL};font-size:{int(32 * K)}px;padding:{int(20 * K)}px {int(36 * K)}px">obiimy.world</span></div>"""
+    ad(id, body, note)
+
+def film(id, imgs, small, note=""):
+    """A strip of film — four set frames with sprocket holes — beside the number."""
+    def holes(x, h):
+        n = h // int(44 * K)
+        return "".join(f'<div style="position:absolute;left:{x}px;top:{i * int(44 * K) + int(12 * K)}px;width:{int(18 * K)}px;height:{int(24 * K)}px;border-radius:{int(4 * K)}px;background:{INK}"></div>' for i in range(n))
+    if SQ:
+        sw = 1080; fh = int(330 * K); fw = (sw - 5 * 10) // 4; top = Y0
+        frames = "".join(f'<div class="ph" style="position:absolute;left:{10 + i * (fw + 10)}px;top:{int(30 * K)}px;width:{fw}px;height:{fh - int(60 * K)}px"><img src="{PR}{f}" alt="" style="object-position:{p}"></div>' for i, (f, p) in enumerate(imgs))
+        strip = f'<div style="left:0;top:{top}px;width:{sw}px;height:{fh}px;background:#0a0908;overflow:hidden">{frames}</div>'
+        body = f"""
+  <div style="inset:0;background:{INK}"></div>{strip}
+  {header()}
+  <div class="light" style="left:64px;right:64px;top:{top + fh + int(40 * K)}px;z-index:4">{kick("Чорна п’ятниця", YEL)}<div style="margin-top:{int(6 * K)}px">{do40(150)}</div><p class="small" style="font-size:{int(30 * K)}px;margin-top:{int(12 * K)}px">{nb(small)}</p></div>
+  {bar(label=CATS)}"""
+    else:
+        sw = 430; sh_ = Y1 - Y0 + int(20 * K); fh = (sh_ - 5 * 12) // 4; fw = sw - 2 * int(52 * K)
+        frames = "".join(f'<div class="ph" style="position:absolute;left:{int(52 * K)}px;top:{12 + i * (fh + 12)}px;width:{fw}px;height:{fh}px"><img src="{PR}{f}" alt="" style="object-position:{p}"></div>' for i, (f, p) in enumerate(imgs))
+        strip = f'<div style="left:40px;top:{Y0 - int(10 * K)}px;width:{sw}px;height:{sh_}px;background:#0a0908;overflow:hidden;box-shadow:0 40px 80px -30px rgba(0,0,0,.8)">{holes(int(16 * K), sh_)}{holes(sw - int(34 * K), sh_)}{frames}</div>'
+        body = f"""
+  <div style="inset:0;background:{INK}"></div>{strip}
+  {header()}
+  <div class="light" style="left:{40 + sw + 50}px;right:64px;top:{Y0 + int(60 * K)}px;z-index:4">{kick("Чорна п’ятниця", YEL)}<div style="margin-top:{int(10 * K)}px">{do40(190)}</div><p class="small" style="font-size:{int(32 * K)}px;margin-top:{int(20 * K)}px">{nb(small)}</p></div>
+  {bar(label=CATS)}"""
+    ad(id, body, note)
+
+def clipyellow(id, img, small, note="", pos="50% 50%", bgsize="cover", big="Чорна п’ятниця. Жовта."):
+    """`clip` on the yellow field: the digits are a window onto the photograph, everything else in ink."""
+    clip(id, img, small, note, pos=pos, big=big, bgsize=bgsize)
+    a = ads[-1]
+    a = a.replace(f'<div style="inset:0;background:{INK}"></div>', f'<div style="inset:0;background:{YEL}"></div>', 1)
+    a = a.replace('filter:saturate(1.1)', 'filter:saturate(1.3) contrast(1.12)')
+    a = a.replace(f'color:{YEL};font-weight:400">−', f'color:{INK};font-weight:400">−').replace(f'color:{YEL};font-weight:400">%', f'color:{INK};font-weight:400">%')
+    a = a.replace(f'class="kicker" style="font-size', f'class="kicker" style="color:{INK};font-size', 1)
+    a = a.replace(f'color:{CREAM};margin-right', f'color:{INK};margin-right')
+    a = a.replace('<div class="light"', '<div class="ink"').replace(f'<div class="light"', '<div class="ink"')
+    a = a.replace(f'src="{LOGO_W}"', f'src="{LOGO_K}"').replace(f'color:{CREAM};z-index:5">', f'color:{INK};z-index:5">')
+    a = a.replace(f'background:{YEL};color:{INK};font-size', f'background:{INK};color:{YEL};font-size').replace(f'color:{CREAM};letter-spacing:.1em;text-transform:none">obiimy', f'color:{INK};letter-spacing:.1em;text-transform:none">obiimy')
+    ads[-1] = a
+
+def marquee(id, img, pos, big, small, note="", zoom=1.0, text="Чорна п’ятниця · до −40 % · "):
+    """The photograph as a central column, the message running vertically along both margins."""
+    cw = 700 if not SQ else 520; cx = (1080 - cw) // 2
+    side = lambda x, flip: f'<div style="left:{x}px;top:{Y0}px;width:{cx}px;height:{Y1 - Y0}px;display:flex;align-items:center;justify-content:center;overflow:hidden"><span class="kicker" style="font-size:{int(40 * K)}px;letter-spacing:.18em;color:{YEL};writing-mode:vertical-rl;{"transform:rotate(180deg);" if flip else ""}white-space:nowrap">{(text * 6).upper()}</span></div>'
+    body = f"""
+  <div style="inset:0;background:{INK}"></div>
+  {side(0, True)}{side(cx + cw, False)}
+  <div class="ph" style="left:{cx}px;top:0;width:{cw}px;height:{H}px"><img src="{PR}{img}" alt="" style="object-position:{pos};transform:scale({zoom})"></div>
+  <div style="left:{cx}px;width:{cw}px;top:0;height:{int(260 * K)}px;background:linear-gradient(180deg,rgba(12,9,8,.5),rgba(12,9,8,0))"></div>
+  <div style="left:{cx}px;width:{cw}px;bottom:0;height:{int(H * .5)}px;background:linear-gradient(0deg,rgba(20,17,16,1) 0,rgba(20,17,16,.9) 30%,rgba(20,17,16,0) 100%)"></div>
+  {header()}
+  <div class="light" style="left:{cx + 40}px;width:{cw - 80}px;bottom:{H - Y1}px;z-index:4">{words(big, small, 64 if not SQ else 48, True)}</div>
+  {bar(label=CATS)}"""
+    ad(id, body, note)
+
+def fold(id, img, pos, big, small, note="", zoom=1.0, origin="50% 50%", veil=.4):
+    """The full-height photograph with a folded-down yellow corner at the top right carrying the number."""
+    d = int((520 if not SQ else 320) * K)
+    corner = (f'<div style="left:{1080 - d}px;top:0;width:{d}px;height:{d}px;z-index:7;background:{YEL};clip-path:polygon(0 0, 100% 0, 100% 100%);filter:drop-shadow(-10px 14px 24px rgba(0,0,0,.45))">'
+              f'<div style="position:absolute;left:{int(d * .68 - d * .5)}px;top:{int(d * .32 - (70 if not SQ else 36) * K)}px;width:{d}px;transform:rotate(45deg);text-align:center;color:{INK}">{do40(96 if not SQ else 50, INK)}</div></div>')
+    if SQ:
+        full(id, img, pos, big, small, note, dark=True, size=68, root=True, zoom=zoom, label=CATS, origin=origin)
+        # the square: the corner at the frame's top right, over the words' half; no header word there, the words start lower
+        ads[-1] = re.sub(r'<p class="hdr"[^>]*>[^<]*</p>', "", ads[-1], count=1)
+        ads[-1] = ads[-1].replace(f"top:{Y0 + int(40 * K)}px;z-index:4", f"top:{Y0 + int(d * .55)}px;z-index:4", 1)
+        ads[-1] = ads[-1].replace("\n</section>", f'\n  {corner}\n</section>'); return
+    body = f"""
+  <div style="inset:0;background:{INK}"></div>
+  <div class="ph" style="inset:0"><img src="{PR}{img}" alt="" style="object-position:{pos};transform:scale({zoom});transform-origin:{origin}"></div>
+  <div style="left:0;right:0;top:0;height:{int(280 * K)}px;background:linear-gradient(180deg,rgba(12,9,8,{veil}),rgba(12,9,8,0))"></div>
+  <div style="left:0;right:0;bottom:0;height:{int(H * .5)}px;background:linear-gradient(0deg,rgba(20,17,16,1) 0,rgba(20,17,16,.9) 30%,rgba(20,17,16,0) 100%)"></div>
+  {corner}
+  <img src="{LOGO_W}" alt="" style="left:64px;top:{TOPL}px;height:{int(56 * K)}px;z-index:5">
+  <div class="light" style="left:64px;right:64px;bottom:{H - Y1}px;z-index:4">{words(big, small, 84, True)}</div>
+  {bar(label=CATS)}"""
+    ad(id, body, note)
+
+frame("bfd-27-frame", LB + "lb06-07-R.webp", "50% 15%", "Хустка «Коло сонця» зі «Співочої душі» — на бежевому тренчі. Хустки, твіллі, маски для сну й набори.", "The yellow passe-partout around the trench frame")
+diag("bfd-28-diag", LB + "lb32-34-R.webp", "50% 0%", "Хустка «Баланс» з «Дикої стихії» — як топ. Хустки, твіллі, маски для сну й набори.", "The halter-top frame with the yellow triangle across the lower right")
+circle("bfd-29-circle", LB + "lb50-52-R.webp", "50% 20%", "Хустка «Ніжність» з «Поклику душі» — під білою федорою.", "The fedora portrait in a round porthole")
+arch("bfd-30-arch", LB + "lb46-48-R.webp", "50% 15%", "Хустка «Пристрасть» з «Поклику душі» — на голові, під білим капелюхом.", "The headscarf profile as an arch on the yellow field")
+ticket("bfd-31-ticket", LB + "lb12-14-R.webp", "50% 10%", "Відривний купон не потрібен.", "Хустка «Поцілунок сонця» з «Пробудження» — бантом на потилиці. Знижки вже на сайті.", "The bow on the back of the neck, the coupon lying at the bottom", veil=.3)
+polaroid("bfd-32-polaroid", ST + "set-smilyvist-02.jpg", "50% 25%", "Набір «твіллі + резинка» «Сміливість» — у волоссі. Хустки, твіллі, маски для сну й набори зі знижкою.", "The set frame as an instant-photo card")
+bars("bfd-33-bars", LB + "lb14-16-L.webp", "50% 20%", "Твіллі «Соковиті спогади» з «Пробудження» — у волоссі. Хустки, твіллі, маски для сну й набори.", "The twilly in the hair above the three growing bars")
+typeonly("bfd-34-type", "No photograph: the yellow field, the range, the four categories")
+film("bfd-35-film", [(ST + "set-tvilli-845-ta-khustky-4444-natkhne-04.jpg", "50% 20%"), (ST + "set-tvilli-845-ta-khustky-4444-probudz-01.jpg", "50% 20%"), (ST + "set-tvilli-845-ta-khustky-4444-vpevnen-03.jpg", "50% 20%"), (ST + "set-tvilli-845-ta-khustky-4444-smilyvy-03.jpg", "50% 20%")],
+     "Набори «твіллі 84 × 5 + хустка 44 × 44»: «Натхнення», «Пробудження», «Впевненість», «Сміливий дотик».", "Four set frames as a strip of film beside the number")
+clipyellow("bfd-36-clip-yellow", "dotyk-flat.webp", "Хустка «Сміливий дотик» з «Дикої стихії» — і всі принти чотирьох колекцій.", "The digits as a window onto the Bold Touch print, on the yellow field", pos="40% 50%", bgsize="140%")
+# bfd-37 (marquee, the profile under the cap) dropped: the cap carries another brand's name, legible in the square (panel)
+fold("bfd-38-fold", LB + "lb55-57-L.webp", "50% 15%", "Загніть кутик на п’ятницю.", "Твіллі — вузлом на шиї. Твіллі 84 × 5 зі знижкою.", "The Delight twilly profile with the folded yellow corner (the print is not named: Delight has no confirmed Ukrainian name in SITE-FACTS)", veil=.5)
+
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · Black Friday · discount</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600&family=Montserrat:wght@300;400;500&family=Onest:wght@400;600&display=swap">

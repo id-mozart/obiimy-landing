@@ -485,10 +485,14 @@ TIERS = [('ok', 'Рекомендовані · прийняті арт-дире�
 
 EDEM_HOME = [   # 06.11.2026 — banners for the home page about the KRAЇNA EDEM × OBIIMY collaboration (ads/edem/build_home.py → ads/edem/out-home)
     ("home-e-hero-big", "Шапка · хустка крупно", "Та сама шапка, хустка-картка на всю висоту банера (720 px), ледь виходить за верхній і нижній край."),
+    ("home-e-hero-mid", "Шапка · хустка крупно, з полями", "Як «хустка крупно», але картка 636 px — не торкається верхнього й нижнього краю банера."),
     ("home-e-hero-bleed", "Шапка · хустка в обріз", "Хустка 920 px: медальйон принту в центрі поля, кути зрізані рамкою банера."),
     ("home-e-hero-tilt", "Шапка · хустка з нахилом", "Хустка 820 px, повернута в перспективі як картка на сторінці — тримає висоту й читається як річ у просторі."),
     ("home-e-hero-right", "Шапка · хустка з правого краю", "Хустка 840 px заходить із правого краю кадру, ліворуч більше повітря для тексту."),
     ("home-e-hero-light", "Шапка лендингу", "Шапка edem.obiimy.world у форматі банера: логотипи, «Трипілля — Мистецтво витоків», лід, золота кнопка й факти зліва; медальйон тлом, хустка-картка, фігурка й підвіски праворуч."),
+    ("home-e-video-tree", "Кадр з відео · хустка в руках", "Стоп-кадр із відео клієнта (0:06): розгорнута хустка в руках у дереві, тепле сонце; фото праворуч плавно розчиняється в темному полі з лок-апом."),
+    ("home-e-video-sky", "Кадр з відео · хустка в небі", "Стоп-кадр (0:16): хустка летить над головою проти сонця; той самий темний лок-ап зліва."),
+    ("home-e-video-portrait", "Кадр з відео · на плечах", "Стоп-кадр (0:39): портрет із хусткою на плечах серед дерев; темне поле з лок-апом."),
     ("home-e-canvas-dark", "Полотно · темний", "Лок-ап на темному полі, принт хустки праворуч, поле плавно переходить у картину — як обраний банер SOLO."),
     ("home-e-canvas-light", "Полотно · кремовий", "Поле кольору самого принту: картина просто продовжується в банер, без масок і меж."),
     ("home-e-medallion-dark", "Медальйон · темний", "Центральний медальйон принту з золотим сяйвом і двома підвісками на темному полі."),
@@ -510,7 +514,7 @@ def edem_cards(site, out):
             t = im.copy(); t.thumbnail((1200, 400)); t.save(prev, quality=82)
         v = hashlib.md5(f.read_bytes()).hexdigest()[:8]; files.append(f"creatives/home/{f.name}?v={v}")
         cards.append(f'''<figure class="hb e"><div class="hbv"><a href="creatives/home/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/home/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="1200" height="360"></a></div>
-      <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><div class="hba"><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></div></figcaption></figure>''')
+      <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><div class="hba"><a href="home-preview?sel={id}">На макеті головної →</a><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></div></figcaption></figure>''')
     return cards, files
 
 def build_home(site, render):
@@ -559,15 +563,15 @@ def build_home(site, render):
 <p class="lede">Обраний банер «Студійний кадр · темний» (home-h-reblum-dark): лок-ап на темному полі, студійний кадр «Авантюри» праворуч, темне поле плавно переходить у фото без різкої межі. Розміри — за ТЗ клієнта для Horoshop (06.11.2026): головна Desktop LINE 1 і верх внутрішніх сторінок 10:3, Mobile LINE 1 — 5:2 (лок-ап на п’яту більший), LINE 2–3 — 5:3. Три мови — тексти з відповідних версій obiimy.world. JPG і WebP (рекомендований Хорошопом) у точному розмірі.</p>
 {hcards_html}</section>''' if hcards else ""
     ecards, efiles = edem_cards(site, out)
-    e_lede = "Колаборація <b>KRAЇNA EDEM × OBIIMY</b> — хустка «Trypillia — The Art of Origins», 88 × 88 см, шовк, лімітований випуск (прес-реліз і дека клієнта). Лок-ап: партнери, «Trypillia» в Cormorant, курсивний підзаголовок, золота плашка з фактами, кнопка «Замовити хустку» → edem.obiimy.world. Ціни на банерах немає (06.11: ціна — лише в секції замовлення). Арт — принт хустки та його елементи з матеріалів клієнта; палітра сторінки продажу (чорнило, крем, золото)."
+    e_lede = "Колаборація <b>KRAЇNA EDEM × OBIIMY</b> — хустка «Трипілля — Мистецтво витоків» (Trypillia — The Art of Origins), 88 × 88 см, шовк, лімітований випуск (прес-реліз і дека клієнта). Лок-ап: партнери, «Трипілля» в Cormorant, курсивний підзаголовок «Мистецтво витоків», золота плашка з фактами, кнопка «Замовити хустку» → edem.obiimy.world. Ціни на банерах немає (06.11: ціна — лише в секції замовлення). Арт — принт хустки та його елементи з матеріалів клієнта; палітра сторінки продажу (чорнило, крем, золото)."
     es_html = f'''<section class="hbt" id="edem"><h2>KRAЇNA EDEM × OBIIMY · Trypillia <span>· {len(ecards)}</span></h2>
 <p class="lede">{e_lede} Окрема сторінка — <a href="home-edem">/home-edem</a>.</p>
 <div class="hbs">{"".join(ecards)}</div></section>''' if ecards else ""
     if ecards:
         epage = f'''<header><a href="home-banners">← Усі банери для головної</a></header>
 <h1>Банери головної · KRAЇNA EDEM × OBIIMY</h1>
-<p class="lede">{e_lede} Формат — 1920 × 576, як поточний банер сайту; поруч із кожним — як його обріже слайдер на телефоні. Після вибору зберемо обраний у розмірах Хорошоп і трьома мовами, як для SOLO.</p>
-<p class="lede hbl"><button type="button" id="hbzip">Завантажити всі (ZIP)</button><span id="hbn"></span></p>
+<p class="lede">{e_lede} Формат — 1920 × 576, як поточний банер сайту. Після вибору зберемо обраний у розмірах Хорошоп і трьома мовами, як для SOLO.</p>
+<p class="lede hbl"><a href="home-preview?sel={",".join(id for id, _, _ in EDEM_HOME)}">Усі на макеті головної (слайдер) →</a><button type="button" id="hbzip">Завантажити всі (ZIP)</button><span id="hbn"></span></p>
 <section class="hbt"><div class="hbs">{"".join(ecards)}</div></section>
 <style>.hbl {{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:14px; }} .hbl button {{ font:inherit; font-size:.88rem; border:0; background:var(--acc); color:#fff; border-radius:999px; padding:10px 16px; cursor:pointer; }} .hbl button[disabled] {{ opacity:.6; }} #hbn {{ font-size:.85rem; color:var(--ink2); }}
 .hbt {{ margin-top: 32px; }} .hbs {{ display: grid; gap: 28px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }}
@@ -655,7 +659,7 @@ document.getElementById('hbzip').addEventListener('click', function () {{
 }});
 </script>'''
         (site / "home-horoshop.html").write_text(render(solo, "", "").replace("<title>Креативи Obiimy</title>", "<title>Банер головної · формати Хорошоп — SOLO</title>"))
-    build_home_mock(site, out, [(id, title) for id, title, _, _ in HOME if (src / f"{id}.jpg").exists()])
+    build_home_mock(site, out, [(id, title) for id, title, _, _ in HOME if (src / f"{id}.jpg").exists()] + [(id, title) for id, title, _ in EDEM_HOME if (ROOT / "ads/edem/out-home" / f"{id}.jpg").exists()])   # the Edem banners in the mock too (07.11)
 
 def build_home_mock(site, out, items):
     """site/home-preview.html — the banners inside a mock of the obiimy.world home page: the site's header, the slider with

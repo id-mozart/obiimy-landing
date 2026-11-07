@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · EDEM home banners</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400&display=swap">
 <style>
 * { box-sizing: border-box; }
 body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webkit-font-smoothing: antialiased; }
@@ -22,41 +22,73 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 .light .more { color: #16100C; border-color: rgba(22,16,12,.7); }
 .glow { border-radius: 50%; filter: blur(70px); opacity: .55; background: radial-gradient(circle, rgba(217,184,106,.55), rgba(217,184,106,0) 70%); }
 .shadow { filter: drop-shadow(0 30px 40px rgba(22,16,12,.28)); }
+/* G · the landing's header: the light page (--bg #F7F1E6, ink text, gold #B48A3A), the mandala faint behind, the scarf as a tilted card */
+.hero { background: radial-gradient(70% 60% at 68% 45%, rgba(180,138,58,.18), transparent 65%), #F7F1E6; color: #2A2017; }
+.hero .mandala { opacity: .14; filter: sepia(.4) saturate(.7); } .hero .mandala img { width: 100%; height: auto; display: block; }
+.hero .card { perspective: 1400px; } .hero .card img { width: 100%; height: auto; display: block; transform: rotateY(-11deg) rotateX(5deg); filter: drop-shadow(0 40px 50px rgba(58,42,28,.42)) drop-shadow(0 4px 10px rgba(58,42,28,.2)); }
+.hero .sheen { position: absolute; inset: 6% 10%; background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,.26) 48%, transparent 58%); mix-blend-mode: screen; transform: rotateY(-11deg) rotateX(5deg); }
+.hero .orn img { width: 100%; height: auto; display: block; filter: drop-shadow(0 18px 20px rgba(58,42,28,.3)); }
+.hero .dust { width: 4px; height: 4px; border-radius: 50%; background: #B48A3A; box-shadow: 0 0 6px rgba(180,138,58,.9); }
+.hero .copy { left: 84px; top: 50%; transform: translateY(-50%); line-height: 1; }
+.hero .logos { display: flex; align-items: center; gap: 18px; } .hero .logos img { display: block; height: 26px; width: auto; } .hero .logos img.edem { height: 72px; margin-top: -6px; } .hero .logos i { font-family: 'Cormorant Garamond', serif; font-style: normal; font-size: 22px; opacity: .55; }
+.hero .eyebrow { margin-top: 22px; font-size: 17px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; color: #B48A3A; }
+.hero h1 { margin: 10px 0 0 -4px; font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 88px; line-height: .98; letter-spacing: -.005em; } .hero h1 i { font-style: italic; color: #B48A3A; }
+.hero .lead { margin-top: 16px; max-width: 600px; font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 28px; line-height: 1.3; color: rgba(42,32,23,.68); }
+.hero .btn { display: inline-block; margin-top: 24px; font-size: 19px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 21px 30px; background: #B48A3A; color: #F7F1E6; }
+.hero .facts { margin-top: 24px; display: flex; gap: 28px; font-size: 16px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: rgba(42,32,23,.68); } .hero .facts b { color: #B48A3A; font-weight: 600; }
 </style></head><body>
 <!-- The print on ink, feathered -->
 <section class="ad " id="home-e-canvas-dark">
   <div style="inset:0;background:#16100C"></div>
   <div style="left:640px;right:0;top:0;bottom:0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 320px);mask-image:linear-gradient(90deg,transparent 0,#000 320px)"><img src="../../photo/edem/art-2400.webp" alt="" style="position:absolute;left:10px;top:-482px;width:1500px;height:1500px"></div>
   <div style="left:640px;top:0;bottom:0;width:290px;background:linear-gradient(90deg,#16100C 0,rgba(22,16,12,.15) 40%,rgba(22,16,12,0) 100%)"></div>
-  <div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:168px">Trypillia</p><p class="t" style="font-size:64px">The Art of Origins</p><p class="pill">Шовк · 88 × 88 см · лімітований випуск</p><p class="more">Замовити хустку</p></div>
+  <div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:168px">Трипілля</p><p class="t" style="font-size:64px">Мистецтво витоків</p><p class="pill">Шовк · 88 × 88 см · лімітований випуск</p><p class="more">Замовити хустку</p></div>
 </section>
 <!-- The print on its own cream -->
 <section class="ad light" id="home-e-canvas-light">
   <img src="../../photo/edem/art-2400.webp" alt="" style="left:860px;top:-262px;width:1100px;height:1100px">
   <div style="left:880px;top:0;bottom:0;width:140px;background:linear-gradient(90deg,#F5EAD7 0,#F5EAD7 30%,rgba(245,234,215,0))"></div>
-  <div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:168px">Trypillia</p><p class="t" style="font-size:64px">The Art of Origins</p><p class="pill">Шовк · 88 × 88 см · лімітований випуск</p><p class="more">Замовити хустку</p></div>
+  <div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:168px">Трипілля</p><p class="t" style="font-size:64px">Мистецтво витоків</p><p class="pill">Шовк · 88 × 88 см · лімітований випуск</p><p class="more">Замовити хустку</p></div>
 </section>
 <!-- The medallion on ink -->
 <section class="ad " id="home-e-medallion-dark">
   <div class="glow" style="left:965px;top:-160px;width:900px;height:900px"></div>
   <div class="cut" style="left:1105px;top:53px;width:470px"><img src="../../photo/edem/mandala.webp" alt=""></div>
-  <div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:168px">Trypillia</p><p class="t" style="font-size:64px">The Art of Origins</p><p class="pill">Шовк · 88 × 88 см · лімітований випуск</p><p class="more">Замовити хустку</p></div>
+  <div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:168px">Трипілля</p><p class="t" style="font-size:64px">Мистецтво витоків</p><p class="pill">Шовк · 88 × 88 см · лімітований випуск</p><p class="more">Замовити хустку</p></div>
 </section>
 <!-- The scarf on cream -->
 <section class="ad light" id="home-e-scarf-light">
   <div class="cut shadow" style="left:1080px;top:2px;width:580px"><img src="../../photo/edem/scarf.webp" alt=""></div>
-  <div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:168px">Trypillia</p><p class="t" style="font-size:64px">The Art of Origins</p><p class="pill">Шовк · 88 × 88 см · лімітований випуск</p><p class="more">Замовити хустку</p></div>
+  <div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:168px">Трипілля</p><p class="t" style="font-size:64px">Мистецтво витоків</p><p class="pill">Шовк · 88 × 88 см · лімітований випуск</p><p class="more">Замовити хустку</p></div>
 </section>
 <!-- The corner of the print on ink -->
 <section class="ad " id="home-e-figure-dark">
   <div style="inset:0;background:#16100C"></div>
   <div class="ph" style="left:820px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 460px);mask-image:linear-gradient(90deg,transparent 0,#000 460px)"><img src="../../photo/edem/art-corner.webp" alt="" style="object-position:50% 28%"></div><div style="left:820px;top:0;bottom:0;width:414px;background:linear-gradient(90deg,#16100C 0,rgba(22,16,12,.15) 40%,rgba(22,16,12,0) 100%)"></div>
-  <div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:168px">Trypillia</p><p class="t" style="font-size:64px">The Art of Origins</p><p class="pill">Шовк · 88 × 88 см · лімітований випуск</p><p class="more">Замовити хустку</p></div>
+  <div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:168px">Трипілля</p><p class="t" style="font-size:64px">Мистецтво витоків</p><p class="pill">Шовк · 88 × 88 см · лімітований випуск</p><p class="more">Замовити хустку</p></div>
 </section>
 <!-- The print full width, cream veil -->
 <section class="ad light" id="home-e-strip">
   <img src="../../photo/edem/art-2400.webp" alt="" style="left:700px;top:-412px;width:1400px;height:1400px">
   <div style="inset:0;background:linear-gradient(90deg,#F5EAD7 0%,#F5EAD7 42%,rgba(245,234,215,0) 52%)"></div>
-  <div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:168px">Trypillia</p><p class="t" style="font-size:64px">The Art of Origins</p><p class="pill">Шовк · 88 × 88 см · лімітований випуск</p><p class="more">Замовити хустку</p></div>
+  <div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:168px">Трипілля</p><p class="t" style="font-size:64px">Мистецтво витоків</p><p class="pill">Шовк · 88 × 88 см · лімітований випуск</p><p class="more">Замовити хустку</p></div>
+</section>
+<!-- The landing's header as a banner -->
+<section class="ad hero" id="home-e-hero-light">
+  <div class="mandala" style="left:900px;top:-130px;width:860px"><img src="../../photo/edem/mandala.webp" alt=""></div>
+  <i class="dust" style="left:930px;top:120px;opacity:0.8"></i><i class="dust" style="left:1010px;top:470px;opacity:0.6"></i><i class="dust" style="left:1180px;top:40px;opacity:0.7"></i><i class="dust" style="left:1270px;top:540px;opacity:0.5"></i><i class="dust" style="left:1500px;top:30px;opacity:0.6"></i><i class="dust" style="left:1610px;top:520px;opacity:0.7"></i><i class="dust" style="left:1700px;top:300px;opacity:0.5"></i><i class="dust" style="left:1860px;top:150px;opacity:0.8"></i><i class="dust" style="left:1880px;top:470px;opacity:0.6"></i><i class="dust" style="left:860px;top:380px;opacity:0.5"></i><i class="dust" style="left:1420px;top:560px;opacity:0.6"></i><i class="dust" style="left:1790px;top:60px;opacity:0.5"></i>
+  <div class="orn" style="left:900px;top:34px;width:74px"><img src="../../photo/edem/pendant-diamond.webp" alt=""></div>
+  <div class="orn" style="left:1746px;top:62px;width:82px"><img src="../../photo/edem/pendant-round.webp" alt=""></div>
+  <div class="orn" style="left:1806px;top:372px;width:56px;opacity:.85;filter:blur(.5px)"><img src="../../photo/edem/pendant-round.webp" alt=""></div>
+  <div class="card" style="left:1112px;top:64px;width:446px"><img src="../../photo/edem/scarf.webp" alt=""><i class="sheen"></i></div>
+  <div class="orn" style="left:986px;top:318px;width:122px"><img src="../../photo/edem/figure.webp" alt=""></div>
+  <div class="copy">
+    <div class="logos"><img src="../../brand/logo-ink.svg" alt="OBIIMY"><i>×</i><img class="edem" src="../../brand/edem-mark.png" alt="Kraїna Edem"></div>
+    <p class="eyebrow">Спільний мистецький проєкт</p>
+    <h1>Трипілля —<br><i>Мистецтво витоків</i></h1>
+    <p class="lead">Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами.</p>
+    <p class="btn">Замовити хустку</p>
+    <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Обмежений наклад</span></div>
+  </div>
 </section>
 </body></html>

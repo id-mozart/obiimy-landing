@@ -1,6 +1,6 @@
 """KRAЇNA EDEM × OBIIMY banners for the home page of obiimy.world (1920 × 576, as the SOLO ones; 06.11.2026, «сделай несколько
-вариантов баннеров для главной про эту коллаборацию, трипільську»). The lock-up: the partners' line, «Trypillia» in Cormorant,
-«The Art of Origins» in italic, a gold pill with the facts (88 × 88 см, шовк, лімітований випуск), the outlined «Замовити хустку».
+вариантов баннеров для главной про эту коллаборацию, трипільську»). The lock-up: the partners' line, «Трипілля» in Cormorant,
+«Мистецтво витоків» in italic (07.11: the Ukrainian name on the Ukrainian page, as on the landing), a gold pill with the facts (88 × 88 см, шовк, лімітований випуск), the outlined «Замовити хустку».
 No price on the banners (06.11: the price lives only in the order section of the page). Art: the client's print and its cut-outs
 (photo/edem) — the figure, the medallion, the pendants, the scarf; palette from the sale page (ink #16100C, cream #F3E9D8, gold #D9B86A).
   python3 edem/build_home.py                                   → edem/home.html
@@ -35,6 +35,20 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 .light .more { color: INK; border-color: rgba(22,16,12,.7); }
 .glow { border-radius: 50%; filter: blur(70px); opacity: .55; background: radial-gradient(circle, rgba(217,184,106,.55), rgba(217,184,106,0) 70%); }
 .shadow { filter: drop-shadow(0 30px 40px rgba(22,16,12,.28)); }
+/* G · the landing's header: the light page (--bg #F7F1E6, ink text, gold #B48A3A), the mandala faint behind, the scarf as a tilted card */
+.hero { background: radial-gradient(70% 60% at 68% 45%, rgba(180,138,58,.18), transparent 65%), #F7F1E6; color: #2A2017; }
+.hero .mandala { opacity: .14; filter: sepia(.4) saturate(.7); } .hero .mandala img { width: 100%; height: auto; display: block; }
+.hero .card { perspective: 1400px; } .hero .card img { width: 100%; height: auto; display: block; transform: rotateY(-11deg) rotateX(5deg); filter: drop-shadow(0 40px 50px rgba(58,42,28,.42)) drop-shadow(0 4px 10px rgba(58,42,28,.2)); }
+.hero .sheen { position: absolute; inset: 6% 10%; background: linear-gradient(115deg, transparent 38%, rgba(255,255,255,.26) 48%, transparent 58%); mix-blend-mode: screen; transform: rotateY(-11deg) rotateX(5deg); }
+.hero .orn img { width: 100%; height: auto; display: block; filter: drop-shadow(0 18px 20px rgba(58,42,28,.3)); }
+.hero .dust { width: 4px; height: 4px; border-radius: 50%; background: #B48A3A; box-shadow: 0 0 6px rgba(180,138,58,.9); }
+.hero .copy { left: 84px; top: 50%; transform: translateY(-50%); line-height: 1; }
+.hero .logos { display: flex; align-items: center; gap: 18px; } .hero .logos img { display: block; height: 26px; width: auto; } .hero .logos img.edem { height: 72px; margin-top: -6px; } .hero .logos i { font-family: 'Cormorant Garamond', serif; font-style: normal; font-size: 22px; opacity: .55; }
+.hero .eyebrow { margin-top: 22px; font-size: 17px; font-weight: 600; letter-spacing: .28em; text-transform: uppercase; color: #B48A3A; }
+.hero h1 { margin: 10px 0 0 -4px; font-family: 'Cormorant Garamond', serif; font-weight: 400; font-size: 88px; line-height: .98; letter-spacing: -.005em; } .hero h1 i { font-style: italic; color: #B48A3A; }
+.hero .lead { margin-top: 16px; max-width: 600px; font-family: 'Cormorant Garamond', serif; font-weight: 300; font-size: 28px; line-height: 1.3; color: rgba(42,32,23,.68); }
+.hero .btn { display: inline-block; margin-top: 24px; font-size: 19px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; padding: 21px 30px; background: #B48A3A; color: #F7F1E6; }
+.hero .facts { margin-top: 24px; display: flex; gap: 28px; font-size: 16px; font-weight: 500; letter-spacing: .12em; text-transform: uppercase; color: rgba(42,32,23,.68); } .hero .facts b { color: #B48A3A; font-weight: 600; }
 """.replace("GRAIN", GRAIN).replace("CREAM2", CREAM2).replace("CREAM", CREAM).replace("INK", INK).replace("GOLD2", GOLD2).replace("GOLD", GOLD).replace("PAPER", PAPER)
 
 ads = []
@@ -42,8 +56,8 @@ def ad(id, body, cls="", note=""):
     ads.append(f'\n<!-- {note} -->\n<section class="ad {cls}" id="{id}">{body}\n</section>')
 
 def lock(size=168, pill=True, more=True, sub=64):
-    return (f'<div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:{size}px">Trypillia</p>'
-            f'<p class="t" style="font-size:{sub}px">The Art of Origins</p>'
+    return (f'<div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:{size}px">Трипілля</p>'
+            f'<p class="t" style="font-size:{sub}px">Мистецтво витоків</p>'
             + ('<p class="pill">Шовк · 88 × 88 см · лімітований випуск</p>' if pill else "") + ('<p class="more">Замовити хустку</p>' if more else "") + '</div>')
 
 def feathered(img, left, feather, pos, veil=INK, w=None):
@@ -88,9 +102,30 @@ ad("home-e-strip", f'''
   <div style="inset:0;background:linear-gradient(90deg,{PAPER} 0%,{PAPER} 42%,rgba(245,234,215,0) 52%)"></div>
   {lock()}''', cls="light", note="The print full width, cream veil")
 
+# G · the landing's header as a banner: logos, eyebrow, the title in two lines with the italic gold second one, the lead, the gold
+#     button and the facts at the left; the faint mandala, the tilted scarf card, the figurine and the pendants at the right (edem-motion-light)
+_dust = "".join(f'<i class="dust" style="left:{x}px;top:{y}px;opacity:{o}"></i>' for x, y, o in
+                [(930, 120, .8), (1010, 470, .6), (1180, 40, .7), (1270, 540, .5), (1500, 30, .6), (1610, 520, .7), (1700, 300, .5), (1860, 150, .8), (1880, 470, .6), (860, 380, .5), (1420, 560, .6), (1790, 60, .5)])
+ad("home-e-hero-light", f'''
+  <div class="mandala" style="left:900px;top:-130px;width:860px"><img src="{E('mandala.webp')}" alt=""></div>
+  {_dust}
+  <div class="orn" style="left:900px;top:34px;width:74px"><img src="{E('pendant-diamond.webp')}" alt=""></div>
+  <div class="orn" style="left:1746px;top:62px;width:82px"><img src="{E('pendant-round.webp')}" alt=""></div>
+  <div class="orn" style="left:1806px;top:372px;width:56px;opacity:.85;filter:blur(.5px)"><img src="{E('pendant-round.webp')}" alt=""></div>
+  <div class="card" style="left:1112px;top:64px;width:446px"><img src="{E('scarf.webp')}" alt=""><i class="sheen"></i></div>
+  <div class="orn" style="left:986px;top:318px;width:122px"><img src="{E('figure.webp')}" alt=""></div>
+  <div class="copy">
+    <div class="logos"><img src="../../brand/logo-ink.svg" alt="OBIIMY"><i>×</i><img class="edem" src="../../brand/edem-mark.png" alt="Kraїna Edem"></div>
+    <p class="eyebrow">Спільний мистецький проєкт</p>
+    <h1>Трипілля —<br><i>Мистецтво витоків</i></h1>
+    <p class="lead">Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами.</p>
+    <p class="btn">Замовити хустку</p>
+    <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Обмежений наклад</span></div>
+  </div>''', cls="hero", note="The landing's header as a banner")
+
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · EDEM home banners</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,300;1,400&display=swap">
 <style>""" + CSS + "</style></head><body>"
 (HERE / "home.html").write_text(HEAD + "".join(ads) + "\n</body></html>")
 print(len(ads), "edem home banners")

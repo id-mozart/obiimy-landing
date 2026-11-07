@@ -120,13 +120,14 @@ SCRIPT = """
 
 DESC = "Спільний мистецький проєкт KRAЇNA EDEM та OBIIMY: шовкова хустка 88 × 88, натхненна трипільською культурою. Лімітований випуск — зареєструйтесь, щоб дізнатися про ціну та старт продажів першими."
 def head(slug, css, title_extra="", url=None, index=False, desc=DESC, lang="uk", extra=""):
+    name = "Trypillia: The Art of Origins" if lang == "en" else "Трипілля: Мистецтво витоків"   # 07.11: the Ukrainian page names the project in Ukrainian
     return f'''<html lang="{lang}">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>KRAЇNA EDEM × OBIIMY — Trypillia: The Art of Origins{title_extra}</title>
+<title>KRAЇNA EDEM × OBIIMY — {name}{title_extra}</title>
 <meta name="description" content="{desc}">
 {"" if index else '<meta name="robots" content="noindex">'}<link rel="canonical" href="{url or SITE_URL + "/edem"}">
-<meta property="og:type" content="website"><meta property="og:title" content="KRAЇNA EDEM × OBIIMY — Trypillia: The Art of Origins"><meta property="og:image" content="{SITE_URL}/photo/edem/art-1600-1200.webp"><meta property="og:url" content="{url or SITE_URL + "/" + slug}"><meta property="og:locale" content="{"en_US" if lang == "en" else "uk_UA"}">{extra}
+<meta property="og:type" content="website"><meta property="og:title" content="KRAЇNA EDEM × OBIIMY — {name}"><meta property="og:image" content="{SITE_URL}/photo/edem/art-1600-1200.webp"><meta property="og:url" content="{url or SITE_URL + "/" + slug}"><meta property="og:locale" content="{"en_US" if lang == "en" else "uk_UA"}">{extra}
 <link rel="icon" href="brand/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">

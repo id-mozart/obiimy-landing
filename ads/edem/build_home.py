@@ -106,19 +106,33 @@ ad("home-e-strip", f'''
 #     button and the facts at the left; the faint mandala, the tilted scarf card, the figurine and the pendants at the right (edem-motion-light)
 _dust = "".join(f'<i class="dust" style="left:{x}px;top:{y}px;opacity:{o}"></i>' for x, y, o in
                 [(960, 110, .7), (1010, 470, .6), (1270, 540, .5), (1610, 520, .7), (1700, 300, .5), (1860, 150, .8), (1880, 470, .6), (1420, 560, .6), (1790, 60, .5)])
-ad("home-e-hero-light", f'''
-  <div class="mandala" style="left:900px;top:-130px;width:860px"><img src="{E('mandala.webp')}" alt=""></div>
+def hero(id, card, fig, pend=None, mandala="left:900px;top:-130px;width:860px", tilt=None, note=""):
+    """The header banner with the scarf card placed by `card` (left/top/width css); 07.11 «давай несколько вариантов, так, чтобы крупнее была сама хустка»."""
+    t = f' style="transform:{tilt}"' if tilt else ""
+    ad(id, f'''
+  <div class="mandala" style="{mandala}"><img src="{E('mandala.webp')}" alt=""></div>
   {_dust}
-  <div class="card" style="left:1112px;top:64px;width:446px"><img src="{E('scarf.webp')}" alt=""><i class="sheen"></i></div>
-  <div class="orn" style="left:1522px;top:16px;width:78px"><img src="{E('pendant-round.webp')}" alt=""></div>
-  <div class="orn" style="left:1064px;top:296px;width:118px"><img src="{E('figure.webp')}" alt=""></div>
+  <div class="card" style="{card}"><img src="{E('scarf.webp')}" alt=""{t}><i class="sheen"{t}></i></div>
+  {f'<div class="orn" style="{pend}"><img src="{E("pendant-round.webp")}" alt=""></div>' if pend else ""}
+  <div class="orn" style="{fig}"><img src="{E('figure.webp')}" alt=""></div>
   <div class="copy">
     <div class="logos"><img src="../../brand/logo-ink.svg" alt="OBIIMY"><i>×</i><img class="edem" src="../../brand/edem-mark.png" alt="Kraїna Edem"></div>
     <p class="eyebrow">Спільний мистецький проєкт</p>
     <h1>Трипілля —<br><i>Мистецтво витоків</i></h1>
     <p class="lead">Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами.</p>
     <p class="btn">Замовити хустку</p>
-  </div>''', cls="hero", note="The landing's header as a banner")
+  </div>''', cls="hero", note=note)
+
+# G · as the page: the card 446 wide, the figurine standing on the field and touching the card's lower-left corner, one pendant (70 px) at its upper-right corner (panel, round 5)
+hero("home-e-hero-light", card="left:1112px;top:64px;width:446px", fig="left:1022px;top:326px;width:118px", pend="left:1478px;top:14px;width:70px", note="The landing's header as a banner")
+# H · the scarf a size up: the card 720 wide, the full height of the banner, a hair over the top and bottom edges
+hero("home-e-hero-big", card="left:1070px;top:-60px;width:720px", fig="left:1030px;top:332px;width:118px", mandala="left:860px;top:-200px;width:1000px", note="The header, the scarf larger")
+# I · the scarf over the edges: the card 920 wide, the medallion of the print in the middle of the field, the corners cut by the frame
+hero("home-e-hero-bleed", card="left:1040px;top:-160px;width:920px", fig="left:1018px;top:326px;width:118px", mandala="left:820px;top:-260px;width:1100px", note="The header, the scarf over the edges")
+# J · the scarf tilted as a card in perspective: 820 wide, a stronger turn, so it keeps the height but reads as a thing in space
+hero("home-e-hero-tilt", card="left:1150px;top:-110px;width:820px", fig="left:1196px;top:328px;width:118px", mandala="left:880px;top:-230px;width:1050px", tilt="rotateY(-28deg) rotateX(8deg)", note="The header, the scarf tilted and larger")
+# K · the scarf entering from the right edge: 840 wide, cut by the right side of the frame, more air for the text
+hero("home-e-hero-right", card="left:1290px;top:-120px;width:840px", fig="left:1260px;top:324px;width:118px", mandala="left:1000px;top:-240px;width:1060px", note="The header, the scarf at the right edge")
 
 HEAD = """<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · EDEM home banners</title>

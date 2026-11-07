@@ -498,20 +498,18 @@ EDEM_HOME = [   # 06.11.2026 — banners for the home page about the KRAЇNA EDE
 ]
 
 def edem_cards(site, out):
-    """The Edem banners as cards (JPG, a 1200 preview, the phone crop) — the same card as the SOLO ones, without the slider controls."""
+    """The Edem banners as cards (JPG and a 1200 preview; no phone crop since 07.11) — the same card as the SOLO ones, without the slider controls."""
     src = ROOT / "ads/edem/out-home"; cards = []; files = []
     if not src.exists(): return cards, files
     for id, title, desc in EDEM_HOME:
         f = src / f"{id}.jpg"
         if not f.exists(): continue
-        dst = out / f.name; prev = out / f"{id}-1200.webp"; ph = out / f"{id}-phone.webp"
-        if not (dst.exists() and prev.exists() and ph.exists() and dst.stat().st_mtime >= f.stat().st_mtime):
+        dst = out / f.name; prev = out / f"{id}-1200.webp"
+        if not (dst.exists() and prev.exists() and dst.stat().st_mtime >= f.stat().st_mtime):
             im = Image.open(f).convert("RGB"); im.save(dst, "JPEG", quality=88, optimize=True, progressive=True)
             t = im.copy(); t.thumbnail((1200, 400)); t.save(prev, quality=82)
-            w, h = im.size; cw = int(h * 1.3); x0 = max(0, min(w - cw, int(w * .02)))
-            im.crop((x0, 0, x0 + cw, h)).resize((520, 400)).save(ph, quality=82)
         v = hashlib.md5(f.read_bytes()).hexdigest()[:8]; files.append(f"creatives/home/{f.name}?v={v}")
-        cards.append(f'''<figure class="hb"><div class="hbv"><a href="creatives/home/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/home/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="1200" height="360"></a><div class="hbp" title="Як обріже слайдер на телефоні (ліва частина з лок-апом)"><img src="creatives/home/{ph.name}?v={v}" alt="" loading="lazy" width="520" height="400"><span>телефон</span></div></div>
+        cards.append(f'''<figure class="hb e"><div class="hbv"><a href="creatives/home/{f.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/home/{prev.name}?v={v}" alt="{html.escape(title)}" loading="lazy" width="1200" height="360"></a></div>
       <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><div class="hba"><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></div></figcaption></figure>''')
     return cards, files
 
@@ -573,7 +571,7 @@ def build_home(site, render):
 <section class="hbt"><div class="hbs">{"".join(ecards)}</div></section>
 <style>.hbl {{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:14px; }} .hbl button {{ font:inherit; font-size:.88rem; border:0; background:var(--acc); color:#fff; border-radius:999px; padding:10px 16px; cursor:pointer; }} .hbl button[disabled] {{ opacity:.6; }} #hbn {{ font-size:.85rem; color:var(--ink2); }}
 .hbt {{ margin-top: 32px; }} .hbs {{ display: grid; gap: 28px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }}
-.hbv {{ display: grid; grid-template-columns: 1fr 180px; gap: 14px; align-items: start; padding: 14px 14px 0; }} .hbv > a img {{ display:block; width:100%; height:auto; }} .hbp {{ position: relative; }} .hbp img {{ display:block; width:100%; height:auto; border-radius: 4px; }} .hbp span {{ position:absolute; left:8px; bottom:8px; font-size:.72rem; background:rgba(0,0,0,.55); color:#fff; padding:3px 7px; border-radius:999px; }}
+.hbv {{ display: grid; grid-template-columns: 1fr 180px; gap: 14px; align-items: start; padding: 14px 14px 0; }} .hbv > a img {{ display:block; width:100%; height:auto; }} .hb.e .hbv {{ grid-template-columns: 1fr; }} .hbp {{ position: relative; }} .hbp img {{ display:block; width:100%; height:auto; border-radius: 4px; }} .hbp span {{ position:absolute; left:8px; bottom:8px; font-size:.72rem; background:rgba(0,0,0,.55); color:#fff; padding:3px 7px; border-radius:999px; }}
 .hb figcaption {{ display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 18px 18px 14px; font-size: .92rem; color: var(--ink2); }} .hb b {{ color: var(--ink); font-size: 1.05rem; }} .hb p {{ margin: 4px 0 0; max-width: 60em; line-height: 1.45; }} .hba {{ display: flex; gap: 16px; }} .hba a {{ color: var(--acc); font-weight: 600; text-decoration: none; white-space: nowrap; }}
 @media (max-width: 700px) {{ .hbv {{ grid-template-columns: 1fr; }} .hbp {{ max-width: 200px; }} .hb figcaption {{ flex-direction: column; align-items: flex-start; }} }}
 .picks, .fmt, .toc, .all, #lb {{ display: none !important; }}</style>
@@ -600,7 +598,7 @@ document.getElementById('hbzip').addEventListener('click', function () {{
 .hbt {{ margin-top: 48px; }} .hsf > a img {{ display:block; width:100%; height:auto; }} .hbt.hs .lede {{ margin: -6px 0 18px; }} .hsl {{ margin: 36px 0 14px; font-size: 1.25rem; }} .hbt h2 {{ margin: 0 0 18px; font-size: 1.5rem; }} .hbt h2 span {{ color: var(--ink2); font-weight: 400; }} .hbt.ok h2::before {{ content: "✓ "; color: #2b7a3d; }}
 .hbs {{ display: grid; gap: 28px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }} .hbt.ok .hb {{ border-color: #2b7a3d; }}
 .hbv {{ display: grid; grid-template-columns: 1fr 160px; gap: 10px; align-items: start; background: var(--bg); padding: 10px; }} .hbv > a img {{ display: block; width: 100%; height: auto; }}
-.hbp {{ position: relative; }} .hbp img {{ display: block; width: 100%; height: auto; border-radius: 14px; border: 3px solid var(--ink); }} .hbp span {{ position: absolute; left: 0; right: 0; bottom: -18px; text-align: center; font-size: .72rem; color: var(--ink2); }}
+.hb.e .hbv {{ grid-template-columns: 1fr; }} .hbp {{ position: relative; }} .hbp img {{ display: block; width: 100%; height: auto; border-radius: 14px; border: 3px solid var(--ink); }} .hbp span {{ position: absolute; left: 0; right: 0; bottom: -18px; text-align: center; font-size: .72rem; color: var(--ink2); }}
 .hb figcaption {{ display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 22px 18px 14px; font-size: .92rem; color: var(--ink2); }} .hb b {{ color: var(--ink); font-size: 1.05rem; }} .hb p {{ margin: 4px 0 0; max-width: 60em; line-height: 1.45; }} .hba {{ display: flex; gap: 16px; }} .hba a {{ color: var(--acc); font-weight: 600; text-decoration: none; white-space: nowrap; }}
 @media (max-width: 700px) {{ .hbv {{ grid-template-columns: 1fr; }} .hbp {{ max-width: 200px; }} .hb figcaption {{ flex-direction: column; align-items: flex-start; }} }}
 .picks, .fmt, .toc, .all, #lb {{ display: none !important; }}</style>

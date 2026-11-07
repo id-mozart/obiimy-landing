@@ -86,6 +86,8 @@ def build(site: pathlib.Path):
     gifts = ([f for f in tri if f.name[0] == "g"] + sorted((ROOT / "ads/solo/out8").glob("g*.jpg")) + pick(tri, gift_names)
              + pick(classic, ["p09", "u06"]))
     gifts_y = [f for f in tri_y if f.name[0] == "g"] + pick(tri_y, gift_names) + pick(yellow, ["p09", "u06"])
+    bfd = sorted((ROOT / "ads/bf/out-discount").glob("*.jpg"))   # 07.11: Black Friday, the discount as the hero
+    add("Чорна п’ятниця · акцент на знижку (07.11)", "Шістнадцять банерів, де головне — цифра: гігантське «до −40 %» і «−20…−40 %» над кампейн-фото з моделями, цифри «40», залиті самим принтом хустки («Коло сонця», леопард «Грації»), жовтий постер із діапазоном, круглий стикер і бирка «до −40 %», колонка −20 / −30 / −40, стіна тексту з портретом-вікном. Цифра завжди з «до» або цілим діапазоном — без відсотка на конкретний товар, без перекреслених цін. Кожен — у чотирьох форматах.", bfd, "bfd")
     bfm = sorted((ROOT / "ads/bf/out-models").glob("*.jpg"))   # 07.11: Black Friday on the campaign photographs with models
     add("Чорна п’ятниця · з моделями (07.11)", "Сімнадцять банерів до Чорної п’ятниці на кампейн-фото з моделями — лукбук бренду, кампейн-кадри й галереї наборів obiimy.world (без SOLO): «Чорне носять усі. Шовк — ви», «Відкрита спина. Відкриті знижки», «Ціни присіли», «Не втрачайте голову. Пов’яжіть її», «Знімаємо капелюха. І ціни», «Дрес-код п’ятниці: шовк», «Єдине чорне тут — капелюх», «Чорна п’ятниця з чистого листа». Знижка — лише діапазоном у плашці; принти й колекції — за SITE-FACTS. Кожен — у чотирьох форматах.", bfm, "bfm")
     bf = sorted((ROOT / "ads/bf/out").glob("*.jpg"))   # 07.11: Black Friday, the collections other than SOLO
@@ -424,7 +426,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
     if n_keep:
         body_html, n = flat(lambda i: i in keep_set); toc_html = ""
         # the newest series sits above the selection on the main page (not in the archive) until the client has sorted it
-        NEW = ("bfm/", "bf/", "sets5/", "sets4/", "sets3/", "sets2/")      # the 26.10 series (cut-outs, veils, cards with shadows) is in the archive since 05.11
+        NEW = ("bfd/", "bfm/", "bf/", "sets5/", "sets4/", "sets3/", "sets2/")      # the 26.10 series (cut-outs, veils, cards with shadows) is in the archive since 05.11
         new_html = ""
         for g in groups:
             if g["cards"] and g["cards"][0][0].startswith(NEW):

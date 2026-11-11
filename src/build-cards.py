@@ -87,7 +87,7 @@ def c_print_back(key="kolo", pos="50% 50%"):
   <div class="who" style="left:6mm;bottom:6mm"><p class="nm">{NAME}</p><p class="tt">{TITLE}</p></div>
   <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>'''
     b = f'''<div class="face"><img class="fill" src="{PRINTS[key]}" alt="" style="object-position:{pos};transform:scale(1.3)">
-  <div style="position:absolute;right:6mm;bottom:6mm;width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("dots", INK, eye="circle", finder=YEL, hole=(5, 5), mark=(None, INK), mark_h=.72)}</div></div>'''   # the print carries the brand's own mark — no second logo on top of it; the QR sits on a white plate
+  <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("dots", INK, eye="circle", finder=YEL, hole=(5, 5), mark=(None, INK), mark_h=.72)}</div></div>'''   # the print carries the brand's own mark — no second logo on top of it; the QR sits on a white plate
     return f, b
 
 def c_yellow():
@@ -238,7 +238,7 @@ def c_band():
 
 def c_porthole():
     f = f"""<div class="face white">
-  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:36mm;height:36mm;border-radius:50%;overflow:hidden"><img class="fill" src="{PRINTS['hrat']}" alt="" style="object-position:50% 50%;transform:scale(1.2)"></div>
+  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:36mm;height:36mm;border-radius:50%;overflow:hidden"><img class="fill" src="{PRINTS['kolo']}" alt="" style="transform:translate(10.1mm,-17.3mm) scale(2.4)"></div>
   <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:4.4mm;left:6mm;top:5.4mm">
   <div class="who" style="left:6mm;bottom:6mm"><p class="nm" style="font-size:3.7mm">Світлана<br>Сніжко</p><p class="tt">{TITLE}</p></div></div>"""
     b = f"""<div class="face ink">
@@ -513,13 +513,13 @@ def c_qr_tiles():
     return f, b
 
 CARDS = [
-    ("02", "Шовк на звороті", "Білий лицьовий бік; на звороті — хустка «Коло сонця» на всю картку, кадр усередині кайми, QR-код на білій плашці в куті.", c_print_back, ""),
+    ("02", "Шовк на звороті", "Білий лицьовий бік; на звороті — хустка «Коло сонця» на всю картку, кадр усередині кайми, QR-код на білій плашці посередині.", c_print_back, ""),
     ("03", "Жовта", "Фірмовий жовтий на лицьовому боці; зворот чорний з логотипом, QR-кодом і рядком «авторські шовкові вироби».", c_yellow, ""),
     ("05", "Кант", "Смуга принту «Сміливість» 12 мм уздовж краю, як кант хустки; на звороті смуга з протилежного боку, QR-код і логотип.", c_twilly, ""),
     ("08", "QR", "Білий лицьовий бік; на звороті справжній QR-код на obiimy.world і рядок «авторські шовкові вироби».", c_qr, ""),
     ("11", "Навпіл", "Половина картки — принт «Сміливий дотик», половина — біла з ім’ям; зворот чорний з контактами і QR.", c_split, ""),
     ("16", "Смуга", "Смуга принту «Сміливість» 12 мм унизу лицьового боку, ім’я й контакти над нею; на звороті смуга зверху, логотип і QR-код.", c_band, ""),
-    ("17", "Ілюмінатор", "Круглий фрагмент хустки «Грація» 36 мм праворуч, ім’я у два рядки ліворуч; зворот чорний з контактами, QR-кодом і логотипом.", c_porthole, ""),
+    ("17", "Ілюмінатор", "Круглий фрагмент хустки «Коло сонця» 36 мм праворуч — пташка серед квітів; ім’я у два рядки ліворуч; зворот чорний з контактами, QR-кодом і логотипом.", c_porthole, ""),
     ("18", "Верх і низ", "Верхня половина — принт «Сміливий дотик», нижня біла з ім’ям і контактами; зворот чорний із жовтою кромкою зверху, логотипом і QR-кодом.", c_topbottom, ""),
     ("28", "QR на жовтому", "Жовтий лицьовий бік, QR-код 26 мм «рідкими» модулями поруч з ім’ям — «робоча» картка для виставок; зворот чорний з контактами.", c_qr_yellow, ""),
     ("30", "QR у шовку", "Зворот — хустка «Коло сонця» на всю картку, QR-код крапками на білій плашці зі скругленими кутами посередині; лицьовий бік чорний.", c_qr_silk, ""),

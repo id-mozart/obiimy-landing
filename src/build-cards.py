@@ -111,7 +111,7 @@ def c_label():
   <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:4.6mm;left:50%;top:7mm;transform:translateX(-50%)">
   <p class="nm c" style="position:absolute;left:0;right:0;top:17.5mm;text-align:center;font-size:4.4mm">{NAME}</p>
   <p class="tt c" style="position:absolute;left:0;right:0;top:24.5mm;text-align:center">{TITLE}</p>
-  <p class="caps" style="position:absolute;left:0;right:0;bottom:6.5mm;text-align:center;font-size:2.3mm;color:#4B423B">OBIIMY · шовк · Україна</p></div>'''
+  <p class="caps" style="position:absolute;left:0;right:0;bottom:6.5mm;text-align:center;font-size:2.3mm;color:#4B423B">OBIIMY · авторські шовкові вироби</p></div>'''
     b = f'''<div class="face" style="background:{PAPER};border-radius:3mm">
   <div class="stitch"></div>
   <div class="ct c" style="left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-size:2.8mm;line-height:1.7"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>'''
@@ -133,7 +133,7 @@ def c_qr():
   <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>'''
     b = f'''<div class="face ink">
   <div style="position:absolute;left:6mm;top:50%;transform:translateY(-50%);width:22mm;height:22mm;background:#fff;padding:2.8mm">{qr(INK)}</div>
-  <div class="ct" style="left:33mm;top:50%;transform:translateY(-50%);color:{CREAM}"><p class="caps" style="color:{YEL};font-size:2.2mm;margin-bottom:1.2mm">Крамниця</p><p style="font-size:3.4mm">{SITE}</p><p style="font-size:2.4mm;color:#B8AC98;margin-top:1mm">хустки · твіллі · маски для сну · набори</p></div></div>'''
+  <div class="ct" style="left:33mm;top:50%;transform:translateY(-50%);color:{CREAM}"><p class="caps" style="color:{YEL};font-size:2.2mm;margin-bottom:1.2mm">Крамниця</p><p style="font-size:3.4mm">{SITE}</p><p style="font-size:2.4mm;color:#B8AC98;margin-top:1mm">авторські шовкові вироби</p></div></div>'''
     return f, b
 
 def c_foil():
@@ -339,7 +339,7 @@ def c_qr_print():
   <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
     b = f"""<div class="face white">
   <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:32mm;height:32mm">{qr_styled("round", INK, fill=PRINTS['smil'], shade=.65, outline=.15)}</div>
-  <div style="position:absolute;left:6mm;top:50%;transform:translateY(-50%)"><p class="caps" style="font-size:2mm;color:#4B423B">Крамниця</p><p style="font-family:Montserrat,sans-serif;font-weight:500;font-size:3.2mm;margin-top:1.2mm">{SITE}</p><p class="ct" style="position:static;font-size:2.2mm;color:#4B423B;margin-top:1.2mm;max-width:38mm">хустки · твіллі · маски для сну · набори</p></div></div>"""
+  <div style="position:absolute;left:6mm;top:50%;transform:translateY(-50%)"><p class="caps" style="font-size:2mm;color:#4B423B">Крамниця</p><p style="font-family:Montserrat,sans-serif;font-weight:500;font-size:3.2mm;margin-top:1.2mm">{SITE}</p><p class="ct" style="position:static;font-size:2.2mm;color:#4B423B;margin-top:1.2mm;max-width:38mm">авторські шовкові вироби</p></div></div>"""
     return f, b
 
 def c_qr_silk():
@@ -358,7 +358,7 @@ def c_qr_square():
   <div class="ct r" style="right:6mm;bottom:6mm;color:{CREAM}"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
     b = f"""<div class="face ink">
   <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:30mm;height:30mm;background:{YEL};padding:4mm">{qr_styled("square", INK)}</div>
-  <div class="ct" style="left:6mm;top:50%;transform:translateY(-50%);color:{CREAM};max-width:44mm"><p class="caps" style="color:{YEL};font-size:2.2mm;margin-bottom:1.2mm">Крамниця</p><p style="font-size:3.4mm">{SITE}</p><p style="font-size:2.4mm;color:#B8AC98;margin-top:1mm;line-height:1.5">хустки · твіллі<br>маски для сну · набори</p></div></div>"""
+  <div class="ct" style="left:6mm;top:50%;transform:translateY(-50%);color:{CREAM};max-width:44mm"><p class="caps" style="color:{YEL};font-size:2.2mm;margin-bottom:1.2mm">Крамниця</p><p style="font-size:3.4mm">{SITE}</p><p style="font-size:2.4mm;color:#B8AC98;margin-top:1mm;line-height:1.5">авторські<br>шовкові вироби</p></div></div>"""
     return f, b
 
 def c_qr_tag():
@@ -429,7 +429,7 @@ def c_qr_passepartout():
     b = f"""<div class="face"><img class="fill" src="{PRINTS['kava']}" alt="" style="object-position:50% 60%;transform:scale(1.25)">
   <div style="position:absolute;left:5mm;top:5mm;width:80mm;height:40mm;background:{CREAM}">
     <div style="position:absolute;left:8mm;top:8mm;width:24mm;height:24mm">{qr_styled("round", INK)}</div>
-    <div class="ct" style="left:40mm;top:50%;transform:translateY(-50%)"><p class="caps" style="font-size:2mm;color:#4B423B;margin-bottom:1mm">Крамниця</p><p style="font-family:Montserrat,sans-serif;font-weight:600;font-size:3.2mm;letter-spacing:.03em">{SITE}</p><p style="font-size:2.2mm;color:#4B423B;margin-top:1mm">хустки · твіллі · маски для сну · набори</p></div></div></div>"""
+    <div class="ct" style="left:40mm;top:50%;transform:translateY(-50%)"><p class="caps" style="font-size:2mm;color:#4B423B;margin-bottom:1mm">Крамниця</p><p style="font-family:Montserrat,sans-serif;font-weight:600;font-size:3.2mm;letter-spacing:.03em">{SITE}</p><p style="font-size:2.2mm;color:#4B423B;margin-top:1mm">авторські шовкові вироби</p></div></div></div>"""
     return f, b
 
 def c_qr_strip():
@@ -440,7 +440,7 @@ def c_qr_strip():
     b = f"""<div class="face" style="background:{CREAM}">
   <div style="position:absolute;left:0;top:0;width:16mm;height:50mm;overflow:hidden"><img class="fill" src="{PRINTS['dotyk']}" alt="" style="object-position:40% 50%;transform:scale(1.5)"></div>
   <div style="position:absolute;left:25mm;top:50%;transform:translateY(-50%);width:24mm;height:24mm">{qr_styled("round", INK)}</div>
-  <div class="ct" style="left:57mm;top:50%;transform:translateY(-50%)"><p class="caps" style="font-size:2mm;color:#4B423B;margin-bottom:1.2mm">Крамниця</p><p style="font-family:Montserrat,sans-serif;font-weight:600;font-size:3.2mm;letter-spacing:.03em">{SITE}</p><p style="font-size:2.2mm;color:#4B423B;margin-top:1.2mm;line-height:1.5">хустки · твіллі<br>маски для сну · набори</p></div></div>"""
+  <div class="ct" style="left:57mm;top:50%;transform:translateY(-50%)"><p class="caps" style="font-size:2mm;color:#4B423B;margin-bottom:1.2mm">Крамниця</p><p style="font-family:Montserrat,sans-serif;font-weight:600;font-size:3.2mm;letter-spacing:.03em">{SITE}</p><p style="font-size:2.2mm;color:#4B423B;margin-top:1.2mm;line-height:1.5">авторські<br>шовкові вироби</p></div></div>"""
     return f, b
 
 def c_qr_medallion():
@@ -471,7 +471,7 @@ def c_qr_stamp():
   <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
     b = f"""<div class="face" style="background:{CREAM}">
   <div style="position:absolute;left:9mm;top:50%;transform:translateY(-50%);width:22mm;height:28mm;overflow:hidden"><img class="fill" src="{PRINTS['kolo']}" alt="" style="object-position:50% 16%;transform:scale(2.2)"><div style="position:absolute;inset:-.6mm;border:1.1mm dotted {CREAM}"></div></div>
-  <p class="caps" style="position:absolute;left:9mm;width:22mm;top:41mm;text-align:center;font-size:1.7mm;color:#4B423B">шовк · Україна</p>
+  <p class="caps" style="position:absolute;left:5mm;width:30mm;top:40.6mm;text-align:center;font-size:1.7mm;letter-spacing:.12em;line-height:1.5;color:#4B423B">авторські<br>шовкові вироби</p>
   <div style="position:absolute;right:7mm;top:50%;transform:translateY(-50%);width:24mm;height:24mm">{qr_styled("round", INK)}</div>
   <div class="ct" style="left:36mm;top:50%;transform:translateY(-50%)"><p class="caps" style="font-size:1.9mm;color:#4B423B;margin-bottom:1.2mm">Крамниця</p><p style="font-family:Montserrat,sans-serif;font-weight:600;font-size:2.5mm;letter-spacing:.02em">{SITE}</p></div></div>"""
     return f, b
@@ -495,7 +495,7 @@ CARDS = [
     ("05", "Кант", "Смуга принту «Сміливість» 12 мм уздовж краю, як кант хустки; на звороті смуга з протилежного боку.", c_twilly, ""),
     ("06", "Етикетка", "Картка-ярлик на щільному папері: скруглені кути, пунктир «стібка», ім’я по центру; контакти на звороті.", c_label, ""),
     ("07", "Вертикальна", "50 × 90, чорна; зворот — фрагмент хустки «Коло сонця» на всю картку, контакти внизу на темній плашці.", c_vertical, "v"),
-    ("08", "QR", "Білий лицьовий бік; на звороті справжній QR-код на obiimy.world і рядок категорій.", c_qr, ""),
+    ("08", "QR", "Білий лицьовий бік; на звороті справжній QR-код на obiimy.world і рядок «авторські шовкові вироби».", c_qr, ""),
     ("09", "Тиснення", "Чорна картка, ім’я й логотип на звороті — золотом (на макеті імітація фольги; у друку — тиснення фольгою, гротеск напівжирний, щоб тонкі штрихи не обривалися).", c_foil, ""),
     ("10", "Підпис", "Кремовий папір, ім’я курсивом як підпис-заглушка (у друк — справжній підпис зі скану); рядок «CEO · засновниця · художниця»; зворот — хустка «Сміливість».", c_signature, ""),
     ("11", "Навпіл", "Половина картки — принт «Сміливий дотик», половина — біла з ім’ям; зворот чорний з контактами і QR.", c_split, ""),

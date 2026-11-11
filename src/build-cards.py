@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """Personal business cards for Світлана Сніжко, CEO of OBIIMY (10.11.2026, client: «сделай отдельную страницу где-то и сделай на ней
-макеты визитных карточек клевых личных для обиймы»). A service page (HIDDEN in build-site.py): twenty-eight pairs front / back (01, 04, 06, 07, 09, 12, 14, 15, 20, 19, 21, 22, 27, 39 were withdrawn by the client on 11.11.2026; their functions stay, their CARDS rows are gone, the numbers of the rest are kept) at the true
+макеты визитных карточек клевых личных для обиймы»). A service page (HIDDEN in build-site.py): twenty-six pairs front / back. The CARDS keys are the original design numbers (01–42); 01, 04, 06, 07, 09, 12, 14, 15, 20, 19, 21, 22, 27, 29, 37, 39 were withdrawn by the client on 11.11.2026 (functions kept, rows gone) and the page shows the rest renumbered 01–26 in page order (NEW maps old → shown; README has the table) at the true
 proportion 90 × 50 mm, 6 px per mm, on a dark studio field. Facts: name and title from the brief; the phone +380 97 773 09 21 is the client's (11.11.2026); the e-mail from the brief; the prints are the real flat scarves of obiimy.world; the QR codes point at https://obiimy.world
 (segno). Nothing about foil or paper is a promise — the «тиснення» card is a mock-up of the effect, said so on the page.
 python3 src/build-cards.py → cards.html → python3 build-site.py → site/cards.html"""
@@ -503,7 +503,6 @@ CARDS = [
     ("25", "Плашка на шовку", "Лицьовий бік — принт «Вир почуттів» на всю картку, ім’я на білій плашці в куті; зворот чорний з логотипом, контактами й назвою принту.", c_plate, ""),
     ("26", "Корінець", "Логотип вертикально вздовж лівого краю, як корінець; ім’я горизонтально, смуга принту «Сміливість» 28 мм праворуч; зворот чорний з логотипом.", c_edge, ""),
     ("28", "QR на жовтому", "Жовтий лицьовий бік, QR-код 26 мм зі скругленими модулями поруч з ім’ям — «робоча» картка для виставок; зворот чорний з контактами.", c_qr_yellow, ""),
-    ("29", "QR із принту", "Модулі QR-коду залиті притемненим на 65 % принтом «Сміливість» у чорній обводці — темна золотаво-синя текстура, кутові мітки чорні; читається обома декодерами, перед тиражем — тестовий оттиск.", c_qr_print, ""),
     ("30", "QR у шовку", "Зворот — хустка «Коло сонця» на всю картку, QR-код на білій плашці зі скругленими кутами посередині; лицьовий бік чорний.", c_qr_silk, ""),
     ("31", "Жовтий квадрат", "Чорна картка з обох боків; на звороті жовтий квадрат 30 мм із QR-кодом (квадратні модулі — на жовтому читаються краще за скруглені), ліворуч — адреса крамниці.", c_qr_square, ""),
     ("32", "Бирка", "Кремова картка; на звороті QR-код на білій бирці з отвором і жовтою ниткою — як етикетка на подарунку.", c_qr_tag, ""),
@@ -511,7 +510,6 @@ CARDS = [
     ("34", "Усе на лицьовому", "QR-код 16 мм у куті лицьового боку поруч з ім’ям і контактами; зворот — принт «Сміливий дотик» на всю картку без тексту.", c_qr_front, ""),
     ("35", "Вертикальна QR", "Картка 50 × 90: чорний лицьовий бік з логотипом та ім’ям; зворот кремовий — QR-код крапками 30 мм, адреса, жовта смуга 26 мм з логотипом і контактами знизу.", c_qr_vertical, "v"),
     ("36", "Великий QR", "Зворот — QR-код 38 мм на всю висоту білої картки, логотип і адреса в правому куті; лицьовий бік жовтий.", c_qr_big, ""),
-    ("37", "Паспарту з QR", "Зворот — хустка «Ранкова кава» як рамка 5 мм навколо кремової плашки з QR-кодом і адресою; у рамці видно лінії хустки та її власну роспись obiimy; лицьовий бік білий.", c_qr_passepartout, ""),
     ("38", "Смуга і QR", "Зворот кремовий: смуга принту «Сміливий дотик» 16 мм ліворуч, QR-код 24 мм поруч, адреса крамниці праворуч; лицьовий бік чорний.", c_qr_strip, ""),
     ("40", "Навскіс", "Зворот розділено по діагоналі: принт «Грація» в лівому куті, QR-код крапками 22 мм і адреса на білому праворуч; лицьовий бік білий.", c_qr_diagonal, ""),
     ("41", "Марка", "Зворот кремовий: фрагмент хустки «Коло сонця» як поштова марка з перфорацією 22 × 28 мм, QR-код 24 мм скругленими модулями праворуч, адреса між ними.", c_qr_stamp, ""),
@@ -584,18 +582,22 @@ def mm_to_calc(html):
 
 CHAPTERS = [("klasyka", "Класика", "Без зображень: чорні, білі, жовті, кремові картки — типографіка й логотип.", ("03", "10", "24", "26")),
             ("prynt", "З принтом", "Справжні хустки obiimy.world на звороті, смугою, колом або на всю картку.", ("02", "05", "11", "13", "16", "17", "18", "23", "25")),
-            ("qr", "QR", "Картки, де QR-код на obiimy.world — частина композиції; усі коди справжні й перевірені. Порядок за висновком панелі: рекомендовані — 32, 30, 34; робочі, для виставок і подарунків — 41, 40, 35, 08, 28, 31, 36, 38, 42, 37; потребують тестового оттиску перед тиражем — 29, 33.", ("32", "30", "34", "41", "40", "35", "08", "28", "31", "36", "38", "42", "37", "29", "33"))]
+            ("qr", "QR", "Картки, де QR-код на obiimy.world — частина композиції; усі коди справжні й перевірені. Порядок за висновком панелі: рекомендовані — {32}, {30}, {34}; робочі, для виставок і подарунків — {41}, {40}, {35}, {08}, {28}, {31}, {36}, {38}, {42}; потребує тестового оттиску перед тиражем — {33}.", ("32", "30", "34", "41", "40", "35", "08", "28", "31", "36", "38", "42", "33"))]
 BY = {c[0]: c for c in CARDS}
 assert sorted(n for ch in CHAPTERS for n in ch[3]) == sorted(BY), "every card in exactly one chapter"
+ORDER = [n for ch in CHAPTERS for n in ch[3]]
+NEW = {old: f"{i + 1:02d}" for i, old in enumerate(ORDER)}   # shown number ← original design number
+def N(text): return re.sub(r"\{(\d\d)\}", lambda m: NEW[m.group(1)], text)   # «{13}» in a text → the shown number of design 13
 sets = []
 for slug, chtitle, chdesc, nums in CHAPTERS:
-  sets.append(f'<h2 class="ch" id="{slug}">{chtitle} <small>{len(nums)}</small></h2><p class="chd">{nb(chdesc)}</p>')
-  for num in nums:
-    _, title, desc, fn, kind = BY[num]
+  sets.append(f'<h2 class="ch" id="{slug}">{chtitle} <small>{len(nums)}</small></h2><p class="chd">{nb(N(chdesc))}</p>')
+  for old in nums:
+    _, title, desc, fn, kind = BY[old]
+    num = NEW[old]
     f, b = fn()
     sets.append(f'''
-<section class="set" id="card-{num}">
-  <div><h2><small>Варіант {num}</small>{title}</h2><p class="d">{nb(desc)}</p></div>
+<section class="set" id="card-{num}" data-design="{old}">
+  <div><h2><small>Варіант {num}</small>{title}</h2><p class="d">{nb(N(desc))}</p></div>
   <div class="pair">
     <div class="side"><em>Лицьовий бік</em><div class="card {kind}">{mm_to_calc(f)}</div></div>
     <div class="side"><em>Зворот</em><div class="card {kind}">{mm_to_calc(b)}</div></div>
@@ -614,9 +616,9 @@ page = f"""<html lang="uk">
 <div class="wrap">
 <header><img src="{LOGO_W}" alt="OBIIMY"><span style="font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#8C8275">Макети · 10–11.11.2026</span></header>
 <h1>Особисті візитки<br>Світлани Сніжко</h1>
-<p class="lead">Двадцять вісім варіантів особистої візитки CEO OBIIMY у трьох главах — класика, з принтом, QR: лицьовий бік і зворот у справжній пропорції картки. Ім’я, посада, телефон, пошта й адреса крамниці; принти — справжні хустки з obiimy.world; QR-коди справжні, ведуть на <b>obiimy.world</b> (стилізовані — з рівнем корекції H, перевірені декодером).</p>
-<div class="spec"><span><b>Формат</b> 90 × 50 мм (варіант 35 — 50 × 90)</span><span><b>Вильоти</b> +3 мм з кожного боку</span><span><b>Шрифт</b> Montserrat — фірмовий, як на obiimy.world (підпис у варіанті 10 — заглушка курсивом до скану)</span><span><b>Телефон</b> {PHONE}</span><span class="warn">Скриньку {MAIL} підтвердити</span><button type="button" id="scale" class="tog">Натуральний розмір 1:1</button></div>
-<p class="toc"><a href="#klasyka">Класика · 4</a><a href="#prynt">З принтом · 9</a><a href="#qr">QR · 15</a><span class="pick">Панель рекомендує: <a href="#card-13">13 Трипілля</a> · <a href="#card-32">32 Бирка</a> · <a href="#card-30">30 QR у шовку</a> · резерв <a href="#card-25">25</a>, <a href="#card-34">34</a></span></p>
+<p class="lead">Двадцять шість варіантів особистої візитки CEO OBIIMY у трьох главах — класика, з принтом, QR: лицьовий бік і зворот у справжній пропорції картки. Ім’я, посада, телефон, пошта й адреса крамниці; принти — справжні хустки з obiimy.world; QR-коди справжні, ведуть на <b>obiimy.world</b> (стилізовані — з рівнем корекції H, перевірені декодером).</p>
+<div class="spec"><span><b>Формат</b> 90 × 50 мм (варіант {NEW['35']} — 50 × 90)</span><span><b>Вильоти</b> +3 мм з кожного боку</span><span><b>Шрифт</b> Montserrat — фірмовий, як на obiimy.world (підпис у варіанті {NEW['10']} — заглушка курсивом до скану)</span><span><b>Телефон</b> {PHONE}</span><span class="warn">Скриньку {MAIL} підтвердити</span><button type="button" id="scale" class="tog">Натуральний розмір 1:1</button></div>
+<p class="toc"><a href="#klasyka">Класика · {len(CHAPTERS[0][3])}</a><a href="#prynt">З принтом · {len(CHAPTERS[1][3])}</a><a href="#qr">QR · {len(CHAPTERS[2][3])}</a><span class="pick">Панель рекомендує: <a href="#card-{NEW["13"]}">{NEW["13"]} Трипілля</a> · <a href="#card-{NEW["32"]}">{NEW["32"]} Бирка</a> · <a href="#card-{NEW["30"]}">{NEW["30"]} QR у шовку</a> · резерв <a href="#card-{NEW["25"]}">{NEW["25"]}</a>, <a href="#card-{NEW["34"]}">{NEW["34"]}</a></span></p>
 {"".join(sets)}
 <p class="note">Для друку кожен варіант зберемо у PDF 96 × 56 мм (з вильотами) у CMYK; для карток із принтом на всю площину («Сміливий дотик», «Вир почуттів») потрібні вихідні фото хусток від клієнта у вищій роздільності — наявні дають близько 265 dpi. Будь-який варіант можна зібрати в іншому кольорі картону або з іншим принтом із колекцій.</p>
 </div>

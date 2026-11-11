@@ -25,7 +25,8 @@ def qr(color, bg=None):
     return svg.replace("<svg ", '<svg class="qr" ', 1)
 
 _qr_n = [0]
-def qr_styled(style="dots", dark=INK, finder=None, hole=None, fill=None, light=None, shade=.5, outline=0, frx=.8, irx=.5, mrx=.3, eye="rect"):
+LOGO_O = __import__("re").search(r' d="([^"]+)"', (ROOT / "brand/logo-o.svg").read_text()).group(1)   # the «O» of the logo (brand/logo-o.svg, viewBox 0 6 232 247), cut from logo-ink.svg
+def qr_styled(style="dots", dark=INK, finder=None, hole=None, fill=None, light=None, shade=.5, outline=0, frx=.8, irx=.5, mrx=.3, eye="rect", eye_in=None, mark=None):
     """A real QR to the shop drawn from segno's matrix (error level H, so a centre hole and rounded modules stay readable):
     style dots | round | square | blob (round modules bridged to dark neighbours); finder — colour of the three finder patterns (rounded rings); hole — (w, h) modules cleared
     in the centre for a logo; fill — an image path used as the module fill (SVG pattern) instead of a flat colour; outline — a dark
@@ -33,7 +34,7 @@ def qr_styled(style="dots", dark=INK, finder=None, hole=None, fill=None, light=N
     q = segno.make("https://obiimy.world", error="h")
     m = q.matrix; n = len(m)
     def in_finder(r, c): return (r < 7 and c < 7) or (r < 7 and c >= n - 7) or (r >= n - 7 and c < 7)
-    fcol = finder or dark
+    fcol = finder or dark; icol = eye_in or fcol   # eye_in — a different colour for the eye's inner dot
     _qr_n[0] += 1; pid = f"pf{_qr_n[0]}"
     paint = f"url(#{pid})" if fill else dark
     parts = []
@@ -43,10 +44,10 @@ def qr_styled(style="dots", dark=INK, finder=None, hole=None, fill=None, light=N
     for r0, c0 in ((0, 0), (0, n - 7), (n - 7, 0)):
         if eye == "circle":   # fully round finder: a ring and a dot
             parts.append(f'<circle cx="{c0 + 3.5}" cy="{r0 + 3.5}" r="3" fill="none" stroke="{fcol}" stroke-width="1"/>')
-            parts.append(f'<circle cx="{c0 + 3.5}" cy="{r0 + 3.5}" r="1.5" fill="{fcol}"/>')
+            parts.append(f'<circle cx="{c0 + 3.5}" cy="{r0 + 3.5}" r="1.5" fill="{icol}"/>')
         else:   # frx .8 / irx .5 is the strict-decoder-safe default (OpenCV stops at rx 1.5); softer values are checked with jsQR before use
             parts.append(f'<rect x="{c0 + .5}" y="{r0 + .5}" width="6" height="6" rx="{frx}" fill="none" stroke="{fcol}" stroke-width="1"/>')
-            parts.append(f'<rect x="{c0 + 2}" y="{r0 + 2}" width="3" height="3" rx="{irx}" fill="{fcol}"/>')
+            parts.append(f'<rect x="{c0 + 2}" y="{r0 + 2}" width="3" height="3" rx="{irx}" fill="{icol}"/>')
     cx = cy = n / 2
     for r, row in enumerate(m):
         for c, v in enumerate(row):
@@ -59,6 +60,10 @@ def qr_styled(style="dots", dark=INK, finder=None, hole=None, fill=None, light=N
                 if r + 1 < n and m[r + 1][c] and not in_finder(r + 1, c): parts.append(f'<rect x="{c + .07}" y="{r + .5}" width=".86" height="1" fill="{paint}"/>')   # .43 was too airy for OpenCV once the logo pill sits in the centre
             elif style == "round": parts.append(f'<rect x="{c + .07}" y="{r + .07}" width=".86" height=".86" rx="{mrx}" fill="{paint}"{f" stroke={chr(34)}{dark}{chr(34)} stroke-width={chr(34)}{outline}{chr(34)}" if outline else ""}/>')
             else: parts.append(f'<rect x="{c}" y="{r}" width="1" height="1" fill="{paint}"/>')
+    if mark:   # mark = (plate colour, letter colour): the logo's «O» on a round plate in the centre hole
+        plate, letter = mark; d = min(hole) if hole else 7; rr = d / 2 - .1; hh = d * .56; sc = hh / 247
+        parts.append(f'<circle cx="{n / 2}" cy="{n / 2}" r="{rr:.2f}" fill="{plate}"/>')
+        parts.append(f'<path transform="translate({n / 2 - 232 * sc / 2:.3f},{n / 2 - hh / 2 - 6 * sc:.3f}) scale({sc:.5f})" fill="{letter}" fill-rule="evenodd" d="{LOGO_O}"/>')
     return f'<svg class="qr" viewBox="0 0 {n} {n}" xmlns="http://www.w3.org/2000/svg">{"".join(parts)}</svg>'
 
 def tel(): return "tel:" + re.sub(r"[^\d+]", "", PHONE)
@@ -81,7 +86,7 @@ def c_print_back(key="kolo", pos="50% 50%"):
   <div class="who" style="left:6mm;bottom:6mm"><p class="nm">{NAME}</p><p class="tt">{TITLE}</p></div>
   <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>'''
     b = f'''<div class="face"><img class="fill" src="{PRINTS[key]}" alt="" style="object-position:{pos};transform:scale(1.3)">
-  <div style="position:absolute;right:6mm;bottom:6mm;width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("dots", INK, eye="circle")}</div></div>'''   # the print carries the brand's own mark — no second logo on top of it; the QR sits on a white plate
+  <div style="position:absolute;right:6mm;bottom:6mm;width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("dots", INK, eye="circle", finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div></div>'''   # the print carries the brand's own mark — no second logo on top of it; the QR sits on a white plate
     return f, b
 
 def c_yellow():
@@ -90,7 +95,7 @@ def c_yellow():
   <div class="who" style="left:6mm;bottom:6mm"><p class="nm" style="font-size:4.4mm;font-weight:600">{NAME}</p><p class="tt">{TITLE}</p></div>
   <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>'''
     b = f'''<div class="face ink"><img class="logo" src="{LOGO_W}" alt="OBIIMY" style="height:4.6mm;left:50%;top:5.4mm;transform:translateX(-50%)">
-  <div style="position:absolute;left:50%;top:13.4mm;transform:translateX(-50%);width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("dots", INK, eye="circle")}</div>
+  <div style="position:absolute;left:50%;top:13.4mm;transform:translateX(-50%);width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("dots", INK, eye="circle", finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div>
   <p class="caps" style="position:absolute;left:0;right:0;bottom:6mm;text-align:center;color:{YEL};font-size:2mm;letter-spacing:.16em">авторські шовкові вироби</p></div>'''
     return f, b
 
@@ -112,7 +117,7 @@ def c_twilly():
   <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>'''
     b = f'''<div class="face ink">
   <div style="position:absolute;right:0;top:0;bottom:0;width:12mm;overflow:hidden"><img class="fill" src="{PRINTS['smil']}" alt="" style="object-position:88% 50%;transform:scale(1.15)"></div>
-  <div style="position:absolute;left:6mm;top:50%;transform:translateY(-50%);width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("dots", INK, eye="circle")}</div>
+  <div style="position:absolute;left:6mm;top:50%;transform:translateY(-50%);width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("dots", INK, eye="circle", finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div>
   <img class="logo" src="{LOGO_W}" alt="OBIIMY" style="height:5.4mm;left:52mm;top:17mm;transform:translateX(-50%)">
   <p class="ct" style="left:52mm;top:26mm;transform:translateX(-50%);color:#B8AC98;font-size:2.1mm;white-space:nowrap">авторські шовкові вироби</p></div>'''
     return f, b
@@ -144,7 +149,7 @@ def c_qr():
   <div class="who" style="left:6mm;bottom:6mm"><p class="nm">{NAME}</p><p class="tt">{TITLE}</p></div>
   <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>'''
     b = f'''<div class="face ink">
-  <div style="position:absolute;left:6mm;top:50%;transform:translateY(-50%);width:24mm;height:24mm;background:#fff;border-radius:1mm;padding:3mm">{qr_styled("blob", INK, frx=1.6, irx=1.1)}</div>
+  <div style="position:absolute;left:6mm;top:50%;transform:translateY(-50%);width:24mm;height:24mm;background:#fff;border-radius:1mm;padding:3mm">{qr_styled("blob", INK, frx=1.6, irx=1.1, finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div>
   <div class="ct" style="left:36mm;top:50%;transform:translateY(-50%);color:{CREAM}"><p style="font-size:3.4mm">{SITE}</p><p style="font-size:2.4mm;color:#B8AC98;margin-top:1mm">авторські шовкові вироби</p></div></div>'''
     return f, b
 
@@ -163,7 +168,7 @@ def c_signature():
   <p class="tt" style="position:absolute;left:6mm;bottom:6mm">{TITLE} · художниця</p>
   <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>'''
     b = f'''<div class="face"><img class="fill" src="{PRINTS['smil']}" alt="" style="object-position:50% 50%;transform:scale(1.25)">
-  <div style="position:absolute;left:6mm;bottom:6mm;width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("blob", INK, frx=1.6, irx=1.1)}</div>
+  <div style="position:absolute;left:6mm;bottom:6mm;width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("blob", INK, frx=1.6, irx=1.1, finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div>
   <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:5mm;right:6mm;bottom:6mm"></div>'''
     return f, b
 
@@ -174,7 +179,7 @@ def c_split():
   <div class="who" style="left:51mm;bottom:6mm"><p class="nm" style="font-size:4mm;line-height:1.15">Світлана<br>Сніжко</p><p class="tt">{TITLE}</p></div></div>'''
     b = f'''<div class="face ink">
   <div class="ct" style="left:6mm;top:50%;transform:translateY(-50%);color:{CREAM};font-size:3mm;line-height:1.7"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div>
-  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("blob", INK, frx=1.6, irx=1.1)}</div></div>'''
+  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("blob", INK, frx=1.6, irx=1.1, finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div></div>'''
     return f, b
 
 def c_bilingual():
@@ -227,7 +232,7 @@ def c_band():
   <div style="position:absolute;left:0;right:0;top:0;height:12mm;overflow:hidden"><img class="fill" src="{PRINTS['smil']}" alt="" style="object-position:50% 50%;transform:scale(1.6)"></div>
   <img class="logo" src="{LOGO_W}" alt="OBIIMY" style="height:5.4mm;left:6mm;top:23mm">
   <p class="ct" style="left:6mm;bottom:6mm;color:#B8AC98;font-size:2.2mm;font-weight:400">авторські шовкові вироби<br>{SITE}</p>
-  <div style="position:absolute;right:6mm;top:18mm;width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("dots", INK, eye="circle")}</div></div>"""
+  <div style="position:absolute;right:6mm;top:18mm;width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("dots", INK, eye="circle", finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div></div>"""
     return f, b
 
 def c_porthole():
@@ -236,7 +241,7 @@ def c_porthole():
   <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:4.4mm;left:6mm;top:5.4mm">
   <div class="who" style="left:6mm;bottom:6mm"><p class="nm" style="font-size:3.7mm">Світлана<br>Сніжко</p><p class="tt">{TITLE}</p></div></div>"""
     b = f"""<div class="face ink">
-  <div style="position:absolute;right:6mm;top:6mm;width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("blob", INK, frx=1.6, irx=1.1)}</div>
+  <div style="position:absolute;right:6mm;top:6mm;width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("blob", INK, frx=1.6, irx=1.1, finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div>
   <img class="logo" src="{LOGO_W}" alt="OBIIMY" style="height:5mm;right:6mm;bottom:6mm">
   <div class="ct" style="left:6mm;top:50%;transform:translateY(-50%);color:{CREAM};font-size:2.8mm;line-height:1.7"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
     return f, b
@@ -248,7 +253,7 @@ def c_topbottom():
   <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
     b = f"""<div class="face ink"><img class="logo" src="{LOGO_W}" alt="OBIIMY" style="height:5.4mm;left:6mm;top:50%;transform:translateY(-50%)">
   <p class="ct" style="left:6mm;bottom:6mm;color:#B8AC98;font-size:2.2mm">авторські шовкові вироби</p>
-  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:22mm;height:22mm;background:#fff;padding:2.6mm">{qr_styled("dots", INK, eye="circle")}</div>
+  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:22mm;height:22mm;background:#fff;padding:2.6mm">{qr_styled("dots", INK, eye="circle", finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div>
   <div style="position:absolute;left:0;right:0;top:0;height:1.5mm;background:{YEL}"></div></div>"""
     return f, b
 
@@ -327,7 +332,7 @@ def c_edge():
   <div class="who" style="left:14mm;bottom:6mm"><p class="nm">Світлана<br>Сніжко</p><p class="tt">{TITLE}</p></div></div>"""
     b = f"""<div class="face ink"><img class="logo" src="{LOGO_W}" alt="OBIIMY" style="height:5.4mm;left:6mm;top:50%;transform:translateY(-50%)">
   <p class="ct" style="left:6mm;bottom:6mm;color:#B8AC98;font-size:2.2mm">авторські шовкові вироби</p>
-  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:22mm;height:22mm;background:#fff;padding:2.6mm">{qr_styled("blob", INK, frx=1.6, irx=1.1)}</div></div>"""
+  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:22mm;height:22mm;background:#fff;padding:2.6mm">{qr_styled("blob", INK, frx=1.6, irx=1.1, finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div></div>"""
     return f, b
 
 def c_qr_dots():
@@ -344,7 +349,7 @@ def c_qr_dots():
 def c_qr_yellow():
     f = f"""<div class="face" style="background:{YEL}">
   <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:4.6mm;left:6mm;top:6mm">
-  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:26mm;height:26mm">{qr_styled("blob", INK, frx=1.6, irx=1.1)}</div>
+  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:26mm;height:26mm">{qr_styled("blob", INK, frx=1.6, irx=1.1, hole=(7, 7), mark=(INK, YEL))}</div>
   <div class="who" style="left:6mm;bottom:6mm"><p class="nm" style="font-size:4.4mm">Світлана<br>Сніжко</p><p class="tt">{TITLE}</p></div></div>"""
     b = f"""<div class="face ink">
   <div class="ct" style="left:6mm;top:50%;transform:translateY(-50%);color:{CREAM};font-size:2.8mm;line-height:1.7"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div>
@@ -367,7 +372,7 @@ def c_qr_silk():
   <div class="who" style="left:6mm;bottom:6mm;color:{CREAM}"><p class="nm">{NAME}</p><p class="tt">{TITLE}</p></div>
   <div class="ct r" style="right:6mm;bottom:6mm;color:{CREAM}"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
     b = f"""<div class="face"><img class="fill" src="{PRINTS['kolo']}" alt="" style="object-position:50% 50%;transform:scale(1.3)">
-  <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:30mm;height:30mm;background:#fff;border-radius:2mm;padding:2.6mm;box-shadow:0 .6mm 2mm rgba(0,0,0,.18)">{qr_styled("dots", INK, eye="circle")}</div></div>"""
+  <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:30mm;height:30mm;background:#fff;border-radius:2mm;padding:2.6mm;box-shadow:0 .6mm 2mm rgba(0,0,0,.18)">{qr_styled("dots", INK, eye="circle", finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div></div>"""
     return f, b
 
 def c_qr_square():
@@ -376,7 +381,7 @@ def c_qr_square():
   <div class="who" style="left:6mm;bottom:6mm;color:{CREAM}"><p class="nm">{NAME}</p><p class="tt">{TITLE}</p></div>
   <div class="ct r" style="right:6mm;bottom:6mm;color:{CREAM}"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
     b = f"""<div class="face ink">
-  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:30mm;height:30mm;background:{YEL};padding:4mm">{qr_styled("blob", INK, frx=1.6, irx=1.1)}</div>
+  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:30mm;height:30mm;background:{YEL};padding:4mm">{qr_styled("blob", INK, frx=1.6, irx=1.1, hole=(7, 7), mark=(INK, YEL))}</div>
   <div class="ct" style="left:6mm;top:50%;transform:translateY(-50%);color:{CREAM};max-width:44mm"><p style="font-size:3.4mm">{SITE}</p><p style="font-size:2.4mm;color:#B8AC98;margin-top:1mm;line-height:1.5">авторські<br>шовкові вироби</p></div></div>"""
     return f, b
 
@@ -389,7 +394,7 @@ def c_qr_tag():
   <div style="position:absolute;left:58.5mm;top:9.2mm;width:.5mm;height:16mm;background:{YEL};transform-origin:top left;transform:rotate(34deg) translate(-50%,-15.4mm)"></div>
   <div style="position:absolute;left:46mm;top:5mm;width:30mm;height:40mm;background:#fff;border-radius:2mm;box-shadow:0 .6mm 2mm rgba(0,0,0,.14)">
     <div style="position:absolute;left:50%;top:2.6mm;transform:translateX(-50%);width:2.6mm;height:2.6mm;border-radius:50%;background:{CREAM};border:.35mm solid {INK}"></div>
-    <div style="position:absolute;left:50%;top:8.2mm;transform:translateX(-50%);width:23mm;height:23mm">{qr_styled("blob", INK, frx=1.6, irx=1.1)}</div>
+    <div style="position:absolute;left:50%;top:8.2mm;transform:translateX(-50%);width:23mm;height:23mm">{qr_styled("blob", INK, frx=1.6, irx=1.1, finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div>
     <p class="caps" style="position:absolute;left:0;right:0;top:33.4mm;text-align:center;font-size:1.9mm;letter-spacing:.12em;text-transform:none;font-weight:600">{SITE}</p></div>
   <p class="ct" style="left:6mm;top:50%;transform:translateY(-50%);font-size:2.2mm;color:#4B423B;line-height:1.6;max-width:34mm">авторські<br>шовкові вироби<br><span style="font-weight:600;font-size:2.6mm">{SITE}</span></p></div>"""
     return f, b
@@ -402,7 +407,7 @@ def c_qr_half():
     b = f"""<div class="face white">
   <div style="position:absolute;left:0;top:0;width:42mm;height:50mm;overflow:hidden"><img class="fill" src="{PRINTS['smil']}" alt="" style="object-position:50% 50%;transform:scale(1.6)"></div>
   <div style="position:absolute;left:42mm;top:0;width:48mm;height:50mm">
-    <div style="position:absolute;left:50%;top:10mm;transform:translateX(-50%);width:24mm;height:24mm">{qr_styled("dots", INK, eye="circle")}</div>
+    <div style="position:absolute;left:50%;top:10mm;transform:translateX(-50%);width:24mm;height:24mm">{qr_styled("dots", INK, eye="circle", finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div>
     <p class="ct" style="left:0;right:0;top:38.6mm;text-align:center;font-size:2mm;color:#4B423B">авторські шовкові вироби</p>
     <p style="position:absolute;left:0;right:0;top:42.2mm;text-align:center;font-family:Montserrat,sans-serif;font-weight:600;font-size:2.6mm;letter-spacing:.04em">{SITE}</p></div></div>"""
     return f, b
@@ -410,7 +415,7 @@ def c_qr_half():
 def c_qr_front():
     f = f"""<div class="face white">
   <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:4.4mm;left:6mm;top:5.4mm">
-  <div style="position:absolute;right:6mm;top:6mm;width:18mm;height:18mm">{qr_styled("blob", INK, frx=1.6, irx=1.1)}</div>
+  <div style="position:absolute;right:6mm;top:6mm;width:18mm;height:18mm">{qr_styled("blob", INK, frx=1.6, irx=1.1, finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div>
   <div class="who" style="left:6mm;bottom:6mm"><p class="nm">{NAME}</p><p class="tt">{TITLE}</p></div>
   <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
     b = f"""<div class="face"><img class="fill" src="{PRINTS['dotyk']}" alt="" style="object-position:50% 50%;transform:scale(1.3)"></div>"""
@@ -479,7 +484,7 @@ def c_qr_diagonal():
   <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
     b = f"""<div class="face white">
   <div style="position:absolute;inset:0;clip-path:polygon(0 0,55% 0,0 100%)"><img class="fill" src="{PRINTS['hrat']}" alt="" style="object-position:30% 50%;transform:scale(1.3)"></div>
-  <div style="position:absolute;right:7mm;top:7mm;width:22mm;height:22mm">{qr_styled("dots", INK, eye="circle")}</div>
+  <div style="position:absolute;right:7mm;top:7mm;width:22mm;height:22mm">{qr_styled("dots", INK, eye="circle", finder=YEL, hole=(7, 7), mark=(YEL, INK))}</div>
   <div class="ct r" style="right:7mm;bottom:6mm"><p style="font-size:2.2mm;color:#4B423B;margin-bottom:1mm">авторські шовкові вироби</p><p style="font-family:Montserrat,sans-serif;font-weight:600;font-size:3mm;letter-spacing:.03em">{SITE}</p></div></div>"""
     return f, b
 
@@ -626,7 +631,7 @@ page = f"""<html lang="uk">
 <div class="wrap">
 <header><img src="{LOGO_W}" alt="OBIIMY"><span style="font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#8C8275">Макети · 10–11.11.2026</span></header>
 <h1>Особисті візитки<br>Світлани Сніжко</h1>
-<p class="lead">Сімнадцять варіантів особистої візитки засновниці OBIIMY у трьох главах — класика, з принтом, QR; у кожному варіанті є QR-код: лицьовий бік і зворот у справжній пропорції картки. Ім’я, посада, телефон, пошта й адреса крамниці; принти — справжні хустки з obiimy.world; QR-коди справжні, ведуть на <b>obiimy.world</b> — усі стилізовані: крапки з круглими вічками або «рідкі» модулі з м’якими вічками, рівень корекції H, перевірені декодером Apple Vision (камера iPhone) на масштабах від 1 до 0,15.</p>
+<p class="lead">Сімнадцять варіантів особистої візитки засновниці OBIIMY у трьох главах — класика, з принтом, QR; у кожному варіанті є QR-код: лицьовий бік і зворот у справжній пропорції картки. Ім’я, посада, телефон, пошта й адреса крамниці; принти — справжні хустки з obiimy.world; QR-коди справжні, ведуть на <b>obiimy.world</b> — усі стилізовані: крапки з круглими вічками або «рідкі» модулі з м’якими вічками, вічка жовті, у центрі літера «O» з логотипа на жовтому кружку (на жовтих картках — навпаки), рівень корекції H, перевірені декодером Apple Vision (камера iPhone) на масштабах від 1 до 0,15.</p>
 <div class="spec"><span><b>Формат</b> 90 × 50 мм</span><span><b>Вильоти</b> +3 мм з кожного боку</span><span><b>Шрифт</b> Montserrat — фірмовий, як на obiimy.world (підпис у варіанті {NEW['10']} — заглушка курсивом до скану)</span><span><b>Телефон</b> {PHONE}</span><span class="warn">Скриньку {MAIL} підтвердити</span><button type="button" id="scale" class="tog">Натуральний розмір 1:1</button></div>
 <p class="toc"><a href="#klasyka">Класика · {len(CHAPTERS[0][3])}</a><a href="#prynt">З принтом · {len(CHAPTERS[1][3])}</a><a href="#qr">QR · {len(CHAPTERS[2][3])}</a><span class="pick">Панель рекомендує: <a href="#card-{NEW["32"]}">{NEW["32"]} Бирка</a> · <a href="#card-{NEW["30"]}">{NEW["30"]} QR у шовку</a> · <a href="#card-{NEW["02"]}">{NEW["02"]} Шовк на звороті</a> · резерв <a href="#card-{NEW["34"]}">{NEW["34"]}</a></span></p>
 {"".join(sets)}

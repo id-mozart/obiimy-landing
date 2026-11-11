@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 """Personal business cards for Світлана Сніжко, CEO of OBIIMY (10.11.2026, client: «сделай отдельную страницу где-то и сделай на ней
-макеты визитных карточек клевых личных для обиймы»). A service page (HIDDEN in build-site.py): thirty pairs front / back at the true
-proportion 90 × 50 mm, 6 px per mm, on a dark studio field. Facts: name and title from the brief; the phone is a placeholder the client
-replaces; the e-mail from the brief; the prints are the real flat scarves of obiimy.world; the QR codes point at https://obiimy.world
+макеты визитных карточек клевых личных для обиймы»). A service page (HIDDEN in build-site.py): thirty-six pairs front / back at the true
+proportion 90 × 50 mm, 6 px per mm, on a dark studio field. Facts: name and title from the brief; the phone +380 97 773 09 21 is the client's (11.11.2026); the e-mail from the brief; the prints are the real flat scarves of obiimy.world; the QR codes point at https://obiimy.world
 (segno). Nothing about foil or paper is a promise — the «тиснення» card is a mock-up of the effect, said so on the page.
 python3 src/build-cards.py → cards.html → python3 build-site.py → site/cards.html"""
 import pathlib, re, sys
@@ -11,7 +10,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "ads" / "solo"))
 from kit import nb
 
-NAME, TITLE, PHONE, MAIL, SITE = "Світлана Сніжко", "CEO", "+380 67 123 45 67", "svitlana@obiimy.world", "obiimy.world"
+NAME, TITLE, PHONE, MAIL, SITE = "Світлана Сніжко", "CEO", "+380 97 773 09 21", "svitlana@obiimy.world", "obiimy.world"
 LAT = "Svitlana Snizhko"
 YEL, INK, CREAM, PAPER = "#F2B705", "#141110", "#F3EADB", "#F1E8D8"
 LOGO_W, LOGO_K = "brand/logo-white.png", "brand/logo-ink.png"
@@ -352,6 +351,76 @@ def c_qr_silk():
   <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:30mm;height:30mm;background:#fff;border-radius:2mm;padding:2.6mm;box-shadow:0 .6mm 2mm rgba(0,0,0,.18)">{qr_styled("round", INK)}</div></div>"""
     return f, b
 
+def c_qr_square():
+    f = f"""<div class="face ink">
+  <img class="logo" src="{LOGO_W}" alt="OBIIMY" style="height:5mm;left:6mm;top:6mm">
+  <div class="who" style="left:6mm;bottom:6mm;color:{CREAM}"><p class="nm">{NAME}</p><p class="tt">{TITLE}</p></div>
+  <div class="ct r" style="right:6mm;bottom:6mm;color:{CREAM}"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
+    b = f"""<div class="face ink">
+  <div style="position:absolute;right:6mm;top:50%;transform:translateY(-50%);width:30mm;height:30mm;background:{YEL};padding:4mm">{qr_styled("square", INK)}</div>
+  <div class="ct" style="left:6mm;top:50%;transform:translateY(-50%);color:{CREAM};max-width:44mm"><p class="caps" style="color:{YEL};font-size:2.2mm;margin-bottom:1.2mm">Крамниця</p><p style="font-size:3.4mm">{SITE}</p><p style="font-size:2.4mm;color:#B8AC98;margin-top:1mm;line-height:1.5">хустки · твіллі<br>маски для сну · набори</p></div></div>"""
+    return f, b
+
+def c_qr_tag():
+    f = f"""<div class="face" style="background:{CREAM}">
+  <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:4.4mm;left:6mm;top:5.4mm">
+  <div class="who" style="left:6mm;bottom:6mm"><p class="nm">{NAME}</p><p class="tt">{TITLE}</p></div>
+  <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
+    b = f"""<div class="face" style="background:{CREAM}">
+  <div style="position:absolute;left:58.5mm;top:9.2mm;width:.5mm;height:16mm;background:{YEL};transform-origin:top left;transform:rotate(34deg) translate(-50%,-15.4mm)"></div>
+  <div style="position:absolute;left:46mm;top:5mm;width:30mm;height:40mm;background:#fff;border-radius:2mm;box-shadow:0 .6mm 2mm rgba(0,0,0,.14)">
+    <div style="position:absolute;left:50%;top:2.6mm;transform:translateX(-50%);width:2.6mm;height:2.6mm;border-radius:50%;background:{CREAM};border:.35mm solid {INK}"></div>
+    <div style="position:absolute;left:50%;top:8.2mm;transform:translateX(-50%);width:23mm;height:23mm">{qr_styled("round", INK)}</div>
+    <p class="caps" style="position:absolute;left:0;right:0;top:33.4mm;text-align:center;font-size:1.9mm;letter-spacing:.12em;text-transform:none;font-weight:600">{SITE}</p></div>
+  <p class="caps" style="position:absolute;left:6mm;top:50%;transform:translateY(-50%);font-size:2mm;color:#4B423B;line-height:1.8">Крамниця<br><span style="font-weight:600;letter-spacing:.06em;text-transform:none;font-size:2.6mm">{SITE}</span></p></div>"""
+    return f, b
+
+def c_qr_half():
+    f = f"""<div class="face white">
+  <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:4.4mm;left:6mm;top:5.4mm">
+  <div class="who" style="left:6mm;bottom:6mm"><p class="nm">{NAME}</p><p class="tt">{TITLE}</p></div>
+  <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
+    b = f"""<div class="face white">
+  <div style="position:absolute;left:0;top:0;width:42mm;height:50mm;overflow:hidden"><img class="fill" src="{PRINTS['smil']}" alt="" style="object-position:50% 50%;transform:scale(1.6)"></div>
+  <div style="position:absolute;left:42mm;top:0;width:48mm;height:50mm">
+    <div style="position:absolute;left:50%;top:10mm;transform:translateX(-50%);width:24mm;height:24mm">{qr_styled("square", INK)}</div>
+    <p class="caps" style="position:absolute;left:0;right:0;top:39.5mm;text-align:center;font-size:2mm;color:#4B423B">Крамниця</p>
+    <p style="position:absolute;left:0;right:0;top:42.6mm;text-align:center;font-family:Montserrat,sans-serif;font-weight:600;font-size:2.6mm;letter-spacing:.04em">{SITE}</p></div></div>"""
+    return f, b
+
+def c_qr_front():
+    f = f"""<div class="face white">
+  <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:4.4mm;left:6mm;top:5.4mm">
+  <div style="position:absolute;right:6mm;top:6mm;width:16mm;height:16mm">{qr(INK)}</div>
+  <div class="who" style="left:6mm;bottom:6mm"><p class="nm">{NAME}</p><p class="tt">{TITLE}</p></div>
+  <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
+    b = f"""<div class="face"><img class="fill" src="{PRINTS['dotyk']}" alt="" style="object-position:50% 50%;transform:scale(1.3)"></div>"""
+    return f, b
+
+def c_qr_vertical():
+    f = f"""<div class="face ink">
+  <img class="logo" src="{LOGO_W}" alt="OBIIMY" style="height:4.6mm;left:50%;top:7mm;transform:translateX(-50%)">
+  <div class="who" style="left:6mm;bottom:6mm;color:{CREAM}"><p class="nm" style="font-size:4.6mm;line-height:1.15;font-weight:400">Світлана<br>Сніжко</p><p class="tt">{TITLE}</p></div></div>"""
+    b = f"""<div class="face" style="background:{CREAM}">
+  <div style="position:absolute;left:50%;top:8mm;transform:translateX(-50%);width:30mm;height:30mm">{qr_styled("dots", INK)}</div>
+  <p class="caps" style="position:absolute;left:0;right:0;top:46mm;text-align:center;font-size:2mm;color:#4B423B">Крамниця</p>
+  <p style="position:absolute;left:0;right:0;top:49.4mm;text-align:center;font-family:Montserrat,sans-serif;font-weight:600;font-size:3mm;letter-spacing:.04em">{SITE}</p>
+  <div style="position:absolute;left:0;right:0;bottom:0;height:26mm;background:{YEL}">
+    <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:3.8mm;left:50%;top:6mm;transform:translateX(-50%)">
+    <div class="ct" style="left:0;right:0;bottom:6mm;text-align:center;font-size:2.4mm;font-weight:500"><p>{PHONE}</p><p>{MAIL}</p></div></div></div>"""
+    return f, b
+
+def c_qr_big():
+    f = f"""<div class="face" style="background:{YEL}">
+  <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:4.6mm;left:6mm;top:6mm">
+  <div class="who" style="left:6mm;bottom:6mm"><p class="nm">{NAME}</p><p class="tt">{TITLE}</p></div>
+  <div class="ct r" style="right:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>"""
+    b = f"""<div class="face white">
+  <div style="position:absolute;left:6mm;top:6mm;width:38mm;height:38mm">{qr_styled("square", INK)}</div>
+  <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:4mm;right:6mm;top:6.2mm">
+  <div class="ct r" style="right:6mm;bottom:6mm"><p class="caps" style="font-size:2mm;color:#4B423B;margin-bottom:1mm">Крамниця</p><p style="font-family:Montserrat,sans-serif;font-weight:600;font-size:3.2mm;letter-spacing:.03em">{SITE}</p></div></div>"""
+    return f, b
+
 CARDS = [
     ("01", "Чорнило", "Чорна картка, білий логотип, ім’я Montserrat; зворот — логотип по центру, адреса й жовта кромка 2 мм знизу.", c_ink, ""),
     ("02", "Шовк на звороті", "Білий лицьовий бік; на звороті — хустка «Коло сонця» на всю картку, кадр усередині кайми.", c_print_back, ""),
@@ -383,6 +452,12 @@ CARDS = [
     ("28", "QR на жовтому", "Жовтий лицьовий бік, QR-код 26 мм зі скругленими модулями поруч з ім’ям — «робоча» картка для виставок; зворот чорний з контактами.", c_qr_yellow, ""),
     ("29", "QR із принту", "Модулі QR-коду залиті притемненим на 65 % принтом «Сміливість» у чорній обводці — темна золотаво-синя текстура, кутові мітки чорні; читається обома декодерами, перед тиражем — тестовий оттиск.", c_qr_print, ""),
     ("30", "QR у шовку", "Зворот — хустка «Коло сонця» на всю картку, QR-код на білій плашці зі скругленими кутами посередині; лицьовий бік чорний.", c_qr_silk, ""),
+    ("31", "Жовтий квадрат", "Чорна картка з обох боків; на звороті жовтий квадрат 30 мм із QR-кодом (квадратні модулі — на жовтому читаються краще за скруглені), ліворуч — адреса крамниці.", c_qr_square, ""),
+    ("32", "Бирка", "Кремова картка; на звороті QR-код на білій бирці з отвором і жовтою ниткою — як етикетка на подарунку.", c_qr_tag, ""),
+    ("33", "Половина", "Зворот навпіл: ліворуч 42 мм принту «Сміливість», праворуч QR-код 24 мм на білому з тихою зоною 12 мм від принту й адресою крамниці; лицьовий бік білий.", c_qr_half, ""),
+    ("34", "Усе на лицьовому", "QR-код 16 мм у куті лицьового боку поруч з ім’ям і контактами; зворот — принт «Сміливий дотик» на всю картку без тексту.", c_qr_front, ""),
+    ("35", "Вертикальна QR", "Картка 50 × 90: чорний лицьовий бік з логотипом та ім’ям; зворот кремовий — QR-код крапками 30 мм, адреса, жовта смуга 26 мм з логотипом і контактами знизу.", c_qr_vertical, "v"),
+    ("36", "Великий QR", "Зворот — QR-код 38 мм на всю висоту білої картки, логотип і адреса в правому куті; лицьовий бік жовтий.", c_qr_big, ""),
 ]
 
 CSS = f"""
@@ -451,7 +526,7 @@ def mm_to_calc(html):
 
 CHAPTERS = [("klasyka", "Класика", "Без зображень: чорні, білі, жовті, кремові картки — типографіка й логотип.", ("01", "03", "04", "06", "07", "09", "10", "12", "14", "15", "20", "24", "26")),
             ("prynt", "З принтом", "Справжні хустки obiimy.world на звороті, смугою, колом або на всю картку.", ("02", "05", "11", "13", "16", "17", "18", "19", "21", "22", "23", "25")),
-            ("qr", "QR", "Картки, де QR-код на obiimy.world — частина композиції; усі коди справжні й перевірені.", ("08", "27", "28", "29", "30"))]
+            ("qr", "QR", "Картки, де QR-код на obiimy.world — частина композиції; усі коди справжні й перевірені. Порядок за висновком панелі: рекомендовані — 27, 32, 30, 34; робочі, для виставок — 35, 08, 28, 31, 36; потребують тестового оттиску перед тиражем — 29, 33.", ("27", "32", "30", "34", "35", "08", "28", "31", "36", "29", "33"))]
 BY = {c[0]: c for c in CARDS}
 assert sorted(n for ch in CHAPTERS for n in ch[3]) == sorted(BY), "every card in exactly one chapter"
 sets = []
@@ -479,11 +554,11 @@ page = f"""<html lang="uk">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap">
 <style>{mm_to_calc(CSS)}</style>
 <div class="wrap">
-<header><img src="{LOGO_W}" alt="OBIIMY"><span style="font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#8C8275">Макети · 10.11.2026</span></header>
+<header><img src="{LOGO_W}" alt="OBIIMY"><span style="font-family:Montserrat,sans-serif;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:#8C8275">Макети · 10–11.11.2026</span></header>
 <h1>Особисті візитки<br>Світлани Сніжко</h1>
-<p class="lead">Тридцять варіантів особистої візитки CEO OBIIMY у трьох главах — класика, з принтом, QR: лицьовий бік і зворот у справжній пропорції картки. Ім’я, посада, телефон, пошта й адреса крамниці; принти — справжні хустки з obiimy.world; QR-коди справжні, ведуть на <b>obiimy.world</b> (стилізовані — з рівнем корекції H, перевірені декодером).</p>
-<div class="spec"><span><b>Формат</b> 90 × 50 мм (варіант 07 — 50 × 90)</span><span><b>Вильоти</b> +3 мм з кожного боку</span><span><b>Шрифт</b> Montserrat — фірмовий, як на obiimy.world (підпис у варіанті 10 — заглушка курсивом до скану)</span><span class="warn">Телефон {PHONE} — заглушка, замінити на справжній перед друком; скриньку {MAIL} підтвердити</span><button type="button" id="scale" class="tog">Натуральний розмір 1:1</button></div>
-<p class="toc"><a href="#klasyka">Класика · 13</a><a href="#prynt">З принтом · 12</a><a href="#qr">QR · 5</a><span class="pick">Панель рекомендує: <a href="#card-13">13 Трипілля</a> · <a href="#card-09">09 Тиснення</a> · <a href="#card-27">27 QR крапками</a></span></p>
+<p class="lead">Тридцять шість варіантів особистої візитки CEO OBIIMY у трьох главах — класика, з принтом, QR: лицьовий бік і зворот у справжній пропорції картки. Ім’я, посада, телефон, пошта й адреса крамниці; принти — справжні хустки з obiimy.world; QR-коди справжні, ведуть на <b>obiimy.world</b> (стилізовані — з рівнем корекції H, перевірені декодером).</p>
+<div class="spec"><span><b>Формат</b> 90 × 50 мм (варіант 07 — 50 × 90)</span><span><b>Вильоти</b> +3 мм з кожного боку</span><span><b>Шрифт</b> Montserrat — фірмовий, як на obiimy.world (підпис у варіанті 10 — заглушка курсивом до скану)</span><span><b>Телефон</b> {PHONE}</span><span class="warn">Скриньку {MAIL} підтвердити</span><button type="button" id="scale" class="tog">Натуральний розмір 1:1</button></div>
+<p class="toc"><a href="#klasyka">Класика · 13</a><a href="#prynt">З принтом · 12</a><a href="#qr">QR · 11</a><span class="pick">Панель рекомендує: <a href="#card-13">13 Трипілля</a> · <a href="#card-09">09 Тиснення</a> · <a href="#card-27">27 QR крапками</a> · резерв <a href="#card-14">14</a>, <a href="#card-25">25</a>, <a href="#card-32">32</a></span></p>
 {"".join(sets)}
 <p class="note">Для друку кожен варіант зберемо у PDF 96 × 56 мм (з вильотами) у CMYK; для карток із принтом на всю площину («Сміливий дотик», «Вир почуттів») потрібні вихідні фото хусток від клієнта у вищій роздільності — наявні дають близько 265 dpi. «Тиснення» на макеті — імітація фольги на екрані. Будь-який варіант можна зібрати в іншому кольорі картону або з іншим принтом із колекцій.</p>
 </div>

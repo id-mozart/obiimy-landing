@@ -1,5 +1,6 @@
 // Print-ready PDFs of business-card faces from cards.html: trim + 3 mm bleed + crop marks, 1 CSS mm = 1 mm.
 // usage: IDS=03,04,05 OUT=brand/print [PNG=dir] node review/print/vizytky-pdf.mjs
+// text is converted to outlines (see outline()), so the PDFs carry no fonts; the scarf photo stays a 300+ dpi JPEG
 // per face: vizytka-NN-lytse.pdf = trim + 3 mm bleed, no marks (what Ukrainian digital shops ask for); -mitky.pdf = the same on a page with crop marks; -kontur.pdf = the trim outline (radius 3 mm) in magenta on the clean page.
 import { writeFileSync } from 'node:fs';
 import puppeteer from '/Users/ivan/obiimy/review/pp/node_modules/puppeteer-core/lib/esm/puppeteer/puppeteer-core.js';
@@ -21,6 +22,42 @@ const marks = (W, H) => {   // 8 crop marks, 0.1 mm, from 1 mm inside the page e
   return out.join('');
 };
 const page = await browser.newPage();
+// Replace every text run inside the card with SVG paths: Chrome gives each character's rendered x and the baseline (so kerning,
+// letter-spacing and alignment stay exactly as laid out); opentype.js gives the glyph outline from the same static TTF.
+const outline = async () => {
+  await page.addScriptTag({ url: 'https://cdnjs.cloudflare.com/ajax/libs/opentype.js/1.3.4/opentype.min.js' });
+  const info = await page.evaluate(async () => {
+    const fonts = {};
+    for (const [w, n] of [[300, 'Light'], [400, 'Regular'], [500, 'Medium'], [600, 'SemiBold']]) fonts[w] = await opentype.load(`brand/fonts/Montserrat-${n}.ttf`);
+    const card = document.querySelector('.card'), cr = card.getBoundingClientRect();
+    const walker = document.createTreeWalker(card, NodeFilter.SHOW_TEXT), nodes = [];
+    while (walker.nextNode()) if (walker.currentNode.nodeValue.trim()) nodes.push(walker.currentNode);
+    const parts = [], stats = { runs: 0, glyphs: 0, missing: [] };
+    for (const tn of nodes) {
+      const el = tn.parentElement, cs = getComputedStyle(el);
+      const font = fonts[parseInt(cs.fontWeight)] || fonts[400], size = parseFloat(cs.fontSize), tt = cs.textTransform;
+      const probe = document.createElement('span'); probe.style.cssText = 'display:inline-block;width:0;height:0';
+      tn.after(probe); const base = probe.getBoundingClientRect().bottom; probe.remove();
+      const range = document.createRange(), text = tn.nodeValue;
+      for (let i = 0; i < text.length; i++) {
+        if (!text[i].trim()) continue;
+        range.setStart(tn, i); range.setEnd(tn, i + 1);
+        const r = range.getBoundingClientRect(), ch = tt === 'uppercase' ? text[i].toUpperCase() : text[i];
+        const g = font.charToGlyph(ch); if (!g || g.index === 0) stats.missing.push(ch);
+        const path = g.getPath(r.left - cr.left, base - cr.top, size); path.fill = cs.color;
+        parts.push(path.toSVG(3)); stats.glyphs++;
+      }
+      const hide = document.createElement('span'); hide.style.visibility = 'hidden'; tn.replaceWith(hide); hide.appendChild(tn); stats.runs++;
+    }
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', `0 0 ${cr.width} ${cr.height}`);
+    svg.style.cssText = `position:absolute;left:0;top:0;width:${cr.width}px;height:${cr.height}px;overflow:visible;pointer-events:none`;
+    svg.innerHTML = parts.join(''); card.appendChild(svg);
+    return stats;
+  });
+  if (info.missing.length) throw new Error('glyphs missing: ' + info.missing.join(''));
+  return info;
+};
 const TMP = process.env.TMP || '/tmp';
 const show = async html => { writeFileSync(`${TMP}/sheet.html`, html); await page.goto(`file://${TMP}/sheet.html`, { waitUntil: 'load', timeout: 60000 }); await page.evaluate(() => document.fonts.ready); await new Promise(r => setTimeout(r, 400)); };
 for (const id of process.env.IDS.split(',')) {
@@ -44,6 +81,7 @@ for (const id of process.env.IDS.split(',')) {
     f.html = f.html.replace(/brand\/logo-(ink|white)\.png/g, 'brand/logo-$1.svg');
     const html = sheet(f.html.replace(/<div class="face/, `<div class="bleed" style="background:${f.bg}"></div><div class="face`), mk);
     await show(html);
+    await outline();   // text → glyph outlines (client, 12.11.2026: «вектором всё для печати»), no fonts left in the PDF
     await page.pdf({ path: `${process.env.OUT}/vizytka-${id}-${name}${suffix}.pdf`, width: `${PW / 25.4}in`, height: `${PH / 25.4}in`, printBackground: true, preferCSSPageSize: true });
     if (process.env.PNG) { await page.setViewport({ width: Math.ceil(PW * 96 / 25.4), height: Math.ceil(PH * 96 / 25.4), deviceScaleFactor: 300 / 96 }); await page.screenshot({ path: `${process.env.PNG}/vizytka-${id}-${name}${suffix}.png` }); }
   }

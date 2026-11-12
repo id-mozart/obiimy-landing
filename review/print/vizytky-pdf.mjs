@@ -9,7 +9,8 @@ const browser = await puppeteer.launch({ executablePath: '/Applications/Google C
 const src = await browser.newPage();
 await src.goto(`file://${ROOT}/cards.html`, { waitUntil: 'networkidle0', timeout: 60000 });
 await src.evaluate(() => document.fonts.ready);
-const head = await src.evaluate(() => [...document.querySelectorAll('link[rel=stylesheet], style')].map(e => e.outerHTML).join('\n'));
+const head = await src.evaluate(() => [...document.querySelectorAll('style')].map(e => e.outerHTML).join('\n'))
+  + [[300, 'Light'], [400, 'Regular'], [500, 'Medium'], [600, 'SemiBold']].map(([w, n]) => `<style>@font-face{font-family:'Montserrat';font-weight:${w};src:url('brand/fonts/Montserrat-${n}.ttf') format('truetype')}</style>`).join('');
 const size = k => k.includes('s') ? [85, 55] : k.includes('v') ? [50, 90] : k.includes('q') ? [55, 55] : [90, 50];
 const marks = (W, H) => {   // 8 crop marks, 0.1 mm, from 1 mm inside the page edge to 0.5 mm short of the bleed edge
   const L = MARGIN - BLEED - 1.5, out = [];
@@ -34,21 +35,22 @@ for (const id of process.env.IDS.split(',')) {
 .sheet{position:relative;width:${PW}mm;height:${PH}mm;overflow:hidden;background:#fff}
 .sheet .clip{position:absolute;left:${MARGIN - BLEED}mm;top:${MARGIN - BLEED}mm;width:${W + 2 * BLEED}mm;height:${H + 2 * BLEED}mm;overflow:hidden}
 .sheet .card{position:absolute;left:${BLEED}mm;top:${BLEED}mm;overflow:visible;border-radius:0;box-shadow:none;font-size:10px}
-.sheet .card .face{overflow:visible;font-size:1mm}.sheet .bleed{position:absolute;inset:-${BLEED}mm;z-index:-1}.sheet .fill{left:-${BLEED}mm;top:-${BLEED}mm;width:calc(100% + ${2 * BLEED}mm);height:calc(100% + ${2 * BLEED}mm)}
+.sheet .card .face{overflow:visible;font-size:1mm}.sheet .bleed{position:absolute;inset:-${BLEED}mm}.sheet .fill{left:-${BLEED}mm;top:-${BLEED}mm;width:calc(100% + ${2 * BLEED}mm);height:calc(100% + ${2 * BLEED}mm)}
 .sheet i{position:absolute;background:#000}.sheet .die{position:absolute;left:${MARGIN}mm;top:${MARGIN}mm;width:${W}mm;height:${H}mm;border:.25pt solid #ff00ff;border-radius:3mm;box-sizing:border-box}</style></head>
 <body><div class="sheet"><div class="clip">${inner}</div>${mk ? marks(W, H) : ''}</div></body></html>`;
   for (const [i, name] of [[0, 'lytse'], [1, 'zvorot']]) for (const mk of [false, true]) {
     MARGIN = mk ? 8 : BLEED; PW = W + 2 * MARGIN; PH = H + 2 * MARGIN;
     const f = faces[i], suffix = mk ? '-mitky' : '';
+    f.html = f.html.replace(/brand\/logo-(ink|white)\.png/g, 'brand/logo-$1.svg');
     const html = sheet(f.html.replace(/<div class="face/, `<div class="bleed" style="background:${f.bg}"></div><div class="face`), mk);
     await show(html);
-    await page.pdf({ path: `${process.env.OUT}/vizytka-${id}-${name}${suffix}.pdf`, width: `${PW}mm`, height: `${PH}mm`, printBackground: true, preferCSSPageSize: true });
+    await page.pdf({ path: `${process.env.OUT}/vizytka-${id}-${name}${suffix}.pdf`, width: `${PW / 25.4}in`, height: `${PH / 25.4}in`, printBackground: true, preferCSSPageSize: true });
     if (process.env.PNG) { await page.setViewport({ width: Math.ceil(PW * 96 / 25.4), height: Math.ceil(PH * 96 / 25.4), deviceScaleFactor: 300 / 96 }); await page.screenshot({ path: `${process.env.PNG}/vizytka-${id}-${name}${suffix}.png` }); }
   }
   MARGIN = BLEED; PW = W + 2 * MARGIN; PH = H + 2 * MARGIN;
   const rk = faces[0].kind.split(' ').includes('r');
   await show(sheet(rk ? `<div class="die"></div>` : `<div class="die" style="border-radius:0"></div>`, false));
-  await page.pdf({ path: `${process.env.OUT}/vizytka-${id}-kontur.pdf`, width: `${PW}mm`, height: `${PH}mm`, printBackground: false, preferCSSPageSize: true });
+  await page.pdf({ path: `${process.env.OUT}/vizytka-${id}-kontur.pdf`, width: `${PW / 25.4}in`, height: `${PH / 25.4}in`, printBackground: false, preferCSSPageSize: true });
   console.log(id, `${W}×${H} mm, clean page ${PW}×${PH} mm, radius ${rk ? 3 : 0}`);
 }
 await browser.close();

@@ -516,18 +516,20 @@ def c_yellow_silk():
     """Client, 11.11.2026: «лицевая желтая, бек от первой» — the yellow front of «Жовта» with the silk back (kolo, QR in the centre) of «Шовк на звороті»."""
     return c_yellow()[0], c_print_back()[1]
 
-def c_yellow_silk_sq():   # the square 55 × 55: the yellow front stacked in one left column (the name and the contacts do not fit side by side in 43 mm), the silk back as in c_print_back
+def c_yellow_silk_sq():   # the square 55 × 55 (client, 12.11.2026): everything centred on the yellow front; the silk back framed larger and shifted down so the bird sits below the QR plate
     f = f'''<div class="face" style="background:{YEL}">
-  <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:5mm;left:6mm;top:6mm">
-  <div class="who" style="left:6mm;bottom:19mm"><p class="nm" style="font-size:4mm;font-weight:600">{NAME}</p><p class="tt">{TITLE}</p></div>
-  <div class="ct" style="left:6mm;bottom:6mm"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>'''
-    return f, c_print_back()[1]
+  <img class="logo" src="{LOGO_K}" alt="OBIIMY" style="height:5mm;left:50%;top:9mm;transform:translateX(-50%)">
+  <div class="who" style="left:0;right:0;top:23.5mm;text-align:center"><p class="nm" style="font-size:4mm;font-weight:600">{NAME}</p><p class="tt">{TITLE}</p></div>
+  <div class="ct" style="left:0;right:0;bottom:9mm;text-align:center"><p>{PHONE}</p><p>{MAIL}</p><p>{SITE}</p></div></div>'''
+    b = f'''<div class="face"><img class="fill" src="{PRINTS['kolo']}" alt="" style="transform:translate(0,4.5mm) scale(1.55)">
+  <div style="position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:22mm;height:22mm;background:#fff;border-radius:1mm;padding:2.6mm">{qr_styled("dots", INK, eye="circle", finder=YEL, hole=(5, 5), mark=(None, INK), mark_h=.72)}</div></div>'''
+    return f, b
 
 CARDS = [
     ("02", "Шовк на звороті", "Білий лицьовий бік; на звороті — хустка «Коло сонця» на всю картку, кадр усередині кайми, QR-код на білій плашці посередині.", c_print_back, ""),
     ("43", "Жовта з шовком на звороті", "Лицьовий бік як у варіанті {03}: фірмовий жовтий, логотип, ім’я, контакти; зворот як у варіанті {02}: хустка «Коло сонця» на всю картку з QR-кодом на білій плашці посередині; кути скруглені (радіус 3 мм).", c_yellow_silk, "r"),
     ("44", "Жовта з шовком · 85 × 55", "Той самий дизайн, що у варіанті {43}, у форматі 85 × 55 мм зі скругленими кутами (радіус 3 мм): трохи вища й вужча картка, кадр хустки на звороті ширший по вертикалі.", c_yellow_silk, "s r"),
-    ("45", "Жовта з шовком · квадрат", "Той самий дизайн, що у варіантах {43} і {44}, у квадратному форматі 55 × 55 мм зі скругленими кутами (радіус 3 мм): на лицьовому боці ім’я і контакти в одній колонці зліва, на звороті квадратний кадр «Кола сонця» з QR-кодом посередині.", c_yellow_silk_sq, "q r"),
+    ("45", "Жовта з шовком · квадрат", "Той самий дизайн, що у варіантах {43} і {44}, у квадратному форматі 55 × 55 мм зі скругленими кутами (радіус 3 мм): на лицьовому боці логотип, ім’я і контакти по центру; на звороті кадр «Кола сонця» більший, пташка — під QR-кодом.", c_yellow_silk_sq, "q r"),
     ("03", "Жовта", "Фірмовий жовтий на лицьовому боці; зворот чорний з логотипом, QR-кодом і рядком «авторські шовкові вироби».", c_yellow, ""),
     ("05", "Кант", "Смуга принту «Сміливість» 12 мм уздовж краю, як кант хустки; на звороті смуга з протилежного боку, QR-код і логотип.", c_twilly, ""),
     ("08", "QR", "Білий лицьовий бік; на звороті справжній QR-код на obiimy.world і рядок «авторські шовкові вироби».", c_qr, ""),

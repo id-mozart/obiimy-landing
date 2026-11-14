@@ -12,7 +12,7 @@ English titles, images and texts, rebuild the home slideshow from the English sl
   python3 src/horoshop_home.py home [--apply]          upload the EN slides to Files, replace the image banner with a slideshow, add a
                                                         «Collections» list to templates/index.json (backup in shopify/backup/)
   python3 src/horoshop_home.py menus [--apply]         main menu and footer catalog: collections + new categories
-Needs the data of src/horoshop.py export (data/horoshop/products.json, pages.json) and data/horoshop/collection-descriptions-en.json.
+Needs the data of src/horoshop.py export (data/horoshop/products.json, pages.json) and src/horoshop-collection-descriptions-en.json.
 """
 import json, pathlib, re, sys, time
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -84,7 +84,8 @@ def cmd_tags():
 
 # ─── collections ───────────────────────────────────────────────────────────────────────────────────────────────────────────────
 def cmd_collections():
-    pg = pages(); desc = json.loads((DATA / "collection-descriptions-en.json").read_text())
+    pg = pages(); df = ROOT / "src" / "horoshop-collection-descriptions-en.json"   # the EN texts of the site's collection pages (kept in src/ so the editor image has them)
+    desc = json.loads(df.read_text()) if df.exists() else {}
     have = {c["handle"]: c for c in shop.gql("{ collections(first: 100) { nodes { id handle title } } }")["collections"]["nodes"]}
     plan = []
     for cid, (tag, handle, title) in CATS.items():

@@ -23,6 +23,30 @@ def log_entries(limit=300):
     for e in rows: e["rolled_back_by"] = undone.get(e["id"])
     return list(reversed(rows))[:limit]
 
+DRAFTS = ROOT / "data" / "horoshop" / "discount-drafts.json"   # named sets of changes (article, kind, value) to apply later (the client, 14.11.2026)
+
+def drafts_list():
+    try: return json.loads(DRAFTS.read_text(encoding="utf-8"))
+    except Exception: return []
+
+def _drafts_write(rows):
+    DRAFTS.parent.mkdir(parents=True, exist_ok=True); DRAFTS.write_text(json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
+
+def draft_save(body):
+    """{name, items, id?} → a new draft, or the draft with that id (or the same name) overwritten."""
+    name = str(body.get("name") or "").strip()[:80]; items = [i for i in (body.get("items") or []) if i.get("article")]
+    if not name: return dict(ok=False, error="Назвіть чернетку.")
+    if not items: return dict(ok=False, error="Немає змін для збереження.")
+    rows = drafts_list(); now = time.strftime("%Y-%m-%d %H:%M")
+    clean = [dict(article=str(i["article"]), kind=(i.get("kind") or "none"), value=float(i.get("value") or 0)) for i in items]
+    hit = next((d for d in rows if d["id"] == body.get("id")), None) or next((d for d in rows if d["name"].lower() == name.lower()), None)
+    if hit: hit.update(name=name, items=clean, updated=now)
+    else: rows.insert(0, dict(id=uuid.uuid4().hex[:8], name=name, items=clean, created=now, updated=now))
+    _drafts_write(rows); return dict(ok=True, drafts=rows)
+
+def draft_delete(body):
+    rows = [d for d in drafts_list() if d["id"] != body.get("id")]; _drafts_write(rows); return dict(ok=True, drafts=rows)
+
 def _state(p):
     return {"price": float(p.get("price") or 0), "price_old": float(p.get("price_old") or 0), "discount": float(p.get("discount") or 0)}
 
@@ -156,14 +180,15 @@ tr.changed td{background:var(--mark)}select.k{border:1px solid var(--line);borde
 .bar .cnt{color:var(--muted);font-size:14px}button.go{appearance:none;border:0;border-radius:999px;background:var(--yel);color:var(--ink);font:inherit;font-weight:500;padding:12px 26px;cursor:pointer}button.go:disabled{background:#d9d3c8;color:#8a8378;cursor:default}
 button.ghost{appearance:none;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font:inherit;padding:11px 18px;cursor:pointer}
 .msg{font-size:14px}.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}#load{color:var(--muted);padding:40px 0;text-align:center}
-#logbox{margin-top:28px}#logbox summary{font-weight:500}.le{padding:10px 16px;border-top:1px solid var(--line);font-size:14px}.le.undone{opacity:.55}.le .h{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.le .h b{font-weight:500}.le .h .k{font-size:12px;border-radius:999px;padding:2px 8px;background:#f1ece3;color:var(--muted)}.le .h .k.rb{background:#fde7e4;color:var(--bad)}.le .h button{margin-left:auto}
+#logbox,#draftbox{margin-top:28px}#logbox summary,#draftbox summary{font-weight:500}.bar .ghost:disabled{opacity:.5;cursor:default}.le{padding:10px 16px;border-top:1px solid var(--line);font-size:14px}.le.undone{opacity:.55}.le .h{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.le .h b{font-weight:500}.le .h .k{font-size:12px;border-radius:999px;padding:2px 8px;background:#f1ece3;color:var(--muted)}.le .h .k.rb{background:#fde7e4;color:var(--bad)}.le .h button{margin-left:auto}
 .le ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:13px}.le li b{color:var(--ink);font-weight:500}
 </style></head><body><main>
 <h1>Знижки</h1>
-<p class="sub">Товари obiimy.world за категоріями сайту; колонка «Залишок» — за даними KeyCRM (Bimp оновлює їх кожні 15 хв): склад «1 Склад Світлана» або всі склади разом, перемикач у фільтрі. Знижка задається у відсотках або в гривнях від повної ціни і записується в Хорошоп кнопкою «Застосувати»; у Shopify підтягується наступною <a href="/sync" id="lnk">синхронізацією</a>. Є також <a href="/portrait" id="lnk2">портрет клієнта</a>.</p>
+<p class="sub">Товари obiimy.world: групування за категорією, колекцією, залишком, знижкою, ціною чи наявністю; колонка «Залишок» — за даними KeyCRM (Bimp оновлює їх кожні 15 хв): склад «1 Склад Світлана» або всі склади разом, перемикач у фільтрі. Знижка задається у відсотках або в гривнях від повної ціни і записується в Хорошоп кнопкою «Застосувати»; у Shopify підтягується наступною <a href="/sync" id="lnk">синхронізацією</a>. Є також <a href="/portrait" id="lnk2">портрет клієнта</a>.</p>
 <div class="top">
  <input type="search" id="q" placeholder="Пошук за назвою або артикулом">
  <label><input type="checkbox" id="onlyd"> лише зі знижкою</label>
+ <label>групувати <select class="k" id="grp"><option value="cat">за категорією</option><option value="col">за колекцією</option><option value="stock">за залишком</option><option value="disc">за знижкою</option><option value="price">за ціною</option><option value="avail">за наявністю на сайті</option></select></label>
  <label>склад <select class="k" id="wh"><option value="1">1 Склад Світлана</option><option value="all">усі склади</option></select></label>
  <label title="Залишок за даними KeyCRM">залишок від <input class="v" id="qmin" placeholder="0" style="width:56px"> до <input class="v" id="qmax" placeholder="∞" style="width:56px"></label>
  <button class="ghost" id="reload">Оновити з Хорошопу</button>
@@ -171,14 +196,23 @@ button.ghost{appearance:none;border:1px solid var(--line);border-radius:999px;ba
 </div>
 <div id="load">Завантажую каталог…</div>
 <div id="groups"></div>
+<details id="draftbox"><summary>Чернетки знижок <span class="hid" id="draftn"></span></summary><div id="drafts"></div></details>
 <details id="logbox"><summary>Журнал змін <span class="hid" id="logn"></span></summary><div id="log"></div></details>
 </main>
-<div class="bar"><span class="cnt" id="cnt">Змін немає</span><button class="go" id="apply" disabled>Застосувати</button><span class="msg" id="msg"></span></div>
+<div class="bar"><span class="cnt" id="cnt">Змін немає</span><button class="ghost" id="savedraft" disabled>Зберегти як чернетку</button><button class="go" id="apply" disabled>Застосувати</button><span class="msg" id="msg"></span></div>
 <script>
 const KEY=new URLSearchParams(location.search).get('key')||'';const api=(u,o={})=>fetch(u+(u.includes('?')?'&':'?')+'key='+encodeURIComponent(KEY),o);
 const $=id=>document.getElementById(id);let ROWS=[],CH={};
 const money=v=>Number(v).toLocaleString('uk-UA',{maximumFractionDigits:0})+' грн';
 const ST=r=>$('wh').value==='all'?r.stock_all:r.stock, RS=r=>$('wh').value==='all'?r.reserve_all:r.reserve;
+const GROUPS={
+ cat:r=>r.category,
+ col:r=>(r.collections&&r.collections.length)?r.collections[0].replace(/^Колекції\//,''):'Без колекції',
+ stock:r=>{const q=ST(r);return q===null?'Немає в обліку':q<=0?'0 на складі':q<=5?'1–5 на складі':q<=20?'6–20 на складі':'понад 20 на складі'},
+ disc:r=>!r.kind?'Без знижки':r.kind==='amt'?'Знижка в гривнях':r.pct>=40?'Знижка 40 % і більше':r.pct>=20?'Знижка 20–39 %':'Знижка до 20 %',
+ price:r=>r.full<1000?'до 1 000 грн':r.full<2500?'1 000–2 499 грн':r.full<5000?'2 500–4 999 грн':'від 5 000 грн',
+ avail:r=>!r.shown?'Приховані на сайті':r.presence==='In stock'?'В наявності':'Немає в наявності'};
+const ORDER={stock:['понад 20 на складі','6–20 на складі','1–5 на складі','0 на складі','Немає в обліку'],disc:['Знижка 40 % і більше','Знижка 20–39 %','Знижка до 20 %','Знижка в гривнях','Без знижки'],price:['до 1 000 грн','1 000–2 499 грн','2 500–4 999 грн','від 5 000 грн'],avail:['В наявності','Немає в наявності','Приховані на сайті']};
 const esc=s=>String(s).replace(/[<>&"]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[m]));
 async function load(keepMsg){ $('load').hidden=false;$('groups').innerHTML='';CH={};upd(keepMsg);
  const r=await api('/api/discounts',{cache:'no-store'});const d=await r.json();$('load').hidden=true;
@@ -188,9 +222,10 @@ function render(){
  const q=$('q').value.trim().toLowerCase(),od=$('onlyd').checked;const qmin=$('qmin').value===''?null:parseFloat($('qmin').value),qmax=$('qmax').value===''?null:parseFloat($('qmax').value);const groups={};
  for(const r of ROWS){ if(q&&!(r.name.toLowerCase().includes(q)||r.article.toLowerCase().includes(q)))continue; if(od&&!r.kind&&!CH[r.article])continue;
   if(qmin!==null||qmax!==null){const st=ST(r)===null?0:ST(r); if(qmin!==null&&st<qmin)continue; if(qmax!==null&&st>qmax)continue;}
-  (groups[r.category]=groups[r.category]||[]).push(r);}
+  const gk=GROUPS[$('grp').value](r);(groups[gk]=groups[gk]||[]).push(r);}
  const open=new Set([...document.querySelectorAll('details[open]')].map(d=>d.dataset.g));
- $('groups').innerHTML=Object.keys(groups).sort().map(g=>{const rs=groups[g];const nd=rs.filter(r=>r.kind).length;
+ const ord=ORDER[$('grp').value];const keys=Object.keys(groups).sort((a,b)=>ord?(ord.indexOf(a)-ord.indexOf(b)):a.localeCompare(b,'uk'));
+ $('groups').innerHTML=keys.map(g=>{const rs=groups[g];const nd=rs.filter(r=>r.kind).length;
   const stq=rs.reduce((a,r)=>a+(ST(r)||0),0);return '<details data-g="'+esc(g)+'"'+(open.has(g)||q||$('qmin').value||$('qmax').value?' open':'')+'><summary>'+esc(g)+' <span class="n">'+rs.length+' арт. · на складі '+Math.round(stq)+' шт.</span>'+(nd?'<span class="d">зі знижкою: '+nd+'</span>':'')+'</summary>'
   +'<div class="gfill">усій групі: <select class="k" data-gk="'+esc(g)+'"><option value="pct">%</option><option value="amt">грн</option></select><input class="v" data-gv="'+esc(g)+'" placeholder="0"><button class="ghost" style="padding:5px 12px;font-size:13px" data-gset="'+esc(g)+'">заповнити</button><button class="clear" data-gclr="'+esc(g)+'">зняти всі знижки групи</button></div>'
   +'<table><tr><th></th><th>Артикул</th><th>Товар</th><th class="num">Повна ціна</th><th class="num" title="За даними KeyCRM">Залишок</th><th class="num">Зараз</th><th>Нова знижка</th><th></th></tr>'
@@ -204,17 +239,31 @@ function render(){
 function setChange(a,kind,value){const r=ROWS.find(x=>x.article===a);if(!r)return;const v=parseFloat(String(value).replace(',','.'))||0;
  const same=(v===0&&!r.kind)||(kind==='pct'&&r.kind==='pct'&&v===r.pct)||(kind==='amt'&&r.kind==='amt'&&v===r.amt);
  if(same)delete CH[a];else CH[a]={kind:v?kind:'none',value:v};upd();}
-function upd(keep){const n=Object.keys(CH).length;$('cnt').textContent=n?'Змін: '+n:'Змін немає';$('apply').disabled=!n;if(!keep)$('msg').textContent='';}
+let DRAFT=null;
+function upd(keep){const n=Object.keys(CH).length;$('cnt').textContent=(n?'Змін: '+n:'Змін немає')+(DRAFT?' · чернетка «'+DRAFT.name+'»':'');$('apply').disabled=!n;$('savedraft').disabled=!n;if(!keep)$('msg').textContent='';}
+const fmtItem=i=>i.kind==='pct'?('−'+i.value+'%'):i.kind==='amt'?('−'+money(i.value)):'зняти';
+async function loadDrafts(list){const d=list||(await (await api('/api/discounts/drafts',{cache:'no-store'})).json()).drafts||[];$('draftn').textContent=d.length?('· '+d.length):'';
+ $('drafts').innerHTML=d.map(x=>'<div class="le"><div class="h"><b>'+esc(x.name)+'</b><span class="hid">'+x.items.length+' арт. · '+esc(x.updated)+'</span><span style="margin-left:auto;display:flex;gap:6px"><button class="ghost" style="padding:5px 12px;font-size:13px" data-dl="'+esc(x.id)+'">Завантажити</button><button class="go" style="padding:6px 14px;font-size:13px" data-da="'+esc(x.id)+'">Застосувати</button><button class="clear" data-dd="'+esc(x.id)+'">видалити</button></span></div><ul>'+x.items.slice(0,30).map(i=>{const r=ROWS.find(r=>r.article===i.article);return '<li><b>'+esc(i.article)+'</b> '+esc(r?r.name:'(немає в каталозі)')+': '+esc(fmtItem(i))+'</li>'}).join('')+(x.items.length>30?'<li>… ще '+(x.items.length-30)+'</li>':'')+'</ul></div>').join('')||'<div class="le hid">Чернеток ще немає. Внесіть зміни й натисніть «Зберегти як чернетку».</div>';
+ window.__drafts=d;}
+function loadDraft(x){CH={};let miss=0;for(const i of x.items){if(!ROWS.find(r=>r.article===i.article)){miss++;continue;}CH[i.article]={kind:i.kind,value:i.value};}DRAFT={id:x.id,name:x.name};upd();render();$('msg').textContent='Завантажено чернетку «'+x.name+'»: '+(x.items.length-miss)+' змін'+(miss?', '+miss+' артикулів немає в каталозі':'')+'. Перевірте й натисніть «Застосувати».';$('msg').className='msg';}
+$('savedraft').onclick=async()=>{const name=prompt('Назва чернетки',DRAFT?DRAFT.name:'');if(!name)return;const items=Object.entries(CH).map(([article,c])=>({article,kind:c.kind,value:c.value}));
+ const r=await api('/api/discounts/drafts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:DRAFT&&DRAFT.name===name?DRAFT.id:null,name,items})});const d=await r.json();
+ if(!d.ok){$('msg').textContent=d.error||'Помилка';$('msg').className='msg bad';return}DRAFT={id:(d.drafts.find(x=>x.name===name)||{}).id,name};upd(true);$('msg').textContent='Чернетку «'+name+'» збережено ('+items.length+' змін).';$('msg').className='msg ok';$('draftbox').open=true;loadDrafts(d.drafts);};
+document.addEventListener('click',async e=>{const t=e.target;const list=window.__drafts||[];
+ if(t.dataset.dl!==undefined){const x=list.find(d=>d.id===t.dataset.dl);if(x)loadDraft(x);window.scrollTo({top:0,behavior:'smooth'});}
+ if(t.dataset.da!==undefined){const x=list.find(d=>d.id===t.dataset.da);if(!x)return;loadDraft(x);if(Object.keys(CH).length)$('apply').click();}
+ if(t.dataset.dd!==undefined){const x=list.find(d=>d.id===t.dataset.dd);if(!x||!confirm('Видалити чернетку «'+x.name+'»?'))return;const r=await api('/api/discounts/drafts/delete',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:x.id})});const d=await r.json();if(DRAFT&&DRAFT.id===x.id)DRAFT=null;upd(true);loadDrafts(d.drafts);}
+});
 document.addEventListener('input',e=>{const t=e.target;if(t.dataset.v!==undefined){const a=t.dataset.v;setChange(a,document.querySelector('[data-k="'+CSS.escape(a)+'"]').value,t.value);t.closest('tr').classList.toggle('changed',!!CH[a]);}});
 document.addEventListener('change',e=>{const t=e.target;if(t.dataset.k!==undefined){const a=t.dataset.k;const v=document.querySelector('[data-v="'+CSS.escape(a)+'"]').value;if(v)setChange(a,t.value,v);t.closest('tr').classList.toggle('changed',!!CH[a]);}});
 document.addEventListener('click',e=>{const t=e.target;
  if(t.dataset.clr!==undefined){const a=t.dataset.clr;const r=ROWS.find(x=>x.article===a);if(r.kind)CH[a]={kind:'none',value:0};else delete CH[a];upd();render();}
- if(t.dataset.gset!==undefined){const g=t.dataset.gset;const kind=document.querySelector('[data-gk="'+CSS.escape(g)+'"]').value;const v=document.querySelector('[data-gv="'+CSS.escape(g)+'"]').value;if(!v)return;for(const r of ROWS)if(r.category===g)setChange(r.article,kind,v);render();}
- if(t.dataset.gclr!==undefined){const g=t.dataset.gclr;for(const r of ROWS)if(r.category===g){if(r.kind)CH[r.article]={kind:'none',value:0};else delete CH[r.article];}upd();render();}
+ if(t.dataset.gset!==undefined){const g=t.dataset.gset;const kind=document.querySelector('[data-gk="'+CSS.escape(g)+'"]').value;const v=document.querySelector('[data-gv="'+CSS.escape(g)+'"]').value;if(!v)return;const gf=GROUPS[$('grp').value];for(const r of ROWS)if(gf(r)===g)setChange(r.article,kind,v);render();}
+ if(t.dataset.gclr!==undefined){const g=t.dataset.gclr;const gf=GROUPS[$('grp').value];for(const r of ROWS)if(gf(r)===g){if(r.kind)CH[r.article]={kind:'none',value:0};else delete CH[r.article];}upd();render();}
 });
 function showPics(d){d.querySelectorAll('td.pic img[data-src]').forEach(i=>{i.src=i.dataset.src;i.removeAttribute('data-src');});}
 document.addEventListener('toggle',e=>{if(e.target.tagName==='DETAILS'&&e.target.open)showPics(e.target);},true);
-$('q').oninput=render;$('onlyd').onchange=render;$('qmin').oninput=render;$('qmax').oninput=render;$('wh').onchange=render;$('reload').onclick=load;
+$('q').oninput=render;$('onlyd').onchange=render;$('qmin').oninput=render;$('qmax').oninput=render;$('wh').onchange=render;$('grp').onchange=()=>{document.querySelectorAll('details[data-g]').forEach(d=>d.open=false);render();};$('reload').onclick=load;
 const fmt=s=>s.discount?('−'+s.discount+'% від '+money(s.price)):(s.price_old>s.price?(money(s.price)+' (повна '+money(s.price_old)+')'):money(s.price));
 async function loadLog(){const r=await api('/api/discounts/log',{cache:'no-store'});const d=await r.json();if(!d.ok)return;$('logn').textContent=d.entries.length?('· '+d.entries.length):'';
  $('log').innerHTML=d.entries.map(e=>{const who=(e.who&&e.who.ip)?' · '+e.who.ip:'';const items=e.items.slice(0,40).map(i=>'<li><b>'+esc(i.article)+'</b> '+esc(i.name||'')+(i.before&&i.after?': '+esc(fmt(i.before))+' → '+esc(fmt(i.after)):'')+(i.result&&!/оновлен|обновлен/i.test(i.result)?' <span style="color:var(--bad)">'+esc(i.result)+'</span>':'')+'</li>').join('')+(e.items.length>40?'<li>… ще '+(e.items.length-40)+'</li>':'');
@@ -229,7 +278,7 @@ $('apply').onclick=async()=>{const items=Object.entries(CH).map(([article,c])=>(
  const r=await api('/api/discounts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items})});const d=await r.json();
  if(!d.ok){$('msg').textContent=d.error||'Помилка';$('msg').className='msg bad';$('apply').disabled=false;return}
  const bad=d.plan.filter(p=>!/оновлен|обновлен/i.test(p.result||''));$('msg').textContent=bad.length?('Записано '+(d.applied-bad.length)+', з помилками '+bad.length+': '+bad.map(p=>p.article+' — '+p.result).join('; ')):('Записано: '+d.applied+'. Щоб оновити Shopify, запустіть синхронізацію.');$('msg').className='msg '+(bad.length?'bad':'ok');
- await load(true);await loadLog();};
+ DRAFT=null;await load(true);await loadLog();await loadDrafts();};
 if(KEY){for(const id of ['lnk','lnk2']){const l=document.getElementById(id);if(l)l.href+='?key='+encodeURIComponent(KEY);}}
-load();
+load().then(()=>loadDrafts());
 </script></body></html>"""

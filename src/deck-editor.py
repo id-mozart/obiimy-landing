@@ -903,8 +903,9 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_response(status); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
             self.send_header("Cache-Control", "no-store"); self.corp_cors(); self.end_headers(); return self.wfile.write(data)
         if u.path == "/portrait": return self.send_bytes(portraitpage.PAGE.encode("utf-8"), "text/html; charset=utf-8")   # open for now (the client, 14.11): the advertisers read it without a login
-        if u.path in ("/sync", "/discounts", "/api/sync", "/api/discounts", "/api/discounts/log") and not self.keyed(q): return self.need_key()
+        if u.path in ("/sync", "/discounts", "/api/sync", "/api/discounts", "/api/discounts/log", "/api/discounts/drafts") and not self.keyed(q): return self.need_key()
         if u.path == "/api/discounts/log": return self.api(lambda: dict(ok=True, entries=discountpanel.log_entries()))
+        if u.path == "/api/discounts/drafts": return self.api(lambda: dict(ok=True, drafts=discountpanel.drafts_list()))
         if u.path == "/sync": return self.send_bytes(syncpanel.PAGE.encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/api/sync": return self.api(syncpanel.state)
         if u.path == "/discounts": return self.send_bytes(discountpanel.PAGE.encode("utf-8"), "text/html; charset=utf-8")
@@ -990,8 +991,12 @@ class Handler(SimpleHTTPRequestHandler):
         except ValueError: n = -1
         if n < 0 or n > 80 * 1048576: return self.send_json(dict(ok=False, error="Файл слишком большой (больше 80 МБ)."), 413)
         data = self.rfile.read(n)
-        if u.path in ("/api/sync", "/api/discounts", "/api/discounts/rollback") and not self.keyed(q): return self.need_key()
+        if u.path in ("/api/sync", "/api/discounts", "/api/discounts/rollback", "/api/discounts/drafts", "/api/discounts/drafts/delete") and not self.keyed(q): return self.need_key()
         if u.path == "/api/sync": return self.api(syncpanel.start)
+        if u.path in ("/api/discounts/drafts", "/api/discounts/drafts/delete"):
+            try: body = json.loads(data.decode("utf-8")); assert isinstance(body, dict)
+            except (ValueError, AssertionError): return self.send_json(dict(ok=False, error="Запит не розібрати."), 400)
+            return self.api(lambda: discountpanel.draft_delete(body) if u.path.endswith("/delete") else discountpanel.draft_save(body))
         if u.path in ("/api/discounts", "/api/discounts/rollback"):
             try: body = json.loads(data.decode("utf-8")); assert isinstance(body, dict)
             except (ValueError, AssertionError): return self.send_json(dict(ok=False, error="Запит не розібрати."), 400)

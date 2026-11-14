@@ -7,7 +7,7 @@ Wide frames are drawn at 1920 px and rendered at DPR 2; the 5:3 frame is drawn a
   DPR=2 VW=2000 ADS=solo/horoshop.html OUT=solo/out-horoshop ONLY=hs-desktop,hs-mobile node render.mjs   (nine frames: uk, -ru, -en)
   DPR=1 VW=2000 ADS=solo/horoshop.html OUT=solo/out-horoshop ONLY=hs-line2 node render.mjs
   python3 solo/build_horoshop.py finish               → solo/out-horoshop/final/*.jpg|webp (named by placement and size)"""
-import pathlib, sys
+import os, pathlib, sys
 HERE = pathlib.Path(__file__).parent
 sys.path.insert(0, str(HERE))
 import build_home as HB
@@ -28,10 +28,11 @@ def photo(left, feather, pos):
     that zone — no hard edge between the field and the picture (the client, 06.11), and the picture itself not darkened to the right."""
     return (f'<div class="ph" style="left:{left}px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 {feather}px);mask-image:linear-gradient(90deg,transparent 0,#000 {feather}px)"><img src="{RB}" alt="" style="object-position:{pos}"></div>'
             f'<div style="left:{left}px;top:0;bottom:0;width:{int(feather * .9)}px;background:linear-gradient(90deg,{INK} 0,rgba(20,17,16,.15) 40%,rgba(20,17,16,0) 100%)"></div>')
+NOBTN = os.environ.get("NOBTN") == "1"      # 14.11.2026: the Shopify slide gets a real theme button instead of the drawn one
 def lock_l(lang, k=1.0):
     kk, so, t, pill, more = T[lang]
     inner = (f'<div class="lock" style="position:absolute"><p class="k">{kk}</p><p class="s" style="font-size:150px">{so}</p><p class="t">{t}</p>'
-             f'<p class="pill">{pill}</p><p class="more">{more}</p></div>')
+             f'<p class="pill">{pill}</p>' + ("" if NOBTN else f'<p class="more">{more}</p>') + '</div>')
     return inner if k == 1 else f'<div style="left:0;top:0;bottom:0;width:900px;transform:scale({k});transform-origin:0 50%">{inner}</div>'
 
 for lang in T:
@@ -65,5 +66,5 @@ if "finish" in sys.argv:
         im.save(out / f"{name}.webp", "WEBP", quality=86, method=6)
         print(name, im.size, (out / f"{name}.jpg").stat().st_size // 1024, "KB jpg", (out / f"{name}.webp").stat().st_size // 1024, "KB webp")
 else:
-    (HERE / "horoshop.html").write_text(HEAD.replace("SOLO home banners", "SOLO · Horoshop formats") + "".join(ads) + "\n</body></html>")
+    (HERE / ("horoshop-nobtn.html" if NOBTN else "horoshop.html")).write_text(HEAD.replace("SOLO home banners", "SOLO · Horoshop formats") + "".join(ads) + "\n</body></html>")
     print(len(ads), "horoshop frames")

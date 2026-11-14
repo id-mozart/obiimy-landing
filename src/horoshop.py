@@ -8,6 +8,7 @@ Credentials — ~/.config/obiimy/horoshop.env (HOROSHOP_DOMAIN, HOROSHOP_LOGIN, 
 
   python3 src/horoshop.py export     → data/horoshop/products.json (every product, every field) + currency.json
   python3 src/horoshop.py report     → compare with Shopify by SKU (= Horoshop article): prices, new, missing → data/horoshop/report.json
+  python3 src/horoshop.py discount <артикул> <%>   a per-product discount on the site itself (catalog/import); 0 removes it
 Shopify prices are USD = Horoshop UAH price ÷ the site's UAH→USD rate, rounded to whole dollars — that is what the English storefront shows
 (14.11.2026: rate 35.5, mask 2700 грн → $76, the same $76 in Shopify).
 """
@@ -314,6 +315,19 @@ def cmd_backup():
     f.write_text(json.dumps({"at": time.strftime("%Y-%m-%d %H:%M"), "products": rows}, ensure_ascii=False))
     print(f"бекап: {f.relative_to(ROOT)} — {len(rows)} товарів, {sum(len(p['variants']['nodes']) for p in rows)} варіантів, {f.stat().st_size // 1024} КБ")
 
+def cmd_discount(article, percent):
+    """A per-product discount on the site: catalog/import updates only the fields it is given (the client, 14.11.2026: «−20 % на один товар»).
+    python3 src/horoshop.py discount <артикул> <відсоток>  (0 removes the discount)."""
+    h = Horoshop(); percent = int(percent)
+    def fetch(): return [p for p in h.products() if p.get("article") == article]   # the export's `article` filter is ignored by the site, so page through everything
+    before = fetch()
+    if not before: sys.exit(f"артикул {article} не знайдено в Хорошопі")
+    p = before[0]; print(f"до:    {article} {name(p)[:50]} — {p['price']} грн, знижка {p.get('discount') or 0} %")
+    res = h.call("catalog/import", {"products": [{"article": article, "discount": percent}]})
+    print("відповідь:", json.dumps(res, ensure_ascii=False)[:300])
+    after = fetch()[0]
+    print(f"після: {article} — {after['price']} грн, знижка {after.get('discount') or 0} % → на вітрині {effective_uah(after):.0f} грн, ${usd(effective_uah(after), h.rates().get('USD', 35.5))}")
+
 def cmd_status(apply=False):
     """Existing products follow the site's visibility: hidden there → DRAFT here, shown → ACTIVE. Products without a SKU are not touched."""
     prods = json.loads((OUT / "products.json").read_text()); hs = {p["article"]: p for p in prods}
@@ -378,4 +392,5 @@ if __name__ == "__main__":
     elif cmd == "status": cmd_status(apply)
     elif cmd == "publish": cmd_publish(apply)
     elif cmd == "backup": cmd_backup()
+    elif cmd == "discount": cmd_discount(sys.argv[2], sys.argv[3])
     else: print(__doc__)

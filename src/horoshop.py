@@ -77,6 +77,10 @@ def effective_uah(p):
     """What the storefront charges: `price` less the relative `discount` (percent) — the site shows t-shirt 1700 грн · −40 % as 1020 грн / $29."""
     return float(p.get("price") or 0) * (1 - float(p.get("discount") or 0) / 100)
 
+def full_uah(p):
+    """The price before any discount: `price_old` when an amount discount lowered `price` (the «Знижки» page), else `price`."""
+    return max(float(p.get("price") or 0), float(p.get("price_old") or 0))
+
 def usd(price_uah, rate):
     return int(round(float(price_uah) / rate)) if price_uah else 0
 
@@ -228,7 +232,7 @@ def cmd_prices(apply=False):
     for sku, (pr, v) in sv.items():
         p = hs.get(sku) or (hs.get(alias(sku)) if alias(sku) not in sv else None)
         if not p: continue
-        new = usd(effective_uah(p), rep["rate"]); full = usd(p["price"], rep["rate"])
+        new = usd(effective_uah(p), rep["rate"]); full = usd(full_uah(p), rep["rate"])
         inp = {"id": v["id"]}
         if abs(float(v["price"]) - new) >= 0.5: inp["price"] = f"{new:.2f}"
         want_cmp = f"{full:.2f}" if full > new else None
@@ -264,7 +268,7 @@ def cmd_new(apply=False):
         cat = L(first.get("parent"), "ua")
         variants = []
         for a in group:
-            p = hs[a]; price = usd(effective_uah(p), rate); full = usd(p["price"], rate)
+            p = hs[a]; price = usd(effective_uah(p), rate); full = usd(full_uah(p), rate)
             v = {"sku": a, "price": f"{price:.2f}", "inventoryPolicy": "DENY", "inventoryItem": {"tracked": presence(p) != "In stock"},   # in stock → not tracked (purchasable); out of stock → tracked with 0 → «Sold out»
                  "optionValues": [{"optionName": opt or "Title", "name": (L(p.get("Rozmir"), "en").strip() if opt else "Default Title")}]}
             if full > price: v["compareAtPrice"] = f"{full:.2f}"

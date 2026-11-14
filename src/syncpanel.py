@@ -97,7 +97,7 @@ details{margin-top:24px}summary{cursor:pointer;color:var(--muted);font-size:15px
 ul.sum{margin:12px 0 0;padding-left:18px;font-size:14px;color:var(--ink)}.warn{color:var(--bad);font-size:14px;margin-top:10px}
 </style></head><body><main>
 <h1>Синхронізація з Shopify</h1>
-<p class="sub">Каталог obiimy.world (Хорошоп) → shop.obiimy.world: ціни, нові товари, наявність, колекції. Назви й описи наявних товарів не змінюються.</p>
+<p class="sub">Каталог obiimy.world (Хорошоп) → shop.obiimy.world: ціни, нові товари, наявність, колекції. Назви й описи наявних товарів не змінюються. Знижки на сайті — на сторінці <a href="/discounts">Знижки</a>.</p>
 <div class="card">
  <div class="row">
   <div class="last">Остання синхронізація<b id="last">—</b></div>
@@ -126,6 +126,6 @@ async function load(){
  clearTimeout(timer);timer=setTimeout(load,s.running?3000:30000);
 }
 $('go').onclick=async()=>{ if(!confirm('Запустити синхронізацію з Хорошопом? Ціни й наявність у Shopify буде оновлено, нові товари створено.'))return;
- $('go').disabled=true;const r=await fetch('/api/sync',{method:'POST'});const s=await r.json();if(!s.ok)alert(s.error||'Не вдалося запустити');load();};
+ $('go').disabled=true;const r=await fetch('/api/sync',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});const s=await r.json();if(!s.ok)alert(s.error||'Не вдалося запустити');load();};
 load();
 </script></body></html>"""

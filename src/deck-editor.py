@@ -902,8 +902,8 @@ class Handler(SimpleHTTPRequestHandler):
             except Problem as e: data = json.dumps(dict(ok=False, error=str(e)), ensure_ascii=False).encode("utf-8"); status = e.status
             self.send_response(status); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
             self.send_header("Cache-Control", "no-store"); self.corp_cors(); self.end_headers(); return self.wfile.write(data)
-        if u.path in ("/sync", "/discounts", "/portrait", "/api/sync", "/api/discounts") and not self.keyed(q): return self.need_key()
-        if u.path == "/portrait": return self.send_bytes(portraitpage.PAGE.encode("utf-8"), "text/html; charset=utf-8")
+        if u.path == "/portrait": return self.send_bytes(portraitpage.PAGE.encode("utf-8"), "text/html; charset=utf-8")   # open for now (the client, 14.11): the advertisers read it without a login
+        if u.path in ("/sync", "/discounts", "/api/sync", "/api/discounts") and not self.keyed(q): return self.need_key()
         if u.path == "/sync": return self.send_bytes(syncpanel.PAGE.encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/api/sync": return self.api(syncpanel.state)
         if u.path == "/discounts": return self.send_bytes(discountpanel.PAGE.encode("utf-8"), "text/html; charset=utf-8")

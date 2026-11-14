@@ -6,9 +6,25 @@ the fields it is given. Two kinds of discount, as Horoshop keeps them: a percent
 (`price` lowered, the full price kept in `price_old`). Mounted by src/deck-editor.py: GET /discounts, GET|POST /api/discounts.
 After applying, the Shopify store follows on the next run of /sync.
 """
-import json, pathlib, sys, time
+import json, pathlib, sys, time, uuid
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src")); import horoshop as H
+LOG = ROOT / "data" / "horoshop" / "discounts-log.jsonl"     # one line per apply or rollback: who (ip, browser), when, each article before → after
+
+def _log_write(entry):
+    LOG.parent.mkdir(parents=True, exist_ok=True)
+    with open(LOG, "a", encoding="utf-8") as f: f.write(json.dumps(entry, ensure_ascii=False) + "\n")
+
+def log_entries(limit=300):
+    """Newest first; an entry rolled back later carries `rolled_back_by` so the page can grey it out."""
+    if not LOG.exists(): return []
+    rows = [json.loads(l) for l in LOG.read_text(encoding="utf-8").splitlines() if l.strip()]
+    undone = {e.get("rollback_of"): e["id"] for e in rows if e.get("rollback_of")}
+    for e in rows: e["rolled_back_by"] = undone.get(e["id"])
+    return list(reversed(rows))[:limit]
+
+def _state(p):
+    return {"price": float(p.get("price") or 0), "price_old": float(p.get("price_old") or 0), "discount": float(p.get("discount") or 0)}
 
 FIELDS = ["article", "parent_article", "title", "mod_title", "price", "price_old", "discount", "parent", "alt_parent", "display_in_showcase", "presence", "currency", "link", "images", "gallery_common"]
 
@@ -39,11 +55,18 @@ def rows():
     out.sort(key=lambda r: (r["category"], r["parent"], r["article"]))
     return dict(ok=True, at=time.strftime("%Y-%m-%d %H:%M"), rate=rate, rows=out)
 
-def apply(body):
-    """body = {items: [{article, kind: 'pct'|'amt'|'none', value}]} → catalog/import. A percentage clears any amount discount and vice versa."""
+def _import(h, prods, plan):
+    res = h.call("catalog/import", {"products": prods}) if prods else {}
+    log = {l.get("article"): l for l in (res.get("log") or [])}
+    for pl in plan:
+        l = log.get(pl["article"]); pl["result"] = "; ".join(m.get("message", "") for m in (l or {}).get("info", [])) if l else pl.get("error", "немає відповіді")
+
+def apply(body, who=None):
+    """body = {items: [{article, kind: 'pct'|'amt'|'none', value}]} → catalog/import. A percentage clears any amount discount and vice versa.
+    Every call is logged with the previous and the new values, so it can be rolled back from the page."""
     items = body.get("items") or []
     if not items: return dict(ok=False, error="Немає змін.")
-    h = H.Horoshop(); cur = {p["article"]: p for p in h.products(includedParams=["article", "price", "price_old", "discount"]) if p.get("article")}
+    h = H.Horoshop(); cur = {p["article"]: p for p in h.products(includedParams=["article", "price", "price_old", "discount", "mod_title", "title"]) if p.get("article")}
     prods, plan = [], []
     for it in items:
         a = str(it.get("article") or "").strip(); p = cur.get(a)
@@ -54,12 +77,29 @@ def apply(body):
         if kind == "pct" and 0 < v < 100: upd = {"article": a, "price": full, "price_old": 0, "discount": round(v, 2)}
         elif kind == "amt" and 0 < v < full: upd = {"article": a, "price": round(full - v, 2), "price_old": full, "discount": 0}
         else: upd = {"article": a, "price": full, "price_old": 0, "discount": 0}
-        prods.append(upd); plan.append(dict(article=a, **{k: v for k, v in upd.items() if k != "article"}))
-    res = h.call("catalog/import", {"products": prods}) if prods else {}
-    log = {l.get("article"): l for l in (res.get("log") or [])}
-    for pl in plan:
-        l = log.get(pl["article"]); pl["result"] = "; ".join(m.get("message", "") for m in (l or {}).get("info", [])) if l else pl.get("error", "немає відповіді")
-    return dict(ok=True, applied=len(prods), plan=plan)
+        prods.append(upd); plan.append(dict(article=a, name=(H.L(p.get("mod_title"), "ua") or H.L(p.get("title"), "ua")).strip(), before=_state(p), after={k: v for k, v in upd.items() if k != "article"}))
+    _import(h, prods, plan)
+    entry = dict(id=uuid.uuid4().hex[:10], at=time.strftime("%Y-%m-%d %H:%M:%S"), kind="apply", who=who or {}, items=plan, applied=len(prods))
+    _log_write(entry)
+    return dict(ok=True, applied=len(prods), plan=plan, entry_id=entry["id"])
+
+def rollback(body, who=None):
+    """body = {id} → every article of that log entry gets its `before` values back (price, price_old, discount); logged as its own entry."""
+    eid = str(body.get("id") or ""); entries = {e["id"]: e for e in log_entries(100000)}
+    e = entries.get(eid)
+    if not e: return dict(ok=False, error="Запис журналу не знайдено.")
+    if e.get("rolled_back_by"): return dict(ok=False, error="Цей запис уже відкочено.")
+    h = H.Horoshop(); cur = {p["article"]: p for p in h.products(includedParams=["article", "price", "price_old", "discount", "mod_title", "title"]) if p.get("article")}
+    prods, plan = [], []
+    for it in e["items"]:
+        a = it["article"]; b = it.get("before"); p = cur.get(a)
+        if not b or not p: plan.append(dict(article=a, error="не знайдено")); continue
+        upd = {"article": a, "price": b["price"], "price_old": b["price_old"], "discount": b["discount"]}
+        prods.append(upd); plan.append(dict(article=a, name=it.get("name", ""), before=_state(p), after={k: v for k, v in upd.items() if k != "article"}))
+    _import(h, prods, plan)
+    entry = dict(id=uuid.uuid4().hex[:10], at=time.strftime("%Y-%m-%d %H:%M:%S"), kind="rollback", rollback_of=eid, who=who or {}, items=plan, applied=len(prods))
+    _log_write(entry)
+    return dict(ok=True, applied=len(prods), plan=plan, entry_id=entry["id"])
 
 PAGE = """<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Знижки</title>
@@ -82,6 +122,8 @@ tr.changed td{background:var(--mark)}select.k{border:1px solid var(--line);borde
 .bar .cnt{color:var(--muted);font-size:14px}button.go{appearance:none;border:0;border-radius:999px;background:var(--yel);color:var(--ink);font:inherit;font-weight:500;padding:12px 26px;cursor:pointer}button.go:disabled{background:#d9d3c8;color:#8a8378;cursor:default}
 button.ghost{appearance:none;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font:inherit;padding:11px 18px;cursor:pointer}
 .msg{font-size:14px}.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}#load{color:var(--muted);padding:40px 0;text-align:center}
+#logbox{margin-top:28px}#logbox summary{font-weight:500}.le{padding:10px 16px;border-top:1px solid var(--line);font-size:14px}.le.undone{opacity:.55}.le .h{display:flex;gap:12px;align-items:center;flex-wrap:wrap}.le .h b{font-weight:500}.le .h .k{font-size:12px;border-radius:999px;padding:2px 8px;background:#f1ece3;color:var(--muted)}.le .h .k.rb{background:#fde7e4;color:var(--bad)}.le .h button{margin-left:auto}
+.le ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:13px}.le li b{color:var(--ink);font-weight:500}
 </style></head><body><main>
 <h1>Знижки</h1>
 <p class="sub">Товари obiimy.world за категоріями сайту. Знижка задається у відсотках або в гривнях від повної ціни і записується в Хорошоп кнопкою «Застосувати»; у Shopify підтягується наступною <a href="/sync" id="lnk">синхронізацією</a>. Є також <a href="/portrait" id="lnk2">портрет клієнта</a>.</p>
@@ -93,6 +135,7 @@ button.ghost{appearance:none;border:1px solid var(--line);border-radius:999px;ba
 </div>
 <div id="load">Завантажую каталог…</div>
 <div id="groups"></div>
+<details id="logbox"><summary>Журнал змін <span class="hid" id="logn"></span></summary><div id="log"></div></details>
 </main>
 <div class="bar"><span class="cnt" id="cnt">Змін немає</span><button class="go" id="apply" disabled>Застосувати</button><span class="msg" id="msg"></span></div>
 <script>
@@ -133,13 +176,21 @@ document.addEventListener('click',e=>{const t=e.target;
 function showPics(d){d.querySelectorAll('td.pic img[data-src]').forEach(i=>{i.src=i.dataset.src;i.removeAttribute('data-src');});}
 document.addEventListener('toggle',e=>{if(e.target.tagName==='DETAILS'&&e.target.open)showPics(e.target);},true);
 $('q').oninput=render;$('onlyd').onchange=render;$('reload').onclick=load;
+const fmt=s=>s.discount?('−'+s.discount+'% від '+money(s.price)):(s.price_old>s.price?(money(s.price)+' (повна '+money(s.price_old)+')'):money(s.price));
+async function loadLog(){const r=await api('/api/discounts/log',{cache:'no-store'});const d=await r.json();if(!d.ok)return;$('logn').textContent=d.entries.length?('· '+d.entries.length):'';
+ $('log').innerHTML=d.entries.map(e=>{const who=(e.who&&e.who.ip)?' · '+e.who.ip:'';const items=e.items.slice(0,40).map(i=>'<li><b>'+esc(i.article)+'</b> '+esc(i.name||'')+(i.before&&i.after?': '+esc(fmt(i.before))+' → '+esc(fmt(i.after)):'')+(i.result&&!/оновлен|обновлен/i.test(i.result)?' <span style="color:var(--bad)">'+esc(i.result)+'</span>':'')+'</li>').join('')+(e.items.length>40?'<li>… ще '+(e.items.length-40)+'</li>':'');
+ return '<div class="le'+(e.rolled_back_by?' undone':'')+'"><div class="h"><b>'+esc(e.at)+'</b><span class="k'+(e.kind==='rollback'?' rb':'')+'">'+(e.kind==='rollback'?'відкат запису '+esc(e.rollback_of):'зміна')+'</span><span class="hid">'+e.applied+' арт.'+esc(who)+'</span>'+(e.rolled_back_by?'<span class="hid">відкочено</span>':(e.kind==='apply'?'<button class="ghost" style="padding:5px 12px;font-size:13px" data-rb="'+esc(e.id)+'">Відкотити</button>':'<button class="ghost" style="padding:5px 12px;font-size:13px" data-rb="'+esc(e.id)+'">Відкотити відкат</button>'))+'</div><ul>'+items+'</ul></div>'}).join('')||'<div class="le hid">Змін ще не було.</div>';}
+document.addEventListener('click',async e=>{const t=e.target;if(t.dataset.rb===undefined)return;if(!confirm('Повернути значення, які були до цієї зміни? Ціни на сайті зміняться одразу.'))return;t.disabled=true;
+ const r=await api('/api/discounts/rollback',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({id:t.dataset.rb})});const d=await r.json();
+ $('msg').textContent=d.ok?('Відкочено: '+d.applied+' арт.'):(d.error||'Помилка');$('msg').className='msg '+(d.ok?'ok':'bad');await loadLog();await load(true);});
+loadLog();
 $('apply').onclick=async()=>{const items=Object.entries(CH).map(([article,c])=>({article,kind:c.kind,value:c.value}));
  if(!confirm('Записати '+items.length+' змін у Хорошоп? Ціни на сайті зміняться одразу.'))return;
  $('apply').disabled=true;$('msg').textContent='Записую…';$('msg').className='msg';
  const r=await api('/api/discounts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items})});const d=await r.json();
  if(!d.ok){$('msg').textContent=d.error||'Помилка';$('msg').className='msg bad';$('apply').disabled=false;return}
- const bad=d.plan.filter(p=>!/оновлен/i.test(p.result||''));$('msg').textContent=bad.length?('Записано '+(d.applied-bad.length)+', з помилками '+bad.length+': '+bad.map(p=>p.article+' — '+p.result).join('; ')):('Записано: '+d.applied+'. Щоб оновити Shopify, запустіть синхронізацію.');$('msg').className='msg '+(bad.length?'bad':'ok');
- await load(true);};
+ const bad=d.plan.filter(p=>!/оновлен|обновлен/i.test(p.result||''));$('msg').textContent=bad.length?('Записано '+(d.applied-bad.length)+', з помилками '+bad.length+': '+bad.map(p=>p.article+' — '+p.result).join('; ')):('Записано: '+d.applied+'. Щоб оновити Shopify, запустіть синхронізацію.');$('msg').className='msg '+(bad.length?'bad':'ok');
+ await load(true);await loadLog();};
 if(KEY){for(const id of ['lnk','lnk2']){const l=document.getElementById(id);if(l)l.href+='?key='+encodeURIComponent(KEY);}}
 load();
 </script></body></html>"""

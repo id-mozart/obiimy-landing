@@ -11,7 +11,7 @@ Credentials — ~/.config/obiimy/horoshop.env (HOROSHOP_DOMAIN, HOROSHOP_LOGIN, 
 Shopify prices are USD = Horoshop UAH price ÷ the site's UAH→USD rate, rounded to whole dollars — that is what the English storefront shows
 (14.11.2026: rate 35.5, mask 2700 грн → $76, the same $76 in Shopify).
 """
-import json, os, pathlib, re, sys, time, urllib.request
+import json, os, pathlib, re, sys, time, urllib.request, uuid
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "data" / "horoshop"
@@ -315,6 +315,38 @@ def cmd_status(apply=False):
         r = shop.gql("mutation($p: ProductUpdateInput!){ productUpdate(product: $p){ product { id status } userErrors { field message } } }", {"p": {"id": pid, "status": b}})["productUpdate"]
         print("  ", t[:50], r["userErrors"] or b)
 
+def cmd_publish(apply=False):
+    """After the app got write_publications / write_inventory (14.11.2026): publish the products created by `new` to every sales channel
+    the existing products use, and make stock follow the site — out-of-stock variants get 0 at the store's location."""
+    shop = _shop()
+    pubs = [n["id"] for n in shop.gql("{ publications(first: 20) { nodes { id name } } }")["publications"]["nodes"]]
+    loc = shop.gql("{ locations(first: 5) { nodes { id name isActive } } }")["locations"]["nodes"][0]["id"]
+    created = [json.loads(l) for l in (OUT / "applied-new.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
+    pids = [c["product"] for c in created if c.get("product") and not c.get("errors")]
+    prods = json.loads((OUT / "products.json").read_text()); hs = {p["article"]: p for p in prods}
+    sp = shopify_products()
+    oos = [(v["sku"], v["inventoryItem"]["id"], v["inventoryItem"]["tracked"], v["inventoryQuantity"]) for pr in sp for v in pr["variants"]["nodes"]
+           if v.get("sku") and (hs.get(v["sku"]) or {}).get("article") and presence(hs[v["sku"]]) != "In stock"]
+    print(f"{'Застосовую' if apply else 'План'}: опублікувати {len(pids)} нових товарів у {len(pubs)} каналах; обнулити залишок у {len(oos)} варіантах без наявності: {[o[0] for o in oos]}")
+    if not apply: return
+    ok = 0
+    for pid in ([] if "--skip-publish" in sys.argv else pids):
+        r = shop.gql("mutation($id: ID!, $in: [PublicationInput!]!) { publishablePublish(id: $id, input: $in) { userErrors { field message } } }",
+                     {"id": pid, "in": [{"publicationId": x} for x in pubs]})["publishablePublish"]
+        if r["userErrors"]: print("  ПОМИЛКА publish", pid, r["userErrors"])
+        else: ok += 1
+        time.sleep(0.25)
+    print("опубліковано:", ok)
+    for sku, item, tracked, qty in oos:
+        if qty == 0 and tracked: continue
+        if not tracked:
+            r = shop.gql("mutation($id: ID!) { inventoryItemUpdate(id: $id, input: {tracked: true}) { userErrors { field message } } }", {"id": item})["inventoryItemUpdate"]
+            if r["userErrors"]: print("  ПОМИЛКА tracked", sku, r["userErrors"])
+        r = shop.gql("mutation($in: InventorySetQuantitiesInput!) { inventorySetQuantities(input: $in) @idempotent(key: \"" + uuid.uuid4().hex + "\") { userErrors { field message } } }",
+                     {"in": {"name": "available", "reason": "correction", "quantities": [{"inventoryItemId": item, "locationId": loc, "quantity": 0, "changeFromQuantity": qty}]}})["inventorySetQuantities"]
+        print("  ", sku, "→ 0", r["userErrors"] or "ok")
+        time.sleep(0.25)
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else ""; apply = "--apply" in sys.argv
     if cmd == "export": cmd_export()
@@ -322,4 +354,5 @@ if __name__ == "__main__":
     elif cmd == "prices": cmd_prices(apply)
     elif cmd == "new": cmd_new(apply)
     elif cmd == "status": cmd_status(apply)
+    elif cmd == "publish": cmd_publish(apply)
     else: print(__doc__)

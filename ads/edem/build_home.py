@@ -99,6 +99,12 @@ for lang in ("en",):
   <div style="left:850px;top:0;bottom:0;width:170px;background:linear-gradient(90deg,{PAPER} 0,{PAPER} 30%,rgba(245,234,215,0))"></div>
   <div style="left:0;top:0;bottom:0;width:1000px;transform:scale(1.2);transform-origin:0 50%">{lock(lang=lang).replace('<div class="lock">', '<div class="lock" style="position:absolute">')}</div>''', cls="light mobile", note=f"5:2 for the mobile slider · {lang}")
 
+# the Shopify slide (14.11.2026): the same English frame without the drawn button — the theme's own button goes there
+ad("home-e-canvas-light-en-nobtn", f'''
+  <img src="{E('art-2400.webp')}" alt="" style="left:860px;top:-262px;width:1100px;height:1100px">
+  <div style="left:880px;top:0;bottom:0;width:140px;background:linear-gradient(90deg,{PAPER} 0,{PAPER} 30%,rgba(245,234,215,0))"></div>
+  {lock(lang="en", more=False).replace('<div class="lock">', '<div class="lock" style="transform:translateY(calc(-50% - 26px))">')}''', cls="light", note="The print on its own cream · en · no button (Shopify); the lock-up a little higher so the theme button fits under the pill")
+
 # C · the medallion alone on ink, a warm glow behind it, the pendants beside
 ad("home-e-medallion-dark", f'''
   <div class="glow" style="left:965px;top:-160px;width:900px;height:900px"></div>

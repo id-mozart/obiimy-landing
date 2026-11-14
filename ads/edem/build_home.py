@@ -31,6 +31,7 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 .ad .pill { display: inline-block; margin-top: 34px; font-size: 26px; font-weight: 500; letter-spacing: .01em; padding: 17px 28px; border-radius: 999px; background: GOLD; color: INK; line-height: 1; }
 .ad .more { display: flex; width: max-content; align-items: center; gap: 14px; margin-top: 18px; font-size: 26px; font-weight: 500; letter-spacing: .02em; padding: 15px 28px 15px 30px; border: 1.5px solid rgba(243,233,216,.8); border-radius: 999px; color: CREAM; }
 .ad .more::after { content: "→"; font-weight: 400; font-size: 24px; line-height: 1; transform: translateY(-1px); }
+.ad.mobile { height: 768px; }
 .light { background: PAPER; color: INK; } .light .lock .k { color: #9A7430; font-weight: 600; } .light .lock .t { color: rgba(22,16,12,.72); }
 .light .more { color: INK; border-color: rgba(22,16,12,.7); }
 .glow { border-radius: 50%; filter: blur(70px); opacity: .55; background: radial-gradient(circle, rgba(217,184,106,.55), rgba(217,184,106,0) 70%); }
@@ -55,10 +56,13 @@ ads = []
 def ad(id, body, cls="", note=""):
     ads.append(f'\n<!-- {note} -->\n<section class="ad {cls}" id="{id}">{body}\n</section>')
 
-def lock(size=168, pill=True, more=True, sub=64):
-    return (f'<div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:{size}px">Трипілля</p>'
-            f'<p class="t" style="font-size:{sub}px">Мистецтво витоків</p>'
-            + ('<p class="pill">Шовк · 88 × 88 см · лімітований випуск</p>' if pill else "") + ('<p class="more">Замовити хустку</p>' if more else "") + '</div>')
+LOCK_T = {"uk": ("Трипілля", "Мистецтво витоків", "Шовк · 88 × 88 см · лімітований випуск", "Замовити хустку"),
+          "en": ("Trypillia", "The Art of Origins", "Silk · 88 × 88 cm · limited edition", "Order the scarf")}   # the landing's own English (edem.obiimy.world/en)
+def lock(size=168, pill=True, more=True, sub=64, lang="uk"):
+    t1, t2, t3, t4 = LOCK_T[lang]
+    return (f'<div class="lock"><p class="k">KRAЇNA EDEM<i>×</i>OBIIMY</p><p class="s" style="font-size:{size}px">{t1}</p>'
+            f'<p class="t" style="font-size:{sub}px{";margin-top:18px" if lang == "en" else ""}">{t2}</p>'   # EN: the p of «Trypillia» would touch the f of «of» below
+            + (f'<p class="pill">{t3}</p>' if pill else "") + (f'<p class="more">{t4}</p>' if more else "") + '</div>')
 
 def feathered(img, left, feather, pos, veil=INK, w=None):
     """The picture from `left` to the right edge, melting into the field over `feather` px (as the chosen SOLO banner)."""
@@ -78,6 +82,22 @@ ad("home-e-canvas-light", f'''
   <img src="{E('art-2400.webp')}" alt="" style="left:860px;top:-262px;width:1100px;height:1100px">
   <div style="left:880px;top:0;bottom:0;width:140px;background:linear-gradient(90deg,{PAPER} 0,{PAPER} 30%,rgba(245,234,215,0))"></div>
   {lock()}''', cls="light", note="The print on its own cream")
+
+# B-mobile · the same on 5:2 for the Horoshop mobile slider (3840 × 1536 at DPR 2, 14.11.2026): the print larger, the lock-up a fifth bigger
+ad("home-e-canvas-light-mobile", f'''
+  <img src="{E('art-2400.webp')}" alt="" style="left:830px;top:-330px;width:1430px;height:1430px">
+  <div style="left:850px;top:0;bottom:0;width:170px;background:linear-gradient(90deg,{PAPER} 0,{PAPER} 30%,rgba(245,234,215,0))"></div>
+  <div style="left:0;top:0;bottom:0;width:1000px;transform:scale(1.2);transform-origin:0 50%">{lock().replace('<div class="lock">', '<div class="lock" style="position:absolute">')}</div>''', cls="light mobile", note="The print on its own cream · 5:2 for the mobile slider")
+
+for lang in ("en",):
+    ad(f"home-e-canvas-light-{lang}", f'''
+  <img src="{E('art-2400.webp')}" alt="" style="left:860px;top:-262px;width:1100px;height:1100px">
+  <div style="left:880px;top:0;bottom:0;width:140px;background:linear-gradient(90deg,{PAPER} 0,{PAPER} 30%,rgba(245,234,215,0))"></div>
+  {lock(lang=lang)}''', cls="light", note=f"The print on its own cream · {lang}")
+    ad(f"home-e-canvas-light-mobile-{lang}", f'''
+  <img src="{E('art-2400.webp')}" alt="" style="left:830px;top:-330px;width:1430px;height:1430px">
+  <div style="left:850px;top:0;bottom:0;width:170px;background:linear-gradient(90deg,{PAPER} 0,{PAPER} 30%,rgba(245,234,215,0))"></div>
+  <div style="left:0;top:0;bottom:0;width:1000px;transform:scale(1.2);transform-origin:0 50%">{lock(lang=lang).replace('<div class="lock">', '<div class="lock" style="position:absolute">')}</div>''', cls="light mobile", note=f"5:2 for the mobile slider · {lang}")
 
 # C · the medallion alone on ink, a warm glow behind it, the pendants beside
 ad("home-e-medallion-dark", f'''

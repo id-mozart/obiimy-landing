@@ -13,6 +13,7 @@ The page itself (HTML, CSS, JS) is src/deck-editor.html."""
 import hashlib, io, json, os, pathlib, re, shlex, shutil, subprocess, sys, tempfile, threading, time, urllib.parse, urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from PIL import Image, ImageChops, ImageOps, ImageStat
+import keycrm                                                            # src/keycrm.py: the landing's orders and payments → KeyCRM (KEYCRM_* variables; unset → nothing is sent)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 PORT = int(os.environ.get("DECK_EDITOR_PORT") or 8770)
@@ -644,6 +645,8 @@ def api_edem_register(body, ip="", origin="", base=""):
             out["pay"] = wfp_purchase(rec, f"{origin}/pay/return?lang={lang}&ref={ref}", f"{base}/api/wfp"); out["url"] = WFP_PAY_URL; rec["pay"] = "wayforpay"
     EDEM_DIR.mkdir(parents=True, exist_ok=True)
     with open(EDEM_DIR / ("orders.jsonl" if kind == "order" else "registrations.jsonl"), "a", encoding="utf-8") as f: f.write(json.dumps(rec, ensure_ascii=False) + "\n")   # orders apart from the early-access registrations (06.11)
+    if kind == "order" and keycrm.configured():   # 14.11.2026: the order goes to KeyCRM too (source «лендинг»), off the request thread; failures land in data/edem/keycrm.jsonl
+        threading.Thread(target=keycrm.push_order, args=(dict(rec), EDEM_PRICE), daemon=True).start()
     return out
 
 def _jsonl(name):
@@ -685,6 +688,10 @@ def api_wfp_callback(body):
     EDEM_DIR.mkdir(parents=True, exist_ok=True)
     with open(EDEM_DIR / "payments.jsonl", "a", encoding="utf-8") as f: f.write(json.dumps(rec, ensure_ascii=False) + "\n")
     sys.stderr.write(f"{time.strftime('%H:%M:%S')}  wayforpay {rec['ref']} {rec['status']} {rec['amount']} {rec['currency']}\n")
+    if rec["status"] == "Approved" and keycrm.configured():   # the card payment becomes a «paid» payment line on the KeyCRM order (refunds stay manual)
+        try: amount = float(rec["amount"])
+        except ValueError: amount = 0
+        threading.Thread(target=keycrm.add_payment, args=(rec["ref"], amount, "paid", f"WayForPay {rec['ref']}" + (f", картка {rec['cardPan']}" if rec["cardPan"] else "") + (f", {rec['paymentSystem']}" if rec["paymentSystem"] else "")), daemon=True).start()
     now = int(time.time())
     return {"orderReference": rec["ref"], "status": "accept", "time": now, "signature": wfp_sign([rec["ref"], "accept", now])}
 
@@ -858,6 +865,7 @@ class Handler(SimpleHTTPRequestHandler):
             if not CORP_PASSWORD or not hmac.compare_digest(q.get("key") or "", CORP_PASSWORD): return self.send_json(dict(ok=False, error="Потрібен ключ."), 401)
             return self.api(api_edem_list)
         if u.path == "/api/wfp": return self.send_json(dict(ok=True, configured=bool(WFP_ACCOUNT and WFP_SECRET), account=WFP_ACCOUNT[:3] + "…" if WFP_ACCOUNT else "", domain=WFP_DOMAIN))   # a health check: is WayForPay set up here?
+        if u.path == "/api/keycrm": return self.send_json(dict(ok=True, configured=keycrm.configured(), source_id=keycrm.SOURCE_ID, sku=keycrm.SKU, payment_method=keycrm.PAYMENT_METHOD, delivery_service_id=keycrm.DELIVERY_SERVICE_ID))   # is KeyCRM set up here? (no key shown)
         if u.path == "/edem-orders":
             import hmac
             if not CORP_PASSWORD or not hmac.compare_digest(q.get("key") or "", CORP_PASSWORD): return self.send_json(dict(ok=False, error="Потрібен ключ."), 401)

@@ -8,7 +8,7 @@
   story   — the figure spins in 3D with the scroll progress of the section, pendants swing on cords and kick when hovered;
   symbols — four 3D cards that tilt on hover with the element popping out towards the viewer.
 Reduced motion: everything is static. Touch: no pointer parallax, idle drift only. Output: edem-motion.html (HIDDEN; in the variants bar)."""
-import importlib.util, pathlib, random, re, sys
+import os, importlib.util, pathlib, random, re, sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 from imgs import img
@@ -17,7 +17,7 @@ MANIFESTO, STORY, SYMBOLS, SPEC, EDEM_P, EDEM_L, OB_P, OB_L, STEPS = V.MANIFESTO
 PHONE, PHONE_HREF, MAIL, TG = V.PHONE, V.PHONE_HREF, V.MAIL, V.TG
 form_html, FORM_CSS, write, spec_rows = V.form_html, V.FORM_CSS, V.write, V.spec_rows
 
-PRICE = 8500                                     # the client's retail price, set in chat on 04.11.2026; shown only in the order section since 06.11 («цену оставим только в конце») (review/SITE-FACTS.md; 4 800 named first, corrected to 8 500 the same day)
+PRICE = int(os.environ.get("EDEM_PRICE") or 8500)   # EDEM_PRICE overrides for a test build (1 грн on 14.11.2026, together with the same variable on the deck-editor service); the client's retail price, set in chat on 04.11.2026; shown only in the order section since 06.11 («цену оставим только в конце») (review/SITE-FACTS.md; 4 800 named first, corrected to 8 500 the same day)
 PRICE_T = f"{PRICE:,}".replace(",", "\u202f") + "\u00a0грн"   # «4 800 грн»
 EDEM_URL = "https://edem.obiimy.world/"         # the sale page lives on its own subdomain (server.js serves edem-motion-light at its root)
 LEAD = "Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами — спільна робота KRAЇNA EDEM та OBIIMY."

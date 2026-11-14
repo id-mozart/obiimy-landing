@@ -84,7 +84,7 @@ button.ghost{appearance:none;border:1px solid var(--line);border-radius:999px;ba
 .msg{font-size:14px}.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}#load{color:var(--muted);padding:40px 0;text-align:center}
 </style></head><body><main>
 <h1>Знижки</h1>
-<p class="sub">Товари obiimy.world за категоріями сайту. Знижка задається у відсотках або в гривнях від повної ціни і записується в Хорошоп кнопкою «Застосувати»; у Shopify підтягується наступною <a href="/sync" id="lnk">синхронізацією</a>.</p>
+<p class="sub">Товари obiimy.world за категоріями сайту. Знижка задається у відсотках або в гривнях від повної ціни і записується в Хорошоп кнопкою «Застосувати»; у Shopify підтягується наступною <a href="/sync" id="lnk">синхронізацією</a>. Є також <a href="/portrait" id="lnk2">портрет клієнта</a>.</p>
 <div class="top">
  <input type="search" id="q" placeholder="Пошук за назвою або артикулом">
  <label><input type="checkbox" id="onlyd"> лише зі знижкою</label>
@@ -140,6 +140,6 @@ $('apply').onclick=async()=>{const items=Object.entries(CH).map(([article,c])=>(
  if(!d.ok){$('msg').textContent=d.error||'Помилка';$('msg').className='msg bad';$('apply').disabled=false;return}
  const bad=d.plan.filter(p=>!/оновлен/i.test(p.result||''));$('msg').textContent=bad.length?('Записано '+(d.applied-bad.length)+', з помилками '+bad.length+': '+bad.map(p=>p.article+' — '+p.result).join('; ')):('Записано: '+d.applied+'. Щоб оновити Shopify, запустіть синхронізацію.');$('msg').className='msg '+(bad.length?'bad':'ok');
  await load(true);};
-if(KEY){const l=document.getElementById('lnk');if(l)l.href+='?key='+encodeURIComponent(KEY);}
+if(KEY){for(const id of ['lnk','lnk2']){const l=document.getElementById(id);if(l)l.href+='?key='+encodeURIComponent(KEY);}}
 load();
 </script></body></html>"""

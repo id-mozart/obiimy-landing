@@ -517,6 +517,61 @@ def edem_cards(site, out):
       <figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div><div class="hba"><a href="home-preview?sel={",".join(i for i, _, _ in EDEM_HOME)}&amp;b={id}">На макеті головної →</a><a href="creatives/home/{f.name}?v={v}" download="{f.name}">JPG 1920 × 576 ↓</a></div></figcaption></figure>''')
     return cards, files
 
+
+BF_HOME = [   # 14.11.2026 — Black Friday banners for the home page (ads/bf/build_home.py → ads/bf/out-home/final), desktop 10:3 + mobile 5:2
+    ("bfh-01-hero", "Герой серії · −20…−40 %", "Назва дня дрібно, діапазон знижки жовтим і великим, праворуч смуга з трьох кадрів: хустка «Відновлення», твіллі «Соковиті спогади», маска «Впевненість»."),
+    ("bfh-02-red", "Чорна п’ятниця. Червона хустка.", "Кадр Рив’єри: червона хустка на зап’ясті; колір хустки — в заголовку, як у серії."),
+    ("bfh-03-square", "Квадрат. Не чорний.", "Плоска хустка «Коло сонця» 88 × 88 карткою на чорному полі — квадрат Малевича, тільки з шовку."),
+    ("bfh-04-yellow", "У нас п’ятниця жовта.", "Фірмовий жовтий замість чорного: жовта коробка з хусткою в горох; плашка знижки інвертована."),
+    ("bfh-05-faces", "Усі обличчя Чорної п’ятниці.", "Чотири портрети з лукбуку в ряд: хустка на плечах, твіллі на шиї, бантом, під коміром."),
+    ("bfh-06-tags", "Три бирки. Одна п’ятниця.", "Паперові бирки −20 / −30 / −40 на нитках, знизу піднімається хустка «Грація»; без плашки — цифри вже на бирках."),
+    ("bfh-07-sleep", "Проспати Чорну п’ятницю? Можна.", "Маска для сну «Ніжність» крупно; шовкова маска як привід не бігти за знижками."),
+    ("bfh-08-kolo", "Листопад темний. Хустка — ні.", "«Коло сонця» на моделі в тренчі біля вікна — сонячна хустка проти темного місяця."),
+]
+def bf_home_page(site, out, render):
+    """site/home-bf.html — the Black Friday home banners in the Horoshop sizes (desktop LINE 1 3840 × 1152 and mobile LINE 1 3840 × 1536), JPG + WebP and a ZIP."""
+    src = ROOT / "ads/bf/out-home/final"
+    if not src.exists(): return ""
+    bout = out / "bf"; bout.mkdir(exist_ok=True); cards = []; files = []
+    for id, title, desc in BF_HOME:
+        parts = []
+        for sfx, label, size in (("desktop-line1-3840x1152", "Desktop · LINE 1", "3840 × 1152 (10:3)"), ("mobile-line1-3840x1536", "Mobile · LINE 1", "3840 × 1536 (5:2)")):
+            j, wp = src / f"{id}-{sfx}.jpg", src / f"{id}-{sfx}.webp"
+            if not j.exists(): continue
+            for f in (j, wp):
+                if f.exists() and not ((bout / f.name).exists() and (bout / f.name).stat().st_mtime >= f.stat().st_mtime): shutil.copy2(f, bout / f.name)
+            prev = bout / f"{id}-{sfx}-1200.webp"
+            if not prev.exists() or prev.stat().st_mtime < j.stat().st_mtime:
+                t = Image.open(j).convert("RGB"); t.thumbnail((1200, 800)); t.save(prev, quality=82)
+            v = hashlib.md5(j.read_bytes()).hexdigest()[:8]; files.append(f"creatives/home/bf/{j.name}?v={v}")
+            wlink = f' · <a href="creatives/home/bf/{wp.name}?v={v}" download="{wp.name}">WebP ↓</a>' if wp.exists() else ""
+            parts.append(f'<div class="bfp"><a href="creatives/home/bf/{j.name}?v={v}" target="_blank" rel="noopener"><img src="creatives/home/bf/{prev.name}?v={v}" alt="{html.escape(title)} · {label}" loading="lazy"></a><p><b>{label}</b> · {size} · <a href="creatives/home/bf/{j.name}?v={v}" download="{j.name}">JPG ↓</a>{wlink}</p></div>')
+        if parts: cards.append(f'<figure class="hb e"><div class="bfv">{"".join(parts)}</div><figcaption><div><b>{html.escape(title)}</b><p>{html.escape(desc)}</p></div></figcaption></figure>')
+    if not cards: return ""
+    lede = "Банери Чорної п’ятниці для головної obiimy.world у розмірах Хорошоп: Desktop LINE 1 (10:3) і Mobile LINE 1 (5:2), JPG і WebP. Мова серії (ads/bf): чорне поле, кремовий текст, жовтий лише для знижки; знижка — діапазон «−20…−40 %» або «до −40 %», бо який товар на скільки — не вирішено; без дат і перекреслених цін. Фото — з obiimy.world і кампейн-зйомок, нічого з SOLO. Лок-ап зліва, фото праворуч плавно переходить у поле; кнопка «До знижок» намальована — банер Хорошопу є картинкою з посиланням. Логотипа немає: він у шапці сайту."
+    page = f'''<header><a href="home-banners">← Усі банери для головної</a><a href="creatives">Рекламні креативи →</a></header>
+<h1>Банери головної · Чорна п’ятниця</h1>
+<p class="lede">{lede}</p>
+<p class="lede hbl"><button type="button" id="hbzip">Завантажити всі (ZIP)</button><span id="hbn"></span></p>
+<section class="hbt"><div class="hbs">{"".join(cards)}</div></section>
+<style>.hbl {{ display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:14px; }} .hbl button {{ font:inherit; font-size:.88rem; border:0; background:var(--acc); color:#fff; border-radius:999px; padding:10px 16px; cursor:pointer; }} .hbl button[disabled] {{ opacity:.6; }} #hbn {{ font-size:.85rem; color:var(--ink2); }}
+.hbt {{ margin-top: 32px; }} .hbs {{ display: grid; gap: 28px; }} .hb {{ margin: 0; background: var(--card); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }}
+.bfv {{ display: grid; grid-template-columns: 1fr 1fr; gap: 14px; padding: 14px 14px 0; }} .bfp img {{ display:block; width:100%; height:auto; border-radius:4px; }} .bfp p {{ margin: 8px 0 0; font-size: .82rem; color: var(--ink2); }} .bfp a {{ color: var(--acc); font-weight: 600; text-decoration: none; }}
+.hb figcaption {{ padding: 16px 18px 14px; font-size: .92rem; color: var(--ink2); }} .hb b {{ color: var(--ink); font-size: 1.05rem; }} .hb figcaption p {{ margin: 4px 0 0; max-width: 60em; line-height: 1.45; }}
+@media (max-width: 800px) {{ .bfv {{ grid-template-columns: 1fr; }} }}
+.picks, .fmt, .toc, .all, #lb {{ display: none !important; }}</style>
+<script>
+document.getElementById('hbzip').addEventListener('click', function () {{
+  var btn = this, n = document.getElementById('hbn'), items = {json.dumps(files)}; btn.disabled = true;
+  (window.JSZip ? Promise.resolve() : new Promise(function (ok, no) {{ var s = document.createElement('script'); s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js'; s.onload = ok; s.onerror = no; document.head.appendChild(s); }}))
+  .then(function () {{ var zip = new JSZip(), done = 0; return Promise.all(items.map(function (u) {{ return fetch(u).then(function (r) {{ return r.blob(); }}).then(function (b) {{ zip.file(u.split('/').pop().split('?')[0], b); n.textContent = 'Пакую: ' + (++done) + ' з ' + items.length; }}); }})).then(function () {{ return zip.generateAsync({{ type: 'blob' }}); }}); }})
+  .then(function (blob) {{ var a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'obiimy-black-friday-home-banners.zip'; a.click(); n.textContent = ''; btn.disabled = false; }})
+  .catch(function (e) {{ n.textContent = 'Не вдалося: ' + e; btn.disabled = false; }});
+}});
+</script>'''
+    (site / "home-bf.html").write_text(render(page, "", "").replace("<title>Креативи Obiimy</title>", "<title>Банери головної · Чорна п’ятниця</title>"))
+    return f'<p class="lede">Чорна п’ятниця (14.11) — вісім варіантів у розмірах Хорошоп, десктоп і мобільний: <a href="home-bf">/home-bf</a>.</p>'
+
 def build_home(site, render):
     """site/home-banners.html — the SOLO banners for the home page of obiimy.world (1920 × 576), from ads/solo/out-home:
     grouped by tier (accepted / new round / reserve), every card with a phone crop (the slider on a 390 px screen shows the
@@ -636,8 +691,9 @@ document.getElementById('hbzip').addEventListener('click', function () {{
   .catch(function (e) {{ n.textContent = 'Не вдалося: ' + e; btn.disabled = false; }});
 }});
 </script>'''
+    bf_link = bf_home_page(site, out, render)
     page = render(body, "", "").replace("<title>Креативи Obiimy</title>", "<title>Банери для головної obiimy.world — SOLO</title>")
-    (site / "home-banners.html").write_text(page)
+    (site / "home-banners.html").write_text(page.replace('<section class="hbt" id="edem">', bf_link + '<section class="hbt" id="edem">', 1) if bf_link else page)
     if hcards:   # 06.11: a standalone page with only the chosen banner in the Horoshop sizes — the link to hand to the content manager
         hfiles = [f"creatives/home/horoshop/{n}" for n in sorted(x.name for x in hout.iterdir() if x.suffix in (".jpg", ".webp") and "-1200" not in x.name)]
         solo = f'''<header><a href="home-banners">← Усі банери для головної</a></header>

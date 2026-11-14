@@ -98,6 +98,7 @@ def shopify_products():
 def cmd_export():
     OUT.mkdir(parents=True, exist_ok=True)
     h = Horoshop(); rates = h.rates(); prods = h.products()
+    (OUT / "pages.json").write_text(json.dumps(h.call("pages/export", {}), ensure_ascii=False, indent=1))   # categories (id, parent, titles, image) — horoshop_home.py builds collections from them
     (OUT / "currency.json").write_text(json.dumps({"at": time.strftime("%Y-%m-%d %H:%M"), "rates_uah_per_unit": rates}, ensure_ascii=False, indent=1))
     (OUT / "products.json").write_text(json.dumps(prods, ensure_ascii=False, indent=0))
     shown = [p for p in prods if int(p.get("display_in_showcase") or 0)]

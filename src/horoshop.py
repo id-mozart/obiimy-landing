@@ -121,7 +121,7 @@ def alias(sku):
 def cmd_report():
     prods = json.loads((OUT / "products.json").read_text()); rate = json.loads((OUT / "currency.json").read_text())["rates_uah_per_unit"]["USD"]
     hs = {p["article"].strip(): p for p in prods if p.get("article")}
-    sp = shopify_products()
+    sp = shopify_products(); (OUT / "shopify-before.json").write_text(json.dumps(sp, ensure_ascii=False))   # the snapshot prices/status/publish work from
     sv = {}                                                       # sku → (product, variant)
     for pr in sp:
         for v in pr["variants"]["nodes"]:
@@ -297,6 +297,22 @@ def cmd_new(apply=False):
         time.sleep(0.6)
     print(f"готово: створено {ok}, помилок {bad}")
 
+def cmd_backup():
+    """Every product with all its fields → data/horoshop/backups/products-<date>.json (what to restore from if a sync goes wrong)."""
+    shop = _shop(); rows, cursor = [], None
+    while True:
+        d = shop.gql("""query($c: String) { products(first: 50, after: $c) { pageInfo { hasNextPage endCursor }
+          nodes { id title handle descriptionHtml vendor productType tags status publishedAt seo { title description } options { name position values }
+            media(first: 30) { nodes { id alt mediaContentType ... on MediaImage { image { url } } } }
+            variants(first: 50) { nodes { id title sku barcode price compareAtPrice inventoryPolicy inventoryQuantity selectedOptions { name value } inventoryItem { id tracked } } }
+            metafields(first: 30) { nodes { namespace key type value } } } } }""", {"c": cursor})
+        rows += d["products"]["nodes"]
+        if not d["products"]["pageInfo"]["hasNextPage"]: break
+        cursor = d["products"]["pageInfo"]["endCursor"]
+    f = OUT / "backups" / f"products-{time.strftime('%Y%m%d-%H%M')}.json"; f.parent.mkdir(parents=True, exist_ok=True)
+    f.write_text(json.dumps({"at": time.strftime("%Y-%m-%d %H:%M"), "products": rows}, ensure_ascii=False))
+    print(f"бекап: {f.relative_to(ROOT)} — {len(rows)} товарів, {sum(len(p['variants']['nodes']) for p in rows)} варіантів, {f.stat().st_size // 1024} КБ")
+
 def cmd_status(apply=False):
     """Existing products follow the site's visibility: hidden there → DRAFT here, shown → ACTIVE. Products without a SKU are not touched."""
     prods = json.loads((OUT / "products.json").read_text()); hs = {p["article"]: p for p in prods}
@@ -323,6 +339,11 @@ def cmd_publish(apply=False):
     loc = shop.gql("{ locations(first: 5) { nodes { id name isActive } } }")["locations"]["nodes"][0]["id"]
     created = [json.loads(l) for l in (OUT / "applied-new.jsonl").read_text(encoding="utf-8").splitlines() if l.strip()]
     pids = [c["product"] for c in created if c.get("product") and not c.get("errors")]
+    unpub = []
+    for i in range(0, len(pids), 50):   # only the ones not yet in the Online Store
+        for n in shop.gql("query($ids: [ID!]!) { nodes(ids: $ids) { ... on Product { id status publishedAt } } }", {"ids": pids[i:i + 50]})["nodes"]:
+            if n and n["status"] == "ACTIVE" and not n.get("publishedAt"): unpub.append(n["id"])   # drafts never get a publishedAt — skip them
+    pids = unpub
     prods = json.loads((OUT / "products.json").read_text()); hs = {p["article"]: p for p in prods}
     sp = shopify_products()
     oos = [(v["sku"], v["inventoryItem"]["id"], v["inventoryItem"]["tracked"], v["inventoryQuantity"]) for pr in sp for v in pr["variants"]["nodes"]
@@ -355,4 +376,5 @@ if __name__ == "__main__":
     elif cmd == "new": cmd_new(apply)
     elif cmd == "status": cmd_status(apply)
     elif cmd == "publish": cmd_publish(apply)
+    elif cmd == "backup": cmd_backup()
     else: print(__doc__)

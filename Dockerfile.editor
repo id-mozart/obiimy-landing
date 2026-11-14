@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir pillow segno pymupdf numpy
 COPY review/pp/package.json review/pp/package-lock.json review/pp/kp-pdf.mjs review/pp/
 RUN cd review/pp && npm ci --omit=dev && npm cache clean --force
 COPY src ./src
+COPY shopify/shop.py ./shopify/shop.py
 COPY brand ./brand
 COPY img ./img
 COPY photo ./photo

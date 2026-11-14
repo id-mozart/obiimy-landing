@@ -13,6 +13,7 @@ The page itself (HTML, CSS, JS) is src/deck-editor.html."""
 import hashlib, io, json, os, pathlib, re, shlex, shutil, subprocess, sys, tempfile, threading, time, urllib.parse, urllib.request
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from PIL import Image, ImageChops, ImageOps, ImageStat
+import syncpanel                                                         # src/syncpanel.py: the «Синхронізація з Shopify» page (GET /sync, GET|POST /api/sync)
 import keycrm                                                            # src/keycrm.py: the landing's orders and payments → KeyCRM (KEYCRM_* variables; unset → nothing is sent)
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
@@ -879,6 +880,8 @@ class Handler(SimpleHTTPRequestHandler):
             except Problem as e: data = json.dumps(dict(ok=False, error=str(e)), ensure_ascii=False).encode("utf-8"); status = e.status
             self.send_response(status); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
             self.send_header("Cache-Control", "no-store"); self.corp_cors(); self.end_headers(); return self.wfile.write(data)
+        if u.path == "/sync": return self.send_bytes(syncpanel.PAGE.encode("utf-8"), "text/html; charset=utf-8")
+        if u.path == "/api/sync": return self.api(syncpanel.state)
         if u.path == "/api/pages": return self.api(api_pages)
         if u.path == "/api/library": return self.api(api_library)
         if u.path == "/api/versions": return self.api(api_versions)
@@ -952,6 +955,7 @@ class Handler(SimpleHTTPRequestHandler):
             if n < 0 or n > 80 * 1048576: return self.send_json(dict(ok=False, error="Запит завеликий (понад 80 МБ)."), 413)
             return self.kp_pdf(self.rfile.read(n))
         if u.path in ("/api/corp", "/api/corp-upload"): return self.corp_post(u, q)
+        if u.path == "/api/sync": return self.api(syncpanel.start)
         if u.path == "/api/edem": return self.edem_post()
         if u.path == "/api/wfp": return self.wfp_post()
         if not self.authed(): return

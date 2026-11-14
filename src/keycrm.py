@@ -7,11 +7,11 @@ Settings — environment only (locally ~/.config/obiimy/keycrm.env, on Railway t
   KEYCRM_API_KEY              the key from KeyCRM → Налаштування → Основні → API (never print, never commit)
   KEYCRM_SOURCE_ID            id of the source «лендинг» created in Налаштування → Джерела (list: python3 src/keycrm.py refs)
   KEYCRM_SKU                  артикул of the scarf in the KeyCRM catalogue — with it the order line is matched to the product
-  KEYCRM_PAYMENT_METHOD       name of the payment method for card payments, as KeyCRM spells it (default «WayForPay»)
+  KEYCRM_PAYMENT_METHOD_ID    id of the payment method for card payments (or KEYCRM_PAYMENT_METHOD — its exact name; default «WayForPay»)
   KEYCRM_DELIVERY_SERVICE_ID  id of Нова Пошта among the delivery services (optional; the city and branch go as text anyway)
 
 CLI:  python3 src/keycrm.py refs                 sources, payment methods, delivery services, statuses — with ids
-      python3 src/keycrm.py product <sku>        the catalogue entry behind an артикул
+      python3 src/keycrm.py product <sku>        the catalogue offer (variant) behind an артикул
       python3 src/keycrm.py order <EDEM-ref>     the KeyCRM order created for a landing order (by source_uuid)
       python3 src/keycrm.py push <EDEM-ref>      (re)send a landing order from data/edem/orders.jsonl — skipped if it is already there
       python3 src/keycrm.py payload <EDEM-ref>   print the JSON that would be sent, nothing is sent
@@ -23,6 +23,7 @@ KEY = os.environ.get("KEYCRM_API_KEY") or ""
 SOURCE_ID = int(os.environ.get("KEYCRM_SOURCE_ID") or 0)
 SKU = os.environ.get("KEYCRM_SKU") or ""
 PAYMENT_METHOD = os.environ.get("KEYCRM_PAYMENT_METHOD") or "WayForPay"
+PAYMENT_METHOD_ID = int(os.environ.get("KEYCRM_PAYMENT_METHOD_ID") or 0)   # preferred over the name when set (ids: python3 src/keycrm.py refs)
 DELIVERY_SERVICE_ID = int(os.environ.get("KEYCRM_DELIVERY_SERVICE_ID") or 0)
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 EDEM_DIR = ROOT / "data" / "edem"
@@ -116,7 +117,8 @@ def add_payment(ref, amount, status="paid", description="", method=None):
     try:
         oid = local_order_id(ref) or (lambda o: int(o["id"]) if o else 0)(find_order(ref))
         if not oid: _log(ref, "payment", ok=False, error="замовлення в KeyCRM не знайдено"); return False
-        body = {"payment_method": method or PAYMENT_METHOD, "amount": amount, "status": status, "description": description[:250],
+        body = {"amount": amount, "status": status, "description": description[:250],
+                **({"payment_method_id": PAYMENT_METHOD_ID} if PAYMENT_METHOD_ID and not method else {"payment_method": method or PAYMENT_METHOD}),
                 "payment_date": time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime())}
         res = api("POST", f"/order/{oid}/payment", body)
         _log(ref, "payment", ok=True, id=oid, payment_id=res.get("id"), status=status, amount=amount); return True
@@ -142,7 +144,7 @@ def main(argv):
             print(f"\n{title}:")
             for r in rows or []: print(f"  {r.get('id'):>4}  {r.get('name')}" + (f"  ({r.get('alias')})" if r.get("alias") else "") + ("" if r.get("is_active", True) else "  [неактивний]"))
     elif cmd == "product":
-        res = api("GET", "/products", params={"filter[sku]": argv[2], "limit": 5, "include": "offers"})
+        res = api("GET", "/offers", params={"filter[sku]": argv[2], "limit": 5, "include": "product"})   # /products has no sku filter; offers (variants) do
         print(json.dumps(res.get("data"), ensure_ascii=False, indent=1)[:4000])
     elif cmd == "order":
         print(json.dumps(find_order(argv[2]), ensure_ascii=False, indent=1))

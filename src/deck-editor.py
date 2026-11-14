@@ -865,7 +865,7 @@ class Handler(SimpleHTTPRequestHandler):
             if not CORP_PASSWORD or not hmac.compare_digest(q.get("key") or "", CORP_PASSWORD): return self.send_json(dict(ok=False, error="Потрібен ключ."), 401)
             return self.api(api_edem_list)
         if u.path == "/api/wfp": return self.send_json(dict(ok=True, configured=bool(WFP_ACCOUNT and WFP_SECRET), account=WFP_ACCOUNT[:3] + "…" if WFP_ACCOUNT else "", domain=WFP_DOMAIN))   # a health check: is WayForPay set up here?
-        if u.path == "/api/keycrm": return self.send_json(dict(ok=True, configured=keycrm.configured(), source_id=keycrm.SOURCE_ID, sku=keycrm.SKU, payment_method=keycrm.PAYMENT_METHOD, delivery_service_id=keycrm.DELIVERY_SERVICE_ID))   # is KeyCRM set up here? (no key shown)
+        if u.path == "/api/keycrm": return self.send_json(dict(ok=True, configured=keycrm.configured(), source_id=keycrm.SOURCE_ID, sku=keycrm.SKU, payment_method=keycrm.PAYMENT_METHOD_ID or keycrm.PAYMENT_METHOD, delivery_service_id=keycrm.DELIVERY_SERVICE_ID))   # is KeyCRM set up here? (no key shown)
         if u.path == "/edem-orders":
             import hmac
             if not CORP_PASSWORD or not hmac.compare_digest(q.get("key") or "", CORP_PASSWORD): return self.send_json(dict(ok=False, error="Потрібен ключ."), 401)

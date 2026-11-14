@@ -10,7 +10,15 @@ import json, pathlib, sys, time
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src")); import horoshop as H
 
-FIELDS = ["article", "parent_article", "title", "mod_title", "price", "price_old", "discount", "parent", "alt_parent", "display_in_showcase", "presence", "currency", "link"]
+FIELDS = ["article", "parent_article", "title", "mod_title", "price", "price_old", "discount", "parent", "alt_parent", "display_in_showcase", "presence", "currency", "link", "images", "gallery_common"]
+
+def thumb(p):
+    """The site's own 120 px thumbnail of the first picture: …/images/<n>/<name>_+<hash>.jpg → …/images/<n>/120x120l80nn0/<name>.webp (falls back to the original in the page)."""
+    pics = (p.get("images") or []) + (p.get("gallery_common") or [])
+    if not pics: return "", ""
+    import re
+    m = re.match(r"(https://[^/]+/content/images/\d+/)(.+?)(?:_\+[0-9a-f]+)?\.(jpe?g|png|webp)$", pics[0])
+    return (f"{m.group(1)}120x120l80nn0/{m.group(2)}.webp" if m else pics[0]), pics[0]
 
 def full_uah(p):
     return max(float(p.get("price") or 0), float(p.get("price_old") or 0))
@@ -27,7 +35,7 @@ def rows():
         out.append(dict(article=p["article"], parent=p.get("parent_article") or p["article"], name=(H.L(p.get("mod_title"), "ua") or H.L(p.get("title"), "ua")).strip(),
                         category=H.L(p.get("parent"), "ua") or "—", collections=[H.L(a, "ua") for a in p.get("alt_parent") or [] if H.L(a, "ua").startswith("Колекції/")],
                         full=full, now=round(now, 2), pct=pct, amt=round(full - now, 2), kind=kind, shown=int(p.get("display_in_showcase") or 0),
-                        presence=H.presence(p), link=p.get("link") or ""))
+                        presence=H.presence(p), link=p.get("link") or "", thumb=thumb(p)[0], pic=thumb(p)[1]))
     out.sort(key=lambda r: (r["category"], r["parent"], r["article"]))
     return dict(ok=True, at=time.strftime("%Y-%m-%d %H:%M"), rate=rate, rows=out)
 
@@ -65,7 +73,7 @@ details{background:#fff;border:1px solid var(--line);border-radius:12px;margin:0
 summary::before{content:"▸";color:var(--muted);transition:transform .15s}details[open] summary::before{transform:rotate(90deg)}summary .n{color:var(--muted);font-weight:400;font-size:13px}summary .d{margin-left:auto;font-weight:400;font-size:13px;color:var(--ok)}
 .gfill{display:flex;gap:8px;align-items:center;padding:0 16px 10px 36px;font-size:13px;color:var(--muted)}.gfill input{width:70px}
 table{width:100%;border-collapse:collapse}th,td{padding:7px 10px;border-top:1px solid var(--line);text-align:left;vertical-align:middle;font-size:14px}th{color:var(--muted);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
-td.num,th.num{text-align:right;white-space:nowrap}td.art{color:var(--muted);font-size:12.5px;white-space:nowrap}td.name a{color:inherit;text-decoration:none}td.name a:hover{text-decoration:underline}
+td.num,th.num{text-align:right;white-space:nowrap}td.art{color:var(--muted);font-size:12.5px;white-space:nowrap}td.pic{width:56px;padding:4px 6px}td.pic img{width:48px;height:48px;object-fit:cover;border-radius:8px;background:#f1ece3;display:block}td.pic span{display:block;width:48px;height:48px;border-radius:8px;background:#f1ece3}td.name a{color:inherit;text-decoration:none}td.name a:hover{text-decoration:underline}
 .cur{white-space:nowrap}.cur b{font-weight:500;color:var(--ok)}.cur s{color:var(--muted)}.hid{color:var(--muted);font-size:12px}
 input.v{width:64px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;text-align:right;background:#fff}input.v:focus{outline:2px solid var(--yel);border-color:transparent}
 tr.changed td{background:var(--mark)}select.k{border:1px solid var(--line);border-radius:8px;padding:6px;font:inherit;background:#fff}
@@ -103,12 +111,13 @@ function render(){
  $('groups').innerHTML=Object.keys(groups).sort().map(g=>{const rs=groups[g];const nd=rs.filter(r=>r.kind).length;
   return '<details data-g="'+esc(g)+'"'+(open.has(g)||q?' open':'')+'><summary>'+esc(g)+' <span class="n">'+rs.length+' арт.</span>'+(nd?'<span class="d">зі знижкою: '+nd+'</span>':'')+'</summary>'
   +'<div class="gfill">усій групі: <select class="k" data-gk="'+esc(g)+'"><option value="pct">%</option><option value="amt">грн</option></select><input class="v" data-gv="'+esc(g)+'" placeholder="0"><button class="ghost" style="padding:5px 12px;font-size:13px" data-gset="'+esc(g)+'">заповнити</button><button class="clear" data-gclr="'+esc(g)+'">зняти всі знижки групи</button></div>'
-  +'<table><tr><th>Артикул</th><th>Товар</th><th class="num">Повна ціна</th><th class="num">Зараз</th><th>Нова знижка</th><th></th></tr>'
+  +'<table><tr><th></th><th>Артикул</th><th>Товар</th><th class="num">Повна ціна</th><th class="num">Зараз</th><th>Нова знижка</th><th></th></tr>'
   +rs.map(r=>{const c=CH[r.article];const kind=c?c.kind:(r.kind||'pct');const val=c?c.value:(r.kind==='pct'?r.pct:(r.kind==='amt'?r.amt:''));
-   return '<tr data-a="'+esc(r.article)+'"'+(c?' class="changed"':'')+'><td class="art">'+esc(r.article)+(r.shown?'':' <span class="hid">прихований</span>')+'</td><td class="name">'+(r.link?'<a href="'+esc(r.link)+'" target="_blank" rel="noopener">'+esc(r.name)+'</a>':esc(r.name))+(r.presence!=='In stock'?' <span class="hid">немає в наявності</span>':'')+'</td>'
+   return '<tr data-a="'+esc(r.article)+'"'+(c?' class="changed"':'')+'><td class="pic">'+(r.thumb?'<img data-src="'+esc(r.thumb)+'" data-f="'+esc(r.pic)+'" alt="" onerror="if(!this.dataset.o){this.dataset.o=1;this.src=this.dataset.f}">':'<span></span>')+'</td><td class="art">'+esc(r.article)+(r.shown?'':' <span class="hid">прихований</span>')+'</td><td class="name">'+(r.link?'<a href="'+esc(r.link)+'" target="_blank" rel="noopener">'+esc(r.name)+'</a>':esc(r.name))+(r.presence!=='In stock'?' <span class="hid">немає в наявності</span>':'')+'</td>'
    +'<td class="num">'+money(r.full)+'</td><td class="num cur">'+(r.kind?'<b>'+money(r.now)+'</b> <s>'+money(r.full)+'</s> <span class="hid">'+(r.kind==='pct'?'−'+r.pct+'%':'−'+money(r.amt))+'</span>':'—')+'</td>'
    +'<td><input class="v" data-v="'+esc(r.article)+'" value="'+esc(val)+'" placeholder="0"> <select class="k" data-k="'+esc(r.article)+'"><option value="pct"'+(kind==='pct'?' selected':'')+'>%</option><option value="amt"'+(kind==='amt'?' selected':'')+'>грн</option></select></td>'
    +'<td>'+(r.kind||c?'<button class="clear" data-clr="'+esc(r.article)+'" title="зняти знижку">зняти</button>':'')+'</td></tr>'}).join('')+'</table></details>'}).join('')||'<p class="hid">Нічого не знайдено.</p>';
+ document.querySelectorAll('details[open]').forEach(showPics);
 }
 function setChange(a,kind,value){const r=ROWS.find(x=>x.article===a);if(!r)return;const v=parseFloat(String(value).replace(',','.'))||0;
  const same=(v===0&&!r.kind)||(kind==='pct'&&r.kind==='pct'&&v===r.pct)||(kind==='amt'&&r.kind==='amt'&&v===r.amt);
@@ -121,6 +130,8 @@ document.addEventListener('click',e=>{const t=e.target;
  if(t.dataset.gset!==undefined){const g=t.dataset.gset;const kind=document.querySelector('[data-gk="'+CSS.escape(g)+'"]').value;const v=document.querySelector('[data-gv="'+CSS.escape(g)+'"]').value;if(!v)return;for(const r of ROWS)if(r.category===g)setChange(r.article,kind,v);render();}
  if(t.dataset.gclr!==undefined){const g=t.dataset.gclr;for(const r of ROWS)if(r.category===g){if(r.kind)CH[r.article]={kind:'none',value:0};else delete CH[r.article];}upd();render();}
 });
+function showPics(d){d.querySelectorAll('td.pic img[data-src]').forEach(i=>{i.src=i.dataset.src;i.removeAttribute('data-src');});}
+document.addEventListener('toggle',e=>{if(e.target.tagName==='DETAILS'&&e.target.open)showPics(e.target);},true);
 $('q').oninput=render;$('onlyd').onchange=render;$('reload').onclick=load;
 $('apply').onclick=async()=>{const items=Object.entries(CH).map(([article,c])=>({article,kind:c.kind,value:c.value}));
  if(!confirm('Записати '+items.length+' змін у Хорошоп? Ціни на сайті зміняться одразу.'))return;

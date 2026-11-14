@@ -38,8 +38,17 @@ section[id] { scroll-margin-top: 20px; }
 .cta { display: flex; flex-wrap: wrap; gap: 14px; }
 /* ── hero: the scene ───────────────────────────────────────────────────────────────────────────── */
 .hero { position: relative; min-height: 100vh; overflow: hidden; display: grid; align-items: center; padding: 100px 0 80px; background: radial-gradient(70% 60% at 68% 45%, rgba(180,138,58,.18), transparent 65%), var(--bg); }
-.hero .top { position: absolute; left: 0; right: 0; top: 26px; max-width: 1240px; margin: 0 auto; padding: 0 24px; box-sizing: border-box; display: flex; justify-content: space-between; align-items: center; font-size: 11px; letter-spacing: .26em; text-transform: uppercase; color: var(--cream2); z-index: 5; }
-.logos { display: flex; align-items: center; gap: 22px; } .logos img { height: 30px; width: auto; display: block; } .logos img.edem { height: 82px; margin-top: -8px; } .hero .top .right { display: flex; align-items: center; gap: 18px; } .hero .top .lang { color: inherit; text-decoration: none; border: 1px solid currentColor; padding: 6px 9px; border-radius: 2px; font-size: 10px; letter-spacing: .2em; opacity: .75; transition: opacity .2s; } .hero .top .lang:hover { opacity: 1; }
+.bar { position: fixed; left: 0; right: 0; top: 0; z-index: 50; height: 64px; padding: 0 24px; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--cream2); border-bottom: 1px solid transparent; transition: background .3s, border-color .3s; }
+.bar.on { background: rgba(22,16,12,.84); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-color: var(--line); }
+.bar .in { max-width: 1240px; height: 100%; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
+.bar .home { display: flex; align-items: center; gap: 16px; text-decoration: none; color: inherit; flex: none; } .bar .home img { height: 24px; width: auto; display: block; } .bar .home img.edem { height: 52px; margin-top: -3px; } .bar .home .x { font-family: 'Cormorant Garamond', serif; font-size: 20px; opacity: .55; letter-spacing: 0; }
+.bar nav { display: flex; gap: 26px; } .bar nav a { color: inherit; text-decoration: none; opacity: .72; padding: 5px 0; border-bottom: 1px solid transparent; transition: opacity .2s, border-color .2s; white-space: nowrap; } .bar nav a:hover, .bar nav a[aria-current] { opacity: 1; border-color: var(--gold); }
+.bar .right { display: flex; align-items: center; gap: 16px; flex: none; } .bar .site { color: inherit; text-decoration: none; opacity: .72; white-space: nowrap; transition: opacity .2s; } .bar .site:hover { opacity: 1; } .bar .site i { font-style: normal; margin-right: 6px; }
+.bar .lang { color: inherit; text-decoration: none; border: 1px solid currentColor; padding: 6px 9px; border-radius: 2px; font-size: 10px; letter-spacing: .2em; opacity: .75; transition: opacity .2s; } .bar .lang:hover { opacity: 1; }
+.bar .cta { padding: 10px 16px; font-size: 10px; letter-spacing: .18em; }
+html { scroll-padding-top: 76px; }
+@media (max-width: 960px) { .bar nav { display: none; } }
+.logos { display: flex; align-items: center; gap: 22px; } .logos img { height: 30px; width: auto; display: block; } .logos img.edem { height: 82px; margin-top: -8px; }
 .logos .x { font-family: 'Cormorant Garamond', serif; font-size: 24px; opacity: .55; letter-spacing: 0; } .logos b { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 21px; letter-spacing: .14em; text-transform: uppercase; color: var(--cream); line-height: 1; }
 .dust { position: absolute; inset: 0; pointer-events: none; z-index: 1; } .dust i { position: absolute; bottom: -10px; width: 3px; height: 3px; border-radius: 50%; background: var(--gold); opacity: 0; animation: rise linear infinite; box-shadow: 0 0 6px rgba(217,184,106,.8); }
 @keyframes rise { 0% { transform: translateY(0) translateX(0); opacity: 0; } 10% { opacity: .9; } 90% { opacity: .5; } 100% { transform: translateY(-110vh) translateX(40px); opacity: 0; } }
@@ -109,13 +118,21 @@ section.s { padding: clamp(80px, 10vw, 150px) 0; position: relative; overflow: h
 footer { padding: 34px 24px; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--cream2); display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; border-top: 1px solid var(--line); } footer a { text-decoration: none; }
 @media (max-width: 980px) { .hero { padding: 90px 0 60px; } .hero .copy > * { max-width: none; } .l-card { position: relative; left: auto; top: auto; margin: 0 auto 30px; width: min(78vw, 420px); } .scene { position: relative; inset: auto; height: auto; pointer-events: none; } .l-mandala { display: none; } .l-fig, .l-pr, .l-pd, .l-pr2 { position: absolute; } .l-fig { left: 2%; top: 10%; } .l-pr { left: 84%; top: 4%; } .l-pd { left: 6%; top: 70%; } .l-pr2 { left: 88%; top: 60%; }
   .scarf, .story, .brands, .reg .wrap, .film { grid-template-columns: 1fr; } .film .vid { width: min(100%, 360px); } .cards { grid-template-columns: repeat(2, 1fr); } .hangs { display: none; } .spin { height: 320px; } .lenswrap { cursor: default; } .hintlens { display: none; } }
-@media (max-width: 600px) { body { font-size: 16px; } .cards { grid-template-columns: 1fr; } .cta .btn { flex: 1 1 100%; justify-content: center; } .hero .top { font-size: 9px; letter-spacing: .16em; } .hero .top .right > span { display: none; } .logos { gap: 14px; } .logos img { height: 24px; } .logos img.edem { height: 58px; margin-top: -4px; } }
+@media (max-width: 600px) { body { font-size: 16px; } .cards { grid-template-columns: 1fr; } .cta .btn { flex: 1 1 100%; justify-content: center; } .bar { height: 56px; padding: 0 14px; font-size: 9px; letter-spacing: .14em; } .bar .in { gap: 10px; } .bar .home { gap: 10px; } .bar .home img { height: 19px; } .bar .home img.edem, .bar .home .x { display: none; } .bar .site { letter-spacing: .08em; } .bar .right { gap: 9px; } .bar .lang { padding: 5px 7px; font-size: 9px; } .bar .cta { padding: 9px 11px; font-size: 9px; letter-spacing: .12em; } html { scroll-padding-top: 64px; } .logos { gap: 14px; } .logos img { height: 24px; } .logos img.edem { height: 58px; margin-top: -4px; } }
 @media (hover: none) { .lens, .hintlens { display: none; } .lenswrap { cursor: default; } }
 @media (prefers-reduced-motion: reduce) { .card, .layer img, .dust i, .hang, .l-mandala img, .mani .bg img, .reg .bg img, .scrollhint i { animation: none !important; } .mani .w { opacity: 1; transform: none; } }
 """
 
 JS = """
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches, fine = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  var bar = document.getElementById('bar');
+  function barOn() { if (bar) bar.classList.toggle('on', window.scrollY > 24); }
+  barOn(); window.addEventListener('scroll', barOn, { passive: true });
+  if (bar && 'IntersectionObserver' in window) {
+    var links = [].slice.call(bar.querySelectorAll('nav a')), secs = links.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+    var bio = new IntersectionObserver(function (es) { es.forEach(function (e) { var i = secs.indexOf(e.target); if (i >= 0 && e.isIntersecting) { links.forEach(function (l) { l.removeAttribute('aria-current'); }); links[i].setAttribute('aria-current', 'true'); } }); }, { rootMargin: '-40% 0px -55% 0px' });
+    secs.forEach(function (sec) { if (sec) bio.observe(sec); });
+  }
   var hero = document.getElementById('hero'), card = document.getElementById('card'), layers = [].slice.call(document.querySelectorAll('.scene .layer'));
   var tx = 0, ty = 0, cx = 0, cy = 0, sy = 0, raf = null;
   function frame() {
@@ -170,6 +187,7 @@ JS = """
 LIGHT = [  # the same page on warm paper: palette, shadows and the few hard-coded dark surfaces swapped
     (":root { --bg: #16100C; --bg2: #1F1610; --cream: #F3E9D8; --cream2: rgba(243,233,216,.72); --gold: #D9B86A; --gold2: #B48A3A; --line: rgba(217,184,106,.22); --acc: #D9B86A; --fb: rgba(42,32,23,.3); --fbg: #FBF4E7; --fink: #2A2017; }",
      ":root { --bg: #F7F1E6; --bg2: #FBF7F0; --cream: #2A2017; --cream2: rgba(42,32,23,.68); --gold: #B48A3A; --gold2: #D9B86A; --line: rgba(42,32,23,.14); --acc: #B48A3A; --fb: rgba(42,32,23,.25); --fbg: #FFFFFF; --fink: #2A2017; }"),
+    ("background: rgba(22,16,12,.84); backdrop-filter: blur(14px);", "background: rgba(247,241,230,.88); backdrop-filter: blur(14px);"),
     (".btn-line { border-color: rgba(243,233,216,.6); color: var(--cream); } .btn-line:hover { border-color: var(--cream); }", ".btn-line { border-color: #2A2017; color: #2A2017; } .btn-line:hover { background: rgba(42,32,23,.06); }"),
     ("rgba(180,138,58,.18), transparent 65%)", "rgba(217,184,106,.38), transparent 65%)"),
     ("background: linear-gradient(115deg, transparent 35%, rgba(255,255,255,.28) 48%, transparent 60%)", "background: linear-gradient(115deg, transparent 40%, rgba(255,255,255,.12) 48%, transparent 56%)"),
@@ -250,7 +268,6 @@ def order_form(lang="uk"):
 
 # The English page (edem.obiimy.world/en, client 05.11.2026): the Ukrainian body with every phrase replaced; each pair must match, and no Cyrillic may remain
 EN = [
- ("Лімітований випуск · 2026", "Limited edition · 2026"),
  ("Спільний мистецький проєкт", "A joint art project"),
  ("<h1>Трипілля —<br><i>Мистецтво витоків</i></h1>", "<h1>Trypillia —<br><i>The Art of Origins</i></h1>"),
  ("Kraїna Edem × Obiimy · Трипілля — Мистецтво витоків · 2026", "Kraїna Edem × Obiimy · Trypillia — The Art of Origins · 2026"),
@@ -268,7 +285,9 @@ EN = [
  ("<span>Принт</span><b>Авторський, спільний для двох брендів</b>", "<span>Print</span><b>Original, created jointly by the two brands</b>"), ("<span>Підпис</span><b>OBIIMY × Edem на полотні</b>", "<span>Signature</span><b>OBIIMY × Edem on the canvas</b>"),
  ("<span>Наклад</span><b>Обмежений</b>", "<span>Edition</span><b>Limited</b>"), ("<span>Виготовлено</span><b>в Україні</b>", "<span>Made</span><b>in Ukraine</b>"),
  ("Лімітований випуск. Доставка Новою поштою по Україні.", "Limited edition. Delivery by Nova Poshta across Ukraine, worldwide shipping at the carrier’s rates."),
- (">Замовити хустку</a>", ">Order the scarf</a>"),
+ (">Замовити хустку</a>", ">Order the scarf</a>"), ('title="На головний сайт OBIIMY"', 'title="OBIIMY main site"'), ('aria-label="Розділи сторінки"', 'aria-label="Page sections"'),
+ ('<a href="#scarf">Хустка</a><a href="#film">Відео</a><a href="#story">Історія</a><a href="#symbols">Символи</a><a href="#brands">Партнери</a>', '<a href="#scarf">The scarf</a><a href="#film">Film</a><a href="#story">Story</a><a href="#symbols">Symbols</a><a href="#brands">Partners</a>'),
+ ('cta" href="#order">Замовити</a>', 'cta" href="#order">Order</a>'),
  ('aria-label="Відео: хустка Трипілля — Мистецтво витоків"', 'aria-label="Video: the Trypillia — The Art of Origins scarf"'),
  ('data-on="Увімкнути звук" data-off="Вимкнути звук">Увімкнути звук<', 'data-on="Sound on" data-off="Sound off">Sound on<'),
  ("<p class=\"eyebrow\">Відео</p><h2>Хустка наживо</h2>", "<p class=\"eyebrow\">Film</p><h2>The scarf in motion</h2>"),
@@ -318,10 +337,16 @@ def english(body):
 def main(light=False, lang="uk"):
     rnd = random.Random(7)
     dust = "".join(f'<i style="left:{rnd.uniform(0, 100):.1f}%;animation-duration:{rnd.uniform(9, 22):.1f}s;animation-delay:-{rnd.uniform(0, 22):.1f}s;width:{rnd.choice([2, 2, 3, 4])}px;height:{rnd.choice([2, 2, 3, 4])}px"></i>' for _ in range(42))
+    logo, edem_mark = ("logo-ink", "edem-mark") if light else ("logo-white", "edem-mark-white")
+    lang_link = '<a class="lang" href="edem-motion-light" hreflang="uk" lang="uk">UA</a>' if lang == "en" else '<a class="lang" href="edem-motion-light-en" hreflang="en" lang="en">EN</a>'
     body = f'''
+<header class="bar" id="bar"><div class="in">
+  <a class="home" href="https://obiimy.world/" title="На головний сайт OBIIMY"><img src="brand/{logo}.svg" alt="OBIIMY" width="1200" height="255"><span class="x">×</span><img class="edem" src="brand/{edem_mark}.png" alt="Kraїna Edem" width="340" height="338"></a>
+  <nav aria-label="Розділи сторінки"><a href="#scarf">Хустка</a><a href="#film">Відео</a><a href="#story">Історія</a><a href="#symbols">Символи</a><a href="#brands">Партнери</a></nav>
+  <div class="right"><a class="site" href="https://obiimy.world/"><i>←</i>obiimy.world</a>{lang_link}<a class="btn btn-main cta" href="#order">Замовити</a></div>
+</div></header>
 <main id="top">
 <section class="hero" id="hero">
-  <div class="top"><div class="logos"><img src="brand/{"logo-ink" if light else "logo-white"}.svg" alt="OBIIMY" width="1200" height="255"><span class="x">×</span><img class="edem" src="brand/{"edem-mark" if light else "edem-mark-white"}.png" alt="Kraїna Edem" width="340" height="338"></div><div class="right"><span>Лімітований випуск · 2026</span>{'<a class="lang" href="edem-motion-light" hreflang="uk" lang="uk">UA</a>' if lang == "en" else '<a class="lang" href="edem-motion-light-en" hreflang="en" lang="en">EN</a>'}</div></div>
   <div class="dust" aria-hidden="true">{dust}</div>
   <div class="scene" aria-hidden="true">
     <div class="layer l-mandala" data-depth=".12">{img("photo/edem/mandala.webp", "", sizes="1300px")}</div>

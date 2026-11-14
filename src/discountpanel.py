@@ -64,7 +64,7 @@ def stock_map(force=False):
                 for x in data:
                     if not x.get("sku"): continue
                     w = next((w for w in x.get("warehouse") or [] if int(w.get("id") or 0) == STOCK_WAREHOUSE), None)
-                    out[x["sku"]] = (float(w.get("quantity") or 0), float(w.get("reserve") or 0)) if w else (None, None)
+                    out[x["sku"]] = ((float(w.get("quantity") or 0), float(w.get("reserve") or 0)) if w else (None, None)) + (float(x.get("quantity") or 0), float(x.get("reserve") or 0))   # + the total over all warehouses
                 if len(data) < 50: break
                 page += 1
         _stock_cache.update(at=time.time(), map=out)
@@ -82,7 +82,7 @@ def rows():
         full = max(price, old); now = price * (1 - pct / 100)
         kind = "pct" if pct else ("amt" if old > price else "")
         k = _crm_key(p["article"], st); q = st.get(k) if k else None      # None → not in the warehouse system; (None, None) → in the system, not on this warehouse
-        out.append(dict(stock=(q[0] if q and q[0] is not None else (0.0 if q else None)), reserve=(q[1] if q and q[1] is not None else 0.0), crm_sku=k,article=p["article"], parent=p.get("parent_article") or p["article"], name=(H.L(p.get("mod_title"), "ua") or H.L(p.get("title"), "ua")).strip(),
+        out.append(dict(stock=(q[0] if q and q[0] is not None else (0.0 if q else None)), reserve=(q[1] if q and q[1] is not None else 0.0), stock_all=(q[2] if q else None), reserve_all=(q[3] if q else 0.0), crm_sku=k,article=p["article"], parent=p.get("parent_article") or p["article"], name=(H.L(p.get("mod_title"), "ua") or H.L(p.get("title"), "ua")).strip(),
                         category=H.L(p.get("parent"), "ua") or "—", collections=[H.L(a, "ua") for a in p.get("alt_parent") or [] if H.L(a, "ua").startswith("Колекції/")],
                         full=full, now=round(now, 2), pct=pct, amt=round(full - now, 2), kind=kind, shown=int(p.get("display_in_showcase") or 0),
                         presence=H.presence(p), link=p.get("link") or "", thumb=thumb(p)[0], pic=thumb(p)[1]))
@@ -160,11 +160,12 @@ button.ghost{appearance:none;border:1px solid var(--line);border-radius:999px;ba
 .le ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:13px}.le li b{color:var(--ink);font-weight:500}
 </style></head><body><main>
 <h1>Знижки</h1>
-<p class="sub">Товари obiimy.world за категоріями сайту; колонка «Залишок» — склад «1 Склад Світлана» за даними KeyCRM (Bimp оновлює їх кожні 15 хв). Знижка задається у відсотках або в гривнях від повної ціни і записується в Хорошоп кнопкою «Застосувати»; у Shopify підтягується наступною <a href="/sync" id="lnk">синхронізацією</a>. Є також <a href="/portrait" id="lnk2">портрет клієнта</a>.</p>
+<p class="sub">Товари obiimy.world за категоріями сайту; колонка «Залишок» — за даними KeyCRM (Bimp оновлює їх кожні 15 хв): склад «1 Склад Світлана» або всі склади разом, перемикач у фільтрі. Знижка задається у відсотках або в гривнях від повної ціни і записується в Хорошоп кнопкою «Застосувати»; у Shopify підтягується наступною <a href="/sync" id="lnk">синхронізацією</a>. Є також <a href="/portrait" id="lnk2">портрет клієнта</a>.</p>
 <div class="top">
  <input type="search" id="q" placeholder="Пошук за назвою або артикулом">
  <label><input type="checkbox" id="onlyd"> лише зі знижкою</label>
- <label title="Залишок на складі «1 Склад Світлана» за даними KeyCRM">залишок від <input class="v" id="qmin" placeholder="0" style="width:56px"> до <input class="v" id="qmax" placeholder="∞" style="width:56px"></label>
+ <label>склад <select class="k" id="wh"><option value="1">1 Склад Світлана</option><option value="all">усі склади</option></select></label>
+ <label title="Залишок за даними KeyCRM">залишок від <input class="v" id="qmin" placeholder="0" style="width:56px"> до <input class="v" id="qmax" placeholder="∞" style="width:56px"></label>
  <button class="ghost" id="reload">Оновити з Хорошопу</button>
  <span class="hid" id="at"></span>
 </div>
@@ -177,6 +178,7 @@ button.ghost{appearance:none;border:1px solid var(--line);border-radius:999px;ba
 const KEY=new URLSearchParams(location.search).get('key')||'';const api=(u,o={})=>fetch(u+(u.includes('?')?'&':'?')+'key='+encodeURIComponent(KEY),o);
 const $=id=>document.getElementById(id);let ROWS=[],CH={};
 const money=v=>Number(v).toLocaleString('uk-UA',{maximumFractionDigits:0})+' грн';
+const ST=r=>$('wh').value==='all'?r.stock_all:r.stock, RS=r=>$('wh').value==='all'?r.reserve_all:r.reserve;
 const esc=s=>String(s).replace(/[<>&"]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[m]));
 async function load(keepMsg){ $('load').hidden=false;$('groups').innerHTML='';CH={};upd(keepMsg);
  const r=await api('/api/discounts',{cache:'no-store'});const d=await r.json();$('load').hidden=true;
@@ -185,13 +187,13 @@ async function load(keepMsg){ $('load').hidden=false;$('groups').innerHTML='';CH
 function render(){
  const q=$('q').value.trim().toLowerCase(),od=$('onlyd').checked;const qmin=$('qmin').value===''?null:parseFloat($('qmin').value),qmax=$('qmax').value===''?null:parseFloat($('qmax').value);const groups={};
  for(const r of ROWS){ if(q&&!(r.name.toLowerCase().includes(q)||r.article.toLowerCase().includes(q)))continue; if(od&&!r.kind&&!CH[r.article])continue;
-  if(qmin!==null||qmax!==null){const st=r.stock===null?0:r.stock; if(qmin!==null&&st<qmin)continue; if(qmax!==null&&st>qmax)continue;}
+  if(qmin!==null||qmax!==null){const st=ST(r)===null?0:ST(r); if(qmin!==null&&st<qmin)continue; if(qmax!==null&&st>qmax)continue;}
   (groups[r.category]=groups[r.category]||[]).push(r);}
  const open=new Set([...document.querySelectorAll('details[open]')].map(d=>d.dataset.g));
  $('groups').innerHTML=Object.keys(groups).sort().map(g=>{const rs=groups[g];const nd=rs.filter(r=>r.kind).length;
-  const stq=rs.reduce((a,r)=>a+(r.stock||0),0);return '<details data-g="'+esc(g)+'"'+(open.has(g)||q||$('qmin').value||$('qmax').value?' open':'')+'><summary>'+esc(g)+' <span class="n">'+rs.length+' арт. · на складі '+Math.round(stq)+' шт.</span>'+(nd?'<span class="d">зі знижкою: '+nd+'</span>':'')+'</summary>'
+  const stq=rs.reduce((a,r)=>a+(ST(r)||0),0);return '<details data-g="'+esc(g)+'"'+(open.has(g)||q||$('qmin').value||$('qmax').value?' open':'')+'><summary>'+esc(g)+' <span class="n">'+rs.length+' арт. · на складі '+Math.round(stq)+' шт.</span>'+(nd?'<span class="d">зі знижкою: '+nd+'</span>':'')+'</summary>'
   +'<div class="gfill">усій групі: <select class="k" data-gk="'+esc(g)+'"><option value="pct">%</option><option value="amt">грн</option></select><input class="v" data-gv="'+esc(g)+'" placeholder="0"><button class="ghost" style="padding:5px 12px;font-size:13px" data-gset="'+esc(g)+'">заповнити</button><button class="clear" data-gclr="'+esc(g)+'">зняти всі знижки групи</button></div>'
-  +'<table><tr><th></th><th>Артикул</th><th>Товар</th><th class="num">Повна ціна</th><th class="num">Зараз</th><th class="num" title="Склад «1 Склад Світлана», KeyCRM">Залишок</th><th>Нова знижка</th><th></th></tr>'
+  +'<table><tr><th></th><th>Артикул</th><th>Товар</th><th class="num">Повна ціна</th><th class="num">Зараз</th><th class="num" title="За даними KeyCRM">Залишок</th><th>Нова знижка</th><th></th></tr>'
   +rs.map(r=>{const c=CH[r.article];const kind=c?c.kind:(r.kind||'pct');const val=c?c.value:(r.kind==='pct'?r.pct:(r.kind==='amt'?r.amt:''));
    return '<tr data-a="'+esc(r.article)+'"'+(c?' class="changed"':'')+'><td class="pic">'+(r.thumb?'<img data-src="'+esc(r.thumb)+'" data-f="'+esc(r.pic)+'" alt="" onerror="if(!this.dataset.o){this.dataset.o=1;this.src=this.dataset.f}">':'<span></span>')+'</td><td class="art">'+esc(r.article)+(r.shown?'':' <span class="hid">прихований</span>')+'</td><td class="name">'+(r.link?'<a href="'+esc(r.link)+'" target="_blank" rel="noopener">'+esc(r.name)+'</a>':esc(r.name))+(r.presence!=='In stock'?' <span class="hid">немає в наявності</span>':'')+'</td>'
    +'<td class="num">'+money(r.full)+'</td><td class="num stock'+(r.stock===null?' hid':(r.stock<=0?' zero':''))+'">'+(r.stock===null?'—':(Math.round(r.stock)+(r.reserve?' <span class="hid">(рез. '+Math.round(r.reserve)+')</span>':'')))+'</td><td class="num cur">'+(r.kind?'<b>'+money(r.now)+'</b> <s>'+money(r.full)+'</s> <span class="hid">'+(r.kind==='pct'?'−'+r.pct+'%':'−'+money(r.amt))+'</span>':'—')+'</td>'
@@ -212,7 +214,7 @@ document.addEventListener('click',e=>{const t=e.target;
 });
 function showPics(d){d.querySelectorAll('td.pic img[data-src]').forEach(i=>{i.src=i.dataset.src;i.removeAttribute('data-src');});}
 document.addEventListener('toggle',e=>{if(e.target.tagName==='DETAILS'&&e.target.open)showPics(e.target);},true);
-$('q').oninput=render;$('onlyd').onchange=render;$('qmin').oninput=render;$('qmax').oninput=render;$('reload').onclick=load;
+$('q').oninput=render;$('onlyd').onchange=render;$('qmin').oninput=render;$('qmax').oninput=render;$('wh').onchange=render;$('reload').onclick=load;
 const fmt=s=>s.discount?('−'+s.discount+'% від '+money(s.price)):(s.price_old>s.price?(money(s.price)+' (повна '+money(s.price_old)+')'):money(s.price));
 async function loadLog(){const r=await api('/api/discounts/log',{cache:'no-store'});const d=await r.json();if(!d.ok)return;$('logn').textContent=d.entries.length?('· '+d.entries.length):'';
  $('log').innerHTML=d.entries.map(e=>{const who=(e.who&&e.who.ip)?' · '+e.who.ip:'';const items=e.items.slice(0,40).map(i=>'<li><b>'+esc(i.article)+'</b> '+esc(i.name||'')+(i.before&&i.after?': '+esc(fmt(i.before))+' → '+esc(fmt(i.after)):'')+(i.result&&!/оновлен|обновлен/i.test(i.result)?' <span style="color:var(--bad)">'+esc(i.result)+'</span>':'')+'</li>').join('')+(e.items.length>40?'<li>… ще '+(e.items.length-40)+'</li>':'');

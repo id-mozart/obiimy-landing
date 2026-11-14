@@ -76,7 +76,7 @@ button.ghost{appearance:none;border:1px solid var(--line);border-radius:999px;ba
 .msg{font-size:14px}.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}#load{color:var(--muted);padding:40px 0;text-align:center}
 </style></head><body><main>
 <h1>Знижки</h1>
-<p class="sub">Товари obiimy.world за категоріями сайту. Знижка задається у відсотках або в гривнях від повної ціни і записується в Хорошоп кнопкою «Застосувати»; у Shopify підтягується наступною <a href="/sync">синхронізацією</a>.</p>
+<p class="sub">Товари obiimy.world за категоріями сайту. Знижка задається у відсотках або в гривнях від повної ціни і записується в Хорошоп кнопкою «Застосувати»; у Shopify підтягується наступною <a href="/sync" id="lnk">синхронізацією</a>.</p>
 <div class="top">
  <input type="search" id="q" placeholder="Пошук за назвою або артикулом">
  <label><input type="checkbox" id="onlyd"> лише зі знижкою</label>
@@ -88,11 +88,12 @@ button.ghost{appearance:none;border:1px solid var(--line);border-radius:999px;ba
 </main>
 <div class="bar"><span class="cnt" id="cnt">Змін немає</span><button class="go" id="apply" disabled>Застосувати</button><span class="msg" id="msg"></span></div>
 <script>
+const KEY=new URLSearchParams(location.search).get('key')||'';const api=(u,o={})=>fetch(u+(u.includes('?')?'&':'?')+'key='+encodeURIComponent(KEY),o);
 const $=id=>document.getElementById(id);let ROWS=[],CH={};
 const money=v=>Number(v).toLocaleString('uk-UA',{maximumFractionDigits:0})+' грн';
 const esc=s=>String(s).replace(/[<>&"]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[m]));
 async function load(keepMsg){ $('load').hidden=false;$('groups').innerHTML='';CH={};upd(keepMsg);
- const r=await fetch('/api/discounts',{cache:'no-store'});const d=await r.json();$('load').hidden=true;
+ const r=await api('/api/discounts',{cache:'no-store'});const d=await r.json();$('load').hidden=true;
  if(!d.ok){$('groups').innerHTML='<p class="msg bad">'+esc(d.error||'Помилка')+'</p>';return}
  ROWS=d.rows;$('at').textContent='дані з сайту на '+d.at+', курс '+d.rate;render();}
 function render(){
@@ -124,9 +125,10 @@ $('q').oninput=render;$('onlyd').onchange=render;$('reload').onclick=load;
 $('apply').onclick=async()=>{const items=Object.entries(CH).map(([article,c])=>({article,kind:c.kind,value:c.value}));
  if(!confirm('Записати '+items.length+' змін у Хорошоп? Ціни на сайті зміняться одразу.'))return;
  $('apply').disabled=true;$('msg').textContent='Записую…';$('msg').className='msg';
- const r=await fetch('/api/discounts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items})});const d=await r.json();
+ const r=await api('/api/discounts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({items})});const d=await r.json();
  if(!d.ok){$('msg').textContent=d.error||'Помилка';$('msg').className='msg bad';$('apply').disabled=false;return}
  const bad=d.plan.filter(p=>!/оновлен/i.test(p.result||''));$('msg').textContent=bad.length?('Записано '+(d.applied-bad.length)+', з помилками '+bad.length+': '+bad.map(p=>p.article+' — '+p.result).join('; ')):('Записано: '+d.applied+'. Щоб оновити Shopify, запустіть синхронізацію.');$('msg').className='msg '+(bad.length?'bad':'ok');
  await load(true);};
+if(KEY){const l=document.getElementById('lnk');if(l)l.href+='?key='+encodeURIComponent(KEY);}
 load();
 </script></body></html>"""

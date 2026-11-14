@@ -792,6 +792,14 @@ class Handler(SimpleHTTPRequestHandler):
         if post and origin and urllib.parse.urlsplit(origin).hostname not in ("127.0.0.1", "localhost", "::1"): return False
         return True
 
+    def keyed(self, q):
+        """The sync and discounts pages change live prices, and the editor on Railway is public — they need the manager's key
+        (CORP_EDIT_PASSWORD, the same as /edem-orders) as ?key= or X-Key, unless the whole editor already sits behind Basic auth."""
+        import hmac
+        if PASSWORD: return True
+        if not CORP_PASSWORD: return not PUBLIC                      # local use without any key is fine; public without a key — no
+        return hmac.compare_digest(q.get("key") or self.headers.get("X-Key") or "", CORP_PASSWORD)
+
     def authed(self):
         """HTTP Basic auth when DECK_EDITOR_PASSWORD is set (any user name); /pub/* is public — the site fetches the published PDF."""
         if not PASSWORD or urllib.parse.urlsplit(self.path).path.startswith("/pub/"): return True
@@ -881,6 +889,8 @@ class Handler(SimpleHTTPRequestHandler):
             except Problem as e: data = json.dumps(dict(ok=False, error=str(e)), ensure_ascii=False).encode("utf-8"); status = e.status
             self.send_response(status); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
             self.send_header("Cache-Control", "no-store"); self.corp_cors(); self.end_headers(); return self.wfile.write(data)
+        if u.path in ("/sync", "/discounts", "/api/sync", "/api/discounts") and not self.keyed(q):
+            return self.send_json(dict(ok=False, error="Потрібен ключ: додайте ?key=… до адреси."), 401)
         if u.path == "/sync": return self.send_bytes(syncpanel.PAGE.encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/api/sync": return self.api(syncpanel.state)
         if u.path == "/discounts": return self.send_bytes(discountpanel.PAGE.encode("utf-8"), "text/html; charset=utf-8")
@@ -966,6 +976,7 @@ class Handler(SimpleHTTPRequestHandler):
         except ValueError: n = -1
         if n < 0 or n > 80 * 1048576: return self.send_json(dict(ok=False, error="Файл слишком большой (больше 80 МБ)."), 413)
         data = self.rfile.read(n)
+        if u.path in ("/api/sync", "/api/discounts") and not self.keyed(q): return self.send_json(dict(ok=False, error="Потрібен ключ."), 401)
         if u.path == "/api/sync": return self.api(syncpanel.start)
         if u.path == "/api/discounts":
             try: body = json.loads(data.decode("utf-8")); assert isinstance(body, dict)

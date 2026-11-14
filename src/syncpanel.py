@@ -97,7 +97,7 @@ details{margin-top:24px}summary{cursor:pointer;color:var(--muted);font-size:15px
 ul.sum{margin:12px 0 0;padding-left:18px;font-size:14px;color:var(--ink)}.warn{color:var(--bad);font-size:14px;margin-top:10px}
 </style></head><body><main>
 <h1>Синхронізація з Shopify</h1>
-<p class="sub">Каталог obiimy.world (Хорошоп) → shop.obiimy.world: ціни, нові товари, наявність, колекції. Назви й описи наявних товарів не змінюються. Знижки на сайті — на сторінці <a href="/discounts">Знижки</a>.</p>
+<p class="sub">Каталог obiimy.world (Хорошоп) → shop.obiimy.world: ціни, нові товари, наявність, колекції. Назви й описи наявних товарів не змінюються. Знижки на сайті — на сторінці <a href="/discounts" id="lnk">Знижки</a>.</p>
 <div class="card">
  <div class="row">
   <div class="last">Остання синхронізація<b id="last">—</b></div>
@@ -111,9 +111,10 @@ ul.sum{margin:12px 0 0;padding-left:18px;font-size:14px;color:var(--ink)}.warn{c
 </div>
 </main>
 <script>
+const KEY=new URLSearchParams(location.search).get('key')||'';const api=(u,o={})=>fetch(u+(u.includes('?')?'&':'?')+'key='+encodeURIComponent(KEY),o);
 const $=id=>document.getElementById(id);let timer=null;
 async function load(){
- const r=await fetch('/api/sync',{cache:'no-store'});const s=await r.json();
+ const r=await api('/api/sync',{cache:'no-store'});const s=await r.json();
  $('last').textContent=s.last_ok||'ще не було';
  const c=s.configured;$('warn').hidden=c.horoshop&&c.shopify;$('warn').textContent='Немає доступів: '+[!c.horoshop&&'Хорошоп',!c.shopify&&'Shopify'].filter(Boolean).join(', ')+'. Додайте змінні HOROSHOP_* / SHOPIFY_* сервісу.';
  $('go').disabled=s.running||!(c.horoshop&&c.shopify);
@@ -126,6 +127,7 @@ async function load(){
  clearTimeout(timer);timer=setTimeout(load,s.running?3000:30000);
 }
 $('go').onclick=async()=>{ if(!confirm('Запустити синхронізацію з Хорошопом? Ціни й наявність у Shopify буде оновлено, нові товари створено.'))return;
- $('go').disabled=true;const r=await fetch('/api/sync',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});const s=await r.json();if(!s.ok)alert(s.error||'Не вдалося запустити');load();};
+ $('go').disabled=true;const r=await api('/api/sync',{method:'POST',headers:{'Content-Type':'application/json'},body:'{}'});const s=await r.json();if(!s.ok)alert(s.error||'Не вдалося запустити');load();};
+if(KEY){const l=document.getElementById('lnk');if(l)l.href+='?key='+encodeURIComponent(KEY);}
 load();
 </script></body></html>"""

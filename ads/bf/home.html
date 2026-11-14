@@ -19,15 +19,27 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 .tag.y { background: #F2B705; } .tag.y::before { box-shadow: inset 0 0 0 3px #c99a0a; }
 .lock .small { margin-top: 22px; font-family: 'EB Garamond', serif; font-weight: 500; font-size: 31px; line-height: 1.25; color: #D9CDB9; max-width: 720px; text-wrap: pretty; }
 .lock .row { display: flex; align-items: center; gap: 16px; margin-top: 30px; }
+.lock .pill.xl { font-size: 34px; padding: 20px 34px; } .lock .more.xl { font-size: 32px; padding: 18px 32px 18px 34px; }
 .lock .pill { display: inline-block; font-size: 26px; font-weight: 500; letter-spacing: .01em; padding: 17px 28px; border-radius: 999px; background: #F2B705; color: #141110; line-height: 1; white-space: nowrap; }
 .lock .more { display: flex; align-items: center; gap: 10px; font-size: 26px; font-weight: 500; letter-spacing: .02em; padding: 15px 28px 15px 30px; border: 1.5px solid rgba(243,234,219,.8); border-radius: 999px; color: #F3EADB; line-height: 1; white-space: nowrap; }
-.lock .more::after { content: "→"; font-weight: 400; font-size: 24px; line-height: 1; transform: translateY(-1px); }
+.lock .more::after, p.more::after { content: "→"; font-weight: 400; font-size: 24px; line-height: 1; transform: translateY(-1px); }
 .yellow { background: #F2B705; color: #1B1613; } .yellow .lock .k { color: #8A6A12; } .yellow .lock .small { color: #4B423B; }
 .yellow .lock .pill { background: #141110; color: #F3EADB; } .yellow .lock .more { color: #1B1613; border-color: rgba(27,22,19,.75); }
 .card { background: #fff; box-shadow: 0 40px 80px -24px rgba(0,0,0,.7), 0 6px 14px rgba(0,0,0,.3); } .card img { width: 100%; height: 100%; object-fit: cover; display: block; }
 .tag { background: #F6F0E4; color: #141110; border-radius: 10px; box-shadow: 0 24px 50px -20px rgba(0,0,0,.8); display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .tag::before { content: ""; position: absolute; top: 12px; left: 50%; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: #141110; box-shadow: inset 0 0 0 3px #d9cfbd; }
 .tag .n { font-weight: 400; font-size: 72px; line-height: 1; letter-spacing: -.03em; margin-top: 22px; font-variant-numeric: tabular-nums; }
+
+.lock.r { left: auto; right: 84px; text-align: right; } .lock.r .row { justify-content: flex-end; } .lock.r .small { margin-left: auto; }
+.lock.c { left: 50%; transform: translate(-50%, -50%); text-align: center; } .lock.c .row { justify-content: center; } .lock.c .small { margin: 22px auto 0; }
+.lock .num .do { font-size: .42em; font-weight: 400; letter-spacing: 0; margin-right: .12em; vertical-align: .55em; color: #F3EADB; }
+.yellow .lock .num { color: #141110; } .yellow .lock .num .do { color: #4B423B; }
+.tk { background: #F2B705; color: #141110; border-radius: 22px; padding: 44px 52px; line-height: 1; } .tk::before, .tk::after { content: ""; position: absolute; top: 57%; width: 44px; height: 44px; margin-top: -22px; border-radius: 50%; background: #141110; } .tk::before { left: -22px; } .tk::after { right: -22px; }
+.tk .k { font-family: 'Onest', sans-serif; font-size: 20px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase; color: #8A6A12; }
+.tk .num { font-weight: 300; font-size: 150px; letter-spacing: -.04em; line-height: .92; margin-top: 14px; white-space: nowrap; } .tk .num span { font-size: .5em; letter-spacing: 0; }
+.tk .more { display: inline-flex; align-items: center; gap: 10px; margin-top: 26px; font-size: 26px; font-weight: 500; letter-spacing: .02em; padding: 15px 28px 15px 30px; border: 1.5px solid rgba(27,22,19,.75); border-radius: 999px; color: #141110; line-height: 1; white-space: nowrap; }
+.tk .l { font-family: 'EB Garamond', serif; font-weight: 500; font-size: 28px; color: #4B423B; margin-top: 18px; border-top: 1.5px dashed rgba(27,22,19,.35); padding-top: 18px; }
+.panel { background: rgba(20,17,16,.96); }
 .tag .t { font-family: 'Onest', sans-serif; font-size: 14px; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; margin-top: 16px; color: #8A6A12; }
 </style></head><body>
 <!-- The hero: the range in yellow, three silk frames in a strip -->
@@ -40,7 +52,7 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 <section class="ad mobile" id="bfh-01-hero-mobile">
   <div style="inset:0;background:#141110"></div>
   <div class="ph" style="left:928px;top:0;width:290px;height:768px"><img src="../../photo/site/khustka-vidnovlennia-88x88-02.jpg" alt="" style="object-position:62% 20%"></div><div class="ph" style="left:1224px;top:0;width:290px;height:768px"><img src="../../photo/site/tvilli-shovkovyi-sokovyti-spohady-02.jpg" alt="" style="object-position:50% 30%"></div><div class="ph" style="left:1520px;top:0;width:400px;height:768px"><img src="../../photo/site/mask-vpevnenist-04.jpg" alt="" style="object-position:55% 30%"></div><div style="left:928px;top:0;bottom:0;width:140px;background:linear-gradient(90deg,#141110 0,rgba(20,17,16,.6) 45%,rgba(20,17,16,0) 100%)"></div>
-  <div style="left:0;top:0;bottom:0;width:804px;transform:scale(1.12);transform-origin:0 50%"><div class="lock" style="position:absolute;width:720px"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="num">−20<i>…</i>−40<span> %</span></p><p class="small">Шовк з авторськими принтами: хустки, твіллі, маски для сну, резинки й подарункові набори.</p><div class="row"><p class="more">До знижок</p></div></div></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:804px;transform:scale(1.12);transform-origin:0 50%"><div class="lock" style="position:absolute;width:720px"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="num">−20<i>…</i>−40<span> %</span></p><p class="small">Шовк з авторськими принтами: хустки, твіллі, маски для сну, резинки й подарункові набори.</p><div class="row"><p class="more">До знижок</p></div></div></div>
 </section>
 <!-- The red scarf, the Riviera frame -->
 <section class="ad " id="bfh-02-red">
@@ -52,7 +64,7 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 <section class="ad mobile" id="bfh-02-red-mobile">
   <div style="inset:0;background:#141110"></div>
   <div class="ph" style="left:820px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 460px);mask-image:linear-gradient(90deg,transparent 0,#000 460px)"><img src="../../photo/riviera-red.jpg" alt="" style="object-position:50% 26%;transform:scale(1.0);transform-origin:50% 50%"></div><div style="left:820px;top:0;bottom:0;width:414px;background:linear-gradient(90deg,#141110 0,rgba(20,17,16,.15) 40%,rgba(20,17,16,0) 100%)"></div>
-  <div style="left:0;top:0;bottom:0;width:904px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="big"><span class="g">Чорна п’ятниця.</span><br><em style="color:#E24B3B">Червона</em> хустка.</p><p class="small">Хустки чотирьох колекцій зі знижкою. Шовк, авторський принт, ручна обробка краю.</p><div class="row"><p class="pill">Знижки до −40 %</p><p class="more">До знижок</p></div></div></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:904px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="big"><span class="g">Чорна п’ятниця.</span><br><em style="color:#E24B3B">Червона</em> хустка.</p><p class="small">Хустки чотирьох колекцій зі знижкою. Шовк, авторський принт, ручна обробка краю.</p><div class="row"><p class="pill">Знижки до −40 %</p><p class="more">До знижок</p></div></div></div>
 </section>
 <!-- Malevich's square, only in silk -->
 <section class="ad " id="bfh-03-square">
@@ -64,7 +76,7 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 <section class="ad mobile" id="bfh-03-square-mobile">
   <div style="inset:0;background:#141110"></div>
   <div class="card" style="left:1100px;top:14px;width:740px;height:740px;transform:rotate(-3deg);z-index:3"><img src="../../photo/site/khustka-flat-kolo-sontsia-88x88-01.jpg" alt=""></div>
-  <div style="left:0;top:0;bottom:0;width:904px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="big">Квадрат. Не чорний.</p><p class="small">Хустка 88 × 88 см «Коло сонця» зі «Співочої душі» — і всі принти чотирьох колекцій зі знижкою.</p><div class="row"><p class="pill">Знижки до −40 %</p><p class="more">До знижок</p></div></div></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:904px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="big">Квадрат. Не чорний.</p><p class="small">Хустка 88 × 88 см «Коло сонця» зі «Співочої душі» — і всі принти чотирьох колекцій зі знижкою.</p><div class="row"><p class="pill">Знижки до −40 %</p><p class="more">До знижок</p></div></div></div>
 </section>
 <!-- The brand's yellow instead of black -->
 <section class="ad yellow" id="bfh-04-yellow">
@@ -76,7 +88,7 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 <section class="ad yellow mobile" id="bfh-04-yellow-mobile">
   <div style="inset:0;background:#F2B705"></div>
   <div class="ph" style="left:880px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 420px);mask-image:linear-gradient(90deg,transparent 0,#000 420px)"><img src="../../photo/box-dots.jpg" alt="" style="object-position:58% 70%;transform:scale(1.09);transform-origin:0 50%"></div><div style="left:880px;top:0;bottom:0;width:378px;background:linear-gradient(90deg,#F2B705 0,rgba(242,183,5,.15) 40%,rgba(242,183,5,0) 100%)"></div>
-  <div style="left:0;top:0;bottom:0;width:904px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Знижки на шовк</p><p class="big">У нас п’ятниця жовта.</p><p class="small">Жовтий — наш колір. Чорний — лише назва п’ятниці. Знижки на шовк з авторськими принтами.</p><div class="row"><p class="pill">Знижки до −40 %</p><p class="more">До знижок</p></div></div></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:904px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Знижки на шовк</p><p class="big">У нас п’ятниця жовта.</p><p class="small">Жовтий — наш колір. Чорний — лише назва п’ятниці. Знижки на шовк з авторськими принтами.</p><div class="row"><p class="pill">Знижки до −40 %</p><p class="more">До знижок</p></div></div></div>
 </section>
 <!-- Four lookbook portraits in a row -->
 <section class="ad " id="bfh-05-faces">
@@ -88,7 +100,7 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 <section class="ad mobile" id="bfh-05-faces-mobile">
   <div style="inset:0;background:#141110"></div>
   <div class="ph" style="left:942px;top:0;width:240px;height:768px"><img src="../../photo/lookbook/lb47-49-L.webp" alt="" style="object-position:50% 6%"></div><div class="ph" style="left:1188px;top:0;width:240px;height:768px"><img src="../../photo/lookbook/lb07-08-L.webp" alt="" style="object-position:50% 0%"></div><div class="ph" style="left:1434px;top:0;width:240px;height:768px"><img src="../../photo/lookbook/lb43-45-L.webp" alt="" style="object-position:50% 8%"></div><div class="ph" style="left:1680px;top:0;width:240px;height:768px"><img src="../../photo/lookbook/lb26-28-R.webp" alt="" style="object-position:50% 6%"></div><div style="left:942px;top:0;bottom:0;width:150px;background:linear-gradient(90deg,#141110 0,rgba(20,17,16,.6) 45%,rgba(20,17,16,0) 100%)"></div>
-  <div style="left:0;top:0;bottom:0;width:904px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Знижки на шовк</p><p class="big">Усі обличчя Чорної п’ятниці.</p><p class="small">Хустки, твіллі, маски для сну<br>й подарункові набори — зі знижкою.</p><div class="row"><p class="pill">Знижки до −40 %</p><p class="more">До знижок</p></div></div></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:904px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Знижки на шовк</p><p class="big">Усі обличчя Чорної п’ятниці.</p><p class="small">Хустки, твіллі, маски для сну<br>й подарункові набори — зі знижкою.</p><div class="row"><p class="pill">Знижки до −40 %</p><p class="more">До знижок</p></div></div></div>
 </section>
 <!-- Three paper tags: 20, 30, 40 -->
 <section class="ad " id="bfh-06-tags">
@@ -102,7 +114,7 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
   <div style="inset:0;background:#141110"></div>
   <div style="left:956px;right:0;top:322px;bottom:0;-webkit-mask-image:linear-gradient(180deg,transparent,#000 75%);mask-image:linear-gradient(180deg,transparent,#000 75%)"><div class="ph" style="position:absolute;inset:0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 200px);mask-image:linear-gradient(90deg,transparent,#000 200px)"><img src="../../photo/hratsiia-flat.webp" alt="" style="object-position:50% 40%;opacity:.85;transform:scale(1.12)"></div></div>
   <div style="left:1136px;top:0;width:2px;height:130px;background:#8a7f70;z-index:2"></div><div class="tag" style="left:1016px;top:110px;width:240px;height:340px;transform:rotate(-4deg);z-index:3"><p class="n">−20 %</p><p class="t">Чорна п’ятниця</p></div><div style="left:1426px;top:0;width:2px;height:164px;background:#8a7f70;z-index:2"></div><div class="tag" style="left:1306px;top:144px;width:240px;height:340px;transform:rotate(2deg);z-index:3"><p class="n">−30 %</p><p class="t">Чорна п’ятниця</p></div><div style="left:1716px;top:0;width:2px;height:198px;background:#8a7f70;z-index:2"></div><div class="tag y" style="left:1596px;top:178px;width:240px;height:340px;transform:rotate(-2deg);z-index:3"><p class="n">−40 %</p><p class="t">Чорна п’ятниця</p></div>
-  <div style="left:0;top:0;bottom:0;width:744px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:660px"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="big">Три бирки. Одна п’ятниця.</p><p class="small">Яка знижка на що — у каталозі. Хустки, твіллі, маски для сну, резинки й набори.</p><div class="row"><p class="more">До знижок</p></div></div></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:744px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:660px"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="big">Три бирки. Одна п’ятниця.</p><p class="small">Яка знижка на що — у каталозі. Хустки, твіллі, маски для сну, резинки й набори.</p><div class="row"><p class="more">До знижок</p></div></div></div>
 </section>
 <!-- The sleep mask -->
 <section class="ad " id="bfh-07-sleep">
@@ -114,7 +126,7 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 <section class="ad mobile" id="bfh-07-sleep-mobile">
   <div style="inset:0;background:#141110"></div>
   <div class="ph" style="left:880px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 440px);mask-image:linear-gradient(90deg,transparent 0,#000 440px)"><img src="../../photo/site/mask-nizhnist-03.jpg" alt="" style="object-position:30% 34%;transform:scale(1.0);transform-origin:50% 50%"></div><div style="left:880px;top:0;bottom:0;width:396px;background:linear-gradient(90deg,#141110 0,rgba(20,17,16,.15) 40%,rgba(20,17,16,0) 100%)"></div>
-  <div style="left:0;top:0;bottom:0;width:904px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Знижки на шовк</p><p class="big">Проспати Чорну п’ятницю? Можна. У шовковій масці.</p><p class="small">Маски для сну з авторськими принтами — зі знижкою. І хустки, твіллі, резинки й набори теж.</p><div class="row"><p class="pill">Знижки до −40 %</p><p class="more">До знижок</p></div></div></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:904px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Знижки на шовк</p><p class="big">Проспати Чорну п’ятницю? Можна. У шовковій масці.</p><p class="small">Маски для сну з авторськими принтами — зі знижкою. І хустки, твіллі, резинки й набори теж.</p><div class="row"><p class="pill">Знижки до −40 %</p><p class="more">До знижок</p></div></div></div>
 </section>
 <!-- The sun scarf against the dark month -->
 <section class="ad " id="bfh-08-kolo">
@@ -126,6 +138,78 @@ body { margin: 0; background: #666; font-family: 'Montserrat', sans-serif; -webk
 <section class="ad mobile" id="bfh-08-kolo-mobile">
   <div style="inset:0;background:#141110"></div>
   <div class="ph" style="left:940px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 440px);mask-image:linear-gradient(90deg,transparent 0,#000 440px)"><img src="../../photo/kolo-2.webp" alt="" style="object-position:62% 8%;transform:scale(1.2);transform-origin:0 50%"></div><div style="left:940px;top:0;bottom:0;width:396px;background:linear-gradient(90deg,#141110 0,rgba(20,17,16,.15) 40%,rgba(20,17,16,0) 100%)"></div>
-  <div style="left:0;top:0;bottom:0;width:904px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Чорна п’ятниця</p><p class="big">Листопад темний. Хустка — ні.</p><p class="small">На ній — «Коло сонця» зі «Співочої душі». Хустки чотирьох колекцій зі знижкою: шовк, авторський принт, ручна обробка краю.</p><div class="row"><p class="pill">Знижки до −40 %</p><p class="more">До знижок</p></div></div></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:904px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Чорна п’ятниця</p><p class="big">Листопад темний. Хустка — ні.</p><p class="small">На ній — «Коло сонця» зі «Співочої душі». Хустки чотирьох колекцій зі знижкою: шовк, авторський принт, ручна обробка краю.</p><div class="row"><p class="pill">Знижки до −40 %</p><p class="more">До знижок</p></div></div></div>
+</section>
+<!-- The open back: the photo at the left, the words at the right -->
+<section class="ad " id="bfh-09-back">
+  <div style="inset:0;background:#141110"></div>
+  <div class="ph" style="left:0;width:1060px;top:0;bottom:0;-webkit-mask-image:linear-gradient(270deg,transparent 0,#000 420px);mask-image:linear-gradient(270deg,transparent 0,#000 420px)"><img src="../../photo/enerhiia-back.webp" alt="" style="object-position:50% 2%;transform:scale(1.0);transform-origin:50% 50%"></div><div style="left:682px;top:0;bottom:0;width:378px;background:linear-gradient(270deg,#141110 0,rgba(20,17,16,.15) 40%,rgba(20,17,16,0) 100%)"></div>
+  <div class="lock r" style="position:absolute;width:780px"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="big">Відкрита спина. Відкриті знижки.</p><p class="small">Хустка «Енергія» у волоссі — і всі хустки, твіллі, маски для сну й набори зі знижкою.</p><div class="row"><p class="pill xl">Знижки до −40 %</p><p class="more xl">До знижок</p></div></div>
+</section>
+<!-- The open back: the photo at the left, the words at the right · mobile 5:2 -->
+<section class="ad mobile" id="bfh-09-back-mobile">
+  <div style="inset:0;background:#141110"></div>
+  <div class="ph" style="left:0;width:1000px;top:0;bottom:0;-webkit-mask-image:linear-gradient(270deg,transparent 0,#000 420px);mask-image:linear-gradient(270deg,transparent 0,#000 420px)"><img src="../../photo/enerhiia-back.webp" alt="" style="object-position:50% 2%;transform:scale(1.0);transform-origin:50% 50%"></div><div style="left:622px;top:0;bottom:0;width:378px;background:linear-gradient(270deg,#141110 0,rgba(20,17,16,.15) 40%,rgba(20,17,16,0) 100%)"></div>
+  <div style="position:absolute;right:0;top:0;bottom:0;width:864px;transform:scale(1.2);transform-origin:100% 50%"><div class="lock r" style="position:absolute;width:780px"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="big">Відкрита спина. Відкриті знижки.</p><p class="small">Хустка «Енергія» у волоссі — і всі хустки, твіллі, маски для сну й набори зі знижкою.</p><div class="row"><p class="pill xl">Знижки до −40 %</p><p class="more xl">До знижок</p></div></div></div>
+</section>
+<!-- «Ціни присіли.» with the range large -->
+<section class="ad " id="bfh-11-sat">
+  <div style="inset:0;background:#141110"></div>
+  <div class="ph" style="left:860px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 460px);mask-image:linear-gradient(90deg,transparent 0,#000 460px)"><img src="../../photo/lookbook/lb40-42-R.webp" alt="" style="object-position:50% 9%;transform:scale(1.0);transform-origin:50% 50%"></div><div style="left:860px;top:0;bottom:0;width:414px;background:linear-gradient(90deg,#141110 0,rgba(20,17,16,.15) 40%,rgba(20,17,16,0) 100%)"></div>
+  <div class="lock" style="position:absolute;width:820px"><p class="k">Чорна п’ятниця</p><p class="num">−20<i>…</i>−40<span> %</span></p><p class="big" style="font-size:64px">Ціни присіли.</p><p class="small">На хустки, твіллі, маски для сну, резинки й подарункові набори чотирьох колекцій.</p><div class="row"><p class="more">До знижок</p></div></div>
+</section>
+<!-- «Ціни присіли.» with the range large · mobile 5:2 -->
+<section class="ad mobile" id="bfh-11-sat-mobile">
+  <div style="inset:0;background:#141110"></div>
+  <div class="ph" style="left:900px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 460px);mask-image:linear-gradient(90deg,transparent 0,#000 460px)"><img src="../../photo/lookbook/lb40-42-R.webp" alt="" style="object-position:50% 9%;transform:scale(1.0);transform-origin:50% 50%"></div><div style="left:900px;top:0;bottom:0;width:414px;background:linear-gradient(90deg,#141110 0,rgba(20,17,16,.15) 40%,rgba(20,17,16,0) 100%)"></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:904px;transform:scale(1.15);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Чорна п’ятниця</p><p class="num">−20<i>…</i>−40<span> %</span></p><p class="big" style="font-size:64px">Ціни присіли.</p><p class="small">На хустки, твіллі, маски для сну, резинки й подарункові набори чотирьох колекцій.</p><div class="row"><p class="more">До знижок</p></div></div></div>
+</section>
+<!-- Yellow field, «до −40 %» in ink, the box with the red scarf -->
+<section class="ad yellow" id="bfh-12-ynum">
+  <div style="inset:0;background:#F2B705"></div>
+  <div class="ph" style="left:900px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 420px);mask-image:linear-gradient(90deg,transparent 0,#000 420px)"><img src="../../photo/box-red-1200.webp" alt="" style="object-position:50% 50%;transform:scale(1.06);transform-origin:0 50%"></div><div style="left:900px;top:0;bottom:0;width:378px;background:linear-gradient(90deg,#F2B705 0,rgba(242,183,5,.15) 40%,rgba(242,183,5,0) 100%)"></div>
+  <div class="lock" style="position:absolute;width:820px"><p class="k">Чорна п’ятниця</p><p class="num"><span class="do">до</span>−40<span> %</span></p><p class="big" style="font-size:56px">Знижки на шовк.</p><p class="small">Хустки, твіллі, маски для сну, резинки й подарункові набори з авторськими принтами.</p><div class="row"><p class="more">До знижок</p></div></div>
+</section>
+<!-- Yellow field, «до −40 %» in ink, the box with the red scarf · mobile 5:2 -->
+<section class="ad yellow mobile" id="bfh-12-ynum-mobile">
+  <div style="inset:0;background:#F2B705"></div>
+  <div class="ph" style="left:940px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 420px);mask-image:linear-gradient(90deg,transparent 0,#000 420px)"><img src="../../photo/box-red-1200.webp" alt="" style="object-position:50% 62%;transform:scale(1.06);transform-origin:0 50%"></div><div style="left:940px;top:0;bottom:0;width:378px;background:linear-gradient(90deg,#F2B705 0,rgba(242,183,5,.15) 40%,rgba(242,183,5,0) 100%)"></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:904px;transform:scale(1.15);transform-origin:0 50%"><div class="lock" style="position:absolute;width:820px"><p class="k">Чорна п’ятниця</p><p class="num"><span class="do">до</span>−40<span> %</span></p><p class="big" style="font-size:56px">Знижки на шовк.</p><p class="small">Хустки, твіллі, маски для сну, резинки й подарункові набори з авторськими принтами.</p><div class="row"><p class="more">До знижок</p></div></div></div>
+</section>
+<!-- Three flat scarves as tilted cards -->
+<section class="ad " id="bfh-13-cards">
+  <div style="inset:0;background:#141110"></div>
+  <div class="card" style="left:1060px;top:98px;width:400px;height:400px;transform:rotate(-7deg);z-index:3"><img src="../../photo/mizh-flat.webp" alt=""></div><div class="card" style="left:1330px;top:74px;width:400px;height:400px;transform:rotate(2deg);z-index:4"><img src="../../photo/site/khustka-flat-smilyvist-44x44-01.jpg" alt=""></div><div class="card" style="left:1600px;top:100px;width:400px;height:400px;transform:rotate(8deg);z-index:5"><img src="../../photo/site/khustka-flat-kolo-sontsia-88x88-01.jpg" alt=""></div>
+  <div class="lock" style="position:absolute;width:820px"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="big">Не чорні. Зі знижкою.</p><p class="small">Хустки чотирьох колекцій: біла «Між нами», жовта «Сміливість», «Коло сонця» — і решта принтів.</p><div class="row"><p class="pill xl">Знижки до −40 %</p><p class="more xl">До знижок</p></div></div>
+</section>
+<!-- Three flat scarves as tilted cards · mobile 5:2 -->
+<section class="ad mobile" id="bfh-13-cards-mobile">
+  <div style="inset:0;background:#141110"></div>
+  <div class="card" style="left:1000px;top:144px;width:500px;height:500px;transform:rotate(-7deg);z-index:3"><img src="../../photo/mizh-flat.webp" alt=""></div><div class="card" style="left:1300px;top:120px;width:500px;height:500px;transform:rotate(2deg);z-index:4"><img src="../../photo/site/khustka-flat-smilyvist-44x44-01.jpg" alt=""></div><div class="card" style="left:1600px;top:146px;width:500px;height:500px;transform:rotate(8deg);z-index:5"><img src="../../photo/site/khustka-flat-kolo-sontsia-88x88-01.jpg" alt=""></div>
+  <div style="position:absolute;left:0;top:0;bottom:0;width:784px;transform:scale(1.2);transform-origin:0 50%"><div class="lock" style="position:absolute;width:700px"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="big">Не чорні. Зі знижкою.</p><p class="small">Хустки чотирьох колекцій: біла «Між нами», жовта «Сміливість», «Коло сонця» — і решта принтів.</p><div class="row"><p class="pill xl">Знижки до −40 %</p><p class="more xl">До знижок</p></div></div></div>
+</section>
+<!-- A hard split: the photo at the left, the yellow block with the range at the right -->
+<section class="ad " id="bfh-14-split">
+  <div style="inset:0;background:#F2B705"></div>
+  <div class="ph" style="left:0;top:0;bottom:0;width:720px"><img src="../../photo/dotyk-2.webp" alt="" style="object-position:50% 0%"></div>
+  <div class="yellow" style="left:720px;right:0;top:0;bottom:0;background:transparent"><div class="lock r" style="position:absolute;width:820px"><p class="k">Знижки на шовк</p><p class="num">−20<i>…</i>−40<span> %</span></p><p class="big" style="font-size:60px">Чорна п’ятниця.</p><p class="small">Шовк з авторськими принтами: хустки, твіллі, маски для сну, резинки й набори.</p><div class="row"><p class="more">До знижок</p></div></div></div>
+</section>
+<!-- A hard split: the photo at the left, the yellow block with the range at the right · mobile 5:2 -->
+<section class="ad mobile" id="bfh-14-split-mobile">
+  <div style="inset:0;background:#F2B705"></div>
+  <div class="ph" style="left:0;top:0;bottom:0;width:920px"><img src="../../photo/dotyk-2.webp" alt="" style="object-position:50% 0%"></div>
+  <div class="yellow" style="left:920px;right:0;top:0;bottom:0;background:transparent"><div style="position:absolute;right:0;top:0;bottom:0;width:904px;transform:scale(1.12);transform-origin:100% 50%"><div class="lock r" style="position:absolute;width:820px"><p class="k">Знижки на шовк</p><p class="num">−20<i>…</i>−40<span> %</span></p><p class="big" style="font-size:60px">Чорна п’ятниця.</p><p class="small">Шовк з авторськими принтами: хустки, твіллі, маски для сну, резинки й набори.</p><div class="row"><p class="more">До знижок</p></div></div></div></div>
+</section>
+<!-- A yellow coupon with the range, the pink scarf on the back -->
+<section class="ad " id="bfh-16-ticket">
+  <div style="inset:0;background:#141110"></div>
+  <div class="ph" style="left:1000px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 440px);mask-image:linear-gradient(90deg,transparent 0,#000 440px)"><img src="../../photo/vyr-2.webp" alt="" style="object-position:50% 46%;transform:scale(1.0);transform-origin:50% 50%"></div><div style="left:1000px;top:0;bottom:0;width:396px;background:linear-gradient(90deg,#141110 0,rgba(20,17,16,.15) 40%,rgba(20,17,16,0) 100%)"></div>
+  <div class="tk" style="position:absolute;left:84px;top:50%;transform:translateY(-50%)"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="num">−20<i>…</i>−40<span> %</span></p><p class="l">Хустки · твіллі · маски для сну · резинки · набори</p><p class="more">До знижок</p></div>
+</section>
+<!-- A yellow coupon with the range, the pink scarf on the back · mobile 5:2 -->
+<section class="ad mobile" id="bfh-16-ticket-mobile">
+  <div style="inset:0;background:#141110"></div>
+  <div class="ph" style="left:1000px;right:0;top:0;bottom:0;-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 440px);mask-image:linear-gradient(90deg,transparent 0,#000 440px)"><img src="../../photo/vyr-2.webp" alt="" style="object-position:50% 46%;transform:scale(1.0);transform-origin:50% 50%"></div><div style="left:1000px;top:0;bottom:0;width:396px;background:linear-gradient(90deg,#141110 0,rgba(20,17,16,.15) 40%,rgba(20,17,16,0) 100%)"></div>
+  <div style="left:0;top:0;bottom:0;width:900px;transform:scale(1.15);transform-origin:0 50%"><div class="tk" style="position:absolute;left:84px;top:50%;transform:translateY(-50%)"><p class="k">Чорна п’ятниця · знижки на шовк</p><p class="num">−20<i>…</i>−40<span> %</span></p><p class="l">Хустки · твіллі · маски для сну · резинки · набори</p><p class="more">До знижок</p></div></div>
 </section>
 </body></html>

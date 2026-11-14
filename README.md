@@ -243,7 +243,7 @@ python3 src/deck-editor.py
 - `home` — п’ять англійських слайдів обкладинки з obiimy.world/en (3840 × 1152, завантажені у Files як `home-slide-N-*.webp`) у секції `slideshow` замість `image_banner` (Dawn дозволяє максимум 5 слайдів: узято Solo, 2D-хустки, Sale, подарунки, «Співоча душа»; пропущено весняну акцію, дубль 2D і банер коробок, що вів на паше); після Sale — список «Collections» з п’яти принтових; у списку категорій (тепер «Catalog») додано Jewelry й Obiimy HOME. Бекапи `templates/index.json` і меню — `shopify/backup/index-*.json`, `menus-*.json`.
 - `menus` — головне меню: пункт Collections з п’ятьма підпунктами, у Catalog додано Jewelry, Obiimy HOME (Shirts, Pajamas, T-shirts, Sleep Accessories) і підпункти паше; футер-каталог — Jewelry, Obiimy HOME, Collections.
 - Права застосунку: версія `obiimy-setup-3` додала `read/write_files`, `read/write_online_store_navigation` (грант через «Test app» → Update, токен оновити).
-- Помічено, не чіпали: колекція `gift-sets` у магазині показує всі 525 товарів — у її правилах, крім тегу, є умови за типом, що збігаються з усім; `optionize-add-ons` — службова.
+- Колекція `gift-sets` показувала всі 525 товарів (правила «або»: тег, тип = Gift sets, тип ≠ variant-product); 14.11 лишено одне правило — тег `Gift sets` — тепер 102 товари (категорія «Подарунки» сайту разом з наборами з інших категорій). `optionize-add-ons` — службова, не чіпали.
 
 ## Shopify: «About us» (16.10.2026)
 

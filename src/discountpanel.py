@@ -6,7 +6,7 @@ the fields it is given. Two kinds of discount, as Horoshop keeps them: a percent
 (`price` lowered, the full price kept in `price_old`). Mounted by src/deck-editor.py: GET /discounts, GET|POST /api/discounts.
 After applying, the Shopify store follows on the next run of /sync.
 """
-import json, pathlib, sys, time, uuid
+import json, pathlib, re, sys, time, uuid
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src")); import horoshop as H
 LOG = ROOT / "data" / "horoshop" / "discounts-log.jsonl"     # one line per apply or rollback: who (ip, browser), when, each article before → after
@@ -39,21 +39,55 @@ def thumb(p):
 def full_uah(p):
     return max(float(p.get("price") or 0), float(p.get("price_old") or 0))
 
+STOCK_WAREHOUSE = int(__import__("os").environ.get("STOCK_WAREHOUSE_ID") or 1)   # KeyCRM warehouse «1 Склад Світлана» — the only one that counts (the client, 14.11.2026)
+_stock_cache = {"at": 0, "map": {}}
+
+def _crm_key(article, keys):
+    """The site's article → the code the warehouse uses: 44-xx and 44-xx-D became P-44-xx there, a few spellings differ."""
+    if article in keys: return article
+    m = re.match(r"^44-(\d+)(-D)?$", article)
+    if m and f"P-44-{m.group(1)}{m.group(2) or ''}" in keys: return f"P-44-{m.group(1)}{m.group(2) or ''}"
+    alt = {"140-15-6": "140/15-6"}.get(article)
+    return alt if alt in keys else None
+
+def stock_map(force=False):
+    """{article in KeyCRM: (quantity, reserve)} on the chosen warehouse, from GET /offers/stocks?filter[details]=true (Bimp → KeyCRM every 15 min).
+    Cached 10 minutes; an empty map when KeyCRM is not configured or fails — the page then shows no stock column values."""
+    import keycrm as K
+    if not force and time.time() - _stock_cache["at"] < 600: return _stock_cache["map"]
+    out = {}
+    try:
+        if K.KEY:
+            page = 1
+            while page <= 40:
+                r = K.api("GET", "/offers/stocks", params={"limit": 50, "page": page, "filter[details]": "true"}); data = r.get("data") or []
+                for x in data:
+                    if not x.get("sku"): continue
+                    w = next((w for w in x.get("warehouse") or [] if int(w.get("id") or 0) == STOCK_WAREHOUSE), None)
+                    out[x["sku"]] = (float(w.get("quantity") or 0), float(w.get("reserve") or 0)) if w else (None, None)
+                if len(data) < 50: break
+                page += 1
+        _stock_cache.update(at=time.time(), map=out)
+    except Exception as e:
+        sys.stderr.write(f"keycrm stocks: {e}\n")
+    return _stock_cache["map"] or out
+
 def rows():
     """The catalogue as the page needs it: one row per article, the category path, the full price, the current discount and the price the storefront charges."""
     h = H.Horoshop(); prods = h.products(includedParams=FIELDS); rate = h.rates().get("USD") or 35.5
-    out = []
+    st = stock_map(); out = []
     for p in prods:
         if not p.get("article"): continue
         price = float(p.get("price") or 0); old = float(p.get("price_old") or 0); pct = float(p.get("discount") or 0)
         full = max(price, old); now = price * (1 - pct / 100)
         kind = "pct" if pct else ("amt" if old > price else "")
-        out.append(dict(article=p["article"], parent=p.get("parent_article") or p["article"], name=(H.L(p.get("mod_title"), "ua") or H.L(p.get("title"), "ua")).strip(),
+        k = _crm_key(p["article"], st); q = st.get(k) if k else None      # None → not in the warehouse system; (None, None) → in the system, not on this warehouse
+        out.append(dict(stock=(q[0] if q and q[0] is not None else (0.0 if q else None)), reserve=(q[1] if q and q[1] is not None else 0.0), crm_sku=k,article=p["article"], parent=p.get("parent_article") or p["article"], name=(H.L(p.get("mod_title"), "ua") or H.L(p.get("title"), "ua")).strip(),
                         category=H.L(p.get("parent"), "ua") or "—", collections=[H.L(a, "ua") for a in p.get("alt_parent") or [] if H.L(a, "ua").startswith("Колекції/")],
                         full=full, now=round(now, 2), pct=pct, amt=round(full - now, 2), kind=kind, shown=int(p.get("display_in_showcase") or 0),
                         presence=H.presence(p), link=p.get("link") or "", thumb=thumb(p)[0], pic=thumb(p)[1]))
     out.sort(key=lambda r: (r["category"], r["parent"], r["article"]))
-    return dict(ok=True, at=time.strftime("%Y-%m-%d %H:%M"), rate=rate, rows=out)
+    return dict(ok=True, at=time.strftime("%Y-%m-%d %H:%M"), rate=rate, rows=out, stock_at=time.strftime("%H:%M", time.localtime(_stock_cache["at"])) if _stock_cache["at"] else None, warehouse=STOCK_WAREHOUSE)
 
 def _import(h, prods, plan):
     res = h.call("catalog/import", {"products": prods}) if prods else {}
@@ -114,7 +148,7 @@ summary::before{content:"▸";color:var(--muted);transition:transform .15s}detai
 .gfill{display:flex;gap:8px;align-items:center;padding:0 16px 10px 36px;font-size:13px;color:var(--muted)}.gfill input{width:70px}
 table{width:100%;border-collapse:collapse}th,td{padding:7px 10px;border-top:1px solid var(--line);text-align:left;vertical-align:middle;font-size:14px}th{color:var(--muted);font-weight:500;font-size:12px;text-transform:uppercase;letter-spacing:.04em}
 td.num,th.num{text-align:right;white-space:nowrap}td.art{color:var(--muted);font-size:12.5px;white-space:nowrap}td.pic{width:56px;padding:4px 6px}td.pic img{width:48px;height:48px;object-fit:cover;border-radius:8px;background:#f1ece3;display:block}td.pic span{display:block;width:48px;height:48px;border-radius:8px;background:#f1ece3}td.name a{color:inherit;text-decoration:none}td.name a:hover{text-decoration:underline}
-.cur{white-space:nowrap}.cur b{font-weight:500;color:var(--ok)}.cur s{color:var(--muted)}.hid{color:var(--muted);font-size:12px}
+.cur{white-space:nowrap}td.stock{white-space:nowrap;font-weight:500}td.stock.zero{color:var(--bad)}.cur b{font-weight:500;color:var(--ok)}.cur s{color:var(--muted)}.hid{color:var(--muted);font-size:12px}
 input.v{width:64px;border:1px solid var(--line);border-radius:8px;padding:6px 8px;font:inherit;text-align:right;background:#fff}input.v:focus{outline:2px solid var(--yel);border-color:transparent}
 tr.changed td{background:var(--mark)}select.k{border:1px solid var(--line);border-radius:8px;padding:6px;font:inherit;background:#fff}
 .clear{border:0;background:none;color:var(--muted);cursor:pointer;font-size:13px;padding:4px 6px}.clear:hover{color:var(--bad)}
@@ -126,10 +160,11 @@ button.ghost{appearance:none;border:1px solid var(--line);border-radius:999px;ba
 .le ul{margin:6px 0 0;padding-left:18px;color:var(--muted);font-size:13px}.le li b{color:var(--ink);font-weight:500}
 </style></head><body><main>
 <h1>Знижки</h1>
-<p class="sub">Товари obiimy.world за категоріями сайту. Знижка задається у відсотках або в гривнях від повної ціни і записується в Хорошоп кнопкою «Застосувати»; у Shopify підтягується наступною <a href="/sync" id="lnk">синхронізацією</a>. Є також <a href="/portrait" id="lnk2">портрет клієнта</a>.</p>
+<p class="sub">Товари obiimy.world за категоріями сайту; колонка «Залишок» — склад «1 Склад Світлана» за даними KeyCRM (Bimp оновлює їх кожні 15 хв). Знижка задається у відсотках або в гривнях від повної ціни і записується в Хорошоп кнопкою «Застосувати»; у Shopify підтягується наступною <a href="/sync" id="lnk">синхронізацією</a>. Є також <a href="/portrait" id="lnk2">портрет клієнта</a>.</p>
 <div class="top">
  <input type="search" id="q" placeholder="Пошук за назвою або артикулом">
  <label><input type="checkbox" id="onlyd"> лише зі знижкою</label>
+ <label title="Залишок на складі «1 Склад Світлана» за даними KeyCRM">залишок від <input class="v" id="qmin" placeholder="0" style="width:56px"> до <input class="v" id="qmax" placeholder="∞" style="width:56px"></label>
  <button class="ghost" id="reload">Оновити з Хорошопу</button>
  <span class="hid" id="at"></span>
 </div>
@@ -146,18 +181,20 @@ const esc=s=>String(s).replace(/[<>&"]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;',
 async function load(keepMsg){ $('load').hidden=false;$('groups').innerHTML='';CH={};upd(keepMsg);
  const r=await api('/api/discounts',{cache:'no-store'});const d=await r.json();$('load').hidden=true;
  if(!d.ok){$('groups').innerHTML='<p class="msg bad">'+esc(d.error||'Помилка')+'</p>';return}
- ROWS=d.rows;$('at').textContent='дані з сайту на '+d.at+', курс '+d.rate;render();}
+ ROWS=d.rows;$('at').textContent='дані з сайту на '+d.at+', курс '+d.rate+(d.stock_at?', залишки складу 1 з KeyCRM на '+d.stock_at:', залишки недоступні');render();}
 function render(){
- const q=$('q').value.trim().toLowerCase(),od=$('onlyd').checked;const groups={};
- for(const r of ROWS){ if(q&&!(r.name.toLowerCase().includes(q)||r.article.toLowerCase().includes(q)))continue; if(od&&!r.kind&&!CH[r.article])continue; (groups[r.category]=groups[r.category]||[]).push(r);}
+ const q=$('q').value.trim().toLowerCase(),od=$('onlyd').checked;const qmin=$('qmin').value===''?null:parseFloat($('qmin').value),qmax=$('qmax').value===''?null:parseFloat($('qmax').value);const groups={};
+ for(const r of ROWS){ if(q&&!(r.name.toLowerCase().includes(q)||r.article.toLowerCase().includes(q)))continue; if(od&&!r.kind&&!CH[r.article])continue;
+  if(qmin!==null||qmax!==null){const st=r.stock===null?0:r.stock; if(qmin!==null&&st<qmin)continue; if(qmax!==null&&st>qmax)continue;}
+  (groups[r.category]=groups[r.category]||[]).push(r);}
  const open=new Set([...document.querySelectorAll('details[open]')].map(d=>d.dataset.g));
  $('groups').innerHTML=Object.keys(groups).sort().map(g=>{const rs=groups[g];const nd=rs.filter(r=>r.kind).length;
-  return '<details data-g="'+esc(g)+'"'+(open.has(g)||q?' open':'')+'><summary>'+esc(g)+' <span class="n">'+rs.length+' арт.</span>'+(nd?'<span class="d">зі знижкою: '+nd+'</span>':'')+'</summary>'
+  const stq=rs.reduce((a,r)=>a+(r.stock||0),0);return '<details data-g="'+esc(g)+'"'+(open.has(g)||q||$('qmin').value||$('qmax').value?' open':'')+'><summary>'+esc(g)+' <span class="n">'+rs.length+' арт. · на складі '+Math.round(stq)+' шт.</span>'+(nd?'<span class="d">зі знижкою: '+nd+'</span>':'')+'</summary>'
   +'<div class="gfill">усій групі: <select class="k" data-gk="'+esc(g)+'"><option value="pct">%</option><option value="amt">грн</option></select><input class="v" data-gv="'+esc(g)+'" placeholder="0"><button class="ghost" style="padding:5px 12px;font-size:13px" data-gset="'+esc(g)+'">заповнити</button><button class="clear" data-gclr="'+esc(g)+'">зняти всі знижки групи</button></div>'
-  +'<table><tr><th></th><th>Артикул</th><th>Товар</th><th class="num">Повна ціна</th><th class="num">Зараз</th><th>Нова знижка</th><th></th></tr>'
+  +'<table><tr><th></th><th>Артикул</th><th>Товар</th><th class="num">Повна ціна</th><th class="num">Зараз</th><th class="num" title="Склад «1 Склад Світлана», KeyCRM">Залишок</th><th>Нова знижка</th><th></th></tr>'
   +rs.map(r=>{const c=CH[r.article];const kind=c?c.kind:(r.kind||'pct');const val=c?c.value:(r.kind==='pct'?r.pct:(r.kind==='amt'?r.amt:''));
    return '<tr data-a="'+esc(r.article)+'"'+(c?' class="changed"':'')+'><td class="pic">'+(r.thumb?'<img data-src="'+esc(r.thumb)+'" data-f="'+esc(r.pic)+'" alt="" onerror="if(!this.dataset.o){this.dataset.o=1;this.src=this.dataset.f}">':'<span></span>')+'</td><td class="art">'+esc(r.article)+(r.shown?'':' <span class="hid">прихований</span>')+'</td><td class="name">'+(r.link?'<a href="'+esc(r.link)+'" target="_blank" rel="noopener">'+esc(r.name)+'</a>':esc(r.name))+(r.presence!=='In stock'?' <span class="hid">немає в наявності</span>':'')+'</td>'
-   +'<td class="num">'+money(r.full)+'</td><td class="num cur">'+(r.kind?'<b>'+money(r.now)+'</b> <s>'+money(r.full)+'</s> <span class="hid">'+(r.kind==='pct'?'−'+r.pct+'%':'−'+money(r.amt))+'</span>':'—')+'</td>'
+   +'<td class="num">'+money(r.full)+'</td><td class="num stock'+(r.stock===null?' hid':(r.stock<=0?' zero':''))+'">'+(r.stock===null?'—':(Math.round(r.stock)+(r.reserve?' <span class="hid">(рез. '+Math.round(r.reserve)+')</span>':'')))+'</td><td class="num cur">'+(r.kind?'<b>'+money(r.now)+'</b> <s>'+money(r.full)+'</s> <span class="hid">'+(r.kind==='pct'?'−'+r.pct+'%':'−'+money(r.amt))+'</span>':'—')+'</td>'
    +'<td><input class="v" data-v="'+esc(r.article)+'" value="'+esc(val)+'" placeholder="0"> <select class="k" data-k="'+esc(r.article)+'"><option value="pct"'+(kind==='pct'?' selected':'')+'>%</option><option value="amt"'+(kind==='amt'?' selected':'')+'>грн</option></select></td>'
    +'<td>'+(r.kind||c?'<button class="clear" data-clr="'+esc(r.article)+'" title="зняти знижку">зняти</button>':'')+'</td></tr>'}).join('')+'</table></details>'}).join('')||'<p class="hid">Нічого не знайдено.</p>';
  document.querySelectorAll('details[open]').forEach(showPics);
@@ -175,7 +212,7 @@ document.addEventListener('click',e=>{const t=e.target;
 });
 function showPics(d){d.querySelectorAll('td.pic img[data-src]').forEach(i=>{i.src=i.dataset.src;i.removeAttribute('data-src');});}
 document.addEventListener('toggle',e=>{if(e.target.tagName==='DETAILS'&&e.target.open)showPics(e.target);},true);
-$('q').oninput=render;$('onlyd').onchange=render;$('reload').onclick=load;
+$('q').oninput=render;$('onlyd').onchange=render;$('qmin').oninput=render;$('qmax').oninput=render;$('reload').onclick=load;
 const fmt=s=>s.discount?('−'+s.discount+'% від '+money(s.price)):(s.price_old>s.price?(money(s.price)+' (повна '+money(s.price_old)+')'):money(s.price));
 async function loadLog(){const r=await api('/api/discounts/log',{cache:'no-store'});const d=await r.json();if(!d.ok)return;$('logn').textContent=d.entries.length?('· '+d.entries.length):'';
  $('log').innerHTML=d.entries.map(e=>{const who=(e.who&&e.who.ip)?' · '+e.who.ip:'';const items=e.items.slice(0,40).map(i=>'<li><b>'+esc(i.article)+'</b> '+esc(i.name||'')+(i.before&&i.after?': '+esc(fmt(i.before))+' → '+esc(fmt(i.after)):'')+(i.result&&!/оновлен|обновлен/i.test(i.result)?' <span style="color:var(--bad)">'+esc(i.result)+'</span>':'')+'</li>').join('')+(e.items.length>40?'<li>… ще '+(e.items.length-40)+'</li>':'');

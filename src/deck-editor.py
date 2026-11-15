@@ -884,7 +884,9 @@ class Handler(SimpleHTTPRequestHandler):
             f = PUBLISHED / "deck.pdf"
             if not f.is_file(): return self.send_error(404, "Not published yet")
             return self.send_bytes(f.read_bytes(), "application/pdf", cache="no-cache")
-        if u.path in ("/", "/index.html"): return self.send_bytes(UI.read_bytes(), "text/html; charset=utf-8")
+        if u.path in ("/", "/index.html") and (self.headers.get("Host") or "").startswith("marketing."):   # marketing.obiimy.world opens on the audience portrait (the client, 15.11.2026)
+            self.send_response(302); self.send_header("Location", "/portrait" + (("?" + u.query) if u.query else "")); self.send_header("Cache-Control", "no-store"); self.end_headers(); return
+        if u.path in ("/", "/index.html", "/deck"): return self.send_bytes(marketingnav.wrap(UI.read_text(encoding="utf-8"), "deck", editor=True).encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/api/edem-list":
             import hmac
             if not CORP_PASSWORD or not hmac.compare_digest(q.get("key") or "", CORP_PASSWORD): return self.send_json(dict(ok=False, error="Потрібен ключ."), 401)

@@ -311,7 +311,9 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
     only = true; document.body.classList.add('shared');
   }} else {{
     try {{ (stored ? JSON.parse(stored) : DEF).forEach(function (x) {{ picks.add(x); }}); }} catch (e) {{}}
+    only = picks.size > 0;   // the page opens on the selection (the client, 15.11.2026: «креативы по умолчанию открывай с „лише відмічені“»)
   }}
+  document.getElementById('only').setAttribute('aria-pressed', only ? 'true' : 'false');
   window.addEventListener('hashchange', function () {{ location.reload(); }});
   var boxes = [].slice.call(document.querySelectorAll('.c .pick input'));
   function list() {{

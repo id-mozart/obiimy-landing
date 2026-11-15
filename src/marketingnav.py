@@ -1,0 +1,23 @@
+#!/usr/bin/env python3
+"""The sticky «Маркетинг» header of the manager pages on the editor service (15.11.2026, «хедер прилипающий с логотипом обийми и надпись
+маркетинг, в меню — аудитория, знижки, клієнти, шопіфай»). `wrap(page, active)` puts the CSS before the page's first </style> and the
+header right after <body>; the menu links carry ?key=… when the page was opened with the manager's key, so /discounts, /customers and
+/sync stay reachable from /portrait and back. The logo is the repo file brand/logo-ink.svg, served by the editor as /brand/logo-ink.svg."""
+NAV = [("portrait", "Аудиторія", "/portrait"), ("discounts", "Знижки", "/discounts"), ("customers", "Клієнти", "/customers"), ("sync", "Shopify", "/sync")]
+CSS = (".mk{position:sticky;top:0;z-index:50;background:rgba(247,243,236,.94);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-bottom:1px solid #e6e0d6}"
+       ".mk .in{max-width:1200px;margin:0 auto;padding:0 20px;height:52px;display:flex;align-items:center;gap:16px}.mk img{height:19px;width:auto;display:block}"
+       ".mk .t{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:#6b645c;padding-left:14px;border-left:1px solid #e6e0d6;line-height:1}"
+       ".mk nav{margin-left:auto;display:flex;gap:4px}.mk nav a{color:#141110;text-decoration:none;font-size:14px;padding:7px 12px;border-radius:999px;white-space:nowrap}.mk nav a:hover{background:#fff}.mk nav a.on{background:#141110;color:#fff}"
+       "@media(max-width:700px){.mk .in{height:46px;gap:10px;padding:0 12px}.mk .t{display:none}.mk nav{gap:0}.mk nav a{padding:6px 8px;font-size:13px}}")
+JS = "(()=>{const k=new URLSearchParams(location.search).get('key');if(k)document.querySelectorAll('.mk nav a').forEach(a=>{a.href+=(a.href.includes('?')?'&':'?')+'key='+encodeURIComponent(k);});})();"
+
+def header(active):
+    links = "".join('<a href="%s"%s>%s</a>' % (href, ' class="on"' if key == active else "", title) for key, title, href in NAV)
+    return (f'<header class="mk"><div class="in"><a href="/portrait" title="OBIIMY"><img src="/brand/logo-ink.svg" alt="OBIIMY"></a><span class="t">Маркетинг</span><nav>{links}</nav></div></header>'
+            f"<script>{JS}</script>")
+
+def wrap(page, active):
+    """The page with the header: CSS before the first </style>, the header right after <body>."""
+    page = page.replace("</style>", CSS + "\n</style>", 1)
+    i = page.index("<body>") + len("<body>")
+    return page[:i] + header(active) + page[i:]

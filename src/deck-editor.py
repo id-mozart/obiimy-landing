@@ -15,6 +15,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from PIL import Image, ImageChops, ImageOps, ImageStat
 import portraitpage                                                      # src/portraitpage.py: the «Портрет клієнта» page (GET /portrait)
 import discountpanel                                                     # src/discountpanel.py: the «Знижки» page (GET /discounts, GET|POST /api/discounts)
+import marketingnav                                                      # src/marketingnav.py: the sticky «Маркетинг» header with the menu of the manager pages
 import customerspanel                                                    # src/customerspanel.py: the «Клієнти» page (GET /customers, GET /api/customers, POST /api/customers/refresh)
 import syncpanel                                                         # src/syncpanel.py: the «Синхронізація з Shopify» page (GET /sync, GET|POST /api/sync)
 import keycrm                                                            # src/keycrm.py: the landing's orders and payments → KeyCRM (KEYCRM_* variables; unset → nothing is sent)
@@ -903,15 +904,15 @@ class Handler(SimpleHTTPRequestHandler):
             except Problem as e: data = json.dumps(dict(ok=False, error=str(e)), ensure_ascii=False).encode("utf-8"); status = e.status
             self.send_response(status); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
             self.send_header("Cache-Control", "no-store"); self.corp_cors(); self.end_headers(); return self.wfile.write(data)
-        if u.path == "/portrait": return self.send_bytes(portraitpage.PAGE.encode("utf-8"), "text/html; charset=utf-8")   # open for now (the client, 14.11): the advertisers read it without a login
+        if u.path == "/portrait": return self.send_bytes(marketingnav.wrap(portraitpage.PAGE, "portrait").encode("utf-8"), "text/html; charset=utf-8")   # open for now (the client, 14.11): the advertisers read it without a login
         if u.path in ("/sync", "/discounts", "/customers", "/api/sync", "/api/discounts", "/api/discounts/log", "/api/discounts/drafts", "/api/customers") and not self.keyed(q): return self.need_key()
-        if u.path == "/customers": return self.send_bytes(customerspanel.PAGE.encode("utf-8"), "text/html; charset=utf-8")
+        if u.path == "/customers": return self.send_bytes(marketingnav.wrap(customerspanel.PAGE, "customers").encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/api/customers": return self.api(customerspanel.customers)
         if u.path == "/api/discounts/log": return self.api(lambda: dict(ok=True, entries=discountpanel.log_entries()))
         if u.path == "/api/discounts/drafts": return self.api(lambda: dict(ok=True, drafts=discountpanel.drafts_list()))
-        if u.path == "/sync": return self.send_bytes(syncpanel.PAGE.encode("utf-8"), "text/html; charset=utf-8")
+        if u.path == "/sync": return self.send_bytes(marketingnav.wrap(syncpanel.PAGE, "sync").encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/api/sync": return self.api(syncpanel.state)
-        if u.path == "/discounts": return self.send_bytes(discountpanel.PAGE.encode("utf-8"), "text/html; charset=utf-8")
+        if u.path == "/discounts": return self.send_bytes(marketingnav.wrap(discountpanel.PAGE, "discounts").encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/api/discounts": return self.api(discountpanel.rows)
         if u.path == "/api/pages": return self.api(api_pages)
         if u.path == "/api/library": return self.api(api_library)

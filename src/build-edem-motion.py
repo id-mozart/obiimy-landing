@@ -41,14 +41,14 @@ section[id] { scroll-margin-top: 20px; }
 .bar { position: fixed; left: 0; right: 0; top: 0; z-index: 50; height: 64px; padding: 0 24px; font-size: 11px; letter-spacing: .22em; text-transform: uppercase; color: var(--cream2); border-bottom: 1px solid transparent; transition: background .3s, border-color .3s; }
 .bar.on { background: rgba(22,16,12,.84); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-color: var(--line); }
 .bar .in { max-width: 1240px; height: 100%; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 18px; }
-.bar .home { display: flex; align-items: center; gap: 16px; text-decoration: none; color: inherit; flex: none; } .bar .home img { height: 24px; width: auto; display: block; } .bar .home img.edem { height: 52px; margin-top: -3px; } .bar .home .x { font-family: 'Cormorant Garamond', serif; font-size: 20px; opacity: .55; letter-spacing: 0; }
+.bar .home { display: flex; align-items: center; gap: 16px; text-decoration: none; color: inherit; flex: none; } .bar .home img { height: 24px; width: auto; display: block; } .bar .home img.edem { height: 30px; margin-top: 3px; } .bar .home .x { font-family: 'Cormorant Garamond', serif; font-size: 20px; opacity: .55; letter-spacing: 0; }
 .bar nav { display: flex; gap: 26px; } .bar nav a { color: inherit; text-decoration: none; opacity: .72; padding: 5px 0; border-bottom: 1px solid transparent; transition: opacity .2s, border-color .2s; white-space: nowrap; } .bar nav a:hover, .bar nav a[aria-current] { opacity: 1; border-color: var(--gold); }
 .bar .right { display: flex; align-items: center; gap: 16px; flex: none; } .bar .site { color: inherit; text-decoration: none; opacity: .72; white-space: nowrap; transition: opacity .2s; } .bar .site:hover { opacity: 1; } .bar .site i { font-style: normal; margin-right: 6px; }
 .bar .lang { color: inherit; text-decoration: none; border: 1px solid currentColor; padding: 6px 9px; border-radius: 2px; font-size: 10px; letter-spacing: .2em; opacity: .75; transition: opacity .2s; } .bar .lang:hover { opacity: 1; }
 .bar .cta { padding: 10px 16px; font-size: 10px; letter-spacing: .18em; }
 html { scroll-padding-top: 76px; }
 @media (max-width: 960px) { .bar nav { display: none; } }
-.logos { display: flex; align-items: center; gap: 22px; } .logos img { height: 30px; width: auto; display: block; } .logos img.edem { height: 82px; margin-top: -8px; }
+.logos { display: flex; align-items: center; gap: 22px; } .logos img { height: 30px; width: auto; display: block; } .logos img.edem { height: 44px; margin-top: 2px; }
 .logos .x { font-family: 'Cormorant Garamond', serif; font-size: 24px; opacity: .55; letter-spacing: 0; } .logos b { font-family: 'Cormorant Garamond', serif; font-weight: 700; font-size: 21px; letter-spacing: .14em; text-transform: uppercase; color: var(--cream); line-height: 1; }
 .dust { position: absolute; inset: 0; pointer-events: none; z-index: 1; } .dust i { position: absolute; bottom: -10px; width: 3px; height: 3px; border-radius: 50%; background: var(--gold); opacity: 0; animation: rise linear infinite; box-shadow: 0 0 6px rgba(217,184,106,.8); }
 @keyframes rise { 0% { transform: translateY(0) translateX(0); opacity: 0; } 10% { opacity: .9; } 90% { opacity: .5; } 100% { transform: translateY(-110vh) translateX(40px); opacity: 0; } }
@@ -337,11 +337,11 @@ def english(body):
 def main(light=False, lang="uk"):
     rnd = random.Random(7)
     dust = "".join(f'<i style="left:{rnd.uniform(0, 100):.1f}%;animation-duration:{rnd.uniform(9, 22):.1f}s;animation-delay:-{rnd.uniform(0, 22):.1f}s;width:{rnd.choice([2, 2, 3, 4])}px;height:{rnd.choice([2, 2, 3, 4])}px"></i>' for _ in range(42))
-    logo, edem_mark = ("logo-ink", "edem-mark") if light else ("logo-white", "edem-mark-white")
+    logo, edem_mark = ("logo-ink", "edem-wordmark") if light else ("logo-white", "edem-wordmark-white")   # the script «Edem» without the crest (the client, 15.11.2026)
     lang_link = '<a class="lang" href="edem-motion-light" hreflang="uk" lang="uk">UA</a>' if lang == "en" else '<a class="lang" href="edem-motion-light-en" hreflang="en" lang="en">EN</a>'
     body = f'''
 <header class="bar" id="bar"><div class="in">
-  <a class="home" href="https://obiimy.world/" title="На головний сайт OBIIMY"><img src="brand/{logo}.svg" alt="OBIIMY" width="1200" height="255"><span class="x">×</span><img class="edem" src="brand/{edem_mark}.png" alt="Kraїna Edem" width="340" height="338"></a>
+  <a class="home" href="https://obiimy.world/" title="На головний сайт OBIIMY"><img src="brand/{logo}.svg" alt="OBIIMY" width="1200" height="255"><span class="x">×</span><img class="edem" src="brand/{edem_mark}.png" alt="Kraїna Edem" width="316" height="148"></a>
   <nav aria-label="Розділи сторінки"><a href="#scarf">Хустка</a><a href="#film">Відео</a><a href="#story">Історія</a><a href="#symbols">Символи</a><a href="#brands">Партнери</a></nav>
   <div class="right"><a class="site" href="https://obiimy.world/"><i>←</i>obiimy.world</a>{lang_link}<a class="btn btn-main cta" href="#order">Замовити</a></div>
 </div></header>

@@ -264,6 +264,8 @@ python3 src/deck-editor.py
 
 ## Шапка «Маркетинг» (15.11.2026)
 
+**Домен marketing.obiimy.world (15.11.2026, «перенести это всё на marketing.obiimy.world»):** кастомний домен сервісу `deck-editor` на Railway (`customDomainCreate` через API, ціль `4tj4hicr.up.railway.app`) + CNAME `marketing` → ця ціль у Cloudflare без проксі (так само, як `corporate` і `edem`). Усі сторінки доступні за `https://marketing.obiimy.world/portrait`, `/discounts`, `/customers`, `/sync`, корінь — редактор деки; старий `deck-editor-production.up.railway.app` працює далі.
+
 Запит: «хедер прилипающий с логотипом обийми и надпись маркетинг, в меню — аудитория, знижки, клієнти, шопіфай». `src/marketingnav.py`: `wrap(page, active)` вставляє CSS перед першим `</style>` і липку шапку одразу після `<body>` — логотип `brand/logo-ink.svg` (сервіс редактора віддає файли репозиторію як є), підпис «Маркетинг», меню Аудиторія (`/portrait`) · Знижки (`/discounts`) · Клієнти (`/customers`) · Shopify (`/sync`) · Презентація (корінь сервісу, редактор корпоративної деки) · Креативи (`https://obiimy-landing-production.up.railway.app/creatives`, зовнішнє посилання без ключа), активний пункт чорний; на телефоні меню гортається по горизонталі; скрипт у шапці дописує `?key=…` до пунктів меню, якщо сторінку відкрито з ключем. Підключено в `deck-editor.py` на всіх чотирьох маршрутах; панель фільтрів «Знижок» тепер липне під шапкою (`top:58px`). На телефоні підпис ховається, пункти меню стискаються.
 
 ## Сторінка «Клієнти» (15.11.2026)

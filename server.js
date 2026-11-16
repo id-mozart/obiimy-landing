@@ -24,7 +24,7 @@ async function proxied(req, res) {
 const CORP = { host: /^corporate\./i, page: '/b2b-deck', pages: { '/b2b-deck': 'b2b-deck', '/b2b-team-main': 'b2b-team-main' },
   allow: /^\/(photo|img|brand|tex|thumbs|cms\.js|favicon|obiimy-podarunky-dlia-komandy\.pdf|lookbook-obiimy-2026)/ };   // what the corporate host serves besides its page
 const EDEM = { host: /^edem\./i, page: '/edem-motion-light', pages: {}, allow: /^\/(photo\/edem\/|brand\/|favicon)/,
-  alias: { '/en': '/edem-motion-light-en' }, canon: { '/edem-motion-light': '/', '/edem-motion-light-en': '/en' } };   // /en is the English page; the slugs redirect to the short paths
+  alias: { '/en': '/edem-motion-light-en', '/thank-you-edem': '/edem-thank-you', '/thank-you-edem/': '/edem-thank-you' }, canon: { '/edem-motion-light': '/', '/edem-motion-light-en': '/en', '/edem-thank-you': '/thank-you-edem/', '/edem-thank-you-en': '/thank-you-edem/?lang=en' } };   // /thank-you-edem/ — the page WayForPay returns to (16.11.2026)   // /en is the English page; the slugs redirect to the short paths
 const HOSTS = [CORP, EDEM];
 
 // Content edits made on the landing itself (cms.js, «?edit») are kept by the editor service as /pub/corp.json and applied here
@@ -73,7 +73,11 @@ function payReturn(req, res, u, own) {
     const b = new URLSearchParams(raw), ref = String(b.get('orderReference') || u.searchParams.get('orderReference') || u.searchParams.get('ref') || '').replace(/[^A-Za-z0-9-]/g, '').slice(0, 40);
     const st = String(b.get('transactionStatus') || u.searchParams.get('transactionStatus') || '').toLowerCase();
     const pay = st === 'approved' ? 'paid' : (st === 'declined' || st === 'expired') ? 'declined' : st ? 'pending' : 'cancel';   // no status at all = the visitor cancelled on the payment page
-    const en = u.searchParams.get('lang') === 'en', page = own ? (en ? '/en' : '/') : (en ? '/edem-motion-light-en' : '/edem-motion-light');
+    const en = u.searchParams.get('lang') === 'en';
+    if (own) {   // the Edem host: the thank-you page (16.11.2026 — the advertisers' purchase tracking lives there); the old sale-page return stays for the other hosts
+      res.writeHead(303, { Location: '/thank-you-edem/?' + (ref ? 'order=' + ref + '&pay=' + pay + '&' : '') + (en ? 'lang=en' : ''), 'Cache-Control': 'no-store' }); return res.end();
+    }
+    const page = en ? '/edem-motion-light-en' : '/edem-motion-light';
     res.writeHead(303, { Location: page + (ref ? '?order=' + ref + '&pay=' + pay : '') + '#order', 'Cache-Control': 'no-store' }); res.end();
   };
   if (req.method === 'POST') { req.on('data', c => { if (raw.length < 65536) raw += c; }); req.on('end', done); } else done();
@@ -82,11 +86,11 @@ function payReturn(req, res, u, own) {
 const server = http.createServer(async (req, res) => {
   const u = new URL(req.url, 'http://x');
   const own = HOSTS.find(h => h.host.test(req.headers.host || ''));
-  if (u.pathname === '/pay/return') return payReturn(req, res, u, own && own === EDEM ? own : null);
+  if (u.pathname === '/pay/return' || (own === EDEM && req.method === 'POST' && /^\/thank-you-edem\/?$/.test(u.pathname))) return payReturn(req, res, u, own && own === EDEM ? own : null);   // the gateway POSTs the result to the returnUrl; the browser then GETs the page
   if (own) {       // a landing's own host: its page at the root, its assets, nothing else
     const bare = u.pathname.replace(/\.html$/, ''), canon = own.canon && own.canon[bare], alias = own.alias && own.alias[bare];
     if (canon) { res.writeHead(301, { Location: canon + u.search }); return res.end(); }
-    if (alias) req.url = alias + u.search;
+    if (alias) req.url = (alias === '/edem-thank-you' && u.searchParams.get('lang') === 'en' ? '/edem-thank-you-en' : alias) + u.search;
     else if (u.pathname === '/' || u.pathname === '/index.html' || u.pathname === own.page || u.pathname === own.page + '.html') req.url = own.page + u.search;
     else if (!own.allow.test(u.pathname)) { res.writeHead(302, { Location: '/' }); return res.end(); }
   }

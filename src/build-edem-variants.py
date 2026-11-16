@@ -11,6 +11,7 @@ sys.path.insert(0, str(ROOT / "src"))
 from imgs import img, typo
 _spec = importlib.util.spec_from_file_location("edem", ROOT / "src" / "build-edem.py"); edem = importlib.util.module_from_spec(_spec); _spec.loader.exec_module(edem)
 PHONE, PHONE_HREF, MAIL, TG, API_LOCAL, API_PROD, SITE_URL = edem.PHONE, edem.PHONE_HREF, edem.MAIL, edem.TG, edem.API_LOCAL, edem.API_PROD, edem.SITE_URL
+EDEM_SKU = __import__("os").environ.get("KEYCRM_SKU") or "88-91-D"   # the scarf's article (the same one the KeyCRM order line uses) — item_id of the GA4 purchase
 
 # ─── shared copy (the press release and the deck) ─────────────────────────────────────────────────────────────────────────────
 MANIFESTO = "Є речі, які неможливо виміряти часом. <b>Пам’ять землі.</b> Символи, що пережили тисячоліття. Образи, які залишили нам давні покоління. І культурний код, який продовжує жити, навіть коли змінюються епохи."
@@ -91,6 +92,11 @@ SCRIPT = """
     fetch(API + '/api/edem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(function (r) { return r.json(); }).then(function (j) {
       if (!j.ok) throw new Error('x');
       if (j.pay && j.url) {   // WayForPay is on: the signed Purchase fields go to the payment page as a plain form POST (the visitor comes back to ?order=…&pay=…)
+        try {   // the analytics: the click that leads to the payment page (GA4 via GTM: click_order_pay_edem; Meta: InitiateCheckout)
+          var amt = Number(String(j.pay.amount || '').replace(',', '.')) || 0;
+          window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'click_order_pay_edem', transaction_id: j.ref || '', currency: 'UAH', value: amt });
+          if (window.fbq) fbq('track', 'InitiateCheckout', { value: amt, currency: 'UAH', content_ids: ['EDEM_SKU'], content_type: 'product' }, { eventID: 'ic-' + (j.ref || '') });
+        } catch (e) {}
         var pf = document.createElement('form'); pf.method = 'POST'; pf.action = j.url; pf.acceptCharset = 'utf-8'; pf.hidden = true;
         Object.keys(j.pay).forEach(function (k) { var i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = j.pay[k]; pf.appendChild(i); });
         document.body.appendChild(pf); btn.textContent = S('paying', 'Переходимо до оплати…'); pf.submit(); return;
@@ -116,9 +122,16 @@ SCRIPT = """
   } else { document.querySelectorAll('.rv').forEach(function (el) { el.classList.add('in'); }); }
   EXTRA
 })();
-</script>""".replace("API_LOCAL", API_LOCAL).replace("API_PROD", API_PROD).replace("TG?text", TG + "?text")
+</script>""".replace("API_LOCAL", API_LOCAL).replace("API_PROD", API_PROD).replace("TG?text", TG + "?text").replace("EDEM_SKU", EDEM_SKU)
 
 DESC = "Спільний мистецький проєкт KRAЇNA EDEM та OBIIMY: шовкова хустка 88 × 88, натхненна трипільською культурою. Лімітований випуск — зареєструйтесь, щоб дізнатися про ціну та старт продажів першими."
+FB_PIXEL = "1331262968959972"            # the client's Meta pixel for the Edem landing (the advertisers' brief, 16.11.2026)
+GTM_ID = __import__("os").environ.get("EDEM_GTM_ID") or ""   # the GTM container of the advertisers — set when they give it; the dataLayer events are pushed regardless
+TRACK = ('<script>window.dataLayer=window.dataLayer||[];</script>'
+         + (f'<script>(function(w,d,s,l,i){{w[l]=w[l]||[];w[l].push({{"gtm.start":new Date().getTime(),event:"gtm.js"}});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);}})(window,document,"script","dataLayer","{GTM_ID}");</script>' if GTM_ID else "")
+         + f'<script>!function(f,b,e,v,n,t,s){{if(f.fbq)return;n=f.fbq=function(){{n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)}};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init","{FB_PIXEL}");fbq("track","PageView");</script>'
+         + f'<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id={FB_PIXEL}&ev=PageView&noscript=1" alt=""></noscript>')
+
 def head(slug, css, title_extra="", url=None, index=False, desc=DESC, lang="uk", extra=""):
     name = "Trypillia: The Art of Origins" if lang == "en" else "Трипілля: Мистецтво витоків"   # 07.11: the Ukrainian page names the project in Ukrainian
     return f'''<html lang="{lang}">
@@ -131,7 +144,7 @@ def head(slug, css, title_extra="", url=None, index=False, desc=DESC, lang="uk",
 <link rel="icon" href="brand/favicon.ico">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
-<style>{css}</style>'''
+<style>{css}</style>{TRACK}'''
 
 def write(slug, css, body, extra_js="", **kw):
     html = head(slug, css, **kw) + typo(body) + SCRIPT.replace("EXTRA", extra_js) + edem.variants_bar(slug)

@@ -133,7 +133,7 @@ form.f .err { color: #C0392B; font-size: 13px; display: none; } form.f label.bad
 </style>
 </head>
 <body>
-
+<script>window.dataLayer=window.dataLayer||[];</script><script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init","1331262968959972");fbq("track","PageView");</script><noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1331262968959972&ev=PageView&noscript=1" alt=""></noscript>
 <header class="bar" id="bar"><div class="in">
   <a class="home" href="https://obiimy.world/" title="OBIIMY main site"><img src="brand/logo-ink.svg" alt="OBIIMY" width="1200" height="255"><span class="x">×</span><img class="edem" src="brand/edem-wordmark.png" alt="Kraїna Edem" width="316" height="148"></a>
   <nav aria-label="Page sections"><a href="#scarf">The scarf</a><a href="#film">Film</a><a href="#story">Story</a><a href="#symbols">Symbols</a><a href="#brands">Partners</a></nav>
@@ -214,7 +214,7 @@ form.f .err { color: #C0392B; font-size: 13px; display: none; } form.f label.bad
     <label><span>Quantity</span><select name="qty" id="qty" data-fmt="en"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="4">4</option><option value="5">5</option></select></label>
     <label><span>Comment <small style="font-weight:400">(optional)</small></span><input name="comment" type="text" maxlength="300"></label>
     <div class="total"><span>Scarf 88 × 88 cm, 100% silk · <span id="qty-t">1</span> pc.</span><b id="total-t">8,500 UAH</b></div>
-    <div class="actions"><button class="btn btn-main" type="submit">Order and pay — 8,500 UAH</button><span class="hint">Card payment on the secure WayForPay page.<br>* required fields</span></div>
+    <div class="actions"><button class="btn btn-main" id="click_order_pay_edem" type="submit">Order and pay — 8,500 UAH</button><span class="hint">Card payment on the secure WayForPay page.<br>* required fields</span></div>
   </form>
   <div class="done" id="reg-done" hidden>
     <h3 id="done-h">Thank you — your order has been received</h3>
@@ -245,6 +245,11 @@ form.f .err { color: #C0392B; font-size: 13px; display: none; } form.f label.bad
     fetch(API + '/api/edem', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) }).then(function (r) { return r.json(); }).then(function (j) {
       if (!j.ok) throw new Error('x');
       if (j.pay && j.url) {   // WayForPay is on: the signed Purchase fields go to the payment page as a plain form POST (the visitor comes back to ?order=…&pay=…)
+        try {   // the analytics: the click that leads to the payment page (GA4 via GTM: click_order_pay_edem; Meta: InitiateCheckout)
+          var amt = Number(String(j.pay.amount || '').replace(',', '.')) || 0;
+          window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'click_order_pay_edem', transaction_id: j.ref || '', currency: 'UAH', value: amt });
+          if (window.fbq) fbq('track', 'InitiateCheckout', { value: amt, currency: 'UAH', content_ids: ['88-91-D'], content_type: 'product' }, { eventID: 'ic-' + (j.ref || '') });
+        } catch (e) {}
         var pf = document.createElement('form'); pf.method = 'POST'; pf.action = j.url; pf.acceptCharset = 'utf-8'; pf.hidden = true;
         Object.keys(j.pay).forEach(function (k) { var i = document.createElement('input'); i.type = 'hidden'; i.name = k; i.value = j.pay[k]; pf.appendChild(i); });
         document.body.appendChild(pf); btn.textContent = S('paying', 'Переходимо до оплати…'); pf.submit(); return;

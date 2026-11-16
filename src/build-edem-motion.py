@@ -258,7 +258,7 @@ def order_form(lang="uk"):
     <label><span>{L["qty"]}</span><select name="qty" id="qty" data-fmt="{lang}">{qty}</select></label>
     <label><span>{L["comment"]} <small style="font-weight:400">{L["opt"]}</small></span><input name="comment" type="text" maxlength="300"></label>
     <div class="total"><span>{L["line"]} <span id="qty-t">1</span> {L["pcs"]}</span><b id="total-t">{P}</b></div>
-    <div class="actions"><button class="btn btn-main" type="submit">{L["submit"]} {P}</button><span class="hint">{L["hint"]}</span></div>
+    <div class="actions"><button class="btn btn-main" id="click_order_pay_edem" type="submit">{L["submit"]} {P}</button><span class="hint">{L["hint"]}</span></div>
   </form>
   <div class="done" id="reg-done" hidden>
     <h3 id="done-h">{L["done_h"]}</h3>
@@ -424,5 +424,87 @@ def main(light=False, lang="uk"):
     if light:  # the light versions are shown to the partner on their own: no variants bar (client, 04.11)
         p = ROOT / f"{slug}.html"; h = p.read_text(); i = h.index('<nav class="vbar"'); j = h.index("</style>", i) + len("</style>"); p.write_text(h[:i] + h[j:])
 
+THANKS = dict(
+    uk=dict(title="Дякуємо за замовлення", paid_h="Дякуємо! Вашу оплату успішно отримано", paid_p="Менеджер зв’яжеться з вами й відправить хустку Новою поштою.", pending_h="Перевіряємо оплату…", pending_p="Банк ще не підтвердив платіж. Сторінка оновиться сама, це займає до хвилини.",
+            declined_h="Оплата не пройшла", declined_p="Замовлення збережено, але банк не підтвердив платіж. Спробуйте ще раз або напишіть нам у Telegram — надішлемо посилання на оплату.", cancel_h="Оплату скасовано", cancel_p="Замовлення збережено. Повернутися до оплати можна з форми замовлення або написати нам у Telegram.",
+            order="Замовлення", sum="Сума", item="Хустка «Трипілля — Мистецтво витоків», 88 × 88 см", qty="шт.", back="На сторінку хустки", again="Повернутися до замовлення", tg="Написати в Telegram"),
+    en=dict(title="Thank you for your order", paid_h="Thank you! Your payment has been received", paid_p="Our manager will contact you and ship the scarf by Nova Poshta.", pending_h="Checking the payment…", pending_p="The bank has not confirmed the payment yet. This page refreshes itself; it takes up to a minute.",
+            declined_h="The payment did not go through", declined_p="The order is saved, but the bank did not confirm the payment. Try again or write to us on Telegram — we will send you a payment link.", cancel_h="Payment cancelled", cancel_p="The order is saved. You can return to the payment from the order form or write to us on Telegram.",
+            order="Order", sum="Total", item="Scarf “Trypillia — The Art of Origins”, 88 × 88 cm", qty="pcs", back="Back to the scarf page", again="Back to the order", tg="Write on Telegram"))
+
+def thankyou(lang="uk"):
+    """edem-thank-you[-en].html — the page WayForPay returns to (/thank-you-edem/?order=…&pay=…): the state of the order, confirmed with the
+    editor service (GET /api/edem-status), and — once, only for a confirmed payment — the GA4 `purchase` in the dataLayer and the Meta
+    Purchase with the order reference as eventID (the server sends the same event through the Conversions API, deduplicated by that id).
+    The advertisers' brief, 16.11.2026."""
+    T = THANKS[lang]; home = "/en" if lang == "en" else "/"
+    css = light_css() + FORM_CSS + """
+.ty { min-height: 100vh; display: grid; place-items: center; padding: 120px 24px 80px; }
+.ty .card { max-width: 640px; width: 100%; background: var(--fbg, #FBF4E7); color: var(--fink, #2A2017); border-radius: 18px; padding: 44px 44px 40px; box-shadow: 0 30px 80px -30px rgba(0,0,0,.35); text-align: center; }
+.ty .ic { width: 64px; height: 64px; border-radius: 50%; margin: 0 auto 22px; display: grid; place-items: center; background: #D9B86A; color: #2A2017; font-size: 30px; }
+.ty h1 { font-size: clamp(30px, 4vw, 44px); margin-bottom: 14px; } .ty p { font-size: 17px; line-height: 1.55; color: rgba(42,32,23,.8); }
+.ty .det { margin: 26px 0 8px; padding: 18px 0 6px; border-top: 1px solid rgba(42,32,23,.14); display: grid; gap: 8px; font-size: 15px; text-align: left; }
+.ty .det div { display: flex; justify-content: space-between; gap: 16px; } .ty .det b { font-weight: 600; }
+.ty .act { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 26px; }
+.ty .act .btn-line { border-color: rgba(42,32,23,.4); color: #2A2017; }
+.ty[data-st="pending"] .ic { background: #e8dcc0; } .ty[data-st="declined"] .ic, .ty[data-st="cancel"] .ic { background: #e9d2c8; }
+"""
+    logo, edem_mark = "logo-ink", "edem-wordmark"
+    import json as _json; json_T = _json.dumps(T, ensure_ascii=False)
+    body = f'''
+<header class="bar" id="bar"><div class="in">
+  <a class="home" href="https://obiimy.world/" title="OBIIMY"><img src="brand/{logo}.svg" alt="OBIIMY" width="1200" height="255"><span class="x">×</span><img class="edem" src="brand/{edem_mark}.png" alt="Kraїna Edem" width="316" height="148"></a>
+  <div class="right"><a class="site" href="{home}"><i>←</i>edem.obiimy.world</a></div>
+</div></header>
+<main class="ty" id="ty" data-st="pending">
+  <div class="card">
+    <div class="ic" id="ic">…</div>
+    <h1 id="h">{T["pending_h"]}</h1>
+    <p id="p">{T["pending_p"]}</p>
+    <div class="det" id="det" hidden><div><span>{T["order"]}</span><b id="ref"></b></div><div><span>{T["item"]}</span><b id="qty"></b></div><div><span>{T["sum"]}</span><b id="sum"></b></div></div>
+    <div class="act"><a class="btn btn-main" id="again" href="{home}#order" hidden>{T["again"]}</a><a class="btn btn-line" href="{home}">{T["back"]}</a><a class="btn btn-line" href="{TG}" target="_blank" rel="noopener">{T["tg"]}</a></div>
+  </div>
+</main>
+<script>
+(function () {{
+  var API = /^(localhost|127\\.0\\.0\\.1)$/.test(location.hostname) ? 'API_LOCAL' : 'API_PROD';
+  var T = {json_T}; var qs = new URLSearchParams(location.search), ref = qs.get('order') || qs.get('ref') || '', pay = (qs.get('pay') || '').toLowerCase();
+  var ty = document.getElementById('ty'), tries = 0, fired = false;
+  if (!/^EDEM-[0-9]{{8}}-[0-9]{{6}}-[0-9a-f]{{4}}$/.test(ref)) {{ show('cancel', null); return; }}
+  function money(v) {{ return Math.round(v).toLocaleString('{ "en-US" if lang == "en" else "uk-UA" }') + ' {"UAH" if lang == "en" else "грн"}'; }}
+  function show(st, j) {{
+    st = st === 'paid' ? 'paid' : st === 'pending' ? 'pending' : st === 'cancel' ? 'cancel' : 'declined';
+    ty.setAttribute('data-st', st); document.getElementById('ic').textContent = st === 'paid' ? '✓' : st === 'pending' ? '…' : '!';
+    document.getElementById('h').textContent = T[st + '_h']; document.getElementById('p').textContent = T[st + '_p'];
+    document.getElementById('again').hidden = !(st === 'declined' || st === 'cancel');
+    if (j && j.amount) {{ document.getElementById('det').hidden = false; document.getElementById('ref').textContent = ref; document.getElementById('qty').textContent = (j.qty || 1) + ' ' + T.qty; document.getElementById('sum').textContent = money(j.amount); }}
+    if (st === 'paid' && j) purchase(j);
+  }}
+  function purchase(j) {{   // once per order: a reload or a reopened link does not count again
+    if (fired) return; fired = true; var key = 'edem_purchase_' + ref;
+    try {{ if (localStorage.getItem(key)) return; localStorage.setItem(key, '1'); }} catch (e) {{}}
+    var value = Number(j.amount) || 0, qty = Number(j.qty) || 1, price = Number(j.price) || (qty ? value / qty : value);
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({{ ecommerce: null }});
+    window.dataLayer.push({{ event: 'purchase', ecommerce: {{ transaction_id: ref, currency: 'UAH', value: value, items: [{{ item_id: j.sku || 'EDEM_SKU', item_name: T.item, price: price, quantity: qty }}] }} }});
+    if (window.fbq) fbq('track', 'Purchase', {{ value: value, currency: 'UAH', content_ids: [j.sku || 'EDEM_SKU'], content_type: 'product', num_items: qty }}, {{ eventID: ref }});
+  }}
+  function check() {{
+    fetch(API + '/api/edem-status?ref=' + encodeURIComponent(ref), {{ cache: 'no-store' }}).then(function (r) {{ return r.json(); }}).then(function (j) {{
+      if (!j.ok) throw new Error('x');
+      var st = j.status === 'refunded' ? 'declined' : j.status;
+      if (st === 'new') st = pay === 'approved' || pay === 'paid' ? 'pending' : pay ? 'cancel' : 'cancel';   // no callback yet: the gateway's own answer decides between «still checking» and «cancelled»
+      show(st, j);
+      if (st === 'pending' && tries++ < 20) setTimeout(check, 3000);
+    }}).catch(function () {{ show(pay === 'paid' || pay === 'approved' ? 'pending' : pay === 'declined' ? 'declined' : 'cancel', null); if (tries++ < 20) setTimeout(check, 3000); }});
+  }}
+  show(pay === 'paid' || pay === 'approved' ? 'pending' : pay === 'declined' ? 'declined' : pay === 'pending' ? 'pending' : 'cancel', null); check();
+}})();
+</script>'''
+    body = body.replace("API_LOCAL", V.API_LOCAL).replace("API_PROD", V.API_PROD).replace("EDEM_SKU", V.EDEM_SKU)
+    slug = "edem-thank-you" + ("-en" if lang == "en" else "")
+    html = V.head(slug, css, title_extra=" — " + T["title"], url=EDEM_URL + "thank-you-edem/", index=False, lang=lang, desc=T["title"]) + body
+    (ROOT / f"{slug}.html").write_text(html); print(slug, len(html) // 1024, "KB")
+
 if __name__ == "__main__":
-    main(); main(light=True); main(light=True, lang="en")
+    main(); main(light=True); main(light=True, lang="en"); thankyou(); thankyou("en")

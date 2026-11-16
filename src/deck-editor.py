@@ -42,6 +42,42 @@ WFP_DOMAIN = os.environ.get("WFP_DOMAIN") or "obiimy.world"
 WFP_PAY_URL = "https://secure.wayforpay.com/pay"
 EDEM_PRICE = int(os.environ.get("EDEM_PRICE") or 8500)                     # the retail price of the scarf, грн (review/SITE-FACTS.md, the client 04.11.2026); the server prices the order, never the browser
 EDEM_PRODUCT = "Хустка KRAЇNA EDEM × OBIIMY «Trypillia — The Art of Origins», 88 × 88 см"
+FB_PIXEL_ID = os.environ.get("FB_PIXEL_ID") or ""                        # Meta pixel of the Edem landing + a Conversions API token (the advertisers, 16.11.2026):
+FB_CAPI_TOKEN = os.environ.get("FB_CAPI_TOKEN") or ""                    # set → every Approved WayForPay payment is also sent as a server-side Purchase (event_id = the order reference, so the browser pixel's event is deduplicated)
+
+def fb_capi_purchase(pay, order):
+    """POST https://graph.facebook.com/v21.0/<pixel>/events — one Purchase for an approved payment: event_id = order reference (the same id
+    the thank-you page gives the browser pixel), hashed e-mail and phone from the order, value and the scarf's article. Failures are logged
+    to data/edem/fb-capi.jsonl and never reach the payment flow."""
+    if not (FB_PIXEL_ID and FB_CAPI_TOKEN): return
+    def sha(v): return hashlib.sha256(v.encode("utf-8")).hexdigest()
+    email = (order.get("email") or pay.get("email") or "").strip().lower(); phone = re.sub(r"\D", "", order.get("phone") or pay.get("phone") or "")
+    if phone.startswith("0") and len(phone) == 10: phone = "38" + phone
+    user = {k: [sha(v)] for k, v in (("em", email), ("ph", phone)) if v}
+    if order.get("ip"): user["client_ip_address"] = order["ip"]
+    try: amount = float(pay.get("amount") or order.get("amount") or 0)
+    except ValueError: amount = 0.0
+    try: qty = int(order.get("qty") or 1)
+    except ValueError: qty = 1
+    ev = {"event_name": "Purchase", "event_time": int(time.time()), "event_id": pay["ref"], "action_source": "website", "event_source_url": "https://edem.obiimy.world/thank-you-edem/",
+          "user_data": user, "custom_data": {"currency": "UAH", "value": amount, "content_ids": [keycrm.SKU or "88-91-D"], "content_type": "product", "num_items": qty, "order_id": pay["ref"]}}
+    body = json.dumps({"data": [ev], "access_token": FB_CAPI_TOKEN}).encode("utf-8")
+    log = {"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "ref": pay["ref"], "value": amount}
+    try:
+        req = urllib.request.Request(f"https://graph.facebook.com/v21.0/{FB_PIXEL_ID}/events", data=body, headers={"Content-Type": "application/json", "User-Agent": "obiimy-edem/1.0"}, method="POST")
+        with urllib.request.urlopen(req, timeout=20) as r: log["result"] = json.loads(r.read().decode("utf-8"))
+    except urllib.error.HTTPError as e: log["error"] = f"HTTP {e.code}: {e.read()[:300].decode('utf-8', 'replace')}"
+    except Exception as e: log["error"] = str(e)[:300]
+    EDEM_DIR.mkdir(parents=True, exist_ok=True)
+    with open(EDEM_DIR / "fb-capi.jsonl", "a", encoding="utf-8") as f: f.write(json.dumps(log, ensure_ascii=False) + "\n")
+    sys.stderr.write(f"{time.strftime('%H:%M:%S')}  fb capi {pay['ref']} {'ok' if 'result' in log else log.get('error', '')[:80]}\n")
+
+def edem_order(ref):
+    """The order record behind a reference (orders.jsonl; the early ones sit in registrations.jsonl), or {}."""
+    for name in ("orders.jsonl", "registrations.jsonl"):
+        for r in _jsonl(name):
+            if r.get("ref") == ref: return r
+    return {}
 EDITS = pathlib.Path(os.environ.get("DECK_EDITS") or ROOT / "src" / "deck-edits.json")
 PAGES = pathlib.Path(os.environ.get("DECK_EDITOR_PAGES") or ROOT / "review" / "deck-editor-pages.json")
 CSS = ROOT / "review" / "deck-editor.css"
@@ -648,7 +684,8 @@ def api_edem_register(body, ip="", origin="", base=""):
         out["ref"] = ref
         if WFP_ACCOUNT and WFP_SECRET and origin in CORP_ORIGINS and base:
             # the reference rides in the returnUrl too: a cancelled payment comes back without a body
-            out["pay"] = wfp_purchase(rec, f"{origin}/pay/return?lang={lang}&ref={ref}", f"{base}/api/wfp"); out["url"] = WFP_PAY_URL; rec["pay"] = "wayforpay"
+            ret = f"{origin}/thank-you-edem/?lang={lang}&ref={ref}" if "edem.obiimy.world" in origin else f"{origin}/pay/return?lang={lang}&ref={ref}"   # the Edem host returns to its thank-you page (16.11.2026); other origins keep the old route
+            out["pay"] = wfp_purchase(rec, ret, f"{base}/api/wfp"); out["url"] = WFP_PAY_URL; rec["pay"] = "wayforpay"
     EDEM_DIR.mkdir(parents=True, exist_ok=True)
     with open(EDEM_DIR / ("orders.jsonl" if kind == "order" else "registrations.jsonl"), "a", encoding="utf-8") as f: f.write(json.dumps(rec, ensure_ascii=False) + "\n")   # orders apart from the early-access registrations (06.11)
     if kind == "order" and keycrm.configured():   # 14.11.2026: the order goes to KeyCRM too (source «лендинг»), off the request thread; failures land in data/edem/keycrm.jsonl
@@ -694,6 +731,8 @@ def api_wfp_callback(body):
     EDEM_DIR.mkdir(parents=True, exist_ok=True)
     with open(EDEM_DIR / "payments.jsonl", "a", encoding="utf-8") as f: f.write(json.dumps(rec, ensure_ascii=False) + "\n")
     sys.stderr.write(f"{time.strftime('%H:%M:%S')}  wayforpay {rec['ref']} {rec['status']} {rec['amount']} {rec['currency']}\n")
+    if rec["status"] == "Approved" and FB_PIXEL_ID and FB_CAPI_TOKEN:   # the server-side Purchase for Meta, off the request thread (16.11.2026)
+        threading.Thread(target=fb_capi_purchase, args=(dict(rec), edem_order(rec["ref"])), daemon=True).start()
     if rec["status"] == "Approved" and keycrm.configured():   # the card payment becomes a «paid» payment line on the KeyCRM order (refunds stay manual)
         try: amount = float(rec["amount"])
         except ValueError: amount = 0
@@ -709,9 +748,15 @@ def edem_payment(ref):
 def api_edem_status(ref):
     """GET /api/edem-status?ref=… for the page the visitor returns to: only the payment state, no personal data."""
     if not re.match(r"^EDEM-[0-9]{8}-[0-9]{6}-[0-9a-f]{4}$", ref or ""): raise Problem("Невідоме замовлення.", 404)
-    p = edem_payment(ref)
+    p = edem_payment(ref); o = edem_order(ref)
     st = (p or {}).get("status") or ""
-    return dict(ok=True, ref=ref, status="paid" if st == "Approved" else "declined" if st in ("Declined", "Expired") else "refunded" if st.startswith("Refund") or st == "Voided" else "pending" if p else "new")
+    try: qty = int(o.get("qty") or 1)
+    except ValueError: qty = 1
+    amount = None
+    try: amount = float((p or {}).get("amount") or o.get("amount") or 0) or None
+    except ValueError: pass
+    return dict(ok=True, ref=ref, status="paid" if st == "Approved" else "declined" if st in ("Declined", "Expired") else "refunded" if st.startswith("Refund") or st == "Voided" else "pending" if p else "new",
+                amount=amount, qty=qty, price=EDEM_PRICE, currency="UAH", sku=keycrm.SKU or "88-91-D")   # the thank-you page's purchase event (16.11.2026): the sum and the quantity, no personal data
 
 def edem_rows():
     """Registrations and orders together (orders written before 06.11 sit in registrations.jsonl with kind=order), each order

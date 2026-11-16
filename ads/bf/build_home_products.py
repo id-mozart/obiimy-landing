@@ -66,7 +66,7 @@ def mosaic(arts, H, mob, x0=None, cols=4):
 def L(big, small, pill, mob, num=None, width=None, xl=True, bigsize=None, kicker=None):
     """Desktop: the full lock-up. Mobile (the frame is shown at a third of its size on a phone): the headline larger, the paragraph
     and the second button dropped — the yellow price pill is the only call (the art director, 16.11)."""
-    if mob: return BH.lock(big, None, kicker=kicker or KICK, num=num, pill=pill, more=None, k=1.15, width=width or 760, xl=True, bigsize=bigsize or 100)
+    if mob: return BH.lock(big, None, kicker="Чорна п’ятниця", num=num, pill=pill, more=None, k=1.15, width=width or 760, xl=True, bigsize=bigsize or 100)
     return BH.lock(big, small, kicker=kicker or KICK, num=num, pill=pill, k=1, width=width or 860, xl=xl, bigsize=bigsize)
 
 n44 = len({re.search(r"[«\"]([^»\"]+)[»\"]", p["name"]).group(1) if re.search(r"[«\"]([^»\"]+)[»\"]", p["name"]) else p["name"] for p in P.values() if "44-" in p["article"] and p["article"].endswith("-D") and p["value"] == 20})   # distinct prints: 44-xx-D and P-44-xx-D are the same scarf listed twice
@@ -179,3 +179,84 @@ both("bfh-37-sleep", v_sleep, "Mask and sleep set large with prices")
 
 (HERE / "home-products.html").write_text(HEAD + "".join(ads) + "\n</body></html>")
 print(len(ads), "home frames incl. the third batch")
+
+
+# ─── the fourth batch (16.11, «ещё варианты баннера на главную»): the receipt, budget shelves, three sizes, the pair, all scrunchies, the lookbook twilly ───
+EXTRA3 = """
+.rc { background: #F6F0E4; color: #141110; border-radius: 14px; box-shadow: 0 40px 80px -24px rgba(0,0,0,.7); font-family: 'Montserrat', sans-serif; }
+.rc .ln { display: flex; align-items: center; gap: 14px; border-bottom: 1.5px dashed rgba(27,22,19,.25); padding: 10px 0; }
+.rc .ln .th { flex: none; background: #fff; overflow: hidden; border-radius: 6px; width: 64px; height: 64px; } .rc .ln .th img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rc .ln .nm { flex: 1; font-family: 'EB Garamond', serif; font-weight: 500; font-size: 26px; color: #1B1613; }
+.rc .ln .old { color: #8A8378; text-decoration: line-through; font-weight: 300; font-size: 22px; } .rc .ln .nw { font-weight: 500; font-size: 26px; font-variant-numeric: tabular-nums; }
+.rc .tot { display: flex; justify-content: space-between; align-items: center; border-top: 2px solid #141110; padding-top: 12px; margin-top: 4px; }
+.tl { font-family: 'Onest', sans-serif; font-weight: 600; font-size: 18px; letter-spacing: .2em; text-transform: uppercase; color: #D9CDB9; white-space: nowrap; }
+.plus { font-family: 'Montserrat', sans-serif; font-weight: 300; color: #F2B705; line-height: 1; text-align: center; }
+.bb { background: #F2B705; color: #141110; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: 'Montserrat', sans-serif; box-shadow: 0 0 0 4px #141110, 0 24px 50px -16px rgba(0,0,0,.8); z-index: 9; }
+.bb b { font-weight: 300; letter-spacing: -.04em; line-height: .9; } .bb i { font-style: normal; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; margin-top: .4em; }
+"""
+HEAD = HEAD.replace("</style>", EXTRA3 + "</style>")
+def money0(v): return money(v).replace(NBSP + "грн", "")
+def short(a):
+    m = re.search(r"[«\"]([^»\"]+)[»\"]", P[a]["name"]); return m.group(1) if m else P[a]["name"]
+BASKET = ["44-21-D", "84-7", "R-4"]
+tot_old = lambda arts: sum(P[a]["full"] for a in arts); tot_new = lambda arts: sum(new(a) for a in arts)
+
+def v_receipt(H, mob):
+    """A paper receipt with three products and the saving, the lock-up at the left."""
+    w = 700 if not mob else 720; x = 1920 - w - 80; k = 1 if not mob else 1.1
+    lines = "".join(f'<div class="ln"><div class="th"><img src="{PD}{a}.jpg" alt="" style="transform:scale({ZOOM.get(a, 1.0)});object-position:{POS.get(a, "50% 50%")}"></div><span class="nm">{short(a)} <span style="font-family:Montserrat,sans-serif;font-size:16px;color:#6B645C">−{pct(a)}{THIN}%</span></span><span class="old">{money0(P[a]["full"])}</span><span class="nw">{money(new(a))}</span></div>' for a in BASKET)
+    rc = (f'<div class="rc" style="left:{x}px;top:50%;transform:translateY(-50%) scale({k});transform-origin:100% 50%;width:{w}px;padding:26px 30px">'
+          f'<p class="bd" style="position:absolute;right:-14px;top:-22px;font-size:26px;padding:12px 18px">економія {money(tot_old(BASKET) - tot_new(BASKET))}</p>{lines}'
+          f'<div class="tot"><span style="font-size:20px;color:#6B645C">Разом замість {money(tot_old(BASKET))}</span><span class="nw" style="font-size:34px;font-weight:500">{money(tot_new(BASKET))}</span></div></div>')
+    return f'<div style="inset:0;background:{INK}"></div>' + rc + L("Кошик Чорної п’ятниці.", f"Хустка 44, твіллі 84 і резинка — {money(tot_new(BASKET))} замість {money(tot_old(BASKET))}.", f"Економія {money(tot_old(BASKET) - tot_new(BASKET))}", mob, width=780 if not mob else 640)
+both("bfh-41-chek", v_receipt, "The receipt with three products and the saving")
+
+def v_tiers(H, mob):
+    """Three budget shelves side by side: a label, one card, the price."""
+    groups = [("До 500 грн", "R-4"), ("До 1 500 грн", "84-7"), ("До 3 000 грн", "M-6")]
+    cs = min(H - 190, 300 if not mob else 290); gap = 34; x0 = 1920 - 3 * cs - 2 * gap - 80; y = (H - cs - 100) // 2 + 36
+    out = ""
+    for i, (lb, a) in enumerate(groups):
+        xx = x0 + i * (cs + gap)
+        out += f'<p class="tl" style="left:{xx}px;top:{y - 34}px">{lb}</p>' + card(a, xx, y, cs, cs, bsize=28) + f'<p class="pr" style="left:{xx}px;top:{y + cs + 10}px;width:{cs}px;font-size:28px"><s>{money0(P[a]["full"])}</s>{money(new(a))}</p>'
+    return f'<div style="inset:0;background:{INK}"></div>' + out + L("Подарунок за бюджетом.", "Три полиці — до 500, до 1 500 і до 3 000 грн; кожна річ уже зі знижкою.", f"Знижки до −{MAXP} %", mob, width=700 if not mob else 640)
+both("bfh-42-biudzhet", v_tiers, "Three budget shelves")
+
+def v_sizes(H, mob):
+    """«Грація» in three sizes: three cards growing to the right, bottom-aligned."""
+    arts = ["44-25-D", "65-25-D", "88-25-D"]; labels = [f"44{THIN}×{THIN}44 · −20{THIN}%", f"65{THIN}×{THIN}65 · −10{THIN}%", f"88{THIN}×{THIN}88 · −10{THIN}%"]
+    big = min(H - 150, 470 if not mob else 460); ws = [int(big * .6), int(big * .8), big]; gap = -int(big * .18); pl = 60
+    x = 1920 - sum(ws) - 2 * gap - 80; base = (H + big) // 2 - 16; out = ""; xx = x
+    for i, (a, wi) in enumerate(zip(arts, ws)):
+        out += card(a, xx, base - wi, wi, wi, bsize=24, z=3 + i); xx += wi + gap
+    cw = (sum(ws) + 2 * gap) // 3
+    out += "".join(f'<p class="pr" style="left:{x + i * cw}px;top:{base + 10}px;width:{cw}px;font-size:22px">{lb}<br><b>{money(new(a))}</b></p>' for i, (a, lb) in enumerate(zip(arts, labels)))
+    return f'<div style="inset:0;background:{INK}"></div>' + out + L("«Грація» у трьох розмірах.", f"44{THIN}×{THIN}44 — {money(new('44-25-D'))}, 65{THIN}×{THIN}65 — {money(new('65-25-D'))}, 88{THIN}×{THIN}88 — {money(new('88-25-D'))}.", "«Грація» · від 1 920 грн", mob, width=780 if not mob else 640)
+both("bfh-43-rozmiry", v_sizes, "One print in three sizes")
+
+def v_pair(H, mob):
+    cs = min(H - 110, 380 if not mob else 410); gap = 110 if not mob else 90; x0 = 1920 - 2 * cs - gap - 80; y = (H - cs - 50) // 2
+    out = card("84-7", x0, y, cs, cs, bsize=30, price=True) + card("222-1", x0 + cs + gap, y, cs, cs, bsize=30, price=True) + f'<p class="plus" style="left:{x0 + cs}px;top:{y + cs // 2 - 50}px;width:{gap}px;font-size:110px">+</p>'
+    tot = tot_new(["84-7", "222-1"]); was = tot_old(["84-7", "222-1"])
+    return f'<div style="inset:0;background:{INK}"></div>' + out + L(f"Твіллі + кільце. {money(tot)}.", f"Разом замість {money(was)}: твіллі 84{NBSP}см і кільце Gold, обидва −30{THIN}%.", f"{money(tot)} замість {money(was)}", mob, width=720 if not mob else 700)
+both("bfh-44-para", v_pair, "The pair: twilly and ring")
+
+def v_allscr(H, mob):
+    arts = ["R-16", "R-18", "R-4", "R-7", "R-11", "R-6", "R-1", "R-10"] if not mob else ["R-16", "R-18", "R-4", "R-7", "R-11", "R-6"]
+    cols = 4 if not mob else 3; gap = 14; x0 = 1000 if not mob else 1060; rows_n = 2
+    size = min((1920 - x0 - 28 - gap * (cols - 1)) // cols, (H - 56 - gap) // rows_n); y0 = (H - rows_n * size - gap) // 2
+    out = "".join(card(a, x0 + (i % cols) * (size + gap), y0 + (i // cols) * (size + gap), size, size, bsize=22).split('<p class="bd"')[0] for i, a in enumerate(arts))
+    d = 240 if not mob else 300
+    out += f'<div class="bb" style="left:{1920 - d - 40}px;top:{H - d - 44}px;width:{d}px;height:{d}px"><b style="font-size:{int(d * .34)}px">−30 %</b><i style="font-size:{int(d * .075)}px">на всі {nR} принти</i></div>'
+    return f'<div style="inset:0;background:{INK}"></div>' + out + L(f"Резинки. Усі −30{THIN}%.", f"{nR} принти по {money(new('R-4'))} замість {money(P['R-4']['full'])}.", f"{money(new('R-4'))} замість {money(P['R-4']['full'])}", mob)
+both("bfh-45-vsi-rezynky", v_allscr, "All scrunchies, one round badge")
+
+def v_lookbook(H, mob):
+    """A lookbook frame with a twilly at the neck melting into the field, one twilly card over it."""
+    cs = 320 if not mob else 360
+    return f'<div style="inset:0;background:{INK}"></div>' + BH.feathered(LB + "lb07-08-L.webp", 980 if not mob else 960, 440, "50% 28%" if not mob else "35% 0%") + card("84-7", 1000 if not mob else 1040, H - cs - 50, cs, cs, rot=-4, z=5, bsize=30) + \
+        L(f"Твіллі 84{NBSP}см. −30{THIN}%.", f"{n84} принтів по {money(new('84-7'))} замість {money(P['84-7']['full'])} — на шию, у волосся, на сумку.", f"{money(new('84-7'))} замість {money(P['84-7']['full'])}", mob, width=780 if not mob else 700)
+both("bfh-46-lookbook", v_lookbook, "The lookbook twilly with one card")
+
+(HERE / "home-products.html").write_text(HEAD + "".join(ads) + "\n</body></html>")
+print(len(ads), "home frames incl. the fourth batch")

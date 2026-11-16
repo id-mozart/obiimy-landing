@@ -199,6 +199,134 @@ wall("bfp-13-dobirka", ["44-22-D", "84-7", "R-7", "M-6", "222-1", "NM-6", "140-1
 hero("bfp-14-kiltse", "444-1", f"Кільце «Циліндр». −30{THIN}%.", f"Кільце Gold — до хустки чи твіллі зі знижкою, в один кошик.",
      "One gold ring, −30 %", label=f"Кільця · {money(new('444-1'))}", pos="50% 50%", zoom=1.9)
 
+
+# ─── the second batch (16.11, «ещё варианты и креативов»): the price as the hero, the receipt, gift tiers, pairs, sizes ─────────
+EXTRA += """
+.bigp { font-family: 'Montserrat', sans-serif; font-weight: 300; letter-spacing: -.04em; line-height: .92; color: #F2B705; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.bigp s { color: #9A9088; font-weight: 300; font-size: .5em; letter-spacing: -.02em; margin-right: .25em; vertical-align: .55em; }
+.bigp span { font-size: .4em; letter-spacing: 0; color: #F3EADB; margin-left: .1em; }
+.rc { background: #F6F0E4; color: #141110; border-radius: 14px; box-shadow: 0 40px 80px -24px rgba(0,0,0,.7); font-family: 'Montserrat', sans-serif; }
+.rc .ln { display: flex; align-items: center; gap: 14px; border-bottom: 1.5px dashed rgba(27,22,19,.25); }
+.rc .ln:last-child { border-bottom: 0; }
+.rc .ln .th { flex: none; background: #fff; overflow: hidden; border-radius: 6px; } .rc .ln .th img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.rc .ln .nm { flex: 1; font-family: 'EB Garamond', serif; font-weight: 500; color: #1B1613; line-height: 1.1; }
+.rc .ln .old { color: #8A8378; text-decoration: line-through; font-weight: 300; white-space: nowrap; }
+.rc .ln .nw { font-weight: 500; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.rc .tot { display: flex; justify-content: space-between; align-items: center; border-top: 2px solid #141110; }
+.plus { font-family: 'Montserrat', sans-serif; font-weight: 300; color: #F2B705; line-height: 1; text-align: center; }
+.tl { font-family: 'Onest', sans-serif; font-weight: 600; letter-spacing: .2em; text-transform: uppercase; color: #D9CDB9; white-space: nowrap; }
+.bb { position: absolute; background: #F2B705; color: #141110; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; font-family: 'Montserrat', sans-serif; box-shadow: 0 0 0 4px #141110, 0 24px 50px -16px rgba(0,0,0,.8); z-index: 9; }
+.bb b { font-weight: 300; letter-spacing: -.04em; line-height: .9; } .bb i { font-style: normal; font-weight: 500; letter-spacing: .06em; text-transform: uppercase; margin-top: .4em; }
+"""
+def savings(arts): return sum(P[a]["full"] for a in arts) - sum(new(a) for a in arts)
+def tot_old(arts): return sum(P[a]["full"] for a in arts)
+def tot_new(arts): return sum(new(a) for a in arts)
+def money0(v): return money(v).replace(NBSP + "грн", "")
+
+def place(id, draw, bh_of, big, small, note, label=None, size=76):
+    """The vertical: the block from `draw(box)` and the words under it (frame); the square: the block in the left box, the words at the right."""
+    if SQ:
+        avail = H - Y0 - BOTB - BAR - 50; bh = min(avail, bh_of(592))
+        box = (48, Y0 + (avail - bh) // 2, 592, bh)   # the block centred in the left two thirds
+        body = f'<div style="inset:0;background:{INK}"></div>{draw(box)}{header(True, hdr_text(big))}<div class="light" style="left:{664}px;right:64px;top:{Y0 + 10}px;z-index:4">{words(big, small, 50)}</div>{bar(True, label or CATS)}'
+        ad(id, body, note); return
+    w = 952; bh = bh_of(w)
+    frame(id, lambda top: draw((64, top, w, bh)), bh, big, small, note, label, size=size)
+
+def pricehero(id, a, big, small, note, label=None):
+    """The price pair huge at the top, the product card under it."""
+    def draw(box):
+        x, y, w, h = box; ps = int(170 * K) if not SQ else 96
+        out = f'<p class="bigp" style="left:{x}px;top:{y}px;font-size:{ps}px"><s>{money0(P[a]["full"])}</s>{money0(new(a))}<span>грн</span></p>'
+        cy = y + int(ps * 1.0) + int(24 * K); ch = h - (cy - y)
+        return out + card(a, x, cy, w, ch, badge=True, bsize=36 if not SQ else 28)
+    place(id, draw, lambda w: int(170 * K) + int(24 * K) + min(w, int(760 * K)), big, small, note, label)
+
+def receipt(id, arts, big, small, note, label=None):
+    """A paper receipt: a thumbnail, the name, the old price struck, the new one; the total and the saving at the bottom."""
+    def draw(box):
+        x, y, w, h = box; pad = int(40 * K) if not SQ else 24; th = int(170 * K) if not SQ else 92; fs = int(42 * K) if not SQ else 26
+        lines = "".join(f'<div class="ln" style="padding:{int(14 * K)}px 0"><div class="th" style="width:{th}px;height:{th}px"><img src="{PD}{a}.jpg" alt="" style="transform:scale({ZOOM.get(a, 1.0)});object-position:{POS.get(a, "50% 50%")}"></div><span class="nm" style="font-size:{int(fs * 1.1)}px">{nb(short(a))}<br><span style="font-family:Montserrat,sans-serif;font-size:{int(fs * .7)}px;color:#6B645C;font-weight:400">−{pct(a)}{THIN}%</span></span><span class="old" style="font-size:{int(fs * .9)}px">{money0(P[a]["full"])}</span><span class="nw" style="font-size:{fs}px">{money(new(a))}</span></div>' for a in arts)
+        tot = f'<div class="tot" style="padding-top:{int(18 * K)}px;margin-top:{int(6 * K)}px"><span style="font-size:{int(fs * .9)}px;color:#6B645C">Разом замість {money(tot_old(arts))}</span><span class="nw" style="font-size:{int(fs * 1.3)}px;font-weight:500">{money(tot_new(arts))}</span></div>'
+        sv = f'<p class="bd" style="right:{-int(14 * K)}px;top:{-int(22 * K)}px;font-size:{int(fs * 1.05)}px;padding:{int(fs * .5)}px {int(fs * .8)}px;position:absolute">економія {money(savings(arts))}</p>'
+        return f'<div class="rc" style="left:{x}px;top:{y}px;width:{w}px;padding:{pad}px {pad + 6}px;position:absolute">{sv}{lines}{tot}</div>'
+    n = len(arts)
+    if SQ: frame(id, lambda top: draw((64, top, 952, 0)), (92 + 28) * n + 130, big, small, note, label, size=52); return
+    place(id, draw, lambda w: (int(170 * K) + int(28 * K)) * n + int(180 * K), big, small, note, label)
+
+def tiers(id, groups, big, small, note, label=None):
+    """Three shelves by budget: a yellow label and three small cards with the price under each."""
+    def draw(box):
+        x, y, w, h = box; rows_n = len(groups); gap = int(16 * K); lab = int(34 * K) if not SQ else 22; pl = int(36 * K) if not SQ else 22
+        ch = (h - rows_n * (lab + pl + gap)) // rows_n; cw = min(ch, (w - 2 * gap) // 3); out = ""
+        for r, (title, arts) in enumerate(groups):
+            yy = y + r * (ch + lab + pl + gap)
+            out += f'<p class="tl" style="left:{x}px;top:{yy}px;font-size:{int(lab * .62)}px">{title}</p>'
+            for i, a in enumerate(arts):
+                xx = x + i * (cw + gap); out += card(a, xx, yy + lab, cw, ch, badge=True, bsize=22 if not SQ else 16)
+                out += f'<p class="pr" style="left:{xx}px;top:{yy + lab + ch + int(6 * K)}px;width:{cw}px;text-align:center;font-size:{int(32 * K) if not SQ else 18}px"><b>{money(new(a))}</b></p>'
+        return out
+    place(id, draw, lambda w: 3 * ((w - 2 * int(16 * K)) // 3 + int(34 * K) + int(36 * K) + int(16 * K)) - int(16 * K), big, small, note, label)
+
+def pair(id, a, b, big, small, note, label=None):
+    """Two cards with a plus between them and the total of the pair."""
+    def draw(box):
+        x, y, w, h = box
+        if SQ:
+            gap = 50; cw = (w - gap) // 2; ch = min(cw, h - 70)
+            return card(a, x, y, cw, ch, badge=True, bsize=26, price=True) + card(b, x + cw + gap, y, cw, ch, badge=True, bsize=26, price=True) + f'<p class="plus" style="left:{x + cw}px;top:{y + ch // 2 - 25}px;width:{gap}px;font-size:50px">+</p>'
+        cs = int(540 * K); gap = int(80 * K); out = ""
+        for i, it in enumerate((a, b)):
+            yy = y + i * (cs + gap); out += card(it, x, yy, cs, cs, badge=True, bsize=32)
+            out += f'<p class="pr" style="left:{x + cs + int(40 * K)}px;top:{yy + cs // 2 - int(30 * K)}px;font-size:{int(44 * K)}px;text-align:left"><s>{money(P[it]["full"])}</s><br><b>{money(new(it))}</b></p>'
+        out += f'<p class="plus" style="left:{x}px;top:{y + cs + gap // 2 - int(48 * K)}px;width:{cs}px;font-size:{int(90 * K)}px">+</p>'
+        return out
+    place(id, draw, lambda w: 2 * int(540 * K) + int(80 * K), big, small, note, label)
+
+def sizes(id, arts, labels, big, small, note, label=None):
+    """The same print in three sizes: three cards growing to the right, bottom-aligned, the size and the price under each."""
+    def draw(box):
+        x, y, w, h = box; ws = [int(w * f) for f in (.34, .44, .56)]; gap = -int(w * .17)
+        pl = int(84 * K) if not SQ else 44; base = y + (h - pl); out = ""; xx = x
+        for i, (a, wi) in enumerate(zip(arts, ws)):
+            hi = min(wi, h - pl); out += card(a, xx, base - hi, wi, hi, badge=True, bsize=24 if not SQ else 16, z=3 + i); xx += wi + gap
+        cw = w // 3
+        out += "".join(f'<p class="pr" style="left:{x + i * cw}px;top:{base + int(10 * K)}px;width:{cw}px;text-align:center;font-size:{int(30 * K) if not SQ else 15}px;line-height:1.2">{lb}<br><b>{money(new(a))}</b></p>' for i, (a, lb) in enumerate(zip(arts, labels)))
+        return out
+    place(id, draw, lambda w: int(w * .56) + int(84 * K), big, small, note, label)
+
+def mosaic12(id, arts, cols, big, small, note, label=None, badge=("−30 %", "на всі 34 принти")):
+    """Twelve cards without badges and one round badge over the corner."""
+    def draw(box):
+        x, y, w, h = box; gap = int(12 * K); rows_n = (len(arts) + cols - 1) // cols
+        cw = (w - gap * (cols - 1)) // cols; ch = min(cw, (h - gap * (rows_n - 1)) // rows_n)
+        out = "".join(card(a, x + (i % cols) * (cw + gap), y + (i // cols) * (ch + gap), cw, ch, badge=False) for i, a in enumerate(arts))
+        d = int(300 * K) if not SQ else 180
+        out += f'<div class="bb" style="left:{x + w - d + int(30 * K)}px;top:{y + rows_n * (ch + gap) - d - int(10 * K)}px;width:{d}px;height:{d}px"><b style="font-size:{int(d * .34)}px">{badge[0]}</b><i style="font-size:{int(d * .075)}px">{nb(badge[1])}</i></div>'
+        return out
+    rows_n = (len(arts) + cols - 1) // cols
+    place(id, draw, lambda w: rows_n * ((w - int(12 * K) * (cols - 1)) // cols) + (rows_n - 1) * int(12 * K), big, small, note, label)
+
+def typo(id, big, small, strip, note, label=None):
+    """Words only, huge; a thin strip of small cards under them."""
+    def draw(box):
+        x, y, w, h = box; n = len(strip); gap = int(10 * K); cw = (w - gap * (n - 1)) // n
+        return "".join(card(a, x + i * (cw + gap), y + h - cw, cw, cw, badge=True, bsize=24) for i, a in enumerate(strip))
+    place(id, draw, lambda w: (w - int(10 * K) * (len(strip) - 1)) // len(strip) + int(20 * K), big, small, note, label, size=150)
+
+NB = NBSP
+pricehero("bfp-15-tsina-rezynka", "R-4", f"Резинка «Ніжність». −30{THIN}%.", f"Шовкова резинка на жовтій коробці — {nR} принти в добірці, усі по {money(new('R-4'))}.", "The price pair huge, the scrunchie under it", label=f"Резинки · {money(new('R-4'))}")
+pricehero("bfp-16-tsina-tvilli", "84-7", f"Твіллі «Спокуса» 84{NB}см. −30{THIN}%.", f"{words_n(n84).capitalize()} принтів твіллі 84{THIN}×{THIN}5 по {money(new('84-7'))}.", "The price pair huge, the twilly under it", label=f"Твіллі 84 см · {money(new('84-7'))}")
+BASKET = ["44-21-D", "84-7", "R-4"]
+receipt("bfp-17-chek", BASKET, "Кошик Чорної п’ятниці.", f"Хустка 44, твіллі 84 і резинка — {money(tot_new(BASKET))} замість {money(tot_old(BASKET))}: економія {money(savings(BASKET))}.", "A receipt: three products, the saving", label=f"Економія {money(savings(BASKET))}")
+tiers("bfp-18-biudzhet", [("До 500 грн", ["222-1", "R-4", "111-2"]), ("До 1 500 грн", ["84-7", "Book-027", "NR-300"]), ("До 3 000 грн", ["44-21-D", "M-6", "NM-6"])],
+      "Подарунок за бюджетом.", "Три полиці — до 500, до 1 500 і до 3 000 грн; кожна річ уже зі знижкою.", "Three shelves by budget", label="Подарунки · до −30 %")
+pair("bfp-19-para", "84-7", "222-1", f"Твіллі + кільце. {money(tot_new(['84-7', '222-1']))}.", f"Разом замість {money(tot_old(['84-7', '222-1']))}: твіллі 84{NB}см «Спокуса» і кільце Gold «Безкінечність», обидва −30{THIN}%.", "The pair: twilly and ring", label=f"Пара · {money(tot_new(['84-7', '222-1']))}")
+sizes("bfp-20-rozmiry", ["44-25-D", "65-25-D", "88-25-D"], [f"44{THIN}×{THIN}44 · −20{THIN}%", f"65{THIN}×{THIN}65 · −10{THIN}%", f"88{THIN}×{THIN}88 · −10{THIN}%"],
+      "«Грація» у трьох розмірах.", f"Двосторонній друк: 44{THIN}×{THIN}44 — {money(new('44-25-D'))}, 65{THIN}×{THIN}65 — {money(new('65-25-D'))}, 88{THIN}×{THIN}88 — {money(new('88-25-D'))}.", "One print, three sizes", label="«Грація» · 44, 65, 88 см")
+mosaic12("bfp-21-vsi-rezynky", ["R-16", "R-18", "R-4", "R-7", "R-11", "R-6", "R-1", "R-10", "R-2", "R-5", "R-8", "R-38"], 3, f"Резинки. Усі −30{THIN}%.", f"{nR} принти по {money(new('R-4'))} замість {money(P['R-4']['full'])}.", "Twelve scrunchies, one round badge", label=f"Резинки · {money(new('R-4'))}", badge=("−30 %", f"на всі {nR} принти"))
+typo("bfp-22-slova", f"{TOTAL} товари. До −{MAXP}{THIN}%.", "Хустки, твіллі, маски, резинки, кільця й набори зі знижкою — на obiimy.world.", ["44-22-D", "84-7", "R-4"], "Words only and a strip of three cards")
+
 HEAD = f"""<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · Black Friday · the draft's products</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@500;600&family=Montserrat:wght@300;400;500&family=Onest:wght@400;600&display=swap">

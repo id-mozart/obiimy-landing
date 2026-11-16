@@ -504,7 +504,7 @@ def thankyou(lang="uk"):
 </script>'''
     body = body.replace("API_LOCAL", V.API_LOCAL).replace("API_PROD", V.API_PROD).replace("EDEM_SKU", V.EDEM_SKU)
     slug = "edem-thank-you" + ("-en" if lang == "en" else "")
-    html = V.head(slug, css, title_extra=" — " + T["title"], url=EDEM_URL + "thank-you-edem/", index=False, lang=lang, desc=T["title"]) + body
+    html = V.head(slug, css, title_extra=" — " + T["title"], url=EDEM_URL + "thank-you-edem/", index=False, lang=lang, desc=T["title"]) + V.GTM_NOSCRIPT + body
     html = html.replace('src="brand/', 'src="/brand/').replace('href="brand/', 'href="/brand/')   # the page lives at /thank-you-edem/ — the site's assets by absolute path
     (ROOT / f"{slug}.html").write_text(html); print(slug, len(html) // 1024, "KB")
 

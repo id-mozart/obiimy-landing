@@ -126,11 +126,12 @@ SCRIPT = """
 
 DESC = "Спільний мистецький проєкт KRAЇNA EDEM та OBIIMY: шовкова хустка 88 × 88, натхненна трипільською культурою. Лімітований випуск — зареєструйтесь, щоб дізнатися про ціну та старт продажів першими."
 FB_PIXEL = "1331262968959972"            # the client's Meta pixel for the Edem landing (the advertisers' brief, 16.11.2026)
-GTM_ID = __import__("os").environ.get("EDEM_GTM_ID") or ""   # the GTM container of the advertisers — set when they give it; the dataLayer events are pushed regardless
+GTM_ID = __import__("os").environ.get("EDEM_GTM_ID") or "GTM-57G5WLTR"   # the advertisers' GTM container (given 16.11.2026); EDEM_GTM_ID overrides it
 TRACK = ('<script>window.dataLayer=window.dataLayer||[];</script>'
          + (f'<script>(function(w,d,s,l,i){{w[l]=w[l]||[];w[l].push({{"gtm.start":new Date().getTime(),event:"gtm.js"}});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!="dataLayer"?"&l="+l:"";j.async=true;j.src="https://www.googletagmanager.com/gtm.js?id="+i+dl;f.parentNode.insertBefore(j,f);}})(window,document,"script","dataLayer","{GTM_ID}");</script>' if GTM_ID else "")
          + f'<script>!function(f,b,e,v,n,t,s){{if(f.fbq)return;n=f.fbq=function(){{n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)}};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version="2.0";n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}}(window,document,"script","https://connect.facebook.net/en_US/fbevents.js");fbq("init","{FB_PIXEL}");fbq("track","PageView");</script>'
          + f'<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id={FB_PIXEL}&ev=PageView&noscript=1" alt=""></noscript>')
+GTM_NOSCRIPT = f'<noscript><iframe src="https://www.googletagmanager.com/ns.html?id={GTM_ID}" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>' if GTM_ID else ""
 
 def head(slug, css, title_extra="", url=None, index=False, desc=DESC, lang="uk", extra=""):
     name = "Trypillia: The Art of Origins" if lang == "en" else "Трипілля: Мистецтво витоків"   # 07.11: the Ukrainian page names the project in Ukrainian
@@ -147,7 +148,7 @@ def head(slug, css, title_extra="", url=None, index=False, desc=DESC, lang="uk",
 <style>{css}</style>{TRACK}'''
 
 def write(slug, css, body, extra_js="", **kw):
-    html = head(slug, css, **kw) + typo(body) + SCRIPT.replace("EXTRA", extra_js) + edem.variants_bar(slug)
+    html = head(slug, css, **kw) + GTM_NOSCRIPT + typo(body) + SCRIPT.replace("EXTRA", extra_js) + edem.variants_bar(slug)
     (ROOT / f"{slug}.html").write_text(html); print(slug, len(html) // 1024, "KB")
 
 def spec_rows(): return "".join(f"<div><span>{k}</span><b>{v}</b></div>" for k, v in SPEC)

@@ -447,6 +447,7 @@ def thankyou(lang="uk"):
 .ty .det div { display: flex; justify-content: space-between; gap: 16px; } .ty .det b { font-weight: 600; }
 .ty .act { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; margin-top: 26px; }
 .ty .act .btn-line { border-color: rgba(42,32,23,.4); color: #2A2017; }
+.ty [hidden] { display: none !important; }
 .ty[data-st="pending"] .ic { background: #e8dcc0; } .ty[data-st="declined"] .ic, .ty[data-st="cancel"] .ic { background: #e9d2c8; }
 """
     logo, edem_mark = "logo-ink", "edem-wordmark"

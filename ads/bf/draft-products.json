@@ -1,0 +1,2167 @@
+[
+ {
+  "article": "111-1",
+  "name": "Потрійне кільце для хустки Gold",
+  "category": "Прикраси",
+  "full": 450.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/35/troynoe-kolechko-dlja-platka-zoloto-67278457014268_+3f072136b4.jpg",
+  "thumb": "https://obiimy.world/content/images/35/120x120l80nn0/troynoe-kolechko-dlja-platka-zoloto-67278457014268.webp",
+  "link": "https://obiimy.world/potriine-kilechko-dlia-khustky-zoloto/",
+  "stock": 237.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "111-2",
+  "name": "Потрійне кільце для хустки Silver",
+  "category": "Прикраси",
+  "full": 450.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/36/troynoe-kolechko-dlja-platka-serebro-29555892216840_+c3e5b08325.jpg",
+  "thumb": "https://obiimy.world/content/images/36/120x120l80nn0/troynoe-kolechko-dlja-platka-serebro-29555892216840.webp",
+  "link": "https://obiimy.world/potriine-kilechko-dlia-khustky-sriblo/",
+  "stock": 316.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-1",
+  "name": "Хустка твіллі шовкова «Літній віночок» 140x5",
+  "category": "Твіллі",
+  "full": 1850.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/41/tvilli-iz-naturalnogo-shelka-letniy-venochek-57389116975654_+c0e11f135f.jpg",
+  "thumb": "https://obiimy.world/content/images/41/120x120l80nn0/tvilli-iz-naturalnogo-shelka-letniy-venochek-57389116975654.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-litniivinochok/1787/",
+  "stock": 8.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-11",
+  "name": "Хустка твіллі шовкова «Впевненість» 140x5",
+  "category": "Твіллі",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/36/tvilli-iz-naturalnogo-shelka-uverennost-58362737132140_+617acdbdc8.jpg",
+  "thumb": "https://obiimy.world/content/images/36/120x120l80nn0/tvilli-iz-naturalnogo-shelka-uverennost-58362737132140.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-vpevnenist/1783/",
+  "stock": 18.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-13",
+  "name": "Хустка твіллі шовкова «Щирі Почуття» 140x5",
+  "category": "Твіллі",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/25/tvilli-shelkovyy-iskrennie-chuvstva-17371966091069_+b3b603ecd5.jpg",
+  "thumb": "https://obiimy.world/content/images/25/120x120l80nn0/tvilli-shelkovyy-iskrennie-chuvstva-17371966091069.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-shchyri-pochuttia/1825/",
+  "stock": 23.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-14",
+  "name": "Хустка твіллі шовкова «Пробудження» 140x5",
+  "category": "Твіллі",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/27/tvilli-iz-naturalnogo-shelka-probuzhdenie-25497468062437_+d9cc218e56.jpg",
+  "thumb": "https://obiimy.world/content/images/27/120x120l80nn0/tvilli-iz-naturalnogo-shelka-probuzhdenie-25497468062437.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-probudzhennia/1827/",
+  "stock": 12.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-16",
+  "name": "Хустка твіллі шовкова «Соковиті Спогади» 140x5",
+  "category": "Твіллі",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/31/tvilli-iz-naturalnogo-shelka-sochnye-vospominanija-38257195533526_+e0509a6c15.jpg",
+  "thumb": "https://obiimy.world/content/images/31/120x120l80nn0/tvilli-iz-naturalnogo-shelka-sochnye-vospominanija-38257195533526.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-sokovyti-spohady/1831/",
+  "stock": 11.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-17",
+  "name": "Хустка твіллі шовкова «Між нами» 140x5",
+  "category": "Твіллі",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/46/tvilli-iz-naturalnogo-shelka-mezhdu-nami-93353267458539_+c9422cc817.jpg",
+  "thumb": "https://obiimy.world/content/images/46/120x120l80nn0/tvilli-iz-naturalnogo-shelka-mezhdu-nami-93353267458539.webp",
+  "link": "https://obiimy.world/tvilli-z-naturalnoho-shovku-mizh-namy/1896/",
+  "stock": 14.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-18",
+  "name": "Хустка твіллі шовкова «Вир почуттів» 140x5",
+  "category": "Твіллі",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/2/tvilli-iz-naturalnogo-shelka-vodovorot-chuvstv-83563162833982_+433dfd6006.jpg",
+  "thumb": "https://obiimy.world/content/images/2/120x120l80nn0/tvilli-iz-naturalnogo-shelka-vodovorot-chuvstv-83563162833982.webp",
+  "link": "https://obiimy.world/tvilli-z-naturalnoho-shovku-vyr-pochuttiv/1902/",
+  "stock": 28.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-23",
+  "name": "Хустка твіллі шовкова «Баланс» 140x5",
+  "category": "Твіллі",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/37/tvilli-z-naturalnoho-shovku-balans-47352510544337_+fedcc8011a.jpg",
+  "thumb": "https://obiimy.world/content/images/37/120x120l80nn0/tvilli-z-naturalnoho-shovku-balans-47352510544337.webp",
+  "link": "https://obiimy.world/tvilli-z-naturalnoho-shovku-balans/1950/",
+  "stock": 12.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-25",
+  "name": "Хустка твіллі шовкова «Грація» 140x5",
+  "category": "Твіллі",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/42/tvilli-iz-naturalnogo-shelka-gracija-91159861977950_+b2c96f714f.jpg",
+  "thumb": "https://obiimy.world/content/images/42/120x120l80nn0/tvilli-iz-naturalnogo-shelka-gracija-91159861977950.webp",
+  "link": "https://obiimy.world/tvilli-z-naturalnoho-shovku-hratsiia/1992/",
+  "stock": 40.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-30",
+  "name": "Хустка твіллі шовкова «Коло сонця» 140x5",
+  "category": "Твіллі",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/18/tvilli-shovkovyi-kolo-sontsia-33963932454464_+3a536542ea.jpg",
+  "thumb": "https://obiimy.world/content/images/18/120x120l80nn0/tvilli-shovkovyi-kolo-sontsia-33963932454464.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-kolo-sontsia/2072/",
+  "stock": 8.0,
+  "collections": [
+   "Колекції/«Співоча душа»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-31",
+  "name": "Хустка твіллі шовкова «Піднесення» 140x5",
+  "category": "Твіллі",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/19/tvilli-shovkovyi-pidnesennia-92764744965784_+ad534dea63.jpg",
+  "thumb": "https://obiimy.world/content/images/19/120x120l80nn0/tvilli-shovkovyi-pidnesennia-92764744965784.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-pidnesennia/2073/",
+  "stock": 22.0,
+  "collections": [
+   "Колекції/«Співоча душа»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-6",
+  "name": "Хустка твіллі шовкова «Енергія» 140x5",
+  "category": "Твіллі",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/37/tvilli-iz-naturalnogo-shelka-energija-30301191612350_+b884fbe72e.jpg",
+  "thumb": "https://obiimy.world/content/images/37/120x120l80nn0/tvilli-iz-naturalnogo-shelka-energija-30301191612350.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-enerhiia/1784/",
+  "stock": 32.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "140-7",
+  "name": "Хустка твіллі шовкова «Спокуса» 140x5",
+  "category": "Твіллі",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/48/tvilli-iz-naturalnogo-shelka-soblazn-20732605610511_+4426600344.jpg",
+  "thumb": "https://obiimy.world/content/images/48/120x120l80nn0/tvilli-iz-naturalnogo-shelka-soblazn-20732605610511.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-spokusa/1792/",
+  "stock": 8.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "222-1",
+  "name": "Кільце для хустки «Безкінечність» Gold",
+  "category": "Прикраси",
+  "full": 450.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/37/kolechko-dlja-platka-zolotistoe-beskonechnost-16947677215988_+7a3cd7dfd1.jpg",
+  "thumb": "https://obiimy.world/content/images/37/120x120l80nn0/kolechko-dlja-platka-zolotistoe-beskonechnost-16947677215988.webp",
+  "link": "https://obiimy.world/kilechko-dlia-khustky-zolotyste-bezkinechnist/",
+  "stock": 265.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "222-2",
+  "name": "Кільце для хустки «Безкінечність» Silver",
+  "category": "Прикраси",
+  "full": 450.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/38/kolechko-dlja-platka-serebristoe-beskonechnost-92889092829110_+7806aa286a.jpg",
+  "thumb": "https://obiimy.world/content/images/38/120x120l80nn0/kolechko-dlja-platka-serebristoe-beskonechnost-92889092829110.webp",
+  "link": "https://obiimy.world/kilechko-dlia-khustky-sribliaste-bezkinechnist/",
+  "stock": 182.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "333-1",
+  "name": "Кільце для хустки «Х стиль» Gold",
+  "category": "Прикраси",
+  "full": 450.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/39/kolechko-dlja-platka-zolotistoe-x-stil-30719161040831_+b34027208a.jpg",
+  "thumb": "https://obiimy.world/content/images/39/120x120l80nn0/kolechko-dlja-platka-zolotistoe-x-stil-30719161040831.webp",
+  "link": "https://obiimy.world/kilechko-dlia-khustky-zolotyste-kh-styl/",
+  "stock": 143.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "333-2",
+  "name": "Кільце для хустки «Х стиль» Silver",
+  "category": "Прикраси",
+  "full": 450.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/40/kolechko-dlja-platka-serebristoe-x-stil-33866114989409_+2730d2bd3c.jpg",
+  "thumb": "https://obiimy.world/content/images/40/120x120l80nn0/kolechko-dlja-platka-serebristoe-x-stil-33866114989409.webp",
+  "link": "https://obiimy.world/kilechko-dlia-khustky-sribliaste-kh-styl/",
+  "stock": 186.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "44-12",
+  "name": "Шовкова хустка «Поцілунок Сонця» 44x44",
+  "category": "Хустки",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/4/shovkova-khustka-potsilunok-sontsia-44x44-36734775250933_+f4bd850f79.jpg",
+  "thumb": "https://obiimy.world/content/images/4/120x120l80nn0/shovkova-khustka-potsilunok-sontsia-44x44-36734775250933.webp",
+  "link": "https://obiimy.world/shovkova-khustka-potsilunok-sontsia-44x44/",
+  "stock": 6.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "44-15-D",
+  "name": "Хустка паше шовкова «Закоханість» 44х44 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/23/pashe-shelkovyy-vlublennost-4444-15-dvustoronnjaja-pechat-19079834569294_+3c94109e7f.jpg",
+  "thumb": "https://obiimy.world/content/images/23/120x120l80nn0/pashe-shelkovyy-vlublennost-4444-15-dvustoronnjaja-pechat-19079834569294.webp",
+  "link": "https://obiimy.world/khustka-pashe-shovkova-zakokhanist-44x44-dvostoronnii-druk/",
+  "stock": 13.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "44-18-D",
+  "name": "Шовкова хустка «Вир почуттів» 44х44 (двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/15/shovkova-khustka-vyr-pochuttiv-44kh44-dvostoronnii-druk-96067569872813_+40ca1a0df2.png",
+  "thumb": "https://obiimy.world/content/images/15/120x120l80nn0/shovkova-khustka-vyr-pochuttiv-44kh44-dvostoronnii-druk-96067569872813.webp",
+  "link": "https://obiimy.world/shovkova-khustka-vyr-pochuttiv-44kh44-dvostoronnii-druk/",
+  "stock": 16.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "44-20-D",
+  "name": "Хустка паше шовкова «З чистого листа» 44х44 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/25/pashe-shelkovyy-s-chistogo-lista-4444-20-dvustoronnjaja-pechat-32099657265200_+b13cc6e389.jpg",
+  "thumb": "https://obiimy.world/content/images/25/120x120l80nn0/pashe-shelkovyy-s-chistogo-lista-4444-20-dvustoronnjaja-pechat-32099657265200.webp",
+  "link": "https://obiimy.world/khustka-pashe-shovkova-z-chystoho-lysta-44x44-dvostoronnii-druk/",
+  "stock": 16.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "44-21-D",
+  "name": "Хустка паше шовкова «Натхнення» 44x44 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/26/khustka-pashe-shovkova-natkhnennia-44x44-dvostoronnii-druk-82589994233420_+08c9177d20.jpg",
+  "thumb": "https://obiimy.world/content/images/26/120x120l80nn0/khustka-pashe-shovkova-natkhnennia-44x44-dvostoronnii-druk-82589994233420.webp",
+  "link": "https://obiimy.world/khustka-pashe-shovkova-natkhnennia-44x44-dvostoronnii-druk/",
+  "stock": 20.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "44-22-D",
+  "name": "Хустка паше шовкова «Сміливий дотик» 44x44 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/27/khustka-pashe-shovkova-smilyvyi-dotyk-44x44-dvostoronnii-druk-22543989074092_+deb680e336.jpg",
+  "thumb": "https://obiimy.world/content/images/27/120x120l80nn0/khustka-pashe-shovkova-smilyvyi-dotyk-44x44-dvostoronnii-druk-22543989074092.webp",
+  "link": "https://obiimy.world/khustka-pashe-shovkova-smilyvyi-dotyk-44x44-dvostoronnii-druk/",
+  "stock": 16.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "44-24-D",
+  "name": "Хустка паше шовкова «Відновлення» 44х44 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/29/pashe-shelkovyy-obnovlenie-4444-24-dvustoronnjaja-pechat-16769701493537_+571b60e069.jpg",
+  "thumb": "https://obiimy.world/content/images/29/120x120l80nn0/pashe-shelkovyy-obnovlenie-4444-24-dvustoronnjaja-pechat-16769701493537.webp",
+  "link": "https://obiimy.world/khustka-pashe-shovkova-vidnovlennia-44x44-dvostoronnii-druk/",
+  "stock": 17.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "44-25-D",
+  "name": "Хустка паше шовкова «Грація» 44х44 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/30/khustka-pashe-shovkova-hratsiia-44x44-dvostoronnii-druk-25575241006056_+5fe1080d48.jpg",
+  "thumb": "https://obiimy.world/content/images/30/120x120l80nn0/khustka-pashe-shovkova-hratsiia-44x44-dvostoronnii-druk-25575241006056.webp",
+  "link": "https://obiimy.world/khustka-pashe-shovkova-hratsiia-44x44-dvostoronnii-druk/",
+  "stock": 14.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "44-26-D",
+  "name": "Хустка паше шовкова «Дика спокуса» 44х44 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/31/pashe-shelkovyy-dikiy-soblazn-4444-26-dvustoronnjaja-pechat-91937349435818_+11b076ed6b.jpg",
+  "thumb": "https://obiimy.world/content/images/31/120x120l80nn0/pashe-shelkovyy-dikiy-soblazn-4444-26-dvustoronnjaja-pechat-91937349435818.webp",
+  "link": "https://obiimy.world/khustka-pashe-shovkova-dyka-spokusa-44x44-dvostoronnii-druk/",
+  "stock": 14.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "44-6-D",
+  "name": "Хустка паше шовкова «Енергія» 44x44 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/18/khustka-pashe-shovkova-enerhiia-44x44-dvostoronnii-druk-93416189649910_+65eabf4919.jpg",
+  "thumb": "https://obiimy.world/content/images/18/120x120l80nn0/khustka-pashe-shovkova-enerhiia-44x44-dvostoronnii-druk-93416189649910.webp",
+  "link": "https://obiimy.world/khustka-pashe-shovkova-enerhiia-44x44-dvostoronnii-druk/",
+  "stock": 11.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "44-8-D",
+  "name": "Шовкова хустка «Сміливість» 44х44 (двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/3/shovkova-khustka-smilyvist-44kh44-dvostoronnii-druk-49707490748896_+aa49073876.jpg",
+  "thumb": "https://obiimy.world/content/images/3/120x120l80nn0/shovkova-khustka-smilyvist-44kh44-dvostoronnii-druk-49707490748896.webp",
+  "link": "https://obiimy.world/shovkova-khustka-smilyvist-44kh44-dvostoronnii-druk/",
+  "stock": 54.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "444-1",
+  "name": "Кільце для хустки «Циліндр» Gold",
+  "category": "Прикраси",
+  "full": 450.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/41/kolechko-dlja-platka-zolotistoe-cilindr-40511496189970_+28ad86ef52.jpg",
+  "thumb": "https://obiimy.world/content/images/41/120x120l80nn0/kolechko-dlja-platka-zolotistoe-cilindr-40511496189970.webp",
+  "link": "https://obiimy.world/kilechko-dlia-khustky-zolotyste-tsylindr/",
+  "stock": 59.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "444-2",
+  "name": "Кільце для хустки «Циліндр» Silver",
+  "category": "Прикраси",
+  "full": 450.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/42/kolechko-dlja-platka-serebristoe-cilindr-92790787690003_+c6a3ed5d66.jpg",
+  "thumb": "https://obiimy.world/content/images/42/120x120l80nn0/kolechko-dlja-platka-serebristoe-cilindr-92790787690003.webp",
+  "link": "https://obiimy.world/kilechko-dlia-khustky-sribliaste-tsylindr/",
+  "stock": 62.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "555-1",
+  "name": "Кільце для хустки «Н стиль» Gold",
+  "category": "Прикраси",
+  "full": 450.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/43/kolechko-dlja-platka-zolotistoe-n-stil-96672856188001_+05e2e7a2db.jpg",
+  "thumb": "https://obiimy.world/content/images/43/120x120l80nn0/kolechko-dlja-platka-zolotistoe-n-stil-96672856188001.webp",
+  "link": "https://obiimy.world/kilechko-dlia-khustky-zolotyste-n-styl/",
+  "stock": 69.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "555-2",
+  "name": "Кільце для хустки «Н стиль» Silver",
+  "category": "Прикраси",
+  "full": 450.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/44/kolechko-dlja-platka-serebristoe-n-stil-27240378289224_+4d7f5d96d2.jpg",
+  "thumb": "https://obiimy.world/content/images/44/120x120l80nn0/kolechko-dlja-platka-serebristoe-n-stil-27240378289224.webp",
+  "link": "https://obiimy.world/klechko-dlia-khustky-sribliaste-n-styl/",
+  "stock": 58.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "65-15-D",
+  "name": "Шовкова хустка «Закоханість» 65x65 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 4800.0,
+  "kind": null,
+  "value": null,
+  "pic": "https://obiimy.world/content/images/44/shovkova-khustka-zakokhanist-65x65-dvostoronnii-druk-85781471568941_+dd0e7cf8bf.jpg",
+  "thumb": "https://obiimy.world/content/images/44/120x120l80nn0/shovkova-khustka-zakokhanist-65x65-dvostoronnii-druk-85781471568941.webp",
+  "link": "https://obiimy.world/shovkova-khustka-zakokhanist-65x65-dvostoronnii-druk/",
+  "stock": 12.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "65-20-D",
+  "name": "Шовкова хустка «З чистого листа» 65x65 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 4800.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/46/shovkova-khustka-z-chystoho-lysta-65x65-dvostoronnii-druk-61556777964152_+3a77162621.jpg",
+  "thumb": "https://obiimy.world/content/images/46/120x120l80nn0/shovkova-khustka-z-chystoho-lysta-65x65-dvostoronnii-druk-61556777964152.webp",
+  "link": "https://obiimy.world/shovkova-khustka-z-chystoho-lysta-65x65-dvostoronnii-druk/",
+  "stock": 48.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "65-21-D",
+  "name": "Шовкова хустка «Натхнення» 65x65 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 4800.0,
+  "kind": "pct",
+  "value": 10.0,
+  "pic": "https://obiimy.world/content/images/26/pashe-shelkovyy-vdoxnovenie-4444-21-dvustoronnjaja-pechat-21142535367751_+06680a550d.jpg",
+  "thumb": "https://obiimy.world/content/images/26/120x120l80nn0/pashe-shelkovyy-vdoxnovenie-4444-21-dvustoronnjaja-pechat-21142535367751.webp",
+  "link": "https://obiimy.world/shovkova-khustka-natkhnennia-65x65-dvostoronnii-druk/",
+  "stock": 18.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "65-23-D",
+  "name": "Шовкова хустка «Баланс» 65x65 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 4800.0,
+  "kind": "pct",
+  "value": 10.0,
+  "pic": "https://obiimy.world/content/images/28/pashe-shelkovyy-balans-4444-23-dvustoronnjaja-pechat-81398455726974_+a3f1ee1354.jpg",
+  "thumb": "https://obiimy.world/content/images/28/120x120l80nn0/pashe-shelkovyy-balans-4444-23-dvustoronnjaja-pechat-81398455726974.webp",
+  "link": "https://obiimy.world/shovkova-khustka-balans-65x65-dvostoronnii-druk/",
+  "stock": 15.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "65-24",
+  "name": "Шовкова хустка «Відновлення» 65x65",
+  "category": "Хустки",
+  "full": 3200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/15/shovkova-khustka-vidnovlennia-44x44-44835316167956_+7ad2160140.jpg",
+  "thumb": "https://obiimy.world/content/images/15/120x120l80nn0/shovkova-khustka-vidnovlennia-44x44-44835316167956.webp",
+  "link": "https://obiimy.world/shovkova-khustka-vidnovlennia-65x65/",
+  "stock": 11.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "65-24-D",
+  "name": "Шовкова хустка «Відновлення» 65x65 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 4800.0,
+  "kind": "pct",
+  "value": 10.0,
+  "pic": "https://obiimy.world/content/images/50/shovkova-khustka-vidnovlennia-65x65-dvostoronnii-druk-37691742287558_+5b91f16fd2.jpg",
+  "thumb": "https://obiimy.world/content/images/50/120x120l80nn0/shovkova-khustka-vidnovlennia-65x65-dvostoronnii-druk-37691742287558.webp",
+  "link": "https://obiimy.world/shovkova-khustka-vidnovlennia-65x65-dvostoronnii-druk/",
+  "stock": 13.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "65-25",
+  "name": "Шовкова хустка «Грація» 65x65",
+  "category": "Хустки",
+  "full": 3200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/16/premium-shelkovyy-platok-gracija-97441251613054_+07f425c960.jpg",
+  "thumb": "https://obiimy.world/content/images/16/120x120l80nn0/premium-shelkovyy-platok-gracija-97441251613054.webp",
+  "link": "https://obiimy.world/shovkova-khustka-hratsiia-65x65/",
+  "stock": 8.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "65-25-D",
+  "name": "Шовкова хустка «Грація» 65x65 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 4800.0,
+  "kind": "pct",
+  "value": 10.0,
+  "pic": "https://obiimy.world/content/images/30/pashe-shelkovyy-gracija-4444-25-dvustoronnjaja-pechat-22035251518211_+20be2a9783.jpg",
+  "thumb": "https://obiimy.world/content/images/30/120x120l80nn0/pashe-shelkovyy-gracija-4444-25-dvustoronnjaja-pechat-22035251518211.webp",
+  "link": "https://obiimy.world/shovkova-khustka-hratsiia-65x65-dvostoronnii-druk/",
+  "stock": 8.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "65-6-D",
+  "name": "Шовкова хустка «Енергія» 65x65 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 4800.0,
+  "kind": null,
+  "value": null,
+  "pic": "https://obiimy.world/content/images/18/pashe-shelkovyy-energija-4444-6-dvustoronnjaja-pechat-49483777026793_+03b79d600c.jpg",
+  "thumb": "https://obiimy.world/content/images/18/120x120l80nn0/pashe-shelkovyy-energija-4444-6-dvustoronnjaja-pechat-49483777026793.webp",
+  "link": "https://obiimy.world/shovkova-khustka-enerhiia-65x65-dvostoronnii-druk/",
+  "stock": 58.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "84-13",
+  "name": "Хустка твіллі шовкова «Щирі Почуття» 84x5",
+  "category": "Твіллі",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/25/tvilli-shelkovyy-iskrennie-chuvstva-17371966091069_+b3b603ecd5.jpg",
+  "thumb": "https://obiimy.world/content/images/25/120x120l80nn0/tvilli-shelkovyy-iskrennie-chuvstva-17371966091069.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-shchyri-pochuttia/",
+  "stock": 16.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "84-17",
+  "name": "Хустка твіллі шовкова «Між нами» 84x5",
+  "category": "Твіллі",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/46/tvilli-iz-naturalnogo-shelka-mezhdu-nami-93353267458539_+c9422cc817.jpg",
+  "thumb": "https://obiimy.world/content/images/46/120x120l80nn0/tvilli-iz-naturalnogo-shelka-mezhdu-nami-93353267458539.webp",
+  "link": "https://obiimy.world/tvilli-z-naturalnoho-shovku-mizh-namy/",
+  "stock": 14.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "84-19",
+  "name": "Хустка твіллі шовкова «Ранкова кава» 84x5",
+  "category": "Твіллі",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/44/tvilli-iz-naturalnogo-shelka-utrenniy-kofe-90775435042805_+4a38d51c3d.jpg",
+  "thumb": "https://obiimy.world/content/images/44/120x120l80nn0/tvilli-iz-naturalnogo-shelka-utrenniy-kofe-90775435042805.webp",
+  "link": "https://obiimy.world/tvilli-z-naturalnoho-shovku-rankova-kava/",
+  "stock": 15.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "84-2",
+  "name": "Хустка твіллі шовкова «Літнє поле» 84x5",
+  "category": "Твіллі",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/40/tvilli-iz-naturalnogo-shelka-letnee-pole-75726979240210_+cb6231b9ed.jpg",
+  "thumb": "https://obiimy.world/content/images/40/120x120l80nn0/tvilli-iz-naturalnogo-shelka-letnee-pole-75726979240210.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-litniepole/",
+  "stock": 30.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "84-24",
+  "name": "Хустка твіллі шовкова «Відновлення» 84x5",
+  "category": "Твіллі",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/41/tvilli-z-naturalnoho-shovku-vidnovlennia-89310934226291_+1c6c0cabce.jpg",
+  "thumb": "https://obiimy.world/content/images/41/120x120l80nn0/tvilli-z-naturalnoho-shovku-vidnovlennia-89310934226291.webp",
+  "link": "https://obiimy.world/tvilli-z-naturalnoho-shovku-vidnovlennia/",
+  "stock": 10.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "84-25",
+  "name": "Хустка твіллі шовкова «Грація» 84x5",
+  "category": "Твіллі",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/42/tvilli-iz-naturalnogo-shelka-gracija-91159861977950_+b2c96f714f.jpg",
+  "thumb": "https://obiimy.world/content/images/42/120x120l80nn0/tvilli-iz-naturalnogo-shelka-gracija-91159861977950.webp",
+  "link": "https://obiimy.world/tvilli-z-naturalnoho-shovku-hratsiia/",
+  "stock": 6.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "84-27",
+  "name": "Хустка твіллі шовкова «Мелодія двох» 84x5",
+  "category": "Твіллі",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/15/tvilli-shovkovyi-melodiia-dvokh-70715865705223_+eae2bbd467.jpg",
+  "thumb": "https://obiimy.world/content/images/15/120x120l80nn0/tvilli-shovkovyi-melodiia-dvokh-70715865705223.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-melodiia-dvokh/",
+  "stock": 6.0,
+  "collections": [
+   "Колекції/«Співоча душа»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "84-30",
+  "name": "Хустка твіллі шовкова «Коло сонця» 84x5",
+  "category": "Твіллі",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/18/tvilli-shovkovyi-kolo-sontsia-33963932454464_+3a536542ea.jpg",
+  "thumb": "https://obiimy.world/content/images/18/120x120l80nn0/tvilli-shovkovyi-kolo-sontsia-33963932454464.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-kolo-sontsia/",
+  "stock": 8.0,
+  "collections": [
+   "Колекції/«Співоча душа»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "84-7",
+  "name": "Хустка твіллі шовкова «Спокуса» 84x5",
+  "category": "Твіллі",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/48/tvilli-iz-naturalnogo-shelka-soblazn-20732605610511_+4426600344.jpg",
+  "thumb": "https://obiimy.world/content/images/48/120x120l80nn0/tvilli-iz-naturalnogo-shelka-soblazn-20732605610511.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-spokusa/",
+  "stock": 12.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "84-8",
+  "name": "Хустка твіллі шовкова «Сміливість» 84x5",
+  "category": "Твіллі",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/47/tvilli-iz-naturalnogo-shelka-smelost-47617940725569_+c92bdb186b.jpg",
+  "thumb": "https://obiimy.world/content/images/47/120x120l80nn0/tvilli-iz-naturalnogo-shelka-smelost-47617940725569.webp",
+  "link": "https://obiimy.world/tvilli-shovkovyi-smilyvist/",
+  "stock": 26.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "88-10-D",
+  "name": "Шовкова хустка «Маків цвіт» 88x88 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 6600.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/19/pashe-shelkovyy-makov-cvet-4444-10-dvustoronnjaja-pechat-40510481796615_+5d50085392.jpg",
+  "thumb": "https://obiimy.world/content/images/19/120x120l80nn0/pashe-shelkovyy-makov-cvet-4444-10-dvustoronnjaja-pechat-40510481796615.webp",
+  "link": "https://obiimy.world/shovkova-khustka-makiv-tsvit-88x88-dvostoronnii-druk/",
+  "stock": 21.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "88-11",
+  "name": "Шовкова хустка «Впевненість» 88x88",
+  "category": "Хустки",
+  "full": 4400.0,
+  "kind": "pct",
+  "value": 10.0,
+  "pic": "https://obiimy.world/content/images/3/shovkova-khustka-vpevnenist-44x44-80056592371433_+a5bb1d57b2.png",
+  "thumb": "https://obiimy.world/content/images/3/120x120l80nn0/shovkova-khustka-vpevnenist-44x44-80056592371433.webp",
+  "link": "https://obiimy.world/shovkova-khustka-vpevnenist-88x88/",
+  "stock": 6.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "88-12",
+  "name": "Шовкова хустка «Поцілунок Сонця» 88x88",
+  "category": "Хустки",
+  "full": 4400.0,
+  "kind": "pct",
+  "value": 10.0,
+  "pic": "https://obiimy.world/content/images/4/shovkova-khustka-potsilunok-sontsia-44x44-36734775250933_+f4bd850f79.jpg",
+  "thumb": "https://obiimy.world/content/images/4/120x120l80nn0/shovkova-khustka-potsilunok-sontsia-44x44-36734775250933.webp",
+  "link": "https://obiimy.world/shovkova-khustka-potsilunok-sontsia-88x88/",
+  "stock": 11.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "88-18-D",
+  "name": "Шовкова хустка «Вир почуттів» 88х88 (двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 6600.0,
+  "kind": null,
+  "value": null,
+  "pic": "",
+  "thumb": "",
+  "link": "https://obiimy.world/shovkova-khustka-vyr-pochuttiv-88kh88-dvostoronnii-druk/",
+  "stock": 10.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "88-21-D",
+  "name": "Шовкова хустка «Натхнення» 88x88 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 6600.0,
+  "kind": "pct",
+  "value": 10.0,
+  "pic": "https://obiimy.world/content/images/26/pashe-shelkovyy-vdoxnovenie-4444-21-dvustoronnjaja-pechat-21142535367751_+06680a550d.jpg",
+  "thumb": "https://obiimy.world/content/images/26/120x120l80nn0/pashe-shelkovyy-vdoxnovenie-4444-21-dvustoronnjaja-pechat-21142535367751.webp",
+  "link": "https://obiimy.world/shovkova-khustka-natkhnennia-88x88-dvostoronnii-druk/",
+  "stock": 10.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "88-22-D",
+  "name": "Шовкова хустка «Сміливий дотик» 88x88 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 6600.0,
+  "kind": "pct",
+  "value": 10.0,
+  "pic": "https://obiimy.world/content/images/27/pashe-shelkovyy-smeloe-prikosnovenie-4444-22-dvustoronnjaja-pechat-75714966263131_+efe5515bc1.jpg",
+  "thumb": "https://obiimy.world/content/images/27/120x120l80nn0/pashe-shelkovyy-smeloe-prikosnovenie-4444-22-dvustoronnjaja-pechat-75714966263131.webp",
+  "link": "https://obiimy.world/shovkova-khustka-smilyvyi-dotyk-88x88-dvostoronnii-druk/",
+  "stock": 8.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "88-24",
+  "name": "Шовкова хустка «Відновлення» 88x88",
+  "category": "Хустки",
+  "full": 4400.0,
+  "kind": "pct",
+  "value": 10.0,
+  "pic": "https://obiimy.world/content/images/15/shovkova-khustka-vidnovlennia-44x44-44835316167956_+7ad2160140.jpg",
+  "thumb": "https://obiimy.world/content/images/15/120x120l80nn0/shovkova-khustka-vidnovlennia-44x44-44835316167956.webp",
+  "link": "https://obiimy.world/shovkova-khustka-vidnovlennia-88x88/",
+  "stock": 15.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "88-25-D",
+  "name": "Шовкова хустка «Грація» 88x88 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 6600.0,
+  "kind": "pct",
+  "value": 10.0,
+  "pic": "https://obiimy.world/content/images/30/pashe-shelkovyy-gracija-4444-25-dvustoronnjaja-pechat-22035251518211_+20be2a9783.jpg",
+  "thumb": "https://obiimy.world/content/images/30/120x120l80nn0/pashe-shelkovyy-gracija-4444-25-dvustoronnjaja-pechat-22035251518211.webp",
+  "link": "https://obiimy.world/shovkova-khustka-hratsiia-88x88-dvostoronnii-druk/",
+  "stock": 7.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "88-31-D",
+  "name": "Шовкова хустка «Піднесення» 88x88 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 6600.0,
+  "kind": null,
+  "value": null,
+  "pic": "https://obiimy.world/content/images/36/pashe-shelkovyy-podem-4444-31-dvustoronnjaja-pechat-92680343218051_+748b50553e.jpg",
+  "thumb": "https://obiimy.world/content/images/36/120x120l80nn0/pashe-shelkovyy-podem-4444-31-dvustoronnjaja-pechat-92680343218051.webp",
+  "link": "https://obiimy.world/shovkova-khustka-pidnesennia-88x88-dvostoronnii-druk/",
+  "stock": 19.0,
+  "collections": [
+   "Колекції/«Співоча душа»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "88-33-D",
+  "name": "Шовкова хустка «Флірт» 88х88 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 6600.0,
+  "kind": "pct",
+  "value": 10.0,
+  "pic": "https://obiimy.world/content/images/23/shovkova-khustka-flirt-44kh44-dvostoronnii-druk-65201498548448_+594211b535.jpg",
+  "thumb": "https://obiimy.world/content/images/23/120x120l80nn0/shovkova-khustka-flirt-44kh44-dvostoronnii-druk-65201498548448.webp",
+  "link": "https://obiimy.world/shovkova-khustka-flirt-88kh88-dvostoronnii-druk/",
+  "stock": 10.0,
+  "collections": [
+   "Колекції/«Соло: шлях до себе»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "88-38-D",
+  "name": "Шовкова хустка «Сміливий крок» 88х88 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 6600.0,
+  "kind": "pct",
+  "value": 10.0,
+  "pic": "https://obiimy.world/content/images/16/copy_shovkova-khustka-zolote-svitlo-44kh44-dvostoronnii-druk2465-57814710952140_+b9a8b28f75.jpg",
+  "thumb": "https://obiimy.world/content/images/16/120x120l80nn0/copy_shovkova-khustka-zolote-svitlo-44kh44-dvostoronnii-druk2465-57814710952140.webp",
+  "link": "https://obiimy.world/shovkova-khustka-smilyvyi-krok-88kh88-dvostoronnii-druk/",
+  "stock": 11.0,
+  "collections": [
+   "Колекції/«Соло: шлях до себе»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "88-5-D",
+  "name": "Шовкова хустка «Пристрасть» 88x88 (Двосторонній друк)",
+  "category": "Хустки 2D",
+  "full": 6600.0,
+  "kind": null,
+  "value": null,
+  "pic": "https://obiimy.world/content/images/17/pashe-shelkovyy-strast-4444-5-dvustoronnjaja-pechat-97984313242674_+669bed45d9.jpg",
+  "thumb": "https://obiimy.world/content/images/17/120x120l80nn0/pashe-shelkovyy-strast-4444-5-dvustoronnjaja-pechat-97984313242674.webp",
+  "link": "https://obiimy.world/shovkova-khustka-prystrast-88x88-dvostoronnii-druk/",
+  "stock": 23.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "Book-027",
+  "name": "Закладка для книги «Мелодія двох»",
+  "category": "Маски для сну",
+  "full": 800.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/35/zakladka-dlia-knyhy-melodiia-dvokh-43166031518250_+81c1a523ba.jpg",
+  "thumb": "https://obiimy.world/content/images/35/120x120l80nn0/zakladka-dlia-knyhy-melodiia-dvokh-43166031518250.webp",
+  "link": "https://obiimy.world/zakladka-dlia-knyhy-melodiia-dvokh/",
+  "stock": 71.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "C-10L",
+  "name": "Сорочка жіноча «Маків цвіт» 42 / L / 50",
+  "category": "Obiimy HOME/Сорочки",
+  "full": 6000.0,
+  "kind": null,
+  "value": null,
+  "pic": "https://obiimy.world/content/images/15/rubashka-makov-cvet-54628839573641_+80896f381b.jpg",
+  "thumb": "https://obiimy.world/content/images/15/120x120l80nn0/rubashka-makov-cvet-54628839573641.webp",
+  "link": "https://obiimy.world/sorochka-makiv-tsvit/1771/",
+  "stock": 4.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "C-10M",
+  "name": "Сорочка жіноча «Маків цвіт» 40 / M / 48",
+  "category": "Obiimy HOME/Сорочки",
+  "full": 6000.0,
+  "kind": null,
+  "value": null,
+  "pic": "https://obiimy.world/content/images/15/rubashka-makov-cvet-54628839573641_+80896f381b.jpg",
+  "thumb": "https://obiimy.world/content/images/15/120x120l80nn0/rubashka-makov-cvet-54628839573641.webp",
+  "link": "https://obiimy.world/sorochka-makiv-tsvit/1772/",
+  "stock": 4.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "C-10S",
+  "name": "Сорочка жіноча «Маків цвіт» 38 / S / 46",
+  "category": "Obiimy HOME/Сорочки",
+  "full": 6000.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/15/rubashka-makov-cvet-54628839573641_+80896f381b.jpg",
+  "thumb": "https://obiimy.world/content/images/15/120x120l80nn0/rubashka-makov-cvet-54628839573641.webp",
+  "link": "https://obiimy.world/sorochka-makiv-tsvit/",
+  "stock": 5.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "C-5S",
+  "name": "Сорочка жіноча «Світло в тобі» 38 / S / 46",
+  "category": "Obiimy HOME/Сорочки",
+  "full": 6000.0,
+  "kind": null,
+  "value": null,
+  "pic": "https://obiimy.world/content/images/22/rubashka-svet-v-tebe-53826889552118_+978f7fcc85.jpg",
+  "thumb": "https://obiimy.world/content/images/22/120x120l80nn0/rubashka-svet-v-tebe-53826889552118.webp",
+  "link": "https://obiimy.world/sorochka-svitlo-v-tobi/1809/",
+  "stock": 4.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "M-27",
+  "name": "Маска для сну з натурального шовку «Мелодія двох»",
+  "category": "Маски для сну",
+  "full": 2700.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/33/maska-dlia-snu-z-naturalnoho-shovku-melodiia-dvokh-88380390444964_+281459d81e.jpg",
+  "thumb": "https://obiimy.world/content/images/33/120x120l80nn0/maska-dlia-snu-z-naturalnoho-shovku-melodiia-dvokh-88380390444964.webp",
+  "link": "https://obiimy.world/maska-dlia-snu-z-naturalnoho-shovku-melodiia-dvokh/",
+  "stock": 51.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "M-6",
+  "name": "Маска для сну з натурального шовку «Енергія»",
+  "category": "Маски для сну",
+  "full": 2700.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/43/maska-dlia-snu-z-naturalnoho-shovku-enerhiia-92651483413560_+b551442411.jpg",
+  "thumb": "https://obiimy.world/content/images/43/120x120l80nn0/maska-dlia-snu-z-naturalnoho-shovku-enerhiia-92651483413560.webp",
+  "link": "https://obiimy.world/maska-dlia-snu-z-naturalnoho-shovku-enerhiia/",
+  "stock": 48.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "M-95",
+  "name": "Маска для сну \"Серцебиття\" чорна в чохлі",
+  "category": "Маски для сну",
+  "full": 2700.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/28/maska-dlia-snu-sertsebyttia-chorna-v-chokhli-13083488168729_+16bccd0b00.jpg",
+  "thumb": "https://obiimy.world/content/images/28/120x120l80nn0/maska-dlia-snu-sertsebyttia-chorna-v-chokhli-13083488168729.webp",
+  "link": "https://obiimy.world/maska-dlia-snu-sertsebyttia-chorna-v-chokhli/",
+  "stock": 4.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "M-96",
+  "name": "Маска для сну з натурального шовку \"Серцебиття\"",
+  "category": "Маски для сну",
+  "full": 2700.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/18/maska-dlia-snu-z-naturalnoho-shovku-sertsebyttia-26631009891222_+082594279f.jpg",
+  "thumb": "https://obiimy.world/content/images/18/120x120l80nn0/maska-dlia-snu-z-naturalnoho-shovku-sertsebyttia-26631009891222.webp",
+  "link": "https://obiimy.world/maska-dlia-snu-z-naturalnoho-shovku-sertsebyttia/",
+  "stock": 6.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "NM-6",
+  "name": "Подарунковий набір для сну «Енергія»",
+  "category": "Подарунки",
+  "full": 3280.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/48/maska-dlia-snu-ta-rezynka-enerhiia-79281494339350_+838342a33f.jpg",
+  "thumb": "https://obiimy.world/content/images/48/120x120l80nn0/maska-dlia-snu-ta-rezynka-enerhiia-79281494339350.webp",
+  "link": "https://obiimy.world/maska-dlia-snu-ta-rezynka-enerhiia/",
+  "stock": 4.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "NR-300",
+  "name": "Набір шовкових резинок для волосся 3 шт.",
+  "category": "Подарунки",
+  "full": 1800.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/3/nabor-3-shelkovyx-rezinki-50526974728127_+b53e44369b.jpg",
+  "thumb": "https://obiimy.world/content/images/3/120x120l80nn0/nabor-3-shelkovyx-rezinki-50526974728127.webp",
+  "link": "https://obiimy.world/nabir-3-shovkovykh-rezynky/",
+  "stock": 9.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "NT-140-1",
+  "name": "Подарунковий набір твіллі та резинка «Літній віночок», 140x5",
+  "category": "Подарунки",
+  "full": 2800.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/27/tvilli-i-rezinka-letniy-venochek-64245662710728_+924e73be6c.jpg",
+  "thumb": "https://obiimy.world/content/images/27/120x120l80nn0/tvilli-i-rezinka-letniy-venochek-64245662710728.webp",
+  "link": "https://obiimy.world/tvilli-ta-rezynka-litnii-vinochok/1776/",
+  "stock": 5.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "NT-140-3",
+  "name": "Подарунковий набір твіллі та резинка «Захоплення», 140x5",
+  "category": "Подарунки",
+  "full": 2800.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/25/tvilli-i-rezinka-uvlechenie-36746920270421_+fb292b45b5.jpg",
+  "thumb": "https://obiimy.world/content/images/25/120x120l80nn0/tvilli-i-rezinka-uvlechenie-36746920270421.webp",
+  "link": "https://obiimy.world/tvilli-ta-rezynka-zakhoplennia/1774/",
+  "stock": 4.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "NT-140-6",
+  "name": "Подарунковий набір твіллі та резинка «Енергія», 140x5",
+  "category": "Подарунки",
+  "full": 2800.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/24/tvilli-i-rezinka-energija-52668519073651_+b884af14d6.jpg",
+  "thumb": "https://obiimy.world/content/images/24/120x120l80nn0/tvilli-i-rezinka-energija-52668519073651.webp",
+  "link": "https://obiimy.world/tvilli-ta-rezynka-enerhiia/1773/",
+  "stock": 4.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "NT-140-7",
+  "name": "Подарунковий набір твіллі та резинка «Спокуса», 140x5",
+  "category": "Подарунки",
+  "full": 2800.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/33/tvilli-ta-rezynka-spokusa1782-73513778920224_+22f1e2a0c2.png",
+  "thumb": "https://obiimy.world/content/images/33/120x120l80nn0/tvilli-ta-rezynka-spokusa1782-73513778920224.webp",
+  "link": "https://obiimy.world/tvilli-ta-rezynka-spokusa/1782/",
+  "stock": 4.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "NT-84-2",
+  "name": "Подарунковий бокс твіллі та резинка «Літнє поле», 84х5",
+  "category": "Подарунки",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/28/tvilli-ta-rezynka-litnie-pole-95976284428168_+6c65880fd4.jpg",
+  "thumb": "https://obiimy.world/content/images/28/120x120l80nn0/tvilli-ta-rezynka-litnie-pole-95976284428168.webp",
+  "link": "https://obiimy.world/tvilli-ta-rezynka-litnie-pole/",
+  "stock": 4.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "NT-84-7",
+  "name": "Подарунковий набір твіллі та резинка «Спокуса», 84x5",
+  "category": "Подарунки",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/33/tvilli-ta-rezynka-spokusa1782-73513778920224_+22f1e2a0c2.png",
+  "thumb": "https://obiimy.world/content/images/33/120x120l80nn0/tvilli-ta-rezynka-spokusa1782-73513778920224.webp",
+  "link": "https://obiimy.world/tvilli-ta-rezynka-spokusa/",
+  "stock": 4.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "NT-84-8",
+  "name": "Подарунковий бокс твіллі та резинка «Сміливість», 84х5",
+  "category": "Подарунки",
+  "full": 2200.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/34/tvilli-ta-rezynka-smilyvist-49109524788908_+bf0d09cda2.jpg",
+  "thumb": "https://obiimy.world/content/images/34/120x120l80nn0/tvilli-ta-rezynka-smilyvist-49109524788908.webp",
+  "link": "https://obiimy.world/tvilli-ta-rezynka-smilyvist/",
+  "stock": 4.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "P-44-12",
+  "name": "Хустка паше з шовку  «Поцілунок Сонця» 44x44",
+  "category": "Хустки паше/Паше односторонні",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/44/khustka-pashe-shovkova-potsilunok-sontsia-44x44-82920718094142_+fc7dafd44c.jpg",
+  "thumb": "https://obiimy.world/content/images/44/120x120l80nn0/khustka-pashe-shovkova-potsilunok-sontsia-44x44-82920718094142.webp",
+  "link": "https://obiimy.world/khustka-pashe-shovkova-potsilunok-sontsia-44x44/",
+  "stock": 6.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "P-44-12-D",
+  "name": "Двостороння хустка паше «Поцілунок сонця»",
+  "category": "Хустки паше/Паше двосторонні",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/34/dvostoronnia-khustka-pashe-potsilunok-sontsia-13113647935028_+12f46d31f3.jpg",
+  "thumb": "https://obiimy.world/content/images/34/120x120l80nn0/dvostoronnia-khustka-pashe-potsilunok-sontsia-13113647935028.webp",
+  "link": "https://obiimy.world/dvostoronnia-khustka-pashe-potsilunok-sontsia/",
+  "stock": 16.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "P-44-15-D",
+  "name": "Двостороння хустка паше «Закоханість»",
+  "category": "Хустки паше/Паше двосторонні",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/37/dvostoronnia-khustka-pashe-zakokhanist-70478673248168_+4ed957ced6.jpg",
+  "thumb": "https://obiimy.world/content/images/37/120x120l80nn0/dvostoronnia-khustka-pashe-zakokhanist-70478673248168.webp",
+  "link": "https://obiimy.world/dvostoronnia-khustka-pashe-zakokhanist/",
+  "stock": 13.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "P-44-18-D",
+  "name": "Двостороння хустка паше «Вир почуттів»",
+  "category": "Хустки паше/Паше двосторонні",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/2/76036128812357_+34b14625e4.png",
+  "thumb": "https://obiimy.world/content/images/2/120x120l80nn0/76036128812357.webp",
+  "link": "",
+  "stock": 16.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "P-44-20-D",
+  "name": "Двостороння хустка паше «З чистого листа»",
+  "category": "Хустки паше/Паше двосторонні",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/36/dvostoronnia-khustka-pashe-z-chystoho-lysta-35602838898282_+f0b7afbe5c.jpg",
+  "thumb": "https://obiimy.world/content/images/36/120x120l80nn0/dvostoronnia-khustka-pashe-z-chystoho-lysta-35602838898282.webp",
+  "link": "https://obiimy.world/dvostoronnia-khustka-pashe-z-chystoho-lysta/",
+  "stock": 16.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "P-44-6-D",
+  "name": "Двостороння хустка паше «Енергія»",
+  "category": "Хустки паше/Паше двосторонні",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/46/48827892740006_+7b802c5865.jpg",
+  "thumb": "https://obiimy.world/content/images/46/120x120l80nn0/48827892740006.webp",
+  "link": "",
+  "stock": 11.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "P-44-8-D",
+  "name": "Двостороння хустка паше «Сміливість»",
+  "category": "Хустки паше/Паше двосторонні",
+  "full": 2400.0,
+  "kind": "pct",
+  "value": 20.0,
+  "pic": "https://obiimy.world/content/images/48/60113255900467_+d486791c2f.jpg",
+  "thumb": "https://obiimy.world/content/images/48/120x120l80nn0/60113255900467.webp",
+  "link": "",
+  "stock": 54.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "P-44-98",
+  "name": "Хустка паше з шовку «Синій» 44x44",
+  "category": "Хустки паше/Паше односторонні",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/14/shelkovyy-platok-pashe-siniy-99581057460380_+8ccd81ac48.jpg",
+  "thumb": "https://obiimy.world/content/images/14/120x120l80nn0/shelkovyy-platok-pashe-siniy-99581057460380.webp",
+  "link": "https://obiimy.world/khustka-pashe-shovkova-synii-44x44/",
+  "stock": 18.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "P-44-99",
+  "name": "Хустка паше з шовку «Червоний» 44x44",
+  "category": "Хустки паше/Паше односторонні",
+  "full": 1600.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/15/shelkovyy-platok-pashe-krasnyy-32566029385948_+02d4bcdfff.jpg",
+  "thumb": "https://obiimy.world/content/images/15/120x120l80nn0/shelkovyy-platok-pashe-krasnyy-32566029385948.webp",
+  "link": "https://obiimy.world/khustka-pashe-shovkova-chervonyi-44x44/",
+  "stock": 21.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "Prykrasa1",
+  "name": "Прикраси для твіллі та хусток 1",
+  "category": "Прикраси",
+  "full": 550.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/8/ukrashenie-dlja-tvilli-i-platkov-39446060702838_+616242d371.jpg",
+  "thumb": "https://obiimy.world/content/images/8/120x120l80nn0/ukrashenie-dlja-tvilli-i-platkov-39446060702838.webp",
+  "link": "https://obiimy.world/prykrasy-dlia-tvilli-ta-khustok/",
+  "stock": 9.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "Prykrasa2",
+  "name": "Прикраси для твіллі та хусток 2",
+  "category": "Прикраси",
+  "full": 750.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/9/ukrashenie-dlja-tvilli-i-platkov-11192347247722_+cce0075c09.jpg",
+  "thumb": "https://obiimy.world/content/images/9/120x120l80nn0/ukrashenie-dlja-tvilli-i-platkov-11192347247722.webp",
+  "link": "https://obiimy.world/prykrasy-dlia-tvilli-ta-khustok/1958/",
+  "stock": 14.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "Prykrasa3",
+  "name": "Прикраси для твіллі та хусток 3",
+  "category": "Прикраси",
+  "full": 850.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/10/ukrashenie-dlja-tvilli-i-platkov-59294183593622_+a344612c27.jpg",
+  "thumb": "https://obiimy.world/content/images/10/120x120l80nn0/ukrashenie-dlja-tvilli-i-platkov-59294183593622.webp",
+  "link": "https://obiimy.world/prykrasy-dlia-tvilli-ta-khustok/1959/",
+  "stock": 13.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-1",
+  "name": "Шовкова резинка для волосся «Літній віночок»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/7/rezinka-dlja-volos-iz-shelka-letniy-venochek-61942767749927_+7a2fbf1237.jpg",
+  "thumb": "https://obiimy.world/content/images/7/120x120l80nn0/rezinka-dlja-volos-iz-shelka-letniy-venochek-61942767749927.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-litnii-vinochok/",
+  "stock": 28.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-10",
+  "name": "Шовкова резинка для волосся «Маків цвіт»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/8/rezinka-dlja-volos-iz-shelka-makovyy-cvet-31471961727258_+b2c5bfbdd3.jpg",
+  "thumb": "https://obiimy.world/content/images/8/120x120l80nn0/rezinka-dlja-volos-iz-shelka-makovyy-cvet-31471961727258.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-makovyi-tsvit/",
+  "stock": 52.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-11",
+  "name": "Шовкова резинка для волосся «Впевненість»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/14/rezinka-dlja-volos-iz-shelka-uverennost-26196616883189_+f829bf3cf4.jpg",
+  "thumb": "https://obiimy.world/content/images/14/120x120l80nn0/rezinka-dlja-volos-iz-shelka-uverennost-26196616883189.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-vpevnenist/",
+  "stock": 23.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-12",
+  "name": "Шовкова резинка для волосся «Поцілунок Сонця»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/20/rezinka-dlja-volos-iz-shelka-poceluy-solnca-98458151063923_+5102a9c621.jpg",
+  "thumb": "https://obiimy.world/content/images/20/120x120l80nn0/rezinka-dlja-volos-iz-shelka-poceluy-solnca-98458151063923.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-potsilunok-sontsia/",
+  "stock": 19.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-13",
+  "name": "Шовкова резинка для волосся «Щирі Почуття»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/21/rezinka-dlja-volos-iz-shelka-iskrennie-chuvstva-36817853317771_+e1485574a9.jpg",
+  "thumb": "https://obiimy.world/content/images/21/120x120l80nn0/rezinka-dlja-volos-iz-shelka-iskrennie-chuvstva-36817853317771.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-shchyri-pochuttia/",
+  "stock": 20.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-14",
+  "name": "Шовкова резинка для волосся «Пробудження»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/22/rezinka-dlja-volos-iz-shelka-probuzhdenie-38611655954890_+823f3a9215.jpg",
+  "thumb": "https://obiimy.world/content/images/22/120x120l80nn0/rezinka-dlja-volos-iz-shelka-probuzhdenie-38611655954890.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-probudzhennia/",
+  "stock": 60.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-15",
+  "name": "Шовкова резинка для волосся «Закоханість»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/23/rezinka-dlja-volos-iz-shelka-vlublenost-47940364262169_+db953fa780.jpg",
+  "thumb": "https://obiimy.world/content/images/23/120x120l80nn0/rezinka-dlja-volos-iz-shelka-vlublenost-47940364262169.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-zakokhanist/",
+  "stock": 42.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-16",
+  "name": "Шовкова резинка для волосся «Соковиті спогади»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/10/rezinka-dlja-volos-sochnye-vospominanija-49756725292106_+09c5817025.jpg",
+  "thumb": "https://obiimy.world/content/images/10/120x120l80nn0/rezinka-dlja-volos-sochnye-vospominanija-49756725292106.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-sokovyti-spohady/",
+  "stock": 25.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-17",
+  "name": "Шовкова резинка для волосся «Між нами»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/8/rezinka-dlja-volos-mezhdu-nami-69836813662295_+926d7ba431.jpg",
+  "thumb": "https://obiimy.world/content/images/8/120x120l80nn0/rezinka-dlja-volos-mezhdu-nami-69836813662295.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-mizh-namy/",
+  "stock": 30.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-18",
+  "name": "Шовкова резинка для волосся «Вир почуттів»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/9/rezinka-dlja-volos-mezhdu-nami-42477920328129_+fc64a33a5c.jpg",
+  "thumb": "https://obiimy.world/content/images/9/120x120l80nn0/rezinka-dlja-volos-mezhdu-nami-42477920328129.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-vyr-pochuttiv/",
+  "stock": 57.0,
+  "collections": [
+   "Колекції/«Пробудження»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-19",
+  "name": "Шовкова резинка для волосся «Ранкова кава»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/21/rezinka-dlja-volos-iz-shelka-utrenniy-kofe-42920203521579_+2c1358bed5.jpg",
+  "thumb": "https://obiimy.world/content/images/21/120x120l80nn0/rezinka-dlja-volos-iz-shelka-utrenniy-kofe-42920203521579.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-rankova-kava/",
+  "stock": 27.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-2",
+  "name": "Шовкова резинка для волосся «Літнє поле»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/6/rezinka-dlja-volos-iz-shelka-letnee-pole-97249565982748_+87768e54dd.jpg",
+  "thumb": "https://obiimy.world/content/images/6/120x120l80nn0/rezinka-dlja-volos-iz-shelka-letnee-pole-97249565982748.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-litnie-pole/",
+  "stock": 45.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-20",
+  "name": "Шовкова резинка для волосся «З чистого листа»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/24/rezinka-dlja-volos-iz-shelka-s-chistogo-lista-71011380055394_+d70c436fd0.jpg",
+  "thumb": "https://obiimy.world/content/images/24/120x120l80nn0/rezinka-dlja-volos-iz-shelka-s-chistogo-lista-71011380055394.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-z-chystoho-lysta/",
+  "stock": 54.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-21",
+  "name": "Шовкова резинка для волосся «Натхнення»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/27/rezinka-dlja-volos-iz-shelka-vdoxnovenie-92848628336897_+f97060cb39.jpg",
+  "thumb": "https://obiimy.world/content/images/27/120x120l80nn0/rezinka-dlja-volos-iz-shelka-vdoxnovenie-92848628336897.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-natkhnennia/",
+  "stock": 18.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-22",
+  "name": "Шовкова резинка для волосся «Сміливий дотик»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/31/rezinka-dlja-volos-iz-shelka-smeloe-prikosnovenie-69757967165860_+00cbe91e53.jpg",
+  "thumb": "https://obiimy.world/content/images/31/120x120l80nn0/rezinka-dlja-volos-iz-shelka-smeloe-prikosnovenie-69757967165860.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-smilyvyi-dotyk/",
+  "stock": 37.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-23",
+  "name": "Шовкова резинка для волосся «Баланс»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/34/rezinka-dlja-volos-iz-shelka-balans-78342107012759_+be891853ad.jpg",
+  "thumb": "https://obiimy.world/content/images/34/120x120l80nn0/rezinka-dlja-volos-iz-shelka-balans-78342107012759.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-balans/",
+  "stock": 33.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-24",
+  "name": "Шовкова резинка для волосся «Відновлення»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/38/rezinka-dlja-volos-iz-shelka-vosstanovlenie-25908121858341_+b7966b3e5a.jpg",
+  "thumb": "https://obiimy.world/content/images/38/120x120l80nn0/rezinka-dlja-volos-iz-shelka-vosstanovlenie-25908121858341.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-vidnovlennia/",
+  "stock": 23.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-25",
+  "name": "Шовкова резинка для волосся «Грація»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/42/rezinka-dlja-volos-iz-shelka-gracija-37667867068303_+cd14b10b61.jpg",
+  "thumb": "https://obiimy.world/content/images/42/120x120l80nn0/rezinka-dlja-volos-iz-shelka-gracija-37667867068303.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-hratsiia/",
+  "stock": 22.0,
+  "collections": [
+   "Колекції/«Дика стихія»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-27",
+  "name": "Шовкова резинка для волосся «Мелодія двох»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/25/rezinka-dlja-volos-iz-shelka-melodija-dvux-52252694347375_+d40b43299c.jpg",
+  "thumb": "https://obiimy.world/content/images/25/120x120l80nn0/rezinka-dlja-volos-iz-shelka-melodija-dvux-52252694347375.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-melodiia-dvokh/",
+  "stock": 28.0,
+  "collections": [
+   "Колекції/«Співоча душа»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-28",
+  "name": "Шовкова резинка для волосся «Єднання»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/26/rezinka-dlja-volos-iz-shelka-edinenie-21377266310537_+e647192614.jpg",
+  "thumb": "https://obiimy.world/content/images/26/120x120l80nn0/rezinka-dlja-volos-iz-shelka-edinenie-21377266310537.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-yednannia/",
+  "stock": 54.0,
+  "collections": [
+   "Колекції/«Співоча душа»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-29",
+  "name": "Шовкова резинка для волосся «Тиша серця»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/27/rezinka-dlja-volos-iz-shelka-tishina-serdca-27071709928124_+d8aab473d6.jpg",
+  "thumb": "https://obiimy.world/content/images/27/120x120l80nn0/rezinka-dlja-volos-iz-shelka-tishina-serdca-27071709928124.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-tysha-sertsia/",
+  "stock": 41.0,
+  "collections": [
+   "Колекції/«Співоча душа»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-3",
+  "name": "Шовкова резинка для волосся «Захоплення»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/5/rezinka-dlja-volos-iz-shelka-vosxishenie-17634131796289_+c4f8d016a0.jpg",
+  "thumb": "https://obiimy.world/content/images/5/120x120l80nn0/rezinka-dlja-volos-iz-shelka-vosxishenie-17634131796289.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-zakhoplennia/",
+  "stock": 33.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-30",
+  "name": "Шовкова резинка для волосся «Коло сонця»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/28/rezinka-dlja-volos-iz-shelka-krug-solnca-81121523936232_+6f45f21876.jpg",
+  "thumb": "https://obiimy.world/content/images/28/120x120l80nn0/rezinka-dlja-volos-iz-shelka-krug-solnca-81121523936232.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-kolo-sontsia/",
+  "stock": 30.0,
+  "collections": [
+   "Колекції/«Співоча душа»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-31",
+  "name": "Шовкова резинка для волосся «Піднесення»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/29/rezinka-dlja-volos-iz-shelka-vozvyshenie-85262154739997_+1ac1c9a981.jpg",
+  "thumb": "https://obiimy.world/content/images/29/120x120l80nn0/rezinka-dlja-volos-iz-shelka-vozvyshenie-85262154739997.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-pidnesennia/",
+  "stock": 44.0,
+  "collections": [
+   "Колекції/«Співоча душа»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-32",
+  "name": "Шовкова резинка для волосся «Іскра»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/42/20759573921754_+035441d2c1.jpg",
+  "thumb": "https://obiimy.world/content/images/42/120x120l80nn0/20759573921754.webp",
+  "link": "https://obiimy.world/shovkova-rezynka-dlia-volossia-iskra/",
+  "stock": 28.0,
+  "collections": [
+   "Колекції/«Соло: шлях до себе»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-33",
+  "name": "Шовкова резинка для волосся «Флірт»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/29/shovkova-rezynka-dlia-volossia-flirt-94220029708641_+8a126ee2d7.jpg",
+  "thumb": "https://obiimy.world/content/images/29/120x120l80nn0/shovkova-rezynka-dlia-volossia-flirt-94220029708641.webp",
+  "link": "https://obiimy.world/shovkova-rezynka-dlia-volossia-flirt/",
+  "stock": 23.0,
+  "collections": [
+   "Колекції/«Соло: шлях до себе»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-34",
+  "name": "Шовкова резинка для волосся «Пульс»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/47/shovkova-rezynka-dlia-volossia-puls-23345829940850_+bc81caf235.jpg",
+  "thumb": "https://obiimy.world/content/images/47/120x120l80nn0/shovkova-rezynka-dlia-volossia-puls-23345829940850.webp",
+  "link": "https://obiimy.world/shovkova-rezynka-dlia-volossia-puls/",
+  "stock": 19.0,
+  "collections": [
+   "Колекції/«Соло: шлях до себе»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-38",
+  "name": "Шовкова резинка для волосся «Сміливий крок»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/43/copy_shovkova-rezynka-dlia-volossia-iskra-97991347395790_+de0498d697.jpg",
+  "thumb": "https://obiimy.world/content/images/43/120x120l80nn0/copy_shovkova-rezynka-dlia-volossia-iskra-97991347395790.webp",
+  "link": "https://obiimy.world/shovkova-rezynka-dlia-volossia-smilyvyi-krok/",
+  "stock": 18.0,
+  "collections": [
+   "Колекції/«Соло: шлях до себе»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-4",
+  "name": "Шовкова резинка для волосся «Ніжність»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/9/rezinka-dlja-volos-iz-shelka-nezhnost-52766832041091_+ad1cbaed72.jpg",
+  "thumb": "https://obiimy.world/content/images/9/120x120l80nn0/rezinka-dlja-volos-iz-shelka-nezhnost-52766832041091.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-nizhnist/",
+  "stock": 31.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-5",
+  "name": "Шовкова резинка для волосся «Пристрасть»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/10/rezinka-dlja-volos-iz-shelka-strast-97346082781039_+5631f4f130.jpg",
+  "thumb": "https://obiimy.world/content/images/10/120x120l80nn0/rezinka-dlja-volos-iz-shelka-strast-97346082781039.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-prystrast/",
+  "stock": 32.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-6",
+  "name": "Шовкова резинка для волосся «Енергія»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/4/rezinka-dlja-volos-iz-shelka-energija-76969172937870_+6ade58ac3e.jpg",
+  "thumb": "https://obiimy.world/content/images/4/120x120l80nn0/rezinka-dlja-volos-iz-shelka-energija-76969172937870.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-enerhiia/",
+  "stock": 33.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-7",
+  "name": "Шовкова резинка для волосся «Спокуса»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/13/rezinka-dlja-volos-iz-shelka-soblazn-68389694676225_+7b3d190f47.jpg",
+  "thumb": "https://obiimy.world/content/images/13/120x120l80nn0/rezinka-dlja-volos-iz-shelka-soblazn-68389694676225.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-spokusa/",
+  "stock": 22.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-8",
+  "name": "Шовкова резинка для волосся «Сміливість»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/12/rezinka-dlja-volos-iz-shelka-smelost-33864470461375_+98933ed6b4.jpg",
+  "thumb": "https://obiimy.world/content/images/12/120x120l80nn0/rezinka-dlja-volos-iz-shelka-smelost-33864470461375.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-smilyvist/",
+  "stock": 77.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-9",
+  "name": "Шовкова резинка для волосся «Свобода»",
+  "category": "Резинки",
+  "full": 700.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/11/rezinka-dlja-volos-iz-shelka-svoboda-68947726468314_+5b08da9233.jpg",
+  "thumb": "https://obiimy.world/content/images/11/120x120l80nn0/rezinka-dlja-volos-iz-shelka-svoboda-68947726468314.webp",
+  "link": "https://obiimy.world/rezynka-dlia-volossia-iz-shovku-svoboda/",
+  "stock": 37.0,
+  "collections": [
+   "Колекції/«Поклик душі»"
+  ],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "R-as",
+  "name": "Шовкова резинка для волосся в асортименті",
+  "category": "Пакування та подарунки",
+  "full": 550.0,
+  "kind": "pct",
+  "value": 30.0,
+  "pic": "https://obiimy.world/content/images/2/97212760338464_+e3921f3054.jpg",
+  "thumb": "https://obiimy.world/content/images/2/120x120l80nn0/97212760338464.webp",
+  "link": "https://obiimy.world/shovkova-rezynka-dlia-volossia-v-asortymenti/",
+  "stock": 27.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "t-shirt-21L",
+  "name": "Футболка жіноча «Натхнення» L",
+  "category": "Obiimy HOME/Футболки",
+  "full": 1700.0,
+  "kind": null,
+  "value": null,
+  "pic": "https://obiimy.world/content/images/40/futbolka-zhenskaja-vdoxnovenie-64001504292686_+c7127efa7b.jpg",
+  "thumb": "https://obiimy.world/content/images/40/120x120l80nn0/futbolka-zhenskaja-vdoxnovenie-64001504292686.webp",
+  "link": "https://obiimy.world/futbolka-zhinocha-natkhnennia/",
+  "stock": 5.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "t-shirt-M98M",
+  "name": "Футболка чоловіча «Класика синій» M",
+  "category": "Obiimy HOME/Футболки",
+  "full": 1700.0,
+  "kind": null,
+  "value": null,
+  "pic": "https://obiimy.world/content/images/49/futbolka-muzhskaja-klassika-siniy-80493865509824_+e87601988f.JPG",
+  "thumb": "https://obiimy.world/content/images/49/futbolka-muzhskaja-klassika-siniy-80493865509824_+e87601988f.JPG",
+  "link": "https://obiimy.world/futbolka-cholovicha-klasyka-synii/2099/",
+  "stock": 4.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ },
+ {
+  "article": "t-shirt-M98XL",
+  "name": "Футболка чоловіча «Класика синій» XL",
+  "category": "Obiimy HOME/Футболки",
+  "full": 1700.0,
+  "kind": null,
+  "value": null,
+  "pic": "https://obiimy.world/content/images/49/futbolka-muzhskaja-klassika-siniy-80493865509824_+e87601988f.JPG",
+  "thumb": "https://obiimy.world/content/images/49/futbolka-muzhskaja-klassika-siniy-80493865509824_+e87601988f.JPG",
+  "link": "https://obiimy.world/futbolka-cholovicha-klasyka-synii/2100/",
+  "stock": 5.0,
+  "collections": [],
+  "in_page": true,
+  "draft": "Чорна п’ятниця"
+ }
+]

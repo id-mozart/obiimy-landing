@@ -86,6 +86,8 @@ def build(site: pathlib.Path):
     gifts = ([f for f in tri if f.name[0] == "g"] + sorted((ROOT / "ads/solo/out8").glob("g*.jpg")) + pick(tri, gift_names)
              + pick(classic, ["p09", "u06"]))
     gifts_y = [f for f in tri_y if f.name[0] == "g"] + pick(tri_y, gift_names) + pick(yellow, ["p09", "u06"])
+    bfp = sorted((ROOT / "ads/bf/out-products").glob("*.jpg"))   # 16.11: Black Friday, the products of the client's draft with their own discounts
+    add("Чорна п’ятниця · товари добірки (16.11)", "Чотирнадцять банерів на товарах, які клієнт поклав у чернетку знижок «Чорна п’ятниця» на /discounts (122 товари зі знижкою −10 / −20 / −30 %): хустки 44 см, твіллі 84 і 140, резинки, кільця, маски й набори для сну, подарункові бокси, великі хустки, стіна з дев’яти товарів. Уперше знижка прив’язана до товару: жовтий бейдж на картці й ціна «1 120 грн замість 1 600» (роздріб obiimy.world, нова — за чернеткою). Фото — картки товарів із сайту на білих картках. Якщо чернетка зміниться — перезібрати `draft-products.json` і серію. Кожен — у чотирьох форматах.", bfp, "bfp")
     bfd = sorted((ROOT / "ads/bf/out-discount").glob("*.jpg"))   # 07.11: Black Friday, the discount as the hero
     add("Чорна п’ятниця · акцент на знижку (07.11)", "Тридцять шість банерів, де головне — цифра: гігантське «до −40 %» і «−20…−40 %» над кампейн-фото з моделями, цифри «40», залиті самим принтом хустки («Коло сонця», леопард «Грації»), жовтий постер із діапазоном, круглий стикер і бирка «до −40 %», колонка −20 / −30 / −40, стіна тексту з портретом-вікном, контурні й вертикальні цифри, печатка, жовте паспарту, арка, ілюмінатор, купон, полароїд, кіноплівка з наборів, загнутий кутик. Цифра завжди з «до» або цілим діапазоном — без відсотка на конкретний товар, без перекреслених цін. Кожен — у чотирьох форматах.", bfd, "bfd")
     bfm = sorted((ROOT / "ads/bf/out-models").glob("*.jpg"))   # 07.11: Black Friday on the campaign photographs with models
@@ -428,7 +430,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
     if n_keep:
         body_html, n = flat(lambda i: i in keep_set); toc_html = ""
         # the newest series sits above the selection on the main page (not in the archive) until the client has sorted it
-        NEW = ("bfd/", "bfm/", "bf/", "sets5/", "sets4/", "sets3/", "sets2/")      # the 26.10 series (cut-outs, veils, cards with shadows) is in the archive since 05.11
+        NEW = ("bfp/", "bfd/", "bfm/", "bf/", "sets5/", "sets4/", "sets3/", "sets2/")      # the 26.10 series (cut-outs, veils, cards with shadows) is in the archive since 05.11
         new_html = ""
         for g in groups:
             if g["cards"] and g["cards"][0][0].startswith(NEW):
@@ -536,6 +538,13 @@ BF_HOME = [   # 14.11.2026 — Black Friday banners for the home page (ads/bf/bu
     ("bfh-13-cards", "Не чорні. Зі знижкою.", "Три плоскі хустки віялом: «Між нами», «Сміливість», «Коло сонця»."),
     ("bfh-14-split", "Жорсткий сплит · −20…−40 %", "Кадр із поля без розтушовки зліва, жовтий блок із діапазоном справа."),
     ("bfh-16-ticket", "Купон · −20…−40 %", "Жовтий купон із діапазоном, переліком товарів і кнопкою; рожева хустка «Вир» на спині справа."),
+    # from the client's draft of discounts (16.11, «ещё варианты для чёрной пятницы баннера на главную» — the goods of the «Чорна п’ятниця» draft, their own −20 / −30 %)
+    ("bfh-21-khustky", "Двосторонні хустки 44 см. −20 %.", "Три хустки 44 × 44 з двостороннім друком віялом — «Натхнення», «Сміливий дотик», «Грація» — з жовтими бейджами −20 %; плашка «1 920 грн замість 2 400»."),
+    ("bfh-22-tvilli", "Твіллі 84 см. −30 %.", "Шість твіллі 84 × 5 на білих картках у два ряди, бейджі −30 %; «1 120 грн замість 1 600», у чернетці десять принтів."),
+    ("bfh-23-rezynky", "Резинки. −30 %.", "Вісім резинок на жовтих коробках у два ряди; «490 грн замість 700», 34 принти в добірці."),
+    ("bfh-24-kiltsia", "Кільця для хустки. −30 %.", "Чотири кільця кольору Gold — «Безкінечність», «Х стиль», «Циліндр», «Н стиль» — крупно на білих картках; «315 грн замість 450»."),
+    ("bfh-25-son", "Маски й набори для сну. −20 %.", "Маска «Енергія», набір для сну в жовтій коробці, «Серцебиття» — три картки з бейджами −20 % і цінами в рядку."),
+    ("bfh-26-dobirka", "122 товари. До −30 %.", "Мозаїка з восьми товарів добірки з їхніми бейджами −10 / −20 / −30 %; плашка «Знижки до −30 %»."),
 ]
 def bf_home_page(site, out, render):
     """site/home-bf.html — the Black Friday home banners in the Horoshop sizes (desktop LINE 1 3840 × 1152 and mobile LINE 1 3840 × 1536), JPG + WebP and a ZIP."""

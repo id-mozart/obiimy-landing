@@ -103,6 +103,73 @@ def customers():
     rows.sort(key=lambda r: r["last"], reverse=True)
     return dict(ok=True, at=c.get("at"), loading=_state["loading"], error=_state["error"], daily=True, sources=c.get("sources", {}), partner_sources=sorted(PARTNER_SOURCES), usd_sources=sorted(USD_SOURCES), rate=RATE, rows=rows)
 
+import re as _re
+_PATR = _re.compile(r"(ович|евич|йович|ійович|івна|ївна|овна|евна|іївна|ovich|ovna)$", _re.I)
+_STRONG = _re.compile(r"(енко|єнко|чук|щук|юк|ук|ський|ська|ский|ская|цький|цька|цкий|цкая|зький|зька|ич|ець|ун|ян|ай|ей|ів|ов|ев|єв|ова|ева|єва|ко)$", _re.I)   # endings first names never have
+def first_name(full, common=frozenset()):
+    """«Прізвище Ім’я По батькові» or «Ім’я Прізвище» → the first name alone. Rules, in order: the word right before a patronymic;
+    a word from `common` (first names seen many times across all buyers); a word without a surname ending; else the first word."""
+    toks = [x for x in _re.split(r"[\s,()]+", (full or "").strip()) if x and _re.match(r"^[A-Za-zА-ЯІЇЄҐа-яіїєґ'’\-]{2,}$", x)]
+    if not toks: return ""
+    cap = lambda s: s[:1].upper() + s[1:]
+    for i, x in enumerate(toks):
+        if _PATR.search(x) and i > 0: return cap(toks[i - 1])
+    for x in toks:
+        if x.lower() in common: return cap(x)
+    cand = [x for x in toks if not _PATR.search(x) and not _STRONG.search(x)]
+    return cap((cand or toks)[0])
+
+def common_names(rows, min_count=3):
+    """Words that repeat across many buyers' names are first names (Олена, Наталія, Андрій…) — minus surname-shaped words and
+    the words seen in the surname position of three-word names («Прізвище Ім’я По батькові»)."""
+    cnt, surn = {}, set()
+    for r in rows:
+        toks = [x for x in _re.split(r"[\s,()]+", (r.get("name") or "").lower()) if len(x) >= 2]
+        if len(toks) >= 3 and _PATR.search(toks[2]): surn.add(toks[0])
+        for x in set(toks):
+            if not _PATR.search(x): cnt[x] = cnt.get(x, 0) + 1
+    return frozenset(x for x, n in cnt.items() if n >= min_count and x not in surn and not _STRONG.search(x))
+
+def contacts():
+    """The advertisers' view: first name, phone, e-mail — nothing else (the client, 16.11.2026)."""
+    c = customers(); common = common_names(c["rows"])
+    return dict(ok=True, at=c["at"], loading=c["loading"], error=c["error"], rows=[dict(name=first_name(r["name"], common), phone=r["phone"], email=r["email"], src=r["src"]) for r in c["rows"] if r["src"] not in PARTNER_SOURCES])
+
+CONTACTS_PAGE = r"""<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Контакти</title>
+<style>
+:root{--ink:#141110;--muted:#6b645c;--line:#e6e0d6;--paper:#f7f3ec;--yel:#f4c430;--ok:#1f7a3a;--bad:#b3261e;--mark:#fff3c4}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.45 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+main{max-width:960px;margin:0 auto;padding:28px 20px 60px}h1{font-weight:500;font-size:26px;margin:0}.hd{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:14px}.hd .sp{flex:1}.hid{color:var(--muted);font-size:12.5px}
+button.ghost{appearance:none;border:1px solid var(--line);border-radius:999px;background:#fff;color:var(--ink);font:inherit;padding:7px 14px;cursor:pointer;font-size:13.5px}
+.panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:0 0 12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.search{flex:1;min-width:240px;position:relative}.search input{width:100%;border:1px solid var(--line);border-radius:999px;padding:10px 38px;font:inherit;font-size:15px;background:#fbf9f5}.search input:focus{outline:2px solid var(--yel);border-color:transparent;background:#fff}.search .ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.tog{border:1px solid var(--line);border-radius:999px;padding:6px 11px;font-size:13.5px;background:#fff;cursor:pointer;color:var(--muted);font:inherit}.tog.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.sum{color:var(--muted);font-size:13.5px;width:100%}.sum b{color:var(--ink);font-weight:500}.how{font-size:13.5px;color:var(--muted);margin:0 0 12px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:auto}table{width:100%;border-collapse:collapse}th,td{padding:8px 12px;border-top:1px solid var(--line);text-align:left;font-size:14px;white-space:nowrap}th{color:var(--muted);font-weight:500;font-size:11.5px;text-transform:uppercase;letter-spacing:.04em;position:sticky;top:0;background:#fff}td.e a{color:inherit}mark{background:var(--mark);padding:0 1px;border-radius:2px}.empty{padding:28px;text-align:center;color:var(--muted)}.msg{font-size:13.5px}.msg.ok{color:var(--ok)}.msg.bad{color:var(--bad)}
+@media(max-width:700px){main{padding:16px 12px 40px}}
+</style></head><body><main>
+<div class="hd"><h1>Контакти</h1><span class="hid" id="at"></span><span class="sp"></span><button class="ghost" id="copy">Скопіювати email</button><button class="ghost" id="csv">Завантажити CSV</button></div>
+<p class="how">Покупці OBIIMY для розсилок: ім’я, телефон, email. Один рядок на людину. Дані персональні — використовувати лише для комунікації від імені OBIIMY і нікому не передавати.</p>
+<section class="panel"><div class="search"><span class="ico">⌕</span><input type="search" id="q" placeholder="Пошук: ім’я, email, телефон" autocomplete="off"></div><button class="tog on" id="em">лише з email</button><button class="tog" id="ph">лише з телефоном</button><span class="sum" id="sum"></span><span class="msg" id="msg"></span></section>
+<div class="card"><table id="t"></table></div>
+<script>
+const KEY=new URLSearchParams(location.search).get('key')||'';const api=(u,o={})=>fetch(u+(u.includes('?')?'&':'?')+'key='+encodeURIComponent(KEY),o);const $=id=>document.getElementById(id);
+let ROWS=[],timer=null;const F={q:'',email:true,phone:false};
+const esc=s=>String(s??'').replace(/[<>&"]/g,m=>({'<':'&lt;','>':'&gt;','&':'&amp;','"':'&quot;'}[m]));const plural=(n,a,b,c)=>{const m=n%10,h=n%100;return n+' '+(m===1&&h!==11?a:(m>=2&&m<=4&&(h<12||h>14)?b:c))};
+const hl=(s,tk)=>{let h=esc(s);if(!tk.length)return h;const re=new RegExp('('+tk.map(t=>esc(t).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')).join('|')+')','gi');return h.replace(re,'<mark>$1</mark>')};
+function filtered(){const tk=F.q.trim().toLowerCase().split(/\s+/).filter(Boolean);return ROWS.filter(r=>(!F.email||r.email)&&(!F.phone||r.phone)&&(!tk.length||tk.every(t=>(r.name+' '+r.email+' '+r.phone).toLowerCase().includes(t))));}
+function render(){const rows=filtered(),tk=F.q.trim().toLowerCase().split(/\s+/).filter(Boolean);rows.sort((a,b)=>a.name.localeCompare(b.name,'uk'));
+ $('sum').innerHTML=ROWS.length?'Контактів: <b>'+rows.length+'</b> із '+ROWS.length+' · з email: '+rows.filter(r=>r.email).length+' · з телефоном: '+rows.filter(r=>r.phone).length:'';
+ $('t').innerHTML='<tr><th>Ім’я</th><th>Телефон</th><th>Email</th></tr>'+rows.slice(0,4000).map(r=>'<tr><td>'+hl(r.name||'—',tk)+'</td><td>'+hl(r.phone,tk)+'</td><td class="e">'+(r.email?'<a href="mailto:'+esc(r.email)+'">'+hl(r.email,tk)+'</a>':'<span class="hid">—</span>')+'</td></tr>').join('')+(rows.length?'':'<tr><td colspan="3" class="empty">'+(ROWS.length?'Нікого не знайдено.':'Дані ще завантажуються…')+'</td></tr>');window.__rows=rows;}
+async function load(){const r=await api('/api/contacts',{cache:'no-store'});const d=await r.json();if(!d.ok){$('msg').textContent=d.error||'Помилка';$('msg').className='msg bad';return}ROWS=d.rows;$('at').textContent=d.at?'дані на '+d.at.slice(0,16):'';render();if(d.loading){$('msg').textContent='Завантажую…';clearTimeout(timer);timer=setTimeout(load,4000);}else $('msg').textContent='';}
+$('q').oninput=()=>{F.q=$('q').value;render();};$('em').onclick=()=>{F.email=!F.email;$('em').classList.toggle('on',F.email);render();};$('ph').onclick=()=>{F.phone=!F.phone;$('ph').classList.toggle('on',F.phone);render();};
+const csvCell=v=>{v=String(v??'');return /[;"\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v};
+$('csv').onclick=()=>{const rows=window.__rows||[];const blob=new Blob(['\ufeff'+['Ім’я;Телефон;Email',...rows.map(r=>[r.name,r.phone,r.email].map(csvCell).join(';'))].join('\r\n')],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='obiimy-kontakty-'+new Date().toISOString().slice(0,10)+'.csv';a.click();setTimeout(()=>URL.revokeObjectURL(a.href),5000);$('msg').textContent='CSV: '+rows.length+' рядків.';$('msg').className='msg ok';};
+$('copy').onclick=async()=>{const em=[...new Set((window.__rows||[]).map(r=>r.email).filter(Boolean))];try{await navigator.clipboard.writeText(em.join(', '));$('msg').textContent='Скопійовано '+plural(em.length,'адресу','адреси','адрес')+'.';$('msg').className='msg ok';}catch(e){prompt('Скопіюйте вручну',em.join(', '));}};
+load();
+</script></body></html>"""
+
 PAGE = r"""<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Клієнти</title>
 <style>

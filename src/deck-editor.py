@@ -27,6 +27,7 @@ PASSWORD = os.environ.get("DECK_EDITOR_PASSWORD") or ""                 # set �
 PUBLIC = os.environ.get("DECK_EDITOR_PUBLIC") == "1"                   # Railway without a password (the owner's call, 09.10): any host, writes only from the editor's own origin
 PUBLISHED = ROOT / "data" / "published"
 CORP_DIR = ROOT / "data" / "corp"                                          # content edits of the corporate landing (cms.js on the site): corp.json + uploads + history
+GUEST_PASSWORD = os.environ.get("GUEST_PASSWORD") or ""                    # the simple password of the advertisers (the client, 16.11.2026): opens /portrait and /contacts only
 CORP_PASSWORD = os.environ.get("CORP_EDIT_PASSWORD") or ""                 # set → «Опублікувати» on the landing needs this key (X-Corp-Key); empty → open, as the deck editor
 CORP_ORIGINS = ("https://corporate.obiimy.world", "https://edem.obiimy.world", "https://obiimy-landing-production.up.railway.app", "http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:8765", "http://127.0.0.1:8765")                                 # the PDF «Опубликовать» copies here on Railway (src/deck-publish-prod.py)
 # WayForPay for the KRAЇNA EDEM × OBIIMY sale page (the client's merchant account obiimy_world, access given 06.11.2026): the
@@ -810,9 +811,20 @@ class Handler(SimpleHTTPRequestHandler):
             except Exception: pass
         return False
 
-    def need_key(self):
+    def guest(self, q):
+        """The advertisers' simple password (GUEST_PASSWORD): ?key=… or the browser's login dialog with any user name."""
+        import hmac, base64
+        if not GUEST_PASSWORD: return False
+        if hmac.compare_digest(q.get("key") or "", GUEST_PASSWORD): return True
+        a = self.headers.get("Authorization") or ""
+        if a.startswith("Basic "):
+            try: user, _, pw = base64.b64decode(a[6:].strip()).decode("utf-8").partition(":"); return hmac.compare_digest(pw, GUEST_PASSWORD)
+            except Exception: pass
+        return False
+
+    def need_key(self, guest=False):
         self.send_response(401); self.send_header("WWW-Authenticate", 'Basic realm="OBIIMY", charset="UTF-8"')
-        body = "Потрібен вхід: логін obiimy, пароль — ключ.".encode("utf-8")
+        body = ("Потрібен вхід: логін obiimy, пароль — ключ." if not guest else "Потрібен вхід: логін будь-який, пароль — від OBIIMY.").encode("utf-8")
         self.send_header("Content-Type", "text/plain; charset=utf-8"); self.send_header("Content-Length", str(len(body))); self.end_headers(); self.wfile.write(body)
 
     def authed(self):
@@ -906,7 +918,10 @@ class Handler(SimpleHTTPRequestHandler):
             except Problem as e: data = json.dumps(dict(ok=False, error=str(e)), ensure_ascii=False).encode("utf-8"); status = e.status
             self.send_response(status); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
             self.send_header("Cache-Control", "no-store"); self.corp_cors(); self.end_headers(); return self.wfile.write(data)
-        if u.path == "/portrait": return self.send_bytes(marketingnav.wrap(portraitpage.PAGE, "portrait").encode("utf-8"), "text/html; charset=utf-8")   # open for now (the client, 14.11): the advertisers read it without a login
+        if u.path in ("/portrait", "/contacts", "/api/contacts") and not (self.keyed(q) or self.guest(q)): return self.need_key(guest=True)
+        if u.path == "/portrait": return self.send_bytes(marketingnav.wrap(portraitpage.PAGE, "portrait", guest=not self.keyed(q)).encode("utf-8"), "text/html; charset=utf-8")
+        if u.path == "/contacts": return self.send_bytes(marketingnav.wrap(customerspanel.CONTACTS_PAGE, "contacts", guest=not self.keyed(q)).encode("utf-8"), "text/html; charset=utf-8")
+        if u.path == "/api/contacts": return self.api(customerspanel.contacts)   # open for now (the client, 14.11): the advertisers read it without a login
         if u.path in ("/sync", "/discounts", "/customers", "/api/sync", "/api/discounts", "/api/discounts/log", "/api/discounts/drafts", "/api/customers") and not self.keyed(q): return self.need_key()
         if u.path == "/customers": return self.send_bytes(marketingnav.wrap(customerspanel.PAGE, "customers").encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/api/customers": return self.api(customerspanel.customers)

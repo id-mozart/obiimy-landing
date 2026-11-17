@@ -671,7 +671,7 @@ def api_edem_register(body, ip="", origin="", base=""):
     name, phone = t("name", 120), t("phone", 60)
     if len(name) < 2 or len(phone) < 5: raise Problem("Потрібні ім’я та телефон.")
     kind = "order" if body.get("kind") == "order" else "register"
-    if kind == "order" and (len(t("city", 80)) < 2 or len(t("branch", 120)) < 1): raise Problem("Потрібні місто й відділення Нової пошти.")
+    if kind == "order" and len(t("city", 80)) < 2: raise Problem("Потрібне місто.")   # the branch is optional since 17.11.2026 (the client); the manager asks for it when it is missing
     rec = {"at": time.strftime("%Y-%m-%dT%H:%M:%S"), "kind": kind, "name": name, "phone": phone, "email": t("email", 120),
            "interest": t("interest", 80), "note": t("note", 1000), "page": t("page", 200), "ip": ip}
     out = dict(ok=True)

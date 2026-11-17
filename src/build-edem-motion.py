@@ -222,7 +222,7 @@ ORDER_STEPS = [("Замовлення", "Ім’я, телефон, місто �
 FORM_UK = dict(title="Замовлення · Трипілля — Мистецтво витоків", sending="Надсилаємо…", total_label="Разом", fail_h="Замовлення не надіслано",
                fail_p="Не вдалося надіслати замовлення автоматично. Натисніть «Написати в Telegram» — текст уже підготовлено.",
                name="Ім’я *", e_name="Вкажіть ім’я", phone="Телефон *", e_phone="Вкажіть телефон, щонайменше 9 цифр", email="Email", opt="(необов’язково)",
-               city="Місто *", e_city="Вкажіть місто", branch="Відділення Нової пошти *", ph_branch="№ відділення або поштомат", e_branch="Вкажіть відділення чи поштомат",
+               city="Місто *", e_city="Вкажіть місто", branch="Відділення Нової пошти", ph_branch="№ відділення або поштомат", e_branch="Вкажіть відділення чи поштомат",   # optional since 17.11.2026 (the client: «не обязательно должно быть»); the manager asks when it is missing
                qty="Кількість", comment="Коментар", line="Хустка 88 × 88 см, 100% шовк ·", pcs="шт.", submit="Замовити й оплатити —", hint="Оплата карткою на захищеній сторінці WayForPay.<br>* обов’язкові поля", paying="Переходимо до оплати…",
                done_h="Дякуємо — замовлення прийнято", done_p="Менеджер зв’яжеться з вами найближчим часом, підтвердить замовлення й надішле посилання на оплату. Якщо зручніше — напишіть нам у Telegram.",
                paid_h="Оплату отримано — дякуємо!", paid_p="Замовлення {ref} оплачено. Менеджер зв’яжеться з вами й відправить хустку Новою поштою. Якщо є запитання — напишіть нам у Telegram.",
@@ -233,7 +233,7 @@ FORM_UK = dict(title="Замовлення · Трипілля — Мистец�
 FORM_EN = dict(title="Order · Trypillia — The Art of Origins", sending="Sending…", total_label="Total", fail_h="The order was not sent",
                fail_p="We could not send the order automatically. Tap “Write on Telegram” — the text is ready.",
                name="Name *", e_name="Please enter your name", phone="Phone *", e_phone="Please enter a phone number with at least 9 digits", email="Email", opt="(optional)",
-               city="City *", e_city="Please enter your city", branch="Nova Poshta branch / address *", ph_branch="Branch no. or address", e_branch="Please enter a branch or an address",
+               city="City *", e_city="Please enter your city", branch="Nova Poshta branch / address", ph_branch="Branch no. or address", e_branch="Please enter a branch or an address",
                qty="Quantity", comment="Comment", line="Scarf 88 × 88 cm, 100% silk ·", pcs="pc.", submit="Order and pay —", hint="Card payment on the secure WayForPay page.<br>* required fields", paying="Taking you to the payment page…",
                done_h="Thank you — your order has been received", done_p="Our manager will contact you shortly, confirm the order and send a payment link. If you prefer, write to us on Telegram.",
                paid_h="Payment received — thank you!", paid_p="Order {ref} is paid. Our manager will contact you and ship the scarf by Nova Poshta. If you have any questions, write to us on Telegram.",
@@ -254,7 +254,7 @@ def order_form(lang="uk"):
     <label><span>{L["phone"]}</span><input name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+380" required aria-describedby="err-phone"><span class="err" id="err-phone" role="alert">{L["e_phone"]}</span></label>
     <label class="full"><span>{L["email"]} <small style="font-weight:400">{L["opt"]}</small></span><input name="email" type="email" autocomplete="email"></label>
     <label><span>{L["city"]}</span><input name="city" type="text" autocomplete="address-level2" required aria-describedby="err-city"><span class="err" id="err-city" role="alert">{L["e_city"]}</span></label>
-    <label><span>{L["branch"]}</span><input name="branch" type="text" placeholder="{L["ph_branch"]}" required aria-describedby="err-branch"><span class="err" id="err-branch" role="alert">{L["e_branch"]}</span></label>
+    <label><span>{L["branch"]} <small style="font-weight:400">{L["opt"]}</small></span><input name="branch" type="text" placeholder="{L["ph_branch"]}"></label>
     <label><span>{L["qty"]}</span><select name="qty" id="qty" data-fmt="{lang}">{qty}</select></label>
     <label><span>{L["comment"]} <small style="font-weight:400">{L["opt"]}</small></span><input name="comment" type="text" maxlength="300"></label>
     <div class="total"><span>{L["line"]} <span id="qty-t">1</span> {L["pcs"]}</span><b id="total-t">{P}</b></div>

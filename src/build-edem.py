@@ -187,7 +187,7 @@ def main():
     <h1>Trypillia —<br><i>The Art of Origins</i></h1>
     <p class="lead">Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами — спільна робота KRAЇNA EDEM та OBIIMY.</p>
     <div class="cta"><a class="btn btn-gold" href="#register">Отримати ранній доступ</a><a class="btn btn-line" href="#story">Про проєкт</a></div>
-    <div class="facts"><span><b>88 × 88 см</b></span><span><b>100%</b> шовк</span><span>Обмежений наклад</span><span>Підпис OBIIMY × Edem</span></div>
+    <div class="facts"><span><b>88 × 88 см</b></span><span><b>100%</b> шовк</span><span>Лімітована серія</span><span>Підпис OBIIMY × Edem</span></div>
   </div>
   <div class="art">{scarf}</div>
 </div></section>
@@ -216,7 +216,7 @@ def main():
         <div><span>Матеріал</span><b>100% натуральний шовк</b></div>
         <div><span>Принт</span><b>Авторський, спільний для двох брендів</b></div>
         <div><span>Підпис</span><b>OBIIMY × Edem на полотні</b></div>
-        <div><span>Наклад</span><b>Обмежений</b></div>
+        <div><span>Серія</span><b>Лімітована</b></div>
         <div><span>Виготовлено</span><b>в Україні</b></div>
       </div>
       <div class="note">Ціну й дату старту повідомимо зареєстрованим першими.</div>

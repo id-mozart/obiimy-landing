@@ -101,7 +101,7 @@ def canvas():
   <div class="canvas">{img("photo/edem/art-2400.webp", ART_ALT, sizes="(max-width: 1560px) 96vw, 1460px", lazy=False, eager_priority=True)}</div>
   <div class="under rv"><p class="lead">{LEAD}</p>
     <div class="cta"><a class="btn btn-main" href="#register">Отримати ранній доступ</a><a class="btn btn-line" href="#story">Про проєкт</a></div>
-    <p class="facts"><b>88 × 88 см</b> · <b>100% шовк</b> · обмежений наклад · підпис OBIIMY × Edem</p></div>
+    <p class="facts"><b>88 × 88 см</b> · <b>100% шовк</b> · лімітована серія · підпис OBIIMY × Edem</p></div>
 </section>
 
 <section class="s mani" id="manifest"><div class="wrap rv"><div class="orn">{img("photo/edem/pendant-round.webp", "", sizes="72px")}</div><blockquote>{MANIFESTO}</blockquote></div></section>
@@ -181,7 +181,7 @@ def spread():
     <h1 style="margin-top:18px"><b>Trypillia —</b><br>The Art of Origins</h1>
     <p class="lead">{LEAD}</p>
     <div class="cta"><a class="btn btn-main" href="#register">Отримати ранній доступ</a><a class="btn btn-line" href="#scarf">Побачити хустку</a></div>
-    <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Обмежений наклад</span><span>Підпис OBIIMY × Edem</span></div>
+    <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Лімітована серія</span><span>Підпис OBIIMY × Edem</span></div>
   </div>
   <p class="vert">Шовкова хустка за трипільськими мотивами</p>
 </section>
@@ -257,7 +257,7 @@ def silk():
   <div class="frame">{img("photo/edem/art-2400.webp", ART_ALT, sizes="(max-width: 1200px) 96vw, 1150px", lazy=False, eager_priority=True)}</div>
   <div class="under rv"><p class="lead">{LEAD}</p>
     <div class="cta"><a class="btn btn-main" href="#register">Отримати ранній доступ</a><a class="btn btn-line" href="#story">Про проєкт</a></div>
-    <p class="facts"><b>88 × 88 см</b> · <b>100% шовк</b> · обмежений наклад · підпис OBIIMY × Edem</p></div>
+    <p class="facts"><b>88 × 88 см</b> · <b>100% шовк</b> · лімітована серія · підпис OBIIMY × Edem</p></div>
 </section>
 
 <section class="s mani" id="manifest"><div class="wrap"><div class="glass rv"><blockquote>{MANIFESTO}</blockquote></div></div></section>

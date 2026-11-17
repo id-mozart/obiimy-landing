@@ -22,7 +22,7 @@ SYMBOLS = [("figure", "Жіночий образ", "Виразний силуе�
            ("mandala", "Коло життя", "Круговий орнамент медальйона нагадує про зміну пір року, оновлення природи й безперервність життя.", "Центральний медальйон принту: спіраль у золоті й синьому"),
            ("pendant-round", "Рівновага", "Два завитки утворюють врівноважену композицію, що в авторському прочитанні передає гармонію та взаємодію.", "Кругла золота підвіска з двома спіралями"),
            ("pendant-diamond", "Геометрія Трипілля", "Ромбовидна форма та спіральні лінії поєднують геометричні мотиви, відомі з трипільського мистецтва.", "Ромбовидна золота підвіска з орнаментом")]
-SPEC = [("Розмір", "88 × 88 см"), ("Матеріал", "100% натуральний шовк"), ("Принт", "Авторський, спільний для двох брендів"), ("Підпис", "OBIIMY × Edem на полотні"), ("Серія", "Лімітована"), ("Виготовлено", "в Україні")]   # «Лімітована серія» instead of «Обмежений наклад» (the advertisers, 17.11.2026: «наклад» reads as a print run of books)
+SPEC = [("Розмір", "88 × 88 см"), ("Матеріал", "100% натуральний шовк"), ("Принт", "Авторський, спільний для двох брендів"), ("Підпис", "OBIIMY × Edem на полотні"), ("Серія", "Лімітована"), ("Виготовлено", "в Україні")]   # «Лімітована серія» instead of «Лімітована серія» (the advertisers, 17.11.2026: «наклад» reads as a print run of books)
 EDEM_P = "Збереження й популяризація української культурної спадщини вже багато років є невід’ємною частиною філософії KRAЇNA EDEM — через культурні ініціативи, мистецькі проєкти та простори, присвячені творчості."
 EDEM_L = ["Park3020 — парк сучасної української скульптури, де мистецтво взаємодіє з природою", "Підтримка українських митців і популяризація сучасного мистецтва"]
 OB_P = "Український бренд шовкових хусток і аксесуарів з авторськими принтами. Засновниця й художниця — Світлана Сніжко: перші колекції виросли з її картин."
@@ -247,7 +247,7 @@ def gold():
       <h1 style="margin-top:20px">Trypillia —<br><i>The Art of Origins</i></h1>
       <p class="lead">Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами — спільна робота KRAЇNA EDEM та OBIIMY.</p>
       <div class="cta"><a class="btn btn-main" href="#register">Отримати ранній доступ</a><a class="btn btn-line" href="#story">Про проєкт</a></div>
-      <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Обмежений наклад</span><span>Підпис OBIIMY × Edem</span></div>
+      <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Лімітована серія</span><span>Підпис OBIIMY × Edem</span></div>
     </div>
     <div class="art">{img("photo/edem/scarf.webp", "Хустка KRAЇNA EDEM × OBIIMY «Trypillia — The Art of Origins», 88 × 88", sizes="(max-width: 980px) 90vw, 44vw", lazy=False, eager_priority=True)}</div>
   </div>
@@ -355,7 +355,7 @@ def museum():
     <h1 style="margin-top:18px">Trypillia —<br><i>The Art of Origins</i></h1>
     <p class="lead">Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами — спільна робота KRAЇNA EDEM та OBIIMY.</p>
     <div class="cta"><a class="btn btn-main" href="#register">Отримати ранній доступ</a><a class="btn btn-line" href="#story">Про проєкт</a></div></div>
-  <figure>{img("photo/edem/art-1600.webp", "Принт хустки «Trypillia — The Art of Origins» повністю", sizes="(max-width: 980px) 92vw, 44vw", lazy=False, eager_priority=True)}<div class="dim"><span>0</span><i></i><span>88 см</span></div><p class="cap">Хустка 88 × 88 см · 100% натуральний шовк · обмежений наклад · підпис OBIIMY × Edem на полотні</p></figure>
+  <figure>{img("photo/edem/art-1600.webp", "Принт хустки «Trypillia — The Art of Origins» повністю", sizes="(max-width: 980px) 92vw, 44vw", lazy=False, eager_priority=True)}<div class="dim"><span>0</span><i></i><span>88 см</span></div><p class="cap">Хустка 88 × 88 см · 100% натуральний шовк · лімітована серія · підпис OBIIMY × Edem на полотні</p></figure>
 </section>
 <section class="mani" id="manifest"><p class="plate rv">II · Маніфест</p><blockquote class="rv" style="margin-top:22px">{MANIFESTO}</blockquote></section>
 <section id="scarf"><p class="plate rv">III · Хустка</p><h2 class="rv">Мистецьке полотно, яке можна носити</h2>
@@ -445,7 +445,7 @@ def zoom():
   <div class="stage">
     <div class="art" id="art">{img("photo/edem/art-2400.webp", "Принт хустки «Trypillia — The Art of Origins»", sizes="100vmin", lazy=False, eager_priority=True)}</div>
     <div class="veil"></div><div class="scrim"></div>
-    <div class="top"><span>Kraїna Edem × Obiimy</span><span>88 × 88 · шовк · обмежений наклад</span></div>
+    <div class="top"><span>Kraїna Edem × Obiimy</span><span>88 × 88 · шовк · лімітована серія</span></div>
     <div class="dots" id="dots">{"".join('<i class="on"></i>' if i == 0 else "<i></i>" for i in range(4))}</div>
     <div class="cap"><div class="in">{cap_html}</div></div>
     <p class="hintsc" id="hintsc">Гортайте</p>

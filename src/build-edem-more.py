@@ -197,7 +197,7 @@ def book():
   <section class="page cover" id="p1"><div class="two">
     <div><p class="eyebrow">Спільний мистецький проєкт · лімітований випуск 2026</p><h1>Trypillia —<br><i>The Art of Origins</i></h1><p class="lead">{LEAD}</p>
       <div class="cta"><a class="btn btn-main" href="#p7">Отримати ранній доступ</a><a class="btn btn-line" href="#p5">Побачити хустку</a></div>
-      <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Обмежений наклад</span><span>Підпис OBIIMY × Edem</span></div></div>
+      <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Лімітована серія</span><span>Підпис OBIIMY × Edem</span></div></div>
     <div class="mock">{img("photo/edem/scarf.webp", "Хустка KRAЇNA EDEM × OBIIMY «Trypillia — The Art of Origins», 88 × 88", sizes="(max-width: 980px) 90vw, 40vw", lazy=False, eager_priority=True)}</div>
   </div>{foot(0)}</section>
   <section class="page alt mani" id="p2"><div><div class="orn">{img("photo/edem/pendant-round.webp", "", sizes="120px")}</div><blockquote>{MANIFESTO}</blockquote></div>{foot(1)}</section>

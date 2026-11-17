@@ -384,7 +384,7 @@ def main(light=False, lang="uk"):
     <h1>Трипілля —<br><i>Мистецтво витоків</i></h1>
     <p class="lead">{LEAD}</p>
     <div class="cta"><a class="btn btn-main" href="#order">Замовити хустку</a><a class="btn btn-line" href="#scarf">Роздивитися хустку</a></div>
-    <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Лімітована серія</span><span>Підпис OBIIMY × Edem</span></div>
+    <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Лімітована серія</span></div>
   </div>
   <p class="scrollhint">Гортайте<i></i></p>
 </section>

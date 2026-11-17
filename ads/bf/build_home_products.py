@@ -265,33 +265,37 @@ both("bfh-46-lookbook", v_lookbook, "The lookbook twilly with one card")
 EXTRA5 = """
 .sv .nm { font-family: 'EB Garamond', serif; font-style: italic; font-weight: 500; color: #E7D9A6; line-height: 1.1; }
 .sv .tp { font-family: 'Montserrat', sans-serif; font-weight: 400; color: #C9C6C0; line-height: 1.25; }
-.sv .ci { display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #F2B705; color: #141110; box-shadow: 0 0 0 4px #141110, 0 14px 30px -10px rgba(0,0,0,.8); font-family: 'Montserrat', sans-serif; font-weight: 500; letter-spacing: -.02em; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; z-index: 6; }
+.sv .ci { display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #F2B705; color: #141110; box-shadow: 0 16px 30px -12px rgba(0,0,0,.7); font-family: 'Onest', 'Montserrat', sans-serif; font-weight: 700; letter-spacing: -.03em; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; z-index: 6; }
 """
-HEAD = HEAD.replace("</style>", EXTRA5 + "</style>").replace("EB+Garamond:wght@500;600", "EB+Garamond:ital,wght@0,500;0,600;1,500")
+HEAD = HEAD.replace("</style>", EXTRA5 + "</style>").replace("EB+Garamond:wght@500;600", "EB+Garamond:ital,wght@0,500;0,600;1,500").replace("Onest:wght@400;600", "Onest:wght@400;600;700")
 # 17.11, the client: «бери фото не просто товара, а где человек есть или где-то в жизни» — the galleries of the same products on
 # obiimy.world (data/horoshop/products.json → gallery_common), copied to photo/bf-draft/life/<article>.jpg
 # 17.11, the client again: «зроби менше товарів, щоб було краще видно їх» — five slices instead of seven, all with a person
-SEVEN = [("88-33-D", "Хустка 88 × 88", "50% 12%", 1.0), ("44-26-D", "Паше 44 × 44", "50% 40%", 1.0), ("84-24", "Твіллі 84", "50% 14%", 1.0),
-         ("140-14", "Твіллі 140", "50% 0%", 1.0), ("R-20", "Резинка", "50% 20%", 1.0)]
+# 17.11, the art director's pick («посимпатичніше, уважно з арт-директором»): one warm beige-caramel shoot, no sunglasses, faces calm,
+# mid / close / mid / mid / close; captions are one word (the client: «не твіллі 95, а просто твіллі»)
+SEVEN = [("88-22-D", "Хустка", "64% 20%", 1.0), ("44-21-D", "Паше", "44% 25%", 1.0), ("84-30", "Твіллі", "50% 25%", 1.0),
+         ("65-23-D", "Хустка", "50% 15%", 1.0), ("R-23", "Резинка", "60% 20%", 1.0)]   # 65-23-D is the AD's alternate: the first pick (65-24-D) turned out to be a back view
 PL = "../../photo/bf-draft/life/"
 def seven_tiles(left, right, top, bottom, mob, gap=10, names=True):
     n = len(SEVEN); w = (right - left - gap * (n - 1)) // n
     d = 72 if not mob else 104                                  # the discount circle on the foot of the tile (the reviewers: air around the digits, larger on mobile)
-    cap_h = (int(24 * 1.4) + 22 + 10) if names else 0
+    cap_h = (int(26 * 1.3) + 12) if names else 0
     h = bottom - top - d // 2 - cap_h
     out = ""
     for i, (a, tp, pos, z) in enumerate(SEVEN):
         x = left + i * (w + gap)
         out += f'<div class="ph" style="left:{x}px;top:{top}px;width:{w}px;height:{h}px;background:#2A2522"><img src="{PL}{a}.jpg" alt="" style="object-position:{pos};transform:scale({z});transform-origin:{pos}"></div>'
-        out += f'<p class="ci" style="left:{x + (w - d) // 2}px;top:{top + h - d // 2}px;width:{d}px;height:{d}px;font-size:{int(d * .28)}px">−{pct(a)}{THIN}%</p>'
+        out += f'<p class="ci" style="left:{x + (w - d) // 2}px;top:{top + h - d // 2}px;width:{d}px;height:{d}px;font-size:{int(d * .34)}px">−{pct(a)}{THIN}%</p>'
         if names:
-            out += f'<div class="sv" style="left:{x}px;width:{w}px;top:{top + h + d // 2 + 12}px;text-align:center"><p class="nm" style="font-size:24px;white-space:nowrap">{short(a)}</p><p class="tp" style="font-size:14px;margin-top:5px">{tp}</p></div>'
+            out += f'<div class="sv" style="left:{x}px;width:{w}px;top:{top + h + d // 2 + 12}px;text-align:center"><p class="nm" style="font-size:26px;white-space:nowrap">{tp}</p></div>'
     return out
 def v_seven(H, mob):
+    # the copy (the client: «текст зліва осмислений»; the copywriter's option 1): a gift to yourself or to someone you love
     if mob: return f'<div style="inset:0;background:{INK}"></div>' + seven_tiles(960, 1892, 40, 728, True, gap=12, names=False) + \
-        L(f"Знижки до −30{THIN}%", None, f"{TOTAL} товари", True, width=720, bigsize=96)
+        L("Подаруйте собі шовк", None, f"−10 · −20 · −30{THIN}%", True, width=720, bigsize=92)
     return f'<div style="inset:0;background:{INK}"></div>' + seven_tiles(790, 1856, 36, 540, False, gap=14) + \
-        L(f"Від хустки до резинки — знижки до −30{THIN}%", f"{TOTAL} товари зі знижками −10, −20 і −30{THIN}%: хустки, твіллі, маски для сну, резинки й аксесуари.", f"−10 · −20 · −30{THIN}%", False, width=660, bigsize=58)
+        BH.lock("Подаруйте собі шовк — або тому, кого любите", f"{TOTAL} авторські шовкові вироби, створені в Україні, — зі знижками −10, −20 і −30{THIN}%.",
+                kicker="Чорна п’ятниця в OBIIMY", pill=f"−10 · −20 · −30{THIN}%", more="Обрати подарунок", width=660, xl=False, bigsize=58)
 both_cls("bfh-47-sim", v_seven, "Seven product slices with names and discount circles (after home-t1-seven-faces)", "sv")
 
 (HERE / "home-products.html").write_text(HEAD + "".join(ads) + "\n</body></html>")

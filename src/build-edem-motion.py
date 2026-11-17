@@ -8,7 +8,7 @@
   story   — the figure spins in 3D with the scroll progress of the section, pendants swing on cords and kick when hovered;
   symbols — four 3D cards that tilt on hover with the element popping out towards the viewer.
 Reduced motion: everything is static. Touch: no pointer parallax, idle drift only. Output: edem-motion.html (HIDDEN; in the variants bar)."""
-import os, importlib.util, pathlib, random, re, sys
+import os, importlib.util, json, pathlib, random, re, sys
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "src"))
 from imgs import img
@@ -21,7 +21,7 @@ PRICE = int(os.environ.get("EDEM_PRICE") or 8500)   # EDEM_PRICE overrides for a
 PRICE_T = f"{PRICE:,}".replace(",", "\u202f") + "\u00a0грн"   # «4 800 грн»
 EDEM_URL = "https://edem.obiimy.world/"         # the sale page lives on its own subdomain (server.js serves edem-motion-light at its root)
 LEAD = "Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами — спільна робота KRAЇNA EDEM та OBIIMY."
-SCARF_LEAD = "Хустка тут — більше, ніж аксесуар: мистецьке полотно, що поєднує сучасний дизайн із пам’яттю про давні культури."
+SCARF_LEAD = "Хустка тут — більше, ніж аксесуар: трипільські мотиви, переосмислені крізь авторський погляд на сучасність."   # the advertisers' wording, 17.11.2026
 
 CSS = """
 :root { --bg: #16100C; --bg2: #1F1610; --cream: #F3E9D8; --cream2: rgba(243,233,216,.72); --gold: #D9B86A; --gold2: #B48A3A; --line: rgba(217,184,106,.22); --acc: #D9B86A; --fb: rgba(42,32,23,.3); --fbg: #FBF4E7; --fink: #2A2017; }
@@ -274,16 +274,16 @@ EN = [
  ("Мистецтво бути ближче. Шовкова хустка за трипільськими мотивами — спільна робота KRAЇNA EDEM та OBIIMY.", "The art of being closer. A silk scarf inspired by Trypillian motifs — a collaboration between KRAЇNA EDEM and OBIIMY."),
  ('alt="Хустка KRAЇNA EDEM × OBIIMY «Трипілля — Мистецтво витоків», 88 × 88"', 'alt="The KRAЇNA EDEM × OBIIMY scarf “Trypillia — The Art of Origins”, 88 × 88"'),
  ("Роздивитися хустку", "See the scarf"), ("Гортайте<i>", "Scroll<i>"),
- ("<b>100%</b> шовк", "<b>100%</b> silk"), ("<b>88 × 88</b> см", "<b>88 × 88</b> cm"), ("Обмежений наклад", "Limited run"), ("Підпис OBIIMY × Edem", "Signed OBIIMY × Edem"),
+ ("<b>100%</b> шовк", "<b>100%</b> silk"), ("<b>88 × 88</b> см", "<b>88 × 88</b> cm"), ("Лімітована серія", "Limited edition"), ("Підпис OBIIMY × Edem", "Signed OBIIMY × Edem"),
  ("Є речі, які неможливо виміряти часом. <b>Пам’ять землі.</b> Символи, що пережили тисячоліття. Образи, які залишили нам давні покоління. І культурний код, який продовжує жити, навіть коли змінюються епохи.",
   "Some things cannot be measured in time. <b>The memory of the land.</b> Symbols that have outlived millennia. Images left to us by distant generations. And a cultural code that lives on, even as the eras change."),
  ("Хустка · 88 × 88 см", "The scarf · 88 × 88 cm"), ("Мистецьке полотно, яке можна носити", "An artwork you can wear"),
- ("Хустка тут — більше, ніж аксесуар: мистецьке полотно, що поєднує сучасний дизайн із пам’яттю про давні культури.", "More than an accessory: an art canvas that joins contemporary design with the memory of ancient cultures."),
+ ("Хустка тут — більше, ніж аксесуар: трипільські мотиви, переосмислені крізь авторський погляд на сучасність.", "More than an accessory, this silk scarf reimagines the art of Trypillia through a contemporary lens."),
  ('alt="Принт хустки «Трипілля — Мистецтво витоків» повністю"', 'alt="The full print of the “Trypillia — The Art of Origins” scarf"'),
- ("Наведіть курсор — лупа покаже деталі принту", "Move the cursor over the print — the loupe shows the details"),
+ ("Наведіть курсор — лупа допоможе роздивитися візерунок", "Hover over the print — zoom in on the details"),
  ("<span>Розмір</span><b>88 × 88 см</b>", "<span>Size</span><b>88 × 88 cm</b>"), ("<span>Матеріал</span><b>100% натуральний шовк</b>", "<span>Material</span><b>100% natural silk</b>"),
  ("<span>Принт</span><b>Авторський, спільний для двох брендів</b>", "<span>Print</span><b>Original, created jointly by the two brands</b>"), ("<span>Підпис</span><b>OBIIMY × Edem на полотні</b>", "<span>Signature</span><b>OBIIMY × Edem on the canvas</b>"),
- ("<span>Наклад</span><b>Обмежений</b>", "<span>Edition</span><b>Limited</b>"), ("<span>Виготовлено</span><b>в Україні</b>", "<span>Made</span><b>in Ukraine</b>"),
+ ("<span>Серія</span><b>Лімітована</b>", "<span>Edition</span><b>Limited</b>"), ("<span>Виготовлено</span><b>в Україні</b>", "<span>Made</span><b>in Ukraine</b>"),
  ("Лімітований випуск. Доставка Новою поштою по Україні.", "Limited edition. Delivery by Nova Poshta across Ukraine, worldwide shipping at the carrier’s rates."),
  (">Замовити хустку</a>", ">Order the scarf</a>"), ('title="На головний сайт OBIIMY"', 'title="OBIIMY main site"'), ('aria-label="Розділи сторінки"', 'aria-label="Page sections"'),
  ('<a href="#scarf">Хустка</a><a href="#film">Відео</a><a href="#story">Історія</a><a href="#symbols">Символи</a><a href="#brands">Партнери</a>', '<a href="#scarf">The scarf</a><a href="#film">Film</a><a href="#story">Story</a><a href="#symbols">Symbols</a><a href="#brands">Partners</a>'),
@@ -293,20 +293,20 @@ EN = [
  ("<p class=\"eyebrow\">Відео</p><h2>Хустка наживо</h2>", "<p class=\"eyebrow\">Film</p><h2>The scarf in motion</h2>"),
  ("Шовк у русі: «Трипілля — Мистецтво витоків» на пленері — у руках, на плечах, у світлі дня.", "Silk in motion: “Trypillia — The Art of Origins” outdoors — in the hands, on the shoulders, in daylight."),
  ("Історія, що живе в нас", "A history that lives in us"), ("Наше коріння сягає глибини тисячоліть", "Our roots reach back millennia"),
- ("Задовго до сучасних кордонів і держав на землях нинішньої України розвивалися давні культури, які залишили по собі унікальну мистецьку спадщину. Особливе місце серед них посідає трипільська культура — одна з найяскравіших археологічних культур давньої Європи, що існувала впродовж VI–IV тисячоліть до нашої ери.",
-  "Long before today’s borders and states, ancient cultures flourished on the lands of present-day Ukraine and left behind a unique artistic heritage. A special place among them belongs to the Trypillian culture — one of the most striking archaeological cultures of ancient Europe, which existed through the 6th–4th millennia BCE."),
+ ("Задовго до сучасних кордонів і держав на землях нинішньої України розвивалися давні культури, які залишили по собі унікальну мистецьку спадщину. Особливе місце серед них посідає трипільська культура — одна з найяскравіших археологічних культур давньої Європи, що існувала впродовж VI–III тисячоліть до нашої ери.",
+  "Long before today’s borders and states, ancient cultures flourished on the lands of present-day Ukraine and left behind a unique artistic heritage. A special place among them belongs to the Trypillian culture — one of the most striking archaeological cultures of ancient Europe, which existed through the 6th–3rd millennia BCE."),
  ("Сьогодні ці стародавні знаки набувають нового звучання. Ми не можемо повернути час, але можемо зберегти пам’ять про тих, хто жив до нас, — відкрити для себе їхнє мистецтво й відчути зв’язок із землею, її історією та культурними витоками.",
   "Today these ancient signs take on a new resonance. We cannot turn back time, but we can keep the memory of those who lived before us — discover their art and feel a bond with the land, its history and its cultural origins."),
  ('alt="Трипільська фігурка — елемент принту"', 'alt="A Trypillian figurine — an element of the print"'),
  ("Символи хустки", "The symbols of the scarf"), ("Кожна деталь має значення", "Every detail has meaning"),
  ("Давні орнаментальні мотиви й символічні образи — переосмислені мовою сучасного дизайну, у золоті й глибокому синьому.", "Ancient ornamental motifs and symbolic images, reinterpreted in the language of contemporary design — in gold and deep blue."),
- ("Пластика</h3><p>Жіноча фігурка зі спіральним орнаментом — образ трипільської пластики, який чотири рази повторюється на полотні хустки.", "The figurine</h3><p>A female figurine with a spiral ornament — an image of Trypillian clay sculpture, repeated four times across the canvas of the scarf."),
+ ("Жіночий образ</h3><p>Виразний силует і спіральний орнамент переосмислюють пластику жіночих статуеток Трипілля.", "The female image</h3><p>An expressive silhouette and a spiral ornament reinterpret the clay figurines of Trypillian women."),
  ('alt="Золота жіноча фігурка зі спіралями — трипільська пластика в принті"', 'alt="A golden female figurine with spirals — Trypillian sculpture in the print"'),
- ("Медальйон</h3><p>Центр композиції — спіраль у колі. У спіралях трипільського орнаменту дослідники вбачають плин часу, відродження та циклічність життя.", "The medallion</h3><p>At the centre of the composition is a spiral within a circle. In the spirals of Trypillian ornament, researchers see the flow of time, rebirth and the cycle of life."),
+ ("Коло життя</h3><p>Круговий орнамент медальйона нагадує про зміну пір року, оновлення природи й безперервність життя.", "The circle of life</h3><p>The circular ornament of the medallion recalls the turning of the seasons, the renewal of nature and the continuity of life."),
  ('alt="Центральний медальйон принту: спіраль у золоті й синьому"', 'alt="The central medallion of the print: a spiral in gold and blue"'),
- ("Підвіски</h3><p>Круглі золоті підвіски на плетених синіх шнурах оточують медальйон — вісім, по дві з кожного боку.", "The pendants</h3><p>Round golden pendants on braided blue cords surround the medallion — eight of them, two on each side."),
+ ("Рівновага</h3><p>Два завитки утворюють врівноважену композицію, що в авторському прочитанні передає гармонію та взаємодію.", "Balance</h3><p>Two curls form a balanced composition that, in the artist’s reading, conveys harmony and interaction."),
  ('alt="Кругла золота підвіска з двома спіралями"', 'alt="A round golden pendant with two spirals"'),
- ("Ромби</h3><p>Чотири ромбовидні підвіски тримають композицію по діагоналях і замикають її в раму.", "The diamonds</h3><p>Four diamond-shaped pendants hold the composition along the diagonals and close it into a frame."),
+ ("Геометрія Трипілля</h3><p>Ромбовидна форма та спіральні лінії поєднують геометричні мотиви, відомі з трипільського мистецтва.", "The geometry of Trypillia</h3><p>The diamond shape and spiral lines bring together geometric motifs known from Trypillian art."),
  ('alt="Ромбовидна золота підвіска з орнаментом"', 'alt="A diamond-shaped golden pendant with ornament"'),
  ("<p class=\"eyebrow\">Партнери</p><h2>Два бренди. Одна філософія. Спільне мистецтво.</h2>", "<p class=\"eyebrow\">Partners</p><h2>Two brands. One philosophy. Shared art.</h2>"),
  ("<p class=\"eyebrow\">Партнер</p>", "<p class=\"eyebrow\">Partner</p>"), ("<p class=\"eyebrow\">Бренд</p>", "<p class=\"eyebrow\">Brand</p>"),
@@ -322,6 +322,29 @@ EN = [
  ("Хустка «Трипілля — Мистецтво витоків» —", "The “Trypillia — The Art of Origins” scarf —"),
  ("Питання: <a", "Questions: <a"),
 ]
+# SEO (the advertisers' brief of 17.11.2026): meta description + keywords for the two indexed pages and a schema.org Product in JSON-LD (price = the live PRICE)
+SEO = {
+ "uk": {"desc": "Шовкова хустка «Трипілля — Мистецтво витоків» від KRAЇNA EDEM та OBIIMY. Натуральний шовк, 88 × 88 см. Ціна %s грн. Доставка Новою поштою по Україні." % f"{PRICE:,}".replace(",", "\u00a0"),
+        "keywords": "хустка Трипілля, шовкова хустка Трипілля, Трипілля Мистецтво витоків, OBIIMY, OBIIMY EDEM, хустка з трипільським орнаментом, хустка з українськими мотивами, дизайнерська хустка, купити хустку Трипілля",
+        "name": "Шовкова хустка «Трипілля — Мистецтво витоків» KRAЇNA EDEM × OBIIMY",
+        "jd": "Шовкова хустка з авторським принтом за трипільськими мотивами. Спільний проєкт KRAЇNA EDEM та OBIIMY. Натуральний шовк, розмір 88 × 88 см.",
+        "material": "100% натуральний шовк", "size": "88 × 88 см"},
+ "en": {"desc": "Trypillia — The Art of Origins silk scarf by KRAЇNA EDEM and OBIIMY. 100% natural silk, 88 × 88 cm. UAH PRICE. Delivery across Ukraine via Nova Poshta.".replace("PRICE", f"{PRICE:,}"),
+        "keywords": "Trypillia scarf, Trypillia silk scarf, Trypillia The Art of Origins, OBIIMY, OBIIMY EDEM, KRAЇNA EDEM, silk scarf with Trypillian motifs, Ukrainian silk scarf, Ukrainian-inspired scarf, designer silk scarf, buy Trypillia silk scarf",
+        "name": "Trypillia — The Art of Origins silk scarf, KRAЇNA EDEM × OBIIMY",
+        "jd": "A silk scarf with an original print inspired by Trypillian motifs. A joint project of KRAЇNA EDEM and OBIIMY. Natural silk, 88 × 88 cm.",
+        "material": "100% natural silk", "size": "88 × 88 cm"},
+}
+def jsonld(lang):
+    s, url = SEO[lang], EDEM_URL + ("en" if lang == "en" else "")
+    data = {"@context": "https://schema.org", "@type": "Product", "@id": EDEM_URL + "#product", "url": url, "inLanguage": lang,
+            "name": s["name"], "description": s["jd"], "sku": V.EDEM_SKU,
+            "image": [EDEM_URL + "photo/edem/art-1600-1200.webp", EDEM_URL + "photo/edem/scarf.webp"],
+            "brand": {"@type": "Brand", "name": "OBIIMY"}, "material": s["material"], "size": s["size"],
+            "offers": {"@type": "Offer", "url": url, "price": f"{PRICE}.00", "priceCurrency": "UAH", "availability": "https://schema.org/InStock",
+                       "itemCondition": "https://schema.org/NewCondition", "seller": {"@type": "Organization", "name": "OBIIMY", "url": "https://obiimy.world/"}}}
+    return '\n<script type="application/ld+json">' + json.dumps(data, ensure_ascii=False) + "</script>"
+
 ORDER_STEPS_EN = [("Order", "Your name, phone, city and a Nova Poshta branch or a delivery address."),
                   ("Card payment", "After “Order and pay” — the secure WayForPay payment page."),
                   ("Delivery", "Once paid — confirmation and shipping: by Nova Poshta across Ukraine, worldwide at the carrier’s rates.")]
@@ -361,7 +384,7 @@ def main(light=False, lang="uk"):
     <h1>Трипілля —<br><i>Мистецтво витоків</i></h1>
     <p class="lead">{LEAD}</p>
     <div class="cta"><a class="btn btn-main" href="#order">Замовити хустку</a><a class="btn btn-line" href="#scarf">Роздивитися хустку</a></div>
-    <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Обмежений наклад</span><span>Підпис OBIIMY × Edem</span></div>
+    <div class="facts"><span><b>88 × 88</b> см</span><span><b>100%</b> шовк</span><span>Лімітована серія</span><span>Підпис OBIIMY × Edem</span></div>
   </div>
   <p class="scrollhint">Гортайте<i></i></p>
 </section>
@@ -371,7 +394,7 @@ def main(light=False, lang="uk"):
 <section class="s" id="scarf" style="background:var(--bg2)"><div class="wrap">
   <div class="head rv"><p class="eyebrow">Хустка · 88 × 88 см</p><h2>Мистецьке полотно, яке можна носити</h2><p class="lead">{SCARF_LEAD}</p></div>
   <div class="scarf">
-    <div class="rv"><div class="lenswrap" id="lenswrap">{img("photo/edem/art-1600.webp", "Принт хустки «Трипілля — Мистецтво витоків» повністю", sizes="(max-width: 980px) 92vw, 58vw")}<div class="lens" id="lens" aria-hidden="true">{img("photo/edem/art-2400.webp", "", sizes="2000px")}</div></div><p class="hintlens">Наведіть курсор — лупа покаже деталі принту</p></div>
+    <div class="rv"><div class="lenswrap" id="lenswrap">{img("photo/edem/art-1600.webp", "Принт хустки «Трипілля — Мистецтво витоків» повністю", sizes="(max-width: 980px) 92vw, 58vw")}<div class="lens" id="lens" aria-hidden="true">{img("photo/edem/art-2400.webp", "", sizes="2000px")}</div></div><p class="hintlens">Наведіть курсор — лупа допоможе роздивитися візерунок</p></div>
     <div class="rv"><div class="spec">{spec_rows()}</div><p class="note">Лімітований випуск. Доставка Новою поштою по Україні.</p><p style="margin-top:26px"><a class="btn btn-main" href="#order">Замовити хустку</a></p></div>
   </div>
 </div></section>
@@ -415,12 +438,12 @@ def main(light=False, lang="uk"):
     alts = f'\n<link rel="alternate" hreflang="uk" href="{EDEM_URL}"><link rel="alternate" hreflang="en" href="{EDEM_URL}en"><link rel="alternate" hreflang="x-default" href="{EDEM_URL}">'
     if lang == "en":
         slug = "edem-motion-light-en"
-        write(slug, light_css() + FORM_CSS, english(body), JS.replace("PRICE *", f"{PRICE} *"), url=EDEM_URL + "en", index=True, lang="en", extra=alts,
-              desc=f"A silk scarf by KRAЇNA EDEM × OBIIMY, “Trypillia — The Art of Origins”: 88 × 88 cm, inspired by Trypillian motifs — a limited edition, {PRICE_EN}. Order online; delivery by Nova Poshta across Ukraine and worldwide.")
+        write(slug, light_css() + FORM_CSS, english(body), JS.replace("PRICE *", f"{PRICE} *"), url=EDEM_URL + "en", index=True, lang="en", extra=alts + jsonld("en"),
+              desc=SEO["en"]["desc"], keywords=SEO["en"]["keywords"])
     else:
         slug = "edem-motion-light" if light else "edem-motion"
-        write(slug, (light_css() if light else CSS) + FORM_CSS, body, JS.replace("PRICE *", f"{PRICE} *"), url=EDEM_URL, index=light, extra=alts if light else "",
-              desc=f"Шовкова хустка KRAЇNA EDEM × OBIIMY «Трипілля — Мистецтво витоків», 88 × 88 см, за трипільськими мотивами — лімітований випуск, {PRICE_T}. Замовлення онлайн, доставка Новою поштою.")
+        write(slug, (light_css() if light else CSS) + FORM_CSS, body, JS.replace("PRICE *", f"{PRICE} *"), url=EDEM_URL, index=light, extra=(alts + jsonld("uk")) if light else "",
+              desc=SEO["uk"]["desc"], keywords=SEO["uk"]["keywords"])
     if light:  # the light versions are shown to the partner on their own: no variants bar (client, 04.11)
         p = ROOT / f"{slug}.html"; h = p.read_text(); i = h.index('<nav class="vbar"'); j = h.index("</style>", i) + len("</style>"); p.write_text(h[:i] + h[j:])
 

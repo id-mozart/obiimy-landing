@@ -26,6 +26,11 @@ const CORP = { host: /^corporate\./i, page: '/b2b-deck', pages: { '/b2b-deck': '
 const EDEM = { host: /^edem\./i, page: '/edem-motion-light', pages: {}, allow: /^\/(photo\/edem\/|brand\/|favicon)/,
   alias: { '/en': '/edem-motion-light-en', '/thank-you-edem': '/edem-thank-you', '/thank-you-edem/': '/edem-thank-you' }, canon: { '/edem-motion-light': '/', '/edem-motion-light-en': '/en', '/edem-thank-you': '/thank-you-edem/', '/edem-thank-you-en': '/thank-you-edem/?lang=en' } };   // /thank-you-edem/ — the page WayForPay returns to (16.11.2026)   // /en is the English page; the slugs redirect to the short paths
 const HOSTS = [CORP, EDEM];
+// edem.obiimy.world for Search Console (the advertisers, 17.11.2026): a sitemap with the two indexed pages and a robots.txt that points to it
+EDEM.files = {
+  '/sitemap.xml': ['application/xml; charset=utf-8', '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n  <url><loc>https://edem.obiimy.world/</loc></url>\n  <url><loc>https://edem.obiimy.world/en</loc></url>\n</urlset>\n'],
+  '/robots.txt': ['text/plain; charset=utf-8', 'User-agent: *\nAllow: /\nSitemap: https://edem.obiimy.world/sitemap.xml\n'],
+};
 
 // Content edits made on the landing itself (cms.js, «?edit») are kept by the editor service as /pub/corp.json and applied here
 // to every element the generator marked with data-cms / data-cms-img, so the page is served already edited (no flicker, SEO
@@ -89,6 +94,8 @@ const server = http.createServer(async (req, res) => {
   if (u.pathname === '/pay/return' || (own === EDEM && req.method === 'POST' && /^\/thank-you-edem\/?$/.test(u.pathname))) return payReturn(req, res, u, own && own === EDEM ? own : null);   // the gateway POSTs the result to the returnUrl; the browser then GETs the page
   if (own) {       // a landing's own host: its page at the root, its assets, nothing else
     const bare = u.pathname.replace(/\.html$/, ''), canon = own.canon && own.canon[bare], alias = own.alias && own.alias[bare];
+    const file = own.files && own.files[u.pathname];
+    if (file) { res.writeHead(200, { 'Content-Type': file[0], 'Cache-Control': 'public, max-age=3600' }); return res.end(req.method === 'HEAD' ? undefined : file[1]); }
     if (canon) { res.writeHead(301, { Location: canon + u.search }); return res.end(); }
     if (alias) req.url = (alias === '/edem-thank-you' && u.searchParams.get('lang') === 'en' ? '/edem-thank-you-en' : alias) + u.search;
     else if (u.pathname === '/' || u.pathname === '/index.html' || u.pathname === own.page || u.pathname === own.page + '.html') req.url = own.page + u.search;

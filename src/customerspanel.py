@@ -133,7 +133,7 @@ def common_names(rows, min_count=3):
 def contacts():
     """The advertisers' view: first name, phone, e-mail — nothing else (the client, 16.11.2026)."""
     c = customers(); common = common_names(c["rows"])
-    return dict(ok=True, at=c["at"], loading=c["loading"], error=c["error"], rows=[dict(name=first_name(r["name"], common), phone=r["phone"], email=r["email"], src=r["src"]) for r in c["rows"] if r["src"] not in PARTNER_SOURCES])
+    return dict(ok=True, at=c["at"], loading=c["loading"], error=c["error"], rows=[dict(name=first_name(r["name"], common), phone=r["phone"], email=r["email"]) for r in c["rows"] if r["src"] not in PARTNER_SOURCES])
 
 CONTACTS_PAGE = r"""<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Контакти</title>

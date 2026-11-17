@@ -276,15 +276,18 @@ HEAD = HEAD.replace("</style>", EXTRA5 + "</style>").replace("EB+Garamond:wght@5
 SEVEN = [("88-22-D", "Хустка", "64% 20%", 1.0), ("44-21-D", "Паше", "44% 25%", 1.0), ("84-30", "Твіллі", "50% 25%", 1.0),
          ("65-23-D", "Хустка", "50% 15%", 1.0), ("R-23", "Резинка", "60% 20%", 1.0)]   # 65-23-D is the AD's alternate: the first pick (65-24-D) turned out to be a back view
 PL = "../../photo/bf-draft/life/"
-def seven_tiles(left, right, top, bottom, mob, gap=10, names=True):
-    n = len(SEVEN); w = (right - left - gap * (n - 1)) // n
+def seven_tiles(left, right, top, bottom, mob, gap=10, names=True, tiles=None):
+    tiles = tiles or [(a, a, tp, pos, z) for a, tp, pos, z in SEVEN]   # (file stem, article for the discount, caption, focus, zoom)
+    n = len(tiles); w = (right - left - gap * (n - 1)) // n
     d = 72 if not mob else 104                                  # the discount circle on the foot of the tile (the reviewers: air around the digits, larger on mobile)
     cap_h = (int(26 * 1.3) + 12) if names else 0
     h = bottom - top - d // 2 - cap_h
     out = ""
-    for i, (a, tp, pos, z) in enumerate(SEVEN):
+    for i, t in enumerate(tiles):
+        f, a, tp, pos, z = t[:5]
+        if mob and len(t) > 5: pos = t[5]                      # the narrower mobile slice may need its own focus
         x = left + i * (w + gap)
-        out += f'<div class="ph" style="left:{x}px;top:{top}px;width:{w}px;height:{h}px;background:#2A2522"><img src="{PL}{a}.jpg" alt="" style="object-position:{pos};transform:scale({z});transform-origin:{pos}"></div>'
+        out += f'<div class="ph" style="left:{x}px;top:{top}px;width:{w}px;height:{h}px;background:#2A2522"><img src="{PL}{f}.jpg" alt="" style="object-position:{pos};transform:scale({z});transform-origin:{pos}"></div>'
         out += f'<p class="ci" style="left:{x + (w - d) // 2}px;top:{top + h - d // 2}px;width:{d}px;height:{d}px;font-size:{int(d * .34)}px">−{pct(a)}{THIN}%</p>'
         if names:
             out += f'<div class="sv" style="left:{x}px;width:{w}px;top:{top + h + d // 2 + 12}px;text-align:center"><p class="nm" style="font-size:26px;white-space:nowrap">{tp}</p></div>'
@@ -297,6 +300,41 @@ def v_seven(H, mob):
         BH.lock("Подаруйте собі шовк — або тому, кого любите", f"{TOTAL} авторські шовкові вироби, створені в Україні, — зі знижками −10, −20 і −30{THIN}%.",
                 kicker="Чорна п’ятниця в OBIIMY", pill=f"−10 · −20 · −30{THIN}%", more="Обрати подарунок", width=660, xl=False, bigsize=58)
 both_cls("bfh-47-sim", v_seven, "Seven product slices with names and discount circles (after home-t1-seven-faces)", "sv")
+
+# 17.11, the client: «давай несколько разных версий, и учти что осень-зима уже» — the same five-slice layout, but the frames are the
+# autumn-winter shoots from the products' galleries (coats, trenches, the teal fur, the leather jacket, blazers); captions stay one word.
+# After the reviews (AD 8.2 / 7.9 / 7.2, facts 7.5 / 7.5 / 6.5): a pashe caption only where a pashe is in the frame (the 44 galleries reuse the
+# big-scarf shots, so the trench/camel frames are credited to the 88 articles), «і на зиму» instead of «і до зими» (read as a deadline),
+# no «Чорна п’ятниця» twice, no sweater that isn't in the frames, non-breaking spaces inside the discount list, the camel frame not in every version.
+# tile = (photo file in photo/bf-draft/life, article for the discount, caption, focus point, zoom)
+SEASON = {
+ # warm palette: camel coat, cream knit, beige trench, mustard trench, black suit — faces front / ¾ / profile / front / front, outdoor and studio alternate
+ "bfh-48-coat": ([("88-24-03", "88-24", "Хустка", "50% 18%", 1.0), ("84-27-03", "84-27", "Твіллі", "22% 20%", 1.0, "30% 20%"), ("88-22-D-02", "88-22-D", "Хустка", "62% 18%", 1.0),
+                  ("P-44-98-00", "P-44-98", "Паше", "50% 18%", 1.0), ("140-16-01", "140-16", "Твіллі", "50% 15%", 1.0)],
+                 "Шовк до пальта{NBSP}— і на зиму", "Хустка, паше чи твіллі до пальта, тренча й жакета: {TOTAL}{NBSP}авторські шовкові вироби, створені в Україні,{NBSP}— зі{NBSP}знижками −10,{NBSP}−20{NBSP}і{NBSP}−30{THIN}%.",
+                 "Шовк до пальта"),
+ # colour against grey days: teal fur, black leather, black blazer with a red scarf, a knotted pashe close-up, beige trench with the leopard print
+ "bfh-49-fur": ([("84-24-02", "84-24", "Твіллі", "40% 15%", 1.0), ("140-31-01", "140-31", "Твіллі", "72% 20%", 1.0), ("88-11-01", "88-11", "Хустка", "55% 18%", 1.0),
+                 ("P-44-12-02", "P-44-12", "Паше", "50% 40%", 1.0), ("88-22-D-01", "88-22-D", "Хустка", "50% 100%", 1.18)],
+                "Кольоровий шовк{NBSP}— проти сірих днів", "Яскравий акцент до хутра, шкіри й тренча: {TOTAL}{NBSP}авторські шовкові вироби, створені в Україні,{NBSP}— зі{NBSP}знижками −10,{NBSP}−20{NBSP}і{NBSP}−30{THIN}%.",
+                "Кольоровий шовк"),
+ # black + camel + one mint accent: black suit, camel coat, black blazer with the red scarf, teal fur (the profile frame hid the face in hair → the front one), black blazer with a pocket square
+ "bfh-50-city": ([("140-16-01", "140-16", "Твіллі", "50% 15%", 1.0), ("88-24-01", "88-24", "Хустка", "50% 18%", 1.0), ("88-11-04", "88-11", "Хустка", "70% 20%", 1.0),
+                  ("84-24-02", "84-24", "Твіллі", "40% 15%", 1.0), ("P-44-99-01", "P-44-99", "Паше", "50% 20%", 1.0)],
+                 "Акцент холодного сезону{NBSP}— шовк", "До пальта, жакета й хутра: {TOTAL}{NBSP}авторські шовкові вироби, створені в Україні,{NBSP}— зі{NBSP}знижками −10,{NBSP}−20{NBSP}і{NBSP}−30{THIN}%.",
+                 "Шовк холодного сезону"),
+}
+def v_season(key):
+    tiles, big, small, mbig = SEASON[key]
+    big = big.replace("{NBSP}", NBSP)
+    small = small.replace("{TOTAL}", str(TOTAL)).replace("{THIN}", THIN).replace("{NBSP}", NBSP)
+    def v(H, mob):
+        if mob: return f'<div style="inset:0;background:{INK}"></div>' + seven_tiles(960, 1892, 40, 728, True, gap=12, names=False, tiles=tiles) + \
+            L(mbig, None, f"−10 · −20 · −30{THIN}%", True, width=720, bigsize=92)
+        return f'<div style="inset:0;background:{INK}"></div>' + seven_tiles(790, 1856, 36, 540, False, gap=14, tiles=tiles) + \
+            BH.lock(big, small, kicker="Чорна п’ятниця в OBIIMY", pill=f"−10 · −20 · −30{THIN}%", more="Обрати подарунок", width=660, xl=False, bigsize=58)
+    return v
+for key in SEASON: both_cls(key, v_season(key), "Five autumn-winter slices with discount circles (after bfh-47)", "sv")
 
 (HERE / "home-products.html").write_text(HEAD + "".join(ads) + "\n</body></html>")
 print(len(ads), "home frames incl. the fourth batch")

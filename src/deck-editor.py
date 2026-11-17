@@ -928,7 +928,10 @@ class Handler(SimpleHTTPRequestHandler):
             f = CORP_DIR / name if re.match(r"^[a-z0-9._-]+$", name) else None
             if not f or not f.is_file(): self.send_error(404, "No such file"); return True
             ctype = {".png": "image/png", ".jpg": "image/jpeg", ".webp": "image/webp"}.get(f.suffix, "application/octet-stream")
-            self.send_bytes(f.read_bytes(), ctype, cache="public, max-age=31536000, immutable"); return True
+            data = f.read_bytes(); self.send_response(200); self.send_header("Content-Type", ctype); self.send_header("Content-Length", str(len(data)))
+            self.send_header("Cache-Control", "public, max-age=31536000, immutable"); self.send_header("Access-Control-Allow-Origin", "*"); self.end_headers()   # any origin may read the published pictures (the Horoshop admin pulls blog covers from here, 17.11.2026)
+            if self.command != "HEAD": self.wfile.write(data)
+            return True
         return False
 
     def do_GET(self):

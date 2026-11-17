@@ -258,5 +258,41 @@ def v_lookbook(H, mob):
         L(f"Твіллі 84{NBSP}см. −30{THIN}%.", f"{n84} принтів по {money(new('84-7'))} замість {money(P['84-7']['full'])} — на шию, у волосся, на сумку.", f"{money(new('84-7'))} замість {money(P['84-7']['full'])}", mob, width=780 if not mob else 700)
 both("bfh-46-lookbook", v_lookbook, "The lookbook twilly with one card")
 
+
+# ── batch 5 (17.11): the client — «баннер на основе home-t1-seven-faces: фото товаров чёрной пятницы и снизу в кружочках скидки».
+# The SOLO strip of seven portraits becomes seven tall slices of the draft's products (one per kind: 88, 44, twilly 84 and 140,
+# sleep mask, scrunchie, ring), the print name in gold italic under each and the yellow discount circle sitting on the tile's foot.
+EXTRA5 = """
+.sv .nm { font-family: 'EB Garamond', serif; font-style: italic; font-weight: 500; color: #E7D9A6; line-height: 1.1; }
+.sv .tp { font-family: 'Montserrat', sans-serif; font-weight: 400; color: #C9C6C0; line-height: 1.25; }
+.sv .ci { display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #F2B705; color: #141110; box-shadow: 0 0 0 4px #141110, 0 14px 30px -10px rgba(0,0,0,.8); font-family: 'Montserrat', sans-serif; font-weight: 500; letter-spacing: -.02em; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; z-index: 6; }
+"""
+HEAD = HEAD.replace("</style>", EXTRA5 + "</style>").replace("EB+Garamond:wght@500;600", "EB+Garamond:ital,wght@0,500;0,600;1,500")
+# 17.11, the client: «бери фото не просто товара, а где человек есть или где-то в жизни» — the galleries of the same products on
+# obiimy.world (data/horoshop/products.json → gallery_common), copied to photo/bf-draft/life/<article>.jpg
+# 17.11, the client again: «зроби менше товарів, щоб було краще видно їх» — five slices instead of seven, all with a person
+SEVEN = [("88-33-D", "Хустка 88 × 88", "50% 12%", 1.0), ("44-26-D", "Паше 44 × 44", "50% 40%", 1.0), ("84-24", "Твіллі 84", "50% 14%", 1.0),
+         ("140-14", "Твіллі 140", "50% 0%", 1.0), ("R-20", "Резинка", "50% 20%", 1.0)]
+PL = "../../photo/bf-draft/life/"
+def seven_tiles(left, right, top, bottom, mob, gap=10, names=True):
+    n = len(SEVEN); w = (right - left - gap * (n - 1)) // n
+    d = 72 if not mob else 104                                  # the discount circle on the foot of the tile (the reviewers: air around the digits, larger on mobile)
+    cap_h = (int(24 * 1.4) + 22 + 10) if names else 0
+    h = bottom - top - d // 2 - cap_h
+    out = ""
+    for i, (a, tp, pos, z) in enumerate(SEVEN):
+        x = left + i * (w + gap)
+        out += f'<div class="ph" style="left:{x}px;top:{top}px;width:{w}px;height:{h}px;background:#2A2522"><img src="{PL}{a}.jpg" alt="" style="object-position:{pos};transform:scale({z});transform-origin:{pos}"></div>'
+        out += f'<p class="ci" style="left:{x + (w - d) // 2}px;top:{top + h - d // 2}px;width:{d}px;height:{d}px;font-size:{int(d * .28)}px">−{pct(a)}{THIN}%</p>'
+        if names:
+            out += f'<div class="sv" style="left:{x}px;width:{w}px;top:{top + h + d // 2 + 12}px;text-align:center"><p class="nm" style="font-size:24px;white-space:nowrap">{short(a)}</p><p class="tp" style="font-size:14px;margin-top:5px">{tp}</p></div>'
+    return out
+def v_seven(H, mob):
+    if mob: return f'<div style="inset:0;background:{INK}"></div>' + seven_tiles(960, 1892, 40, 728, True, gap=12, names=False) + \
+        L(f"Знижки до −30{THIN}%", None, f"{TOTAL} товари", True, width=720, bigsize=96)
+    return f'<div style="inset:0;background:{INK}"></div>' + seven_tiles(790, 1856, 36, 540, False, gap=14) + \
+        L(f"Від хустки до резинки — знижки до −30{THIN}%", f"{TOTAL} товари зі знижками −10, −20 і −30{THIN}%: хустки, твіллі, маски для сну, резинки й аксесуари.", f"−10 · −20 · −30{THIN}%", False, width=660, bigsize=58)
+both_cls("bfh-47-sim", v_seven, "Seven product slices with names and discount circles (after home-t1-seven-faces)", "sv")
+
 (HERE / "home-products.html").write_text(HEAD + "".join(ads) + "\n</body></html>")
 print(len(ads), "home frames incl. the fourth batch")

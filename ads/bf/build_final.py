@@ -25,6 +25,8 @@ EXTRA = """
 .more { display: inline-flex; align-items: center; gap: .45em; font-family: 'Onest', sans-serif; font-weight: 600; letter-spacing: .02em; border: 2.5px solid #F3EADB; border-radius: 999px; color: #F3EADB; white-space: nowrap; background: rgba(20,17,16,.35); }
 .more::after { content: "→"; font-weight: 400; }
 .tile { overflow: hidden; background: #2A2522; } .tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.yl .big.yel { color: #141110; } .yl .sub { color: #4B423B; } .yl .ci { background: #141110; color: #F2B705; box-shadow: 0 16px 30px -14px rgba(0,0,0,.45); }
+.yl .more { border-color: #141110; color: #141110; background: rgba(255,255,255,.18); } .yl .hdr { color: #141110 !important; } .yl .tile { background: #E0AA05; }
 """
 # frame = (file in photo/bf-draft/life, article for the discount, focus for a tall slice, focus for the hero)
 F = {
@@ -133,6 +135,62 @@ def few(id, keys, note):
         body = field + header(True, hdr_text(BIG)) + lockup(Y0 + int(10 * K)) + tiles(keys, 64, 1016, Y0 + wh + int(40 * K), Y1 - int(16 * K), cols=n, gap=int(18 * K)) + ctabar()
     ad(id, body, note)
 
+def ad_yl(id, body, note):   # the yellow inversion (22.11, «ещё варианты»): the brand yellow field, ink words and circles
+    ads.append(f'\n<!-- {note} -->\n<section class="ad yl" id="{id}">{body}\n</section>')
+
+def split(id, key, note, yellow=False):
+    """The photo across the top edge to edge, melting into the field; the words under it; the circle on the photo's bottom-right corner.
+    In the square the photo takes the left half at full height."""
+    f, a, pos, hpos = F[key]
+    field = YEL if yellow else INK; rgb = _rgb(field); d = int(230 * K); dark = not yellow
+    if SQ:
+        pw = 560
+        body = (f'<div style="inset:0;background:{field}"></div>'
+                f'<div class="tile" style="left:0;top:0;width:{pw}px;height:{H}px"><img src="{PL}{f}.jpg" alt="" style="object-position:{hpos}"></div>'
+                f'<div style="left:{pw - 120}px;top:0;width:120px;height:{H}px;background:linear-gradient(90deg,rgba({rgb},0),{field})"></div>'
+                + circle(pw - 120 - d // 2, H - BOTB - BAR - int(60 * K) - d, d, a)
+                + header(dark, hdr_text(BIG)) + lockup(Y0 + int(60 * K), size=84, sub=28, left=pw - 20, width=1080 - pw - 44) + ctabar())
+    else:
+        yph = int(H * .56)
+        body = (f'<div style="inset:0;background:{field}"></div>'
+                f'<div class="tile" style="left:0;right:0;top:0;height:{yph + int(60 * K)}px"><img src="{PL}{f}.jpg" alt="" style="object-position:{hpos}"></div>'
+                f'<div style="left:0;right:0;top:{yph - int(200 * K)}px;height:{int(262 * K)}px;background:linear-gradient(0deg,{field},rgba({rgb},.85) 30%,rgba({rgb},0))"></div>'
+                f'<div style="left:0;right:0;top:0;height:{int(260 * K)}px;background:linear-gradient(180deg,rgba(12,9,8,{.5 if dark else .3}),rgba(12,9,8,0))"></div>'
+                + circle(1080 - 64 - d, yph - int(150 * K) - d, d, a)
+                + header(dark, hdr_text(BIG)) + lockup(yph + int(10 * K)) + ctabar())
+    (ad_yl if yellow else ad)(id, body, note)
+
+def mosaic(id, keys, note, yellow=False):
+    """One large frame and two small ones stacked beside it (three goods, the first the hero)."""
+    field = YEL if yellow else INK; dark = not yellow
+    def draw(left, right, top, bottom):
+        gap = int(16 * K); bw = int((right - left - gap) * .62); sw = right - left - gap - bw; sh = (bottom - top - gap) // 2
+        d1 = int(230 * K); d2 = int(150 * K); ins = int(14 * K); up = int(22 * K); out = ""
+        f, a, pos, hpos = F[keys[0]]
+        out += f'<div class="tile" style="left:{left}px;top:{top}px;width:{bw}px;height:{bottom - top}px"><img src="{PL}{f}.jpg" alt="" style="object-position:{hpos}"></div>' + circle(left + bw - d1 - ins, bottom - d1 - ins - up, d1, a)
+        for i, k in enumerate(keys[1:3]):
+            f, a, pos, _ = F[k]; y = top + i * (sh + gap); x = left + bw + gap
+            out += f'<div class="tile" style="left:{x}px;top:{y}px;width:{sw}px;height:{sh}px"><img src="{PL}{f}.jpg" alt="" style="object-position:{pos}"></div>' + circle(x + sw - d2 - ins, y + sh - d2 - ins - int(12 * K), d2, a)
+        return out
+    if SQ: body = f'<div style="inset:0;background:{field}"></div>' + header(dark, hdr_text(BIG)) + lockup(Y0 + int(30 * K), size=96, sub=30, width=400) + draw(470, 1016, Y0, Y1 - int(10 * K)) + ctabar()
+    else: body = f'<div style="inset:0;background:{field}"></div>' + header(dark, hdr_text(BIG)) + lockup(Y0 + int(10 * K)) + draw(64, 1016, Y0 + int(270 * K), Y1 - int(16 * K)) + ctabar()
+    (ad_yl if yellow else ad)(id, body, note)
+
+def six(id, keys, note, yellow=False):
+    """A wall of six frames, 3 × 2."""
+    field = YEL if yellow else INK; dark = not yellow
+    if SQ: body = f'<div style="inset:0;background:{field}"></div>' + header(dark, hdr_text(BIG)) + lockup(Y0 + int(30 * K), size=96, sub=30, width=400) + tiles(keys, 480, 1016, Y0, Y1 - int(10 * K), cols=3, gap=10) + ctabar()
+    else: body = f'<div style="inset:0;background:{field}"></div>' + header(dark, hdr_text(BIG)) + lockup(Y0 + int(10 * K)) + tiles(keys, 64, 1016, Y0 + int(270 * K), Y1 - int(16 * K), cols=3, gap=int(14 * K)) + ctabar()
+    (ad_yl if yellow else ad)(id, body, note)
+
+def four_yl(id, keys, note, grid=False):
+    """The four on the yellow field."""
+    if SQ:
+        body = f'<div style="inset:0;background:{YEL}"></div>' + header(False, hdr_text(BIG)) + (lockup(Y0 + int(30 * K), size=96, sub=30, width=430) + tiles(keys, 520, 1016, Y0, Y1 - int(10 * K), cols=2, gap=12) if grid else lockup(Y0, size=96, sub=30) + tiles(keys, 64, 1016, Y0 + int(200 * K), Y1 - int(10 * K))) + ctabar()
+    else:
+        body = f'<div style="inset:0;background:{YEL}"></div>' + header(False, hdr_text(BIG)) + lockup(Y0 + int(10 * K)) + tiles(keys, 64, 1016, Y0 + int(270 * K), Y1 - int(16 * K), cols=2 if grid else 4) + ctabar()
+    ad_yl(id, body, note)
+
 def hero(id, key, note, cx=.62, cy=.58, size=118):
     """One frame edge to edge; the words on the dark veil at the foot; one circle by the product (cx, cy — fractions of the frame)."""
     f, a, _, pos = F[key]
@@ -192,6 +250,20 @@ hero("bff-37-hero-sun44", "sun44", "One frame: «Поцілунок Сонця»
 hero("bff-38-hero-energy", "energy", "One frame: twilly «Енергія» on the neck −30")
 hero("bff-39-hero-bow", "bow", "One frame: the shirt «Маків цвіт» with the bow −20")
 hero("bff-40-hero-back", "back", "One frame: «Енергія» in the hair, the open back −10")
+# 22.11, «ещё варианты»: the photo across the top, the mosaic, the wall of six, and the yellow inversion
+split("bff-41-split-columns", "columns", "Photo on top: the columns −10")
+split("bff-42-split-chystyi", "chystyi", "Photo on top: «З чистого листа» in the field −20")
+split("bff-43-split-energy", "energy", "Photo on top: twilly «Енергія» −30")
+mosaic("bff-44-mosaic-final", ["columns", "chystyi", "coffee"], "Mosaic: the columns large, «З чистого листа» and the coffee beside")
+mosaic("bff-45-mosaic-field", ["fur", "camel", "pashe"], "Mosaic: the fur large, the camel coat and the dark pashe beside")
+six("bff-46-six-final", ["columns", "chystyi", "coffee", "sofa", "energy", "sun44"], "Six frames: the banner's four, the twilly, «Поцілунок Сонця»")
+six("bff-47-six-dark", ["tiedark", "yelblue", "leath2", "leathtw", "sit", "belt"], "Six frames on the dark goods")
+four_yl("bff-48-yellow-row", FINAL, "The yellow inversion: the banner's four in a row")
+four_yl("bff-49-yellow-grid", FINAL, "The yellow inversion: the banner's four as a grid", grid=True)
+few_yl = lambda id, keys, note: six.__globals__["ad_yl"](id, f'<div style="inset:0;background:{YEL}"></div>' + header(False, hdr_text(BIG)) + (lockup(Y0 + int(30 * K), size=96, sub=30, width=400) + tiles(keys, 490, 1016, Y0, Y1 - int(10 * K), cols=len(keys), gap=14) if SQ else lockup(Y0 + int(10 * K)) + tiles(keys, 64, 1016, Y0 + int(270 * K), Y1 - int(16 * K), cols=len(keys), gap=int(18 * K))) + ctabar(), note)
+few_yl("bff-50-yellow-trio", ["sun44", "yellow", "giftbox"], "The yellow inversion: three summer frames")
+split("bff-51-yellow-split-sofa", "sofa", "The yellow inversion: the sofa photo on top −30", yellow=True)
+six("bff-52-yellow-six", ["columns", "chystyi", "coffee", "sofa", "energy", "sun44"], "The yellow inversion: the wall of six", yellow=True)
 
 HEAD = f"""<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · Black Friday · after the final home banner</title>

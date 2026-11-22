@@ -59,6 +59,23 @@ F = {
  "neck":    ("84-23-02",   "84-23",   "50% 45%", "50% 50%"),    # twilly «Баланс» knotted on the neck, close, −30
  "ring":    ("111-1-03",   "111-1",   "50% 30%", "50% 35%"),    # the triple ring on the blue scarf, the black tee, −30
  "chpashe": ("P-44-20-D-03", "P-44-20-D", "50% 30%", "50% 35%"),  # pashe «З чистого листа» on the black top, the field, −20
+ # 22.11, the client again: «ещё добавь креативов из выборки /black-friday/ в том стиле, что есть, и ещё вариант» — more goods of the page
+ "makiv":   ("65-10-D-04", "65-10-D", "50% 30%", "50% 35%"),    # «Маків цвіт» 65 knotted on the white shirt, −10
+ "sun44":   ("44-12-02",   "44-12",   "50% 30%", "50% 35%"),    # «Поцілунок Сонця» 44 on the white tee, −30
+ "hat":     ("65-5-D-03",  "65-5-D",  "50% 25%", "50% 30%"),    # «Пристрасть» 65 under the white hat, −10
+ "back":    ("65-6-D-03",  "65-6-D",  "50% 25%", "50% 30%"),    # «Енергія» 65 in the hair, the open back, −10
+ "yelhat":  ("65-8-D-03",  "65-8-D",  "50% 25%", "50% 30%"),    # «Сміливість» 65 on the dark hat, −10
+ "dress":   ("84-14-03",   "84-14",   "50% 25%", "50% 30%"),    # twilly «Пробудження» on the white dress, −30
+ "yellow":  ("84-2-03",    "84-2",    "50% 30%", "50% 35%"),    # twilly «Літнє поле» on the bag, the yellow dress, −30
+ "energy":  ("84-6-02",    "84-6",    "50% 30%", "50% 35%"),    # twilly «Енергія» on the neck, face to camera, −30
+ "flower":  ("84-7-02",    "84-7",    "50% 40%", "50% 45%"),    # twilly «Спокуса» on the white trousers with the flower, −30
+ "wine65":  ("65-26-D-03", "65-26-D", "50% 45%", "50% 50%"),    # «Дика спокуса» 65 knotted on the white shirt, −10
+ "belt":    ("65-25-D-09", "65-25-D", "50% 35%", "50% 40%"),    # «Грація» 65 as a belt on the blue blazer, the dark field, −10
+ "giftbox": ("NT-84-8-02", "NT-84-8", "50% 25%", "50% 30%"),    # the gift box: twilly «Сміливість» in the hair, the white blazer, −20
+ "tail":    ("P-44-15-D-02", "P-44-15-D", "50% 30%", "50% 35%"),  # pashe «Закоханість» on the ponytail, −20
+ "sit":     ("65-31-D-02", "65-31-D", "50% 25%", "50% 30%"),    # «Піднесення» 65 on the leather, seated, −10
+ "bow":     ("C-10S-02",   "C-10S",   "50% 25%", "50% 30%"),    # the shirt «Маків цвіт» with the bow, full, −20
+ "trprof":  ("65-22-D-10", "65-22-D", "50% 25%", "50% 25%"),    # «Сміливий дотик» 65 on the trench, profile, −10
 }
 FINAL = ["columns", "chystyi", "coffee", "sofa"]                          # the home banner's four, in the client's order
 
@@ -103,6 +120,17 @@ def four(id, keys, note, grid=False):
     else:
         wh = int(230 * K)
         body = field + header(True, hdr_text(BIG)) + lockup(Y0 + int(10 * K)) + tiles(keys, 64, 1016, Y0 + wh + int(40 * K), Y1 - int(16 * K), cols=2 if grid else 4) + ctabar()
+    ad(id, body, note)
+
+def few(id, keys, note):
+    """The new variant (22.11): two or three frames in a row, larger than in the four — the words above, the bar below."""
+    field = f'<div style="inset:0;background:{INK}"></div>'
+    n = len(keys)
+    if SQ:
+        body = field + header(True, hdr_text(BIG)) + lockup(Y0 + int(30 * K), size=96, sub=30, width=400) + tiles(keys, 490, 1016, Y0, Y1 - int(10 * K), cols=n, gap=14) + ctabar()
+    else:
+        wh = int(230 * K)
+        body = field + header(True, hdr_text(BIG)) + lockup(Y0 + int(10 * K)) + tiles(keys, 64, 1016, Y0 + wh + int(40 * K), Y1 - int(16 * K), cols=n, gap=int(18 * K)) + ctabar()
     ad(id, body, note)
 
 def hero(id, key, note, cx=.62, cy=.58, size=118):
@@ -151,6 +179,19 @@ hero("bff-25-hero-tiedark", "tiedark", "One frame: the twilly on the black blaze
 hero("bff-26-hero-yelblue", "yelblue", "One frame: the twilly on the black top −30")
 hero("bff-27-hero-redpashe", "redpashe", "One frame: the red pashe on the terrace −10")
 hero("bff-28-hero-fieldtr", "fieldtr", "One frame: «Сміливий дотик» on the trench −10")
+# 22.11, the third ask: more goods of /black-friday/ and the new variant — pairs and trios
+few("bff-29-duo-summer", ["sun44", "yellow"], "Two frames: «Поцілунок Сонця» on the white tee −30, the yellow dress with the twilly −30")
+few("bff-30-duo-white", ["makiv", "wine65"], "Two frames: «Маків цвіт» and «Дика спокуса» knotted on white shirts −10")
+few("bff-31-duo-hair", ["giftbox", "tail"], "Two frames: the twilly in the hair (the gift box) −20, the pashe on the ponytail −20")
+few("bff-32-trio-hats", ["hat", "yelhat", "back"], "Three frames: the white hat, the dark hat, the open back −10")
+few("bff-33-trio-twilly", ["energy", "dress", "flower"], "Three frames: twillies on the neck, on the dress, on the trousers −30")
+few("bff-34-trio-dark", ["sit", "belt", "trprof"], "Three frames: the leather seated, the blue blazer in the field, the trench in profile −10")
+four("bff-35-mix-row", ["bow", "energy", "makiv", "sit"], "Four frames: the shirt with the bow −20, the twilly −30, «Маків цвіт» −10, the leather −10")
+four("bff-36-mix-grid", ["sun44", "giftbox", "wine65", "belt"], "Four frames as a grid: −30, −20, −10, −10", grid=True)
+hero("bff-37-hero-sun44", "sun44", "One frame: «Поцілунок Сонця» 44 on the white tee −30")
+hero("bff-38-hero-energy", "energy", "One frame: twilly «Енергія» on the neck −30")
+hero("bff-39-hero-bow", "bow", "One frame: the shirt «Маків цвіт» with the bow −20")
+hero("bff-40-hero-back", "back", "One frame: «Енергія» in the hair, the open back −10")
 
 HEAD = f"""<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · Black Friday · after the final home banner</title>

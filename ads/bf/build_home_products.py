@@ -345,14 +345,16 @@ for key in SEASON: both_cls(key, v_season(key), "Five autumn-winter slices with 
 # 22.11, the client again: no captions under the circles, and only frames without a white / light studio background — the outdoor
 # shoots (camel coat, beige trench, teal fur in the field) and the dark close-up of the knotted pashe; the AD's round 1: calm faces, mobile focuses so no face is cut
 # the AD, round 2 (8,5 / 8,2): the fur frame with air above the head (84-24), the pashe close-up below the earring, the first frame higher on mobile
-FOUR = [("65-24-01", "65-24", "Хустка", "50% 18%", 1.0, "50% 30%"), ("P-44-12-02", "P-44-12", "Паше", "50% 62%", 1.0, "50% 70%"),
+# 22.11, the client: the second frame — the second gallery photo of /shovkova-khustka-flirt-65kh65-dvostoronnii-druk/ (coffee, Vogue, the «Флірт»
+# scarf knotted on the trench); the pool already holds that shot at 1800 px as 88-33-D.jpg, and the 88 article carries the same −10 % the 65 page shows
+FOUR = [("65-24-01", "65-24", "Хустка", "50% 18%", 1.0, "50% 30%"), ("88-33-D", "88-33-D", "Хустка", "54% 38%", 1.0, "56% 40%"),
         ("65-21-D-04", "65-21-D", "Хустка", "50% 22%", 1.0, "50% 25%"), ("84-24", "84-24", "Твіллі", "50% 18%", 1.0, "50% 12%")]
 def v_four(H, mob):
     field = f'<div style="inset:0;background:{INK}"></div>'
     if mob: return field + seven_tiles(940, 1820, 44, 684, True, gap=14, names=False, tiles=FOUR, tight=True, d=124) + \
-        BH.lock("Чорна п’ятниця", None, kicker="", pill="−10 · −20 · −30%", more=None, k=1.35, width=600, xl=True, bigsize=72)   # no kicker: it would repeat the headline; k 1.35 — the AD: the pill ≈ 46 px, the circles 124 px, right margin ≈ 100 px
+        BH.lock("Чорна п’ятниця", None, kicker="", pill=None, more="Дивитися всі", k=1.35, width=600, xl=True, bigsize=72)   # no kicker: it would repeat the headline; the client, 22.11: no yellow pill, the button on mobile too; k 1.35 — the AD: the circles 124 px, right margin ≈ 100 px
     return field + seven_tiles(1060, 1856, 78, 498, False, gap=14, names=False, tiles=FOUR, tight=True) + \
-        BH.lock("Чорна п’ятниця", f"Неймовірні знижки в{NBSP}OBIIMY", kicker="", pill="−10 · −20 · −30%", more="Дивитися всі", width=760, xl=False, bigsize=92)   # the client's words, 22.11 («всі» after a vowel, euphony)
+        BH.lock("Чорна п’ятниця", f"Неймовірні знижки в{NBSP}OBIIMY", kicker="", pill=None, more="Дивитися всі", width=760, xl=False, bigsize=92)   # the client's words, 22.11 («всі» after a vowel, euphony)
 both_cls("bfh-51-four", v_four, "Four smaller autumn-winter slices, tight discount circles, the short lock-up (bfh-50 reworked)", "sv")
 
 (HERE / "home-products.html").write_text(HEAD + "".join(ads) + "\n</body></html>")

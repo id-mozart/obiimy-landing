@@ -288,8 +288,10 @@ def seven_tiles(left, right, top, bottom, mob, gap=10, names=True, tiles=None, t
     for i, t in enumerate(tiles):
         f, a, tp, pos, z = t[:5]
         if mob and len(t) > 5: pos = t[5]                      # the narrower mobile slice may need its own focus
+        dy = t[6] if len(t) > 6 else 0                           # the client, 22.11: «чуть пониже картинку сдвинь» — the picture slides down by dy px, the field shows above it
         x = left + i * (w + gap)
-        out += f'<div class="ph" style="left:{x}px;top:{top}px;width:{w}px;height:{h}px;background:#2A2522"><img src="{PL}{f}.jpg" alt="" style="object-position:{pos};transform:scale({z});transform-origin:{pos}"></div>'
+        origin, bg = (pos, "#2A2522") if z >= 1 and not dy else ("50% 100%", INK)      # zoom < 1 or a shift: the gap is the banner's own field
+        out += f'<div class="ph" style="left:{x}px;top:{top}px;width:{w}px;height:{h}px;background:{bg}"><img src="{PL}{f}.jpg" alt="" style="object-position:{pos};transform:translateY({dy}px) scale({z});transform-origin:{origin}"></div>'
         out += f'<p class="ci" style="left:{x + (w - d) // 2}px;top:{top + h - d // 2}px;width:{d}px;height:{d}px;font-size:{int(d * .34)}px;{ls}">{sym(a)}</p>'
         if names:
             out += f'<div class="sv" style="left:{x}px;width:{w}px;top:{top + h + d // 2 + 12}px;text-align:center"><p class="nm" style="font-size:26px;white-space:nowrap">{tp}</p></div>'
@@ -347,15 +349,33 @@ for key in SEASON: both_cls(key, v_season(key), "Five autumn-winter slices with 
 # the AD, round 2 (8,5 / 8,2): the fur frame with air above the head (84-24), the pashe close-up below the earring, the first frame higher on mobile
 # 22.11, the client: the second frame — the second gallery photo of /shovkova-khustka-flirt-65kh65-dvostoronnii-druk/ (coffee, Vogue, the «Флірт»
 # scarf knotted on the trench); the pool already holds that shot at 1800 px as 88-33-D.jpg, and the 88 article carries the same −10 % the 65 page shows
-FOUR = [("65-24-01", "65-24", "Хустка", "50% 18%", 1.0, "50% 30%"), ("88-33-D", "88-33-D", "Хустка", "54% 38%", 1.0, "56% 40%"),
-        ("65-21-D-04", "65-21-D", "Хустка", "50% 22%", 1.0, "50% 25%"), ("84-24", "84-24", "Твіллі", "50% 18%", 1.0, "50% 12%")]
-def v_four(H, mob):
-    field = f'<div style="inset:0;background:{INK}"></div>'
-    if mob: return field + seven_tiles(940, 1820, 44, 684, True, gap=14, names=False, tiles=FOUR, tight=True, d=124) + \
-        BH.lock("Чорна п’ятниця", None, kicker="", pill=None, more="Дивитися всі", k=1.35, width=600, xl=True, bigsize=72)   # no kicker: it would repeat the headline; the client, 22.11: no yellow pill, the button on mobile too; k 1.35 — the AD: the circles 124 px, right margin ≈ 100 px
-    return field + seven_tiles(1060, 1856, 78, 498, False, gap=14, names=False, tiles=FOUR, tight=True) + \
-        BH.lock("Чорна п’ятниця", f"Неймовірні знижки в{NBSP}OBIIMY", kicker="", pill=None, more="Дивитися всі", width=760, xl=False, bigsize=92)   # the client's words, 22.11 («всі» after a vowel, euphony)
-both_cls("bfh-51-four", v_four, "Four smaller autumn-winter slices, tight discount circles, the short lock-up (bfh-50 reworked)", "sv")
+# 22.11, the client: frames 1 and 3 a little smaller (zoom .9, air above the heads); frame 4 — the sofa photo of /tvilli-shovkovyi-melodiia-dvokh/ (84-27-02 in the pool, −30)
+# 22.11, the client again: all four columns the same height (the .9 zoom of frames 1 and 3 gave a stepped row — reverted), the sub-line on mobile too, the headline in the brand yellow
+# 22.11, the client: frame 1 slid down a little (dy 18 px — the head touched the top), frame 3 — the «Впевненість» 44×44 page (/shovkova-khustka-vpevnenist-44x44/,
+# −10 % there as on the 88 article, whose gallery holds the same columns shoot: 88-11-04 = its 4th photo, 88-11-01 = its 1st), the mobile photo block smaller
+# 22.11, the client: frame 3 — the first photo of that page (88-11-01), frame 1 full height again (the 18 px slide undone), the photo block wider for more room in each frame
+# 22.11, the client: frame 1 — the 4th photo of /shovkova-khustka-vidnovlennia-65x65-dvostoronnii-druk/ (65-24-D, −10 there and in the draft; the pool holds that frame at 3200 px as 88-24-03)
+# 22.11, the client: frame 1 — the 2nd photo of /shovkova-khustka-z-chystoho-lysta-65x65-dvostoronnii-druk/ (65-20-D, −20; saved as photo/bf-draft/life/65-20-D-02.jpg, 1200 × 1800)
+# 22.11, the client's order: the columns portrait first, then «З чистого листа», the coffee frame, the sofa
+FOUR = [("88-11-01", "88-11", "Хустка", "50% 20%", 1.0, "52% 22%"), ("65-20-D-02", "65-20-D", "Хустка", "50% 12%", 1.0, "50% 14%"),
+        ("88-33-D", "88-33-D", "Хустка", "54% 38%", 1.0, "56% 40%"), ("84-27-02", "84-27", "Твіллі", "50% 20%", 1.0, "50% 20%")]
+# 22.11, the client: «окей, сделай версии на трёх языках и запуш на прод, пометив, что эта версия финальная» — bfh-51-four is THE final Black Friday
+# home banner; the same frame in Ukrainian, English and Russian (ids bfh-51-four, bfh-51-four-en, bfh-51-four-ru)
+FOUR_TEXT = {"": ("Чорна п’ятниця", f"Неймовірні знижки в{NBSP}OBIIMY", "Дивитися всі"),
+             "en": ("Black Friday", f"Incredible discounts at{NBSP}OBIIMY", "View all"),
+             "ru": ("Чёрная пятница", f"Невероятные скидки в{NBSP}OBIIMY", "Смотреть все")}
+def v_four_lang(lang):
+    big, small, more = FOUR_TEXT[lang]
+    def v(H, mob):
+        field = f'<div style="inset:0;background:{INK}"></div>'
+        if mob: return field + seven_tiles(830, 1800, 156, 612, True, gap=14, names=False, tiles=FOUR, tight=True, d=112) + \
+            BH.lock(big, small, kicker="", pill=None, more=more, k=1.35, width=560, xl=True, bigsize=52)   # no kicker: it would repeat the headline; no yellow pill (the client); 232 × 400 tiles — the desktop proportion
+        return field + seven_tiles(920, 1856, 78, 498, False, gap=14, names=False, tiles=FOUR, tight=True) + \
+            BH.lock(big, small, kicker="", pill=None, more=more, width=820, xl=False, bigsize=92)   # 820: «Чёрная пятница» stays on one line
+    return v
+for lang in FOUR_TEXT:
+    both_cls("bfh-51-four" + (f"-{lang}" if lang else ""), v_four_lang(lang), f"FINAL (the client, 22.11) — four frames, tight discount circles, the short lock-up · {lang or 'uk'}", "sv four")
+HEAD = HEAD.replace("</style>", ".four .lock .big { color: #F2B705; } .four .lock .small { font-family: 'Montserrat', sans-serif; font-weight: 400; font-size: 44px; line-height: 1.2; letter-spacing: -.01em; color: #D9CDB9; margin-top: 16px; } .four.mobile .lock .small { font-size: 29px; margin-top: 10px; }\n</style>")   # the client, 22.11: the headline in the brand yellow, the sub-line larger and in the headline's face, on mobile too
 
 (HERE / "home-products.html").write_text(HEAD + "".join(ads) + "\n</body></html>")
 print(len(ads), "home frames incl. the fourth batch")

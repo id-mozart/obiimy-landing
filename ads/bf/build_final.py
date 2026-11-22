@@ -12,16 +12,17 @@ import json, pathlib
 from common import *
 HERE = pathlib.Path(__file__).parent
 P = {p["article"]: p for p in json.load(open(HERE / "draft-products.json", encoding="utf-8"))}
+LIVE = json.load(open(HERE / "live-discounts.json", encoding="utf-8"))   # 22.11: the discounts as /black-friday/ shows them (92 articles); the draft is the fallback
 PL = "../../photo/bf-draft/life/"
 NBSP = " "
-def pct(a): return int(P[a]["value"] or 0)
+def pct(a): return int(LIVE[a]["disc"] if a in LIVE else (P[a]["value"] or 0))
 
 BIG, SMALL, CTA = "Чорна п’ятниця", f"Неймовірні знижки в{NBSP}OBIIMY", "Дивитися всі"
 EXTRA = """
 .big.yel { color: #F2B705; }
 .sub { font-family: 'Montserrat', sans-serif; font-weight: 400; color: #D9CDB9; line-height: 1.2; letter-spacing: -.01em; }
 .ci { display: flex; align-items: center; justify-content: center; border-radius: 50%; background: #F2B705; color: #141110; box-shadow: 0 16px 30px -12px rgba(0,0,0,.7); font-family: 'Onest', 'Montserrat', sans-serif; font-weight: 700; letter-spacing: -.07em; line-height: 1; white-space: nowrap; font-variant-numeric: tabular-nums; z-index: 6; }
-.more { display: inline-flex; align-items: center; gap: .4em; font-family: 'Onest', sans-serif; font-weight: 500; letter-spacing: .02em; border: 1.5px solid rgba(243,234,219,.8); border-radius: 999px; color: #F3EADB; white-space: nowrap; }
+.more { display: inline-flex; align-items: center; gap: .45em; font-family: 'Onest', sans-serif; font-weight: 600; letter-spacing: .02em; border: 2.5px solid #F3EADB; border-radius: 999px; color: #F3EADB; white-space: nowrap; background: rgba(20,17,16,.35); }
 .more::after { content: "→"; font-weight: 400; }
 .tile { overflow: hidden; background: #2A2522; } .tile img { width: 100%; height: 100%; object-fit: cover; display: block; }
 """
@@ -32,7 +33,7 @@ F = {
  "coffee":  ("88-33-D",    "88-33-D", "56% 40%", "50% 40%"),    # «Флірт» on the trench, the coffee and Vogue
  "sofa":    ("84-27-02",   "84-27",   "50% 20%", "50% 30%"),    # twilly «Мелодія двох», the cream suit on the leather sofa
  "fur":     ("84-24-02",   "84-24",   "50% 32%", "50% 35%"),    # twilly «Відновлення» in the teal fur, the field
- "camel":   ("65-24-01",   "65-24",   "50% 30%", "50% 25%"),    # «Відновлення» 65 on the camel coat, profile
+ "camel":   ("65-24-01",   "65-24-D", "50% 30%", "50% 25%"),    # «Відновлення» 65 on the camel coat, profile (the 2D article is the one on /black-friday/)
  "trench":  ("88-22-D-02", "88-22-D", "50% 25%", "50% 25%"),    # «Сміливий дотик» 88 on the beige trench, the field
  "pashe":   ("P-44-12-02", "P-44-12", "50% 60%", "50% 55%"),    # the knotted pashe «Поцілунок Сонця», the dark close-up
  "blue":    ("88-25-D-02", "88-25-D", "50% 20%", "50% 30%"),    # «Грація» 88 as a belt on the blue blazer, the sky
@@ -44,6 +45,20 @@ F = {
  "wine":    ("44-24-D-00", "44-24-D", "50% 45%", "50% 45%"),    # pashe «Відновлення» 44 knotted on the white shirt, the dark red
  "camel2":  ("88-24-03",   "88-24",   "50% 16%", "50% 22%"),    # «Відновлення» 88 on the camel coat, face to camera, the field
  "beige":   ("140-30-01",  "140-30",  "50% 18%", "50% 25%"),    # twilly 140 «Коло сонця» on the beige coat, the studio
+ # 22.11, the client: «ещё вариантов с разными товарами из /black-friday/» — frames from the galleries of the other discounted goods
+ "tee":     ("t-shirt-21L-03", "t-shirt-21L", "50% 30%", "50% 35%"),   # the T-shirt «Натхнення» with the scarf at the waist, −40
+ "shirt":   ("C-10S-03",   "C-10S",   "50% 25%", "50% 30%"),    # the shirt «Маків цвіт» with the bow, the columns, −20
+ "man":     ("P-44-12-D-02", "P-44-12-D", "50% 30%", "50% 35%"),  # the man in the white suit, the pocket square «Поцілунок сонця», −20
+ "redpashe":("44-38-D-02", "44-38-D", "50% 25%", "50% 30%"),    # «Сміливий крок» 44 on the brown satin top, the terrace, −10
+ "fieldtr": ("65-22-D-03", "65-22-D", "50% 25%", "50% 25%"),    # «Сміливий дотик» 65 on the trench, the field, −10
+ "leath2":  ("65-31-D-03", "65-31-D", "55% 25%", "55% 30%"),    # «Піднесення» 65 on the black leather, −10
+ "tiedark": ("84-11-03",   "84-11",   "50% 25%", "50% 30%"),    # twilly «Впевненість» on the black blazer, the dark field, −30
+ "yelblue": ("84-8-02",    "84-8",    "50% 30%", "50% 35%"),    # twilly «Сміливість» on the neck, the black top, −30
+ "leathtw": ("84-31-02",   "84-31",   "50% 30%", "50% 35%"),    # twilly «Піднесення» as a tie on the leather jacket, −30
+ "hair":    ("84-16-05",   "84-16",   "50% 40%", "50% 45%"),    # the mint twilly in the hair, close, −30
+ "neck":    ("84-23-02",   "84-23",   "50% 45%", "50% 50%"),    # twilly «Баланс» knotted on the neck, close, −30
+ "ring":    ("111-1-03",   "111-1",   "50% 30%", "50% 35%"),    # the triple ring on the blue scarf, the black tee, −30
+ "chpashe": ("P-44-20-D-03", "P-44-20-D", "50% 30%", "50% 35%"),  # pashe «З чистого листа» on the black top, the field, −20
 }
 FINAL = ["columns", "chystyi", "coffee", "sofa"]                          # the home banner's four, in the client's order
 
@@ -59,22 +74,22 @@ def lockup(top, size=118, sub=40, left=64, width=952, align="left"):
 def ctabar():
     """The bottom row of the series, in the banner's manner: the outlined «Дивитися всі →» and the address, no yellow pill."""
     return (f'<div style="left:64px;right:64px;bottom:{BOTB}px;height:{BAR}px;display:flex;align-items:center;justify-content:space-between;z-index:6">'
-            f'<span class="more" style="font-size:{int(30 * K)}px;padding:{int(18 * K)}px {int(34 * K)}px">{CTA}</span>'
+            f'<span class="more" style="font-size:{int(38 * K)}px;padding:{int(22 * K)}px {int(44 * K)}px">{CTA}</span>'   # the client, 22.11: «заметней и чуть крупнее»
             f'<span class="hdr" style="font-size:{int(26 * K)}px;color:{CREAM};letter-spacing:.1em;text-transform:none">obiimy.world</span></div>')
 
 def tiles(keys, left, right, top, bottom, cols=None, gap=None):
     """The frames as equal tiles with the circle on the foot of each; one row, or a grid of `cols` columns."""
     n = len(keys); cols = cols or n; rows = (n + cols - 1) // cols; gap = gap or int(16 * K)
-    d = int((190 if cols <= 2 else 150) * K)          # the client, 22.11: the discount circle larger
+    d = int((210 if cols <= 2 else 168) * K)          # the client, 22.11: the discount circle larger, then «ещё чуть крупнее и выше»
     w = (right - left - gap * (cols - 1)) // cols
     h = (bottom - top - gap * (rows - 1)) // rows
-    ins = int(12 * K)                                   # the client, 22.11: the circle in the bottom-right corner of the frame
+    ins = int(14 * K); up = int(26 * K)                 # the client, 22.11: the circle in the bottom-right corner of the frame, lifted a little
     out = ""
     for i, k in enumerate(keys):
         f, a, pos, _ = F[k]; r, c = divmod(i, cols)
         x = left + c * (w + gap); y = top + r * (h + gap)
         out += f'<div class="tile" style="left:{x}px;top:{y}px;width:{w}px;height:{h}px"><img src="{PL}{f}.jpg" alt="" style="object-position:{pos}"></div>'
-        out += circle(x + w - d - ins, y + h - d - ins, d, a)
+        out += circle(x + w - d - ins, y + h - d - ins - up, d, a)
     return out
 
 def four(id, keys, note, grid=False):
@@ -93,13 +108,13 @@ def four(id, keys, note, grid=False):
 def hero(id, key, note, cx=.62, cy=.58, size=118):
     """One frame edge to edge; the words on the dark veil at the foot; one circle by the product (cx, cy — fractions of the frame)."""
     f, a, _, pos = F[key]
-    d = int(230 * K)                                    # the client, 22.11: larger
+    d = int(260 * K)                                    # the client, 22.11: larger, then larger and higher again
     body = f'''
   <div class="tile" style="inset:0;background:{INK}"><img src="{PL}{f}.jpg" alt="" style="object-position:{pos}"></div>
   <div style="left:0;right:0;top:0;height:{int(360 * K)}px;background:linear-gradient(180deg,rgba(12,9,8,.6),rgba(12,9,8,0))"></div>
   <div style="left:0;right:0;bottom:0;height:{int(H * .5)}px;background:linear-gradient(0deg,rgba(20,17,16,1) {int(BOTB + BAR * .6)}px,rgba(20,17,16,.92) {int(BOTB + BAR + 120 * K)}px,rgba(20,17,16,0))"></div>
   {header(True, hdr_text(BIG))}
-  {circle(1080 - 64 - d, H - BOTB - BAR - int(40 * K) - d, d, a)}
+  {circle(1080 - 64 - d, H - BOTB - BAR - int(70 * K) - d, d, a)}
   {lockup(Y1 - int((330 if not SQ else 190) * K), size=size if not SQ else 96, sub=40 if not SQ else 30, width=1080 - 128 - d - int(24 * K))}
   {ctabar()}'''
     ad(id, body, note)
@@ -123,6 +138,19 @@ hero("bff-13-hero-profile", "camel", "One frame: the camel coat in profile −20
 hero("bff-14-hero-pashe", "pashe", "One frame: the knotted pashe close-up −30")
 hero("bff-15-hero-wine", "wine", "One frame: the wine pashe on the white shirt −20")
 hero("bff-16-hero-suit", "suit", "One frame: the twilly as a tie on the black suit −20")
+# other goods of /black-friday/ (22.11): the T-shirt −40, the shirt, the man's pocket square, twillies on the dark field, the ring
+four("bff-17-dark-row", ["tiedark", "yelblue", "leath2", "leathtw"], "Other goods on the dark field: twilly on the blazer, twilly on the black top, the leather with «Піднесення», the leather tie")
+four("bff-18-dark-grid", ["tiedark", "yelblue", "leath2", "leathtw"], "The same four as a grid", grid=True)
+four("bff-19-wardrobe-row", ["tee", "shirt", "man", "redpashe"], "Other goods: the T-shirt −40, the shirt, the man's pocket square, the red pashe")
+four("bff-20-wardrobe-grid", ["tee", "shirt", "man", "redpashe"], "The same four as a grid", grid=True)
+four("bff-21-details-row", ["hair", "neck", "ring", "chpashe"], "Other goods, the details: the twilly in the hair, the twilly on the neck, the ring, the pashe in the field")
+hero("bff-22-hero-tee", "tee", "One frame: the T-shirt «Натхнення» −40")
+hero("bff-23-hero-shirt", "shirt", "One frame: the shirt «Маків цвіт» −20")
+hero("bff-24-hero-man", "man", "One frame: the man's pocket square −20")
+hero("bff-25-hero-tiedark", "tiedark", "One frame: the twilly on the black blazer −30")
+hero("bff-26-hero-yelblue", "yelblue", "One frame: the twilly on the black top −30")
+hero("bff-27-hero-redpashe", "redpashe", "One frame: the red pashe on the terrace −10")
+hero("bff-28-hero-fieldtr", "fieldtr", "One frame: «Сміливий дотик» on the trench −10")
 
 HEAD = f"""<!DOCTYPE html>
 <html lang="uk"><head><meta charset="utf-8"><title>Obiimy · Black Friday · after the final home banner</title>

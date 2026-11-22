@@ -276,10 +276,12 @@ HEAD = HEAD.replace("</style>", EXTRA5 + "</style>").replace("EB+Garamond:wght@5
 SEVEN = [("88-22-D", "Хустка", "64% 20%", 1.0), ("44-21-D", "Паше", "44% 25%", 1.0), ("84-30", "Твіллі", "50% 25%", 1.0),
          ("65-23-D", "Хустка", "50% 15%", 1.0), ("R-23", "Резинка", "60% 20%", 1.0)]   # 65-23-D is the AD's alternate: the first pick (65-24-D) turned out to be a back view
 PL = "../../photo/bf-draft/life/"
-def seven_tiles(left, right, top, bottom, mob, gap=10, names=True, tiles=None):
+def seven_tiles(left, right, top, bottom, mob, gap=10, names=True, tiles=None, tight=False, d=None):
     tiles = tiles or [(a, a, tp, pos, z) for a, tp, pos, z in SEVEN]   # (file stem, article for the discount, caption, focus, zoom)
     n = len(tiles); w = (right - left - gap * (n - 1)) // n
-    d = 72 if not mob else 104                                  # the discount circle on the foot of the tile (the reviewers: air around the digits, larger on mobile)
+    d = d or (72 if not mob else 104)                           # the discount circle on the foot of the tile (the reviewers: air around the digits, larger on mobile)
+    sym = (lambda a: f'−{pct(a)}%') if tight else (lambda a: f'−{pct(a)}{THIN}%')   # tight (the client, 22.11): no space before %, the glyphs closer
+    ls = "letter-spacing:-.07em;" if tight else ""
     cap_h = (int(26 * 1.3) + 12) if names else 0
     h = bottom - top - d // 2 - cap_h
     out = ""
@@ -288,7 +290,7 @@ def seven_tiles(left, right, top, bottom, mob, gap=10, names=True, tiles=None):
         if mob and len(t) > 5: pos = t[5]                      # the narrower mobile slice may need its own focus
         x = left + i * (w + gap)
         out += f'<div class="ph" style="left:{x}px;top:{top}px;width:{w}px;height:{h}px;background:#2A2522"><img src="{PL}{f}.jpg" alt="" style="object-position:{pos};transform:scale({z});transform-origin:{pos}"></div>'
-        out += f'<p class="ci" style="left:{x + (w - d) // 2}px;top:{top + h - d // 2}px;width:{d}px;height:{d}px;font-size:{int(d * .34)}px">−{pct(a)}{THIN}%</p>'
+        out += f'<p class="ci" style="left:{x + (w - d) // 2}px;top:{top + h - d // 2}px;width:{d}px;height:{d}px;font-size:{int(d * .34)}px;{ls}">{sym(a)}</p>'
         if names:
             out += f'<div class="sv" style="left:{x}px;width:{w}px;top:{top + h + d // 2 + 12}px;text-align:center"><p class="nm" style="font-size:26px;white-space:nowrap">{tp}</p></div>'
     return out
@@ -335,6 +337,23 @@ def v_season(key):
             BH.lock(big, small, kicker="Чорна п’ятниця в OBIIMY", pill=f"−10 · −20 · −30{THIN}%", more="Обрати подарунок", width=660, xl=False, bigsize=58)
     return v
 for key in SEASON: both_cls(key, v_season(key), "Five autumn-winter slices with discount circles (after bfh-47)", "sv")
+
+# 22.11, the client on bfh-50-city («вот этот доработаем»): the discount circles without the space before % and with the glyphs closer;
+# other photos, fewer and smaller — four; less text on the left: the headline is «Чорна п’ятниця», the sub-line laconic.
+# Frames not used in bfh-48…50: camel coat with the pink scarf (¾ face), black leather with the twilly, mustard trench with the blue
+# pashe, teal fur front — camel / black / mustard / mint, outdoor and studio alternate; the pashe caption only where a pashe is in the frame.
+# 22.11, the client again: no captions under the circles, and only frames without a white / light studio background — the outdoor
+# shoots (camel coat, beige trench, teal fur in the field) and the dark close-up of the knotted pashe; the AD's round 1: calm faces, mobile focuses so no face is cut
+# the AD, round 2 (8,5 / 8,2): the fur frame with air above the head (84-24), the pashe close-up below the earring, the first frame higher on mobile
+FOUR = [("65-24-01", "65-24", "Хустка", "50% 18%", 1.0, "50% 30%"), ("P-44-12-02", "P-44-12", "Паше", "50% 62%", 1.0, "50% 70%"),
+        ("65-21-D-04", "65-21-D", "Хустка", "50% 22%", 1.0, "50% 25%"), ("84-24", "84-24", "Твіллі", "50% 18%", 1.0, "50% 12%")]
+def v_four(H, mob):
+    field = f'<div style="inset:0;background:{INK}"></div>'
+    if mob: return field + seven_tiles(940, 1820, 44, 684, True, gap=14, names=False, tiles=FOUR, tight=True, d=124) + \
+        BH.lock("Чорна п’ятниця", None, kicker="", pill="−10 · −20 · −30%", more=None, k=1.35, width=600, xl=True, bigsize=72)   # no kicker: it would repeat the headline; k 1.35 — the AD: the pill ≈ 46 px, the circles 124 px, right margin ≈ 100 px
+    return field + seven_tiles(1060, 1856, 78, 498, False, gap=14, names=False, tiles=FOUR, tight=True) + \
+        BH.lock("Чорна п’ятниця", f"Неймовірні знижки в{NBSP}OBIIMY", kicker="", pill="−10 · −20 · −30%", more="Дивитися всі", width=760, xl=False, bigsize=92)   # the client's words, 22.11 («всі» after a vowel, euphony)
+both_cls("bfh-51-four", v_four, "Four smaller autumn-winter slices, tight discount circles, the short lock-up (bfh-50 reworked)", "sv")
 
 (HERE / "home-products.html").write_text(HEAD + "".join(ads) + "\n</body></html>")
 print(len(ads), "home frames incl. the fourth batch")

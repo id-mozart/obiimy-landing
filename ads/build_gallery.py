@@ -86,6 +86,8 @@ def build(site: pathlib.Path):
     gifts = ([f for f in tri if f.name[0] == "g"] + sorted((ROOT / "ads/solo/out8").glob("g*.jpg")) + pick(tri, gift_names)
              + pick(classic, ["p09", "u06"]))
     gifts_y = [f for f in tri_y if f.name[0] == "g"] + pick(tri_y, gift_names) + pick(yellow, ["p09", "u06"])
+    bff = sorted((ROOT / "ads/bf/out-final").glob("*.jpg"))   # 22.11: Black Friday, the series after the FINAL home banner bfh-51-four
+    add("Чорна п’ятниця · за фінальним банером головної (22.11)", "Шістнадцять банерів мовою фінального банера bfh-51-four: темне поле, «Чорна п’ятниця» фірмовим жовтим і крупно, «Неймовірні знижки в OBIIMY» тим самим шрифтом, лайфстайл-кадри з галерей товарів зі щільним жовтим кружечком знижки в правому нижньому куті кадру, без підписів, контурна кнопка «Дивитися всі». Три шаблони: чотири кадри банера в ряд і сіткою 2 × 2, один кадр на весь креатив із кружечком біля слів (колонни, «З чистого листа», кава, диван), і ті самі шаблони на інших товарах чернетки: хутро / верблюже пальто / тренч / темне паше рядом і сіткою, синій жакет / леопардовий тренч / бордове паше / гірчичний тренч, студійний ряд із твіллі-краваткою, шкірою, бежевим пальтом і резинкою, плюс шість hero-кадрів (верблюже пальто анфас і в профіль, леопардовий тренч, вузол паше, бордове паше, твіллі-краватка). Знижки — з чернетки клієнта за артикулом кадру. Аудит арт-директора на першому рендері 8,0 / 7,0 / 7,0; після нього прибрано дублі сіток і кадри, де хустка дрібна чи в тіні.", bff, "bff")
     bfp = sorted((ROOT / "ads/bf/out-products").glob("*.jpg"))   # 16.11: Black Friday, the products of the client's draft with their own discounts
     add("Чорна п’ятниця · товари добірки (16.11)", "Двадцять два банери на товарах, які клієнт поклав у чернетку знижок «Чорна п’ятниця» на /discounts (122 товари зі знижкою −10 / −20 / −30 %): хустки 44 см, твіллі 84 і 140, резинки, кільця, маски й набори для сну, подарункові бокси, великі хустки, стіна з дев’яти товарів; друга партія — ціна-герой «700 → 490 грн», чек з економією, три полиці за бюджетом, пара «твіллі + кільце», «Грація» у трьох розмірах, усі резинки з одним круглим бейджем, «122 товари» словами. Уперше знижка прив’язана до товару: жовтий бейдж на картці й ціна «1 120 грн замість 1 600» (роздріб obiimy.world, нова — за чернеткою). Фото — картки товарів із сайту на білих картках. Якщо чернетка зміниться — перезібрати `draft-products.json` і серію. Кожен — у чотирьох форматах.", bfp, "bfp")
     bfd = sorted((ROOT / "ads/bf/out-discount").glob("*.jpg"))   # 07.11: Black Friday, the discount as the hero
@@ -430,7 +432,7 @@ document.querySelectorAll('.bar button').forEach(function (b) {{
     if n_keep:
         body_html, n = flat(lambda i: i in keep_set); toc_html = ""
         # the newest series sits above the selection on the main page (not in the archive) until the client has sorted it
-        NEW = ("bfp/", "bfd/", "bfm/", "bf/", "sets5/", "sets4/", "sets3/", "sets2/")      # the 26.10 series (cut-outs, veils, cards with shadows) is in the archive since 05.11
+        NEW = ("bff/", "bfp/", "bfd/", "bfm/", "bf/", "sets5/", "sets4/", "sets3/", "sets2/")      # the 26.10 series (cut-outs, veils, cards with shadows) is in the archive since 05.11
         new_html = ""
         for g in groups:
             if g["cards"] and g["cards"][0][0].startswith(NEW):

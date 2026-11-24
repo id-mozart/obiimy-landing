@@ -16,7 +16,7 @@ def rows():
     data = json.loads((HERE / "partners.json").read_text(encoding="utf-8"))
     out, seen = [], set()
     for r in data:
-        key = (r.get("city", ""), (r.get("name") or "").strip().lower())
+        key = (r.get("category", ""), r.get("city", ""), (r.get("name") or "").strip().lower())   # the same clinic may sit in two categories (Vidnova: dental, cosmetology, surgery)
         if key in seen or not r.get("name"): continue
         seen.add(key)
         out.append({k: (r.get(k) or "").strip() for k in ("category", "city", "name", "phone", "address", "email", "website", "source", "note")})

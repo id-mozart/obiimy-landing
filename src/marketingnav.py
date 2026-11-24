@@ -12,11 +12,12 @@ CSS = (".mk{position:sticky;top:0;z-index:50;background:linear-gradient(rgba(255
        "@media(max-width:700px){.mk .in{height:46px;gap:10px;padding:0 12px}.mk .t{display:none}.mk nav{gap:0}.mk nav a{padding:6px 8px;font-size:13px}.mk .in a[title]{flex:none}}")
 JS = "(()=>{const k=new URLSearchParams(location.search).get('key');if(k)document.querySelectorAll('.mk nav a[href^=\"/\"]').forEach(a=>{a.href+=(a.href.includes('?')?'&':'?')+'key='+encodeURIComponent(k);});})();"
 
-GUEST = ("portrait", "contacts", "partners", "sets")   # what the advertisers' password opens
+GUEST = ("portrait", "contacts", "partners")   # what the advertisers' password opens; a tuple passed as `guest` narrows the menu to those pages («Набори» has its own login)
 
 def header(active, guest=False):
-    links = "".join('<a href="%s"%s>%s</a>' % (href, ' class="on"' if key == active else "", title) for key, title, href in NAV if not guest or key in GUEST)   # external links (https://…) get no key
-    return (f'<header class="mk"><div class="in"><a href="/portrait" title="OBIIMY"><img src="/brand/logo-ink.svg" alt="OBIIMY"></a><span class="t">Маркетинг</span><nav>{links}</nav></div></header>'
+    home = next(href for key, _, href in NAV if key == guest[0]) if isinstance(guest, tuple) else "/portrait"
+    links = "".join('<a href="%s"%s>%s</a>' % (href, ' class="on"' if key == active else "", title) for key, title, href in NAV if not guest or key in (guest if isinstance(guest, tuple) else GUEST))   # external links (https://…) get no key
+    return (f'<header class="mk"><div class="in"><a href="{home}" title="OBIIMY"><img src="/brand/logo-ink.svg" alt="OBIIMY"></a><span class="t">Маркетинг</span><nav>{links}</nav></div></header>'
             f"<script>{JS}</script>")
 
 EDITOR_CSS = ("body{grid-template:\"mk mk mk\" 46px \"top top top\" 52px \"ctx ctx ctx\" 40px \"rail work lib\" minmax(0,1fr) / 324px minmax(0,1fr) auto}"

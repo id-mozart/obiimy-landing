@@ -12,7 +12,8 @@ article, `available`, <price> (what the storefront charges) and <oldprice> (the 
 
 A daemon thread rebuilds the feed once an hour (SETS_REFRESH_SECONDS); a failed refresh keeps the last good feed and the page says
 so. Mounted by src/deck-editor.py: GET /sets (the page), GET /api/sets (the rows for the preview, ?refresh=1 rebuilds now),
-GET /sets.xml (the feed; ?download=1 saves it as a file) — all behind the manager's key or the advertisers' guest password."""
+GET /sets.xml (the feed; ?download=1 saves it as a file) — all behind the manager's key or the page's own login and
+password (SETS_LOGIN, SETS_PASSWORD; HTTP Basic), not the advertisers' guest password."""
 import html, json, os, pathlib, re, sys, threading, time
 import xml.etree.ElementTree as ET
 ROOT = pathlib.Path(__file__).resolve().parent.parent

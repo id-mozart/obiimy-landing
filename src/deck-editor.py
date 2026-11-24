@@ -15,6 +15,7 @@ from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from PIL import Image, ImageChops, ImageOps, ImageStat
 import portraitpage                                                      # src/portraitpage.py: the «Портрет клієнта» page (GET /portrait)
 import partnerspage                                                      # src/partnerspage.py: the «Партнери» directory (GET /partners, GET /api/partners)
+import setsfeed                                                          # src/setsfeed.py: the «Набори» page and the hourly XML feed of the gift sets (GET /sets, GET /api/sets, GET /sets.xml)
 import discountpanel                                                     # src/discountpanel.py: the «Знижки» page (GET /discounts, GET|POST /api/discounts)
 import marketingnav                                                      # src/marketingnav.py: the sticky «Маркетинг» header with the menu of the manager pages
 import customerspanel                                                    # src/customerspanel.py: the «Клієнти» page (GET /customers, GET /api/customers, POST /api/customers/refresh)
@@ -891,6 +892,15 @@ class Handler(SimpleHTTPRequestHandler):
         self.send_header("Cache-Control", cache); self.end_headers()
         if self.command != "HEAD": self.wfile.write(data)
 
+    def send_sets_xml(self, q):
+        """The gift sets feed (src/setsfeed.py); ?download=1 → saved as a file. 503 while there is no feed yet."""
+        data = setsfeed.xml()
+        if not data: return self.send_bytes("Файл ще не зібрано — спробуйте за хвилину.".encode("utf-8"), "text/plain; charset=utf-8", 503)
+        self.send_response(200); self.send_header("Content-Type", "application/xml; charset=utf-8"); self.send_header("Content-Length", str(len(data))); self.send_header("Cache-Control", "no-store")
+        if q.get("download") == "1": self.send_header("Content-Disposition", 'attachment; filename="obiimy-sets.xml"')
+        self.end_headers()
+        if self.command != "HEAD": self.wfile.write(data)
+
     def send_json(self, obj, status=200): self.send_bytes(json.dumps(obj, ensure_ascii=False).encode("utf-8"), "application/json; charset=utf-8", status)
 
     def end_headers(self):
@@ -967,10 +977,13 @@ class Handler(SimpleHTTPRequestHandler):
             except Problem as e: data = json.dumps(dict(ok=False, error=str(e)), ensure_ascii=False).encode("utf-8"); status = e.status
             self.send_response(status); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
             self.send_header("Cache-Control", "no-store"); self.corp_cors(); self.end_headers(); return self.wfile.write(data)
-        if u.path in ("/portrait", "/contacts", "/api/contacts", "/partners", "/api/partners") and not (self.keyed(q) or self.guest(q)): return self.need_key(guest=True)
+        if u.path in ("/portrait", "/contacts", "/api/contacts", "/partners", "/api/partners", "/sets", "/api/sets", "/sets.xml") and not (self.keyed(q) or self.guest(q)): return self.need_key(guest=True)
         if u.path == "/portrait": return self.send_bytes(marketingnav.wrap(portraitpage.PAGE, "portrait", guest=not self.keyed(q)).encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/partners": return self.send_bytes(marketingnav.wrap(partnerspage.PAGE, "partners", guest=not self.keyed(q)).encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/api/partners": return self.api(partnerspage.rows)
+        if u.path == "/sets": return self.send_bytes(marketingnav.wrap(setsfeed.PAGE, "sets", guest=not self.keyed(q)).encode("utf-8"), "text/html; charset=utf-8")
+        if u.path == "/api/sets": return self.api(lambda: setsfeed.state(force=q.get("refresh") == "1"))
+        if u.path == "/sets.xml": return self.send_sets_xml(q)
         if u.path == "/contacts": return self.send_bytes(marketingnav.wrap(customerspanel.CONTACTS_PAGE, "contacts", guest=not self.keyed(q)).encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/api/contacts": return self.api(customerspanel.contacts)   # open for now (the client, 14.11): the advertisers read it without a login
         if u.path in ("/sync", "/discounts", "/customers", "/api/sync", "/api/discounts", "/api/discounts/log", "/api/discounts/drafts", "/api/customers") and not self.keyed(q): return self.need_key()
@@ -1166,6 +1179,7 @@ def main():
     try: srv = Server((BIND, PORT), lambda *a, **k: Handler(*a, directory=str(ROOT), **k))
     except OSError as e: sys.exit(f"Порт {PORT} занят — редактор, похоже, уже запущен: http://127.0.0.1:{PORT}/  ({e})")
     customerspanel.start_scheduler()   # the «Клієнти» cache refreshes itself from KeyCRM once a day
+    setsfeed.start_scheduler()         # the XML feed of the gift sets rebuilds itself from Horoshop once an hour
     print(f"Редактор колоды: http://{BIND}:{PORT}/   (правки → {EDITS}; пароль: {'да' if PASSWORD else 'нет, только localhost'}; остановить — Ctrl+C)", flush=True)
     try: srv.serve_forever()
     except KeyboardInterrupt: print("\nОстановлен.")

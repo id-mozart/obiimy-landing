@@ -14,6 +14,7 @@ import hashlib, io, json, os, pathlib, re, shlex, shutil, subprocess, sys, tempf
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from PIL import Image, ImageChops, ImageOps, ImageStat
 import portraitpage                                                      # src/portraitpage.py: the «Портрет клієнта» page (GET /portrait)
+import partnerspage                                                      # src/partnerspage.py: the «Партнери» directory (GET /partners, GET /api/partners)
 import discountpanel                                                     # src/discountpanel.py: the «Знижки» page (GET /discounts, GET|POST /api/discounts)
 import marketingnav                                                      # src/marketingnav.py: the sticky «Маркетинг» header with the menu of the manager pages
 import customerspanel                                                    # src/customerspanel.py: the «Клієнти» page (GET /customers, GET /api/customers, POST /api/customers/refresh)
@@ -966,8 +967,10 @@ class Handler(SimpleHTTPRequestHandler):
             except Problem as e: data = json.dumps(dict(ok=False, error=str(e)), ensure_ascii=False).encode("utf-8"); status = e.status
             self.send_response(status); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
             self.send_header("Cache-Control", "no-store"); self.corp_cors(); self.end_headers(); return self.wfile.write(data)
-        if u.path in ("/portrait", "/contacts", "/api/contacts") and not (self.keyed(q) or self.guest(q)): return self.need_key(guest=True)
+        if u.path in ("/portrait", "/contacts", "/api/contacts", "/partners", "/api/partners") and not (self.keyed(q) or self.guest(q)): return self.need_key(guest=True)
         if u.path == "/portrait": return self.send_bytes(marketingnav.wrap(portraitpage.PAGE, "portrait", guest=not self.keyed(q)).encode("utf-8"), "text/html; charset=utf-8")
+        if u.path == "/partners": return self.send_bytes(marketingnav.wrap(partnerspage.PAGE, "partners", guest=not self.keyed(q)).encode("utf-8"), "text/html; charset=utf-8")
+        if u.path == "/api/partners": return self.api(partnerspage.rows)
         if u.path == "/contacts": return self.send_bytes(marketingnav.wrap(customerspanel.CONTACTS_PAGE, "contacts", guest=not self.keyed(q)).encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/api/contacts": return self.api(customerspanel.contacts)   # open for now (the client, 14.11): the advertisers read it without a login
         if u.path in ("/sync", "/discounts", "/customers", "/api/sync", "/api/discounts", "/api/discounts/log", "/api/discounts/drafts", "/api/customers") and not self.keyed(q): return self.need_key()

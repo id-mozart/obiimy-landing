@@ -881,7 +881,34 @@ class Handler(SimpleHTTPRequestHandler):
             try: user, _, pw = base64.b64decode(a[6:].strip()).decode("utf-8").partition(":")
             except Exception: return False
             return hmac.compare_digest(user.encode("utf-8"), SETS_LOGIN.encode("utf-8")) & hmac.compare_digest(pw.encode("utf-8"), SETS_PASSWORD.encode("utf-8"))
+        for part in (self.headers.get("Cookie") or "").split(";"):      # or the cookie of the page's own login form (the client, 26.11: no browser dialog appeared)
+            k, _, v = part.strip().partition("=")
+            if k == "obiimy_sets" and hmac.compare_digest(v.encode("utf-8"), self.sets_token().encode("utf-8")): return True
         return False
+
+    @staticmethod
+    def sets_token():
+        """What the login form's cookie holds: an HMAC of the login under the password — no state on the server, and a new password ends the old sessions."""
+        import hmac, hashlib
+        return hmac.new(SETS_PASSWORD.encode("utf-8"), ("sets:" + SETS_LOGIN).encode("utf-8"), hashlib.sha256).hexdigest()
+
+    def sets_login_page(self, wrong=False):
+        """The login form of «Набори» — shown instead of the browser's Basic dialog, which some browsers do not open."""
+        self.send_bytes(setsfeed.login_page(wrong).encode("utf-8"), "text/html; charset=utf-8", 401)
+
+    def sets_login_post(self):
+        import hmac
+        try: n = int(self.headers.get("Content-Length") or 0)
+        except ValueError: n = -1
+        if n < 0 or n > 4096: return self.send_error(413)
+        f = {k: v[0] for k, v in urllib.parse.parse_qs(self.rfile.read(n).decode("utf-8", "replace")).items()}
+        ok = bool(SETS_LOGIN and SETS_PASSWORD) and (hmac.compare_digest((f.get("login") or "").strip().encode("utf-8"), SETS_LOGIN.encode("utf-8"))
+                                                     & hmac.compare_digest((f.get("password") or "").encode("utf-8"), SETS_PASSWORD.encode("utf-8")))
+        if not ok:
+            time.sleep(1); return self.sets_login_page(wrong=True)
+        self.send_response(303); self.send_header("Location", "/sets")
+        self.send_header("Set-Cookie", "obiimy_sets=%s; Path=/; Max-Age=2592000; HttpOnly; SameSite=Lax%s" % (self.sets_token(), "; Secure" if PUBLIC else ""))
+        self.send_header("Content-Length", "0"); self.end_headers()
 
     def need_key(self, guest=False, sets=False):
         self.send_response(401); self.send_header("WWW-Authenticate", 'Basic realm="%s", charset="UTF-8"' % ("OBIIMY sets" if sets else "OBIIMY"))   # a realm of its own, so the browser does not offer the guest password here
@@ -992,7 +1019,8 @@ class Handler(SimpleHTTPRequestHandler):
             self.send_response(status); self.send_header("Content-Type", "application/json; charset=utf-8"); self.send_header("Content-Length", str(len(data)))
             self.send_header("Cache-Control", "no-store"); self.corp_cors(); self.end_headers(); return self.wfile.write(data)
         if u.path in ("/portrait", "/contacts", "/api/contacts", "/partners", "/api/partners") and not (self.keyed(q) or self.guest(q)): return self.need_key(guest=True)
-        if u.path in ("/sets", "/api/sets", "/sets.xml") and not (self.keyed(q) or self.sets_user()): return self.need_key(sets=True)
+        if u.path in ("/sets", "/api/sets", "/sets.xml") and not (self.keyed(q) or self.sets_user()):
+            return self.sets_login_page() if u.path == "/sets" else self.need_key(sets=True)   # the page → its own form; the feed → 401 Basic, for systems
         if u.path == "/portrait": return self.send_bytes(marketingnav.wrap(portraitpage.PAGE, "portrait", guest=not self.keyed(q)).encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/partners": return self.send_bytes(marketingnav.wrap(partnerspage.PAGE, "partners", guest=not self.keyed(q)).encode("utf-8"), "text/html; charset=utf-8")
         if u.path == "/api/partners": return self.api(partnerspage.rows)
@@ -1085,6 +1113,7 @@ class Handler(SimpleHTTPRequestHandler):
         if u.path in ("/api/corp", "/api/corp-upload"): return self.corp_post(u, q)
         if u.path == "/api/edem": return self.edem_post()
         if u.path == "/api/wfp": return self.wfp_post()
+        if u.path == "/sets/login": return self.sets_login_post()
         if not self.authed(): return
         if not self.local(post=True): return self.send_error(403, "Local use only")
         try: n = int(self.headers.get("Content-Length") or 0)

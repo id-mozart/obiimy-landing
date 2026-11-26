@@ -204,3 +204,31 @@ $('q').oninput=render;$('re').onclick=()=>load(true);
 $('cp').onclick=async()=>{try{await navigator.clipboard.writeText($('u').value);say('Посилання скопійовано.','ok');}catch(e){$('u').select();say('Скопіюйте посилання з поля.','bad');}};
 load(false);
 </script></body></html>"""
+
+
+LOGIN = r"""<!doctype html><html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>Набори — вхід · OBIIMY</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+background:#f7f3ec;color:#141110;font:15px/1.45 -apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif}
+form{width:100%;max-width:360px;background:#fff;border:1px solid #e6e0d6;border-radius:16px;padding:26px 24px}
+.b{font-size:12.5px;letter-spacing:.14em;color:#6b645c}h1{font-weight:500;font-size:24px;margin:4px 0 6px}
+p{margin:0 0 16px;font-size:13.5px;color:#6b645c}label{display:block;font-size:13px;color:#6b645c;margin:0 0 12px}
+input{display:block;width:100%;margin-top:4px;border:1px solid #e6e0d6;border-radius:10px;padding:11px 12px;font:inherit;background:#fbf9f5}
+input:focus{outline:2px solid #f4c430;outline-offset:1px}
+button{width:100%;appearance:none;border:0;border-radius:999px;background:#141110;color:#fff;font:inherit;padding:12px;cursor:pointer;margin-top:4px}
+button:hover{background:#000}.err{color:#b3261e;font-size:13.5px;margin:0 0 12px}
+</style></head><body>
+<form method="post" action="/sets/login">
+<div class="b">OBIIMY</div><h1>Набори</h1>
+<p>Файл із подарунковими наборами. Введіть логін і пароль цієї сторінки.</p>
+<!--ERR-->
+<label>Логін<input name="login" autocomplete="username" autocapitalize="none" spellcheck="false" required autofocus></label>
+<label>Пароль<input name="password" type="password" autocomplete="current-password" required></label>
+<button type="submit">Увійти</button>
+</form></body></html>"""
+
+
+def login_page(wrong=False):
+    """The login form of the page (POST /sets/login); wrong → the note that the pair did not match."""
+    return LOGIN.replace("<!--ERR-->", '<div class="err" role="alert">Логін або пароль не підходять.</div>' if wrong else "")
